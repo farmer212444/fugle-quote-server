@@ -1,0 +1,203 @@
+name: Taiwan Official Quarterly Financial Seed
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/tw_quarterly_ifrs_seed.yml'
+  schedule:
+    # TW 19:50 Monday and Thursday; only save when dataset content changes.
+    - cron: '50 11 * * 1,4'
+permissions:
+  contents: write
+jobs:
+  finance_seed:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Download latest official quarterly snapshots and validate
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          """V8.7.9 official newest-period financial snapshot collector.
+          This is a SEED/PROBE, NOT eight-quarter certification or a backtest.
+          Uses stdlib only; preserves per-source raw responses as GitHub Actions artifact.
+          """
+          from __future__ import annotations
+          import csv, datetime, hashlib, io, json, pathlib, re, sys, time, urllib.request
+
+          ROOT = pathlib.Path('tw-market-data/financial')
+          RAW = pathlib.Path('financial-source-evidence')
+          UTC = datetime.timezone.utc
+          TARGETS = {
+              'TWSE_income': [ ('https://openapi.twse.com.tw/v1/opendata/t187ap06_L_ci','json') ],
+              'TWSE_balance': [ ('https://openapi.twse.com.tw/v1/opendata/t187ap07_L_ci','json') ],
+              'TPEX_income': [ ('https://www.tpex.org.tw/openapi/v1/mopsfin_t187ap06_O_ci','json'), ('https://mopsfin.twse.com.tw/opendata/t187ap06_O_ci.csv','csv') ],
+              'TPEX_balance': [ ('https://www.tpex.org.tw/openapi/v1/mopsfin_t187ap07_O_ci','json'), ('https://mopsfin.twse.com.tw/opendata/t187ap07_O_ci.csv','csv') ],
+          }
+
+
+          def roc_to_year(value):
+              s = str(value or '').strip()
+              if not re.fullmatch(r'\d{2,4}',s): return None
+              y = int(s)
+              if 100 <= y <= 200: y += 1911
+              return y if 2013 <= y <= 2030 else None
+
+
+          def quarter(value):
+              s = str(value or '').strip()
+              # 2, 02, Q2, 第2季, 第二季 and 2季
+              s = s.replace('第','').replace('季','').upper().replace('Q','')
+              return int(s) if s in ('1','2','3','4','01','02','03','04') else None
+
+
+          def text_decode(buf):
+              for enc in ('utf-8-sig','big5'):
+                  try: return buf.decode(enc)
+                  except UnicodeError: pass
+              raise ValueError('Original response undecodable; no guessing.')
+
+
+          def parse_rows(raw, typ):
+              text = text_decode(raw)
+              if '<html' in text[:250].lower() or '<!doctype' in text[:250].lower():
+                  raise ValueError('HTML response, not official dataset')
+              if typ == 'json':
+                  data = json.loads(text)
+                  if isinstance(data,dict):
+                      data = next((data[k] for k in ('data','Data') if isinstance(data.get(k),list)),None)
+                  if not isinstance(data,list): raise ValueError('Expected list of records')
+              else: data = list(csv.DictReader(io.StringIO(text)))
+              data = [v for v in data if isinstance(v,dict)]
+              if len(data) < 40: raise ValueError(f'Insufficient issuer records {len(data)}')
+              return data
+
+
+          def code_from(row):
+              return str(row.get('公司代號') or row.get('公司代碼') or row.get('CompanyCode') or row.get('Code') or '').strip()
+
+
+          def period_from(row):
+              y = roc_to_year(row.get('年度') or row.get('年') or row.get('Year'))
+              q = quarter(row.get('季別') or row.get('季') or row.get('Quarter'))
+              return f'{y}Q{q}' if y and q else None
+
+
+          def validate_rows(rows,kind):
+              filtered=[r for r in rows if re.fullmatch(r'\d{4}',code_from(r))]
+              if len(filtered)<40: raise ValueError('Too few 4-digit securities')
+              seen = set()
+              for r in filtered:
+                  k=code_from(r)
+                  if k in seen: raise ValueError('Duplicate issuer code '+k)
+                  seen.add(k)
+              hist={}
+              for r in filtered:
+                  p=period_from(r)
+                  hist[p] = hist.get(p,0)+1
+              if len(hist)!=1 or None in hist: raise ValueError('Unknown or mixed quarter '+str(hist))
+              stamp=next(iter(hist))
+              return filtered,stamp
+
+
+          def fetch_dataset(kind,sources):
+              errors=[]
+              for url,typ in sources:
+                  try:
+                      print('FETCH',kind,url,flush=True)
+                      req=urllib.request.Request(url,headers={'User-Agent':'Mozilla/5.0 (Research archival non-commercial; original official snapshot)'})
+                      with urllib.request.urlopen(req,timeout=45) as response:
+                          raw=response.read(15_000_001)
+                      if len(raw)<1000 or len(raw)>15_000_000: raise ValueError('Suspicious payload size')
+                      digest=hashlib.sha256(raw).hexdigest()
+                      RAW.mkdir(parents=True,exist_ok=True)
+                      (RAW/f'{kind}_{digest[:12]}.{typ}').write_bytes(raw)
+                      rows=parse_rows(raw,typ)
+                      filtered,period=validate_rows(rows,kind)
+                      return {'kind':kind,'period':period,'url':url,'sha256_original':digest,'original_bytes':len(raw),'raw_rows':len(rows),'issuer_rows':len(filtered),'rows':filtered,'batch_date_values':sorted({str(v.get('出表日期') or '') for v in filtered})}
+                  except Exception as e:
+                      errors.append({'url':url,'exception':type(e).__name__,'reason':str(e)[:220]})
+                      print('FAIL',kind,url,type(e).__name__,str(e)[:150],flush=True)
+              return {'kind':kind,'error':errors}
+
+
+          def save(results):
+              good=[r for r in results if 'rows' in r]
+              if not good: raise RuntimeError('No official source returned valid quarterly dataset')
+              summary=[]
+              latest=ROOT/'latest_manifest.json'
+              for r in good:
+                  period=r['period'];kind=r['kind'];rows=r.pop('rows')
+                  destination=ROOT/period/f'{kind}.json'
+                  destination.parent.mkdir(parents=True,exist_ok=True)
+                  body=(json.dumps(rows,ensure_ascii=False,sort_keys=True,separators=(',',':'))+'\n').encode('utf-8')
+                  sha=hashlib.sha256(body).hexdigest()
+                  if destination.exists() and hashlib.sha256(destination.read_bytes()).hexdigest()!=sha:
+                      old=destination.read_bytes()
+                      revision=ROOT/'revisions'/period/kind/(hashlib.sha256(old).hexdigest()+'.json')
+                      revision.parent.mkdir(parents=True,exist_ok=True)
+                      if not revision.exists():revision.write_bytes(old)
+                  if not destination.exists() or hashlib.sha256(destination.read_bytes()).hexdigest()!=sha:
+                      destination.write_bytes(body)
+                  summary.append({**r,'path':str(destination),'normalized_sha256':sha})
+              failed=[r for r in results if 'error' in r]
+              def identity(r):return (r['kind'],r['period'],r['normalized_sha256'])
+              old=None
+              if latest.exists():
+                  try: old=json.loads(latest.read_text(encoding='utf8'))
+                  except Exception: pass
+              if (old is not None and
+                  sorted(identity(x) for x in old.get('sources',[]))==sorted(identity(x) for x in summary) and
+                  sorted(x['kind'] for x in old.get('failures',[]))==sorted(x['kind'] for x in failed)):
+                  print('NO_CHANGE_VALIDATED_SNAPSHOT - no git churn',flush=True)
+                  return old
+              latest.parent.mkdir(parents=True,exist_ok=True)
+              manifest={
+                  'schema':'v879-quarterly-seed-v1',
+                  'captured_utc':datetime.datetime.now(UTC).isoformat(),
+                  'source_count_ok':len(good),'source_count_expected':len(TARGETS),
+                  'completeness_status':'SINGLE_PERIOD_SNAPSHOT_PARTIAL' if len(good)<len(TARGETS) else 'SINGLE_PERIOD_SNAPSHOT',
+                  'quarters_available':sorted({x['period'] for x in summary}),
+                  'sources':summary,'failures':failed,
+                  'complete_8_quarters_verified':False,
+                  'OCF_PPE_cash_flow_verified':False,
+                  'CB_dilution_verified':False,
+                  'issuer_exact_publication_time_verified':False,
+                  'source_authenticity_note':'SHA confirms bytes versus this self-logged snapshot, not independent source authentication. Batch report date is not issuer filing PIT.',
+                  'financial_units_note':'Original units per source must be checked before cross-company arithmetic. Archived figures are raw string fields.',
+                  'grade':'RESEARCH_ONLY_NOT_FORMAL_A_PLUS'
+              }
+              latest.write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n',encoding='utf8')
+              print('PUBLISHED FINANCIAL SEED',len(good),'of',len(TARGETS),'periods',manifest['quarters_available'],flush=True)
+              return manifest
+
+          if __name__=='__main__':
+              results=[]
+              for name,sources in TARGETS.items():
+                  results.append(fetch_dataset(name,sources))
+                  time.sleep(0.4)
+              save(results)
+          PY
+      - name: Archive raw financial source receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: official-financial-source-raw
+          path: financial-source-evidence/
+          if-no-files-found: ignore
+          retention-days: 60
+      - name: Commit validated research snapshots
+        if: success()
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add tw-market-data/financial/
+          if ! git diff --cached --quiet; then
+            git commit -m 'data: verified financial quarter seed (not eight-quarter certification)'
+            git push
+          else
+            echo 'NO_CHANGES; complete quarter history still pending'
+          fi
