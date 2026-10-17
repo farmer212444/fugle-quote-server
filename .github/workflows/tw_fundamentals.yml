@@ -16,7 +16,7 @@ concurrency:
 jobs:
   collect:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 65
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -29,7 +29,7 @@ jobs:
       - name: Test parser and PIT cutoff
         run: python scripts/tw_fundamentals.py --self-test
       - name: Capture incremental official quarterly snapshots
-        run: python scripts/tw_fundamentals.py --max-fetches 12
+        run: python scripts/tw_fundamentals.py --max-fetches 32
       - name: Archive source HTML for audit
         if: always()
         uses: actions/upload-artifact@v4
