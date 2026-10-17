@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - 'scripts/tw_v877_provisional_rank.py'
+      - 'scripts/tw_v877_quality_rank.py'
       - '.github/workflows/tw_v877_research_rank.yml'
   schedule:
     # Taiwan 20:25 daily. Github scheduled runs may be delayed.
@@ -20,9 +20,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Validate Python scorer
-        run: python scripts/tw_v877_provisional_rank.py --self-test
+        run: python scripts/tw_v877_quality_rank.py --self-test
       - name: Produce provisional research scores
-        run: python scripts/tw_v877_provisional_rank.py
+        run: python scripts/tw_v877_quality_rank.py
       - name: Commit provisional research report
         run: |
           git config user.name 'github-actions[bot]'
