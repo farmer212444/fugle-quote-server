@@ -1,0 +1,76 @@
+{
+  "schema": "v879-quarterly-seed-v1",
+  "captured_utc": "2026-10-17T22:10:32.109853+00:00",
+  "source_count_ok": 4,
+  "source_count_expected": 4,
+  "completeness_status": "SINGLE_PERIOD_SNAPSHOT",
+  "quarters_available": [
+    "2026Q2"
+  ],
+  "sources": [
+    {
+      "kind": "TWSE_income",
+      "period": "2026Q2",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap06_L_ci",
+      "sha256_original": "c9f35fe1a9472c6dc7192342413a4cfcfdc1a19666bb7c77498c0d0bab1da2e4",
+      "original_bytes": 1419464,
+      "raw_rows": 1050,
+      "issuer_rows": 1050,
+      "batch_date_values": [
+        "1151018"
+      ],
+      "path": "tw-market-data/financial/2026Q2/TWSE_income.json",
+      "normalized_sha256": "8aff190886624988d3b285b0a36d2c23ba1c49f9f947ddaef61216dd9c41910f"
+    },
+    {
+      "kind": "TWSE_balance",
+      "period": "2026Q2",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap07_L_ci",
+      "sha256_original": "fc58ef66511e374815c21643b3b4b0ff5f053b98b308a83705e8a775c075990b",
+      "original_bytes": 894970,
+      "raw_rows": 1050,
+      "issuer_rows": 1050,
+      "batch_date_values": [
+        "1151018"
+      ],
+      "path": "tw-market-data/financial/2026Q2/TWSE_balance.json",
+      "normalized_sha256": "2d67cec3c2ba741a800da61e8f5b5df7e6d8348e20071c8a7b77069169b35034"
+    },
+    {
+      "kind": "TPEX_income",
+      "period": "2026Q2",
+      "url": "https://mopsfin.twse.com.tw/opendata/t187ap06_O_ci.csv",
+      "sha256_original": "2ee9e767f2c519966274cd9db8e8d74de3382b0144c876080d8fe3fa43309e94",
+      "original_bytes": 231191,
+      "raw_rows": 885,
+      "issuer_rows": 885,
+      "batch_date_values": [
+        "1151018"
+      ],
+      "path": "tw-market-data/financial/2026Q2/TPEX_income.json",
+      "normalized_sha256": "bfb7a86545633660e2d58f8e4fadc7321a094238ed80f24122017a0fc63d1e83"
+    },
+    {
+      "kind": "TPEX_balance",
+      "period": "2026Q2",
+      "url": "https://mopsfin.twse.com.tw/opendata/t187ap07_O_ci.csv",
+      "sha256_original": "f88374be36b992a4039aa879e478eaec044d1a7d6213f3f74973281ae46b0d1b",
+      "original_bytes": 207070,
+      "raw_rows": 885,
+      "issuer_rows": 885,
+      "batch_date_values": [
+        "1151018"
+      ],
+      "path": "tw-market-data/financial/2026Q2/TPEX_balance.json",
+      "normalized_sha256": "c4f1264d045a4bcb2890a6904ac6b4018098ba9937667a5a4bea6197ca7d94ad"
+    }
+  ],
+  "failures": [],
+  "complete_8_quarters_verified": false,
+  "OCF_PPE_cash_flow_verified": false,
+  "CB_dilution_verified": false,
+  "issuer_exact_publication_time_verified": false,
+  "source_authenticity_note": "SHA confirms bytes versus this self-logged snapshot, not independent source authentication. Batch report date is not issuer filing PIT.",
+  "financial_units_note": "Original units per source must be checked before cross-company arithmetic. Archived figures are raw string fields.",
+  "grade": "RESEARCH_ONLY_NOT_FORMAL_A_PLUS"
+}
