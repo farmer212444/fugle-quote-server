@@ -1,0 +1,291 @@
+name: Taiwan MOPS Historical Quarterly Backfill
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/tw_mops_history.yml'
+  schedule:
+    # Daily 20:50 Taiwan local time; two quarters per run (maximum eight HTTP requests).
+    - cron: '50 12 * * *'
+permissions:
+  contents: write
+concurrency:
+  group: mops-history-backfill
+  cancel-in-progress: false
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 28
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Download and verify past MOPS quarter reports
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          # Taiwan MOPS Historical IFRS Financial Data (research snapshot only)
+          import datetime as dt
+          import gzip
+          import hashlib
+          from html.parser import HTMLParser
+          import json
+          import os
+          from pathlib import Path
+          import re
+          import time
+          from urllib.parse import urlencode
+          from urllib.request import Request, urlopen
+          
+          ROOT=Path('tw-market-data/financial_history')
+          LOGS=Path('mops-history-runlogs')
+          LOGS.mkdir(exist_ok=True)
+          OUTPUT=ROOT/'latest_manifest.json'
+          ENDPOINT='https://mopsov.twse.com.tw/mops/web/'
+          CURRENT_QUARTER='2026Q2' # latest current-period financial seed already saved separately
+          # 8 quarters through 2026Q2; historical backfill excludes existing seed quarter
+          HISTORY=['2026Q1','2025Q4','2025Q3','2025Q2','2025Q1','2024Q4','2024Q3']
+          KINDS={'income':'ajax_t163sb04','balance':'ajax_t163sb05'}
+          MARKETS={'TWSE':'sii','TPEX':'otc'}
+          MAX_QUARTERS_PER_RUN=2
+          
+          class MOPSParser(HTMLParser):
+              def __init__(self):
+                  super().__init__(convert_charrefs=True)
+                  self.tables=[];self.level=0;self.table=None;self.row=None;self.cell=None
+              def handle_starttag(self,tag,attrs):
+                  if tag=='table':
+                      self.level+=1
+                      if self.level==1:self.table=[]
+                  elif tag=='tr' and self.level>0:
+                      self.row=[]
+                  elif tag in ('th','td') and self.row is not None:
+                      self.cell=[]
+              def handle_data(self,data):
+                  if self.cell is not None:self.cell.append(data)
+              def handle_endtag(self,tag):
+                  if tag in ('th','td') and self.cell is not None and self.row is not None:
+                      self.row.append(' '.join(''.join(self.cell).split()))
+                      self.cell=None
+                  elif tag=='tr' and self.row is not None:
+                      if self.row and self.table is not None:self.table.append(self.row)
+                      self.row=None
+                  elif tag=='table' and self.level>0:
+                      self.level-=1
+                      if self.level==0 and self.table is not None:
+                          self.tables.append(self.table)
+                          self.table=None
+          
+          def parse_company_rows(html):
+              p=MOPSParser();p.feed(html)
+              result={}; num_tables=0
+              for table in p.tables:
+                  col=None; headers=None; local=0
+                  for row in table:
+                      for i,cell in enumerate(row[:5]):
+                          if '公司代號' in cell or '公司代碼' in cell:
+                              col=i; headers=row;break
+                      if col is None or col>=len(row):continue
+                      code=row[col].strip()
+                      if not re.fullmatch(r'[1-9]\d{3}',code):continue
+                      if len(row)<col+3:continue
+                      name=row[col+1]
+                      if not name or len(name)>100:continue
+                      # All figures saved as literal strings and source column positions; not converting units.
+                      rec={'code':code,'name':name,'cells':row,'headers':headers,'table_index':len(result),'basis':'RAW_UNVERIFIED'}
+                      if code in result:
+                          if rec['cells']!=result[code]['cells']:
+                              raise ValueError('Conflicting duplicate issuer '+code)
+                      else:result[code]=rec
+                      local+=1
+                  if local>0:num_tables+=1
+              return sorted(result.values(),key=lambda x:x['code']),num_tables,len(p.tables)
+          
+          def period_guard(html,quarter):
+              year,q=quarter.split('Q');roc=int(year)-1911
+              # For financials, the ROC year and season must occur together in the heading.
+              text=re.sub(r'\s+','',re.sub(r'<[^>]*>','',html))
+              # Avoid matching a comparison year in the financial columns.
+              heading=text[:10000]
+              tests=[rf'{roc}年(?:度)?第0?{q}季',rf'{roc}年第0?{q}季',rf'{roc}年(?:度)?第0?{q}季']
+              if not any(re.search(x,heading) for x in tests):
+                  raise ValueError(f'Cannot establish {quarter} in report heading; visible={heading[:230]!r}')
+              return True
+          
+          def download(market,kind,quarter):
+              year,q=quarter.split('Q');roc=str(int(year)-1911)
+              url=ENDPOINT+KINDS[kind]
+              form={'encodeURIComponent':'1','step':'1','firstin':'1','off':'1','isQuery':'Y',
+                    'TYPEK':MARKETS[market],'year':roc,'season':q.zfill(2)}
+              req=Request(url,data=urlencode(form).encode(),headers={
+                  'User-Agent':'Mozilla/5.0 (compatible; archival-financial-research/1.0)',
+                  'Referer':ENDPOINT+KINDS[kind].replace('ajax_',''),
+                  'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8',
+                  'Accept':'text/html,application/xhtml+xml'})
+              with urlopen(req,timeout=80) as response:
+                  raw=response.read(20_000_001)
+              if len(raw)<8000 or len(raw)>20_000_000:
+                  raise ValueError(f'Unexpected HTML length {len(raw)}')
+              for enc in ('utf-8-sig','big5'):
+                  try:html=raw.decode(enc);break
+                  except UnicodeDecodeError:continue
+              else:raise ValueError('Unsupported MOPS encoding')
+              if '<html' not in html[:3000].lower() and '<table' not in html[:3000].lower():
+                  raise ValueError('Unexpected MOPS report format')
+              period_guard(html,quarter)
+              records,report_tables,all_tables=parse_company_rows(html)
+              if len(records)<300:
+                  raise ValueError(f'Too few unique {market} issuers: {len(records)}, parsed tables={all_tables}')
+              if report_tables<1:raise ValueError('No valid issuer financial table')
+              return {'quarter':quarter,'market':market,'kind':kind,'url':url,'request_form':form,
+                      'captured_utc':dt.datetime.now(dt.timezone.utc).isoformat(),
+                      'raw_sha256':hashlib.sha256(raw).hexdigest(),
+                      'raw_length':len(raw),'issuer_rows':len(records),'valid_tables':report_tables,
+                      'reported_quarter_verified':True,
+                      'currency_and_unit_verified':False,
+                      'issuer_exact_original_filing_PIT_verified':False,
+                      'quarter_cashflow_verified':False,
+                      'consolidated_basis_unchecked':True,
+                      'research_only':True,'rows':records},raw
+          
+          def write_versioned(path,raw):
+              path.parent.mkdir(parents=True,exist_ok=True)
+              if path.exists() and path.read_bytes()!=raw:
+                  old=path.read_bytes();sha=hashlib.sha256(old).hexdigest()
+                  rev=ROOT/'revisions'/path.relative_to(ROOT).parent/(path.name+'.'+sha)
+                  rev.parent.mkdir(parents=True,exist_ok=True)
+                  if not rev.exists():rev.write_bytes(old)
+              if not path.exists() or path.read_bytes()!=raw:path.write_bytes(raw)
+          
+          def split_shards(records,meta,max_bytes=600_000):
+              """Keep each JSON piece well under the GitHub Contents text API size ceiling."""
+              chunks=[];current=[]
+              for row in records:
+                  trial=current+[row]
+                  raw=(json.dumps({'meta':meta,'rows':trial},ensure_ascii=False,sort_keys=True,separators=(',',':'))+'\n').encode()
+                  if len(raw)>max_bytes and current:
+                      chunks.append(current);current=[row]
+                  elif len(raw)>max_bytes:
+                      raise ValueError('Single financial issuer row exceeds shard budget')
+                  else:current=trial
+              if current:chunks.append(current)
+              return chunks
+          
+          def save_report(data,raw):
+              period,market,kind=data['quarter'],data['market'],data['kind']
+              head={k:v for k,v in data.items() if k!='rows'}
+              chunks=split_shards(data['rows'],head)
+              entries=[]
+              for i,chunk in enumerate(chunks,1):
+                  dest=ROOT/period/(market+'_'+kind+f'_shard{i:02}.json')
+                  payload=(json.dumps({'meta':head,'rows':chunk},ensure_ascii=False,sort_keys=True,separators=(',',':'))+'\n').encode()
+                  write_versioned(dest,payload)
+                  entries.append({'path':dest.as_posix(),'rows':len(chunk),'sha256':hashlib.sha256(payload).hexdigest()})
+              raw_target=ROOT/period/(market+'_'+kind+'.html.gz')
+              write_versioned(raw_target,gzip.compress(raw,compresslevel=6,mtime=0))
+              index=ROOT/period/(market+'_'+kind+'.index.json')
+              index_data={'meta':head,'shards':entries,'raw_path':raw_target.as_posix(),
+                          'raw_sha256':data['raw_sha256'],
+                          'parsed_count':sum(x['rows'] for x in entries),
+                          'formal_grade_allowed':False}
+              idx_payload=(json.dumps(index_data,ensure_ascii=False,indent=2)+'\n').encode()
+              write_versioned(index,idx_payload)
+              return {'quarter':period,'kind':market+'_'+kind,'rows':data['issuer_rows'],
+                      'index_path':index.as_posix(),'shard_count':len(entries),
+                      'raw_path':raw_target.as_posix(),'index_sha256':hashlib.sha256(idx_payload).hexdigest(),
+                      'sha256_raw':data['raw_sha256']}
+          
+          def existing_quarters():
+              result=[]
+              for period in HISTORY:
+                  missing=[]
+                  for market in MARKETS:
+                      for kind in KINDS:
+                          f=ROOT/period/(market+'_'+kind+'.index.json')
+                          if not f.exists():
+                              missing.append((market,kind))
+                              continue
+                          try:
+                              j=json.loads(f.read_text(encoding='utf-8'))
+                              entries=j['shards']
+                              if not entries or j.get('formal_grade_allowed') is not False:raise ValueError('Invalid index')
+                              for ent in entries:
+                                  fsh=ROOT/period/Path(ent['path']).name
+                                  if not fsh.exists() or hashlib.sha256(fsh.read_bytes()).hexdigest()!=ent['sha256']:
+                                      raise ValueError('Shard missing or corrupted')
+                              if j['parsed_count']!=sum(x['rows'] for x in entries):raise ValueError('Row count mismatch')
+                          except Exception:
+                              missing.append((market,kind))
+                  result.append((period,missing))
+              return result
+          
+          def run():
+              before=existing_quarters()
+              todo=[(p,missing) for p,missing in before if missing][:MAX_QUARTERS_PER_RUN]
+              status=[];failures=[]
+              for period,pairs in todo:
+                  for market,kind in pairs:
+                      print('REQUEST',period,market,kind,flush=True)
+                      try:
+                          data,raw=download(market,kind,period)
+                          status.append(save_report(data,raw))
+                          print('SAVED',period,market,kind,data['issuer_rows'],flush=True)
+                      except Exception as e:
+                          failures.append({'quarter':period,'market':market,'kind':kind,'error':str(e)[:350]})
+                          print('FAILED',period,market,kind,str(e)[:250],flush=True)
+                      time.sleep(1.4)
+              after=existing_quarters()
+              complete=[p for p,missing in after if not missing]
+              manifest={
+                'schema':'v879-mops-quarterly-historical-research-v1',
+                'date_captured_utc':dt.datetime.now(dt.timezone.utc).isoformat(),
+                'seed_quarter_existing_elsewhere':CURRENT_QUARTER,
+                'requested_backfill_quarters':HISTORY,
+                'fully_downloaded_quarters_THIS_COLLECTION':complete,
+                'quarters_remaining':{p:[m+'_'+k for m,k in miss] for p,miss in after if miss},
+                'this_run_saved':status,'this_run_failed':failures,
+                'original_quarterly_filing_PIT_verified':False,
+                'cash_flow_OCF_CAPEX_verified':False,
+                'financial_units_verified':False,
+                'standalone_quarterly_earnings_verified':False,
+                'complete_8q_formal_eligibility':False,
+                'grade':'RESEARCH_ONLY_NOT_FORMAL_A_PLUS',
+                'note':'Historical MOPS retrieval as-of capture. No retrospective backtest timestamp or formal valuation inference until issuer original filing dates and cashflows are independently confirmed.'
+              }
+              LOGS.joinpath('attempt.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+              if status or OUTPUT.exists():
+                  # No price/revenue manifests overwritten; update only historical-financial namespace.
+                  OUTPUT.parent.mkdir(parents=True,exist_ok=True)
+                  old=OUTPUT.read_text(encoding='utf8') if OUTPUT.exists() else ''
+                  if status or not old:
+                      OUTPUT.write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n',encoding='utf8')
+              if todo and not status:
+                  raise RuntimeError('Zero MOPS historical reports passed validation. Inspect attempt.json; do not claim backfill success.')
+              print('STATUS',len(status),'saved',len(failures),'failed',len(complete),'quarters complete',flush=True)
+          
+          if __name__=='__main__':run()
+          PY
+      - name: Save collection attempt and errors
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mops-history-runlog
+          path: mops-history-runlogs/
+          if-no-files-found: ignore
+          retention-days: 30
+      - name: Commit verified historical financial snapshots
+        if: always()
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          if [ -d tw-market-data/financial_history ]; then
+            git add tw-market-data/financial_history/
+            if ! git diff --cached --quiet; then
+              git commit -m 'data: incremental historical MOPS income balance snapshots'
+              git push
+            else
+              echo 'No new or revised historical MOPS data'
+            fi
+          else
+            echo 'No validated historical financial data to commit'
+          fi
