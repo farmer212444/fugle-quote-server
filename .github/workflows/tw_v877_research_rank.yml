@@ -1,0 +1,35 @@
+name: TW V8.7.7 Provisional Research Rank (NOT formal A+)
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'scripts/tw_v877_provisional_rank.py'
+      - '.github/workflows/tw_v877_research_rank.yml'
+  schedule:
+    # Taiwan 20:25 daily. Github scheduled runs may be delayed.
+    - cron: '25 12 * * *'
+permissions:
+  contents: write
+concurrency:
+  group: tw-v877-provisional-research
+  cancel-in-progress: false
+jobs:
+  screen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate Python scorer
+        run: python scripts/tw_v877_provisional_rank.py --self-test
+      - name: Produce provisional research scores
+        run: python scripts/tw_v877_provisional_rank.py
+      - name: Commit provisional research report
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add tw-market-data/rankings/latest_research.json tw-market-data/rankings/latest_research.md
+          if ! git diff --cached --quiet; then
+            git commit -m 'data: update V8.7.7 provisional research (not certified)'
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
