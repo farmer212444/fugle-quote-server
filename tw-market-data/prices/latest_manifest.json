@@ -1,0 +1,19 @@
+{
+  "date": "2026-10-16",
+  "TWSE_rows": 1094,
+  "TPEX_rows": 886,
+  "total": 1980,
+  "path": "tw-market-data/prices/2026-10-16.json",
+  "normalized_sha256": "152811dc2ed6304fbb889e78972d363d96bc7bc2d0d2593e801d23a196c79661",
+  "raw_source_sha256": {
+    "TWSE": "a3a86b0d331c10560b9c9904094f494f45ad7f508a9e1864bcf555bda4e273bb",
+    "TPEX": "fadf503f3b80f10cead93f6255f19731cbb38c4dd545015353fd95caa3f12cf0"
+  },
+  "sources": {
+    "TWSE": "https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL",
+    "TPEX": "https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_close_quotes"
+  },
+  "unadjusted_quotes": true,
+  "security_master_verified": false,
+  "note": "Latest daily unadjusted close; not adjusted for cash dividends, splits or corporate actions."
+}
