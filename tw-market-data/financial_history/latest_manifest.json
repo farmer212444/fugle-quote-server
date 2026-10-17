@@ -1,0 +1,140 @@
+{
+  "schema": "v879-mops-quarterly-historical-research-v1",
+  "date_captured_utc": "2026-10-17T23:02:59.484453+00:00",
+  "seed_quarter_existing_elsewhere": "2026Q2",
+  "requested_backfill_quarters": [
+    "2026Q1",
+    "2025Q4",
+    "2025Q3",
+    "2025Q2",
+    "2025Q1",
+    "2024Q4",
+    "2024Q3"
+  ],
+  "fully_downloaded_quarters_THIS_COLLECTION": [
+    "2026Q1",
+    "2025Q4"
+  ],
+  "quarters_remaining": {
+    "2025Q3": [
+      "TWSE_income",
+      "TWSE_balance",
+      "TPEX_income",
+      "TPEX_balance"
+    ],
+    "2025Q2": [
+      "TWSE_income",
+      "TWSE_balance",
+      "TPEX_income",
+      "TPEX_balance"
+    ],
+    "2025Q1": [
+      "TWSE_income",
+      "TWSE_balance",
+      "TPEX_income",
+      "TPEX_balance"
+    ],
+    "2024Q4": [
+      "TWSE_income",
+      "TWSE_balance",
+      "TPEX_income",
+      "TPEX_balance"
+    ],
+    "2024Q3": [
+      "TWSE_income",
+      "TWSE_balance",
+      "TPEX_income",
+      "TPEX_balance"
+    ]
+  },
+  "this_run_saved": [
+    {
+      "quarter": "2026Q1",
+      "kind": "TWSE_income",
+      "rows": 1084,
+      "index_path": "tw-market-data/financial_history/2026Q1/TWSE_income.index.json",
+      "shard_count": 3,
+      "raw_path": "tw-market-data/financial_history/2026Q1/TWSE_income.html.gz",
+      "index_sha256": "433b6319d5811db6ab45f2c74d5c79dee045054fafb2e72407e9481269cbbb73",
+      "sha256_raw": "af4f3d5cf7665f38633fd2b4cbdaab50de3c11c5483f560e267e070ecdcc34fa"
+    },
+    {
+      "quarter": "2026Q1",
+      "kind": "TWSE_balance",
+      "rows": 1084,
+      "index_path": "tw-market-data/financial_history/2026Q1/TWSE_balance.index.json",
+      "shard_count": 2,
+      "raw_path": "tw-market-data/financial_history/2026Q1/TWSE_balance.html.gz",
+      "index_sha256": "1da8152a5fe02a33be7b6142e9650f8e98a24ba2bd810bcaad65b35f4213014a",
+      "sha256_raw": "e340cb1e414ffc026a37eb3f3a5e123cf688239d053289fcfdb88bc6ab8fc290"
+    },
+    {
+      "quarter": "2026Q1",
+      "kind": "TPEX_income",
+      "rows": 892,
+      "index_path": "tw-market-data/financial_history/2026Q1/TPEX_income.index.json",
+      "shard_count": 3,
+      "raw_path": "tw-market-data/financial_history/2026Q1/TPEX_income.html.gz",
+      "index_sha256": "a79015292054119bbcbf9bcad593d5a370cebd083b6ed1f4de45bea8a26dc7bf",
+      "sha256_raw": "f43684124ea9a3a7028146c7013a62ae6606b9ca39f3b686d5f5abca4848bca4"
+    },
+    {
+      "quarter": "2026Q1",
+      "kind": "TPEX_balance",
+      "rows": 892,
+      "index_path": "tw-market-data/financial_history/2026Q1/TPEX_balance.index.json",
+      "shard_count": 2,
+      "raw_path": "tw-market-data/financial_history/2026Q1/TPEX_balance.html.gz",
+      "index_sha256": "263630e604e9ae6b1d42ef36cccb1d5b0abb5fd469bd0825a5d8b11a8ba62dea",
+      "sha256_raw": "7181bd91214319b468d774bd5d7ec91cf9b1730a798f87de235e69d85b4ad353"
+    },
+    {
+      "quarter": "2025Q4",
+      "kind": "TWSE_income",
+      "rows": 1085,
+      "index_path": "tw-market-data/financial_history/2025Q4/TWSE_income.index.json",
+      "shard_count": 3,
+      "raw_path": "tw-market-data/financial_history/2025Q4/TWSE_income.html.gz",
+      "index_sha256": "2962cc04979703bd81580b94dab85a2b8e9d20c2d8fb5af7c5e916a7877d195a",
+      "sha256_raw": "d0ac343723be6454485e48cf44af2e68c798f77f7683df54024e6d180ea851c8"
+    },
+    {
+      "quarter": "2025Q4",
+      "kind": "TWSE_balance",
+      "rows": 1085,
+      "index_path": "tw-market-data/financial_history/2025Q4/TWSE_balance.index.json",
+      "shard_count": 2,
+      "raw_path": "tw-market-data/financial_history/2025Q4/TWSE_balance.html.gz",
+      "index_sha256": "6aa5c3083ac869fb855c78e4ed89eca1a58b57e198e10bc6d42b6be7174dd9fe",
+      "sha256_raw": "1060924caacdc8c62212453c65a1c725763961dbc263053d52e9db4d7f73fb16"
+    },
+    {
+      "quarter": "2025Q4",
+      "kind": "TPEX_income",
+      "rows": 892,
+      "index_path": "tw-market-data/financial_history/2025Q4/TPEX_income.index.json",
+      "shard_count": 3,
+      "raw_path": "tw-market-data/financial_history/2025Q4/TPEX_income.html.gz",
+      "index_sha256": "e23b0e8f650f08826bab59a37988cdb9b866c7fb28ef1950b9b054dae6148b74",
+      "sha256_raw": "99a3e2b1671ff425f501ac8755daf236ff21ee6f56c3f40d540092c4679a4128"
+    },
+    {
+      "quarter": "2025Q4",
+      "kind": "TPEX_balance",
+      "rows": 892,
+      "index_path": "tw-market-data/financial_history/2025Q4/TPEX_balance.index.json",
+      "shard_count": 2,
+      "raw_path": "tw-market-data/financial_history/2025Q4/TPEX_balance.html.gz",
+      "index_sha256": "54035d1115c8557fa3d588f66872bf36918c9c8998a249518c62ed18f00d0810",
+      "sha256_raw": "d3af3c5e46448a9f913741ed4d4f6a942a060cb5d4c9a8fcfffcebb783fe5024"
+    }
+  ],
+  "this_run_failed": [],
+  "original_quarterly_filing_PIT_verified": false,
+  "cash_flow_OCF_CAPEX_verified": false,
+  "financial_units_verified": false,
+  "standalone_quarterly_earnings_verified": false,
+  "complete_8q_formal_eligibility": false,
+  "grade": "RESEARCH_ONLY_NOT_FORMAL_A_PLUS",
+  "note": "Historical MOPS retrieval as-of capture. No retrospective backtest timestamp or formal valuation inference until issuer original filing dates and cashflows are independently confirmed."
+}
