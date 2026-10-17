@@ -4,12 +4,14 @@ on:
   schedule:
     - cron: '20 10 * * 1-5'
 permissions:
-  contents: read
+  contents: write
 jobs:
   capture:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
       - name: Fetch official revenue files
         shell: bash
         run: |
@@ -59,3 +61,133 @@ jobs:
           name: taiwan-official-revenue
           path: raw/
           retention-days: 30
+      - name: Publish verified revenue to GitHub for ChatGPT connector
+        if: success()
+        shell: bash
+        run: |
+          import csv
+          import datetime
+          import hashlib
+          import io
+          import json
+          import pathlib
+          import re
+          
+          ROOT = pathlib.Path('raw')
+          OUT = pathlib.Path('tw-market-data')
+          F = {
+            'code': '公司代號', 'name': '公司名稱', 'industry': '產業別',
+            'report_month': '資料年月', 'batch_date': '出表日期',
+            'monthly_revenue_k': '營業收入-當月營收',
+            'prior_month_revenue_k': '營業收入-上月營收',
+            'last_year_month_revenue_k': '營業收入-去年當月營收',
+            'monthly_yoy_pct': '營業收入-去年同月增減(%)',
+            'ytd_revenue_k': '累計營業收入-當月累計營收',
+            'last_year_ytd_revenue_k': '累計營業收入-去年累計營收',
+            'ytd_yoy_pct': '累計營業收入-前期比較增減(%)'
+          }
+          
+          def read_rows(p):
+              data = p.read_bytes()
+              if p.suffix == '.json':
+                  result = json.loads(data.decode('utf-8-sig'))
+              else:
+                  s = data.decode('utf-8-sig')
+                  result = list(csv.DictReader(io.StringIO(s)))
+              if not isinstance(result, list) or len(result) < 400:
+                  raise ValueError(f'Invalid/undersized official issuer list: {p}')
+              return result
+          
+          def clean(rows, market):
+              result=[]
+              for raw in rows:
+                  code = str(raw.get('公司代號', '')).strip()
+                  if not re.fullmatch(r'\d{4,6}', code):
+                      raise ValueError(f'Invalid stock code: {code!r}')
+                  mon = str(raw.get('資料年月', '')).strip()
+                  if not re.fullmatch(r'\d{5}', mon):
+                      raise ValueError(f'Invalid ROC month {mon!r}')
+                  for key in F.values():
+                      if key not in raw:
+                          raise ValueError(f'Missing field {key} for {code}')
+                  row = {k: str(raw[v]).strip() for k,v in F.items()}
+                  row['market'] = market
+                  result.append(row)
+              return result
+          
+          manifest = json.loads((ROOT / 'manifest.json').read_text(encoding='utf-8'))
+          receipts = {r['name']: r for r in manifest['sources']}
+          for source in manifest['sources']:
+              if source.get('status') != 'CAPTURED_PENDING_AUDIT':
+                  continue
+              path = ROOT / (source['name'] + ('.csv' if source['name'] == 'tpex' else '.json'))
+              if not path.is_file():
+                  raise ValueError(f'Missing raw payload {path}')
+              data = path.read_bytes()
+              if len(data) != source['bytes'] or hashlib.sha256(data).hexdigest() != source['sha256']:
+                  raise ValueError(f'Official raw receipt mismatch for {path}')
+          
+          if receipts['twse']['status'] != 'CAPTURED_PENDING_AUDIT':
+              raise SystemExit('Official TWSE was not obtained: leave previous snapshot in place')
+          list_twse = clean(read_rows(ROOT / 'twse.json'), 'TWSE')
+          if receipts['tpex_backup']['status'] == 'CAPTURED_PENDING_AUDIT':
+              list_tpex = clean(read_rows(ROOT / 'tpex_backup.json'), 'TPEX')
+          elif receipts['tpex']['status'] == 'CAPTURED_PENDING_AUDIT':
+              list_tpex = clean(read_rows(ROOT / 'tpex.csv'), 'TPEX')
+          else:
+              raise SystemExit('Official TPEx missing: leave previous snapshot in place')
+          if receipts['tpex_backup']['status'] == receipts['tpex']['status'] == 'CAPTURED_PENDING_AUDIT':
+              tpex_csv = clean(read_rows(ROOT / 'tpex.csv'), 'TPEX')
+              if tpex_csv != list_tpex:
+                  raise SystemExit('TPEx CSV/JSON conflict; refuse to publish')
+          
+          rows = list_twse + list_tpex
+          codes = [r['code'] for r in rows]
+          if len(codes) != len(set(codes)):
+              raise SystemExit('Duplicate stock code across markets; refuse to publish')
+          months = set(r['report_month'] for r in rows)
+          if len(months) != 1:
+              raise SystemExit('TWSE/TPEx report months disagree; refuse to publish')
+          roc_month = months.pop()
+          year = 1911 + int(roc_month[:3]); month = int(roc_month[3:])
+          if not 1 <= month <= 12 or year < 2020:
+              raise SystemExit('Invalid report month')
+          period = f'{year:04d}-{month:02d}'
+          # Store only public issuer financial reports, not portfolio, private credentials or custom stock ranks.
+          chunks={}
+          for row in sorted(rows, key=lambda r:r['code']):
+              chunks.setdefault(row['code'][0], []).append(row)
+          archive = OUT / period
+          archive.mkdir(parents=True, exist_ok=True)
+          shards=[]
+          for key, items in sorted(chunks.items()):
+              filepath = archive / f'revenue_{key}.json'
+              raw = (json.dumps(items, ensure_ascii=False, separators=(',', ':')) + '\n').encode('utf-8')
+              filepath.write_bytes(raw)
+              shards.append({'path': filepath.as_posix(), 'records': len(items), 'sha256': hashlib.sha256(raw).hexdigest()})
+          manifest_out={
+              'format_version': 1, 'period': period,
+              'capture_utc': manifest['captured_utc'],
+              'batch_TWSE_report_dates': sorted(set(r['batch_date'] for r in list_twse)),
+              'batch_TPEX_report_dates': sorted(set(r['batch_date'] for r in list_tpex)),
+              'twse_rows': len(list_twse), 'tpex_rows': len(list_tpex),
+              'issuer_rows': len(rows), 'distinct_stock_codes': len(codes),
+              'original_receipts': [dict(name=r['name'], url=r['url'], sha256=r['sha256']) for r in manifest['sources'] if r.get('status')=='CAPTURED_PENDING_AUDIT'],
+              'shards': shards,
+              'original_source_authenticated_independently': False,
+              'company_exact_PIT_publication_verified': False,
+              'financial_8Q_verified': False,
+              'formal_Aplus_certified': False,
+              'note': 'Official-source downloader output, hash checked against receipt. User-side GitHub public repository; batch release date is not individual issuer publication time.'
+          }
+          (OUT / 'latest_manifest.json').write_text(json.dumps(manifest_out,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print(f'PUBLISHED {period}, {len(rows)} unique issuers in {len(shards)} verified shards')
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add tw-market-data/
+          if git diff --cached --quiet; then
+            echo "No change to official monthly revenue snapshot"
+          else
+            git commit -m "data: publish Taiwan official monthly revenue snapshot"
+            git push
+          fi
