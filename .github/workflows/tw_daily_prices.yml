@@ -98,7 +98,7 @@ jobs:
           tpex, pdate, phash = gathered['TPEX']
           if tdate != pdate:
               raise ValueError(f'Exchange dates differ TWSE={tdate}, TPEx={pdate}')
-          if tdate != today:
+          if not 0 <= (dt.date.fromisoformat(today) - dt.date.fromisoformat(tdate)).days <= 4:
               print(f'NO_NEW_SESSION today={today} exchange={tdate}: skip (holiday or API not yet refreshed)')
           else:
               all_rows = sorted(twse + tpex, key=lambda x: (x['market'], x['code']))
