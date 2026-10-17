@@ -100,16 +100,42 @@ jobs:
                   if local>0:num_tables+=1
               return sorted(result.values(),key=lambda x:x['code']),num_tables,len(p.tables)
           
-          def period_guard(html,quarter):
-              year,q=quarter.split('Q');roc=int(year)-1911
-              # For financials, the ROC year and season must occur together in the heading.
-              text=re.sub(r'\s+','',re.sub(r'<[^>]*>','',html))
-              # Avoid matching a comparison year in the financial columns.
-              heading=text[:10000]
-              tests=[rf'{roc}年(?:度)?第0?{q}季',rf'{roc}年第0?{q}季',rf'{roc}年(?:度)?第0?{q}季']
-              if not any(re.search(x,heading) for x in tests):
-                  raise ValueError(f'Cannot establish {quarter} in report heading; visible={heading[:230]!r}')
-              return True
+          def period_guard(html, quarter, market=None):
+              """Check the official report's venue/quarter, retaining true year-confidence.
+          
+              MOPS summary headings can be 「公開資訊觀測站上市公司第一季資料」:
+              the ROC fiscal year is absent even when the POST form supplies it.
+              In that situation allow a research snapshot only; NEVER mark fiscal year verified.
+              """
+              year, q = quarter.split('Q')
+              roc = int(year) - 1911
+              compact = re.sub(r'\s+', '', re.sub(r'<[^>]*>', '', html))
+              heading = compact[:16000]
+              qm = {'1':'一', '2':'二', '3':'三', '4':'四'}[q]
+              label = '上市' if market == 'TWSE' else '上櫃' if market == 'TPEX' else None
+              actual_title = re.search(r'公開資訊觀測站(上市|上櫃)公司(第([一二三四1234])季|年度)資料', heading[:700])
+              if actual_title:
+                  venue, season_text, ordinal = actual_title.group(1), actual_title.group(2), actual_title.group(3)
+                  if label is not None and venue != label:
+                      raise ValueError(f'Official MOPS venue mismatch: expected {label}, got {venue}')
+                  if q == '4':
+                      if season_text not in ('年度', '第四季', '第4季'):
+                          raise ValueError(f'Official MOPS quarter mismatch: requested {quarter}, got {season_text}')
+                  elif ordinal not in (qm, q):
+                      raise ValueError(f'Official MOPS quarter mismatch: requested {quarter}, got {season_text}')
+              # Only call the fiscal year CONFIRMED if it actually appears with the season.
+              qpat = '(?:'+q+'|'+qm+')'
+              strict = [
+                  rf'{roc}年(?:度)?第{qpat}季',
+                  rf'{year}年(?:度)?第{qpat}季',
+              ]
+              if q == '4':
+                  strict += [rf'{roc}年(?:度)?年度', rf'{year}年(?:度)?年度']
+              if any(re.search(pat, heading) for pat in strict):
+                  return 'EXPLICIT_FISCAL_YEAR_QUARTER_IN_RESPONSE'
+              if actual_title:
+                  return 'OFFICIAL_VENUE_QUARTER_HEADER_YEAR_REQUEST_ONLY_UNVERIFIED'
+              raise ValueError(f'Cannot establish official {quarter} quarter/venue header; visible={heading[:230]!r}')
           
           def download(market,kind,quarter):
               year,q=quarter.split('Q');roc=str(int(year)-1911)
@@ -123,6 +149,8 @@ jobs:
                   'Accept':'text/html,application/xhtml+xml'})
               with urlopen(req,timeout=80) as response:
                   raw=response.read(20_000_001)
+              # Preserve rejected responses as an ephemeral Actions artifact for auditing.
+              LOGS.joinpath(f'{quarter}_{market}_{kind}_source.html.gz').write_bytes(gzip.compress(raw,mtime=0))
               if len(raw)<8000 or len(raw)>20_000_000:
                   raise ValueError(f'Unexpected HTML length {len(raw)}')
               for enc in ('utf-8-sig','big5'):
@@ -131,16 +159,24 @@ jobs:
               else:raise ValueError('Unsupported MOPS encoding')
               if '<html' not in html[:3000].lower() and '<table' not in html[:3000].lower():
                   raise ValueError('Unexpected MOPS report format')
-              period_guard(html,quarter)
+              evidence=period_guard(html,quarter,market)
               records,report_tables,all_tables=parse_company_rows(html)
+              print('MOPS_STRUCTURE',quarter,market,kind,'evidence='+evidence,'issuer_rows='+str(len(records)),'tables='+str(report_tables),flush=True)
               if len(records)<300:
                   raise ValueError(f'Too few unique {market} issuers: {len(records)}, parsed tables={all_tables}')
               if report_tables<1:raise ValueError('No valid issuer financial table')
+              # A list of 300 issuers without financial values is not a financial report.
+              numeric_pat=re.compile(r'^[+-]?(?:\d{1,3}(?:,\d{3})+|\d+)(?:\.\d+)?$')
+              numeric_issuers=sum(1 for r in records if any(numeric_pat.fullmatch(v.strip()) for v in r['cells'][2:]))
+              if numeric_issuers<250:raise ValueError(f'Insufficient financial numeric rows {numeric_issuers}')
               return {'quarter':quarter,'market':market,'kind':kind,'url':url,'request_form':form,
                       'captured_utc':dt.datetime.now(dt.timezone.utc).isoformat(),
                       'raw_sha256':hashlib.sha256(raw).hexdigest(),
                       'raw_length':len(raw),'issuer_rows':len(records),'valid_tables':report_tables,
-                      'reported_quarter_verified':True,
+                      'reported_quarter_verified':evidence=='EXPLICIT_FISCAL_YEAR_QUARTER_IN_RESPONSE',
+                      'fiscal_period_evidence':evidence,
+                      'requested_roc_year':roc,
+                      'reported_year_in_response_verified':evidence=='EXPLICIT_FISCAL_YEAR_QUARTER_IN_RESPONSE',
                       'currency_and_unit_verified':False,
                       'issuer_exact_original_filing_PIT_verified':False,
                       'quarter_cashflow_verified':False,
@@ -173,6 +209,18 @@ jobs:
           def save_report(data,raw):
               period,market,kind=data['quarter'],data['market'],data['kind']
               head={k:v for k,v in data.items() if k!='rows'}
+              # Stop if an API silently ignores year and returns the same tables for two periods.
+              row_fingerprint=hashlib.sha256(json.dumps(
+                  [(r['code'],r['cells']) for r in data['rows']],ensure_ascii=False,
+                  sort_keys=True,separators=(',',':')).encode()).hexdigest()
+              for existing in ROOT.glob('20*/*_*.index.json'):
+                  try: prior=json.loads(existing.read_text(encoding='utf-8'))
+                  except (ValueError,OSError):continue
+                  pm=prior.get('meta') or {}
+                  if pm.get('market')==market and pm.get('kind')==kind and pm.get('quarter')!=period:
+                      if pm.get('row_fingerprint')==row_fingerprint:
+                          raise ValueError(f'Identical financial rows across requested years: {period} and {pm.get("quarter")}; year selector may be ignored')
+              head['row_fingerprint']=row_fingerprint
               chunks=split_shards(data['rows'],head)
               entries=[]
               for i,chunk in enumerate(chunks,1):
