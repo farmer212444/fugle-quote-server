@@ -10,6 +10,8 @@ def triage(payload):
         raise ValueError("ranking payload must be an object")
     if payload.get("formal_Aplus_count") != 0 or payload.get("formal_Aplusplus_count") != 0:
         raise ValueError("input claims unverified formal certification")
+    if not payload.get("asof_price_date") or not payload.get("model"):
+        raise ValueError("missing source model or dated price snapshot")
     rows = payload.get("top30_provisional", [])
     if not isinstance(rows, list):
         raise ValueError("top30_provisional must be an array")
@@ -40,13 +42,13 @@ def triage(payload):
             "candidates":out,"warning":"No 2000-issuer coverage, no 2027 EPS recalibration, no backtest; research only."}
 
 def self_test():
-    base={"formal_Aplus_count":0,"formal_Aplusplus_count":0,
+    base={"model":"legacy-research","asof_price_date":"2026-10-16","formal_Aplus_count":0,"formal_Aplusplus_count":0,
           "top30_provisional":[{"code":"9802","name":"鈺齊-KY","score":70,"scenario_upside_pct":27}]}
     r=triage(base)
     assert r["candidates"][0]["research_lane"]=="EARLY_TURNAROUND_REVIEW"
     assert r["candidates"][0]["formal_grade"]=="NOT_CERTIFIED"
     assert r["formal_Aplus_count"]==0
-    assert triage({"formal_Aplus_count":0,"formal_Aplusplus_count":0,
+    assert triage({"model":"legacy-research","asof_price_date":"2026-10-16","formal_Aplus_count":0,"formal_Aplusplus_count":0,
                    "top30_provisional":[{"code":"6206","score":60,"scenario_upside_pct":24.9}]})["candidates"][0]["research_lane"]=="WATCH"
     for bad in ({"formal_Aplus_count":1,"formal_Aplusplus_count":0,"top30_provisional":[]},
                 {"formal_Aplus_count":0,"formal_Aplusplus_count":0,"top30_provisional":[{"code":"1","score":1,"scenario_upside_pct":25},{"code":"1","score":1,"scenario_upside_pct":26}]}):
@@ -54,7 +56,7 @@ def self_test():
         except ValueError:pass
         else:raise AssertionError("fail-closed check missed")
     for invalid in (float("nan"), float("inf"), True):
-        bad={"formal_Aplus_count":0,"formal_Aplusplus_count":0,
+        bad={"model":"legacy-research","asof_price_date":"2026-10-16","formal_Aplus_count":0,"formal_Aplusplus_count":0,
              "top30_provisional":[{"code":"9802","score":70,"scenario_upside_pct":invalid}]}
         try:triage(bad)
         except ValueError:pass
