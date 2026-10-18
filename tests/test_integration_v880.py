@@ -2,7 +2,7 @@ import contextlib,gzip,io,json,pathlib,tempfile,unittest
 from unittest.mock import patch
 from tw_model_v880.model import estimate
 from tw_model_v880.math import previous_periods
-from scripts.tw_v880_run import run
+from scripts.tw_v880_run import run,ordered_recovery_watch
 ASOF='2026-10-18T19:30:00+08:00';CAL=dict(train_count=60,train_target='2025-Q4',revenue_persistence=.5,margin_persistence=.5,cost_persistence=.5)
 class FakeData:
     def __init__(self,*a):
@@ -22,6 +22,16 @@ class FakeData:
     def primary(self,c):return self.evidence['primary'].get(c)
     def detailed_values(self,*a):return None
 class IntegrationTests(unittest.TestCase):
+    def test_public_recovery_watch_does_not_hide_late_code_primary_issuer(self):
+        rows=[dict(code=f'{i:04}',source_tier='OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL',early_recovery_watch=True) for i in range(35)]
+        rows.append(dict(code='9802',source_tier='ORIGINAL_CURRENT_ISSUER_NUMERICS',early_recovery_watch=True))
+        self.assertIn('9802',[r['code'] for r in ordered_recovery_watch(rows)[:30]])
+        self.assertEqual(len(ordered_recovery_watch(rows)),36)
+    def test_watch_priority_preserves_values_ratings_and_nonwatch_exclusion(self):
+        rows=[dict(code='9802',source_tier='ORIGINAL_CURRENT_ISSUER_NUMERICS',early_recovery_watch=True,base=dict(target_price=55.06),formal_Aplus=False),
+              dict(code='0001',early_recovery_watch=False,formal_Aplus=True)]
+        out=ordered_recovery_watch(rows)
+        self.assertEqual([r['code'] for r in out],['9802']);self.assertEqual(out[0]['base']['target_price'],55.06);self.assertFalse(out[0]['formal_Aplus'])
     def test_reported_eps_edit_does_not_change_operating_forecast(self):
         d=FakeData();a=estimate(d,('TEST','SYNTHETIC_A'),CAL,ASOF,'2027-12-31')
         for row in d.history[('TEST','SYNTHETIC_A')].values():row['basic_eps_ytd']*=20

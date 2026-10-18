@@ -44,3 +44,7 @@ python scripts/v880_audit_exports.py --kind shares
 專用營運輸入放 `issuer_bridges/代碼.json`，包含同公司同財報期及目標日、建立與到期時間、來源URL/hash/可得日，以及三情境segments、業外、稅率、歸母比例和PE或NAV方法。函式只接受產能／利用率／單價／成本／剩餘待認列合約等營運輸入，不接受目標EPS或股價。
 
 首次重建證據可用 `python scripts/build_v880_evidence.py --audit-workspace <已凍結原始證據資料夾>`。該轉接器僅對2026Q2種子；日後新增原始公司財報須核對身份、單位及期別再納入。不得重試或繞過受保護的MOPS歷史端點。
+
+## 2026-10-18 早期復甦觀察名單修正
+
+原先171家早期復甦觀察按代碼截前30家，會漏掉已有原始當期數值的9802。現在先列原始當期數值，再以代碼排序，完整名單仍留於hash連結的結果。這只修正查證可見度，不改EPS、PE、價格或認證。39項測試通過；實際788家公司三情境及正式分級與修正前完全一致，9802已出現在公開觀察名單。個股補查與毛利率／PE條件表存於`tw-market-data/evidence/v880/issuer_reviews/9802.json`，不覆寫Base。

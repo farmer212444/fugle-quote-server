@@ -1,0 +1,285 @@
+{
+  "code": "9802",
+  "model": "V8.8.0",
+  "review_kind": "ISSUER_RECOVERY_ASSUMPTION_AUDIT_NOT_FORECAST_OVERRIDE",
+  "financial_period": "2026-Q2",
+  "target_date": "2027-12-31",
+  "review_at": "2026-10-18T13:42:02.599613+00:00",
+  "source_model_estimate_vintage": "2026-10-18T19:40:41+08:00",
+  "source_model_code_sha256": "d5981e31f28079e0ad2c25c8006ed62004e409dfde1f34ffb0e5c6440b0fe299",
+  "source_results_sha256": "495a4a47d8f36c8874da52046ef575a0c87e157499fc04a1b7820208491fc5cc",
+  "sources": [
+    {
+      "url": "https://www.fulgentsun.com/img/News_Release/FY2026 2Q financial results CN.pdf",
+      "sha256": "4107df116e123784b6259b9f83cf4957fa6fba090b37a62119fa1d94eb8d3175",
+      "origin_authenticated": true,
+      "document_date": "2026-07-23"
+    },
+    {
+      "url": "https://www.fulgentsun.com/img/News_Release/Announces Monthly Sales for September 2026_CN(1).pdf",
+      "sha256": "57390118f74e6783a35bd00b469af91a2dbcffdcd64a4d4823e219f1aafa8683",
+      "origin_authenticated": true,
+      "document_date": "2026-10-08"
+    }
+  ],
+  "actual_revenue": {
+    "q3_2026_k": 5435935,
+    "q3_2025_k": 3819386,
+    "sep_2026_k": 1597564,
+    "sep_yoy_pct": 72.0,
+    "q3_yoy_pct": 42.32,
+    "ytd_2026_k": 14369046,
+    "ytd_yoy_pct": 12.97
+  },
+  "operating_findings": [
+    "Current model GM is prior FY GM + 0.75 * current-vs-prior H1 GM change, not a factory utilization/ASP/unit-cost forecast",
+    "Issuer discloses both factory learning/fixed-cost absorption and tariffs/materials/wages; not every margin loss is verified temporary",
+    "Production value and order targets are not recognized revenue, GM or fulfilled earnings guidance"
+  ],
+  "frozen_base": {
+    "revenue_k": 20488820.405557998,
+    "gross_margin": 0.15288326600676558,
+    "gross_profit_k": 3132397.78022777,
+    "opex_ratio": 0.09594268929771342,
+    "opex_k": 1965752.5302471016,
+    "operating_profit_k": 1166645.2499806685,
+    "nonoperating_k": 75946.0,
+    "pretax_k": 1242591.2499806685,
+    "tax_rate": 0.22327164553543818,
+    "parent_fraction": 1.002041108142283,
+    "parent_profit_k": 967125.8443475763,
+    "shares": 210595899.70509127,
+    "eps": 4.592329887248016,
+    "pe": 11.99,
+    "target_price": 55.06203534810371,
+    "price_upside_pct": -18.547284988012247,
+    "future_dividends_per_share": null,
+    "total_return_pct": null
+  },
+  "sensitivity_grid": [
+    {
+      "gross_margin": 0.15288326600676558,
+      "eps": 4.592329887248015,
+      "pe": 12.0,
+      "target_price": 55.10795864697618,
+      "price_upside_pct": -18.479351113940556
+    },
+    {
+      "gross_margin": 0.15288326600676558,
+      "eps": 4.592329887248015,
+      "pe": 15.0,
+      "target_price": 68.88494830872023,
+      "price_upside_pct": 1.9008111075742962
+    },
+    {
+      "gross_margin": 0.17,
+      "eps": 5.888442222361351,
+      "pe": 12.0,
+      "target_price": 70.66130666833621,
+      "price_upside_pct": 4.528560160260664
+    },
+    {
+      "gross_margin": 0.17,
+      "eps": 5.888442222361351,
+      "pe": 15.0,
+      "target_price": 88.32663333542027,
+      "price_upside_pct": 30.660700200325852
+    },
+    {
+      "gross_margin": 0.18,
+      "eps": 6.645661640286309,
+      "pe": 12.0,
+      "target_price": 79.7479396834357,
+      "price_upside_pct": 17.97032497549662
+    },
+    {
+      "gross_margin": 0.18,
+      "eps": 6.645661640286309,
+      "pe": 15.0,
+      "target_price": 99.68492460429464,
+      "price_upside_pct": 47.46290621937077
+    },
+    {
+      "gross_margin": 0.19,
+      "eps": 7.4028810582112685,
+      "pe": 12.0,
+      "target_price": 88.83457269853523,
+      "price_upside_pct": 31.4120897907326
+    },
+    {
+      "gross_margin": 0.19,
+      "eps": 7.4028810582112685,
+      "pe": 15.0,
+      "target_price": 111.04321587316903,
+      "price_upside_pct": 64.26511223841574
+    }
+  ],
+  "required_margin_for_100": [
+    {
+      "price": 100,
+      "pe": 12.0,
+      "required_gross_margin": 0.20228774980007544
+    },
+    {
+      "price": 100,
+      "pe": 15.0,
+      "required_gross_margin": 0.18027739682690547
+    }
+  ],
+  "sensitivity_policy": "Hold revenue, opex ratio, nonoperating income, tax, parent fraction and full-conversion shares fixed. GM/PE axes are assumptions, no probabilities or forecast upgrade.",
+  "cb": {
+    "current_public_bond_record": {
+      "Date": "20261018",
+      "IssuerCode": "9802",
+      "IssuerName": "鈺齊-KY",
+      "BondCode": "98026",
+      "BondType": "5",
+      "SeriesNumber": "6",
+      "TrancheNumber": "",
+      "IssueDate": "20241115",
+      "MaturityDate": "20271115",
+      "IssueAmount": "1000000000",
+      "OutstandingAmount": "999800000",
+      "CouponRate": "0.000000",
+      "InterestBasis": "",
+      "CouponFrequency": "0",
+      "PaidFrequency": "0",
+      "BondRatingAgency": "",
+      "BondRating": "",
+      "IssuerRatingAgency": "",
+      "IssuerRating": "",
+      "GuarantorRatingAgency": "",
+      "GuarantorRating": "",
+      "ListingCountry": "1",
+      "PrincipalRepayment": "1",
+      "PrincipalRepaymentDescription": "",
+      "ShortName": "鈺齊六KY",
+      "ListingDate": "20241115",
+      "TenorYear": "3",
+      "TenorMonth": "0",
+      "ListingStatus": "2",
+      "Guaranteed": "2",
+      "GuaranteeDescription": "",
+      "PutOptionDate": "20261115",
+      "PutOptionPrice": "101.0025",
+      "Underwriter": "779T國票綜合證券",
+      "OutstandingChangeDate": "",
+      "OutstandingChangeDescription": "",
+      "Currency": "1",
+      "OfferingMethod": "7",
+      "Conversion/ExchangePriceAtIssuance": "112.9000",
+      "Conversion/ExchangePeriodStartDate": "20250216",
+      "Conversion/ExchangePeriodEndDate": "20271115",
+      "Trustee": "玉山商業銀行股份有限公司信託處"
+    },
+    "receipt": {
+      "name": "bond_ISSBD5_data",
+      "url": "https://www.tpex.org.tw/openapi/v1/bond_ISSBD5_data",
+      "sha256": "5715a6f7b278837beefe56105cfc97805137f6635129bc1a1d01f9f185980585",
+      "bytes": 452776,
+      "fetched_at": "2026-10-18T13:38:16.885368+00:00",
+      "matching_rows": [
+        {
+          "Date": "20261018",
+          "IssuerCode": "9802",
+          "IssuerName": "鈺齊-KY",
+          "BondCode": "98026",
+          "BondType": "5",
+          "SeriesNumber": "6",
+          "TrancheNumber": "",
+          "IssueDate": "20241115",
+          "MaturityDate": "20271115",
+          "IssueAmount": "1000000000",
+          "OutstandingAmount": "999800000",
+          "CouponRate": "0.000000",
+          "InterestBasis": "",
+          "CouponFrequency": "0",
+          "PaidFrequency": "0",
+          "BondRatingAgency": "",
+          "BondRating": "",
+          "IssuerRatingAgency": "",
+          "IssuerRating": "",
+          "GuarantorRatingAgency": "",
+          "GuarantorRating": "",
+          "ListingCountry": "1",
+          "PrincipalRepayment": "1",
+          "PrincipalRepaymentDescription": "",
+          "ShortName": "鈺齊六KY",
+          "ListingDate": "20241115",
+          "TenorYear": "3",
+          "TenorMonth": "0",
+          "ListingStatus": "2",
+          "Guaranteed": "2",
+          "GuaranteeDescription": "",
+          "PutOptionDate": "20261115",
+          "PutOptionPrice": "101.0025",
+          "Underwriter": "779T國票綜合證券",
+          "OutstandingChangeDate": "",
+          "OutstandingChangeDescription": "",
+          "Currency": "1",
+          "OfferingMethod": "7",
+          "Conversion/ExchangePriceAtIssuance": "112.9000",
+          "Conversion/ExchangePeriodStartDate": "20250216",
+          "Conversion/ExchangePeriodEndDate": "20271115",
+          "Trustee": "玉山商業銀行股份有限公司信託處"
+        }
+      ]
+    },
+    "raw_path": "issuer_reviews/raw/9802_bonds_20261018.json.gz",
+    "raw_gzip_sha256": "559c1becb0b269303a288421724a9cb90248f68518bdddcaf6068ee89731dd66",
+    "current_conversion_price_verified": false,
+    "primary_conversion_price_20260630": 104.1,
+    "put_is_optional_not_certain_outflow": true,
+    "actual_tenders_verified": false,
+    "actual_dividend_completion_verified": false,
+    "alternative_capital_scenarios": [
+      {
+        "put_fraction": 0,
+        "shares": 210595899.70509127,
+        "put_cash_sensitivity_twd": 0.0,
+        "valuation": {
+          "gross_margin": 0.15288326600676558,
+          "eps": 4.592329887248015,
+          "pe": 11.99,
+          "target_price": 55.0620353481037,
+          "price_upside_pct": -18.54728498801227
+        }
+      },
+      {
+        "put_fraction": 0.5,
+        "shares": 205793786.35254562,
+        "put_cash_sensitivity_twd": 504911497.5,
+        "valuation": {
+          "gross_margin": 0.15288326600676558,
+          "eps": 4.699490016140679,
+          "pe": 11.99,
+          "target_price": 56.34688529352674,
+          "price_upside_pct": -16.646619388274043
+        }
+      },
+      {
+        "put_fraction": 1,
+        "shares": 200991673.0,
+        "put_cash_sensitivity_twd": 1009822995.0,
+        "valuation": {
+          "gross_margin": 0.15288326600676558,
+          "eps": 4.8117707062798365,
+          "pe": 11.99,
+          "target_price": 57.69313076829524,
+          "price_upside_pct": -14.655131999563242
+        }
+      }
+    ],
+    "capital_scenarios_are_mutually_exclusive": true,
+    "valuation_does_not_include_new_financing_costs": true
+  },
+  "next_evidence": [
+    "Quarterly GM and opex conversion after Q3 revenue growth",
+    "Factory utilization, yield, ASP and unit labor/material costs",
+    "Post-June conversion-price adjustments, actual put tenders and payment timetable",
+    "Actual dividend payment, H2 OCF/CAPEX, bank facilities and commitments"
+  ],
+  "formal_Aplus_upgraded": false,
+  "formal_Aplusplus_upgraded": false,
+  "model_base_override": false
+}
