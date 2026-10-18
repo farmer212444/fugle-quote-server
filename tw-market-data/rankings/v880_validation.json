@@ -1,0 +1,599 @@
+{
+  "model": "V8.8.0",
+  "calibration": {
+    "status": "ACCOUNTING_CROSS_PERIOD_VALIDATION_ONLY",
+    "train_target": "2025-Q4",
+    "holdout_target": "2026-Q2",
+    "coefficients_frozen_before_holdout": true,
+    "grid": [
+      0.0,
+      0.25,
+      0.5,
+      0.75,
+      1.0
+    ],
+    "revenue_persistence": 0.5,
+    "margin_persistence": 0.75,
+    "cost_persistence": 0.75,
+    "train_count": 1785,
+    "holdout_count": 1783,
+    "train_metrics": {
+      "n": 1785,
+      "revenue_median_absolute_pct_error": 2.946835781945367,
+      "revenue_wape_pct": 4.227617505209535,
+      "gross_margin_median_abs_pp": 0.7672751057967386,
+      "opex_ratio_median_abs_pp": 0.5696921969588085
+    },
+    "holdout_metrics": {
+      "n": 1783,
+      "revenue_median_absolute_pct_error": 7.699933197973985,
+      "revenue_wape_pct": 15.871030556447524,
+      "gross_margin_median_abs_pp": 1.5000000826601552,
+      "opex_ratio_median_abs_pp": 0.9890360655672836
+    },
+    "holdout_no_change_baseline": {
+      "n": 1783,
+      "revenue_median_absolute_pct_error": 12.817441414108721,
+      "revenue_wape_pct": 26.276608964662678,
+      "gross_margin_median_abs_pp": 2.7779975850720118,
+      "opex_ratio_median_abs_pp": 1.6838141373834574
+    },
+    "sector_parameters": {
+      "光電業": {
+        "status": "ACCOUNTING_CROSS_PERIOD_VALIDATION_ONLY",
+        "train_target": "2025-Q4",
+        "holdout_target": "2026-Q2",
+        "coefficients_frozen_before_holdout": true,
+        "grid": [
+          0.0,
+          0.25,
+          0.5,
+          0.75,
+          1.0
+        ],
+        "revenue_persistence": 0.75,
+        "margin_persistence": 0.75,
+        "cost_persistence": 1.0,
+        "train_count": 111,
+        "holdout_count": 111,
+        "train_metrics": {
+          "n": 111,
+          "revenue_median_absolute_pct_error": 3.0841666505212473,
+          "revenue_wape_pct": 2.9147309441277525,
+          "gross_margin_median_abs_pp": 0.9654563008448191,
+          "opex_ratio_median_abs_pp": 0.7031700258387064
+        },
+        "holdout_metrics": {
+          "n": 111,
+          "revenue_median_absolute_pct_error": 5.497317378061739,
+          "revenue_wape_pct": 4.977217989081364,
+          "gross_margin_median_abs_pp": 2.2326875848014183,
+          "opex_ratio_median_abs_pp": 1.475461373594189
+        },
+        "holdout_no_change_baseline": {
+          "n": 111,
+          "revenue_median_absolute_pct_error": 10.123586566504283,
+          "revenue_wape_pct": 10.552811714249716,
+          "gross_margin_median_abs_pp": 3.0183454337167515,
+          "opex_ratio_median_abs_pp": 2.245974909523257
+        },
+        "sector_parameters": {},
+        "minimum_sector_training_sample": 50,
+        "deployed_sector_or_global_holdout_metrics": {
+          "n": 111,
+          "revenue_median_absolute_pct_error": 5.497317378061739,
+          "revenue_wape_pct": 4.977217989081364,
+          "gross_margin_median_abs_pp": 2.2326875848014183,
+          "opex_ratio_median_abs_pp": 1.475461373594189
+        },
+        "survivor_universe_bias_not_resolved": true,
+        "company_publication_times_verified": false,
+        "pit_return_backtest_passed": false,
+        "not_a_probability_calibration": true,
+        "not_a_trading_performance_claim": true
+      },
+      "其他": {
+        "status": "ACCOUNTING_CROSS_PERIOD_VALIDATION_ONLY",
+        "train_target": "2025-Q4",
+        "holdout_target": "2026-Q2",
+        "coefficients_frozen_before_holdout": true,
+        "grid": [
+          0.0,
+          0.25,
+          0.5,
+          0.75,
+          1.0
+        ],
+        "revenue_persistence": 0.25,
+        "margin_persistence": 0.75,
+        "cost_persistence": 0.75,
+        "train_count": 86,
+        "holdout_count": 86,
+        "train_metrics": {
+          "n": 86,
+          "revenue_median_absolute_pct_error": 2.419319407861659,
+          "revenue_wape_pct": 4.188154570799079,
+          "gross_margin_median_abs_pp": 0.6340816620296348,
+          "opex_ratio_median_abs_pp": 0.5606936066235788
+        },
+        "holdout_metrics": {
+          "n": 86,
+          "revenue_median_absolute_pct_error": 7.23962721408073,
+          "revenue_wape_pct": 9.952803285056543,
+          "gross_margin_median_abs_pp": 1.0673045811461361,
+          "opex_ratio_median_abs_pp": 0.8950465536479678
+        },
+        "holdout_no_change_baseline": {
+          "n": 86,
+          "revenue_median_absolute_pct_error": 9.792085942295758,
+          "revenue_wape_pct": 12.948454909991888,
+          "gross_margin_median_abs_pp": 2.432387062924252,
+          "opex_ratio_median_abs_pp": 1.3936602869691157
+        },
+        "sector_parameters": {},
+        "minimum_sector_training_sample": 50,
+        "deployed_sector_or_global_holdout_metrics": {
+          "n": 86,
+          "revenue_median_absolute_pct_error": 7.23962721408073,
+          "revenue_wape_pct": 9.952803285056543,
+          "gross_margin_median_abs_pp": 1.0673045811461361,
+          "opex_ratio_median_abs_pp": 0.8950465536479678
+        },
+        "survivor_universe_bias_not_resolved": true,
+        "company_publication_times_verified": false,
+        "pit_return_backtest_passed": false,
+        "not_a_probability_calibration": true,
+        "not_a_trading_performance_claim": true
+      },
+      "其他電子業": {
+        "status": "ACCOUNTING_CROSS_PERIOD_VALIDATION_ONLY",
+        "train_target": "2025-Q4",
+        "holdout_target": "2026-Q2",
+        "coefficients_frozen_before_holdout": true,
+        "grid": [
+          0.0,
+          0.25,
+          0.5,
+          0.75,
+          1.0
+        ],
+        "revenue_persistence": 0.75,
+        "margin_persistence": 0.75,
+        "cost_persistence": 1.0,
+        "train_count": 88,
+        "holdout_count": 88,
+        "train_metrics": {
+          "n": 88,
+          "revenue_median_absolute_pct_error": 3.3368401513295396,
+          "revenue_wape_pct": 3.209969963826467,
+          "gross_margin_median_abs_pp": 0.6569465374680408,
+          "opex_ratio_median_abs_pp": 0.7534211748174535
+        },
+        "holdout_metrics": {
+          "n": 88,
+          "revenue_median_absolute_pct_error": 9.062627783963428,
+          "revenue_wape_pct": 10.004878676405719,
+          "gross_margin_median_abs_pp": 1.4158637230886408,
+          "opex_ratio_median_abs_pp": 1.2443939191913138
+        },
+        "holdout_no_change_baseline": {
+          "n": 88,
+          "revenue_median_absolute_pct_error": 14.331576758827236,
+          "revenue_wape_pct": 26.139020327180283,
+          "gross_margin_median_abs_pp": 2.3471107167183467,
+          "opex_ratio_median_abs_pp": 1.9963083608636274
+        },
+        "sector_parameters": {},
+        "minimum_sector_training_sample": 50,
+        "deployed_sector_or_global_holdout_metrics": {
+          "n": 88,
+          "revenue_median_absolute_pct_error": 9.062627783963428,
+          "revenue_wape_pct": 10.004878676405719,
+          "gross_margin_median_abs_pp": 1.4158637230886408,
+          "opex_ratio_median_abs_pp": 1.2443939191913138
+        },
+        "survivor_universe_bias_not_resolved": true,
+        "company_publication_times_verified": false,
+        "pit_return_backtest_passed": false,
+        "not_a_probability_calibration": true,
+        "not_a_trading_performance_claim": true
+      },
+      "半導體業": {
+        "status": "ACCOUNTING_CROSS_PERIOD_VALIDATION_ONLY",
+        "train_target": "2025-Q4",
+        "holdout_target": "2026-Q2",
+        "coefficients_frozen_before_holdout": true,
+        "grid": [
+          0.0,
+          0.25,
+          0.5,
+          0.75,
+          1.0
+        ],
+        "revenue_persistence": 0.75,
+        "margin_persistence": 0.75,
+        "cost_persistence": 1.0,
+        "train_count": 191,
+        "holdout_count": 191,
+        "train_metrics": {
+          "n": 191,
+          "revenue_median_absolute_pct_error": 2.6974957149678125,
+          "revenue_wape_pct": 2.5187526029777922,
+          "gross_margin_median_abs_pp": 0.9233464098839628,
+          "opex_ratio_median_abs_pp": 0.7228448905328644
+        },
+        "holdout_metrics": {
+          "n": 191,
+          "revenue_median_absolute_pct_error": 6.572960096759162,
+          "revenue_wape_pct": 9.057110160032886,
+          "gross_margin_median_abs_pp": 1.951087873810664,
+          "opex_ratio_median_abs_pp": 1.3687089232147231
+        },
+        "holdout_no_change_baseline": {
+          "n": 191,
+          "revenue_median_absolute_pct_error": 15.628041376413982,
+          "revenue_wape_pct": 26.921489190585433,
+          "gross_margin_median_abs_pp": 4.05222861807858,
+          "opex_ratio_median_abs_pp": 2.431581419657061
+        },
+        "sector_parameters": {},
+        "minimum_sector_training_sample": 50,
+        "deployed_sector_or_global_holdout_metrics": {
+          "n": 191,
+          "revenue_median_absolute_pct_error": 6.572960096759162,
+          "revenue_wape_pct": 9.057110160032886,
+          "gross_margin_median_abs_pp": 1.951087873810664,
+          "opex_ratio_median_abs_pp": 1.3687089232147231
+        },
+        "survivor_universe_bias_not_resolved": true,
+        "company_publication_times_verified": false,
+        "pit_return_backtest_passed": false,
+        "not_a_probability_calibration": true,
+        "not_a_trading_performance_claim": true
+      },
+      "建材營造": {
+        "status": "ACCOUNTING_CROSS_PERIOD_VALIDATION_ONLY",
+        "train_target": "2025-Q4",
+        "holdout_target": "2026-Q2",
+        "coefficients_frozen_before_holdout": true,
+        "grid": [
+          0.0,
+          0.25,
+          0.5,
+          0.75,
+          1.0
+        ],
+        "revenue_persistence": 0.5,
+        "margin_persistence": 1.0,
+        "cost_persistence": 0.25,
+        "train_count": 76,
+        "holdout_count": 76,
+        "train_metrics": {
+          "n": 76,
+          "revenue_median_absolute_pct_error": 12.994068567159033,
+          "revenue_wape_pct": 46.5362406350713,
+          "gross_margin_median_abs_pp": 2.1781998284917363,
+          "opex_ratio_median_abs_pp": 1.6502263141888796
+        },
+        "holdout_metrics": {
+          "n": 76,
+          "revenue_median_absolute_pct_error": 30.056690647631434,
+          "revenue_wape_pct": 156.62526415061726,
+          "gross_margin_median_abs_pp": 3.3446536450030484,
+          "opex_ratio_median_abs_pp": 3.411301354538003
+        },
+        "holdout_no_change_baseline": {
+          "n": 76,
+          "revenue_median_absolute_pct_error": 45.4687693580997,
+          "revenue_wape_pct": 48.04312975257859,
+          "gross_margin_median_abs_pp": 5.3705932534854455,
+          "opex_ratio_median_abs_pp": 3.9343183010304803
+        },
+        "sector_parameters": {},
+        "minimum_sector_training_sample": 50,
+        "deployed_sector_or_global_holdout_metrics": {
+          "n": 76,
+          "revenue_median_absolute_pct_error": 30.056690647631434,
+          "revenue_wape_pct": 156.62526415061726,
+          "gross_margin_median_abs_pp": 3.3446536450030484,
+          "opex_ratio_median_abs_pp": 3.411301354538003
+        },
+        "survivor_universe_bias_not_resolved": true,
+        "company_publication_times_verified": false,
+        "pit_return_backtest_passed": false,
+        "not_a_probability_calibration": true,
+        "not_a_trading_performance_claim": true
+      },
+      "生技醫療業": {
+        "status": "ACCOUNTING_CROSS_PERIOD_VALIDATION_ONLY",
+        "train_target": "2025-Q4",
+        "holdout_target": "2026-Q2",
+        "coefficients_frozen_before_holdout": true,
+        "grid": [
+          0.0,
+          0.25,
+          0.5,
+          0.75,
+          1.0
+        ],
+        "revenue_persistence": 0.5,
+        "margin_persistence": 0.75,
+        "cost_persistence": 0.75,
+        "train_count": 121,
+        "holdout_count": 121,
+        "train_metrics": {
+          "n": 121,
+          "revenue_median_absolute_pct_error": 1.9236889904024834,
+          "revenue_wape_pct": 3.24945946987047,
+          "gross_margin_median_abs_pp": 0.6364672634348367,
+          "opex_ratio_median_abs_pp": 0.7112931665514077
+        },
+        "holdout_metrics": {
+          "n": 121,
+          "revenue_median_absolute_pct_error": 5.428912893818428,
+          "revenue_wape_pct": 9.063474856460191,
+          "gross_margin_median_abs_pp": 1.4374996660006079,
+          "opex_ratio_median_abs_pp": 1.1456157829100366
+        },
+        "holdout_no_change_baseline": {
+          "n": 121,
+          "revenue_median_absolute_pct_error": 8.85871262931589,
+          "revenue_wape_pct": 14.95268956582462,
+          "gross_margin_median_abs_pp": 2.4609124771183573,
+          "opex_ratio_median_abs_pp": 2.11368329420904
+        },
+        "sector_parameters": {},
+        "minimum_sector_training_sample": 50,
+        "deployed_sector_or_global_holdout_metrics": {
+          "n": 121,
+          "revenue_median_absolute_pct_error": 5.428912893818428,
+          "revenue_wape_pct": 9.063474856460191,
+          "gross_margin_median_abs_pp": 1.4374996660006079,
+          "opex_ratio_median_abs_pp": 1.1456157829100366
+        },
+        "survivor_universe_bias_not_resolved": true,
+        "company_publication_times_verified": false,
+        "pit_return_backtest_passed": false,
+        "not_a_probability_calibration": true,
+        "not_a_trading_performance_claim": true
+      },
+      "通信網路業": {
+        "status": "ACCOUNTING_CROSS_PERIOD_VALIDATION_ONLY",
+        "train_target": "2025-Q4",
+        "holdout_target": "2026-Q2",
+        "coefficients_frozen_before_holdout": true,
+        "grid": [
+          0.0,
+          0.25,
+          0.5,
+          0.75,
+          1.0
+        ],
+        "revenue_persistence": 0.0,
+        "margin_persistence": 1.0,
+        "cost_persistence": 0.75,
+        "train_count": 87,
+        "holdout_count": 87,
+        "train_metrics": {
+          "n": 87,
+          "revenue_median_absolute_pct_error": 3.846946194514156,
+          "revenue_wape_pct": 4.603113520669527,
+          "gross_margin_median_abs_pp": 0.8258765746001873,
+          "opex_ratio_median_abs_pp": 0.9577426182174054
+        },
+        "holdout_metrics": {
+          "n": 87,
+          "revenue_median_absolute_pct_error": 15.705552522499932,
+          "revenue_wape_pct": 18.21711430901244,
+          "gross_margin_median_abs_pp": 2.0222456097629933,
+          "opex_ratio_median_abs_pp": 1.3090002667180536
+        },
+        "holdout_no_change_baseline": {
+          "n": 87,
+          "revenue_median_absolute_pct_error": 15.705552522499932,
+          "revenue_wape_pct": 18.21711430901244,
+          "gross_margin_median_abs_pp": 2.722570675823477,
+          "opex_ratio_median_abs_pp": 3.041786412852321
+        },
+        "sector_parameters": {},
+        "minimum_sector_training_sample": 50,
+        "deployed_sector_or_global_holdout_metrics": {
+          "n": 87,
+          "revenue_median_absolute_pct_error": 15.705552522499932,
+          "revenue_wape_pct": 18.21711430901244,
+          "gross_margin_median_abs_pp": 2.0222456097629933,
+          "opex_ratio_median_abs_pp": 1.3090002667180536
+        },
+        "survivor_universe_bias_not_resolved": true,
+        "company_publication_times_verified": false,
+        "pit_return_backtest_passed": false,
+        "not_a_probability_calibration": true,
+        "not_a_trading_performance_claim": true
+      },
+      "電子零組件業": {
+        "status": "ACCOUNTING_CROSS_PERIOD_VALIDATION_ONLY",
+        "train_target": "2025-Q4",
+        "holdout_target": "2026-Q2",
+        "coefficients_frozen_before_holdout": true,
+        "grid": [
+          0.0,
+          0.25,
+          0.5,
+          0.75,
+          1.0
+        ],
+        "revenue_persistence": 0.5,
+        "margin_persistence": 1.0,
+        "cost_persistence": 0.75,
+        "train_count": 201,
+        "holdout_count": 201,
+        "train_metrics": {
+          "n": 201,
+          "revenue_median_absolute_pct_error": 2.4908648454187277,
+          "revenue_wape_pct": 3.726111474680776,
+          "gross_margin_median_abs_pp": 0.714956429696384,
+          "opex_ratio_median_abs_pp": 0.4245038916300792
+        },
+        "holdout_metrics": {
+          "n": 201,
+          "revenue_median_absolute_pct_error": 9.691864517195281,
+          "revenue_wape_pct": 13.337450037028875,
+          "gross_margin_median_abs_pp": 1.4770490919719825,
+          "opex_ratio_median_abs_pp": 0.9564224749663119
+        },
+        "holdout_no_change_baseline": {
+          "n": 201,
+          "revenue_median_absolute_pct_error": 15.379217489875607,
+          "revenue_wape_pct": 22.2570105685964,
+          "gross_margin_median_abs_pp": 3.2893361371208627,
+          "opex_ratio_median_abs_pp": 1.4884621811067977
+        },
+        "sector_parameters": {},
+        "minimum_sector_training_sample": 50,
+        "deployed_sector_or_global_holdout_metrics": {
+          "n": 201,
+          "revenue_median_absolute_pct_error": 9.691864517195281,
+          "revenue_wape_pct": 13.337450037028875,
+          "gross_margin_median_abs_pp": 1.4770490919719825,
+          "opex_ratio_median_abs_pp": 0.9564224749663119
+        },
+        "survivor_universe_bias_not_resolved": true,
+        "company_publication_times_verified": false,
+        "pit_return_backtest_passed": false,
+        "not_a_probability_calibration": true,
+        "not_a_trading_performance_claim": true
+      },
+      "電機機械": {
+        "status": "ACCOUNTING_CROSS_PERIOD_VALIDATION_ONLY",
+        "train_target": "2025-Q4",
+        "holdout_target": "2026-Q2",
+        "coefficients_frozen_before_holdout": true,
+        "grid": [
+          0.0,
+          0.25,
+          0.5,
+          0.75,
+          1.0
+        ],
+        "revenue_persistence": 0.75,
+        "margin_persistence": 0.75,
+        "cost_persistence": 0.5,
+        "train_count": 98,
+        "holdout_count": 98,
+        "train_metrics": {
+          "n": 98,
+          "revenue_median_absolute_pct_error": 3.5107465149923858,
+          "revenue_wape_pct": 3.4717255071952287,
+          "gross_margin_median_abs_pp": 0.7178510084287937,
+          "opex_ratio_median_abs_pp": 0.7752819742713677
+        },
+        "holdout_metrics": {
+          "n": 98,
+          "revenue_median_absolute_pct_error": 6.40244110340058,
+          "revenue_wape_pct": 7.346871241386571,
+          "gross_margin_median_abs_pp": 1.3894153950407246,
+          "opex_ratio_median_abs_pp": 1.1015443226772197
+        },
+        "holdout_no_change_baseline": {
+          "n": 98,
+          "revenue_median_absolute_pct_error": 11.970077408787024,
+          "revenue_wape_pct": 14.320572864682951,
+          "gross_margin_median_abs_pp": 2.9017618263694613,
+          "opex_ratio_median_abs_pp": 1.4132142429814558
+        },
+        "sector_parameters": {},
+        "minimum_sector_training_sample": 50,
+        "deployed_sector_or_global_holdout_metrics": {
+          "n": 98,
+          "revenue_median_absolute_pct_error": 6.40244110340058,
+          "revenue_wape_pct": 7.346871241386571,
+          "gross_margin_median_abs_pp": 1.3894153950407246,
+          "opex_ratio_median_abs_pp": 1.1015443226772197
+        },
+        "survivor_universe_bias_not_resolved": true,
+        "company_publication_times_verified": false,
+        "pit_return_backtest_passed": false,
+        "not_a_probability_calibration": true,
+        "not_a_trading_performance_claim": true
+      },
+      "電腦及週邊設備業": {
+        "status": "ACCOUNTING_CROSS_PERIOD_VALIDATION_ONLY",
+        "train_target": "2025-Q4",
+        "holdout_target": "2026-Q2",
+        "coefficients_frozen_before_holdout": true,
+        "grid": [
+          0.0,
+          0.25,
+          0.5,
+          0.75,
+          1.0
+        ],
+        "revenue_persistence": 0.0,
+        "margin_persistence": 0.75,
+        "cost_persistence": 0.75,
+        "train_count": 107,
+        "holdout_count": 107,
+        "train_metrics": {
+          "n": 107,
+          "revenue_median_absolute_pct_error": 3.781093432912974,
+          "revenue_wape_pct": 9.750176215041991,
+          "gross_margin_median_abs_pp": 0.5785467896476382,
+          "opex_ratio_median_abs_pp": 0.5508271374435103
+        },
+        "holdout_metrics": {
+          "n": 107,
+          "revenue_median_absolute_pct_error": 16.953688762817087,
+          "revenue_wape_pct": 34.067205873869526,
+          "gross_margin_median_abs_pp": 1.3500141453990409,
+          "opex_ratio_median_abs_pp": 1.3419781332332181
+        },
+        "holdout_no_change_baseline": {
+          "n": 107,
+          "revenue_median_absolute_pct_error": 16.953688762817087,
+          "revenue_wape_pct": 34.067205873869526,
+          "gross_margin_median_abs_pp": 2.8279138797882477,
+          "opex_ratio_median_abs_pp": 1.8494341419422369
+        },
+        "sector_parameters": {},
+        "minimum_sector_training_sample": 50,
+        "deployed_sector_or_global_holdout_metrics": {
+          "n": 107,
+          "revenue_median_absolute_pct_error": 16.953688762817087,
+          "revenue_wape_pct": 34.067205873869526,
+          "gross_margin_median_abs_pp": 1.3500141453990409,
+          "opex_ratio_median_abs_pp": 1.3419781332332181
+        },
+        "survivor_universe_bias_not_resolved": true,
+        "company_publication_times_verified": false,
+        "pit_return_backtest_passed": false,
+        "not_a_probability_calibration": true,
+        "not_a_trading_performance_claim": true
+      }
+    },
+    "minimum_sector_training_sample": 50,
+    "deployed_sector_or_global_holdout_metrics": {
+      "n": 1783,
+      "revenue_median_absolute_pct_error": 7.61555962092102,
+      "revenue_wape_pct": 18.934178683238805,
+      "gross_margin_median_abs_pp": 1.4814454059755762,
+      "opex_ratio_median_abs_pp": 1.015045021968164
+    },
+    "survivor_universe_bias_not_resolved": true,
+    "company_publication_times_verified": false,
+    "pit_return_backtest_passed": false,
+    "not_a_probability_calibration": true,
+    "not_a_trading_performance_claim": true
+  },
+  "backtest": {
+    "status": "BLOCKED_MISSING_PIT_HISTORY",
+    "performance": null,
+    "estimated_hit_rate": null,
+    "missing": [
+      "Issuer disclosure and revision timestamps",
+      "Contemporaneous listing and delisting universe",
+      "Historical frozen forecast vintages",
+      "Execution prices and explicit fees/tax/slippage policy"
+    ],
+    "accounting_holdout_is_stock_return_backtest": false
+  }
+}
