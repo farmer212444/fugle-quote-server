@@ -1,239 +1,38 @@
-name: TW V8.7.7.3 Cash-Earnings Research Audit (NOT A+)
+name: TW V8.8.0 cash evidence model
 on:
   workflow_dispatch:
+  pull_request:
+    paths:
+      - '.github/workflows/tw_v877_cash_quality.yml'
+      - 'tw_model_v880/**'
+      - 'scripts/tw_v880_run.py'
+      - 'tests/**'
+      - 'scripts/v880_audit_exports.py'
   push:
     paths:
       - '.github/workflows/tw_v877_cash_quality.yml'
+      - 'tw_model_v880/**'
+      - 'scripts/tw_v880_run.py'
+      - 'tests/**'
+      - 'scripts/v880_audit_exports.py'
   schedule:
-    # Every day 21:05 Taiwan / 13:05 UTC; GitHub may delay scheduled actions.
     - cron: '5 13 * * *'
 permissions:
   contents: write
 concurrency:
-  group: tw-v8773-cash-quality
+  group: tw-v880-cash-${{ github.ref }}
   cancel-in-progress: false
 jobs:
-  cash_audit:
+  validate_and_run:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-      - name: Write the fail-closed cash audit scorer
-        shell: bash
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate model controls
+        run: python scripts/tw_v880_run.py --self-test
+      - name: Produce dated scenarios and evidence decisions
         run: |
-          cat > /tmp/tw_v877_cash_audit.py <<'PYCODE'
-          #!/usr/bin/env python3
-          """V8.7.7.3 incremental cash earnings audit. Research only, no A+ certification.
-          
-          Uses existing published 2025FY/2025H1/2026H1 normalized statement files.
-          Cannot verify CAPEX, FCF, actual issuer disclosure PIT, dilution history,
-          or historical/industry specific P/E. A negative OCF is NOT an automatic exit.
-          """
-          from __future__ import annotations
-          import argparse
-          import hashlib
-          import json
-          import pathlib
-          import math
-          
-          ROOT = pathlib.Path('tw-market-data')
-          OUT = ROOT / 'rankings'
-          QUARTERS = ('2025-Q2','2025-Q4','2026-Q2')
-          MARKETS = ('TWSE','TPEX')
-          
-          def safe_num(x):
-              try:
-                  if x is None or isinstance(x,bool): return None
-                  v=float(x)
-                  return v if math.isfinite(v) and abs(v)<1e20 else None
-              except (TypeError,ValueError): return None
-          
-          def safediv(a,b):
-              a,b=safe_num(a),safe_num(b)
-              return a/b if a is not None and b not in (None,0) else None
-          
-          def rounded(v,d=2):
-              return round(v,d) if v is not None and math.isfinite(v) else None
-          
-          def read(path):
-              b=pathlib.Path(path).read_bytes()
-              return json.loads(b),hashlib.sha256(b).hexdigest()
-          
-          def history(needed):
-              statement={}
-              hashes={}
-              for q in QUARTERS:
-                  for m in MARKETS:
-                      for kind in ('income','cashflow'):
-                          path=ROOT/'fundamentals'/q/(m+'_'+kind+'.json')
-                          j,digest=read(path)
-                          if j.get('period') != q or j.get('market') != m:
-                              raise ValueError('Period/market mismatch: '+str(path))
-                          rows=j.get('rows')
-                          if not isinstance(rows,list) or len(rows)<100:
-                              raise ValueError('Insufficient financial records: '+str(path))
-                          hashes[str(path)]=digest
-                          for r in rows:
-                              code=str(r.get('code',''))
-                              if code not in needed: continue
-                              key=(code,m)
-                              target=statement.setdefault(key,{}).setdefault(q,{})
-                              if kind in target: raise ValueError('Duplicate code '+code+' '+q+' '+kind)
-                              target[kind]=r
-              return statement,hashes
-          
-          def assess(row, statements):
-              code=str(row['code'])
-              industry=row.get('industry','')
-              found=[(m,d) for (c,m),d in statements.items() if c==code]
-              notes=[]
-              result={
-                 'code':code,'name':row['name'],'industry':industry,
-                 'reference_close':row.get('reference_close'),
-                 'scenario_upside_pct':row.get('scenario_upside_pct'),
-                 'stress_scenario_pct':row.get('scenario_stress_pct'),
-                 'prior_seven_checks_passed':row.get('checks_passed'),
-                 'prior_checks_total':row.get('checks_total'),
-                 'formal_Aplus':False,'formal_Aplusplus':False,
-              }
-              if len(found)!=1:
-                  notes.append('Missing or ambiguous company financial statement')
-                  result.update({'cash_audit':'UNVERIFIED','notes':notes})
-                  return result
-              market,fin=found[0]
-              result['market']=market
-              for q in QUARTERS:
-                  if q not in fin or 'cashflow' not in fin[q] or 'income' not in fin[q]:
-                      notes.append('Missing audited quarter input '+q)
-              if notes:
-                  result.update({'cash_audit':'UNVERIFIED','notes':notes})
-                  return result
-              try:
-                  a=fin['2025-Q2']['cashflow']['operating_cashflow_ytd_k']
-                  b=fin['2025-Q4']['cashflow']['operating_cashflow_ytd_k']
-                  c=fin['2026-Q2']['cashflow']['operating_cashflow_ytd_k']
-                  ni=fin['2026-Q2']['income']['net_income_ytd_k']
-              except KeyError as e:
-                  result.update({'cash_audit':'UNVERIFIED','notes':['Missing cashflow/income key '+str(e)]})
-                  return result
-              a,b,c,ni=(safe_num(v) for v in (a,b,c,ni))
-              if any(v is None for v in (a,b,c,ni)):
-                  result.update({'cash_audit':'UNVERIFIED','notes':['Non-numeric OCF or net income']})
-                  return result
-              ttm=b-a+c
-              cv=safediv(c,ni) if ni>0 else None
-              if ni<=0:notes.append('2026H1 net income <=0; conversion undefined')
-              if c<0:notes.append('Negative OCF in 2026H1: examine working capital and investment cycle; NOT automatic disqualification')
-              if ttm<0:notes.append('Negative trailing 12-month OCF; review demand and working capital')
-              if cv is not None and cv<0.8:notes.append('2026H1 OCF / reported net income <80%; investigate timing/quality')
-              notes += ['CAPEX/PPE cash investment missing: FCF NOT verified',
-                        'Issuer filing PIT/dilution/sector PE not independently verified']
-              cash_ok=(c>0 and ttm>0 and cv is not None and cv>=0.8)
-              seven=(row.get('checks_passed')==7 and row.get('checks_total')==7)
-              result.update({
-                 'ocf_2025H1_ntd_m':rounded(a/1000,2),'ocf_2025FY_ntd_m':rounded(b/1000,2),
-                 'ocf_2026H1_ntd_m':rounded(c/1000,2),'ocf_ttm_ntd_m':rounded(ttm/1000,2),
-                 'reported_net_income_2026H1_ntd_m':rounded(ni/1000,2),
-                 'cash_conversion_2026H1':rounded(cv,3),
-                 'cash_conversion_numerator':'H1 operating cash flow; NOT FCF',
-                 'cash_conversion_denominator':'reported net income including any non-controlling interests',
-                 'cash_audit':'PASS_RESEARCH_SCREEN' if cash_ok else 'REVIEW_WORKING_CAPITAL',
-                 'research_seven_checks_and_cash_pass':bool(seven and cash_ok),
-                 'stress_scenario_positive':bool(safe_num(row.get('scenario_stress_pct')) is not None and row['scenario_stress_pct']>=0),
-                 'capex_ntd_k':None,'free_cashflow_ntd_k':None,'notes':notes,
-              })
-              return result
-          
-          def run():
-              overlay,h=read(OUT/'latest_risk_overlay.json')
-              if overlay.get('seven_of_seven_research_count') is None:
-                  raise ValueError('Risk overlay missing seven-of-seven counts')
-              if overlay.get('formal_Aplus_count')!=0:
-                  raise ValueError('Unexpected formal ratings: investigate upstream first')
-              selected=overlay.get('research_upside_ge25_detail')
-              if not isinstance(selected,list) or len(selected)<10:
-                  raise ValueError('No usable base research candidates')
-              if len(selected)!=overlay.get('upside_ge25_research_issuers'):
-                  raise ValueError('Overlay candidate count mismatch')
-              codes=[str(r['code']) for r in selected]
-              if len(codes)!=len(set(codes)):
-                  raise ValueError('Duplicate candidate code')
-              source,hashes=history(set(codes))
-              detail=[assess(r,source) for r in selected]
-              priority=[r for r in detail if r.get('research_seven_checks_and_cash_pass')]
-              priority.sort(key=lambda r:(r['stress_scenario_positive'],r['scenario_upside_pct']),reverse=True)
-              audited=sum(r.get('cash_audit')!='UNVERIFIED' for r in detail)
-              report={
-                 'model':'V8.7.7.3 cash conversion and 12M OCF research audit (NOT FORMAL A+)',
-                 'reference_close_date':overlay.get('asof_price_date'),
-                 'reference_revenue_period':overlay.get('revenue_period'),
-                 'last_financial_quarter':overlay.get('financial_last_quarter'),
-                 'input_risk_overlay_sha256':h,'financial_statement_sha256':hashes,
-                 'research_candidates':len(detail),'verified_cash_input_candidates':audited,
-                 'prior_seven_of_seven_count':overlay['seven_of_seven_research_count'],
-                 'seven_checks_plus_cash_conversion_ge80pct_count':len(priority),
-                 'seven_checks_plus_cash_plus_positive_stress_count':sum(1 for r in priority if r['stress_scenario_positive']),
-                 'formal_Aplus_count':0,'formal_Aplusplus_count':0,
-                 'CAPEX_FCF_verified':False,'dilution_history_verified':False,
-                 'issuer_PIT_verified':False,'sector_PE_verified':False,
-                 'IMPORTANT':'Positive CFO is not FCF; OCF/NI is only a research check, not an industry-normalized quality gate. Negative OCF never automatically blocks investment. Upside and stress are unverified assumptions. No formal A+ certification.',
-                 'priority_research':priority,'candidate_cash_audit':detail,
-              }
-              OUT.mkdir(exist_ok=True,parents=True)
-              (OUT/'latest_cash_quality.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf8')
-              header=['# V8.7.7.3 現金流品質查核（非正式 A+）','',
-                f"資料基準收盤：{overlay.get('asof_price_date')}；財報截至 {overlay.get('financial_last_quarter')}",
-                '',f'研究候選：{len(detail)}；上游初篩 7/7：{overlay["seven_of_seven_research_count"]}；追加現金流研究檢查通過：{len(priority)}。',
-                '', '**注意：** 未取得 CAPEX／FCF、個別公司公告時間、完整稀釋股數及歷史產業估值，因此**完全不是正式 A+**。',
-                '營業現金流負值也不能直接認定公司基本面惡化。',
-                '', '|股票|情境漲幅|OCF / 淨利|過去12月 OCF（百萬元）|壓力情境|',
-                '|---|---:|---:|---:|---:|']
-              for r in priority:
-                  header.append(f"|{r['code']} {r['name']}|{r['scenario_upside_pct']}%|{rounded(r.get('cash_conversion_2026H1',0)*100,1)}%|{r['ocf_ttm_ntd_m']}|{r.get('stress_scenario_pct')}%|")
-              header+=['','表中 2027 情境漲幅及壓力情境沿用上游的**未驗證**模型，不代表報酬率預測。']
-              (OUT/'latest_cash_quality.md').write_text('\n'.join(header)+'\n',encoding='utf8')
-              print(json.dumps({'research_candidates':len(detail),'audited':audited,'priority_cash_conversion_research_count':len(priority),'formal_Aplus_count':0},ensure_ascii=False))
-          
-          def self_test():
-              assert safe_num('n/a') is None
-              assert safe_num('NaN') is None
-              assert safediv(5,0) is None
-              assert safediv(5,2)==2.5
-              f={q:{'income':{'net_income_ytd_k':1000},'cashflow':{'operating_cashflow_ytd_k':500}} for q in QUARTERS}
-              f['2025-Q4']['cashflow']['operating_cashflow_ytd_k']=800
-              f['2026-Q2']['cashflow']['operating_cashflow_ytd_k']=950
-              a=assess({'code':'1234','name':'synthetic','checks_passed':7,'checks_total':7,'scenario_upside_pct':30,'scenario_stress_pct':5},{('1234','TWSE'):{q:dict(z) for q,z in f.items()}})
-              assert a['research_seven_checks_and_cash_pass'] is True
-              assert a['free_cashflow_ntd_k'] is None
-              f['2026-Q2']['cashflow']['operating_cashflow_ytd_k']=-50
-              a=assess({'code':'1234','name':'synthetic','checks_passed':7,'checks_total':7,'scenario_upside_pct':30},{('1234','TWSE'):{q:dict(z) for q,z in f.items()}})
-              assert a['cash_audit']=='REVIEW_WORKING_CAPITAL'
-              print('SELF_TEST_OK: never invents FCF or formal A+')
-          
-          if __name__=='__main__':
-              a=argparse.ArgumentParser();a.add_argument('--self-test',action='store_true');opts=a.parse_args()
-              self_test() if opts.self_test else run()
-          PYCODE
-      - name: Self test scorer
-        run: python /tmp/tw_v877_cash_audit.py --self-test
-      - name: Audit 63 research candidates against official source financial snapshots
-        run: python /tmp/tw_v877_cash_audit.py
-      - name: Commit research-only results when changed
-        shell: bash
-        run: |
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add tw-market-data/rankings/latest_cash_quality.json tw-market-data/rankings/latest_cash_quality.md
-          if git diff --cached --quiet; then
-            echo 'NO_CHANGES'
-          else
-            git commit -m 'data: update V8.7.7.3 cash conversion research (not A+)'
-            for attempt in 1 2 3; do
-              git pull --rebase origin main
-              if git push origin HEAD:main; then exit 0; fi
-              echo "Push failed, retry $attempt"
-              sleep $((attempt * 3))
-            done
-            echo 'Push failed after three attempts' >&2
-            exit 1
-          fi
+          python scripts/v880_audit_exports.py --kind cash

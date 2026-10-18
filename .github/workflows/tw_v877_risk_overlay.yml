@@ -1,247 +1,38 @@
-name: V8.7.7.2 Research Balance Risk Overlay (NOT A+)
+name: TW V8.8.0 risk evidence model
 on:
   workflow_dispatch:
+  pull_request:
+    paths:
+      - '.github/workflows/tw_v877_risk_overlay.yml'
+      - 'tw_model_v880/**'
+      - 'scripts/tw_v880_run.py'
+      - 'tests/**'
+      - 'scripts/v880_audit_exports.py'
   push:
     paths:
       - '.github/workflows/tw_v877_risk_overlay.yml'
+      - 'tw_model_v880/**'
+      - 'scripts/tw_v880_run.py'
+      - 'tests/**'
+      - 'scripts/v880_audit_exports.py'
   schedule:
-    # Approximately 20:45 Asia/Taipei each day; GitHub may delay scheduled jobs.
     - cron: '45 12 * * *'
 permissions:
   contents: write
 concurrency:
-  group: tw-v8772-research-risk-overlay
+  group: tw-v880-risk-${{ github.ref }}
   cancel-in-progress: false
 jobs:
-  risk_overlay:
+  validate_and_run:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-      - name: Validate base V8.7.7.1 research collector
-        run: python scripts/tw_v877_quality_rank.py --self-test
-      - name: Validate and compute audited balance-risk overlays
-        shell: bash
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate model controls
+        run: python scripts/tw_v880_run.py --self-test
+      - name: Produce dated scenarios and evidence decisions
         run: |
-          cat > /tmp/v877_risk_overlay.py <<'PYCODE'
-          #!/usr/bin/env python3
-          """V8.7.7.2 research-only balance sheet overlay; no formal A+ certification.
-          Run from repository root with scripts/tw_v877_quality_rank.py and snapshot data.
-          This is a supplementary independent research view; it never overwrites the base ranking.
-          """
-          from __future__ import annotations
-          import datetime as dt
-          import hashlib
-          import json
-          import pathlib
-          import runpy
-          import sys
-          
-          ROOT = pathlib.Path('tw-market-data')
-          OUT = ROOT / 'rankings'
-          MANIFEST = ROOT / 'financial' / 'latest_manifest.json'
-          
-          
-          def number(raw):
-              try:
-                  if raw is None or str(raw).strip() == '':
-                      return None
-                  v = float(str(raw).replace(',', ''))
-                  return v if abs(v) < 1e18 else None
-              except (ValueError, TypeError):
-                  return None
-          
-          
-          def round_safe(x, digits=2):
-              return round(x, digits) if x is not None else None
-          
-          
-          def safe_div(a, b):
-              a, b = number(a), number(b)
-              return a / b if a is not None and b not in (None, 0) else None
-          
-          
-          def load_verified_balance():
-              manifest = json.loads(MANIFEST.read_text(encoding='utf-8'))
-              if manifest.get('completeness_status') != 'SINGLE_PERIOD_SNAPSHOT':
-                  raise ValueError('Balance snapshot incomplete: refusing silent partial screening')
-              if manifest.get('source_count_ok') != 4 or manifest.get('source_count_expected') != 4:
-                  raise ValueError('Not all four quarterly balance/income seed files present')
-              source_map = {s['kind']: s for s in manifest.get('sources', [])}
-              balances = {}
-              for market in ('TWSE', 'TPEX'):
-                  s = source_map.get(market + '_balance')
-                  if not s or s['period'] != '2026Q2':
-                      raise ValueError(f'Missing validated {market} 2026Q2 balance sheet')
-                  p = pathlib.Path(s['path'])
-                  data = p.read_bytes()
-                  if hashlib.sha256(data).hexdigest() != s['normalized_sha256']:
-                      raise ValueError('Balance SHA256 mismatch: ' + str(p))
-                  rows = json.loads(data)
-                  if len(rows) < 100:
-                      raise ValueError('Unusually short balance sheet: ' + str(p))
-                  for r in rows:
-                      code = str(r.get('公司代號', ''))
-                      if len(code) != 4 or not code.isdigit():
-                          continue
-                      if (market, code) in balances:
-                          raise ValueError('Duplicated balance code ' + market + '/' + code)
-                      balances[(market, code)] = r
-              return manifest, balances
-          
-          
-          def overlay_one(g, b):
-              close = number(g['reference_close'])
-              assets = number(b.get('資產總計')) if b else None
-              liabilities = number(b.get('負債總計')) if b else None
-              current_assets = number(b.get('流動資產')) if b else None
-              current_liabilities = number(b.get('流動負債')) if b else None
-              bvps = number(b.get('每股參考淨值')) if b else None
-              debt_ratio = safe_div(liabilities, assets)
-              current_ratio = safe_div(current_assets, current_liabilities)
-              pb = safe_div(close, bvps)
-              if pb is not None and pb <= 0:
-                  pb = None
-              if debt_ratio is not None and not 0 <= debt_ratio <= 2:
-                  debt_ratio = None
-              cfo = number(g.get('ocf_26h1_ntd_k'))
-              margin_stable = (g.get('gross_margin_26h1_pct') is not None and g.get('gross_margin_25h1_pct') is not None
-                               and g.get('oper_margin_26h1_pct') is not None and g.get('oper_margin_25h1_pct') is not None)
-              tests = {
-                  'research_upside_ge25': number(g.get('scenario_upside_pct')) is not None and g['scenario_upside_pct'] >= 25,
-                  'positive_ocf_26h1': cfo is not None and cfo > 0,
-                  'debt_assets_le65pct': debt_ratio is not None and debt_ratio <= 0.65,
-                  'current_ratio_ge1_3': current_ratio is not None and current_ratio >= 1.3,
-                  'pb_le3': pb is not None and pb <= 3,
-                  'gross_margin_not_declining': margin_stable and g['gross_margin_26h1_pct'] >= g['gross_margin_25h1_pct'],
-                  'operating_margin_not_declining': margin_stable and g['oper_margin_26h1_pct'] >= g['oper_margin_25h1_pct'],
-              }
-              passed = sum(tests.values())
-              flags = []
-              if b is None:
-                  flags.append('Missing issuer-matched 2026Q2 balance sheet')
-              if cfo is not None and cfo < 0:
-                  flags.append('Negative OCF requires inventory/receivables/capex bridge; not an automatic business failure')
-              if debt_ratio is not None and debt_ratio > 0.65:
-                  flags.append('Leverage review; construction and distributors require sector-specific assessment')
-              if pb is not None and pb > 3:
-                  flags.append('P/B > 3; return-on-equity and dilution verification required')
-              if '建材營造' in g.get('industry', ''):
-                  flags.append('Construction revenue/delivery timing and recognition review required')
-              if any(x in g.get('industry','') for x in ('航運', '鋼鐵', '電子通路')):
-                  flags.append('Cycle normalization and industry valuation still required')
-              flags.extend(['CAPEX/FCF unavailable or not independently verified',
-                            'Company-specific filing PIT and diluted share history unverified',
-                            'Forward EPS and sector P/E are unverified research assumptions'])
-              return {
-                  'code':g['code'], 'name':g['name'], 'industry':g.get('industry'),
-                  'reference_close':close, 'model_score':g.get('score'),
-                  'scenario_upside_pct':g.get('scenario_upside_pct'),
-                  'scenario_stress_pct':g.get('stress_return_pct'),
-                  'research_lane':g.get('research_lane'), 'checks_passed':passed,
-                  'checks_total':7, 'checks':tests,
-                  'debt_assets_pct':round_safe(debt_ratio*100 if debt_ratio is not None else None,1),
-                  'current_ratio':round_safe(current_ratio), 'price_to_book':round_safe(pb),
-                  'ocf_2026h1_ntd_k':cfo,
-                  'flags':flags, 'formal_Aplus':False, 'formal_Aplusplus':False,
-                  'status':'RESEARCH_ONLY_NOT_CERTIFIED'
-              }
-          
-          
-          def run():
-              # Re-evaluate the whole actual candidate universe, not only the published Top30.
-              ns = runpy.run_path('scripts/tw_v877_quality_rank.py')
-              fm, pm, rm, prices, revs, financials, cash = ns['collect']()
-              manifest, balances = load_verified_balance()
-              gathered = []
-              for key, issuer in financials.items():
-                  px = prices.get(key)
-                  if px is None:
-                      continue
-                  g = ns['grade'](issuer, px, revs.get(key[1]), cash.get(key))
-                  if g is None:
-                      continue
-                  if g.get('research_lane') != '品質優先研究':
-                      continue
-                  gathered.append(overlay_one(g, balances.get(key)))
-              all_pos = [x for x in gathered if x['checks']['research_upside_ge25']]
-              full = [x for x in gathered if x['checks_passed'] == 7]
-              # Financial quality then strength of conservative stress result then upside research scenario.
-              order = lambda x: (-x['checks_passed'], -(x['model_score'] or 0), -(x['scenario_stress_pct'] or -999))
-              all_pos.sort(key=order)
-              full.sort(key=order)
-              summary = {
-                  'model':'V8.7.7.2 balance-risk overlay (RESEARCH ONLY)',
-                  'asof_price_date':pm['date'], 'revenue_period':rm['period'],
-                  'financial_last_quarter':fm['last_eligible_quarter'],
-                  'balance_period':manifest['quarters_available'],
-                  'quality_research_issuers':len(gathered),
-                  'upside_ge25_research_issuers':len(all_pos),
-                  'seven_of_seven_research_count':len(full),
-                  'formal_Aplus_count':0, 'formal_Aplusplus_count':0,
-                  'source_authenticity_independently_verified':False,
-                  'issuer_publication_PIT_verified':False,
-                  'CAPEX_FCF_verified':False,
-                  'diluted_share_history_verified':False,
-                  'sector_PE_backtest_verified':False,
-                  'important':'7/7 are preliminary research checks only. They do not satisfy A+ certification. Negative OCF is not automatically disqualifying; leverage screens must be sector-normalized.',
-                  'research_upside_ge25_detail':all_pos,
-                  'seven_of_seven_detail':full,
-              }
-              OUT.mkdir(parents=True, exist_ok=True)
-              (OUT/'latest_risk_overlay.json').write_text(json.dumps(summary,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
-              table = [
-                  '# V8.7.7.2 財務風險覆核（非正式 A+）','',
-                  f"參考收盤：{pm['date']}；財報截至 {fm['last_eligible_quarter']}；資產負債表 {', '.join(manifest['quarters_available'])}。",'',
-                  '本表為 7 項**初步財務篩選**，不是正式 A+/A++，也不是買賣訊號；2027 漲幅為待驗證情境。',
-                  '未完成 CAPEX/FCF、PIT、股數稀釋歷史、產業 PE 獨立驗證。負 OCF 不會一律刪除。','',
-                  f"品質優先母體：{len(gathered)} 檔；漲幅情境 ≥25%：{len(all_pos)} 檔；7/7：{len(full)} 檔。",'',
-                  '|研究序|股票|情境漲幅|7項通過|負債比|流動比|P/B|營業現金流（百萬元）|',
-                  '|---:|---|---:|---:|---:|---:|---:|---:|'
-              ]
-              for n, x in enumerate(all_pos[:30],1):
-                  cf=x['ocf_2026h1_ntd_k']
-                  show_cf='' if cf is None else str(round(cf/1000,1))
-                  table.append(f"|{n}|{x['code']} {x['name']}|{x['scenario_upside_pct']}%|{x['checks_passed']}/7|{x['debt_assets_pct']}%|{x['current_ratio']}|{x['price_to_book']}|{show_cf}|")
-              table += ['', '完整通過與需查核原因請見 `latest_risk_overlay.json`。','']
-              (OUT/'latest_risk_overlay.md').write_text('\n'.join(table), encoding='utf-8')
-              print(json.dumps({'quality_candidates':len(gathered),'upside_ge25':len(all_pos),'checks_7_of_7':len(full),'formal_Aplus':0},ensure_ascii=False))
-          
-          
-          def self_test():
-              assert safe_div(100,0) is None
-              assert number('--') is None
-              good = {'code':'8390','name':'測試','industry':'綠能環保','reference_close':89.7,
-                  'score':86,'scenario_upside_pct':68.9,'stress_return_pct':8,
-                  'ocf_26h1_ntd_k':675183,'gross_margin_26h1_pct':27.1,
-                  'gross_margin_25h1_pct':18.6,'oper_margin_26h1_pct':22.2,
-                  'oper_margin_25h1_pct':13}
-              bs={'資產總計':'1000','負債總計':'210','流動資產':'338','流動負債':'100','每股參考淨值':'40'}
-              assert overlay_one(good,bs)['checks_passed'] == 7
-              good['ocf_26h1_ntd_k']=-1
-              assert overlay_one(good,bs)['checks_passed'] == 6
-              assert overlay_one(good,bs)['formal_Aplus'] is False
-              print('SELF_TEST_OK, audit-only fail-closed certification')
-          
-          
-          if __name__ == '__main__':
-              if '--self-test' in sys.argv:
-                  self_test()
-              else:
-                  run()
-          PYCODE
-          python /tmp/v877_risk_overlay.py --self-test
-          python /tmp/v877_risk_overlay.py
-      - name: Commit research-only overlay
-        shell: bash
-        run: |
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add tw-market-data/rankings/latest_risk_overlay.json tw-market-data/rankings/latest_risk_overlay.md
-          if ! git diff --cached --quiet; then
-            git commit -m 'data: update V8.7.7.2 research-only balance risk overlay'
-            git pull --rebase origin main
-            git push origin HEAD:main
-          else
-            echo 'No changes in research-only risk overlay'
-          fi
+          python scripts/v880_audit_exports.py --kind risk
