@@ -28,6 +28,14 @@ def public_row(r):
         if name in out:out[name]={k:r[name][k] for k in ('eps','pe','target_price','price_upside_pct','total_return_pct') if k in r[name]}
     if 'certification' in r:out['pending_gates']=r['certification']['gates_pending']
     return out
+def ordered_recovery_watch(rows):
+    """Prefer original current numerics before truncating the public watchlist.
+
+    The prior issuer-code order hid late-code issuers such as 9802. This only
+    controls evidence-review visibility; it does not change prices or ratings.
+    """
+    return sorted([r for r in rows if r.get('early_recovery_watch')],
+      key=lambda r:(r.get('source_tier')!='ORIGINAL_CURRENT_ISSUER_NUMERICS',r['code']))
 def run(data_dir,asof,target_date,out_dir=None):
     data=MarketData(data_dir,asof);cal=fit_accounting(data.history,data.period,{c:r.get('industry','') for c,r in data.revenue.items()});rows=[];failures=[]
     for key,history in sorted(data.history.items()):
@@ -53,7 +61,9 @@ def run(data_dir,asof,target_date,out_dir=None):
       primary_selection_bias_unresolved=True,return_definition='Price upside to target date; future dividends unknown remain null, not zero; expected total returns not claimed',
       top10_primary_research=primary[:10],top10_formal_Aplus=formal[:10],top30_provisional=primary[:30],top30_quality_priority=primary[:30],top30_audit_required=broad[:30],all_primary_research=primary,all_model_rows=rows,
       specialist_operating_bridge_queue=[dict(code=r['code'],name=r['name'],requirements=r['specialist_model_requirements']) for r in rows if r.get('specialist_model_requirements')],
-      early_recovery_watch=[r for r in rows if r.get('early_recovery_watch')],pending_work=pending,source_failures=data.errors,issuer_failures=failures)
+      early_recovery_watch=ordered_recovery_watch(rows),
+      early_recovery_watch_selection='Original current issuer numerics first, then issuer code; review visibility only, full list retained in hashed results',
+      pending_work=pending,source_failures=data.errors,issuer_failures=failures)
     out=pathlib.Path(out_dir) if out_dir else pathlib.Path(data_dir)/'rankings';out.mkdir(parents=True,exist_ok=True)
     fmt=lambda v:'待補' if v is None else f'{v:.2f}'
     report=['# V8.8.0 台股 2027 營運情境與證據分級','',f'估計形成：{asof}；參考收盤：{data.price_date}；目標：{target_date}。',
