@@ -1,0 +1,186 @@
+name: TW V8.7.7.4 Paid-In Capital Audit (RESEARCH ONLY)
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/tw_v877_share_audit.yml'
+  schedule:
+    # Daily 21:25 Asia/Taipei, can be delayed by GitHub.
+    - cron: '25 13 * * *'
+permissions:
+  contents: write
+concurrency:
+  group: tw-v8774-share-audit
+  cancel-in-progress: false
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Execute share capital audit
+        shell: bash
+        run: |
+          cat > /tmp/tw_v877_share_audit.py <<'PYCODE'
+          #!/usr/bin/env python3
+          """V8.7.7.4 research-only share-capital comparability audit.
+          Never promotes A+/A++ or claims paid-in capital is diluted weighted shares.
+          """
+          from __future__ import annotations
+          import datetime as dt
+          import hashlib
+          import json
+          from pathlib import Path
+          
+          ROOT=Path('tw-market-data')
+          OUT=ROOT/'rankings'
+          CUTOFF_PCT=5.0
+          
+          def read_json(path):
+              b=path.read_bytes()
+              return json.loads(b),hashlib.sha256(b).hexdigest()
+          
+          def number(raw):
+              if raw is None or str(raw).strip() in ('','--','-','N/A'): return None
+              try:
+                  value=float(str(raw).replace(',',''))
+                  return value if 0<value<1e15 else None
+              except (ValueError, TypeError): return None
+          
+          def latest_balances():
+              manifest,_=read_json(ROOT/'financial'/'latest_manifest.json')
+              source_map={s['kind']:s for s in manifest['sources']}
+              records={}; failures=[]
+              for market in ('TWSE','TPEX'):
+                  try:
+                      source=source_map[market+'_balance']
+                      if source['period']!='2026Q2':raise ValueError('period mismatch')
+                      rows,digest=read_json(Path(source['path']))
+                      if digest!=source['normalized_sha256']:raise ValueError('SHA256 mismatch')
+                      for r in rows:
+                          code=str(r.get('公司代號',''))
+                          if len(code)==4 and code.isdigit():
+                              records[(market,code)]=number(r.get('股本'))
+                  except (KeyError,OSError,ValueError) as err:
+                      failures.append({'market':market,'stage':'2026Q2','error':str(err)})
+              return records,failures
+          
+          def historical_balances(period):
+              records={};failures=[]
+              for market in ('TWSE','TPEX'):
+                  try:
+                      path=ROOT/'financial_history'/period/(market+'_balance.index.json')
+                      index,_=read_json(path)
+                      meta=index['meta']
+                      if meta.get('quarter')!=period or meta.get('market')!=market:
+                          raise ValueError('historical index period/market mismatch')
+                      if not index.get('shards'):raise ValueError('no shards')
+                      for shard in index['shards']:
+                          raw,digest=read_json(Path(shard['path']))
+                          if digest!=shard['sha256']:raise ValueError('shard SHA256 mismatch: '+str(shard['path']))
+                          if raw['meta'].get('quarter')!=period:raise ValueError('shard period mismatch')
+                          for r in raw['rows']:
+                              code=str(r.get('code',''))
+                              if len(code)!=4 or not code.isdigit():continue
+                              h=r.get('headers',[])
+                              cell=r.get('cells',[])
+                              if '股本' not in h:continue
+                              capital=number(cell[h.index('股本')])
+                              if (market,code) in records:raise ValueError('duplicate issuer in historical shards')
+                              records[(market,code)]=capital
+                  except (KeyError,OSError,ValueError,IndexError) as err:
+                      failures.append({'market':market,'stage':period,'error':str(err)})
+              return records,failures
+          
+          def compare(old,new):
+              if old is None or new is None or old<=0:return None
+              return round((new/old-1)*100,2)
+          
+          def main():
+              report,_=read_json(OUT/'latest_cash_quality.json')
+              candidates=report.get('priority_research')
+              if not isinstance(candidates,list) or len(candidates)<1:raise ValueError('missing research candidates')
+              old,a=historical_balances('2025Q4')
+              interim,b=historical_balances('2026Q1')
+              latest,c=latest_balances()
+              result=[]
+              for company in candidates:
+                  code=company['code']
+                  market=company.get('market')
+                  k=(market,code)
+                  x,y,z=old.get(k),interim.get(k),latest.get(k)
+                  growth=compare(x,z)
+                  flagged=growth is None or abs(growth)>=CUTOFF_PCT
+                  result.append({
+                      'code':code,'name':company['name'],'market':market,
+                      'share_capital_2025Q4_ntd_k':x,
+                      'share_capital_2026Q1_ntd_k':y,
+                      'share_capital_2026Q2_ntd_k':z,
+                      'share_capital_change_pct':growth,
+                      'requires_share_denominator_audit':flagged,
+                      'research_upside_pct_unverified':company.get('scenario_upside_pct'),
+                      'positive_stress_scenario_unverified':company.get('stress_scenario_positive'),
+                      'formal_Aplus':False,'formal_Aplusplus':False,
+                      'reason':('capital base changed >=5%; verify cash/stock dividend, actual weighted diluted shares and EPS restatement' if growth is not None and abs(growth)>=CUTOFF_PCT else
+                                'capital history unavailable' if growth is None else
+                                'paid-in capital stable; diluted shares and filing PIT STILL unverified'),
+                  })
+              flagged=[x for x in result if x['requires_share_denominator_audit']]
+              positive_stress=[x for x in result if x['positive_stress_scenario_unverified']]
+              ready=[x for x in positive_stress if not x['requires_share_denominator_audit']]
+              output={
+                'model':'V8.7.7.4 paid-in capital audit — RESEARCH ONLY',
+                'reference_close_date':report.get('reference_close_date'),
+                'fiscal_comparison':['2025Q4','2026Q1','2026Q2'],
+                'raw_source_period_and_units_independently_verified':False,
+                'exact_weighted_average_diluted_shares_verified':False,
+                'company_specific_filing_PIT_verified':False,
+                'CAPEX_FCF_independently_verified':False,
+                'formal_Aplus_count':0,'formal_Aplusplus_count':0,
+                'candidate_count':len(result),
+                'capital_change_ge5pct_or_missing_count':len(flagged),
+                'positive_stress_research_count_before_capital_audit':len(positive_stress),
+                'positive_stress_research_not_capital_flagged_count':len(ready),
+                'source_errors':a+b+c,
+                'important':'Stock-capital changes are NOT automatically economic dilution. NO adjustment to EPS without par value, stock dividend, weighted-average basic/diluted shares, issuer disclosure PIT. Never use these results as buy signals.',
+                'research_priority_without_major_capital_flag':ready,
+                'capital_audit_detail':sorted(result,key=lambda x:(not x['requires_share_denominator_audit'],x['code']))
+              }
+              OUT.mkdir(parents=True,exist_ok=True)
+              (OUT/'latest_share_audit.json').write_text(json.dumps(output,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+              lines=['# V8.7.7.4 股本變動比對（非正式 A+）','',
+                f'研究候選：{len(result)} 檔；股本變動超過 5% 或資料不足：{len(flagged)} 檔。',
+                '此處比對實收股本，**不等於稀釋股數**；尚須核對現金增資、股票股利、股本面額、加權平均股數與 EPS 重編。','',
+                '|股票|2025Q4股本（千元）|2026Q2股本（千元）|股本變動|股數基礎待查|',
+                '|---|---:|---:|---:|---|']
+              for row in sorted(result,key=lambda r:abs(r['share_capital_change_pct'] or 0),reverse=True):
+                  change=row['share_capital_change_pct']
+                  lines.append(f"|{row['code']} {row['name']}|{row['share_capital_2025Q4_ntd_k']}|{row['share_capital_2026Q2_ntd_k']}|{str(change)+'%' if change is not None else '—'}|{'是' if row['requires_share_denominator_audit'] else '未發現≥5%，仍待驗'}|")
+              lines+=['','目前正式 A+／A++ 均為 0。正向壓力情境仍屬未驗證假設。']
+              (OUT/'latest_share_audit.md').write_text('\n'.join(lines)+'\n',encoding='utf-8')
+              print(json.dumps({'result':'RESEARCH_ONLY','total':len(result),'flagged':len(flagged),'positive_stress_not_flagged':len(ready),'errors':len(a+b+c)},ensure_ascii=False))
+          
+          def self_test():
+              assert compare(1134400,1360000)==19.89
+              assert compare(1786961,1965657)==10.0
+              assert compare(0,1360000) is None
+              assert compare(961161,961161)==0
+              print('SELF_TEST_OK: capital change is not share dilution or A+ certification')
+          
+          if __name__=='__main__':
+              import sys
+              self_test() if '--self-test' in sys.argv else main()
+          PYCODE
+          python /tmp/tw_v877_share_audit.py --self-test
+          python /tmp/tw_v877_share_audit.py
+      - name: Commit research-only report
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add tw-market-data/rankings/latest_share_audit.json tw-market-data/rankings/latest_share_audit.md
+          if ! git diff --cached --quiet; then
+            git commit -m 'data: V8.7.7.4 noncertified capital-base audit'
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
