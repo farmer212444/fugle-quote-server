@@ -1,0 +1,21 @@
+name: V8.8.0 Profit Bridge Tests
+on:
+  pull_request:
+    paths:
+      - 'scripts/tw_v880_profit_bridge.py'
+      - '.github/workflows/v880-profit-bridge.yml'
+  workflow_dispatch:
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Independent EPS profit bridge unit tests
+        run: python scripts/tw_v880_profit_bridge.py --self-test
+      - name: Syntax validation
+        run: python -m py_compile scripts/tw_v880_profit_bridge.py
