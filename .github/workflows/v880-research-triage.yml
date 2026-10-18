@@ -1,0 +1,21 @@
+name: V8.8.0 Research Triage Tests
+on:
+  pull_request:
+    paths:
+      - 'scripts/tw_v880_research_triage.py'
+      - '.github/workflows/v880-research-triage.yml'
+  workflow_dispatch:
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Fail-closed triage tests
+        run: python scripts/tw_v880_research_triage.py --self-test
+      - name: Syntax validation
+        run: python -m py_compile scripts/tw_v880_research_triage.py
