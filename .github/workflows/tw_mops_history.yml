@@ -309,7 +309,7 @@ jobs:
               }
               LOGS.joinpath('attempt.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
               if status or OUTPUT.exists():
-                  # No price/revenue manifests overwritten; update only historical-financial namespace.
+                  # Keep last successful manifest when source is blocked; runlog carries errors.
                   OUTPUT.parent.mkdir(parents=True,exist_ok=True)
                   old=OUTPUT.read_text(encoding='utf8') if OUTPUT.exists() else ''
                   if status or not old:
