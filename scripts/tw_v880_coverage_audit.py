@@ -13,10 +13,14 @@ def audit(scan):
     if any(type(x) is not int or x<0 for x in (total,full,batches,missing)):
         raise ValueError("invalid count fields")
     if full>total:raise ValueError("8-quarter issuers exceed issuer universe")
+    if type(scan.get("expected_market_quarter_statement_batches")) is not int:
+        raise ValueError("missing expected batch count")
     if batches+missing!=scan.get("expected_market_quarter_statement_batches"):
         raise ValueError("batch coverage inconsistent")
     if scan.get("formal_Aplus_count")!=0 or scan.get("formal_Aplusplus_count")!=0:
         raise ValueError("uncertified A+ in financial scan")
+    if total==0:
+        raise ValueError("empty financial universe")
     return {"model":"V8.8.0 coverage audit","asof":scan.get("asof_taipei"),
             "companies_with_some_data":total,"mirror_full_8q_income":full,
             "missing_8q_income_or_incomplete":total-full,
@@ -34,7 +38,8 @@ def self_test():
     assert r["missing_8q_income_or_incomplete"]==91
     assert r["original_issuer_8q_PIT_certified"] is False
     for bad in (dict(x,companies_with_full_8Q_income=2000),
-                dict(x,missing_batches=1),dict(x,formal_Aplus_count=1)):
+                dict(x,missing_batches=1),dict(x,formal_Aplus_count=1),
+                dict(x,companies_with_some_data=0,companies_with_full_8Q_income=0)):
         try:audit(bad)
         except ValueError:pass
         else:raise AssertionError("invalid coverage accepted")
