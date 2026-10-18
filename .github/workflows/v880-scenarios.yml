@@ -1,0 +1,23 @@
+name: V8.8.0 Scenario Tests
+on:
+  pull_request:
+    paths:
+      - 'scripts/tw_v880_scenarios.py'
+      - 'scripts/tw_v880_profit_bridge.py'
+      - '.github/workflows/v880-scenarios.yml'
+  workflow_dispatch:
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Independent three-scenario and profit bridge tests
+        run: |
+          python scripts/tw_v880_profit_bridge.py --self-test
+          python scripts/tw_v880_scenarios.py --self-test
+          python -m py_compile scripts/tw_v880_profit_bridge.py scripts/tw_v880_scenarios.py
