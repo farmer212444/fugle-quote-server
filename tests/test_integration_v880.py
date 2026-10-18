@@ -1,8 +1,9 @@
-import contextlib,gzip,io,json,pathlib,tempfile,unittest
+import contextlib,datetime as dt,gzip,io,json,pathlib,tempfile,unittest
 from unittest.mock import patch
 from tw_model_v880.model import estimate
 from tw_model_v880.math import previous_periods
-from scripts.tw_v880_run import run,ordered_recovery_watch
+from scripts.tw_v880_run import run,ordered_recovery_watch,resolve_asof
+from tw_model_v880.data import ensure_vintage
 ASOF='2026-10-18T19:30:00+08:00';CAL=dict(train_count=60,train_target='2025-Q4',revenue_persistence=.5,margin_persistence=.5,cost_persistence=.5)
 class FakeData:
     def __init__(self,*a):
@@ -22,6 +23,21 @@ class FakeData:
     def primary(self,c):return self.evidence['primary'].get(c)
     def detailed_values(self,*a):return None
 class IntegrationTests(unittest.TestCase):
+    def test_same_second_fresh_source_is_not_misclassified_as_future(self):
+        now=dt.datetime.fromisoformat('2026-10-18T21:45:20.780000+08:00')
+        e=dict(snapshot_available_at='2026-10-18T11:29:14+00:00',official_current_bulk=dict(TPEX_balance=dict(fetched_at='2026-10-18T13:45:20.410000+00:00')))
+        for raw in [None,'2026-10-18']:ensure_vintage(e,resolve_asof(raw,now))
+        with self.assertRaisesRegex(ValueError,'COMPONENT_VINTAGE'):ensure_vintage(e,'2026-10-18T21:45:20+08:00')
+    def test_explicit_cutoff_and_future_microsecond_stay_strict(self):
+        now=dt.datetime.fromisoformat('2026-10-18T21:45:20.780000+08:00')
+        cutoff=resolve_asof('2026-10-18T21:45:20.400000+08:00',now)
+        e=dict(snapshot_available_at='2026-10-18T11:29:14+00:00',official_current_bulk=dict(TPEX_balance=dict(fetched_at='2026-10-18T13:45:20.400001+00:00')))
+        with self.assertRaisesRegex(ValueError,'COMPONENT_VINTAGE'):ensure_vintage(e,cutoff)
+        with self.assertRaisesRegex(ValueError,'FUTURE_ESTIMATE'):resolve_asof('2026-10-18T21:45:20.780001+08:00',now)
+    def test_date_cutoff_rejects_future_day_and_includes_past_day_end(self):
+        now=dt.datetime.fromisoformat('2026-10-18T21:45:20.780000+08:00')
+        self.assertEqual(resolve_asof('2026-10-17',now),'2026-10-17T23:59:59.999999+08:00')
+        with self.assertRaisesRegex(ValueError,'FUTURE_ESTIMATE'):resolve_asof('2026-10-19',now)
     def test_public_recovery_watch_does_not_hide_late_code_primary_issuer(self):
         rows=[dict(code=f'{i:04}',source_tier='OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL',early_recovery_watch=True) for i in range(35)]
         rows.append(dict(code='9802',source_tier='ORIGINAL_CURRENT_ISSUER_NUMERICS',early_recovery_watch=True))
