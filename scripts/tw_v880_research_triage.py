@@ -15,9 +15,13 @@ def triage(payload):
     rows = payload.get("top30_provisional", [])
     if not isinstance(rows, list):
         raise ValueError("top30_provisional must be an array")
+    if len(rows) > 30:
+        raise ValueError("legacy provisional input exceeds declared top30 coverage")
     seen = set()
     out = []
     for row in rows:
+        if not isinstance(row, dict):
+            raise ValueError("issuer row must be an object")
         code = str(row.get("code", ""))
         if not code or code in seen:
             raise ValueError("missing or duplicate issuer code")
@@ -61,6 +65,11 @@ def self_test():
         try:triage(bad)
         except ValueError:pass
         else:raise AssertionError("invalid numeric scenario accepted")
+    for invalid_rows in ([None], [{"code":"9802","score":1,"scenario_upside_pct":1}]*31):
+        bad=dict(base,top30_provisional=invalid_rows)
+        try:triage(bad)
+        except ValueError:pass
+        else:raise AssertionError("invalid research rows accepted")
     print("SELF_TEST_OK: V8.8.0 shadow-only triage")
 
 if __name__=="__main__":
