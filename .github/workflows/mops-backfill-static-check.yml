@@ -1,0 +1,30 @@
+name: MOPS Backfill Static Checks
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/tw_mops_history.yml'
+      - '.github/workflows/mops-backfill-static-check.yml'
+  workflow_dispatch:
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify access-control circuit breaker and safe manifest handling
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import ast
+          source=Path('.github/workflows/tw_mops_history.yml').read_text()
+          assert "security_blocked=True" in source
+          assert "if security_blocked:break" in source
+          assert "'source_security_blocked':security_blocked" in source
+          assert "if status or not old:" in source
+          assert "CIRCUIT_BREAKER" in source
+          assert "http error 307" in source and "http error 403" in source
+          code=source.split("python3 - <<'PY'\n",1)[1].split("\n          PY",1)[0]
+          ast.parse("\n".join(line[10:] if line.startswith("          ") else line for line in code.splitlines()))
+          print('PASS: source restriction stops requests; last-good manifest preserved; embedded Python parses')
+          PY

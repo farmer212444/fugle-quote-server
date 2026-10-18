@@ -269,8 +269,9 @@ jobs:
           def run():
               before=existing_quarters()
               todo=[(p,missing) for p,missing in before if missing][:MAX_QUARTERS_PER_RUN]
-              status=[];failures=[]
+              status=[];failures=[];security_blocked=False
               for period,pairs in todo:
+                  if security_blocked:break
                   for market,kind in pairs:
                       print('REQUEST',period,market,kind,flush=True)
                       try:
@@ -278,8 +279,14 @@ jobs:
                           status.append(save_report(data,raw))
                           print('SAVED',period,market,kind,data['issuer_rows'],flush=True)
                       except Exception as e:
-                          failures.append({'quarter':period,'market':market,'kind':kind,'error':str(e)[:350]})
-                          print('FAILED',period,market,kind,str(e)[:250],flush=True)
+                          message=str(e)
+                          failures.append({'quarter':period,'market':market,'kind':kind,'error':message[:350]})
+                          print('FAILED',period,market,kind,message[:250],flush=True)
+                          # Do not hammer a MOPS access-control/security redirect.
+                          if any(token in message.lower() for token in ('http error 307','http error 403','security restriction','access denied')):
+                              security_blocked=True
+                              print('CIRCUIT_BREAKER: official endpoint access restriction; skip remaining requests',flush=True)
+                              break
                       time.sleep(1.4)
               after=existing_quarters()
               complete=[p for p,missing in after if not missing]
@@ -291,6 +298,7 @@ jobs:
                 'fully_downloaded_quarters_THIS_COLLECTION':complete,
                 'quarters_remaining':{p:[m+'_'+k for m,k in miss] for p,miss in after if miss},
                 'this_run_saved':status,'this_run_failed':failures,
+                'source_security_blocked':security_blocked,
                 'original_quarterly_filing_PIT_verified':False,
                 'cash_flow_OCF_CAPEX_verified':False,
                 'financial_units_verified':False,
@@ -301,13 +309,15 @@ jobs:
               }
               LOGS.joinpath('attempt.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
               if status or OUTPUT.exists():
-                  # No price/revenue manifests overwritten; update only historical-financial namespace.
+                  # Keep last successful manifest when source is blocked; runlog carries errors.
                   OUTPUT.parent.mkdir(parents=True,exist_ok=True)
                   old=OUTPUT.read_text(encoding='utf8') if OUTPUT.exists() else ''
                   if status or not old:
                       OUTPUT.write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n',encoding='utf8')
-              if todo and not status:
+              if todo and not status and not security_blocked:
                   raise RuntimeError('Zero MOPS historical reports passed validation. Inspect attempt.json; do not claim backfill success.')
+              if security_blocked:
+                  print('BLOCKED_NOT_COMPLETE: source access restriction; preserved existing snapshots, no fabricated records',flush=True)
               print('STATUS',len(status),'saved',len(failures),'failed',len(complete),'quarters complete',flush=True)
           
           if __name__=='__main__':run()
