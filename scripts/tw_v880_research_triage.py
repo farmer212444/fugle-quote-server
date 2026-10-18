@@ -23,7 +23,7 @@ def triage(payload):
         if not isinstance(row, dict):
             raise ValueError("issuer row must be an object")
         code = str(row.get("code", ""))
-        if not code or code in seen:
+        if not (len(code)==4 and code.isascii() and code.isdigit()) or code in seen:
             raise ValueError("missing or duplicate issuer code")
         seen.add(code)
         upside = row.get("scenario_upside_pct")
@@ -65,7 +65,8 @@ def self_test():
         try:triage(bad)
         except ValueError:pass
         else:raise AssertionError("invalid numeric scenario accepted")
-    for invalid_rows in ([None], [{"code":"9802","score":1,"scenario_upside_pct":1}]*31):
+    for invalid_rows in ([None], [{"code":"9802","score":1,"scenario_upside_pct":1}]*31,
+                         [{"code":"None","score":1,"scenario_upside_pct":1}]):
         bad=dict(base,top30_provisional=invalid_rows)
         try:triage(bad)
         except ValueError:pass
