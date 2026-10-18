@@ -1,6 +1,6 @@
 {
   "schema": "v879-mops-quarterly-historical-research-v1",
-  "date_captured_utc": "2026-10-17T23:02:59.484453+00:00",
+  "date_captured_utc": "2026-10-18T07:56:41.656015+00:00",
   "seed_quarter_existing_elsewhere": "2026Q2",
   "requested_backfill_quarters": [
     "2026Q1",
@@ -13,21 +13,11 @@
   ],
   "fully_downloaded_quarters_THIS_COLLECTION": [
     "2026Q1",
-    "2025Q4"
+    "2025Q4",
+    "2025Q3",
+    "2025Q2"
   ],
   "quarters_remaining": {
-    "2025Q3": [
-      "TWSE_income",
-      "TWSE_balance",
-      "TPEX_income",
-      "TPEX_balance"
-    ],
-    "2025Q2": [
-      "TWSE_income",
-      "TWSE_balance",
-      "TPEX_income",
-      "TPEX_balance"
-    ],
     "2025Q1": [
       "TWSE_income",
       "TWSE_balance",
@@ -49,87 +39,88 @@
   },
   "this_run_saved": [
     {
-      "quarter": "2026Q1",
+      "quarter": "2025Q3",
       "kind": "TWSE_income",
-      "rows": 1084,
-      "index_path": "tw-market-data/financial_history/2026Q1/TWSE_income.index.json",
+      "rows": 1080,
+      "index_path": "tw-market-data/financial_history/2025Q3/TWSE_income.index.json",
       "shard_count": 3,
-      "raw_path": "tw-market-data/financial_history/2026Q1/TWSE_income.html.gz",
-      "index_sha256": "433b6319d5811db6ab45f2c74d5c79dee045054fafb2e72407e9481269cbbb73",
-      "sha256_raw": "af4f3d5cf7665f38633fd2b4cbdaab50de3c11c5483f560e267e070ecdcc34fa"
+      "raw_path": "tw-market-data/financial_history/2025Q3/TWSE_income.html.gz",
+      "index_sha256": "c7c486c9f0c8629441fe9b6edb7d7aa4570ae5679c853164bba05e0fe0c4d99d",
+      "sha256_raw": "84459701a517a5b28c7f678ac08039a9e39bd28b09768f0234f7ed2e42ed60c9"
     },
     {
-      "quarter": "2026Q1",
+      "quarter": "2025Q3",
       "kind": "TWSE_balance",
-      "rows": 1084,
-      "index_path": "tw-market-data/financial_history/2026Q1/TWSE_balance.index.json",
+      "rows": 1080,
+      "index_path": "tw-market-data/financial_history/2025Q3/TWSE_balance.index.json",
       "shard_count": 2,
-      "raw_path": "tw-market-data/financial_history/2026Q1/TWSE_balance.html.gz",
-      "index_sha256": "1da8152a5fe02a33be7b6142e9650f8e98a24ba2bd810bcaad65b35f4213014a",
-      "sha256_raw": "e340cb1e414ffc026a37eb3f3a5e123cf688239d053289fcfdb88bc6ab8fc290"
+      "raw_path": "tw-market-data/financial_history/2025Q3/TWSE_balance.html.gz",
+      "index_sha256": "4c1b82d1955015383379a26b7fecc72d732b9c1253d12999d4875b891d129da6",
+      "sha256_raw": "523257d808268c069900105039e39990278b18a553725fde4be9aaa7b11d8b49"
     },
     {
-      "quarter": "2026Q1",
+      "quarter": "2025Q3",
+      "kind": "TPEX_income",
+      "rows": 887,
+      "index_path": "tw-market-data/financial_history/2025Q3/TPEX_income.index.json",
+      "shard_count": 3,
+      "raw_path": "tw-market-data/financial_history/2025Q3/TPEX_income.html.gz",
+      "index_sha256": "ad540af15aede507c108298d3f392675dceff88fd22e99bb62e89b321f7373ca",
+      "sha256_raw": "e96da53364b41aeb2d4541b135e9f102d9b398698200c91ea1d8366729e72b7b"
+    },
+    {
+      "quarter": "2025Q3",
+      "kind": "TPEX_balance",
+      "rows": 887,
+      "index_path": "tw-market-data/financial_history/2025Q3/TPEX_balance.index.json",
+      "shard_count": 2,
+      "raw_path": "tw-market-data/financial_history/2025Q3/TPEX_balance.html.gz",
+      "index_sha256": "546e3258d2dd4b95ca6f28d2ef9e13d3a4be3aa2fe99135e0abce41b71d72290",
+      "sha256_raw": "8357f678440a93fd76a583998a7e2660b1bc31bae8a54b9f14f075dcbda16ab6"
+    },
+    {
+      "quarter": "2025Q2",
+      "kind": "TWSE_income",
+      "rows": 1083,
+      "index_path": "tw-market-data/financial_history/2025Q2/TWSE_income.index.json",
+      "shard_count": 3,
+      "raw_path": "tw-market-data/financial_history/2025Q2/TWSE_income.html.gz",
+      "index_sha256": "49ad9c4c9c3562f337a4dd4a5f86a1ee74811cc4b78d72af5f6d376404a531ce",
+      "sha256_raw": "ded4fcc9485bcab3d725202f830ad462af283f8e90f0ffc226d55ecc38df1ae1"
+    },
+    {
+      "quarter": "2025Q2",
+      "kind": "TWSE_balance",
+      "rows": 1083,
+      "index_path": "tw-market-data/financial_history/2025Q2/TWSE_balance.index.json",
+      "shard_count": 2,
+      "raw_path": "tw-market-data/financial_history/2025Q2/TWSE_balance.html.gz",
+      "index_sha256": "42e8daf28dd8e489a9719eb05b121896728a2e46bd8e2cde98f00fcdfe3be2a3",
+      "sha256_raw": "be2521db9cfe6ad08f42ebfbdb3a71507499ca5c84aa36d7978fabe8ec0e7f6a"
+    },
+    {
+      "quarter": "2025Q2",
       "kind": "TPEX_income",
       "rows": 892,
-      "index_path": "tw-market-data/financial_history/2026Q1/TPEX_income.index.json",
+      "index_path": "tw-market-data/financial_history/2025Q2/TPEX_income.index.json",
       "shard_count": 3,
-      "raw_path": "tw-market-data/financial_history/2026Q1/TPEX_income.html.gz",
-      "index_sha256": "a79015292054119bbcbf9bcad593d5a370cebd083b6ed1f4de45bea8a26dc7bf",
-      "sha256_raw": "f43684124ea9a3a7028146c7013a62ae6606b9ca39f3b686d5f5abca4848bca4"
+      "raw_path": "tw-market-data/financial_history/2025Q2/TPEX_income.html.gz",
+      "index_sha256": "45fe3061f6f1f7d1ed53edbe1853e9f8719b817f9a1caffaedff0c05164d2171",
+      "sha256_raw": "542e4af627dccdc5087f5f7ca2fa1cca2b8756c495e0ce795d4535001fc933dd"
     },
     {
-      "quarter": "2026Q1",
+      "quarter": "2025Q2",
       "kind": "TPEX_balance",
       "rows": 892,
-      "index_path": "tw-market-data/financial_history/2026Q1/TPEX_balance.index.json",
+      "index_path": "tw-market-data/financial_history/2025Q2/TPEX_balance.index.json",
       "shard_count": 2,
-      "raw_path": "tw-market-data/financial_history/2026Q1/TPEX_balance.html.gz",
-      "index_sha256": "263630e604e9ae6b1d42ef36cccb1d5b0abb5fd469bd0825a5d8b11a8ba62dea",
-      "sha256_raw": "7181bd91214319b468d774bd5d7ec91cf9b1730a798f87de235e69d85b4ad353"
-    },
-    {
-      "quarter": "2025Q4",
-      "kind": "TWSE_income",
-      "rows": 1085,
-      "index_path": "tw-market-data/financial_history/2025Q4/TWSE_income.index.json",
-      "shard_count": 3,
-      "raw_path": "tw-market-data/financial_history/2025Q4/TWSE_income.html.gz",
-      "index_sha256": "2962cc04979703bd81580b94dab85a2b8e9d20c2d8fb5af7c5e916a7877d195a",
-      "sha256_raw": "d0ac343723be6454485e48cf44af2e68c798f77f7683df54024e6d180ea851c8"
-    },
-    {
-      "quarter": "2025Q4",
-      "kind": "TWSE_balance",
-      "rows": 1085,
-      "index_path": "tw-market-data/financial_history/2025Q4/TWSE_balance.index.json",
-      "shard_count": 2,
-      "raw_path": "tw-market-data/financial_history/2025Q4/TWSE_balance.html.gz",
-      "index_sha256": "6aa5c3083ac869fb855c78e4ed89eca1a58b57e198e10bc6d42b6be7174dd9fe",
-      "sha256_raw": "1060924caacdc8c62212453c65a1c725763961dbc263053d52e9db4d7f73fb16"
-    },
-    {
-      "quarter": "2025Q4",
-      "kind": "TPEX_income",
-      "rows": 892,
-      "index_path": "tw-market-data/financial_history/2025Q4/TPEX_income.index.json",
-      "shard_count": 3,
-      "raw_path": "tw-market-data/financial_history/2025Q4/TPEX_income.html.gz",
-      "index_sha256": "e23b0e8f650f08826bab59a37988cdb9b866c7fb28ef1950b9b054dae6148b74",
-      "sha256_raw": "99a3e2b1671ff425f501ac8755daf236ff21ee6f56c3f40d540092c4679a4128"
-    },
-    {
-      "quarter": "2025Q4",
-      "kind": "TPEX_balance",
-      "rows": 892,
-      "index_path": "tw-market-data/financial_history/2025Q4/TPEX_balance.index.json",
-      "shard_count": 2,
-      "raw_path": "tw-market-data/financial_history/2025Q4/TPEX_balance.html.gz",
-      "index_sha256": "54035d1115c8557fa3d588f66872bf36918c9c8998a249518c62ed18f00d0810",
-      "sha256_raw": "d3af3c5e46448a9f913741ed4d4f6a942a060cb5d4c9a8fcfffcebb783fe5024"
+      "raw_path": "tw-market-data/financial_history/2025Q2/TPEX_balance.html.gz",
+      "index_sha256": "d02921deff549644b00efd9b2862395ed5d78e506d005bb4b753ad5151c1664b",
+      "sha256_raw": "42790a56334710d5f6a12beee407b62cf30486e45b3ad36b5f5a797e0eb1e99e"
     }
   ],
   "this_run_failed": [],
+  "source_security_blocked": false,
   "original_quarterly_filing_PIT_verified": false,
   "cash_flow_OCF_CAPEX_verified": false,
   "financial_units_verified": false,
