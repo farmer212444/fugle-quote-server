@@ -1,0 +1,54 @@
+{
+  "meta": {
+    "quarter": "2024Q4",
+    "market": "TWSE",
+    "kind": "income",
+    "url": "https://mopsov.twse.com.tw/mops/web/ajax_t163sb04",
+    "request_form": {
+      "encodeURIComponent": "1",
+      "step": "1",
+      "firstin": "1",
+      "off": "1",
+      "isQuery": "Y",
+      "TYPEK": "sii",
+      "year": "113",
+      "season": "04"
+    },
+    "captured_utc": "2026-10-18T16:10:23.463928+00:00",
+    "raw_sha256": "958511c5f98f3d584961d99fab759d0a3e0db68205f470e00dd2580a8463d246",
+    "raw_length": 1639092,
+    "issuer_rows": 1085,
+    "valid_tables": 6,
+    "reported_quarter_verified": false,
+    "fiscal_period_evidence": "OFFICIAL_VENUE_QUARTER_HEADER_YEAR_REQUEST_ONLY_UNVERIFIED",
+    "requested_roc_year": "113",
+    "reported_year_in_response_verified": false,
+    "currency_and_unit_verified": false,
+    "issuer_exact_original_filing_PIT_verified": false,
+    "quarter_cashflow_verified": false,
+    "consolidated_basis_unchecked": true,
+    "research_only": true,
+    "row_fingerprint": "9692772358bed8206c6f189f9b05c96bd250d8ca85c3c8992026970b8ade4c75"
+  },
+  "shards": [
+    {
+      "path": "tw-market-data/financial_history/2024Q4/TWSE_income_shard01.json",
+      "rows": 431,
+      "sha256": "12d34b51db7b48ab323eb08a4a1e947dc9204e3f9715a12e16171da05f3f2a40"
+    },
+    {
+      "path": "tw-market-data/financial_history/2024Q4/TWSE_income_shard02.json",
+      "rows": 437,
+      "sha256": "5b03e5e5ef1cfe455bc2b0532777d8f9c1141c7ff89172bc75e4d4034d0a3b36"
+    },
+    {
+      "path": "tw-market-data/financial_history/2024Q4/TWSE_income_shard03.json",
+      "rows": 217,
+      "sha256": "e3a7b8a638429c2186753f5d78018be64f234b57ba4644ec77ad17def25df294"
+    }
+  ],
+  "raw_path": "tw-market-data/financial_history/2024Q4/TWSE_income.html.gz",
+  "raw_sha256": "958511c5f98f3d584961d99fab759d0a3e0db68205f470e00dd2580a8463d246",
+  "parsed_count": 1085,
+  "formal_grade_allowed": false
+}

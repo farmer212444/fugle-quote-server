@@ -1,0 +1,49 @@
+{
+  "meta": {
+    "quarter": "2025Q1",
+    "market": "TPEX",
+    "kind": "balance",
+    "url": "https://mopsov.twse.com.tw/mops/web/ajax_t163sb05",
+    "request_form": {
+      "encodeURIComponent": "1",
+      "step": "1",
+      "firstin": "1",
+      "off": "1",
+      "isQuery": "Y",
+      "TYPEK": "otc",
+      "year": "114",
+      "season": "01"
+    },
+    "captured_utc": "2026-10-18T16:09:56.556174+00:00",
+    "raw_sha256": "defb1beda49166d69f8a151b44571cc62d1840b766061d1365107d560036c819",
+    "raw_length": 1033515,
+    "issuer_rows": 870,
+    "valid_tables": 2,
+    "reported_quarter_verified": false,
+    "fiscal_period_evidence": "OFFICIAL_VENUE_QUARTER_HEADER_YEAR_REQUEST_ONLY_UNVERIFIED",
+    "requested_roc_year": "114",
+    "reported_year_in_response_verified": false,
+    "currency_and_unit_verified": false,
+    "issuer_exact_original_filing_PIT_verified": false,
+    "quarter_cashflow_verified": false,
+    "consolidated_basis_unchecked": true,
+    "research_only": true,
+    "row_fingerprint": "e2814f716c10ccc0f46733d5ebbc3981dd8d9c02147f01a2c18f18e57995885a"
+  },
+  "shards": [
+    {
+      "path": "tw-market-data/financial_history/2025Q1/TPEX_balance_shard01.json",
+      "rows": 678,
+      "sha256": "807daf0232491de6198670470f2075014a7dc9f0e49d1f32c75f02f84740f141"
+    },
+    {
+      "path": "tw-market-data/financial_history/2025Q1/TPEX_balance_shard02.json",
+      "rows": 192,
+      "sha256": "68ac9e22b96108f14c3bb6bd62c729425fe8ef1f978afc87a445dc9b9c433afd"
+    }
+  ],
+  "raw_path": "tw-market-data/financial_history/2025Q1/TPEX_balance.html.gz",
+  "raw_sha256": "defb1beda49166d69f8a151b44571cc62d1840b766061d1365107d560036c819",
+  "parsed_count": 870,
+  "formal_grade_allowed": false
+}
