@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""V8.7.7.1 quality-gated preliminary Taiwan earnings/valuation screen.
+"""V8.7.7.5 source-aware preliminary Taiwan earnings/valuation screen.
 
 Ranks research scenarios, NEVER certifies formal A+/A++ without independent
 issuer PIT, CAPEX/FCF, share dilution, historical sector PE and other checks.
@@ -24,6 +24,45 @@ SECTOR_PE = {
     '運動休閒': 15, '其他電子業': 15, '生技醫療業': 16,
     '數位雲端': 17, '金融保險業': 12, '紡織纖維': 12,
 }
+
+# Dated, explicitly *non-certified* 2026H1 evidence. 8390 was checked against
+# issuer PDF, 1256 against a third-party XBRL extraction (not the original PDF).
+# This is a research assumption ledger, NOT an automatic A+ approval.
+# The cases expire after Q3 filing season; NEVER carry 2026H1 assumptions forever.
+EVIDENCE_2026H1 = {
+    '8390': {
+        'name': '金益鼎', 'asof_from': '2026-10-16', 'expires_after': '2026-11-15',
+        'basic_eps': 5.16, 'diluted_eps': 5.13, 'ocf_ytd_k': 675183,
+        'ppe_acquisition_ytd_k': 206450, 'equipment_prepaid_ytd_k': None,
+        'base_eps': 10.0, 'base_pe': 11, 'bear_eps': 7.5, 'bear_pe': 8,
+        'bull_eps': 12.0, 'bull_pe': 13,
+        'quality_issue': 'qualified-review conclusion (some subsidiary/affiliate data not reviewed)',
+        'source_level': 'ISSUER_PDF_REVIEWED',
+        'source_url': 'https://www.jyd.com.tw/storage/system/PDF/2026/JYD-115Q2-Consolidated-Financial-Repot.pdf',
+    },
+    '1256': {
+        'name': '鮮活果汁-KY', 'asof_from': '2026-10-16', 'expires_after': '2026-11-15',
+        'basic_eps': 8.98, 'diluted_eps': 8.79, 'ocf_ytd_k': 294969,
+        'ppe_acquisition_ytd_k': 260039, 'equipment_prepaid_ytd_k': 76067,
+        'base_eps': 17.0, 'base_pe': 12, 'bear_eps': 12.0, 'bear_pe': 9,
+        'bull_eps': 20.0, 'bull_pe': 14,
+        'quality_issue': 'equipment-prepayments and source reconciliation needed',
+        'source_level': 'THIRD_PARTY_XBRL_ORIGINAL_NOT_VERIFIED',
+        'source_url': 'https://financialfilings.com/filings/sunjuice-1256/interim-quarterly-report/2026/60579628/',
+    },
+}
+# These are dated capital-change *alerts*, never diluted weighted-average shares.
+CAPITAL_BASE_WATCH_2026 = {'5511': 19.89, '1720': 10.00}
+
+def evidence_case(code, date_str, financial_last_quarter, basic_eps, operating_cashflow):
+    case = EVIDENCE_2026H1.get(str(code))
+    if case is None: return None, None
+    if financial_last_quarter != '2026-Q2' or not (case['asof_from'] <= date_str <= case['expires_after']):
+        return None, 'DATED_EVIDENCE_EXPIRED_OR_FINANCIAL_PERIOD_CHANGED'
+    if (basic_eps is None or abs(basic_eps-case['basic_eps']) > .02 or
+        operating_cashflow is None or abs(operating_cashflow-case['ocf_ytd_k']) > 1):
+        return None, 'DATED_EVIDENCE_MISMATCH_CHECK_SOURCE_OR_UNIT'
+    return case, None
 
 def get(path):
     return json.loads(pathlib.Path(path).read_text(encoding='utf-8'))
@@ -112,7 +151,7 @@ def earnings_quality(issuer):
     return reasons
 
 
-def grade(issuer, price, rev, ocf):
+def grade(issuer, price, rev, ocf, asof_date='2026-10-16', financial_last_quarter='2026-Q2'):
     if any(q not in issuer for q in QUARTERS):
         return None
     a,b,c = (issuer[q] for q in ('2025-Q2','2025-Q4','2026-Q2'))
@@ -148,10 +187,27 @@ def grade(issuer, price, rev, ocf):
     if g26<gm25:flags.append('H1 gross margin declined')
     o=numeric(ocf.get('operating_cashflow_ytd_k')) if ocf else None
     capex=numeric(ocf.get('capex_ytd_k')) if ocf else None
+    case, case_issue = evidence_case(c['code'],asof_date,financial_last_quarter,numeric(c.get('basic_eps_ytd')),o)
+    if case_issue: flags.append(case_issue)
+    if case:
+        if capex is not None and abs(abs(capex)-case['ppe_acquisition_ytd_k'])>1:
+            flags.append('EXTERNAL_PPE_EVIDENCE_MISMATCH')
+            case_issue='EXTERNAL_PPE_EVIDENCE_MISMATCH'
+            case=None
+        else:
+            capex=case['ppe_acquisition_ytd_k']
+    diluted_h1 = case['diluted_eps'] if case else numeric(c.get('diluted_eps_ytd'))
+    prepaid_k = case.get('equipment_prepaid_ytd_k') if case else None
+    fcf_ppe = o-abs(capex) if o is not None and capex is not None else None
+    fcf_with_prepaid = fcf_ppe-prepaid_k if fcf_ppe is not None and prepaid_k is not None else fcf_ppe
     if o is None:flags.append('operating cash flow unavailable')
     elif o<0:flags.append('negative OCF: examine inventory/capex/receivables; NOT automatic failure')
     if capex is None:flags.append('CAPEX/FCF not verifiable')
-    if c.get('diluted_eps_ytd') is None:flags.append('diluted EPS not verifiable')
+    if diluted_h1 is None:flags.append('diluted EPS not verifiable')
+    if case and case['source_level']!='ISSUER_PDF_REVIEWED':
+        flags.append('XBRL_EVIDENCE_NEEDS_ISSUER_ORIGINAL_RECONCILIATION')
+    if c['code'] in CAPITAL_BASE_WATCH_2026 and asof_date>='2026-10-16':
+        flags.append('SHARE_CAPITAL_CHANGE_GE5: verify stock dividend and weighted diluted shares')
     if not c.get('company_PIT_verified',False):flags.append('company-specific PIT not verified')
     quality_reasons = earnings_quality(issuer)
     # This is a provisional *routing* rule, not a claim about non-recurring income.
@@ -168,6 +224,11 @@ def grade(issuer, price, rev, ocf):
     base2027=normalized_eps*(1+growth)
     multiple=SECTOR_PE.get(industry,13)
     if c['code'] in MEMORY_RELATED:multiple=10
+    if case:
+        # Explicit, dated analyst sensitivity, not extrapolated basic EPS.
+        base2027=case['base_eps']
+        multiple=case['base_pe']
+        flags.append('INDEPENDENT_2027_BASE_SCENARIO_UNVERIFIED_NOT_A_PLUS')
     target=base2027*multiple
     upside=(target/px-1)*100
     exceptional_upside = upside > 150
@@ -175,9 +236,19 @@ def grade(issuer, price, rev, ocf):
         flags.append('EXTREME_SCENARIO: >150% requires independent valuation, share basis and cycle audit')
     # High headline upside and weak operating earnings are routed to a separate audit ledger.
     research_lane = '獲利品質待查' if quality_reasons else ('高漲幅估值待查' if exceptional_upside else '品質優先研究')
-    eps_bear=base2027*.8
-    pe_bear=multiple*.8
+    if case:
+        research_lane = '會計師保留結論待查' if c['code']=='8390' else '原始財報與設備現金流待查'
+        flags.append('QUALITY_HOLD: ' + case['quality_issue'])
+    elif case_issue:
+        research_lane = '證據過期／核對不符待查'
+    if c['code'] in CAPITAL_BASE_WATCH_2026 and asof_date>='2026-10-16':
+        research_lane = '股數基礎待查'
+    eps_bear=case['bear_eps'] if case else base2027*.8
+    pe_bear=case['bear_pe'] if case else multiple*.8
+    eps_bull=case['bull_eps'] if case else base2027*1.2
+    pe_bull=case['bull_pe'] if case else multiple*1.15
     downside=(eps_bear*pe_bear/px-1)*100
+    bull_upside=(eps_bull*pe_bull/px-1)*100
     score=clamp((30-(px/normalized_eps-8)*2),0,30)
     score+=clamp((g26-gm25)*100*1.4+6,0,14)
     score+=clamp((om26-om25)*100*1.5+6,0,14)
@@ -193,10 +264,20 @@ def grade(issuer, price, rev, ocf):
         'eps_2026_cycle_normalized':rnd(normalized_eps),'eps_2027_base_scenario':rnd(base2027),
         'research_pe_assumption':multiple,'research_2027_price_scenario':rnd(target),
         'scenario_upside_pct':rnd(upside,1),'stress_return_pct':rnd(downside,1),
+        'bull_return_pct':rnd(bull_upside,1),
+        'bear_eps_scenario':rnd(eps_bear),'bear_pe_assumption':rnd(pe_bear),
+        'bull_eps_scenario':rnd(eps_bull),'bull_pe_assumption':rnd(pe_bull),
         'sep_revenue_yoy_pct':rnd(my,1),'ytd_revenue_yoy_pct':rnd(yy,1),
         'gross_margin_25h1_pct':rnd(gm25*100,1),'gross_margin_26h1_pct':rnd(g26*100,1),
         'oper_margin_25h1_pct':rnd(om25*100,1),'oper_margin_26h1_pct':rnd(om26*100,1),
         'ocf_26h1_ntd_k':o,'capex_26h1_ntd_k':capex,'score':rnd(score,1),
+        'diluted_eps_26h1':diluted_h1,
+        'fcf_after_ppe_26h1_ntd_k':fcf_ppe,
+        'equipment_prepaid_26h1_ntd_k':prepaid_k,
+        'cash_after_ppe_and_prepaid_26h1_ntd_k':fcf_with_prepaid,
+        'case_evidence_status':case['source_level'] if case else ('STALE_OR_MISMATCH' if case_issue else None),
+        'case_source_url':case['source_url'] if case else None,
+        'capital_change_research_pct':CAPITAL_BASE_WATCH_2026.get(c['code']) if asof_date>='2026-10-16' else None,
         'research_lane':research_lane,'earnings_quality_review':quality_reasons,
         'operating_to_net_2025_ratio':rnd(ratio(b.get('operating_profit_ytd_k'), b.get('net_income_ytd_k')), 3),
         'operating_to_net_2026h1_ratio':rnd(ratio(c.get('operating_profit_ytd_k'), c.get('net_income_ytd_k')), 3),
@@ -210,7 +291,7 @@ def run():
     for key,record in fin.items():
         code=key[1];p=prices.get(key)
         if p:
-            row=grade(record,p,revs.get(code),cfo.get(key))
+            row=grade(record,p,revs.get(code),cfo.get(key),pm['date'],fm['last_eligible_quarter'])
             if row:results.append(row)
     # Do not promote high EPS driven by unsupported operating economics.
     # Research is NOT investment certification. CAPEX, PIT and diluted shares
@@ -220,30 +301,42 @@ def run():
     quality.sort(key=lambda r:(r['score'], r['scenario_upside_pct']),reverse=True)
     audit.sort(key=lambda r:(r['scenario_upside_pct'],r['score']),reverse=True)
     qualified=[x for x in quality if x['scenario_upside_pct']>=25]
+    key_cases=[x for x in results if x['code'] in EVIDENCE_2026H1]
+    key_cases.sort(key=lambda x:x['code'])
     output={
-       'model':'V8.7.7.1 quality-gated research scenario, NOT formal A+',
+       'model':'V8.7.7.5 independent cash and EPS evidence-gated research, NOT formal A+',
        'asof_price_date':pm['date'],'revenue_month':rm['period'],
        'financial_last_quarter':fm['last_eligible_quarter'],
        'financial_batches':fm['verified_batches'], 'financial_companies_full_8q':fm['companies_with_full_8Q_income'],
        'research_universe':len(results),'quality_priority_count':len(quality),
        'earnings_or_valuation_audit_count':len(audit),
        'quality_scenarios_ge25':len(qualified),
+       'issuer_case_evidence_review_count':len(key_cases),
+       'case_evidence_review':key_cases,
        'formal_Aplus_count':0,'formal_Aplusplus_count':0,
-       'IMPORTANT':'Research scenarios only, not validated expected returns. Low operating-profit/net-income ratios only trigger an audit (net income may include minority interests or recurrent affiliates). External verification of issuer PIT, CAPEX/FCF, diluted shares and P/E is still required.',
+       'IMPORTANT':'Research only. 8390/1256 dated source-backed cash-investment evidence and independently assumed 2027 EPS/PE scenarios are not audited future returns. 8390 qualified review opinion holds A+; 1256 original issuer cash-flow reconciliation remains missing. All other issuer PIT, CAPEX/FCF, diluted share history and PE checks may remain incomplete.',
        'top30_provisional':quality[:30],
        'top30_quality_priority':quality[:30],
        'top30_audit_required':audit[:30],
     }
     OUT.mkdir(parents=True,exist_ok=True)
     (OUT/'latest_research.json').write_text(json.dumps(output,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
-    header=['# V8.7.7.1 獲利品質優先研究排序（非正式 A+）','',
+    header=['# V8.7.7.5 原模型重大財報品質覆核（非正式 A+）','',
             '低營業利益／淨利比僅代表需要查核獲利來源，不代表認定業外收益皆為一次性。',
-            '未驗證 PIT、資本支出、稀釋股數及產業 PE，本表不是買賣訊號，漲幅只是估值情境。','',
-            '|研究序|代碼|10/16參考價|品質分數|2027 EPS 情境|PE 假設|情境漲幅|壓力情境|',
+            '8390 有會計師保留核閱結論；1256 設備款需公司原始報告核對。舊 +68% 情境不得再當作 Base。','',
+            '未驗證 PIT、其他公司 CAPEX/FCF、加權稀釋股數及產業 PE，本表不是買賣訊號。','',
+            f'|研究序|代碼|{pm["date"]} 收盤|品質分數|2027 EPS 情境|PE 假設|情境漲幅|壓力情境|',
             '|---:|---|---:|---:|---:|---:|---:|---:|']
     for i,row in enumerate(quality[:20],1):
         header.append(f"|{i}|{row['code']} {row['name']}|{row['reference_close']}|{row['score']}|{row['eps_2027_base_scenario']}|{row['research_pe_assumption']}|{row['scenario_upside_pct']}%|{row['stress_return_pct']}%|")
-    header += ['',f'需要獲利品質／異常估值查核：{len(audit)} 檔（JSON 提供前30檔詳細原因）。',
+    header += ['', '## 指定重大財報覆核個案', '',
+               '|代碼|類別|2027 Base EPS|PE|Base 價|Base 漲幅|Bear 漲幅|Bull 漲幅|',
+               '|---|---|---:|---:|---:|---:|---:|---:|']
+    for item in key_cases:
+        header.append(f"|{item['code']} {item['name']}|{item['research_lane']}|{item['eps_2027_base_scenario']}|{item['research_pe_assumption']}|{item['research_2027_price_scenario']}|{item['scenario_upside_pct']}%|{item['stress_return_pct']}%|{item['bull_return_pct']}%|")
+    header += ['',f'需要獲利品質／估值／股本核對：{len(audit)} 檔（JSON 提供前30檔詳細原因）。','本次 8390/1256 審核屬研究用情境，不能升級 A+。','', '' ]
+    header += [f'查核來源：{EVIDENCE_2026H1[code]["source_url"]}' for code in ('8390','1256')]
+    header += ['','本次來源證據有效期：截至 2026/11/15；其後如未更新將退回待查。',
                '無任何股票通過正式 A+／A++ 全部條件。']
     (OUT/'latest_research.md').write_text('\n'.join(header)+'\n',encoding='utf-8')
     print(json.dumps({'result':'QUALITY_RESEARCH_ONLY','companies_scored':len(results),
@@ -265,7 +358,31 @@ def self_test():
     bad['2025-Q4']={'operating_profit_ytd_k':-101066,'net_income_ytd_k':1060413,'basic_eps_ytd':11.15}
     bad['2026-Q2']={'operating_profit_ytd_k':4507,'net_income_ytd_k':-22329,'basic_eps_ytd':-0.26}
     assert len(earnings_quality(bad))>=2
-    print('SELF_TEST_OK: operating earnings quarantine and fail-closed formal A+')
+    sample={q:{'code':'8390','name':'金益鼎'} for q in QUARTERS}
+    sample['2025-Q2'].update({'basic_eps_ytd':2.74,'revenue_ytd_k':2000000,'gross_profit_ytd_k':372000,'operating_profit_ytd_k':260000})
+    sample['2025-Q4'].update({'basic_eps_ytd':6.6,'operating_profit_ytd_k':679467,'net_income_ytd_k':630121})
+    sample['2026-Q2'].update({'basic_eps_ytd':5.16,'revenue_ytd_k':3000000,'gross_profit_ytd_k':813000,'operating_profit_ytd_k':742953,'net_income_ytd_k':493536})
+    p={'close':89.7,'volume_shares':500000}
+    rev={'industry':'綠能環保','monthly_yoy_pct':38.1,'ytd_yoy_pct':43.4}
+    cash={'operating_cashflow_ytd_k':675183,'capex_ytd_k':None}
+    matched=grade(sample,p,rev,cash,'2026-10-16','2026-Q2')
+    assert matched['eps_2027_base_scenario']==10.0 and matched['research_pe_assumption']==11
+    assert matched['research_2027_price_scenario']==110
+    assert matched['fcf_after_ppe_26h1_ntd_k']==468733
+    assert matched['research_lane']=='會計師保留結論待查' and not matched['formal_Aplus']
+    expired=grade(sample,p,rev,cash,'2026-12-01','2026-Q2')
+    assert expired['research_lane']=='證據過期／核對不符待查'
+    sample2={q:dict(v) for q,v in sample.items()}
+    for row in sample2.values(): row.update({'code':'1256','name':'鮮活果汁-KY'})
+    sample2['2025-Q2']['basic_eps_ytd']=4.33
+    sample2['2025-Q4']['basic_eps_ytd']=11.19
+    sample2['2026-Q2']['basic_eps_ytd']=8.98
+    sample2['2026-Q2']['net_income_ytd_k']=321513
+    rr=grade(sample2,{'close':169,'volume_shares':500000},{'industry':'食品工業','monthly_yoy_pct':33.8,'ytd_yoy_pct':38.1},
+        {'operating_cashflow_ytd_k':294969,'capex_ytd_k':None},'2026-10-16','2026-Q2')
+    assert rr['research_2027_price_scenario']==204 and rr['cash_after_ppe_and_prepaid_26h1_ntd_k']==-41137
+    assert rr['research_lane']=='原始財報與設備現金流待查' and not rr['formal_Aplus']
+    print('SELF_TEST_OK: evidence dates, CAPEX, EPS, scenario overrides, fail-closed A+')
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser();parser.add_argument('--self-test',action='store_true');args=parser.parse_args()
