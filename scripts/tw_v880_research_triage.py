@@ -2,6 +2,7 @@
 """V8.8.0 research-only triage. Never certifies A+/A++ or makes trading decisions."""
 import argparse
 import json
+import math
 from pathlib import Path
 
 def triage(payload):
@@ -21,8 +22,10 @@ def triage(payload):
         seen.add(code)
         upside = row.get("scenario_upside_pct")
         score = row.get("score")
-        if not isinstance(upside, (int,float)) or not isinstance(score,(int,float)):
-            raise ValueError("missing numeric score/upside")
+        if (isinstance(upside, bool) or isinstance(score, bool)
+                or not isinstance(upside, (int,float)) or not isinstance(score,(int,float))
+                or not math.isfinite(upside) or not math.isfinite(score)):
+            raise ValueError("missing, non-finite, or invalid numeric score/upside")
         # Prioritize due diligence, NOT certification; do not treat negative FCF as automatic failure.
         lane = ("EARLY_TURNAROUND_REVIEW" if upside >= 25 else "WATCH")
         out.append({"code":code,"name":row.get("name"),"research_lane":lane,
@@ -43,11 +46,19 @@ def self_test():
     assert r["candidates"][0]["research_lane"]=="EARLY_TURNAROUND_REVIEW"
     assert r["candidates"][0]["formal_grade"]=="NOT_CERTIFIED"
     assert r["formal_Aplus_count"]==0
+    assert triage({"formal_Aplus_count":0,"formal_Aplusplus_count":0,
+                   "top30_provisional":[{"code":"6206","score":60,"scenario_upside_pct":24.9}]})["candidates"][0]["research_lane"]=="WATCH"
     for bad in ({"formal_Aplus_count":1,"formal_Aplusplus_count":0,"top30_provisional":[]},
                 {"formal_Aplus_count":0,"formal_Aplusplus_count":0,"top30_provisional":[{"code":"1","score":1,"scenario_upside_pct":25},{"code":"1","score":1,"scenario_upside_pct":26}]}):
         try:triage(bad)
         except ValueError:pass
         else:raise AssertionError("fail-closed check missed")
+    for invalid in (float("nan"), float("inf"), True):
+        bad={"formal_Aplus_count":0,"formal_Aplusplus_count":0,
+             "top30_provisional":[{"code":"9802","score":70,"scenario_upside_pct":invalid}]}
+        try:triage(bad)
+        except ValueError:pass
+        else:raise AssertionError("invalid numeric scenario accepted")
     print("SELF_TEST_OK: V8.8.0 shadow-only triage")
 
 if __name__=="__main__":
