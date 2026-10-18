@@ -319,6 +319,12 @@ def run():
        'top30_quality_priority':quality[:30],
        'top30_audit_required':audit[:30],
     }
+    # Fail closed: do not publish legacy mixed-share 5511 valuations or any
+    # formal certification from this preliminary ranking generator.
+    from tw_v879_shadow_guard import validate as validate_v879_legacy
+    guard_errors = validate_v879_legacy(output)
+    if guard_errors:
+        raise ValueError('V8.7.9 publication blocked: ' + '; '.join(guard_errors))
     OUT.mkdir(parents=True,exist_ok=True)
     (OUT/'latest_research.json').write_text(json.dumps(output,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     header=['# V8.7.7.5 原模型重大財報品質覆核（非正式 A+）','',
