@@ -1,0 +1,24 @@
+name: V8.7.9 Shadow Guard
+on:
+  pull_request:
+    paths:
+      - 'scripts/tw_v877_quality_rank.py'
+      - 'scripts/tw_v879_shadow_guard.py'
+      - '.github/workflows/v879-shadow-guard.yml'
+  workflow_dispatch:
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Test guard against stale 5511 and false A+ claims
+        run: python scripts/tw_v879_shadow_guard.py --self-test
+      - name: Existing ranking unit tests
+        run: python scripts/tw_v877_quality_rank.py --self-test
+      - name: Syntax validation
+        run: python -m py_compile scripts/tw_v877_quality_rank.py scripts/tw_v879_shadow_guard.py
