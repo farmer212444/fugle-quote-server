@@ -101,11 +101,21 @@ def run(data_dir,asof,target_date,out_dir=None):
       primary_top10=[dict(code=r['code'],name=r['name'],target=round(r['base']['target_price'],2),upside=round(r['base']['price_upside_pct'],1)) for r in primary[:10]],
       holdout=cal.get('deployed_sector_or_global_holdout_metrics')),ensure_ascii=False))
     return result
+def resolve_asof(raw,now):
+    """Preserve real subsecond precision; explicit old cutoffs stay strict."""
+    if now.tzinfo is None:raise ValueError('TIMEZONE_REQUIRED')
+    if raw is None:cut=now
+    elif len(raw)==10:
+        day=dt.date.fromisoformat(raw)
+        if day>now.date():raise ValueError('FUTURE_ESTIMATE_VINTAGE')
+        cut=min(dt.datetime.combine(day,dt.time.max,tzinfo=now.tzinfo),now)
+    else:cut=dt.datetime.fromisoformat(raw.replace('Z','+00:00'))
+    if cut.tzinfo is None:raise ValueError('TIMEZONE_REQUIRED')
+    if cut>now:raise ValueError('FUTURE_ESTIMATE_VINTAGE')
+    return cut.isoformat(timespec='microseconds')
 def main():
     ap=argparse.ArgumentParser();ap.add_argument('--data-dir',default='tw-market-data');ap.add_argument('--asof');ap.add_argument('--target-date');ap.add_argument('--out-dir');ap.add_argument('--self-test',action='store_true');args=ap.parse_args()
     if args.self_test:return subprocess.call([sys.executable,'-m','unittest','discover','-s',str(ROOT/'tests'),'-v'],cwd=ROOT)
-    now=dt.datetime.now(ZoneInfo('Asia/Taipei'));asof=args.asof or now.isoformat(timespec='seconds')
-    if len(asof)==10:asof=min(dt.datetime.fromisoformat(asof+'T23:59:59+08:00'),now).isoformat(timespec='seconds')
-    if dt.datetime.fromisoformat(asof)>now:raise ValueError('FUTURE_ESTIMATE_VINTAGE')
+    now=dt.datetime.now(ZoneInfo('Asia/Taipei'));asof=resolve_asof(args.asof,now)
     target=args.target_date or f'{int(asof[:4])+1}-12-31';run(args.data_dir,asof,target,args.out_dir);return 0
 if __name__=='__main__':raise SystemExit(main())
