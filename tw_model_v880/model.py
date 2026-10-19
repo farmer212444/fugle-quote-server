@@ -16,13 +16,15 @@ def research_gates(primary,code,period,cash,coverage):
     gates['tradability']=gate('PENDING','SINGLE_DAY_QUOTE_IS_NOT_CONTINUOUS_TRADABILITY_CERTIFICATION')
     return gates
 
-def estimate(data,key,calibration,asof,target_date):
+def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
     market,code=key;p=data.prices.get(key);rs=data.history[key];latest=rs[data.period]
     rev=data.revenue.get(code);e=data.evidence;master=e.get('master',{}).get(code)
     if not p or not rev or not master:return None
     calibration=calibration.get('sector_parameters',{}).get(rev.get('industry'),calibration)
     close=number(p['close']);volume=number(p.get('volume_shares'))
-    if close is None or volume is None or close<8 or close*volume<12000000:return None
+    if close is None or volume is None or close<=0:return None
+    thin=close<8 or close*volume<12000000
+    if thin and not shadow_thin:return None
     y,q=quarter_key(data.period);fy_period=f'{y if q==4 else y-1}-Q4';prior_period=f'{y-1}-Q{q}'
     if any(k not in rs for k in data.required_periods):return dict(code=code,name=latest.get('name'),status='MISSING_NORMALIZED_EIGHT_QUARTERS',rankable=False)
     if rev.get('industry')=='金融保險業':return dict(code=code,name=latest.get('name'),status='FINANCIAL_SECTOR_REQUIRES_ROE_PB_MODEL',rankable=False)
@@ -39,6 +41,7 @@ def estimate(data,key,calibration,asof,target_date):
     r=current['revenue_k'];rfy=fyvals['revenue_k'];prior_r=number(pr['revenue_ytd_k'])
     if min(r,rfy,prior_r)<=0:return dict(code=code,name=latest.get('name'),status='NONPOSITIVE_REVENUE_SPECIAL_MODEL_REQUIRED',rankable=False)
     warnings=[]
+    if thin:warnings.append('LOW_LIQUIDITY_OR_PRICE_SHADOW_ONLY_NO_PRIMARY_RANKING')
     if primary:
         for a,b in [('revenue_k','revenue_ytd_k'),('gross_profit_k','gross_profit_ytd_k'),('operating_profit_k','operating_profit_ytd_k')]:
             if abs(current[a]-number(latest[b]))>1:raise ValueError('PRIMARY_MIRROR_'+a+'_MISMATCH')
@@ -116,6 +119,10 @@ def estimate(data,key,calibration,asof,target_date):
     gates=research_gates(primary,code,data.period,flow,coverage.get('eight_quarter_key_income_cash_values_reconciled'))
     for name,value in e.get('certificates',{}).get(code,{}).items():
         if name in GATES:gates[name]=value
+    if thin:
+        # Even a previously signed issuer tradability receipt cannot validate
+        # today's separately restricted thin-liquidity discovery scenario.
+        gates['tradability']=gate('PENDING','LOW_SINGLE_DAY_TRADING_VALUE_OR_PRICE_REQUIRES_MULTI_SESSION_REVIEW')
     # A provisional normalized Base cannot inherit a generic forecast PASS:
     # the issuer-specific recovery mechanism needs a documented signoff.
     if (recovery['applied'] and not e.get('issuer_operating_bridges',{}).get(code)
@@ -151,7 +158,7 @@ def estimate(data,key,calibration,asof,target_date):
     point=base['target_price'] is not None and not share['missing_legal_conversion_inputs'] and not specialist
     if not point:warnings.append('POINT_VALUATION_NOT_COMPARABLE_WITH_UNRESOLVED_INPUTS')
     certification=certify(code,base['price_upside_pct'] if point else None,stress if point else None,gates,asof,data.period)
-    rankable=point and primary is not None
+    rankable=point and primary is not None and not thin
     return dict(code=code,name=latest.get('name'),market=market,industry=industry,financial_period=data.period,
       reference_close=close,price_date=data.price_date,revenue_month=data.revenue_month,estimate_vintage=asof,target_date=target_date,
       source_tier='ORIGINAL_CURRENT_ISSUER_NUMERICS' if primary else 'OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL',rankable=rankable,point_valuation_available=point,
