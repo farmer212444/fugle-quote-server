@@ -19,7 +19,7 @@ class OfficialChipTests(unittest.TestCase):
 
     def tpex_fixture(self):
         return [dict(Date="1151019", SecuritiesCompanyCode=str(6000+i),
-                     **{TPEX_FIELDS["foreign"]: "1", TPEX_FIELDS["trust"]: "-2",
+                     **{TPEX_FIELDS["foreign"]: "1", TPEX_FIELDS["foreign_dealer"]: "0", TPEX_FIELDS["trust"]: "-2",
                         TPEX_FIELDS["dealer"]: "0", TPEX_FIELDS["total"]: "-1"})
                 for i in range(300)]
 
@@ -83,6 +83,14 @@ class OfficialChipTests(unittest.TestCase):
         columns = list(TDCC_FIELDS.values())
         csv_text = ",".join(columns) + "\n" + ",".join(["20261016", "3000", "12", "3", "100", "1.0"])
         self.assertEqual(len(decode_tdcc(csv_text.encode())), 1)
+
+    def test_tdcc_official_json_bom_date_field(self):
+        payload = self.tdcc_fixture()
+        for record in payload:
+            record["\ufeff資料日期"] = record.pop("資料日期")
+        day, result = parse_tdcc(payload)
+        self.assertEqual(day, "2026-10-16")
+        self.assertEqual(len(result), 300)
 
     def test_tdcc_missing_grades_cannot_be_synthetic(self):
         f = [r for r in self.tdcc_fixture() if r[TDCC_FIELDS["grade"]] != "17"]
