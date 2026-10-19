@@ -199,7 +199,9 @@ def probe(research,dispatch,data,dated,receipts,top=50,focus_codes=()):
         code=row["code"];market=row["market"];key=(market,code)
         finance=financial_probe(data,key);capital=capital_probe(data,code)
         liq=liquidity_probe(dated,key)
-        issuer_history=issuer_backfill_probe(data.root,research["asof_price_date"],market,code)
+        # Synthetic gate-dispatch fixtures may intentionally use a minimal data stub.
+        issuer_history=(issuer_backfill_probe(data.root,research["asof_price_date"],market,code)
+                        if hasattr(data,"root") else None)
         st=dict(code=code,name=row.get("name"),market=market,research_upside_pct=row.get("research_upside_pct"),
                 source_status=row.get("source_status"),financial=finance,capital=capital,market_history=liq,issuer_historical_market_data=issuer_history,
                 pending_gates=list(row.get("pending_gates",[])),
