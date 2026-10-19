@@ -134,6 +134,104 @@ def analyze(row, prior, now, cash, oldyear, capital, quarter_num):
     }
     return out
 
+
+def check_post_financial_quarter_revenue(root, research, now_income, prior_income, top):
+    """Watch next-quarter published YTD monthly sales without treating it as Q3 profits.
+
+    Checks captured source receipt and each issuer's shard bytes; fails closed on
+    mixed periods/duplicate codes, missing same-basis H1 income or future capture.
+    Does not mutate model EPS or A+ decisions.
+    """
+    import datetime as datetime_module
+    from zoneinfo import ZoneInfo
+    result = {"status":"NOT_YET_CHECKED","issuer_checks":[],
+              "issuer_filing_PIT_verified":False,"recognized_quarterly_profit_verified":False}
+    path = root / "latest_manifest.json"
+    if not path.exists():
+        result["status"]="NO_MONTHLY_MANIFEST"
+        return result
+    manifest=load(path)
+    fin=str(research.get("financial_last_quarter",""))
+    import re
+    match=re.fullmatch(r"(20\d{2})-Q([1-4])",fin)
+    if match is None:
+        raise ValueError("INVALID_FINANCIAL_PERIOD_FOR_REVENUE_CROSSCHECK")
+    year,quarter=map(int,match.groups())
+    next_month=quarter*3+3
+    if next_month>12:
+        result["status"]="NEXT_QUARTER_AFTER_YEAR_END_NOT_SUPPORTED_YET"
+        return result
+    expected=f"{year:04d}-{next_month:02d}"
+    if manifest.get("period")!=expected:
+        result["status"]="NEXT_QUARTER_MONTH_NOT_PUBLISHED"
+        result["expected"]=expected
+        result["published_month"]=manifest.get("period")
+        return result
+    stamp=datetime_module.datetime.fromisoformat(str(manifest.get("capture_utc","")).replace("Z","+00:00"))
+    estimate=datetime_module.datetime.fromisoformat(str(research.get("estimate_vintage","")).replace("Z","+00:00"))
+    if stamp.tzinfo is None or estimate.tzinfo is None or stamp>estimate:
+        raise ValueError("MONTHLY_REVENUE_RECEIPT_FUTURE_OR_UNZONED")
+    wanted=set(str(item["code"]) for item in top)
+    shards=manifest.get("shards",[])
+    found={}
+    for item in shards:
+        shard=root.parent / str(item.get("path",""))
+        if not shard.is_file() or root.parent not in shard.parents:
+            raise ValueError("MISSING_OR_UNSAFE_MONTHLY_REVENUE_SHARD")
+        raw=shard.read_bytes()
+        if hashlib.sha256(raw).hexdigest()!=item.get("sha256"):
+            raise ValueError("MONTHLY_REVENUE_SHARD_SHA_MISMATCH")
+        rows=json.loads(raw)
+        if len(rows)!=item.get("records"):
+            raise ValueError("MONTHLY_REVENUE_SHARD_SIZE_MISMATCH")
+        for data in rows:
+            code=str(data.get("code",""))
+            if code not in wanted:
+                continue
+            if (code in found or data.get("report_month")!=f"{year-1911:03d}{next_month:02d}"
+                    or data.get("market") not in ("TWSE","TPEX")):
+                raise ValueError("MONTHLY_REVENUE_ISSUER_DUPLICATE_OR_PERIOD_MISMATCH")
+            found[code]=data
+    if wanted-set(found):
+        result["status"]="ISSUER_MONTHLY_REVENUE_MISSING"
+        result["missing_codes"]=sorted(wanted-set(found))
+        return result
+    for row in top:
+        code=str(row["code"]);market=row["market"]
+        new=now_income[(market,code)]
+        prior=prior_income[(market,code)]
+        data=found[code]
+        if data["market"]!=market:
+            raise ValueError("MONTHLY_REVENUE_MARKET_MISMATCH")
+        newer=int(str(data["ytd_revenue_k"]).replace(",",""))
+        older=int(str(data["last_year_ytd_revenue_k"]).replace(",",""))
+        current_base=numeric(new["revenue_ytd_k"],"current_baseline")
+        prior_base=numeric(prior["revenue_ytd_k"],"prior_baseline")
+        quarter_now=newer-current_base
+        quarter_then=older-prior_base
+        if quarter_now<=0 or quarter_then<=0:
+            raise ValueError("NEXT_QUARTER_YTD_SUBTRACTION_INVALID")
+        half_yoy=pct(current_base-prior_base,prior_base)
+        q_yoy=pct(quarter_now-quarter_then,quarter_then)
+        slowdown=round(q_yoy-half_yoy,2)
+        result["issuer_checks"].append({
+            "code":code,"name":row.get("name"),"market":market,
+            "latest_monthly_report":expected,"three_month_revenue_k":round(quarter_now),
+            "prior_three_month_revenue_k":round(quarter_then),
+            "current_financial_H1_yoy_pct":half_yoy,
+            "next_quarter_revenue_yoy_pct":q_yoy,
+            "yoy_deceleration_pp":slowdown,
+            "growth_decelerated_over_20pp":slowdown<=-20.0,
+            "monthly_revenue_individual_PIT_verified":False,
+            "gross_margin_for_next_quarter_verified":False
+        })
+    result["status"]="NEXT_QUARTER_REVENUE_RECONCILED_BUT_MARGIN_UNVERIFIED"
+    result["official_monthly_capture_utc"]=manifest["capture_utc"]
+    result["monthly_archive_period"]=expected
+    result["monthly_manifest_original_receipts"]=manifest.get("original_receipts",[])
+    return result
+
+
 def run(root):
     rankings = root / "rankings"
     research = load(rankings / "latest_research.json")
@@ -178,11 +276,23 @@ def run(root):
         entry["rank"]=position
         entry["source_tier"]=row.get("source_tier")
         out.append(entry)
+    quarterly_lookup = {
+        "now":{(m,c):r for (period,m,k),rows in mirrors.items() if period==quarter and k=="income" for c,r in rows.items()},
+        "prior":{(m,c):r for (period,m,k),rows in mirrors.items() if period==previous and k=="income" for c,r in rows.items()},
+    }
+    next_quarter_revenue=check_post_financial_quarter_revenue(root,research,quarterly_lookup["now"],quarterly_lookup["prior"],top)
+    checks={r["code"]:r for r in next_quarter_revenue.get("issuer_checks",[])}
+    for record in out:
+        if record["code"] in checks:
+            record["next_quarter_revenue"]=checks[record["code"]]
+            if checks[record["code"]]["growth_decelerated_over_20pp"]:
+                record["flags"].append("NEXT_QUARTER_REVENUE_YOY_DECELERATED_OVER_20PP")
     result={
         "model":research.get("model"),"estimate_vintage":research.get("estimate_vintage"),
         "asof_price_date":research.get("asof_price_date"),
         "financial_period":quarter,"prior_comparable":previous,
         "financial_sources":receipts,
+        "next_quarter_monthly_revenue_check":next_quarter_revenue,
         "ranked_diagnostics":out,
         "all_ten_financial_mirrors_present":all(x["status"]=="EVIDENCE_TRIAGE_ONLY_NOT_CERTIFIED" for x in out),
         "formal_Aplus_added":0,"valuation_or_rankings_modified":False,
@@ -214,6 +324,14 @@ def run(root):
             "|---|---:|---:|---:|---:|"]
     for a in out:
         lines.append(f"|{a['code']} {a.get('name') or ''}|{val(a.get('model_base_upside_pct'),'%')}|{val(a.get('double_10pct_stress_upside_pct'),'%')}|{val(a.get('double_20pct_stress_upside_pct'),'%')}|{val(a.get('2027_eps_over_ytd_runrate'))}倍|")
+    lines+=["","## 2026Q3 月營收對照（僅營收，非已驗證EPS）","",
+            "這是本輪研究估值之後已公開的最新月份資料；公司逐筆公告PIT與下季毛利率仍未驗證。",
+            "狀態："+next_quarter_revenue["status"],""]
+    if next_quarter_revenue.get("issuer_checks"):
+        lines+=["|公司|上半年營收YoY|第三季營收YoY|年增加速度(百分點)|需覆核|",
+                "|---|---:|---:|---:|---|"]
+        for record in next_quarter_revenue["issuer_checks"]:
+            lines.append(f"|{record['code']} {record.get('name') or ''}|{record['current_financial_H1_yoy_pct']:+.2f}%|{record['next_quarter_revenue_yoy_pct']:+.2f}%|{record['yoy_deceleration_pp']:+.2f}|{'**年增大幅減速**' if record['growth_decelerated_over_20pp'] else '季報毛利與訂單待核'}|")
     lines+=["","## 待補證據（依原始順位）",""]
     for a in out:
         lines.append(f"- {a['code']} {a.get('name') or ''}："+("、".join(a["flags"]) if a["flags"] else "未驗證完整原件"))
