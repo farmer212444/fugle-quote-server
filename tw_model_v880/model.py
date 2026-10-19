@@ -116,6 +116,12 @@ def estimate(data,key,calibration,asof,target_date):
     gates=research_gates(primary,code,data.period,flow,coverage.get('eight_quarter_key_income_cash_values_reconciled'))
     for name,value in e.get('certificates',{}).get(code,{}).items():
         if name in GATES:gates[name]=value
+    # A provisional normalized Base cannot inherit a generic forecast PASS:
+    # the issuer-specific recovery mechanism needs a documented signoff.
+    if (recovery['applied'] and not e.get('issuer_operating_bridges',{}).get(code)
+        and gates['forecast_bridge'].get('status')=='PASS'
+        and gates['forecast_bridge'].get('margin_normalization_review_complete') is not True):
+        gates['forecast_bridge']=gate('PENDING','CONDITIONAL_MARGIN_RECOVERY_ISSUER_SIGNOFF_REQUIRED')
     forecast=gates['forecast_bridge']
     if forecast.get('status')=='PASS' and any(forecast.get(k)!=v for k,v in [('model_code_sha256',code_fingerprint()),('target_date',target_date),('reference_price_date',data.price_date)]):
         gates['forecast_bridge']=gate('PENDING','FORECAST_CERTIFICATE_DOES_NOT_MATCH_CURRENT_RUNTIME_TARGET_AND_PRICE')
