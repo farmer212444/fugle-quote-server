@@ -19,17 +19,19 @@ if str(ROOT) not in sys.path:
 from scripts.tw_v880_run import public_row
 from tw_model_v880.data import MarketData
 from tw_model_v880.calibration import fit_accounting
-from tw_model_v880.model import estimate
+from tw_model_v880.model import estimate, RESEARCH_MIN_TURNOVER_NTD
 from tw_model_v880.math import number
 
 def discover_shadow(data, report, calibrated):
     modeled_codes = {str(r["code"]) for r in report["all_model_row_summary"]}
+    filtered_codes = {str(r["code"]) for r in report["all_model_row_summary"]
+                      if r.get("status") in ("PRICE_FILTER_BELOW_8_TWD", "TURNOVER_FILTER_BELOW_1M_TWD")}
     examined, eligible, shadow, failures = 0, 0, [], []
     asof = report["estimate_vintage"]
     target = report["target_date"]
     master = data.evidence.get("master", {})
     for (market, code), history in sorted(data.history.items()):
-        if code in modeled_codes:
+        if code in modeled_codes and code not in filtered_codes:
             continue
         examined += 1
         p = data.prices.get((market, code))
@@ -40,7 +42,7 @@ def discover_shadow(data, report, calibrated):
         volume = number(p.get("volume_shares"))
         if close is None or volume is None or close <= 0:
             continue
-        if not (close < 8 or close * volume < 12000000):
+        if not (close < 8 or close * volume < RESEARCH_MIN_TURNOVER_NTD):
             failures.append({"market":market,"code":code,"reason":"UNEXPECTED_NON_THIN_MODEL_EXCLUSION"})
             continue
         eligible += 1

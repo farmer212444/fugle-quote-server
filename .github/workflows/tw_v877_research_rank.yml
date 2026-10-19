@@ -1,4 +1,4 @@
-name: TW V8.8.0 research evidence model
+name: TW V8.8.2 research evidence model
 on:
   workflow_dispatch:
   pull_request:
@@ -15,9 +15,11 @@ on:
       - 'tests/**'
       - 'scripts/build_v880_evidence.py'
       - 'scripts/refresh_v880_public.py'
+      - 'scripts/refresh_v881_capital.py'
       - 'scripts/tw_v877_quality_rank.py'
       - 'tw-market-data/evidence/v880/certificates/**'
       - 'tw-market-data/evidence/v880/issuer_bridges/**'
+      - 'tw-market-data/evidence/v880/capital_terms/**'
   push:
     paths:
       - '.github/workflows/tw_v877_research_rank.yml'
@@ -32,9 +34,11 @@ on:
       - 'tests/**'
       - 'scripts/build_v880_evidence.py'
       - 'scripts/refresh_v880_public.py'
+      - 'scripts/refresh_v881_capital.py'
       - 'scripts/tw_v877_quality_rank.py'
       - 'tw-market-data/evidence/v880/certificates/**'
       - 'tw-market-data/evidence/v880/issuer_bridges/**'
+      - 'tw-market-data/evidence/v880/capital_terms/**'
   schedule:
     - cron: '25 12 * * *'
 permissions:
@@ -91,7 +95,7 @@ jobs:
             python scripts/v880_audit_exports.py --kind shares
             git add tw-market-data/evidence/v880 tw-market-data/rankings
             if git diff --cached --quiet; then exit 0; fi
-            git commit -m 'data: refresh V8.8.1 research and evidence status'
+            git commit -m 'data: refresh V8.8.2 research and evidence status'
             if git push origin HEAD:main; then exit 0; fi
             echo "Remote moved during generated data publication; retrying from latest data"
           done

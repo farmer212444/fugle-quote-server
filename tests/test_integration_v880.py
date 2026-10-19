@@ -48,6 +48,31 @@ class IntegrationTests(unittest.TestCase):
               dict(code='0001',early_recovery_watch=False,formal_Aplus=True)]
         out=ordered_recovery_watch(rows)
         self.assertEqual([r['code'] for r in out],['9802']);self.assertEqual(out[0]['base']['target_price'],55.06);self.assertFalse(out[0]['formal_Aplus'])
+    def test_one_million_research_gate_and_separate_tradability_gate(self):
+        d=FakeData();price=d.prices[('TEST','SYNTHETIC_A')]
+        price['volume_shares']=100000 # NT$10 x 100k = NT$1m exactly
+        at_floor=estimate(d,('TEST','SYNTHETIC_A'),CAL,ASOF,'2027-12-31')
+        self.assertTrue(at_floor['rankable'])
+        self.assertEqual(at_floor['single_day_turnover_ntd'],1000000)
+        self.assertEqual(at_floor['liquidity_research_band'],'RESEARCH_1M_TO_12M_PENDING_EXECUTION')
+        self.assertEqual(at_floor['gates']['tradability']['status'],'PENDING')
+        self.assertFalse(at_floor['formal_Aplus'])
+        price['volume_shares']=99999
+        under_floor=estimate(d,('TEST','SYNTHETIC_A'),CAL,ASOF,'2027-12-31')
+        self.assertFalse(under_floor['rankable'])
+        self.assertEqual(under_floor['status'],'TURNOVER_FILTER_BELOW_1M_TWD')
+        price['volume_shares']=1200000
+        above_review=estimate(d,('TEST','SYNTHETIC_A'),CAL,ASOF,'2027-12-31')
+        self.assertTrue(above_review['rankable'])
+        self.assertEqual(above_review['liquidity_research_band'],'RESEARCH_AT_LEAST_12M_PENDING_EVIDENCE')
+    def test_low_turnover_cannot_reuse_generic_tradability_pass(self):
+        d=FakeData();d.prices[('TEST','SYNTHETIC_A')]['volume_shares']=150000
+        d.evidence['certificates']['SYNTHETIC_A']={'tradability':dict(status='PASS')}
+        a=estimate(d,('TEST','SYNTHETIC_A'),CAL,ASOF,'2027-12-31')
+        self.assertTrue(a['rankable'])
+        self.assertEqual(a['gates']['tradability']['status'],'PENDING')
+        self.assertIn('EXIT_CAPACITY_REVIEW',a['gates']['tradability']['reason'])
+        self.assertFalse(a['formal_Aplus'])
     def test_reported_eps_edit_does_not_change_operating_forecast(self):
         d=FakeData();a=estimate(d,('TEST','SYNTHETIC_A'),CAL,ASOF,'2027-12-31')
         for row in d.history[('TEST','SYNTHETIC_A')].values():row['basic_eps_ytd']*=20
@@ -75,6 +100,7 @@ class IntegrationTests(unittest.TestCase):
         d=FakeData();d.evidence['primary']['SYNTHETIC_A']['values']['gross_profit_k']=999
         with tempfile.TemporaryDirectory() as tmp:
             with patch('scripts.tw_v880_run.MarketData',return_value=d),patch('scripts.tw_v880_run.fit_accounting',return_value=CAL),contextlib.redirect_stdout(io.StringIO()):r=run(tmp,ASOF,'2027-12-31',tmp)
-            self.assertEqual(len(r['issuer_failures']),1);self.assertEqual(r['all_model_rows'][0]['code'],'SYNTHETIC_B');self.assertEqual(r['formal_Aplus_count'],0)
+            self.assertEqual(len(r['issuer_failures']),1);by_code={x['code']:x for x in r['all_model_rows']}
+            self.assertEqual(by_code['SYNTHETIC_A']['status'],'ISSUER_INPUT_OR_MODEL_ERROR');self.assertTrue(by_code['SYNTHETIC_B']['rankable']);self.assertEqual(r['formal_Aplus_count'],0)
             self.assertEqual(json.loads(gzip.decompress((pathlib.Path(tmp)/'v880_full_results.json.gz').read_bytes()))['issuer_failures'],r['issuer_failures'])
 if __name__=='__main__':unittest.main()

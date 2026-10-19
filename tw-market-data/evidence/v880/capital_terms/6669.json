@@ -1,0 +1,57 @@
+{
+  "schema": "V881_DATED_LEGAL_CAPITAL_INPUTS_V1",
+  "code": "6669",
+  "checked_at": "2026-10-19T01:11:56.016160+00:00",
+  "sources": [
+    {
+      "id": "wiwynn_q2",
+      "url": "https://www.wiwynn.com/hubfs/Investors/Financial_Report/2026Q2_WYHQ_FS_CH.pdf",
+      "path": "evidence/v880/capital_terms/sources/wiwynn_q2.json",
+      "sha256": "35a670d14e33749864864bfafb14cc3f0be4be2eab96e4ff039c5cb2c5654c8f",
+      "raw_source_sha256": "bd4c73babbe32cd0dec92560a1d04c6c3291210c28926f4fe0443f5222602775",
+      "available_at": "2026-10-19T00:54:45.354864+00:00",
+      "fetched_at": "2026-10-19T00:54:45.354864+00:00",
+      "source_record_type": "NUMERIC_EXTRACTION_AND_CAPTURE_RECEIPT_NOT_ORIGINAL_DOCUMENT_BYTES",
+      "source_type": "ORIGINAL_ISSUER_DOCUMENT"
+    },
+    {
+      "id": "wiwynn_reset",
+      "url": "https://www.moneydj.com/KMDJ/news/newsviewer.aspx?a=19c0263d-032f-4b0d-8321-c348580795ef",
+      "path": "evidence/v880/capital_terms/sources/wiwynn_reset.json",
+      "sha256": "60366c8a0a332828c8a88305d81f61c9ca6a9f09799cdf427a9682039ad1ef57",
+      "raw_source_sha256": "3426b6ac5c46ad923be0b8c7006c1eb7b57bc4629740a44e508772f8c86e558d",
+      "available_at": "2026-10-19T00:59:19.430587+00:00",
+      "fetched_at": "2026-10-19T00:59:19.430587+00:00",
+      "source_record_type": "NUMERIC_EXTRACTION_AND_CAPTURE_RECEIPT_NOT_ORIGINAL_DOCUMENT_BYTES",
+      "source_type": "ISSUER_ANNOUNCEMENT_REPUBLICATION"
+    }
+  ],
+  "bonds": [
+    {
+      "code": "XS2853493117",
+      "currency": "USD",
+      "fixed_fx_twd": 32.576,
+      "conversion_price": 1017.75,
+      "effective_at": "2026-09-08T00:00:00+08:00",
+      "price_basis": "DATED_ANNOUNCEMENT_RESET_ORIGINAL_COMPLETENESS_PENDING",
+      "source_ids": [
+        "wiwynn_q2",
+        "wiwynn_reset"
+      ]
+    },
+    {
+      "code": "XS3236970433",
+      "currency": "USD",
+      "fixed_fx_twd": 31.951,
+      "conversion_price": 1396.46,
+      "effective_at": "2026-09-08T00:00:00+08:00",
+      "price_basis": "DATED_ANNOUNCEMENT_RESET_ORIGINAL_COMPLETENESS_PENDING",
+      "source_ids": [
+        "wiwynn_q2",
+        "wiwynn_reset"
+      ]
+    }
+  ],
+  "formal_share_certification": false,
+  "interpretation": "Known legal fixed FX and dated prices; official outstanding faces and current common shares load separately. Later reset/option completeness remains pending. Sources contain numeric extractions with original capture hashes, not original byte copies."
+}

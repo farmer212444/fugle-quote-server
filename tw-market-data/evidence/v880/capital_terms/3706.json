@@ -1,0 +1,33 @@
+{
+  "schema": "V881_DATED_LEGAL_CAPITAL_INPUTS_V1",
+  "code": "3706",
+  "checked_at": "2026-10-19T01:11:56.016160+00:00",
+  "sources": [
+    {
+      "id": "mitac_ecb_issue",
+      "url": "https://www.moneydj.com/kmdj/news/newsviewer.aspx?a=9db092af-4a69-4a68-9afa-11050c938ee7",
+      "path": "evidence/v880/capital_terms/sources/mitac_ecb_issue.json",
+      "sha256": "24081f8f2242392aa610b3b5a017da7d7d137e46df13802979bac49dc11188e0",
+      "raw_source_sha256": "3a4230b1c45778ee5f87c02ecd6cd5ffcaf5052ee8776452ae4146b41860cc1a",
+      "available_at": "2026-10-19T01:05:29.666303+00:00",
+      "fetched_at": "2026-10-19T01:05:29.666303+00:00",
+      "source_record_type": "NUMERIC_EXTRACTION_AND_CAPTURE_RECEIPT_NOT_ORIGINAL_DOCUMENT_BYTES",
+      "source_type": "ISSUER_ANNOUNCEMENT_REPUBLICATION"
+    }
+  ],
+  "bonds": [
+    {
+      "code": "XS3250338608",
+      "currency": "USD",
+      "fixed_fx_twd": 31.437,
+      "conversion_price": 97.01,
+      "effective_at": "2026-06-01T00:00:00+08:00",
+      "price_basis": "DATED_ISSUE_OR_OFFERING_PRICE_LATER_RESETS_NOT_CERTIFIED",
+      "source_ids": [
+        "mitac_ecb_issue"
+      ]
+    }
+  ],
+  "formal_share_certification": false,
+  "interpretation": "Known legal fixed FX and dated prices; official outstanding faces and current common shares load separately. Later reset/option completeness remains pending. Sources contain numeric extractions with original capture hashes, not original byte copies."
+}

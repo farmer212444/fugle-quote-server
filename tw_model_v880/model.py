@@ -6,6 +6,10 @@ from .specialists import issuer_case
 from .provenance import code_fingerprint
 from .margin_recovery import assess_margin_recovery
 
+# A low-turnover issuer can be researched without passing the execution gate.
+RESEARCH_MIN_TURNOVER_NTD = 1_000_000
+TRADABILITY_REVIEW_TURNOVER_NTD = 12_000_000
+
 def finite_values(d,keys):return all(d.get(k) is not None and math.isfinite(d[k]) for k in keys)
 def research_gates(primary,code,period,cash,coverage):
     gates={k:gate('PENDING','SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED') for k in GATES}
@@ -19,16 +23,23 @@ def research_gates(primary,code,period,cash,coverage):
 def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
     market,code=key;p=data.prices.get(key);rs=data.history[key];latest=rs[data.period]
     rev=data.revenue.get(code);e=data.evidence;master=e.get('master',{}).get(code)
-    if not p or not rev or not master:return None
+    def unavailable(reason):return dict(code=code,name=latest.get('name'),market=market,status=reason,rankable=False,exclusion_reasons=[reason])
+    if not p:return unavailable('REFERENCE_PRICE_MISSING')
+    if not rev:return unavailable('MONTHLY_REVENUE_MISSING')
+    if not master:return unavailable('ISSUED_SHARE_MASTER_MISSING')
     calibration=calibration.get('sector_parameters',{}).get(rev.get('industry'),calibration)
     close=number(p['close']);volume=number(p.get('volume_shares'))
-    if close is None or volume is None or close<=0:return None
-    thin=close<8 or close*volume<12000000
-    if thin and not shadow_thin:return None
+    if close is None or volume is None or close<=0 or volume<0:return unavailable('REFERENCE_PRICE_OR_VOLUME_INVALID')
+    turnover=close*volume
+    thin=close<8 or turnover<RESEARCH_MIN_TURNOVER_NTD
+    low_turnover_review=turnover<TRADABILITY_REVIEW_TURNOVER_NTD
+    if close<8 and not shadow_thin:return unavailable('PRICE_FILTER_BELOW_8_TWD')
+    if turnover<RESEARCH_MIN_TURNOVER_NTD and not shadow_thin:return unavailable('TURNOVER_FILTER_BELOW_1M_TWD')
     y,q=quarter_key(data.period);fy_period=f'{y if q==4 else y-1}-Q4';prior_period=f'{y-1}-Q{q}'
     if any(k not in rs for k in data.required_periods):return dict(code=code,name=latest.get('name'),status='MISSING_NORMALIZED_EIGHT_QUARTERS',rankable=False)
     if rev.get('industry')=='金融保險業':return dict(code=code,name=latest.get('name'),status='FINANCIAL_SECTOR_REQUIRES_ROE_PB_MODEL',rankable=False)
-    if '*' in latest.get('name',''):return dict(code=code,name=latest.get('name'),status='PAR_OR_SPLIT_RECONCILIATION_REQUIRED',rankable=False)
+    # Profit / actual issued shares does not assume a NT$10 par value. A star in
+    # the name alone must not exclude a company with a real share denominator.
     primary=data.primary(code);cur=primary['values'] if primary else data.detailed_values(key,data.period)
     fy=(cur if q==4 else (primary.get('prior_full_year') if primary else None)) or data.detailed_values(key,fy_period)
     fyop=rs[fy_period];pr=rs[prior_period]
@@ -42,10 +53,13 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
     if min(r,rfy,prior_r)<=0:return dict(code=code,name=latest.get('name'),status='NONPOSITIVE_REVENUE_SPECIAL_MODEL_REQUIRED',rankable=False)
     warnings=[]
     if thin:warnings.append('LOW_LIQUIDITY_OR_PRICE_SHADOW_ONLY_NO_PRIMARY_RANKING')
+    elif low_turnover_review:warnings.append('BELOW_12M_SINGLE_DAY_TURNOVER_RESEARCH_ONLY_REQUIRES_EXIT_CAPACITY_REVIEW')
     if primary:
         for a,b in [('revenue_k','revenue_ytd_k'),('gross_profit_k','gross_profit_ytd_k'),('operating_profit_k','operating_profit_ytd_k')]:
             if abs(current[a]-number(latest[b]))>1:raise ValueError('PRIMARY_MIRROR_'+a+'_MISMATCH')
     else:warnings.append('CURRENT_DETAIL_IS_OFFICIAL_BATCH_SUMMARY_NOT_ORIGINAL_ISSUER_NOTES')
+    for a,b in [('revenue_k','revenue_ytd_k'),('gross_profit_k','gross_profit_ytd_k'),('operating_profit_k','operating_profit_ytd_k')]:
+        if abs(current[a]-number(latest[b]))>1:return unavailable('CURRENT_OFFICIAL_AND_HISTORY_BASIS_MISMATCH')
     month_year,month=map(int,data.revenue_month.split('-'))
     if month_year<y or month_year>y+1:return dict(code=code,name=latest.get('name'),status='MONTHLY_FINANCIAL_YEAR_BRIDGE_NOT_ALIGNED',rankable=False)
     ytd=number(rev.get('ytd_revenue_k'));oldytd=number(rev.get('last_year_ytd_revenue_k'));my=number(rev.get('monthly_yoy_pct'));yy=number(rev.get('ytd_yoy_pct'))
@@ -119,16 +133,20 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
     gates=research_gates(primary,code,data.period,flow,coverage.get('eight_quarter_key_income_cash_values_reconciled'))
     for name,value in e.get('certificates',{}).get(code,{}).items():
         if name in GATES:gates[name]=value
-    if thin:
-        # Even a previously signed issuer tradability receipt cannot validate
-        # today's separately restricted thin-liquidity discovery scenario.
-        gates['tradability']=gate('PENDING','LOW_SINGLE_DAY_TRADING_VALUE_OR_PRICE_REQUIRES_MULTI_SESSION_REVIEW')
     # A provisional normalized Base cannot inherit a generic forecast PASS:
     # the issuer-specific recovery mechanism needs a documented signoff.
     if (recovery['applied'] and not e.get('issuer_operating_bridges',{}).get(code)
         and gates['forecast_bridge'].get('status')=='PASS'
         and gates['forecast_bridge'].get('margin_normalization_review_complete') is not True):
         gates['forecast_bridge']=gate('PENDING','CONDITIONAL_MARGIN_RECOVERY_ISSUER_SIGNOFF_REQUIRED')
+    if thin:
+        gates['tradability']=gate('PENDING','LOW_SINGLE_DAY_TRADING_VALUE_OR_PRICE_REQUIRES_MULTI_SESSION_REVIEW')
+    elif low_turnover_review and gates['tradability'].get('status')!='FAIL':
+        # A single session worth 1m-12m is discoverable, never an automatic A+ PASS.
+        # A documented multiple-session fill/spread and exit-capacity review is required.
+        t=gates['tradability']
+        if not (t.get('multi_session_liquidity_verified') is True and t.get('exit_capacity_verified') is True):
+            gates['tradability']=gate('PENDING','BELOW_12M_DAILY_TURNOVER_REQUIRES_MULTI_SESSION_SPREAD_AND_EXIT_CAPACITY_REVIEW')
     forecast=gates['forecast_bridge']
     if forecast.get('status')=='PASS' and any(forecast.get(k)!=v for k,v in [('model_code_sha256',code_fingerprint()),('target_date',target_date),('reference_price_date',data.price_date)]):
         gates['forecast_bridge']=gate('PENDING','FORECAST_CERTIFICATE_DOES_NOT_MATCH_CURRENT_RUNTIME_TARGET_AND_PRICE')
@@ -136,7 +154,9 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
         gates['auditor_scope']=gate('PENDING','QUALIFIED_SCOPE_MATERIALITY_SIGNOFF_REQUIRED')
     if gates['fully_diluted_shares'].get('status')=='PASS' and (share['unresolved_terms'] or share['missing_legal_conversion_inputs'] or gates['fully_diluted_shares'].get('forecast_denominator_shares')!=share['base_shares']):
         gates['fully_diluted_shares']=gate('PENDING','ACTUAL_DENOMINATOR_OR_CB_TERMS_NOT_RECONCILED')
-    stress=(base['target_price']*POLICY['stress_eps_factor']*POLICY['stress_pe_factor']/close-1)*100 if base['target_price'] is not None else None
+    stress_shares=share['conversion_price_down_10pct_full_conversion_shares']
+    dilution_stress_factor=share['base_shares']/stress_shares if stress_shares else None
+    stress=(base['target_price']*POLICY['stress_eps_factor']*POLICY['stress_pe_factor']*dilution_stress_factor/close-1)*100 if base['target_price'] is not None and dilution_stress_factor is not None else None
     if primary and primary['qualified_review']:warnings.append('QUALIFIED_REVIEW_MATERIALITY_PENDING' if gates['auditor_scope'].get('status')!='PASS' else 'QUALIFIED_REVIEW_MATERIALITY_ASSESSED')
     specialist=[];business=primary.get('business_description','') if primary else ''
     developer=bool(re.search(r'興建.*住宅|大樓.*(?:出售|出租)|住宅.*開發|不動產.*開發',business))
@@ -153,17 +173,28 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
         cases=issuer_case(bridge,code,data.period,asof,target_date,share['base_shares'],{'base':pe,'bear':pe_bear,'bull':pe_bull});base,bear,bull=(cases[n] for n in ('base','bear','bull'))
         for sc in (base,bear,bull):sc.update(returns(sc['target_price'],close,None,asof[:10],target_date))
         if developer and any(cases[n]['valuation_method']!='NAV' for n in cases):raise ValueError('PROPERTY_DEVELOPER_REQUIRES_ASSET_VALUE_BRIDGE')
-        specialist=[];stress=(base['target_price']*.81/close-1)*100 if base['target_price'] is not None and base.get('valuation_method')=='PE' else None
+        specialist=[];stress=(base['target_price']*.81*dilution_stress_factor/close-1)*100 if base['target_price'] is not None and dilution_stress_factor is not None and base.get('valuation_method')=='PE' else None
     elif specialist and gates['forecast_bridge'].get('status')=='PASS':gates['forecast_bridge']=gate('PENDING','SPECIALIST_OPERATING_INPUTS_REQUIRED')
     point=base['target_price'] is not None and not share['missing_legal_conversion_inputs'] and not specialist
     if not point:warnings.append('POINT_VALUATION_NOT_COMPARABLE_WITH_UNRESOLVED_INPUTS')
     certification=certify(code,base['price_upside_pct'] if point else None,stress if point else None,gates,asof,data.period)
-    rankable=point and primary is not None and not thin
+    # Evidence completeness controls formal certification. It must not impose
+    # membership in a hand-selected legacy cohort on the research ranking.
+    rankable=point and not thin
+    exclusions=list(specialist)
+    if share['missing_legal_conversion_inputs']:exclusions.append('CB_LEGAL_CONVERSION_INPUTS_MISSING')
+    if pe is None:exclusions.append('PE_SAMPLE_INSUFFICIENT')
+    if base['eps']<=0:exclusions.append('NONPOSITIVE_EARNINGS_REQUIRES_NON_PE_VALUATION')
     return dict(code=code,name=latest.get('name'),market=market,industry=industry,financial_period=data.period,
-      reference_close=close,price_date=data.price_date,revenue_month=data.revenue_month,estimate_vintage=asof,target_date=target_date,
+      reference_close=close,single_day_turnover_ntd=turnover,
+      liquidity_research_band=('SHADOW_BELOW_1M_OR_PRICE_FLOOR' if thin else 'RESEARCH_1M_TO_12M_PENDING_EXECUTION' if low_turnover_review else 'RESEARCH_AT_LEAST_12M_PENDING_EVIDENCE'),
+      price_date=data.price_date,revenue_month=data.revenue_month,estimate_vintage=asof,target_date=target_date,
       source_tier='ORIGINAL_CURRENT_ISSUER_NUMERICS' if primary else 'OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL',rankable=rankable,point_valuation_available=point,
+      original_current_issuer_numeric_checked=primary is not None,exclusion_reasons=exclusions,
       base=base,bear=bear,bull=bull,share_bridge=share,liquidity=flow,primary_ttm_cash=coverage or None,
-      revenue_bridge=dict(actual_ytd_k=ytd,prior_year_annual_revenue_k=monthly_prior_annual,prior_year_remaining_k=monthly_prior_annual-oldytd,annual_current_year_estimate_k=r_current_year,assumed_annual_growth=g,observed_growth=observed),
+      revenue_bridge=dict(actual_ytd_k=ytd,prior_year_annual_revenue_k=monthly_prior_annual,prior_year_remaining_k=monthly_prior_annual-oldytd,annual_current_year_estimate_k=r_current_year,assumed_annual_growth=g,observed_growth=observed,
+        trend_inputs=dict(financial_ytd_yoy=gh,monthly_ytd_yoy=yy/100,latest_month_yoy=my/100),
+        annual_forward_growth_is_extrapolation_not_validated=True,issuer_capacity_order_ASP_cost_bridge_complete=bool(e.get('issuer_operating_bridges',{}).get(code))),
       coefficient_training=dict(train_target=calibration.get('train_target'),training_cases=calibration['train_count'],revenue_persistence=calibration['revenue_persistence'],margin_persistence=calibration['margin_persistence'],cost_persistence=calibration['cost_persistence']),
       margin_bridge=dict(prior_full_year_gm=gm_fy,current_ytd_gm=gm_now,prior_ytd_gm=gm_prior,unadjusted_base_gm=raw_base_gm,base_gm=base['gross_margin'],base_opex_ratio=cost),margin_recovery=recovery,
       nonoperating_bridge=dict(base_k=nonop,method=nonop_status,component_assumptions_certified=False),
@@ -176,5 +207,5 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
       research_target_price_scenario=base['target_price'] if point else None,target_year_eps_scenario=base['eps'] if point else None,
       research_2027_price_scenario=base['target_price'] if point and target_year==2027 else None,eps_2027_base_scenario=base['eps'] if point and target_year==2027 else None,
       research_pe_assumption=pe,scenario_upside_pct=base['price_upside_pct'] if point else None,
-      rating='估值待驗' if not certification['quality_complete'] else certification['status'],research_lane='原始來源研究候選待驗' if rankable else '來源或估值資料待補',
+      rating='估值待驗' if not certification['quality_complete'] else certification['status'],research_lane=('原始當期研究候選待驗' if primary else '官方彙總研究候選待驗') if rankable else '來源或估值資料待補',
       score=None,company_forecast_confirmed=False,probabilities_calibrated=False)

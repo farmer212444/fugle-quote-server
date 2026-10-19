@@ -1,0 +1,33 @@
+{
+  "schema": "V881_DATED_LEGAL_CAPITAL_INPUTS_V1",
+  "code": "5347",
+  "checked_at": "2026-10-19T01:11:56.016160+00:00",
+  "sources": [
+    {
+      "id": "vis_ecb_issue",
+      "url": "https://www.moneydj.com/kmdj/news/newsviewer.aspx?a=b06227a0-c739-481e-b1f7-4117fbd0c386",
+      "path": "evidence/v880/capital_terms/sources/vis_ecb_issue.json",
+      "sha256": "e4ec8c75b9f13fc153c9af52e48679906c8a8169dea2dad4d546a5bc1570a505",
+      "raw_source_sha256": "d7e4c957ac89e69aa67b918dd281e6c45bef168bc890fe2fa1e409c7290ebcab",
+      "available_at": "2026-10-19T01:07:48.706013+00:00",
+      "fetched_at": "2026-10-19T01:07:48.706013+00:00",
+      "source_record_type": "NUMERIC_EXTRACTION_AND_CAPTURE_RECEIPT_NOT_ORIGINAL_DOCUMENT_BYTES",
+      "source_type": "ISSUER_ANNOUNCEMENT_REPUBLICATION"
+    }
+  ],
+  "bonds": [
+    {
+      "code": "XS3275877143",
+      "currency": "USD",
+      "fixed_fx_twd": 31.325,
+      "conversion_price": 189.0,
+      "effective_at": "2026-02-04T00:00:00+08:00",
+      "price_basis": "DATED_ISSUE_OR_OFFERING_PRICE_LATER_RESETS_NOT_CERTIFIED",
+      "source_ids": [
+        "vis_ecb_issue"
+      ]
+    }
+  ],
+  "formal_share_certification": false,
+  "interpretation": "Known legal fixed FX and dated prices; official outstanding faces and current common shares load separately. Later reset/option completeness remains pending. Sources contain numeric extractions with original capture hashes, not original byte copies."
+}

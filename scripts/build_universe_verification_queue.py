@@ -34,7 +34,8 @@ def build(report, normalized_universe=None, universe_receipts=None):
             "research_upside_pct": upside if eligible else None,
             "certification": "NOT_CERTIFIED",
             "required_gates": list(GATES),
-            "review_state": "PENDING_SOURCE_VERIFICATION"
+            "review_state": "PENDING_SOURCE_VERIFICATION",
+            "source_status": r.get("status"), "exclusion_reasons": r.get("exclusion_reasons", [])
         })
     priority = {"HIGH_UPSIDE_EVIDENCE_REVIEW": 0, "OTHER_VALUED_EVIDENCE_REVIEW": 1, "UNVALUED_INPUT_REPAIR": 2}
     queue.sort(key=lambda x: (priority[x["lane"]], -(x["research_upside_pct"] or 0), x["code"]))
@@ -77,6 +78,8 @@ def build(report, normalized_universe=None, universe_receipts=None):
         "universe_priced": report.get("data_scope", {}).get("priced_issuers"),
         "normalized_financial_issuers": report.get("data_scope", {}).get("normalized_issuers"),
         "model_issuer_rows": len(rows),
+        "model_rows_meaning": "TRACKED_ISSUER_LEDGER_ROWS_NOT_COMPLETED_VALUATIONS_OR_CERTIFICATIONS",
+        "tracked_issuer_universe": report.get("data_scope", {}).get("tracked_issuer_universe", len(rows) + not_modeled),
         "not_yet_in_model_count": not_modeled,
         "not_yet_in_model_note": (
             "Identifiers are derived from hashed normalized financial mirrors and remain NOT_CERTIFIED. "

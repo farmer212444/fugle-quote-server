@@ -1,4 +1,4 @@
-# V8.8.1 shares evidence audit
+# V8.8.2 shares evidence audit
 
 財報 2026-Q2；價格 2026-10-16。
 

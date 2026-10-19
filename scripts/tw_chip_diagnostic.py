@@ -113,7 +113,7 @@ def join_market_codes(queue, reference_price_path=None):
     return result
 
 def summarize(queue, asof, inst, ownership, base_rows, errors):
-    if len(queue.get("queues", [])) + len(queue.get("normalized_not_yet_modeled", [])) != queue.get("normalized_financial_issuers"):
+    if len(queue.get("queues", [])) + len(queue.get("normalized_not_yet_modeled", [])) != queue.get("tracked_issuer_universe", queue.get("normalized_financial_issuers")):
         raise ValueError("UNIVERSE_COUNT_NOT_RECONCILED")
     current_inst = inst[0][1] if inst and inst[0][0] == asof else {}
     current_own = ownership[0][1] if ownership and (dt.date.fromisoformat(asof) - dt.date.fromisoformat(ownership[0][0])).days <= 10 else {}
@@ -142,7 +142,9 @@ def summarize(queue, asof, inst, ownership, base_rows, errors):
     return {
         "asof_price_date": asof,
         "model": queue.get("model"),
-        "financial_issuer_count": len(annotate),
+        "financial_issuer_count": queue.get("normalized_financial_issuers"),
+        "tracked_issuer_count": len(annotate),
+        "issuer_rows_are_tracked_not_certified": True,
         "dated_institutional_snapshots_through_asof": len(inst),
         "dated_tdcc_snapshots_through_asof": len(ownership),
         "matched_current_institutional": sum(bool(r["institutional_day_net_shares"]) for r in annotate),

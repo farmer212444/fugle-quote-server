@@ -1,0 +1,271 @@
+{
+  "model": "V8.8.2",
+  "model_code_sha256": "4772cd10e26c3f709b1834670201224baa8161003462934060cf706679ca2836",
+  "estimate_vintage": "2026-10-19T15:20:56.667882+08:00",
+  "price_date": "2026-10-16",
+  "target_date": "2027-12-31",
+  "tests_passed": 101,
+  "source_refresh": {
+    "at": "2026-10-19T01:21:16.005045+00:00",
+    "successful_sources": [
+      "TWSE_income",
+      "TWSE_balance",
+      "TPEX_income",
+      "TPEX_balance"
+    ],
+    "failed_sources": [],
+    "original_issuer_reports_not_auto_promoted": true,
+    "capital_refresh": {
+      "successful_sources": [
+        "TPEX_master",
+        "TWSE_master",
+        "bond_5",
+        "bond_6",
+        "bond_7",
+        "bond_8"
+      ],
+      "failed_sources": [],
+      "contract_FX_not_replaced_by_spot": true,
+      "issue_conversion_price_is_not_current_reset": true
+    },
+    "current_CB_reset_terms_require_explicit_dated_evidence": true,
+    "PE_peer_snapshot_date": "2026-10-16",
+    "capital_refresh_at": "2026-10-19T01:23:29.044015+00:00"
+  },
+  "before_model": "V8.8.1",
+  "before_data_scope": {
+    "normalized_issuers": 1978,
+    "priced_issuers": 1980,
+    "model_rows": 919,
+    "original_latest_issuer_numeric_coverage": 66,
+    "official_current_bulk_issuers": 1935,
+    "primary_research_rankable": 48,
+    "broad_unverified_historical_detail_rankable": 482,
+    "source_errors": 0,
+    "issuer_failures": 0
+  },
+  "after_data_scope": {
+    "normalized_issuers": 1978,
+    "priced_issuers": 1980,
+    "model_rows": 1997,
+    "tracked_issuer_universe": 1997,
+    "original_latest_issuer_numeric_coverage": 66,
+    "official_current_bulk_issuers": 1935,
+    "primary_research_rankable": 51,
+    "market_research_rankable": 505,
+    "not_rankable": 1492,
+    "broad_unverified_historical_detail_rankable": 505,
+    "source_errors": 0,
+    "issuer_failures": 0
+  },
+  "universe_accounted_for": true,
+  "active_foreign_cb_count": 28,
+  "active_foreign_cb_issuers": 18,
+  "missing_fixed_fx": [],
+  "full_current_terms_certified": false,
+  "comparison": [
+    {
+      "code": "2317",
+      "name": "鴻海",
+      "research_rank": 14,
+      "reference_close": 244.0,
+      "base_eps": 26.966569351132843,
+      "base_price": 437.8022534156417,
+      "upside_pct": 79.42715303919744,
+      "growth": 0.28811801498147155,
+      "denominator": 14155899472.915188,
+      "missing_legal_conversion_inputs": [],
+      "exclusion_reasons": [],
+      "old_rankable": false,
+      "old_missing_legal_conversion_inputs": [
+        "XS2886113278"
+      ],
+      "conditional_margin_recovery": false
+    },
+    {
+      "code": "2376",
+      "name": "技嘉",
+      "research_rank": 18,
+      "reference_close": 357.5,
+      "base_eps": 34.181205822327,
+      "base_price": 610.1345239285371,
+      "upside_pct": 70.66699970029009,
+      "growth": 0.315857986520414,
+      "denominator": 764567343.5685002,
+      "missing_legal_conversion_inputs": [],
+      "exclusion_reasons": [],
+      "old_rankable": false,
+      "old_missing_legal_conversion_inputs": [
+        "XS2653508528",
+        "XS2854876179",
+        "XS3253754934"
+      ],
+      "conditional_margin_recovery": false
+    },
+    {
+      "code": "2382",
+      "name": "廣達",
+      "research_rank": null,
+      "reference_close": 322.0,
+      "base_eps": 49.33249807257396,
+      "base_price": null,
+      "upside_pct": null,
+      "growth": 0.4324235318739298,
+      "denominator": 4286679488.3034368,
+      "missing_legal_conversion_inputs": [],
+      "exclusion_reasons": [
+        "EXTREME_VALUATION_OPERATING_BRIDGE_REQUIRED"
+      ],
+      "old_rankable": false,
+      "old_missing_legal_conversion_inputs": [
+        "XS2894149595",
+        "XS3184844226"
+      ],
+      "conditional_margin_recovery": true
+    },
+    {
+      "code": "6669",
+      "name": "緯穎",
+      "research_rank": 39,
+      "reference_close": 1845.0,
+      "base_eps": 147.9643065865897,
+      "base_price": 2681.113235349005,
+      "upside_pct": 45.31779053382141,
+      "growth": 0.25147653075399484,
+      "denominator": 596286641.2771155,
+      "missing_legal_conversion_inputs": [],
+      "exclusion_reasons": [],
+      "old_rankable": false,
+      "old_missing_legal_conversion_inputs": [
+        "XS2853493117",
+        "XS3236970433"
+      ],
+      "conditional_margin_recovery": false
+    },
+    {
+      "code": "2330",
+      "name": "台積電",
+      "research_rank": 45,
+      "reference_close": 2420.0,
+      "base_eps": 132.58307791362668,
+      "base_price": 3392.1380484201386,
+      "upside_pct": 40.17099373636937,
+      "growth": 0.30830021244820116,
+      "denominator": 25932370067.0,
+      "missing_legal_conversion_inputs": [],
+      "exclusion_reasons": [],
+      "old_rankable": false,
+      "old_missing_legal_conversion_inputs": [],
+      "conditional_margin_recovery": false
+    },
+    {
+      "code": "3231",
+      "name": "緯創",
+      "research_rank": null,
+      "reference_close": 182.5,
+      "base_eps": 26.625739126174814,
+      "base_price": null,
+      "upside_pct": null,
+      "growth": 0.47003296655608684,
+      "denominator": 3641295477.4767,
+      "missing_legal_conversion_inputs": [],
+      "exclusion_reasons": [
+        "EXTREME_VALUATION_OPERATING_BRIDGE_REQUIRED"
+      ],
+      "old_rankable": false,
+      "old_missing_legal_conversion_inputs": [
+        "XS3202703834"
+      ],
+      "conditional_margin_recovery": false
+    },
+    {
+      "code": "9802",
+      "name": "鈺齊-KY",
+      "research_rank": 105,
+      "reference_close": 67.6,
+      "base_eps": 6.520770378247696,
+      "base_price": 78.18403683518987,
+      "upside_pct": 15.656859223653674,
+      "growth": 0.06484998797501161,
+      "denominator": 210595899.70509127,
+      "missing_legal_conversion_inputs": [],
+      "exclusion_reasons": [],
+      "old_rankable": true,
+      "old_missing_legal_conversion_inputs": [],
+      "conditional_margin_recovery": true
+    }
+  ],
+  "calibration": {
+    "train_count": 1783,
+    "holdout_count": 1781,
+    "holdout_standalone_quarter_revenue": {
+      "n": 1781,
+      "median_absolute_pct_error": 12.384109865501724,
+      "wape_pct": 18.50835422386647
+    },
+    "holdout_standalone_quarter_legacy_coefficient": {
+      "n": 1781,
+      "median_absolute_pct_error": 12.526223446219698,
+      "wape_pct": 23.855765621688615
+    },
+    "holdout_high_growth_quarter_revenue": {
+      "n": 457,
+      "median_absolute_pct_error": 19.17768943681679,
+      "wape_pct": 21.62261699384105
+    },
+    "holdout_high_growth_legacy_coefficient": {
+      "n": 457,
+      "median_absolute_pct_error": 19.993823226529983,
+      "wape_pct": 30.027240884104163
+    },
+    "deployed_sector_or_global_holdout_metrics": {
+      "n": 1781,
+      "revenue_median_absolute_pct_error": 6.3606500377752955,
+      "revenue_wape_pct": 9.94986820425984,
+      "gross_margin_median_abs_pp": 1.4814454059755762,
+      "opex_ratio_median_abs_pp": 1.0100944246167087
+    },
+    "annual_forward_growth_is_extrapolation_not_validated": true,
+    "computer_and_peripheral": {
+      "train_count": 107,
+      "holdout_count": 107,
+      "revenue_persistence": 0.5,
+      "legacy_revenue_persistence": 0.0,
+      "holdout_standalone_quarter_revenue": {
+        "n": 107,
+        "median_absolute_pct_error": 16.789753247228578,
+        "wape_pct": 18.025411658031878
+      },
+      "holdout_standalone_quarter_legacy_coefficient": {
+        "n": 107,
+        "median_absolute_pct_error": 23.658093908370027,
+        "wape_pct": 33.82345000442182
+      }
+    }
+  },
+  "formal_Aplus": 0,
+  "formal_Aplusplus": 0,
+  "exclusion_reason_counts": {
+    "TURNOVER_FILTER_BELOW_12M_TWD": 993,
+    "PE_SAMPLE_INSUFFICIENT": 224,
+    "NONPOSITIVE_EARNINGS_REQUIRES_NON_PE_VALUATION": 122,
+    "REFERENCE_PRICE_MISSING": 10,
+    "REFERENCE_PRICE_OR_VOLUME_INVALID": 26,
+    "PRICE_FILTER_BELOW_8_TWD": 29,
+    "TAX_PARENT_EARNINGS_COMPONENTS_MISSING": 48,
+    "EXTREME_VALUATION_OPERATING_BRIDGE_REQUIRED": 18,
+    "MISSING_NORMALIZED_EIGHT_QUARTERS": 36,
+    "CURRENT_FINANCIAL_STATEMENT_MISSING": 20,
+    "OPERATING_OTHER_GAINS_OR_SEGMENT_MODEL_REQUIRED": 2,
+    "PROJECT_DELIVERY_BACKLOG_REVENUE_SCHEDULE_REQUIRED": 28,
+    "NEGATIVE_EXTRAPOLATED_OPEX_NOT_AN_ADMISSIBLE_BASE": 6,
+    "DISTRIBUTOR_UNIT_SPREAD_INVENTORY_CYCLE_REQUIRED": 17,
+    "MONTHLY_FINANCIAL_REVENUE_BASIS_RECONCILIATION_PENDING": 2,
+    "FINANCIAL_SECTOR_REQUIRES_ROE_PB_MODEL": 28
+  },
+  "all_four_outputs_share_version_and_vintage": true,
+  "integration_with_latest_main": "c88c2b30d1696e51192253416f914530315682bc",
+  "thin_shadow_point_valuations": 408,
+  "tracked_union_chip_rows": 1997,
+  "latest_main_features_preserved": true
+}

@@ -1,0 +1,44 @@
+{
+  "schema": "V881_DATED_LEGAL_CAPITAL_INPUTS_V1",
+  "code": "2303",
+  "checked_at": "2026-10-19T01:11:56.016160+00:00",
+  "sources": [
+    {
+      "id": "umc_ecb_issue",
+      "url": "https://www.moneydj.com/KMDJ/news/newsviewer.aspx?a=1fbc1213-8a91-44d6-ac8c-9863f799e787",
+      "path": "evidence/v880/capital_terms/sources/umc_ecb_issue.json",
+      "sha256": "2b9f247d0513a7faab0b30d44b287cbec5cab4ac0c2f5d1e3532aa5d69c29ec6",
+      "raw_source_sha256": "6e6c53daf6b1e8bf4d22069a70c01cdf683e07988eca5705cb610795fe8975f2",
+      "available_at": "2026-10-19T01:05:29.829067+00:00",
+      "fetched_at": "2026-10-19T01:05:29.829067+00:00",
+      "source_record_type": "NUMERIC_EXTRACTION_AND_CAPTURE_RECEIPT_NOT_ORIGINAL_DOCUMENT_BYTES",
+      "source_type": "ISSUER_ANNOUNCEMENT_REPUBLICATION"
+    }
+  ],
+  "bonds": [
+    {
+      "code": "XS3515578006",
+      "currency": "USD",
+      "fixed_fx_twd": 31.753,
+      "conversion_price": 202.06,
+      "effective_at": "2026-10-13T00:00:00+08:00",
+      "price_basis": "DATED_ISSUE_OR_OFFERING_PRICE_LATER_RESETS_NOT_CERTIFIED",
+      "source_ids": [
+        "umc_ecb_issue"
+      ]
+    },
+    {
+      "code": "XS3515562695",
+      "currency": "USD",
+      "fixed_fx_twd": 31.753,
+      "conversion_price": 179.19,
+      "effective_at": "2026-10-13T00:00:00+08:00",
+      "price_basis": "DATED_ISSUE_OR_OFFERING_PRICE_LATER_RESETS_NOT_CERTIFIED",
+      "source_ids": [
+        "umc_ecb_issue"
+      ]
+    }
+  ],
+  "formal_share_certification": false,
+  "interpretation": "Known legal fixed FX and dated prices; official outstanding faces and current common shares load separately. Later reset/option completeness remains pending. Sources contain numeric extractions with original capture hashes, not original byte copies."
+}

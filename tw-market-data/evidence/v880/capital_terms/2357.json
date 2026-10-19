@@ -1,0 +1,33 @@
+{
+  "schema": "V881_DATED_LEGAL_CAPITAL_INPUTS_V1",
+  "code": "2357",
+  "checked_at": "2026-10-19T01:11:56.016160+00:00",
+  "sources": [
+    {
+      "id": "asus_offering",
+      "url": "https://links.sgx.com/FileOpen/ASUSTeK%20Computer%20Inc.%20-%20Final%20Offering%20Circular%20dated%2010%20September%202026.ashx?App=Prospectus&FileID=71052",
+      "path": "evidence/v880/capital_terms/sources/asus_offering.json",
+      "sha256": "016b1c1fe5ad1653bb0822f73b26652d60aa427d736049f98a3fed480fe85499",
+      "raw_source_sha256": "f4c443d433990d7c16b6b748d7570f49f34fbceb9101ba905fcb2ac4bafce57d",
+      "available_at": "2026-10-19T01:09:48.234875+00:00",
+      "fetched_at": "2026-10-19T01:09:48.234875+00:00",
+      "source_record_type": "NUMERIC_EXTRACTION_AND_CAPTURE_RECEIPT_NOT_ORIGINAL_DOCUMENT_BYTES",
+      "source_type": "ORIGINAL_ISSUER_DOCUMENT"
+    }
+  ],
+  "bonds": [
+    {
+      "code": "XS3501273059",
+      "currency": "USD",
+      "fixed_fx_twd": 31.523,
+      "conversion_price": 1384.6,
+      "effective_at": "2026-09-17T00:00:00+08:00",
+      "price_basis": "DATED_ISSUE_OR_OFFERING_PRICE_LATER_RESETS_NOT_CERTIFIED",
+      "source_ids": [
+        "asus_offering"
+      ]
+    }
+  ],
+  "formal_share_certification": false,
+  "interpretation": "Known legal fixed FX and dated prices; official outstanding faces and current common shares load separately. Later reset/option completeness remains pending. Sources contain numeric extractions with original capture hashes, not original byte copies."
+}

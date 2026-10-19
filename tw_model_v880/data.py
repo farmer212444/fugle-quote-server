@@ -7,7 +7,7 @@ def sha(b):return hashlib.sha256(b).hexdigest()
 def ensure_vintage(e,asof):
     cut=timestamp(asof)
     if timestamp(e['snapshot_available_at'])>cut:raise ValueError('EVIDENCE_VINTAGE_FROM_FUTURE')
-    times=[e.get('last_public_refresh',{}).get('at')]+[v.get('fetched_at') for v in e.get('official_current_bulk',{}).values()]
+    times=[e.get('last_public_refresh',{}).get('at')]+[v.get('fetched_at') for v in e.get('official_current_bulk',{}).values()]+[v.get('fetched_at') for v in e.get('capital_sources',{}).values()]
     if any(timestamp(t)>cut for t in times if t):raise ValueError('EVIDENCE_COMPONENT_VINTAGE_FROM_FUTURE')
 class MarketData:
     def __init__(self,root,asof):
@@ -83,6 +83,8 @@ class MarketData:
                     if p.stem!=code:raise ValueError('EVIDENCE_LEDGER_ISSUER_MISMATCH')
                     self.evidence.setdefault(target,{})[code]=obj['gates'] if target=='certificates' else obj
                 except (ValueError,KeyError,OSError) as ex:self.errors.append(dict(source=str(p),error=str(ex)))
+        from .capital import apply_capital_terms
+        apply_capital_terms(self,asof)
     def path(self,s):
         p=pathlib.Path(s)
         if p.parts and p.parts[0]==self.root.name:p=pathlib.Path(*p.parts[1:])

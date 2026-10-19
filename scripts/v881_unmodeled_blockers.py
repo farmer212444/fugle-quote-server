@@ -15,6 +15,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 from tw_model_v880.data import MarketData
 from tw_model_v880.math import number
+from tw_model_v880.model import RESEARCH_MIN_TURNOVER_NTD
 
 def classify(data, report):
     expected = report["data_scope"]["normalized_issuers"]
@@ -26,12 +27,17 @@ def classify(data, report):
         raise ValueError("AMBIGUOUS_MODELED_CODE_UNIVERSE")
     if len(modeled) != report["data_scope"]["model_rows"]:
         raise ValueError("MODELED_COUNT_MISMATCH")
-    if any(code not in {key[1] for key in data.history} for code in modeled):
+    known = {key[1] for key in data.history} | {key[1] for key in data.prices} | set(data.evidence.get("master", {}))
+    if any(code not in known for code in modeled):
         raise ValueError("MODELED_CODE_NOT_IN_FINANCIAL_UNIVERSE")
+    prechecks = {"REFERENCE_PRICE_MISSING", "MONTHLY_REVENUE_MISSING", "ISSUED_SHARE_MASTER_MISSING",
+                 "REFERENCE_PRICE_OR_VOLUME_INVALID", "PRICE_FILTER_BELOW_8_TWD",
+                 "TURNOVER_FILTER_BELOW_1M_TWD", "CURRENT_FINANCIAL_STATEMENT_MISSING"}
+    excluded = {str(x["code"]) for x in report["all_model_row_summary"] if x.get("status") in prechecks}
     new = []
     master = data.evidence.get("master", {})
     for (market, code), historical in sorted(data.history.items()):
-        if code in modeled:
+        if code in modeled and code not in excluded:
             continue
         missing = []
         if data.period not in historical:
@@ -50,8 +56,8 @@ def classify(data, report):
                 missing.append("NO_ELIGIBLE_CLOSE_OR_VOLUME")
             elif close < 8:
                 missing.append("PRICE_BELOW_8_MODEL_RESEARCH_FLOOR")
-            elif close * volume < 12000000:
-                missing.append("LOW_SINGLE_DAY_TRADING_VALUE_BELOW_12M_NTD")
+            elif close * volume < RESEARCH_MIN_TURNOVER_NTD:
+                missing.append("LOW_SINGLE_DAY_TRADING_VALUE_BELOW_1M_NTD")
         if code not in data.revenue:
             missing.append("NO_CURRENT_MONTHLY_REVENUE")
         if code not in master:
@@ -67,7 +73,7 @@ def classify(data, report):
             "PIT_issuer_master_verified": False,
             "formal_Aplus": False
         })
-    if len(new) != expected - len(modeled):
+    if len(new) != sum(code not in modeled or code in excluded for market, code in data.history):
         raise ValueError("UNMODELED_IDENTITY_RECONCILIATION_MISMATCH")
     counts = dict(sorted(collections.Counter(x["primary_blocker"] for x in new).items()))
     all_blockers = dict(sorted(collections.Counter(k for x in new for k in x["all_blockers"]).items()))
@@ -76,7 +82,10 @@ def classify(data, report):
         "estimate_vintage": report["estimate_vintage"],
         "reference_price_date": report["asof_price_date"],
         "financial_last_quarter": data.period,
-        "normalized_universe": expected, "modeled": len(modeled), "unmodeled": len(new),
+        "normalized_universe": expected, "modeled": expected-len(new), "unmodeled": len(new),
+        "tracked_issuer_rows": len(modeled),
+        "tracked_rows_outside_financial_universe": len(set(modeled)-{key[1] for key in data.history}),
+        "ledger_membership_does_not_mean_valuation_or_certification": True,
         "primary_blocker_counts": counts,
         "all_blocker_counts": all_blockers,
         "source_errors": len(data.errors),
