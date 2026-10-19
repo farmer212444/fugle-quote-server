@@ -17,7 +17,7 @@ def response(month,dates):
                      "20.5","21.5","20.2","21.0","0.5"])
     return json.dumps(dict(stat="OK",
         fields=["日期","交易股數","交易筆數","成交金額","開盤價","最高價","最低價","收盤價","漲跌價差"],
-        data=data)).encode()
+        data=data,title=f"115年{month[-2:]}月 6206 飛捷 各日成交資訊")).encode()
 
 def days(month):
     y,m=map(int,month.split("-"))
@@ -67,6 +67,7 @@ class HistoricalTWSETests(unittest.TestCase):
             # Current-month arrival expands only future as-of values.
             y=process("6206","2026-10-20",["2026-10","2026-09"],fetch,p,r,sleep=0)
             self.assertTrue(y["twenty"])
+            self.assertEqual(json.loads((p/"6206.json").read_text())["sessions"][0]["date"],"2026-10-20")
     def test_source_failure_keeps_previous_months(self):
         s=response("2026-09",days("2026-09"))
         with tempfile.TemporaryDirectory() as tmp:
