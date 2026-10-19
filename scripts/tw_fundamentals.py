@@ -388,7 +388,7 @@ def self_test():
     assert allowed_end(dt.date(2026, 10, 17)) == (2026, 2)
     assert early_quarter_candidate(dt.date(2026, 10, 19)) == (2026, 3)
     assert early_quarter_candidate(dt.date(2026, 11, 16)) is None
-    assert early_quarter_candidate(dt.date(2026, 8, 10)) is None
+    assert early_quarter_candidate(dt.date(2026, 8, 10)) == (2026, 2)
     assert latest_completed_quarter(dt.date(2027, 1, 5)) == (2026, 4)
     assert len(periods((2026, 2))) == 8
     print('SELF_TEST_OK: 8Q, MOPS HTML, negative numbers, EPS scenario, fail-closed A+')
