@@ -27,7 +27,6 @@ class OfficialInvestorTests(unittest.TestCase):
                     "https://www.flytech.com.tw/data/investor_law/attached/../danger.pdf",
                     "https://mopsov.twse.com.tw/nas/STR/980220260917M001.pdf"):
             # Path-traversal should be explicitly excluded, not only netloc.
-            if "../" in bad:continue
             self.assertFalse(source_allowed(bad))
 
     def test_issuer_missing_rejected(self):
@@ -39,7 +38,7 @@ class OfficialInvestorTests(unittest.TestCase):
         def fetch(url,limit):
             calls.append(url)
             if "year=2026" in url:return HTML
-            if "year=2025" in url:return HTML.replace(b"2026/08/12",b"2025/08/12")
+            if "year=2025" in url:return HTML.replace(b"2026/08/12",b"2025/08/12").replace(b"1786525880605469429",b"1779243843316457288")
             return b"%PDF-"+b"X"*6000
         with tempfile.TemporaryDirectory() as temp:
             out=Path(temp)/"ir";raw=Path(temp)/"raw"
