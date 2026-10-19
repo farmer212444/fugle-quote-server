@@ -1,0 +1,69 @@
+name: Taiwan Official Chip Evidence
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - '.github/workflows/tw_chip_evidence.yml'
+      - 'scripts/tw_chip_capture.py'
+      - 'scripts/tw_chip_diagnostic.py'
+      - 'tests/test_tw_chip_*.py'
+  push:
+    paths:
+      - '.github/workflows/tw_chip_evidence.yml'
+      - 'scripts/tw_chip_capture.py'
+      - 'scripts/tw_chip_diagnostic.py'
+      - 'tests/test_tw_chip_*.py'
+  schedule:
+    # 20:10 Taiwan time, Monday-Friday; 14:00 Taiwan time Saturday for TDCC refresh.
+    - cron: '10 12 * * 1-5'
+    - cron: '0 6 * * 6'
+permissions:
+  contents: write
+concurrency:
+  group: official-chip-evidence
+  cancel-in-progress: false
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Offline parser, audit and chronology tests
+        run: python -m unittest discover -s tests -p 'test_tw_chip_*.py' -v
+  capture:
+    needs: tests
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 17
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Capture official sources independently; leave old complete result intact on errors
+        run: python scripts/tw_chip_capture.py
+      - name: Save source receipts including failures and original HTTP response bytes
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: official-chip-attempt
+          path: chip-capture-artifact/
+          retention-days: 90
+          if-no-files-found: ignore
+      - name: Produce independent chip coverage diagnostics
+        run: python scripts/tw_chip_diagnostic.py
+      - name: Commit only captured evidence and unpromoted diagnostic status
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add tw-market-data/chip tw-market-data/rankings/chip_coverage.json
+          if git diff --cached --quiet; then
+            echo 'No new official chip data.'
+            exit 0
+          fi
+          git commit -m 'data: archive dated official chip evidence, fail closed on missing source'
+          git pull --rebase origin main
+          git push origin HEAD:main
