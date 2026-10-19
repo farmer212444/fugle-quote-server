@@ -3,6 +3,7 @@ import unittest
 import tempfile
 import json
 import hashlib
+import datetime as dt
 from pathlib import Path
 
 SPEC=importlib.util.spec_from_file_location("v887",Path(__file__).resolve().parents[1]/"scripts/v887_top10_earnings_audit.py")
@@ -109,19 +110,22 @@ class EarningsAuditTests(unittest.TestCase):
             note_path.write_text(json.dumps(note),encoding="utf-8")
             row=dict(code="8390",name="金益鼎",reference_close=89.7,
                      base=dict(eps=13.83,target_price=182.88))
-            out=mod.equity_issuance_audit(root,dict(asof_price_date="2026-10-16"),[row])
+            out=mod.equity_issuance_audit(root,dict(asof_price_date="2026-10-16"),[row],today=dt.date(2026,10,20))
             self.assertEqual(out["status"],"SCENARIO_ONLY_ISSUANCE_NOT_CONFIRMED")
             self.assertFalse(out["formal_grade_updated"])
             self.assertEqual(out["scenarios"][1]["new_shares"],8000000)
             self.assertEqual(out["scenarios"][1]["target_2027_fixed_profit"],168.83)
             self.assertEqual(out["scenarios"][2]["target_2027_fixed_profit"],165.65)
-            stale=mod.equity_issuance_audit(root,dict(asof_price_date="2026-10-19"),[row])
+            stale=mod.equity_issuance_audit(root,dict(asof_price_date="2026-10-19"),[row],today=dt.date(2026,10,20))
             self.assertEqual(stale["status"],"REFERENCE_DATE_CHANGED_RECHECK_SHARE_MASTER_AND_CORPORATE_ACTION")
             self.assertFalse(stale["scenarios"])
+            late=mod.equity_issuance_audit(root,dict(asof_price_date="2026-10-16"),[row],today=dt.date(2026,10,22))
+            self.assertEqual(late["status"],"SCHEDULED_EFFECTIVE_DATE_ELAPSED_RECHECK_OFFICIAL_ISSUANCE")
+            self.assertFalse(late["scenarios"])
             details["issuance_completed"]=True
             note_path.write_text(json.dumps(note),encoding="utf-8")
             with self.assertRaisesRegex(ValueError,"EVENT_CHANGED"):
-                mod.equity_issuance_audit(root,dict(asof_price_date="2026-10-16"),[row])
+                mod.equity_issuance_audit(root,dict(asof_price_date="2026-10-16"),[row],today=dt.date(2026,10,20))
     def test_runrate_not_extrapolated_when_year_to_date_loss(self):
         r=mod.analyze(self.row,self.prior,dict(self.now,basic_eps_ytd=-2),
                       self.cash,self.fy,{},2)
