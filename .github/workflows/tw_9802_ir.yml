@@ -1,0 +1,52 @@
+name: TW 9802 Official IR Evidence Capture
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'scripts/tw_9802_ir.py'
+      - '.github/workflows/tw_9802_ir.yml'
+  schedule:
+    # 14:40 and 20:40 Asia/Taipei; existing model runs at 21:30.
+    - cron: '40 6,12 * * *'
+permissions:
+  contents: write
+concurrency:
+  group: tw-9802-official-ir
+  cancel-in-progress: false
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout public research repository
+        uses: actions/checkout@v4
+      - name: Configure Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate dated issuer link parser (offline)
+        run: python scripts/tw_9802_ir.py --self-test
+      - name: Check official IR releases and download bounded originals
+        run: python scripts/tw_9802_ir.py --max-docs 6
+      - name: Retain downloaded HTML and original PDFs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: official-9802-ir-originals
+          path: market-raw-9802-ir/
+          if-no-files-found: warn
+          retention-days: 90
+      - name: Publish source URLs and immutable hashes (not earnings certification)
+        if: success() && github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add tw-market-data/issuer/9802/manifest.json
+          if git diff --cached --quiet; then
+            echo "No issuer source changes."
+          else
+            git commit -m 'data(9802): record issuer IR publication evidence'
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
