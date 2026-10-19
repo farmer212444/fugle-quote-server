@@ -12,6 +12,7 @@ on:
       - 'scripts/v881_unmodeled_blockers.py'
       - 'scripts/v881_thin_shadow.py'
       - 'scripts/v883_gate_orchestrator.py'
+      - 'scripts/v884_evidence_probe.py'
       - 'scripts/tw_chip_diagnostic.py'
       - 'tests/**'
       - 'scripts/build_v880_evidence.py'
@@ -32,6 +33,7 @@ on:
       - 'scripts/v881_unmodeled_blockers.py'
       - 'scripts/v881_thin_shadow.py'
       - 'scripts/v883_gate_orchestrator.py'
+      - 'scripts/v884_evidence_probe.py'
       - 'scripts/tw_chip_diagnostic.py'
       - 'tests/**'
       - 'scripts/build_v880_evidence.py'
@@ -71,6 +73,7 @@ jobs:
           python scripts/v881_unmodeled_blockers.py
           python scripts/v881_thin_shadow.py
           python scripts/v883_gate_orchestrator.py --top 50
+          python scripts/v884_evidence_probe.py --top 50
           python scripts/tw_chip_diagnostic.py
           python scripts/v880_audit_exports.py --kind risk
           python scripts/v880_audit_exports.py --kind cash
@@ -93,6 +96,7 @@ jobs:
             python scripts/v881_unmodeled_blockers.py
             python scripts/v881_thin_shadow.py
           python scripts/v883_gate_orchestrator.py --top 50
+          python scripts/v884_evidence_probe.py --top 50
             python scripts/tw_chip_diagnostic.py
             python scripts/v880_audit_exports.py --kind risk
             python scripts/v880_audit_exports.py --kind cash
