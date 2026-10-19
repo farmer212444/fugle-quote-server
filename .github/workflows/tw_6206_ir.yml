@@ -1,0 +1,58 @@
+name: TW 6206 Official Investor Briefings
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'scripts/tw_6206_ir.py'
+      - 'tests/test_tw_6206_ir.py'
+      - '.github/workflows/tw_6206_ir.yml'
+  pull_request:
+    paths:
+      - 'scripts/tw_6206_ir.py'
+      - 'tests/test_tw_6206_ir.py'
+      - '.github/workflows/tw_6206_ir.yml'
+  schedule:
+    # Daily 20:20 Asia/Taipei (12:20 UTC); scheduled runs may be delayed.
+    - cron: '20 12 * * *'
+permissions:
+  contents: write
+concurrency:
+  group: tw-ir6206-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install PDF parser
+        run: python -m pip install 'pymupdf>=1.24,<2'
+      - name: Verify official-source parsing and integrity guards
+        run: python -m unittest -v tests.test_tw_6206_ir
+      - name: Fetch published official presentation PDFs
+        if: github.event_name != 'pull_request'
+        run: python scripts/tw_6206_ir.py --max-documents 4
+      - name: Archive original PDF bytes for traceability
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: tw-6206-original-investor-presentations
+          path: market-raw-ir/6206/
+          retention-days: 90
+          if-no-files-found: ignore
+      - name: Publish normalized issuer page-text, source SHA and dated summary
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add tw-market-data/ir/6206/
+          if git diff --cached --quiet; then
+            echo 'No new or changed Flytech briefing.'
+            exit 0
+          fi
+          git commit -m 'data: archive official 6206 investor briefing excerpts and source receipts'
+          git pull --rebase origin main
+          git push origin HEAD:main
