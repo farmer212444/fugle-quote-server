@@ -62,10 +62,10 @@ def number(value):
 
 def pct_number(value):
     s = str(value).replace(",", "").strip()
-    if not re.fullmatch(r"\d+(?:\.\d+)?", s):
+    if not re.fullmatch(r"-?\d+(?:\.\d+)?", s):
         raise ValueError("INVALID_OWNERSHIP_PERCENT")
     v = float(s)
-    if v > 100.01:
+    if abs(v) > 100.01:
         raise ValueError("OWNERSHIP_PERCENT_OUT_OF_RANGE")
     return v
 
@@ -276,6 +276,11 @@ def main():
         reports.append(entry)
     valid_pair = all(k in new for k in ("TWSE", "TPEX")) and new["TWSE"]["data_date"] == new["TPEX"]["data_date"]
     if valid_pair:
+        d = new["TWSE"]["data_date"]
+        dated_receipt = out_root / "institutional" / d / "receipt.json"
+        dated_receipt.write_text(json.dumps(dict(date=d, markets={"TWSE": new["TWSE"], "TPEX": new["TPEX"]},
+                                               certification="SOURCE_SCHEMA_AND_HASH_ONLY"),
+                                            ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         latest = out_root / "institutional" / "latest_complete.json"
         past = json.loads(latest.read_text()) if latest.exists() else {}
         d = new["TWSE"]["data_date"]
@@ -286,6 +291,11 @@ def main():
                                               validity="DATA_SHAPE_AND_TIMESTAMP_VALIDATED_NOT_FULL_MARKET_CERTIFICATION"),
                                          ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     if "TDCC" in new:
+        d = new["TDCC"]["data_date"]
+        dated_receipt = out_root / "ownership" / d / "receipt.json"
+        dated_receipt.write_text(json.dumps(dict(date=d, receipt=new["TDCC"],
+                                               certification="PUBLIC_GRADE_STATISTICS_ONLY"),
+                                            ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         latest = out_root / "ownership" / "latest.json"
         past = json.loads(latest.read_text()) if latest.exists() else {}
         if not past.get("date") or new["TDCC"]["data_date"] >= past["date"]:
