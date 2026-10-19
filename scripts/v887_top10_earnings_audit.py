@@ -233,7 +233,7 @@ def check_post_financial_quarter_revenue(root, research, now_income, prior_incom
 
 
 
-def equity_issuance_audit(root, research, top):
+def equity_issuance_audit(root, research, top, today=None):
     """Curated dated equity offer facts. Do not write forecast changes or A+."""
     path = root / "evidence/v880/issuer_reviews/top3_20261020.json"
     if not path.exists():
@@ -253,6 +253,16 @@ def equity_issuance_audit(root, research, top):
         raise ValueError("INVALID_EQUITY_ISSUANCE_UNITS")
     if details.get("issuance_completed") is not False or details.get("regulator_effectiveness_confirmed") is not False:
         raise ValueError("EVENT_CHANGED_REQUIRES_FRESH_MANUAL_EVIDENCE")
+    now=today or dt.datetime.now(dt.timezone(dt.timedelta(hours=8))).date()
+    if not isinstance(now,dt.date):
+        raise ValueError("INVALID_CURRENT_DATE_FOR_EVENT_STATUS")
+    scheduled=dt.date.fromisoformat(details["originally_scheduled_effective_date"])
+    if now>scheduled:
+        return dict(status="SCHEDULED_EFFECTIVE_DATE_ELAPSED_RECHECK_OFFICIAL_ISSUANCE",
+                    scheduled_effective_date=scheduled.isoformat(),
+                    review_date=note.get("review_date"),
+                    issuance_execution_verified=False,scenarios=[],formal_grade_updated=False,
+                    next_action="Check regulator effectiveness, actual issued share count, offering price and company master before any fresh EPS adjustment.")
     row=next((v for v in top if v.get("code")=="8390"),None)
     if row is None:
         return dict(status="ISSUER_NOT_IN_CURRENT_TOP10",scenarios=[],formal_grade_updated=False)
@@ -281,6 +291,13 @@ def equity_issuance_audit(root, research, top):
                               target_2027_fixed_profit=round(target*factor,2),
                               upside_fixed_profit_pct=round(100*(target*factor/px-1),2),
                               annual_incremental_profit_ntd_to_preserve_EPS=round(eps*new)))
+    available=research.get("top30_provisional",[])
+    for sc in scenarios:
+        up=sc["upside_fixed_profit_pct"]
+        if len(available)>=20 and all(isinstance(z.get("base",{}).get("price_upside_pct"),(int,float)) for z in available):
+            other=[z for z in available if z.get("code")!="8390"]
+            sc["conditional_research_rank_within_top30"]=1+sum(z["base"]["price_upside_pct"]>up for z in other)
+            sc["rank_is_full_universe_certified"]=False
     return dict(status="SCENARIO_ONLY_ISSUANCE_NOT_CONFIRMED",
                 board_announcement_date=details["board_resolution_date"],
                 regulator_filing_date=details["filing_received_date"],
@@ -400,10 +417,10 @@ def run(root):
     lines+=["","## 8390 現金增資潛在稀釋（未生效、未完成，不是新 Base）","",
             "狀態："+share_event["status"],""]
     if share_event.get("scenarios"):
-        lines+=["|股數情境|假設新增股數|固定獲利 EPS|固定獲利合理價|對參考價漲幅|維持原 EPS 所需新增年淨利(億元)|",
-                "|---|---:|---:|---:|---:|---:|"]
+        lines+=["|股數情境|假設新增股數|固定獲利 EPS|固定獲利合理價|對參考價漲幅|維持原 EPS 所需新增年淨利(億元)|情境順位|",
+                "|---|---:|---:|---:|---:|---:|---:|"]
         for sc in share_event["scenarios"]:
-            lines.append(f"|{sc['label']}|{sc['new_shares']:,}|{sc['eps_2027_fixed_profit']:.2f}|{sc['target_2027_fixed_profit']:.2f}|{sc['upside_fixed_profit_pct']:+.2f}%|{sc['annual_incremental_profit_ntd_to_preserve_EPS']/100000000:.2f}|")
+            lines.append(f"|{sc['label']}|{sc['new_shares']:,}|{sc['eps_2027_fixed_profit']:.2f}|{sc['target_2027_fixed_profit']:.2f}|{sc['upside_fixed_profit_pct']:+.2f}%|{sc['annual_incremental_profit_ntd_to_preserve_EPS']/100000000:.2f}|{sc.get('conditional_research_rank_within_top30','待核')}|")
         lines+=["",share_event["caveat"],"",
                 "原始決議及申報來源："+", ".join(share_event["primary_source_urls"])]
     else:
