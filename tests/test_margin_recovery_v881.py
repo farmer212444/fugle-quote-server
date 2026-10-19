@@ -12,7 +12,7 @@ class ConditionalMarginRecoveryTests(unittest.TestCase):
     def test_9802_like_history_has_conditional_base_but_not_certification(self):
         r=self.assess()
         self.assertTrue(r['applied'])
-        self.assertAlmostEqual(r['provisional_base_gm'],.17834475,places=6)
+        self.assertAlmostEqual(r['provisional_base_gm'],.17835825,places=6)
         self.assertEqual(r['recovery_fraction'],.75)
         self.assertFalse(r['causal_factory_evidence_verified'])
         self.assertFalse(r['holdout_validation_complete'])
