@@ -96,6 +96,14 @@ def items(category, html):
             if not link["href"] or not link["title"]:
                 continue
             url = urllib.parse.urljoin(BASE + SOURCES[category], link["href"])
+            parsed = urllib.parse.urlsplit(url)
+            # IR site sometimes publishes PDF paths with literal spaces.
+            url = urllib.parse.urlunsplit((
+                parsed.scheme, parsed.netloc,
+                urllib.parse.quote(urllib.parse.unquote(parsed.path), safe="/%()_.-~"),
+                urllib.parse.quote(urllib.parse.unquote(parsed.query), safe="=&;%+_.-~"),
+                "",
+            ))
             if not allowed(url):
                 continue
             key = digest(url.encode())[:20]
@@ -214,6 +222,8 @@ def self_test():
     n = items("news", '<tr><td>10/19/2026</td><td><a href="ir.asp?seq=1">2026年第三季自結財報新聞稿</a></td></tr>')
     assert q3_early_candidate(n[0])
     assert not allowed("https://example.org/bad.pdf")
+    spaced = items("news", '<tr><td>10/19/2026</td><td><a href="img/News_Release/My PDF_CN(1).pdf">test</a></td></tr>')
+    assert "%20" in spaced[0]["url"] and " " not in spaced[0]["url"]
     print("SELF_TEST_OK")
 
 if __name__ == "__main__":
