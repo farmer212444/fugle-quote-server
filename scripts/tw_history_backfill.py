@@ -65,7 +65,12 @@ def parse(raw,code,month):
         matches=[i for i,f in enumerate(fields) if str(f).replace(" ","").replace("\n","")==term]
         require(len(matches)==1,"TWSE_HISTORY_EXPECTED_FIELD_"+term)
         return matches[0]
-    cols={x:locate(x) for x in ("日期","交易股數","成交金額","收盤價")}
+    def alias(*variants):
+        hits=[i for i,f in enumerate(fields) if str(f).strip().replace(" ","") in variants]
+        require(len(hits)==1,"TWSE_HISTORY_VOL_FIELD_MISSING_OR_AMBIGUOUS")
+        return hits[0]
+    cols={"日期":locate("日期"),"交易股數":alias("成交股數","交易股數"),
+          "成交金額":locate("成交金額"),"收盤價":locate("收盤價")}
     values=j.get("data")
     require(isinstance(values,list) and 5<=len(values)<=32,"MONTH_HISTORY_ROW_COUNT_INVALID")
     data={}
