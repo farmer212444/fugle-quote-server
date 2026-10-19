@@ -195,9 +195,9 @@ def conduct(root=DATA):
         fx=flags_and_next(code,financial,audit["shares"],audit["cash"],rev)
         record=dict(code=code,name=row["name"],market=market,
           base_close=px,price_date=research["asof_price_date"],research_rank_within_all_786=row.get("market_research_rank"),
-          2027_base_eps=round(eps,3),2027_base_pe=round(pe,2),
-          2027_base_target_price=round(modeled_target,2),
-          2027_base_upside_pct=round(100*(modeled_target/px-1),2),
+          base_2027_eps=round(eps,3),base_2027_pe=round(pe,2),
+          base_2027_target_price=round(modeled_target,2),
+          base_2027_upside_pct=round(100*(modeled_target/px-1),2),
           valuation_stress=stressed,
           observed_2025FY_eps=financial["prior_fy_basic_eps"],
           observed_H1_eps=financial["latest_ytd_basic_eps"],
@@ -248,17 +248,15 @@ def markdown(report):
     for r in report["securities"]:
         rev=r["q3_revenue_yoy"] or {}
         yoy=rev.get("next_quarter_revenue_yoy_pct")
-        lines.append(f"|{r['code']} {r['name']}|{r['2027_base_target_price']:.2f}|"
-            f"{r['2027_base_upside_pct']:+.1f}%|"
-            f"{r['valuation_stress']['double20']['upside_pct']:+.1f}%|"
-            f"{yoy:.1f}%" if yoy is not None else "未核對")
-        # Assemble full rows below to ensure missing revenue is not mistaken for profit.
-        lines[-1]=f"|{r['code']} {r['name']}|{r['2027_base_target_price']:.2f}|{r['2027_base_upside_pct']:+.1f}%|{r['valuation_stress']['double20']['upside_pct']:+.1f}%|{yoy:.1f}%" if yoy is not None else f"|{r['code']} {r['name']}|{r['2027_base_target_price']:.2f}|{r['2027_base_upside_pct']:+.1f}%|{r['valuation_stress']['double20']['upside_pct']:+.1f}%|待核"
+        sales=f"{yoy:.1f}%" if yoy is not None else "待核"
+        lines.append(f"|{r['code']} {r['name']}|{r['base_2027_target_price']:.2f}|"
+                     f"{r['base_2027_upside_pct']:+.1f}%|"
+                     f"{r['valuation_stress']['double20']['upside_pct']:+.1f}%|{sales}")
         lines[-1]+=f"|{r['observed_H1_ocf_ntd_100m']:+.2f}|{sum(not x['legal_price_and_outstanding_verified'] for x in r['CB_bond_issues'])}|"
     lines+=["","## 逐股待處理",""]
     for r in report["securities"]:
         lines.append(f"### {r['code']} {r['name']}")
-        lines.append(f"Base價 {r['2027_base_target_price']:.2f}、20%雙壓價 {r['valuation_stress']['double20']['target_price']:.2f}、10%雙壓加CB價 {r['valuation_stress']['double10_plus_CB_reset_sensitivity']['target_price']:.2f}。")
+        lines.append(f"Base價 {r['base_2027_target_price']:.2f}、20%雙壓價 {r['valuation_stress']['double20']['target_price']:.2f}、10%雙壓加CB價 {r['valuation_stress']['double10_plus_CB_reset_sensitivity']['target_price']:.2f}。")
         lines.append("尚未核實項目："+("、".join(r["flags"][:9]) if r["flags"] else "原始財報與法律文件仍待核") )
         if "equity_raise_sensitivity" in r:
             issue=r["equity_raise_sensitivity"]
