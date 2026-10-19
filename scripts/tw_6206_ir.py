@@ -30,7 +30,9 @@ def source_allowed(url):
     if p.scheme != "https" or p.username or p.password or p.port or p.query or p.fragment:
         return False
     domain = (p.hostname or "").lower()
-    path = p.path.lower()
+    path = urllib.parse.unquote(p.path.lower())
+    if ".." in path.split("/") or "\\\\" in path:
+        return False
     return (domain in ("www.flytech.com.tw","flytech.com.tw") and
             path.startswith("/data/investor_law/attached/") and path.endswith(".pdf")) or (
             domain == "mopsov.twse.com.tw" and
