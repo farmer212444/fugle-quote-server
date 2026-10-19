@@ -1,6 +1,6 @@
 # V8.8.7 2027 Top10 獲利品質預檢（不修改正式排名）
 
-形成：2026-10-20T03:25:30.218802+08:00；收盤基準：2026-10-16；財報：2026-Q2。
+形成：2026-10-20T05:09:21.390189+08:00；收盤基準：2026-10-16；財報：2026-Q2。
 
 十檔只完成已有官方來源鏡像的數字交叉分析；不表示原始財報附註、CB法律條款、PIT、流動性已簽核。**正式新增A+：0。**
 
@@ -50,6 +50,20 @@
 |8390 金益鼎|+39.15%|+53.67%|+14.52|季報毛利與訂單待核|
 |6741 91APP*-KY|+31.73%|+32.48%|+0.75|季報毛利與訂單待核|
 |1256 鮮活果汁-KY|+47.33%|+26.68%|-20.65|**年增大幅減速**|
+
+## 8390 現金增資潛在稀釋（未生效、未完成，不是新 Base）
+
+狀態：SCENARIO_ONLY_ISSUANCE_NOT_CONFIRMED
+
+|股數情境|假設新增股數|固定獲利 EPS|固定獲利合理價|對參考價漲幅|維持原 EPS 所需新增年淨利(億元)|
+|---|---:|---:|---:|---:|---:|
+|NO_NEW_SHARES|0|13.83|182.88|+103.88%|0.00|
+|FILED_8M_NOT_EFFECTIVE|8,000,000|12.77|168.83|+88.21%|1.11|
+|BOARD_MAX_10M_NOT_APPROVED_FINAL|10,000,000|12.53|165.65|+84.67%|1.38|
+
+This ratio holds total profit and PE constant. It assumes the pre-issuance share count is not already adjusted for the new equity raise and adds no earnings from proceeds. Do not add again after any new company master update.
+
+原始決議及申報來源：https://ww2.money-link.com.tw/RealtimeNews/NewsContent.aspx?pu=News_0002_3&sn=6329018001, https://www.moneydj.com/KMDJ/news/newsviewer.aspx?a=a361e939-b8b0-4ecd-9604-c4d084e46ea1, https://tw.stock.yahoo.com/quote/8390.TWO/profile
 
 ## 待補證據（依原始順位）
 
