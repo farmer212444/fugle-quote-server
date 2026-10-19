@@ -127,6 +127,91 @@ def allowed_end(asof):
     return max((y, q) for release, y, q in pairs if release <= asof)
 
 
+
+def latest_completed_quarter(asof):
+    """The latest quarter which has ENDED, irrespective of statutory filing deadline."""
+    if asof.month in (1, 2, 3):
+        return asof.year - 1, 4
+    return asof.year, (asof.month - 1) // 3
+
+
+def early_quarter_candidate(asof):
+    """Do not change the full-market eligible period on a single early issuer report."""
+    last=latest_completed_quarter(asof)
+    return last if last > allowed_end(asof) else None
+
+
+def early_watch_9802(asof, offline=False):
+    """Read official early quarterly issuer data without changing market-wide modeling vintage.
+
+    One early issuer's report cannot stand in for full-market quarterly coverage or
+    company-specific original filing PIT; this only creates a research watch receipt.
+    """
+    candidate=early_quarter_candidate(asof)
+    if candidate is None or offline:
+        return dict(status='NO_NEW_PREDEADLINE_QUARTER_TO_PROBE',period=None)
+    y,q=candidate
+    label=f'{y}-Q{q}'
+    source=MOPS+KINDS['income']
+    try:
+        raw=download(y,q,'TWSE','income')
+        # MOPS can return a syntactically valid older-period table for a future query.
+        from html import unescape
+        plain=unescape(re.sub('<[^>]+>',' ',raw.decode('utf-8-sig',errors='replace')))
+        normalized=''.join(plain.split())
+        season={1:'[一1]',2:'[二2]',3:'[三3]',4:'[四4]'}[q]
+        if not re.search('第'+season+'季',normalized):
+            raise ValueError('SOURCE_QUARTER_TITLE_NOT_CONFIRMED')
+        rows=parse(raw,'income',y,q,'TWSE')
+        row=next((x for x in rows if x['code']=='9802'),None)
+        if row is None:
+            return dict(status='9802_NOT_YET_IN_OFFICIAL_QUARTER_TABLE',period=label)
+        revenue=num(row.get('revenue_ytd_k'))
+        gross=num(row.get('gross_profit_ytd_k'))
+        if revenue is None or revenue<=0 or gross is None:
+            raise ValueError('9802_REVENUE_OR_GROSS_PROFIT_INCOMPLETE')
+        q3_gm=None
+        last=periods((y,q),2)[0]
+        previous=f'{last[0]}-Q{last[1]}'
+        prior=load(FIN/previous/'TWSE_income.json',previous,'TWSE','income')
+        prior_row=next((x for x in prior['rows'] if x['code']=='9802'),None) if prior else None
+        if prior_row and all(num(prior_row.get(k)) is not None for k in ('revenue_ytd_k','gross_profit_ytd_k')):
+            delta_revenue=revenue-num(prior_row['revenue_ytd_k'])
+            delta_gross=gross-num(prior_row['gross_profit_ytd_k'])
+            if delta_revenue>0:
+                q3_gm=round(100*delta_gross/delta_revenue,4)
+        receipt=dict(schema='V885_EARLY_ISSUER_FINANCIAL_RESEARCH_V1',
+                     code='9802',market='TWSE',financial_period=label,
+                     source_url=source,original_html_sha256=hashlib.sha256(raw).hexdigest(),
+                     quarter_title_checked=True,issuer_filing_PIT_verified=False,
+                     report_year_independently_verified=False,
+                     captured_at_utc=dt.datetime.now(dt.timezone.utc).isoformat(),
+                     published_at_original_company_timestamp=None,
+                     observed_income_row=row,
+                     year_to_date_gross_margin_pct=round(100*gross/revenue,4),
+                     new_quarter_gross_margin_pct=q3_gm,
+                     status='EARLY_OFFICIAL_TABLE_RESEARCH_ONLY_NOT_FORMAL_MODEL_INPUT',
+                     full_market_quarter_eligibility_unchanged=True,
+                     must_not_set_certification_gate_pass=True)
+        loc=FIN/'early_watch'/f'9802_{y}-Q{q}.json'
+        loc.parent.mkdir(parents=True,exist_ok=True)
+        # Do not churn the repo when the observed source HTML and financial row are unchanged.
+        previous_receipt=json.loads(loc.read_text(encoding='utf-8')) if loc.exists() else None
+        if previous_receipt and previous_receipt.get('observed_income_row')==row and previous_receipt.get('financial_period')==label:
+            return dict(status='ALREADY_OBSERVED_NO_NEW_FINANCIAL_DATA',period=label,
+                        latest_observed_gross_margin_pct=q3_gm)
+        rawpath=RAW/'early_watch'/label/'TWSE_income_9802.html'
+        rawpath.parent.mkdir(parents=True,exist_ok=True)
+        rawpath.write_bytes(raw)
+        dump(loc,receipt)
+        return dict(status='NEW_EARLY_9802_FINANCIAL_NUMBERS_RESEARCH_ONLY',period=label,
+                    latest_observed_gross_margin_pct=q3_gm)
+    except Exception as exc:
+        # Source blocks or incomplete filings do not halt existing complete-quarter collector.
+        return dict(status='EARLY_9802_SOURCE_PENDING_RETRY',
+                    period=label,error=f'{type(exc).__name__}:{str(exc)[:180]}')
+
+
 def periods(end, count=8):
     y, q = end
     result = []
@@ -301,6 +386,10 @@ def self_test():
     assert r['eps_2026_proxy'] == 5.5 and r['eps_2027_base'] == 6.05
     assert not r['formal_Aplus']
     assert allowed_end(dt.date(2026, 10, 17)) == (2026, 2)
+    assert early_quarter_candidate(dt.date(2026, 10, 19)) == (2026, 3)
+    assert early_quarter_candidate(dt.date(2026, 11, 16)) is None
+    assert early_quarter_candidate(dt.date(2026, 8, 10)) is None
+    assert latest_completed_quarter(dt.date(2027, 1, 5)) == (2026, 4)
     assert len(periods((2026, 2))) == 8
     print('SELF_TEST_OK: 8Q, MOPS HTML, negative numbers, EPS scenario, fail-closed A+')
 
@@ -318,6 +407,8 @@ def main():
     asof = dt.date.fromisoformat(args.asof) if args.asof else dt.datetime.now(TZ).date()
     if asof > dt.datetime.now(TZ).date() or not 0 <= args.max_fetches <= 40:
         p.error('No future asof; max-fetches must be 0..40')
+    early_result = early_watch_9802(asof, args.offline)
+    print('EARLY_9802_Q3_WATCH',json.dumps(early_result,ensure_ascii=False))
     result = scan(asof, args.max_fetches, args.offline)
     print(json.dumps({k: result[k] for k in ('status', 'verified_batches', 'missing_batches',
                                             'new_batches_this_run', 'formal_Aplus_count')},
