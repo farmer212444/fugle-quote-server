@@ -7,8 +7,12 @@ This is a diagnostic only; not a substitute for PIT or financial certification.
 import argparse
 import collections
 import json
+import sys
 from pathlib import Path
 
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 from tw_model_v880.data import MarketData
 from tw_model_v880.math import number
 
