@@ -56,8 +56,9 @@ def observe(item,year):
     if None in (fy,one,two):return None
     oldq1=r.get(f'{year-1}-Q1');oldq2=r.get(f'{year-1}-Q2')
     yoy=None;sa=None
-    if oldq1 and oldq1.get('revenue_ytd_k',0)>0:
-        yoy=q1['revenue_ytd_k']/oldq1['revenue_ytd_k']-1
+    prior_rev=oldq1.get('revenue_ytd_k') if oldq1 else None
+    if isinstance(prior_rev,(int,float)) and math.isfinite(prior_rev) and prior_rev>0:
+        yoy=q1['revenue_ytd_k']/prior_rev-1
     if oldq1 and oldq2 and _ratio(oldq1) is not None and _standalone_gm(oldq1,oldq2) is not None:
         sa=(two-one)-(_standalone_gm(oldq1,oldq2)-_ratio(oldq1))
     return dict(code=item['code'],name=item['name'],year=year,
