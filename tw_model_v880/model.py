@@ -6,6 +6,10 @@ from .specialists import issuer_case
 from .provenance import code_fingerprint
 from .margin_recovery import assess_margin_recovery
 
+# A low-turnover issuer can be researched without passing the execution gate.
+RESEARCH_MIN_TURNOVER_NTD = 1_000_000
+TRADABILITY_REVIEW_TURNOVER_NTD = 12_000_000
+
 def finite_values(d,keys):return all(d.get(k) is not None and math.isfinite(d[k]) for k in keys)
 def research_gates(primary,code,period,cash,coverage):
     gates={k:gate('PENDING','SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED') for k in GATES}
@@ -26,9 +30,11 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
     calibration=calibration.get('sector_parameters',{}).get(rev.get('industry'),calibration)
     close=number(p['close']);volume=number(p.get('volume_shares'))
     if close is None or volume is None or close<=0 or volume<0:return unavailable('REFERENCE_PRICE_OR_VOLUME_INVALID')
-    thin=close<8 or close*volume<12000000
+    turnover=close*volume
+    thin=close<8 or turnover<RESEARCH_MIN_TURNOVER_NTD
+    low_turnover_review=turnover<TRADABILITY_REVIEW_TURNOVER_NTD
     if close<8 and not shadow_thin:return unavailable('PRICE_FILTER_BELOW_8_TWD')
-    if close*volume<12000000 and not shadow_thin:return unavailable('TURNOVER_FILTER_BELOW_12M_TWD')
+    if turnover<RESEARCH_MIN_TURNOVER_NTD and not shadow_thin:return unavailable('TURNOVER_FILTER_BELOW_1M_TWD')
     y,q=quarter_key(data.period);fy_period=f'{y if q==4 else y-1}-Q4';prior_period=f'{y-1}-Q{q}'
     if any(k not in rs for k in data.required_periods):return dict(code=code,name=latest.get('name'),status='MISSING_NORMALIZED_EIGHT_QUARTERS',rankable=False)
     if rev.get('industry')=='金融保險業':return dict(code=code,name=latest.get('name'),status='FINANCIAL_SECTOR_REQUIRES_ROE_PB_MODEL',rankable=False)
@@ -47,6 +53,7 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
     if min(r,rfy,prior_r)<=0:return dict(code=code,name=latest.get('name'),status='NONPOSITIVE_REVENUE_SPECIAL_MODEL_REQUIRED',rankable=False)
     warnings=[]
     if thin:warnings.append('LOW_LIQUIDITY_OR_PRICE_SHADOW_ONLY_NO_PRIMARY_RANKING')
+    elif low_turnover_review:warnings.append('BELOW_12M_SINGLE_DAY_TURNOVER_RESEARCH_ONLY_REQUIRES_EXIT_CAPACITY_REVIEW')
     if primary:
         for a,b in [('revenue_k','revenue_ytd_k'),('gross_profit_k','gross_profit_ytd_k'),('operating_profit_k','operating_profit_ytd_k')]:
             if abs(current[a]-number(latest[b]))>1:raise ValueError('PRIMARY_MIRROR_'+a+'_MISMATCH')
@@ -132,7 +139,14 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
         and gates['forecast_bridge'].get('status')=='PASS'
         and gates['forecast_bridge'].get('margin_normalization_review_complete') is not True):
         gates['forecast_bridge']=gate('PENDING','CONDITIONAL_MARGIN_RECOVERY_ISSUER_SIGNOFF_REQUIRED')
-    if thin:gates['tradability']=gate('PENDING','LOW_SINGLE_DAY_TRADING_VALUE_OR_PRICE_REQUIRES_MULTI_SESSION_REVIEW')
+    if thin:
+        gates['tradability']=gate('PENDING','LOW_SINGLE_DAY_TRADING_VALUE_OR_PRICE_REQUIRES_MULTI_SESSION_REVIEW')
+    elif low_turnover_review and gates['tradability'].get('status')!='FAIL':
+        # A single session worth 1m-12m is discoverable, never an automatic A+ PASS.
+        # A documented multiple-session fill/spread and exit-capacity review is required.
+        t=gates['tradability']
+        if not (t.get('multi_session_liquidity_verified') is True and t.get('exit_capacity_verified') is True):
+            gates['tradability']=gate('PENDING','BELOW_12M_DAILY_TURNOVER_REQUIRES_MULTI_SESSION_SPREAD_AND_EXIT_CAPACITY_REVIEW')
     forecast=gates['forecast_bridge']
     if forecast.get('status')=='PASS' and any(forecast.get(k)!=v for k,v in [('model_code_sha256',code_fingerprint()),('target_date',target_date),('reference_price_date',data.price_date)]):
         gates['forecast_bridge']=gate('PENDING','FORECAST_CERTIFICATE_DOES_NOT_MATCH_CURRENT_RUNTIME_TARGET_AND_PRICE')
@@ -172,7 +186,9 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
     if pe is None:exclusions.append('PE_SAMPLE_INSUFFICIENT')
     if base['eps']<=0:exclusions.append('NONPOSITIVE_EARNINGS_REQUIRES_NON_PE_VALUATION')
     return dict(code=code,name=latest.get('name'),market=market,industry=industry,financial_period=data.period,
-      reference_close=close,price_date=data.price_date,revenue_month=data.revenue_month,estimate_vintage=asof,target_date=target_date,
+      reference_close=close,single_day_turnover_ntd=turnover,
+      liquidity_research_band=('SHADOW_BELOW_1M_OR_PRICE_FLOOR' if thin else 'RESEARCH_1M_TO_12M_PENDING_EXECUTION' if low_turnover_review else 'RESEARCH_AT_LEAST_12M_PENDING_EVIDENCE'),
+      price_date=data.price_date,revenue_month=data.revenue_month,estimate_vintage=asof,target_date=target_date,
       source_tier='ORIGINAL_CURRENT_ISSUER_NUMERICS' if primary else 'OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL',rankable=rankable,point_valuation_available=point,
       original_current_issuer_numeric_checked=primary is not None,exclusion_reasons=exclusions,
       base=base,bear=bear,bull=bull,share_bridge=share,liquidity=flow,primary_ttm_cash=coverage or None,

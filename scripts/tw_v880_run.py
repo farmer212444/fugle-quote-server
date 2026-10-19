@@ -20,7 +20,7 @@ def atomic(path,content):
         if os.path.exists(tmp):os.unlink(tmp)
 def public_row(r):
     keys=['code','name','market','industry','financial_period','reference_close','price_date','estimate_vintage','target_date','source_tier','rankable',
-      'point_valuation_available','base','bear','bull','status','warning_flags','formal_Aplus','formal_Aplusplus','scenario_upside_pct','research_target_price_scenario',
+      'point_valuation_available','single_day_turnover_ntd','liquidity_research_band','base','bear','bull','status','warning_flags','formal_Aplus','formal_Aplusplus','scenario_upside_pct','research_target_price_scenario',
       'target_year_eps_scenario','research_2027_price_scenario','eps_2027_base_scenario','research_pe_assumption','research_lane','rating','score',
       'specialist_model_requirements','base_scenario_role','early_recovery_watch','stress_eps90_pe90_upside_pct','original_current_issuer_numeric_checked','exclusion_reasons','margin_recovery','margin_bridge']
     out={k:r[k] for k in keys if k in r}
@@ -64,7 +64,7 @@ def run(data_dir,asof,target_date,out_dir=None):
     pending=[dict(code=r['code'],name=r.get('name'),status=r['status'],pending_gates=r.get('certification',{}).get('gates_pending',[])) for r in rows if not r.get('formal_Aplus')]
     result=dict(model=VERSION,model_code_sha256=code_fingerprint(),estimate_vintage=asof,asof_price_date=data.price_date,revenue_month=data.revenue_month,
       financial_last_quarter=data.period,required_quarters=data.required_periods,target_date=target_date,policy=POLICY,
-      policy_notes=['Approved A+/A++ price-upside thresholds retain 30/35 pct','A++ stress assumes EPS and PE each -10%, CB conversion price -10%, and nonnegative upside; stress design is an explicit implementation assumption'],
+      policy_notes=['Approved A+/A++ price-upside thresholds retain 30/35 pct','Research min one-day turnover 1m NTD; 1m-12m research requires multi-session liquidity/exit review for formal tradability','A++ stress assumes EPS and PE each -10%, CB conversion price -10%, and nonnegative upside; stress design is an explicit implementation assumption'],
       data_scope=dict(normalized_issuers=len(data.history),priced_issuers=len(data.prices),model_rows=len(rows),tracked_issuer_universe=len(universe),original_latest_issuer_numeric_coverage=len(data.evidence.get('primary',{})),
         official_current_bulk_issuers=sum(len(v['rows']) for k,v in data.evidence.get('official_current_bulk',{}).items() if k.endswith('_income')),
         primary_research_rankable=len(primary),market_research_rankable=len(broad),not_rankable=len(rows)-len(broad),broad_unverified_historical_detail_rankable=len(broad),source_errors=len(data.errors),issuer_failures=len(failures)),

@@ -15,6 +15,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 from tw_model_v880.data import MarketData
 from tw_model_v880.math import number
+from tw_model_v880.model import RESEARCH_MIN_TURNOVER_NTD
 
 def classify(data, report):
     expected = report["data_scope"]["normalized_issuers"]
@@ -31,7 +32,7 @@ def classify(data, report):
         raise ValueError("MODELED_CODE_NOT_IN_FINANCIAL_UNIVERSE")
     prechecks = {"REFERENCE_PRICE_MISSING", "MONTHLY_REVENUE_MISSING", "ISSUED_SHARE_MASTER_MISSING",
                  "REFERENCE_PRICE_OR_VOLUME_INVALID", "PRICE_FILTER_BELOW_8_TWD",
-                 "TURNOVER_FILTER_BELOW_12M_TWD", "CURRENT_FINANCIAL_STATEMENT_MISSING"}
+                 "TURNOVER_FILTER_BELOW_1M_TWD", "CURRENT_FINANCIAL_STATEMENT_MISSING"}
     excluded = {str(x["code"]) for x in report["all_model_row_summary"] if x.get("status") in prechecks}
     new = []
     master = data.evidence.get("master", {})
@@ -55,8 +56,8 @@ def classify(data, report):
                 missing.append("NO_ELIGIBLE_CLOSE_OR_VOLUME")
             elif close < 8:
                 missing.append("PRICE_BELOW_8_MODEL_RESEARCH_FLOOR")
-            elif close * volume < 12000000:
-                missing.append("LOW_SINGLE_DAY_TRADING_VALUE_BELOW_12M_NTD")
+            elif close * volume < RESEARCH_MIN_TURNOVER_NTD:
+                missing.append("LOW_SINGLE_DAY_TRADING_VALUE_BELOW_1M_NTD")
         if code not in data.revenue:
             missing.append("NO_CURRENT_MONTHLY_REVENUE")
         if code not in master:

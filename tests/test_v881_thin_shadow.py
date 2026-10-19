@@ -13,7 +13,7 @@ class ThinShadowTests(unittest.TestCase):
             period="2026-Q2",
             prices={
                 ("TWSE","1111"):{"close":20,"volume_shares":1000000},
-                ("TPEX","2222"):{"close":20,"volume_shares":50000},
+                ("TPEX","2222"):{"close":20,"volume_shares":49999},
                 ("TWSE","3333"):{"close":20,"volume_shares":1000000}
             },
             revenue={"1111":{},"2222":{},"3333":{}},
