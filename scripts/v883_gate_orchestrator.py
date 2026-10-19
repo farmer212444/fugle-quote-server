@@ -8,7 +8,10 @@ import argparse
 import collections
 import json
 import math
+import sys
 from pathlib import Path
+ROOT=Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:sys.path.insert(0,str(ROOT))
 from tw_model_v880.evidence import GATES
 
 # These are routing destinations, not source attestations or PASS predicates.
