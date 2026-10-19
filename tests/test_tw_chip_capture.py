@@ -109,5 +109,22 @@ class OfficialChipTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "ORIGINAL_BYTES_CHANGED"):
                 save_capture(*wrong)
 
+    def test_reparse_same_immutable_original_preserves_prior_normalization(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp)
+            args = (out, "institutional", "2026-10-16", "TPEX")
+            raw = b"identical official source body"
+            first = save_capture(*args, raw, [{"code": "1234", "dealer": None}],
+                                 "https://www.tpex.org.tw/openapi/v1/test", "2026-10-19T14:00:00+08:00")
+            second = save_capture(*args, raw, [{"code": "1234", "dealer": 0}],
+                                  "https://www.tpex.org.tw/openapi/v1/test", "2026-10-19T14:10:00+08:00")
+            self.assertEqual(first["raw_sha256"], second["raw_sha256"])
+            self.assertEqual(first["normalized_sha256"], second["parser_reinterpretation_from_previous_sha256"])
+            prior = out / "normalized_revisions" / "institutional" / "2026-10-16" / "TPEX" / (first["normalized_sha256"] + ".json")
+            self.assertTrue(prior.is_file())
+            self.assertIsNone(json.loads(prior.read_text())[0]["dealer"])
+            latest = out / "institutional" / "2026-10-16" / "TPEX.json"
+            self.assertEqual(json.loads(latest.read_text())[0]["dealer"], 0)
+
 if __name__ == "__main__":
     unittest.main()
