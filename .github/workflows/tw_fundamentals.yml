@@ -6,7 +6,9 @@ on:
       - 'scripts/tw_fundamentals.py'
       - '.github/workflows/tw_fundamentals.yml'
   schedule:
-    # 19:55 Asia/Taipei every day. GitHub cron may be delayed.
+    # 19:55 Taipei daily; during reporting season also probe at 13:10.
+    # Updates to official data trigger a separate model run; nightly model also runs at 21:30.
+    - cron: '10 5 * * *'
     - cron: '55 11 * * *'
 permissions:
   contents: write
