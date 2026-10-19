@@ -17,6 +17,7 @@ on:
       - 'tw-market-data/prices/issuer_history/**'
       - 'scripts/v886_9802_early_revalue.py'
       - 'scripts/v888_6206_valuation.py'
+      - 'scripts/v890_five_candidate_audit.py'
       - 'tw-market-data/ir/6206/**'
       - 'scripts/tw_chip_diagnostic.py'
       - 'tests/**'
@@ -51,6 +52,7 @@ on:
       - 'tw-market-data/prices/issuer_history/**'
       - 'scripts/v886_9802_early_revalue.py'
       - 'scripts/v888_6206_valuation.py'
+      - 'scripts/v890_five_candidate_audit.py'
       - 'tw-market-data/ir/6206/**'
       - 'scripts/tw_chip_diagnostic.py'
       - 'tests/**'
@@ -107,6 +109,7 @@ jobs:
           python scripts/v880_audit_exports.py --kind risk
           python scripts/v880_audit_exports.py --kind cash
           python scripts/v880_audit_exports.py --kind shares
+          python scripts/v890_five_candidate_audit.py
       - name: Save current results on main only (retry from fresh origin)
         if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
         run: |
@@ -132,6 +135,7 @@ jobs:
             python scripts/v880_audit_exports.py --kind risk
             python scripts/v880_audit_exports.py --kind cash
             python scripts/v880_audit_exports.py --kind shares
+            python scripts/v890_five_candidate_audit.py
             git add tw-market-data/evidence/v880 tw-market-data/rankings
             if git diff --cached --quiet; then exit 0; fi
             git commit -m 'data: refresh V8.8.2 research and evidence status'
