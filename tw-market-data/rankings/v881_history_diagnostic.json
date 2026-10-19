@@ -1,0 +1,78 @@
+{
+  "model": "V8.8.1 historical accounting diagnostic",
+  "asof_data": "2026-10-19",
+  "exact_v881_margin_normalization_backtest": false,
+  "reason": "The current V8.8.1 2027 normalization uses two completed FY plus 2026H1 and September 2026 revenue. No later actual financial year exists. This is a prior-year/Q1-to-Q2 signal proxy.",
+  "earliest_available_full_year": 2024,
+  "yearly": {
+    "2025": {
+      "all_valid": {
+        "n": 1749,
+        "improved_n": 776,
+        "improved_pct": 44.4,
+        "median_change_pp": -0.43
+      },
+      "low_gm": {
+        "n": 379,
+        "improved_n": 240,
+        "improved_pct": 63.3,
+        "median_change_pp": 1.58
+      },
+      "signal": "PREV_FY_GM_MINUS_CURRENT_Q1_GM_GE_2PP"
+    },
+    "2026": {
+      "all_valid": {
+        "n": 1801,
+        "improved_n": 912,
+        "improved_pct": 50.6,
+        "median_change_pp": 0.03
+      },
+      "low_gm": {
+        "n": 411,
+        "improved_n": 277,
+        "improved_pct": 67.4,
+        "median_change_pp": 1.8
+      },
+      "signal": "PREV_FY_GM_MINUS_CURRENT_Q1_GM_GE_2PP"
+    }
+  },
+  "cohort_2026": {
+    "growth_10pct": {
+      "n": 135,
+      "improved_n": 92,
+      "improved_pct": 68.1,
+      "median_change_pp": 2.13
+    },
+    "below_growth_10pct": {
+      "n": 255,
+      "improved_n": 172,
+      "improved_pct": 67.5,
+      "median_change_pp": 1.76
+    },
+    "growth_10pct_season_adjusted": {
+      "n": 135,
+      "improved_n": 82,
+      "improved_pct": 60.7,
+      "median_change_pp": 1.37
+    },
+    "below_growth_10pct_season_adjusted": {
+      "n": 255,
+      "improved_n": 156,
+      "improved_pct": 61.2,
+      "median_change_pp": 0.93
+    }
+  },
+  "model_2023_to_2025_stock_returns": null,
+  "vs_taiex_alpha": null,
+  "historical_Aplus_pick_rate": null,
+  "formal_stock_return_backtest_passed": false,
+  "limitations": [
+    "Missing pre-2024-Q3 eight-quarter comparable operating histories",
+    "No issuer-specific historical original filing and revision timestamps",
+    "No pre-signal historical forecast vintages nor price/execution/corporate-action archive",
+    "Current normalized backfill can include historical revisions",
+    "Q1-to-Q2 margin proxy is not next-year FY gross-margin recovery",
+    "FY/Q1 earnings are available at different company-specific timestamps",
+    "Selection/regression-to-mean and sector composition not controlled"
+  ]
+}
