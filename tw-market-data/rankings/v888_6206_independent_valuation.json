@@ -1,0 +1,182 @@
+{
+  "status": "SOURCE_RECONCILED_RESEARCH_ONLY_UNCERTIFIED",
+  "model": "V8.8.8 6206 independent source-linked operating bridge",
+  "evaluated_for": "2027-12-31",
+  "issuer": "6206",
+  "actual_ir": {
+    "H1_2026_revenue_m": 3392,
+    "H1_2026_gross_profit_m": 1543,
+    "H1_2026_operating_profit_m": 1006,
+    "H1_2026_parent_profit_m": 848,
+    "H1_2026_eps": 5.93,
+    "H1_2026_gm_pct": 45.5,
+    "H1_2026_op_margin_pct": 29.6,
+    "H1_2026_inventory_m": 1510,
+    "H1_2026_receivables_m": 1617,
+    "H1_2026_cash_m": 2428,
+    "FY_2025_revenue_m": 5033,
+    "FY_2025_eps": 6.9
+  },
+  "official_revenue": {
+    "revenue_9m_ntd_m": 5135.677,
+    "september_2026_ntd_m": 592.08,
+    "ytd_yoy_pct": 30.065378678421236,
+    "provenance": {
+      "report_month": "2026-09",
+      "capture_utc": "2026-10-19T16:59:14.897344+00:00",
+      "official_sources": [
+        {
+          "name": "twse",
+          "url": "https://openapi.twse.com.tw/v1/opendata/t187ap05_L",
+          "sha256": "a58c04b3bdc2b94632027018ca4f09f6ad053848addb7b9580b372626542fc17"
+        },
+        {
+          "name": "tpex",
+          "url": "https://mopsfin.twse.com.tw/opendata/t187ap05_O.csv",
+          "sha256": "b68af0bd0aa7b105e0160af6ba8ec1f95fab2e2f888fffb60f56e26a75045af9"
+        },
+        {
+          "name": "tpex_backup",
+          "url": "https://www.tpex.org.tw/openapi/v1/mopsfin_t187ap05_O",
+          "sha256": "a27fea120daa8ef4543bcbf6e31426cad2e0201111ee8d97916fbb5fce2727a6"
+        }
+      ]
+    }
+  },
+  "official_reference_price": {
+    "close": 134.5,
+    "date": "2026-10-16",
+    "source": "https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL"
+  },
+  "source_receipts": [
+    {
+      "event_date": "2026-08-12",
+      "source_url": "https://www.flytech.com.tw/data/investor_law/attached/1786525880605469429.pdf",
+      "pdf_sha256": "523a4595b772a0b98e14a832086848e393ff432658a2ae9d48d36a9a92a5a056",
+      "extracted_text_sha256": "b851e701df723105fb07383e94045ad90dc08d163cd26d5ba3afdd242297449e",
+      "first_captured_utc": "2026-10-19T13:36:13.690947+00:00"
+    },
+    {
+      "event_date": "2026-03-20",
+      "source_url": "https://www.flytech.com.tw/data/investor_law/attached/1773972630261023736.pdf",
+      "pdf_sha256": "9ba65a636f21ad73fa3640c8a13411d0a2bc58fe85b6b8e04fa89515a0d90b32",
+      "extracted_text_sha256": "9574ae0ec74bd8e059c95d0764cbfbfd017244076774ef8e955e47e4548871e9",
+      "first_captured_utc": "2026-10-19T13:36:13.690947+00:00"
+    }
+  ],
+  "estimated_2026_revenue_m": 6600,
+  "estimated_2026_Q4_revenue_m": 1464.3230000000003,
+  "scenarios": {
+    "bear": {
+      "revenue_m": 6900,
+      "yoy_vs_2026_fy_pct": 4.545454545454541,
+      "gross_margin_pct": 43.0,
+      "opex_ratio_pct": 19.0,
+      "operating_margin_pct": 24.0,
+      "nonop_m": -140,
+      "tax_pct": 20.0,
+      "parent_earnings_m": 1212.8,
+      "diluted_share_proxy_m": 143.1,
+      "eps": 8.47519217330538,
+      "pe": 12,
+      "target_price": 101.70230607966457,
+      "price_upside_pct": -24.38490254300032
+    },
+    "base": {
+      "revenue_m": 7600,
+      "yoy_vs_2026_fy_pct": 15.15151515151516,
+      "gross_margin_pct": 45.0,
+      "opex_ratio_pct": 17.0,
+      "operating_margin_pct": 28.000000000000004,
+      "nonop_m": -50,
+      "tax_pct": 20.0,
+      "parent_earnings_m": 1662.4,
+      "diluted_share_proxy_m": 143.1,
+      "eps": 11.617051013277429,
+      "pe": 16,
+      "target_price": 185.87281621243886,
+      "price_upside_pct": 38.19540238843038
+    },
+    "bull": {
+      "revenue_m": 8400,
+      "yoy_vs_2026_fy_pct": 27.27272727272727,
+      "gross_margin_pct": 46.0,
+      "opex_ratio_pct": 15.8,
+      "operating_margin_pct": 30.200000000000003,
+      "nonop_m": -20,
+      "tax_pct": 20.0,
+      "parent_earnings_m": 2013.44,
+      "diluted_share_proxy_m": 143.1,
+      "eps": 14.0701607267645,
+      "pe": 18,
+      "target_price": 253.262893081761,
+      "price_upside_pct": 88.29954875967361
+    }
+  },
+  "original_common_model": {
+    "model_version": "V8.8.2",
+    "model_vintage": "2026-10-20T05:09:21.390189+08:00",
+    "price_date": "2026-10-16",
+    "current_financial_period": "2026-Q2",
+    "rankable": true,
+    "existing_base_2027": {
+      "revenue_k": 7338392.180814703,
+      "gross_margin": 0.45066580244034565,
+      "gross_profit_k": 3307162.400788816,
+      "opex_ratio": 0.1801098477421254,
+      "opex_k": 1321716.6983585397,
+      "operating_profit_k": 1985445.7024302764,
+      "nonoperating_k": 38266.0,
+      "pretax_k": 2023711.7024302764,
+      "tax_rate": 0.19201601234686988,
+      "parent_fraction": 1.0120254955308803,
+      "parent_profit_k": 1654789.859426227,
+      "shares": 143062324.0,
+      "eps": 11.566915824925553,
+      "pe": 15.535,
+      "target_price": 179.69203734021846,
+      "price_upside_pct": 33.6000277622442,
+      "future_dividends_per_share": null,
+      "total_return_pct": null
+    },
+    "Aplus": false,
+    "gates_pending": [
+      "original_eight_quarter_statements",
+      "cash_and_working_capital",
+      "nonoperating_components",
+      "fully_diluted_shares",
+      "matched_peers_and_cycle",
+      "management_promises",
+      "auditor_scope",
+      "tradability",
+      "forecast_bridge",
+      "insider_claims",
+      "dividend_window",
+      "point_in_time",
+      "out_of_sample_validation"
+    ]
+  },
+  "assumptions_status": {
+    "tax_rate_uncertified": true,
+    "forward_revenue_not_guidance": true,
+    "margin_and_pe_not_company_forecast": true,
+    "AI_premium_not_auto_added": true,
+    "common_shares_are_proxy_not_diluted_certified": true,
+    "q3_2026_eps_still_unknown": true,
+    "free_cash_flow_untested": true,
+    "IR_original_PIT_not_independently_verified": true
+  },
+  "risk": {
+    "H1_2026_inventory_m": 1510,
+    "H1_2026_accounts_receivable_m": 1617,
+    "inventory_days_H1_2026": 114,
+    "inventory_days_Q2_2025": 80,
+    "inventory_up_yoy_pct": 96.87092568448502,
+    "receivables_up_yoy_pct": 34.07960199004976
+  },
+  "formal_Aplus": false,
+  "formal_Aplusplus": false,
+  "formal_quality_gates_passed_by_this_report": 0,
+  "common_market_rank_unchanged": true,
+  "no_automatic_orders": true
+}
