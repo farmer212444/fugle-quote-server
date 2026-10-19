@@ -1,0 +1,56 @@
+name: Taiwan Official TWSE Issuer History Backfill
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/tw_history_backfill.yml'
+      - 'scripts/tw_history_backfill.py'
+      - 'tests/test_tw_history_backfill.py'
+  pull_request:
+    paths:
+      - '.github/workflows/tw_history_backfill.yml'
+      - 'scripts/tw_history_backfill.py'
+      - 'tests/test_tw_history_backfill.py'
+  schedule:
+    # 20:05 Taipei each trading day, after 19:40 latest price collector.
+    - cron: '5 12 * * 1-5'
+permissions:
+  contents: write
+concurrency:
+  group: tw-historical-price-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate official monthly parser and PIT guards
+        run: python -m unittest -v tests.test_tw_history_backfill
+      - name: Backfill official TWSE monthly sessions for focus issuers
+        if: github.event_name != 'pull_request'
+        run: python scripts/tw_history_backfill.py --max-issuers 6 --months 4
+      - name: Archive unmodified monthly exchange JSON
+        if: always() && github.event_name != 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: taiwan-twse-issuer-history-originals
+          path: market-raw-price-history/
+          retention-days: 90
+          if-no-files-found: ignore
+      - name: Publish historical turnover receipts and progress
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add tw-market-data/prices/issuer_history/ tw-market-data/rankings/v889_backfill_progress.*
+          if git diff --cached --quiet; then
+            echo 'Historical TWSE issuer series unchanged.'
+            exit 0
+          fi
+          git commit -m 'data: backfill official TWSE historical issuer sessions'
+          git pull --rebase origin main
+          git push origin HEAD:main
