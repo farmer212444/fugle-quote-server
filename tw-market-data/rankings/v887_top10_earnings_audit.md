@@ -1,6 +1,6 @@
 # V8.8.7 2027 Top10 獲利品質預檢（不修改正式排名）
 
-形成：2026-10-20T05:09:21.390189+08:00；收盤基準：2026-10-16；財報：2026-Q2。
+形成：2026-10-20T05:12:19.548448+08:00；收盤基準：2026-10-16；財報：2026-Q2。
 
 十檔只完成已有官方來源鏡像的數字交叉分析；不表示原始財報附註、CB法律條款、PIT、流動性已簽核。**正式新增A+：0。**
 
@@ -55,11 +55,11 @@
 
 狀態：SCENARIO_ONLY_ISSUANCE_NOT_CONFIRMED
 
-|股數情境|假設新增股數|固定獲利 EPS|固定獲利合理價|對參考價漲幅|維持原 EPS 所需新增年淨利(億元)|
-|---|---:|---:|---:|---:|---:|
-|NO_NEW_SHARES|0|13.83|182.88|+103.88%|0.00|
-|FILED_8M_NOT_EFFECTIVE|8,000,000|12.77|168.83|+88.21%|1.11|
-|BOARD_MAX_10M_NOT_APPROVED_FINAL|10,000,000|12.53|165.65|+84.67%|1.38|
+|股數情境|假設新增股數|固定獲利 EPS|固定獲利合理價|對參考價漲幅|維持原 EPS 所需新增年淨利(億元)|情境順位|
+|---|---:|---:|---:|---:|---:|---:|
+|NO_NEW_SHARES|0|13.83|182.88|+103.88%|0.00|8|
+|FILED_8M_NOT_EFFECTIVE|8,000,000|12.77|168.83|+88.21%|1.11|13|
+|BOARD_MAX_10M_NOT_APPROVED_FINAL|10,000,000|12.53|165.65|+84.67%|1.38|17|
 
 This ratio holds total profit and PE constant. It assumes the pre-issuance share count is not already adjusted for the new equity raise and adds no earnings from proceeds. Do not add again after any new company master update.
 
