@@ -368,6 +368,12 @@ def run(root):
             if checks[record["code"]]["growth_decelerated_over_20pp"]:
                 record["flags"].append("NEXT_QUARTER_REVENUE_YOY_DECELERATED_OVER_20PP")
     share_event=equity_issuance_audit(root,research,top)
+    for record in out:
+        if record["code"]=="8390":
+            if share_event["status"]=="SCENARIO_ONLY_ISSUANCE_NOT_CONFIRMED":
+                record["flags"].append("PENDING_CASH_EQUITY_RAISE_8M_FILED_UP_TO_10M_BOARD_LIMIT")
+            elif share_event["status"]=="SCHEDULED_EFFECTIVE_DATE_ELAPSED_RECHECK_OFFICIAL_ISSUANCE":
+                record["flags"].append("CASH_EQUITY_ISSUANCE_EFFECTIVE_DATE_PASSED_RECHECK")
     result={
         "model":research.get("model"),"estimate_vintage":research.get("estimate_vintage"),
         "asof_price_date":research.get("asof_price_date"),
