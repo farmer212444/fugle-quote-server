@@ -6,6 +6,7 @@ on:
       - '.github/workflows/tw_v877_research_rank.yml'
       - 'tw_model_v880/**'
       - 'scripts/tw_v880_run.py'
+      - 'scripts/v881_history_diagnostic.py'
       - 'tests/**'
       - 'scripts/build_v880_evidence.py'
       - 'scripts/refresh_v880_public.py'
@@ -17,6 +18,7 @@ on:
       - '.github/workflows/tw_v877_research_rank.yml'
       - 'tw_model_v880/**'
       - 'scripts/tw_v880_run.py'
+      - 'scripts/v881_history_diagnostic.py'
       - 'tests/**'
       - 'scripts/build_v880_evidence.py'
       - 'scripts/refresh_v880_public.py'
@@ -47,6 +49,7 @@ jobs:
       - name: Produce dated scenarios and evidence decisions
         run: |
           python scripts/tw_v880_run.py --target-date 2027-12-31
+          python scripts/v881_history_diagnostic.py
           python scripts/v880_audit_exports.py --kind risk
           python scripts/v880_audit_exports.py --kind cash
           python scripts/v880_audit_exports.py --kind shares
@@ -62,6 +65,7 @@ jobs:
             git reset --hard origin/main
             python scripts/refresh_v880_public.py
             python scripts/tw_v880_run.py --target-date 2027-12-31
+            python scripts/v881_history_diagnostic.py
             python scripts/v880_audit_exports.py --kind risk
             python scripts/v880_audit_exports.py --kind cash
             python scripts/v880_audit_exports.py --kind shares
