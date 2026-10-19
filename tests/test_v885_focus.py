@@ -16,9 +16,9 @@ class FocusSelectionTest(unittest.TestCase):
                       latest_primary_key_numbers_checked=False)
         fake_cap=dict(unverified_bond_terms=[])
         fake_liq=dict(twenty_day=None)
-        with patch.object(mod,'financial_probe',return_value=fake_fin), \\
-             patch.object(mod,'capital_probe',return_value=fake_cap), \\
-             patch.object(mod,'liquidity_probe',return_value=fake_liq):
+        with (patch.object(mod,'financial_probe',return_value=fake_fin),
+              patch.object(mod,'capital_probe',return_value=fake_cap),
+              patch.object(mod,'liquidity_probe',return_value=fake_liq)):
             out=mod.probe(research,dispatch,object(),[],[],top=1,focus_codes=['3333','1111'])
         self.assertEqual([r['code'] for r in out['top_priority_evidence']],['1111','3333'])
         self.assertEqual(out['newly_certified_Aplus'],0)
