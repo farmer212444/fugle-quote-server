@@ -14,6 +14,8 @@ on:
       - 'scripts/v883_gate_orchestrator.py'
       - 'scripts/v884_evidence_probe.py'
       - 'scripts/v886_9802_early_revalue.py'
+      - 'scripts/v888_6206_valuation.py'
+      - 'tw-market-data/ir/6206/**'
       - 'scripts/tw_chip_diagnostic.py'
       - 'tests/**'
       - 'scripts/build_v880_evidence.py'
@@ -44,6 +46,8 @@ on:
       - 'scripts/v883_gate_orchestrator.py'
       - 'scripts/v884_evidence_probe.py'
       - 'scripts/v886_9802_early_revalue.py'
+      - 'scripts/v888_6206_valuation.py'
+      - 'tw-market-data/ir/6206/**'
       - 'scripts/tw_chip_diagnostic.py'
       - 'tests/**'
       - 'scripts/build_v880_evidence.py'
@@ -94,6 +98,7 @@ jobs:
           python scripts/v883_gate_orchestrator.py --top 50
           python scripts/v884_evidence_probe.py --top 50 --focus 8390 1785 5439 4739 9802 6206
           python scripts/v886_9802_early_revalue.py
+          python scripts/v888_6206_valuation.py
           python scripts/tw_chip_diagnostic.py
           python scripts/v880_audit_exports.py --kind risk
           python scripts/v880_audit_exports.py --kind cash
@@ -118,6 +123,7 @@ jobs:
             python scripts/v883_gate_orchestrator.py --top 50
             python scripts/v884_evidence_probe.py --top 50 --focus 8390 1785 5439 4739 9802 6206
             python scripts/v886_9802_early_revalue.py
+          python scripts/v888_6206_valuation.py
             python scripts/tw_chip_diagnostic.py
             python scripts/v880_audit_exports.py --kind risk
             python scripts/v880_audit_exports.py --kind cash
