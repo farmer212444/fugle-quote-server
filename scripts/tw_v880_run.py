@@ -22,7 +22,7 @@ def public_row(r):
     keys=['code','name','market','industry','financial_period','reference_close','price_date','estimate_vintage','target_date','source_tier','rankable',
       'point_valuation_available','base','bear','bull','status','warning_flags','formal_Aplus','formal_Aplusplus','scenario_upside_pct','research_target_price_scenario',
       'target_year_eps_scenario','research_2027_price_scenario','eps_2027_base_scenario','research_pe_assumption','research_lane','rating','score',
-      'specialist_model_requirements','base_scenario_role','early_recovery_watch','stress_eps90_pe90_upside_pct']
+      'specialist_model_requirements','base_scenario_role','early_recovery_watch','stress_eps90_pe90_upside_pct','margin_recovery','margin_bridge']
     out={k:r[k] for k in keys if k in r}
     for name in ('base','bear','bull'):
         if name in out:out[name]={k:r[name][k] for k in ('eps','pe','target_price','price_upside_pct','total_return_pct') if k in r[name]}
@@ -60,6 +60,7 @@ def run(data_dir,asof,target_date,out_dir=None):
       ranking_scope='66 previously selected primary-current-issuer group; rankable operating/valuation/share scenarios; research only; not a certified marketwide Top10',
       primary_selection_bias_unresolved=True,return_definition='Price upside to target date; future dividends unknown remain null, not zero; expected total returns not claimed',
       top10_primary_research=primary[:10],top10_formal_Aplus=formal[:10],top30_provisional=primary[:30],top30_quality_priority=primary[:30],top30_audit_required=broad[:30],all_primary_research=primary,all_model_rows=rows,
+      conditional_recovery_audit=[dict(code=r['code'],name=r.get('name'),source_tier=r.get('source_tier'),rankable=r.get('rankable'),margin_recovery=r['margin_recovery']) for r in rows if r.get('margin_recovery',{}).get('candidate')],
       specialist_operating_bridge_queue=[dict(code=r['code'],name=r['name'],requirements=r['specialist_model_requirements']) for r in rows if r.get('specialist_model_requirements')],
       early_recovery_watch=ordered_recovery_watch(rows),
       early_recovery_watch_selection='Original current issuer numerics first, then issuer code; review visibility only, full list retained in hashed results',
@@ -70,6 +71,7 @@ def run(data_dir,asof,target_date,out_dir=None):
       f"正式 A+ {len(formal)} 檔，A++ {len(aq)} 檔。未決證據不等於市場沒有機會。",'',
       f'已納入 {len(data.history)} 家標準化財報；原始當期數字核對66家，其中 {len(primary)} 家有可比較研究估值。',
       '以下依 Base 價差排序，限上述原始核對群；並非全市場正式 A+ 排名。未含未知未來股息及交易成本，不附未校準的機率。','',
+      '毛利率：對過去兩年穩定、近期大幅下滑且營收成長的非特殊產業，Base 加入至多3.5個百分點的條件式恢復假設；Bear仍採原始未恢復毛利率。這是未通過營運歸因及樣本外驗證的研究假設，不構成正式A+。','',
       '|序|公司|收盤|2027 EPS|PE|2027 Base價|潛在漲幅|Bear價|Bull價|','|---:|---|---:|---:|---:|---:|---:|---:|---:|']
     for i,r in enumerate(primary[:10],1):
         b=r['base'];report.append(f"|{i}|{r['code']} {r['name']}|{fmt(r['reference_close'])}|{fmt(b['eps'])}|{fmt(b['pe'])}|{fmt(b['target_price'])}|{b['price_upside_pct']:+.1f}%|{fmt(r['bear']['target_price'])}|{fmt(r['bull']['target_price'])}|")
@@ -91,6 +93,10 @@ def run(data_dir,asof,target_date,out_dir=None):
     compact={k:v for k,v in result.items() if k not in ['all_model_rows','all_primary_research','early_recovery_watch','pending_work']}
     for k in ['top10_primary_research','top30_provisional','top30_quality_priority','top30_audit_required']:compact[k]=[public_row(r) for r in result[k]]
     compact['all_model_row_summary']=[{k:r[k] for k in ['code','name','status','rankable','scenario_upside_pct'] if k in r} for r in rows]
+    compact['top48_primary_research']=[public_row(r) for r in primary[:48]]
+    compact['conditional_recovery_audit']=result['conditional_recovery_audit']
+    compact['conditional_recovery_applied_count']=sum(r.get('margin_recovery',{}).get('applied',False) for r in rows)
+    compact['conditional_recovery_candidate_count']=len(result['conditional_recovery_audit'])
     compact['early_recovery_watch']=[public_row(r) for r in result['early_recovery_watch'][:30]];compact['early_recovery_watch_count']=len(result['early_recovery_watch'])
     compact['pending_work_path']='v880_pending_work.json';compact['full_results']=dict(path='v880_full_results.json.gz',sha256=hashlib.sha256(packed).hexdigest(),json_sha256=hashlib.sha256(full).hexdigest())
     compact['research_universe']=len(rows);compact['quality_priority_count']=len(primary)
