@@ -1,10 +1,10 @@
 {
   "model": "V8.8.2",
-  "estimate_vintage": "2026-10-20T05:01:37.500217+08:00",
+  "estimate_vintage": "2026-10-20T05:05:58.589150+08:00",
   "asof_price_date": "2026-10-16",
   "tracked_issuers": 1997,
   "valued_candidates": 786,
-  "prioritized_count": 50,
+  "prioritized_count": 52,
   "market_price_archived_sessions": 1,
   "official_price_archival_receipts": [
     {
@@ -16,11 +16,11 @@
     }
   ],
   "counts": {
-    "normalized_full_8q_income": 50,
-    "normalized_full_8q_cash": 50,
-    "latest_primary_numbers": 9,
+    "normalized_full_8q_income": 52,
+    "normalized_full_8q_cash": 52,
+    "latest_primary_numbers": 11,
     "20_sessions_observed": 0,
-    "unverified_bond_terms_issuers": 11
+    "unverified_bond_terms_issuers": 12
   },
   "top_priority_evidence": [
     {
@@ -2699,6 +2699,114 @@
       "ready_for_formal_certification": false,
       "newly_passed_gates": [],
       "source_tier": "NORMALIZED_ARCHIVE_AND_CAPTURE_RECEIPTS_NOT_INDEPENDENT_ORIGINAL_ATTESTATION"
+    },
+    {
+      "code": "6206",
+      "name": "飛捷",
+      "market": "TWSE",
+      "research_upside_pct": 33.6000277622442,
+      "source_status": "CERTIFICATION_PENDING",
+      "financial": {
+        "normalized_income_8q_count": 8,
+        "normalized_cashflow_8q_count": 8,
+        "missing_income_periods": [],
+        "missing_cashflow_periods": [],
+        "latest_primary_key_numbers_checked": true,
+        "full_eight_quarter_original_notes_audit": false,
+        "filing_specific_disclosure_timestamps_verified": false,
+        "original_eight_quarter_gate": "PENDING_NOT_CERTIFIED"
+      },
+      "capital": {
+        "issued_share_master_present": true,
+        "reported_bond_count": 0,
+        "unverified_bond_terms": [],
+        "dated_capital_terms_receipt_present": false,
+        "dated_capital_terms_fully_certified": false,
+        "no_listed_bond_does_not_prove_no_other_dilution": true,
+        "fully_diluted_shares_gate": "PENDING_NOT_CERTIFIED"
+      },
+      "market_history": {
+        "available_market_archives": 1,
+        "observed_20_session_issuer_count": 1,
+        "five_day": null,
+        "twenty_day": null,
+        "sixty_day": null,
+        "spread_and_order_book_evidence_available": false,
+        "tradability_gate": "PENDING_NOT_CERTIFIED"
+      },
+      "pending_gates": [
+        "original_eight_quarter_statements",
+        "cash_and_working_capital",
+        "nonoperating_components",
+        "fully_diluted_shares",
+        "matched_peers_and_cycle",
+        "management_promises",
+        "auditor_scope",
+        "tradability",
+        "forecast_bridge",
+        "insider_claims",
+        "dividend_window",
+        "point_in_time",
+        "out_of_sample_validation"
+      ],
+      "ready_for_formal_certification": false,
+      "newly_passed_gates": [],
+      "source_tier": "NORMALIZED_ARCHIVE_AND_CAPTURE_RECEIPTS_NOT_INDEPENDENT_ORIGINAL_ATTESTATION"
+    },
+    {
+      "code": "9802",
+      "name": "鈺齊-KY",
+      "market": "TWSE",
+      "research_upside_pct": 15.656859223653674,
+      "source_status": "CERTIFICATION_PENDING",
+      "financial": {
+        "normalized_income_8q_count": 8,
+        "normalized_cashflow_8q_count": 8,
+        "missing_income_periods": [],
+        "missing_cashflow_periods": [],
+        "latest_primary_key_numbers_checked": true,
+        "full_eight_quarter_original_notes_audit": false,
+        "filing_specific_disclosure_timestamps_verified": false,
+        "original_eight_quarter_gate": "PENDING_NOT_CERTIFIED"
+      },
+      "capital": {
+        "issued_share_master_present": true,
+        "reported_bond_count": 1,
+        "unverified_bond_terms": [
+          "98026"
+        ],
+        "dated_capital_terms_receipt_present": false,
+        "dated_capital_terms_fully_certified": false,
+        "no_listed_bond_does_not_prove_no_other_dilution": true,
+        "fully_diluted_shares_gate": "PENDING_NOT_CERTIFIED"
+      },
+      "market_history": {
+        "available_market_archives": 1,
+        "observed_20_session_issuer_count": 1,
+        "five_day": null,
+        "twenty_day": null,
+        "sixty_day": null,
+        "spread_and_order_book_evidence_available": false,
+        "tradability_gate": "PENDING_NOT_CERTIFIED"
+      },
+      "pending_gates": [
+        "original_eight_quarter_statements",
+        "cash_and_working_capital",
+        "nonoperating_components",
+        "fully_diluted_shares",
+        "matched_peers_and_cycle",
+        "management_promises",
+        "auditor_scope",
+        "tradability",
+        "forecast_bridge",
+        "insider_claims",
+        "dividend_window",
+        "point_in_time",
+        "out_of_sample_validation"
+      ],
+      "ready_for_formal_certification": false,
+      "newly_passed_gates": [],
+      "source_tier": "NORMALIZED_ARCHIVE_AND_CAPTURE_RECEIPTS_NOT_INDEPENDENT_ORIGINAL_ATTESTATION"
     }
   ],
   "manual_review_queue": [
@@ -4798,6 +4906,90 @@
     {
       "code": "6613",
       "name": "朋億*",
+      "gate": "out_of_sample_validation",
+      "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
+      "automatic_pass_prohibited": true
+    },
+    {
+      "code": "6206",
+      "name": "飛捷",
+      "gate": "management_promises",
+      "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
+      "automatic_pass_prohibited": true
+    },
+    {
+      "code": "6206",
+      "name": "飛捷",
+      "gate": "auditor_scope",
+      "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
+      "automatic_pass_prohibited": true
+    },
+    {
+      "code": "6206",
+      "name": "飛捷",
+      "gate": "forecast_bridge",
+      "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
+      "automatic_pass_prohibited": true
+    },
+    {
+      "code": "6206",
+      "name": "飛捷",
+      "gate": "matched_peers_and_cycle",
+      "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
+      "automatic_pass_prohibited": true
+    },
+    {
+      "code": "6206",
+      "name": "飛捷",
+      "gate": "point_in_time",
+      "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
+      "automatic_pass_prohibited": true
+    },
+    {
+      "code": "6206",
+      "name": "飛捷",
+      "gate": "out_of_sample_validation",
+      "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
+      "automatic_pass_prohibited": true
+    },
+    {
+      "code": "9802",
+      "name": "鈺齊-KY",
+      "gate": "management_promises",
+      "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
+      "automatic_pass_prohibited": true
+    },
+    {
+      "code": "9802",
+      "name": "鈺齊-KY",
+      "gate": "auditor_scope",
+      "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
+      "automatic_pass_prohibited": true
+    },
+    {
+      "code": "9802",
+      "name": "鈺齊-KY",
+      "gate": "forecast_bridge",
+      "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
+      "automatic_pass_prohibited": true
+    },
+    {
+      "code": "9802",
+      "name": "鈺齊-KY",
+      "gate": "matched_peers_and_cycle",
+      "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
+      "automatic_pass_prohibited": true
+    },
+    {
+      "code": "9802",
+      "name": "鈺齊-KY",
+      "gate": "point_in_time",
+      "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
+      "automatic_pass_prohibited": true
+    },
+    {
+      "code": "9802",
+      "name": "鈺齊-KY",
       "gate": "out_of_sample_validation",
       "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
       "automatic_pass_prohibited": true
