@@ -148,7 +148,10 @@ def run(limit):
             encoding="utf-8")
         raise RuntimeError("ALL_OFFICIAL_9802_LISTINGS_FAILED")
     # A failed category must not erase previously discovered records.
-    existing = {x["id"]: x for x in old.get("discovered", [])}
+    # Previous versions stored unescaped spaces from the publisher's hrefs.
+    # Drop malformed legacy discoveries; the freshly parsed canonical URL supersedes them.
+    existing = {x["id"]: x for x in old.get("discovered", [])
+                if " " not in x.get("url", "")}
     for item in all_items:
         existing[item["id"]] = item
     discovered = sorted(existing.values(), key=lambda x: (x["site_display_date"], x["category"], x["id"]), reverse=True)
