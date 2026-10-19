@@ -56,6 +56,9 @@ def price(v):
 def parse(raw,code,month):
     j=json.loads(raw.decode("utf-8-sig"))
     require(isinstance(j,dict) and j.get("stat")=="OK","TWSE_HISTORY_RESPONSE_NOT_OK")
+    header=str(j.get("title",""))
+    require(re.search(r"(?<!\\d)"+re.escape(code)+r"(?!\\d)",header) is not None,
+            "TWSE_MONTHLY_ISSUER_CODE_NOT_CONFIRMED_IN_TITLE")
     fields=j.get("fields",[])
     require(isinstance(fields,list) and len(fields)>=7,"TWSE_HISTORY_FIELDS_MISSING")
     def locate(term):
@@ -113,7 +116,7 @@ def stats(dates,asof):
           idealized_5m_exit_sessions_at_20pct=(round(5_000_000/(.20*med),2) if med>0 else None))
     return result
 
-def process(code,asof,months,fetch=request,out=OUT,rawdir=RAW,sleep=0.4):
+def process(code,asof,months,fetch=request,out=OUT,rawdir=RAW,sleep=0.4,reference_close=None):
     path=Path(out)/(code+".json")
     old=json.loads(path.read_text("utf-8")) if path.exists() else {}
     old_months=old.get("by_month",{})
@@ -148,6 +151,9 @@ def process(code,asof,months,fetch=request,out=OUT,rawdir=RAW,sleep=0.4):
     records={month:item["rows"] for month,item in items.items()}
     normalized=combine(records,asof,code)
     require(not normalized or max(x["date"] for x in normalized)<=asof,"FUTURE_PRICE_CANNOT_BE_INCLUDED")
+    if reference_close is not None and normalized and normalized[0]["date"]==asof:
+        if normalized[0]["close"] is None or abs(normalized[0]["close"]-float(reference_close))>.011:
+            raise ValueError("TWSE_HISTORY_CLOSE_DOES_NOT_MATCH_OFFICIAL_DAILY_CLOSE")
     oldstats=stats(normalized,asof)
     result=dict(schema="V889_OFFICIAL_TWSE_ISSUER_MONTHLY",issuer=code,market="TWSE",
       price_reference_asof=asof,source_type="OFFICIAL_TWSE_MONTHLY_STOCK_DAY",
@@ -170,9 +176,11 @@ def run(max_issuers=6,months=4,fetch=request,sleep=0.4):
     rawfile=(ROOT/"prices"/(asof+".json")).read_bytes()
     require(sha(rawfile)==manifest["normalized_sha256"],"LATEST_REFERENCE_PRICE_HASH_MISMATCH")
     ids=candidates(rawfile,max_issuers)
+    close_by_code={x["code"]:x.get("close") for x in json.loads(rawfile) if x.get("market")=="TWSE"}
     rr=[];window=recent_months(dt.date.fromisoformat(asof),months)
     for code in ids:
-        rr.append(process(code,asof,window,fetch=fetch,sleep=sleep))
+        rr.append(process(code,asof,window,fetch=fetch,sleep=sleep,
+                          reference_close=close_by_code[code]))
     result=dict(reference_date=asof,issuer_probes=rr,
         source_scope="TWSE_ISSUERS_ONLY_TPEX_NOT_YET_INCLUDED",
         original_capture_not_independent_PIT_certificate=True,
