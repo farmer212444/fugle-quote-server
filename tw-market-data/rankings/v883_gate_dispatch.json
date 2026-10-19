@@ -1,6 +1,6 @@
 {
   "model": "V8.8.2",
-  "vintage": "2026-10-20T05:15:14.113759+08:00",
+  "vintage": "2026-10-20T05:40:30.083123+08:00",
   "price_date": "2026-10-16",
   "eligible_research_count": 786,
   "tracked_issuer_count": 1997,
@@ -54794,10 +54794,10 @@
       "formal_Aplus": false
     },
     {
-      "code": "4164",
-      "name": "承業醫",
+      "code": "6579",
+      "name": "研揚",
       "market": "TWSE",
-      "research_upside_pct": -23.106295824590728,
+      "research_upside_pct": -23.196788059039875,
       "research_source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "lane": "VALUED_BELOW25",
       "source_status": "CERTIFICATION_PENDING",
@@ -54901,10 +54901,10 @@
       "formal_Aplus": false
     },
     {
-      "code": "6579",
-      "name": "研揚",
+      "code": "4164",
+      "name": "承業醫",
       "market": "TWSE",
-      "research_upside_pct": -23.196788059039875,
+      "research_upside_pct": -23.233248694554533,
       "research_source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "lane": "VALUED_BELOW25",
       "source_status": "CERTIFICATION_PENDING",
@@ -77692,113 +77692,6 @@
       "formal_Aplus": false
     },
     {
-      "code": "6957",
-      "name": "裕慶-KY",
-      "market": "TWSE",
-      "research_upside_pct": -61.20095263533428,
-      "research_source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
-      "lane": "VALUED_BELOW25",
-      "source_status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ],
-      "route_jobs": [
-        {
-          "gate": "original_eight_quarter_statements",
-          "route": "FINANCIAL_ORIGINALS",
-          "next_check": "Fetch eight dated issuer originals, verify units, revisions and notes",
-          "verified": false
-        },
-        {
-          "gate": "cash_and_working_capital",
-          "route": "FINANCIAL_CASH",
-          "next_check": "Reconcile operating cash flow, receivables, inventory, payables and capex",
-          "verified": false
-        },
-        {
-          "gate": "nonoperating_components",
-          "route": "FINANCIAL_NOTES",
-          "next_check": "Reconcile recurring versus volatile nonoperating income components",
-          "verified": false
-        },
-        {
-          "gate": "fully_diluted_shares",
-          "route": "CAPITAL_LEGAL",
-          "next_check": "Verify current common shares, outstanding CB, resets and conversion terms",
-          "verified": false
-        },
-        {
-          "gate": "matched_peers_and_cycle",
-          "route": "VALUATION_REVIEW",
-          "next_check": "Verify business-matched peer sample and full-cycle PE assumptions",
-          "verified": false
-        },
-        {
-          "gate": "management_promises",
-          "route": "HUMAN_REVIEW",
-          "next_check": "Verify management guidance and subsequent delivery from dated source",
-          "verified": false
-        },
-        {
-          "gate": "auditor_scope",
-          "route": "HUMAN_REVIEW",
-          "next_check": "Assess qualified reviews, emphasis paragraphs and materiality",
-          "verified": false
-        },
-        {
-          "gate": "tradability",
-          "route": "MARKET_HISTORY",
-          "next_check": "Collect 20+ dated sessions, spreads and position exit-capacity stress",
-          "verified": false
-        },
-        {
-          "gate": "forecast_bridge",
-          "route": "OPERATING_BRIDGE",
-          "next_check": "Verify issuer capacity, utilization, ASP, orders, costs and EPS bridge",
-          "verified": false
-        },
-        {
-          "gate": "insider_claims",
-          "route": "DISCLOSURE_REVIEW",
-          "next_check": "Match signed insider trade disclosures to issuer, person and date",
-          "verified": false
-        },
-        {
-          "gate": "dividend_window",
-          "route": "CORPORATE_ACTIONS",
-          "next_check": "Verify ex-date, payment, distribution amount and relevant window",
-          "verified": false
-        },
-        {
-          "gate": "point_in_time",
-          "route": "HISTORICAL_PIT",
-          "next_check": "Verify original public timestamps, revisions and then-known issuer universe",
-          "verified": false
-        },
-        {
-          "gate": "out_of_sample_validation",
-          "route": "HISTORICAL_BACKTEST",
-          "next_check": "Require frozen historical model vintages, actions, fees and prices",
-          "verified": false
-        }
-      ],
-      "next_route": "FINANCIAL_ORIGINALS",
-      "evidence_state": "PENDING_NOT_CERTIFIED",
-      "formal_Aplus": false
-    },
-    {
       "code": "3338",
       "name": "泰碩",
       "market": "TWSE",
@@ -78552,6 +78445,113 @@
       "name": "大立光",
       "market": "TWSE",
       "research_upside_pct": -61.96743080291154,
+      "research_source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
+      "lane": "VALUED_BELOW25",
+      "source_status": "CERTIFICATION_PENDING",
+      "pending_gates": [
+        "original_eight_quarter_statements",
+        "cash_and_working_capital",
+        "nonoperating_components",
+        "fully_diluted_shares",
+        "matched_peers_and_cycle",
+        "management_promises",
+        "auditor_scope",
+        "tradability",
+        "forecast_bridge",
+        "insider_claims",
+        "dividend_window",
+        "point_in_time",
+        "out_of_sample_validation"
+      ],
+      "route_jobs": [
+        {
+          "gate": "original_eight_quarter_statements",
+          "route": "FINANCIAL_ORIGINALS",
+          "next_check": "Fetch eight dated issuer originals, verify units, revisions and notes",
+          "verified": false
+        },
+        {
+          "gate": "cash_and_working_capital",
+          "route": "FINANCIAL_CASH",
+          "next_check": "Reconcile operating cash flow, receivables, inventory, payables and capex",
+          "verified": false
+        },
+        {
+          "gate": "nonoperating_components",
+          "route": "FINANCIAL_NOTES",
+          "next_check": "Reconcile recurring versus volatile nonoperating income components",
+          "verified": false
+        },
+        {
+          "gate": "fully_diluted_shares",
+          "route": "CAPITAL_LEGAL",
+          "next_check": "Verify current common shares, outstanding CB, resets and conversion terms",
+          "verified": false
+        },
+        {
+          "gate": "matched_peers_and_cycle",
+          "route": "VALUATION_REVIEW",
+          "next_check": "Verify business-matched peer sample and full-cycle PE assumptions",
+          "verified": false
+        },
+        {
+          "gate": "management_promises",
+          "route": "HUMAN_REVIEW",
+          "next_check": "Verify management guidance and subsequent delivery from dated source",
+          "verified": false
+        },
+        {
+          "gate": "auditor_scope",
+          "route": "HUMAN_REVIEW",
+          "next_check": "Assess qualified reviews, emphasis paragraphs and materiality",
+          "verified": false
+        },
+        {
+          "gate": "tradability",
+          "route": "MARKET_HISTORY",
+          "next_check": "Collect 20+ dated sessions, spreads and position exit-capacity stress",
+          "verified": false
+        },
+        {
+          "gate": "forecast_bridge",
+          "route": "OPERATING_BRIDGE",
+          "next_check": "Verify issuer capacity, utilization, ASP, orders, costs and EPS bridge",
+          "verified": false
+        },
+        {
+          "gate": "insider_claims",
+          "route": "DISCLOSURE_REVIEW",
+          "next_check": "Match signed insider trade disclosures to issuer, person and date",
+          "verified": false
+        },
+        {
+          "gate": "dividend_window",
+          "route": "CORPORATE_ACTIONS",
+          "next_check": "Verify ex-date, payment, distribution amount and relevant window",
+          "verified": false
+        },
+        {
+          "gate": "point_in_time",
+          "route": "HISTORICAL_PIT",
+          "next_check": "Verify original public timestamps, revisions and then-known issuer universe",
+          "verified": false
+        },
+        {
+          "gate": "out_of_sample_validation",
+          "route": "HISTORICAL_BACKTEST",
+          "next_check": "Require frozen historical model vintages, actions, fees and prices",
+          "verified": false
+        }
+      ],
+      "next_route": "FINANCIAL_ORIGINALS",
+      "evidence_state": "PENDING_NOT_CERTIFIED",
+      "formal_Aplus": false
+    },
+    {
+      "code": "6957",
+      "name": "裕慶-KY",
+      "market": "TWSE",
+      "research_upside_pct": -61.97206554302214,
       "research_source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "lane": "VALUED_BELOW25",
       "source_status": "CERTIFICATION_PENDING",
