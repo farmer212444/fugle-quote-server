@@ -87,6 +87,41 @@ class EarningsAuditTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError,"FUTURE_OR_UNZONED"):
                 mod.check_post_financial_quarter_revenue(base,research,
                     {("TWSE","3305"):self.now},{("TWSE","3305"):self.prior},[self.row])
+    def test_8390_equity_raise_stress_and_stale_fail_closed(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as folder:
+            root=Path(folder)/"tw-market-data"
+            note_path=root/"evidence/v880/issuer_reviews/top3_20261020.json"
+            note_path.parent.mkdir(parents=True,exist_ok=True)
+            details=dict(capital_master_shares_asof_2026_10_06=96116128,
+                filed_new_shares_from_nominal=8000000,board_max_new_shares=10000000,
+                filed_nominal_twd=80000000,nominal_value_per_share_twd=10,
+                issuance_completed=False,regulator_effectiveness_confirmed=False,
+                scenario_asof_reference_price=89.7,
+                board_resolution_date="2026-09-21",filing_received_date="2026-10-02",
+                originally_scheduled_effective_date="2026-10-21",
+                filed_amount_source="https://example.org/filing",
+                board_source="https://example.org/board",
+                capital_master_source="https://example.org/master")
+            note=dict(document_type="V8.8.7_TOP3_ORIGINAL_PUBLICATION_AUDIT_RESEARCH_ONLY",
+                review_date="2026-10-20",price_reference_date="2026-10-16",
+                issuer_reviews=[dict(code="8390",equity_issuance=details)])
+            note_path.write_text(json.dumps(note),encoding="utf-8")
+            row=dict(code="8390",name="金益鼎",reference_close=89.7,
+                     base=dict(eps=13.83,target_price=182.88))
+            out=mod.equity_issuance_audit(root,dict(asof_price_date="2026-10-16"),[row])
+            self.assertEqual(out["status"],"SCENARIO_ONLY_ISSUANCE_NOT_CONFIRMED")
+            self.assertFalse(out["formal_grade_updated"])
+            self.assertEqual(out["scenarios"][1]["new_shares"],8000000)
+            self.assertEqual(out["scenarios"][1]["target_2027_fixed_profit"],168.83)
+            self.assertEqual(out["scenarios"][2]["target_2027_fixed_profit"],165.65)
+            stale=mod.equity_issuance_audit(root,dict(asof_price_date="2026-10-19"),[row])
+            self.assertEqual(stale["status"],"REFERENCE_DATE_CHANGED_RECHECK_SHARE_MASTER_AND_CORPORATE_ACTION")
+            self.assertFalse(stale["scenarios"])
+            details["issuance_completed"]=True
+            note_path.write_text(json.dumps(note),encoding="utf-8")
+            with self.assertRaisesRegex(ValueError,"EVENT_CHANGED"):
+                mod.equity_issuance_audit(root,dict(asof_price_date="2026-10-16"),[row])
     def test_runrate_not_extrapolated_when_year_to_date_loss(self):
         r=mod.analyze(self.row,self.prior,dict(self.now,basic_eps_ytd=-2),
                       self.cash,self.fy,{},2)
