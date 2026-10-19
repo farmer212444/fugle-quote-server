@@ -6,7 +6,9 @@ on:
       - 'scripts/tw_fundamentals.py'
       - '.github/workflows/tw_fundamentals.yml'
   schedule:
-    # 19:55 Asia/Taipei every day. GitHub cron may be delayed.
+    # 19:55 Taipei daily; during reporting season also probe at 13:10.
+    # Updates to official data trigger a separate model run; nightly model also runs at 21:30.
+    - cron: '10 5 * * *'
     - cron: '55 11 * * *'
 permissions:
   contents: write
@@ -39,7 +41,7 @@ jobs:
           if-no-files-found: ignore
           retention-days: 30
       - name: Commit normalized verified snapshots and provisional scan
-        if: success()
+        if: success() && github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
