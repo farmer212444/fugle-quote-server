@@ -15,6 +15,25 @@ class VerificationQueueTests(unittest.TestCase):
         self.assertTrue(all(r["certification"] == "NOT_CERTIFIED" for r in result["queues"]))
         self.assertTrue(all(len(r["required_gates"]) == len(GATES) for r in result["queues"]))
 
+    def test_normalized_unmodeled_identities_are_explicit_and_fail_closed(self):
+        report = {"data_scope": {"normalized_issuers": 3}, "all_model_row_summary": [
+            {"market": "TWSE", "code": "1111", "scenario_upside_pct": 40}]}
+        universe = [
+            {"market": "TWSE", "code": "1111", "name": "A"},
+            {"market": "TWSE", "code": "2222", "name": "B"},
+            {"market": "TPEX", "code": "3333", "name": "C"}]
+        result = build(report, universe, [{"path": "x", "sha256": "abc"}])
+        self.assertEqual(result["not_yet_in_model_count"], 2)
+        self.assertEqual([x["code"] for x in result["normalized_not_yet_modeled"]], ["3333", "2222"])
+        self.assertTrue(all(x["certification"] == "NOT_CERTIFIED" for x in result["normalized_not_yet_modeled"]))
+        self.assertFalse(result["official_full_universe_certified"])
+        self.assertEqual(len(result["normalized_universe_identity_receipts"]), 1)
+
+    def test_normalized_universe_count_mismatch_rejected(self):
+        with self.assertRaises(ValueError):
+            build({"data_scope": {"normalized_issuers": 2}, "all_model_row_summary": []},
+                  [{"market": "TWSE", "code": "1111"}])
+
     def test_duplicate_codes_rejected(self):
         with self.assertRaises(ValueError):
             build({"all_model_row_summary": [{"code": "1234"}, {"code": "1234"}]})
