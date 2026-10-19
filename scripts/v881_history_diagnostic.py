@@ -5,8 +5,10 @@ Observes 2025/2026 Q1 low-margin signals vs next quarter standalone gross margin
 Accounts for cumulative-YTD filings. Marks future-data/PIT/seasonality limitations.
 No guessed investment performance and no automatic A+ promotion.
 """
-import argparse,json,math,statistics
+import argparse,json,math,statistics,sys
 from pathlib import Path
+ROOT=Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:sys.path.insert(0,str(ROOT))
 from tw_model_v880 import VERSION
 
 PERIODS=('2024-Q4','2025-Q1','2025-Q2','2025-Q4','2026-Q1','2026-Q2')
