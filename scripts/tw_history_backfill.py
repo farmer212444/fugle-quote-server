@@ -131,7 +131,8 @@ def process(code,asof,months,fetch=request,out=OUT,rawdir=RAW,sleep=0.4):
             # Do not retain days beyond known latest official market date.
             rows=[x for x in rows if x["date"]<=asof]
             require(bool(rows),"NO_SESSIONS_UP_TO_REFERENCE_DATE")
-            if month in items and items[month].get("original_response_sha256")==sha(raw):
+            if (month in items and items[month].get("original_response_sha256")==sha(raw)
+                    and items[month].get("rows")==rows):
                 continue
             rawpath=Path(rawdir)/code/(month+".json")
             rawpath.parent.mkdir(parents=True,exist_ok=True)
