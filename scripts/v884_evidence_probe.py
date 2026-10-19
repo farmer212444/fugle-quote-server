@@ -121,7 +121,7 @@ def capital_probe(data,code):
 
 MANUAL_GATES=("management_promises","auditor_scope","forecast_bridge",
               "matched_peers_and_cycle","point_in_time","out_of_sample_validation")
-def probe(research,dispatch,data,dated,receipts,top=50):
+def probe(research,dispatch,data,dated,receipts,top=50,focus_codes=()):
     if research.get("estimate_vintage")!=dispatch.get("vintage") or research.get("model")!=dispatch.get("model"):
         raise ValueError("DISPATCH_RESEARCH_VINTAGE_MISMATCH")
     if research.get("asof_price_date")!=dispatch.get("price_date"):
@@ -135,6 +135,14 @@ def probe(research,dispatch,data,dated,receipts,top=50):
     if len(live)!=len(ledger):raise ValueError("AMBIGUOUS_MARKET_ISSUER_IDENTITY")
     prioritized=[r for r in ledger if r.get("research_upside_pct") is not None]
     selected=prioritized[:top]
+    # Keep ranked top-N intact; append explicitly requested issuers without duplicates.
+    focus=set(focus_codes)
+    selected_keys={(r["market"],r["code"]) for r in selected}
+    for candidate in prioritized:
+        key=(candidate["market"],candidate["code"])
+        if candidate["code"] in focus and key not in selected_keys:
+            selected.append(candidate)
+            selected_keys.add(key)
     manual=[];profiles=[];counts=Counter()
     for row in selected:
         code=row["code"];market=row["market"];key=(market,code)
@@ -189,13 +197,14 @@ def main():
     p.add_argument("--output",default="tw-market-data/rankings/v884_evidence_progress.json")
     p.add_argument("--markdown",default="tw-market-data/rankings/v884_evidence_progress.md")
     p.add_argument("--top",type=int,default=50)
+    p.add_argument("--focus",nargs="*",default=[],help="Additional issuer codes to probe after ranked top-N")
     args=p.parse_args()
     r=read(args.research);d=read(args.dispatch)
     if r["estimate_vintage"]!=d["vintage"]:raise ValueError("INCONSISTENT_RANKING_AND_DISPATCH")
     data=MarketData(args.data_dir,r["estimate_vintage"])
     manifest=read(Path(args.data_dir)/"prices/latest_manifest.json")
     dated,receipts=price_archive(args.data_dir,r["asof_price_date"],manifest)
-    out=probe(r,d,data,dated,receipts,args.top)
+    out=probe(r,d,data,dated,receipts,args.top,args.focus)
     dst=Path(args.output);dst.parent.mkdir(parents=True,exist_ok=True)
     dst.write_text(json.dumps(out,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
     dest=Path(args.markdown);dest.parent.mkdir(parents=True,exist_ok=True)
