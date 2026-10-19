@@ -22,6 +22,13 @@ on:
       - 'tw-market-data/evidence/v880/certificates/**'
       - 'tw-market-data/evidence/v880/issuer_bridges/**'
       - 'tw-market-data/evidence/v880/capital_terms/**'
+      - 'tw-market-data/fundamentals/latest_scan.json'
+      - 'tw-market-data/fundamentals/*/TWSE_income.json'
+      - 'tw-market-data/fundamentals/*/TPEX_income.json'
+      - 'tw-market-data/fundamentals/*/TWSE_cashflow.json'
+      - 'tw-market-data/fundamentals/*/TPEX_cashflow.json'
+      - 'tw-market-data/prices/latest_manifest.json'
+      - 'tw-market-data/financial/latest_manifest.json'
   push:
     paths:
       - '.github/workflows/tw_v877_research_rank.yml'
@@ -43,8 +50,16 @@ on:
       - 'tw-market-data/evidence/v880/certificates/**'
       - 'tw-market-data/evidence/v880/issuer_bridges/**'
       - 'tw-market-data/evidence/v880/capital_terms/**'
+      - 'tw-market-data/fundamentals/latest_scan.json'
+      - 'tw-market-data/fundamentals/*/TWSE_income.json'
+      - 'tw-market-data/fundamentals/*/TPEX_income.json'
+      - 'tw-market-data/fundamentals/*/TWSE_cashflow.json'
+      - 'tw-market-data/fundamentals/*/TPEX_cashflow.json'
+      - 'tw-market-data/prices/latest_manifest.json'
+      - 'tw-market-data/financial/latest_manifest.json'
   schedule:
-    - cron: '25 12 * * *'
+    # 21:30 Taipei: after 19:40 prices and 19:55 fundamentals (65-minute max runtime).
+    - cron: '30 13 * * *'
 permissions:
   contents: write
 concurrency:
@@ -95,8 +110,8 @@ jobs:
             python scripts/diagnose_unmodeled_universe.py
             python scripts/v881_unmodeled_blockers.py
             python scripts/v881_thin_shadow.py
-          python scripts/v883_gate_orchestrator.py --top 50
-          python scripts/v884_evidence_probe.py --top 50
+            python scripts/v883_gate_orchestrator.py --top 50
+            python scripts/v884_evidence_probe.py --top 50
             python scripts/tw_chip_diagnostic.py
             python scripts/v880_audit_exports.py --kind risk
             python scripts/v880_audit_exports.py --kind cash
