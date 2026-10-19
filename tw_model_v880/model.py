@@ -4,6 +4,7 @@ from .math import number,pct,quarter_key,share_scenarios,liquidity,operating_sce
 from .evidence import GATES,POLICY,certify,gate
 from .specialists import issuer_case
 from .provenance import code_fingerprint
+from .margin_recovery import assess_margin_recovery
 
 def finite_values(d,keys):return all(d.get(k) is not None and math.isfinite(d[k]) for k in keys)
 def research_gates(primary,code,period,cash,coverage):
@@ -67,6 +68,12 @@ def estimate(data,key,calibration,asof,target_date):
     gm=max(0,min(1,gm_fy+calibration['margin_persistence']*(gm_now-gm_prior)));raw_cost=cost_fy+calibration['cost_persistence']*(cost_now-cost_prior);cost=max(0,raw_cost)
     historical_gm=[number(v['gross_profit_ytd_k'])/number(v['revenue_ytd_k']) for v in rs.values() if number(v.get('revenue_ytd_k')) and number(v.get('gross_profit_ytd_k')) is not None]
     gm_spread=max(.01,(pct(historical_gm,.75)-pct(historical_gm,.25))/2)
+    raw_base_gm=gm
+    recovery=assess_margin_recovery(rs,data.period,raw_base_gm,gm_now,my,yy,rev.get('industry',''))
+    if recovery['applied']:
+        gm=recovery['provisional_base_gm'];warnings.append('CONDITIONAL_GM_RECOVERY_RESEARCH_ASSUMPTION_NOT_CERTIFIED')
+    elif recovery['candidate']:
+        warnings.append('MARGIN_NORMALIZATION_NEEDS_ISSUER_DRIVER_REVIEW')
     nonop=current['pretax_profit_k']-current['operating_profit_k'];nonop_status='REPORTED_GAP_COMPOSITION_UNRESOLVED'
     if primary:
         no=primary['nonop_current'];nopr=primary['nonop_prior_ytd'];nofy=primary.get('nonop_prior_fy')
@@ -91,7 +98,7 @@ def estimate(data,key,calibration,asof,target_date):
         warnings.append('CYCLICAL_OR_PROJECT_DELIVERY_REQUIRES_COMPANY_BRIDGE')
         if pe:pe=min(pe,pe_bear)
     base=operating_scenario(r_base,gm,cost,nonop,tax,fraction,share['base_shares'],pe)
-    bear=operating_scenario(r_current_year*max(.05,1+g_bear)**years,max(0,gm-gm_spread),cost+gm_spread/2,nonop,min(.5,tax+.02),fraction,share['base_shares'],pe_bear)
+    bear=operating_scenario(r_current_year*max(.05,1+g_bear)**years,max(0,raw_base_gm-gm_spread),cost+gm_spread/2,nonop,min(.5,tax+.02),fraction,share['base_shares'],pe_bear)
     recovery_gm=min(1,max(gm+gm_spread,pct(historical_gm,.75)))
     bull=operating_scenario(r_current_year*max(.05,1+g_bull)**years,recovery_gm,max(0,cost-gm_spread/2),nonop,tax,fraction,share['base_shares'],pe_bull)
     bull['gross_margin_case']='CONDITIONAL_RECOVERY_TO_PRIOR_UPPER_QUARTILE_NOT_A_PROBABILITY'
@@ -127,6 +134,9 @@ def estimate(data,key,calibration,asof,target_date):
     if base['price_upside_pct'] is not None and base['price_upside_pct']>150:specialist.append('EXTREME_VALUATION_OPERATING_BRIDGE_REQUIRED')
     bridge=e.get('issuer_operating_bridges',{}).get(code)
     if bridge:
+        if recovery['applied']:
+            recovery['status']='SPECIFIC_ISSUER_BRIDGE_OVERRIDES_GENERIC_RECOVERY'
+            recovery['applied']=False
         cases=issuer_case(bridge,code,data.period,asof,target_date,share['base_shares'],{'base':pe,'bear':pe_bear,'bull':pe_bull});base,bear,bull=(cases[n] for n in ('base','bear','bull'))
         for sc in (base,bear,bull):sc.update(returns(sc['target_price'],close,None,asof[:10],target_date))
         if developer and any(cases[n]['valuation_method']!='NAV' for n in cases):raise ValueError('PROPERTY_DEVELOPER_REQUIRES_ASSET_VALUE_BRIDGE')
@@ -142,7 +152,7 @@ def estimate(data,key,calibration,asof,target_date):
       base=base,bear=bear,bull=bull,share_bridge=share,liquidity=flow,primary_ttm_cash=coverage or None,
       revenue_bridge=dict(actual_ytd_k=ytd,prior_year_annual_revenue_k=monthly_prior_annual,prior_year_remaining_k=monthly_prior_annual-oldytd,annual_current_year_estimate_k=r_current_year,assumed_annual_growth=g,observed_growth=observed),
       coefficient_training=dict(train_target=calibration.get('train_target'),training_cases=calibration['train_count'],revenue_persistence=calibration['revenue_persistence'],margin_persistence=calibration['margin_persistence'],cost_persistence=calibration['cost_persistence']),
-      margin_bridge=dict(prior_full_year_gm=gm_fy,current_ytd_gm=gm_now,prior_ytd_gm=gm_prior,base_gm=gm,base_opex_ratio=cost),
+      margin_bridge=dict(prior_full_year_gm=gm_fy,current_ytd_gm=gm_now,prior_ytd_gm=gm_prior,unadjusted_base_gm=raw_base_gm,base_gm=base['gross_margin'],base_opex_ratio=cost),margin_recovery=recovery,
       nonoperating_bridge=dict(base_k=nonop,method=nonop_status,component_assumptions_certified=False),
       pe_bridge=dict(issuer_samples=len(own),peer_samples=len(peers),base=pe,bear=pe_bear,bull=pe_bull,exact_matched_peer_review_complete=False),
       gates=gates,certification=certification,formal_Aplus=certification['formal_Aplus'],formal_Aplusplus=certification['formal_Aplusplus'],status=certification['status'],warning_flags=warnings,
