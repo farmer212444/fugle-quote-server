@@ -1,0 +1,131 @@
+{
+  "document_type": "V8.8.7_TOP3_ORIGINAL_PUBLICATION_AUDIT_RESEARCH_ONLY",
+  "review_date": "2026-10-20",
+  "price_reference_date": "2026-10-16",
+  "formal_Aplus_added": 0,
+  "main_ranking_modified": false,
+  "scope_note": "This memo is dated original/source review, not certification or a new target price. Original issuer filing publication PIT and historic auditor scope not fully checked.",
+  "sources": {
+    "monthly_manifest": "https://github.com/farmer212444/fugle-quote-server/blob/main/tw-market-data/latest_manifest.json",
+    "company_8390_pdf": "https://www.jyd.com.tw/storage/system/PDF/2026/JYD-115Q2-Consolidated-Financial-Repot.pdf",
+    "hightech_5439_official_market_cb": "https://www.tpex.org.tw/storage/eb_data/11409/11400078621.html",
+    "hightech_5439_conversion_reset": "https://news.cnyes.com/news/print/6525876",
+    "sunjuice_1256_issue": "https://wealth.firstbank.com.tw/investment-tips/trend-insight/news/news-detail?id=%7B9ADCB641-9AAD-48EB-B6B1-8294AD6DB324%7D",
+    "sunjuice_1256_conversion_reset": "https://news.cnyes.com/news/print/6511610",
+    "sunjuice_1256_q3_share_conversion": "https://m.moneydj.com/f1a.aspx?a=4A079656-8A3F-43FC-9F53-9E3D0A2D5936",
+    "hightech_5439_ar_turnover_thirdparty": "https://cb.twstock.tools/charts/2026-10-19/54391"
+  },
+  "issuer_reviews": [
+    {
+      "code": "8390",
+      "name": "金益鼎",
+      "financial_period": "2026-Q2",
+      "h1_2026": {
+        "operating_cash_flow_ntd_thousands": 675183,
+        "ppe_cash_paid_ntd_thousands": 206450,
+        "ocf_less_ppe_ntd_thousands": 468733,
+        "receivables_20260630_ntd_thousands": 549341,
+        "receivables_20251231_ntd_thousands": 264325,
+        "inventory_20260630_ntd_thousands": 928964,
+        "inventory_20251231_ntd_thousands": 1064456,
+        "cash_20260630_ntd_thousands": 1615408
+      },
+      "auditor": {
+        "type": "QUALIFIED_REVIEW_CONCLUSION",
+        "not_clean_review": true,
+        "reason": "Specified non-major subsidiaries and equity-accounted investees relied on financial statements not reviewed by independent accountant.",
+        "unreviewed_subs_assets_ntd_thousands": 793978,
+        "unreviewed_subs_assets_pct_group_assets": 16,
+        "unreviewed_subs_H1_comprehensive_loss_ntd_thousands": -3544,
+        "conclusion": "Professional materiality check required; qualified conclusion does not itself prove misstatement.",
+        "individual_formal_gate_pass": false
+      },
+      "sales_q3_2026_yoy_pct": 53.67,
+      "eps_2027_model": 13.83,
+      "forward_PE_model": 13.22,
+      "target_2027_model": 182.88,
+      "open_issues": [
+        "Scope/materiality of accountant's qualified conclusion",
+        "Sustainability of 27% H1 gross margin with metal prices normalized",
+        "Receivable increase, metal price inventory realization, new recycling throughput and earnings conversion"
+      ]
+    },
+    {
+      "code": "1256",
+      "name": "鮮活果汁-KY",
+      "financial_period": "2026-Q2",
+      "h1_2026": {
+        "eps_basic": 8.98,
+        "operating_cash_flow_ntd_thousands": 294969
+      },
+      "sales_q3_2026_yoy_pct": 26.68,
+      "capital": {
+        "issue_face_ntd": 200000000,
+        "issue_date": "2025-10-08",
+        "cb_code": "12561",
+        "documented_conversion_price_2026_07_17_ntd": 182.5,
+        "shares_outstanding_after_2026Q3_conversion_registration": 35781378,
+        "additional_shares_upper_bound_if_all_original_face_still_outstanding": 1095890,
+        "current_bond_outstanding_balance_verified": false,
+        "conversion_terms_after_2026_07_17_verified": false,
+        "modeled_eps_2027_denominator_independently_audited": false,
+        "no_second_dilution_double_count": true
+      },
+      "eps_2027_model": 21.11,
+      "forward_PE_model": 15.79,
+      "target_2027_model": 333.23,
+      "open_issues": [
+        "CB outstanding face and subsequent conversion adjustments",
+        "Share denominator overlap with model's existing full-conversion assumption",
+        "2026Q3 margin and China demand durability",
+        "Receivable collection and liquidity"
+      ]
+    },
+    {
+      "code": "5439",
+      "name": "高技",
+      "financial_period": "2026-Q2",
+      "h1_2026": {
+        "eps_basic": 8.15,
+        "operating_cash_flow_ntd_thousands": 829383
+      },
+      "sales_q3_2026_yoy_pct": 1.58,
+      "sales_h1_2026_yoy_pct": 50.61,
+      "yoy_deceleration_pp": -49.03,
+      "capital": {
+        "issue_face_ntd": 2000000000,
+        "issue_date": "2025-09-09",
+        "cb_code": "54391",
+        "documented_conversion_price_2026_07_28_ntd": 293.6,
+        "additional_shares_upper_bound_if_all_original_face_still_outstanding": 6811990,
+        "current_bond_outstanding_balance_verified": false,
+        "modeled_eps_2027_denominator_independently_audited": false,
+        "no_second_dilution_double_count": true
+      },
+      "third_party_turnover_estimate": {
+        "days_sales_outstanding_H1_2026": 146,
+        "days_sales_outstanding_H1_2025": 111,
+        "source": "https://cb.twstock.tools/charts/2026-10-19/54391",
+        "original_financial_statement_note_reconciliation_completed": false
+      },
+      "eps_2027_model": 20.51,
+      "forward_PE_model": 24.21,
+      "target_2027_model": 496.57,
+      "open_issues": [
+        "Q3 revenue growth slowing sharply; prove reacceleration via orders and mix",
+        "CB current terms and effective share dilution denominator",
+        "Receivable aging and DSO increase independently verified",
+        "24.21x 2027 PE matched operating peers needed"
+      ]
+    }
+  ],
+  "evidence_status": {
+    "raw_monthly_archived_and_h1_mirror_checked": true,
+    "one_issuer_original_Q2_pdf_auditor_scope_read": true,
+    "all_three_original_full_financial_notes_read": false,
+    "original_pdf_sha256_verified": false,
+    "standalone_q3_earnings_available": false,
+    "forward_PE_matched_independent_peer_verification": false,
+    "original_company_PIT": false
+  }
+}
