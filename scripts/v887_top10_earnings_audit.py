@@ -232,6 +232,69 @@ def check_post_financial_quarter_revenue(root, research, now_income, prior_incom
     return result
 
 
+
+def equity_issuance_audit(root, research, top):
+    """Curated dated equity offer facts. Do not write forecast changes or A+."""
+    path = root / "evidence/v880/issuer_reviews/top3_20261020.json"
+    if not path.exists():
+        return dict(status="SOURCE_REVIEW_NOT_PRESENT",scenarios=[],formal_grade_updated=False)
+    note=load(path)
+    if note.get("document_type")!="V8.8.7_TOP3_ORIGINAL_PUBLICATION_AUDIT_RESEARCH_ONLY":
+        raise ValueError("UNEXPECTED_REVIEW_DOC_TYPE")
+    match=next((v for v in note.get("issuer_reviews",[]) if v.get("code")=="8390"),None)
+    if match is None or "equity_issuance" not in match:
+        return dict(status="REVIEW_WITHOUT_EQUITY_EVENT",scenarios=[],formal_grade_updated=False)
+    details=match["equity_issuance"]
+    old_shares=int(details["capital_master_shares_asof_2026_10_06"])
+    filed=int(details["filed_new_shares_from_nominal"])
+    board_max=int(details["board_max_new_shares"])
+    if (old_shares<=0 or filed<=0 or board_max<filed or
+        int(details["filed_nominal_twd"])!=filed*int(details["nominal_value_per_share_twd"])):
+        raise ValueError("INVALID_EQUITY_ISSUANCE_UNITS")
+    if details.get("issuance_completed") is not False or details.get("regulator_effectiveness_confirmed") is not False:
+        raise ValueError("EVENT_CHANGED_REQUIRES_FRESH_MANUAL_EVIDENCE")
+    row=next((v for v in top if v.get("code")=="8390"),None)
+    if row is None:
+        return dict(status="ISSUER_NOT_IN_CURRENT_TOP10",scenarios=[],formal_grade_updated=False)
+    price_date=research.get("asof_price_date")
+    reference_date=note.get("price_reference_date")
+    if price_date!=reference_date:
+        return dict(status="REFERENCE_DATE_CHANGED_RECHECK_SHARE_MASTER_AND_CORPORATE_ACTION",
+                    source_note_date=note.get("review_date"),reference_price_date=reference_date,
+                    current_model_price_date=price_date,scenarios=[],formal_grade_updated=False)
+    ref=int(details["capital_master_shares_asof_2026_10_06"])
+    eps=numeric(row["base"]["eps"],"8390_EPS")
+    target=numeric(row["base"]["target_price"],"8390_target")
+    px=numeric(row["reference_close"],"8390_ref_px")
+    if not (eps>0 and px>0 and target>0):
+        raise ValueError("INVALID_EQUITY_BASE")
+    if abs(px-float(details["scenario_asof_reference_price"]))>0.01:
+        raise ValueError("MODEL_PRICE_AND_EVENT_PRICE_NOT_SAME_REFERENCE")
+    scenarios=[]
+    for label,new in (("NO_NEW_SHARES",0),("FILED_8M_NOT_EFFECTIVE",filed),("BOARD_MAX_10M_NOT_APPROVED_FINAL",board_max)):
+        factor=ref/(ref+new)
+        scenarios.append(dict(label=label,new_shares=new,
+                              assumed_pre_event_shares=ref,
+                              shares_post_hypothetical_event=ref+new,
+                              dilution_pct=round(100*(1-factor),2),
+                              eps_2027_fixed_profit=round(eps*factor,2),
+                              target_2027_fixed_profit=round(target*factor,2),
+                              upside_fixed_profit_pct=round(100*(target*factor/px-1),2),
+                              annual_incremental_profit_ntd_to_preserve_EPS=round(eps*new)))
+    return dict(status="SCENARIO_ONLY_ISSUANCE_NOT_CONFIRMED",
+                board_announcement_date=details["board_resolution_date"],
+                regulator_filing_date=details["filing_received_date"],
+                filing_expected_effectiveness_date=details["originally_scheduled_effective_date"],
+                primary_source_urls=[details["filed_amount_source"],details["board_source"],details["capital_master_source"]],
+                forecast_share_denominator_legally_verified=False,
+                shares_already_in_model_issuer_specific_confirmed=False,
+                incremental_proceeds_earnings_included=False,
+                new_issue_execution_verified=False,
+                audit_or_Aplus_changed=False,
+                formal_grade_updated=False,scenarios=scenarios,
+                caveat="This ratio holds total profit and PE constant. It assumes the pre-issuance share count is not already adjusted for the new equity raise and adds no earnings from proceeds. Do not add again after any new company master update.")
+
+
 def run(root):
     rankings = root / "rankings"
     research = load(rankings / "latest_research.json")
@@ -287,12 +350,14 @@ def run(root):
             record["next_quarter_revenue"]=checks[record["code"]]
             if checks[record["code"]]["growth_decelerated_over_20pp"]:
                 record["flags"].append("NEXT_QUARTER_REVENUE_YOY_DECELERATED_OVER_20PP")
+    share_event=equity_issuance_audit(root,research,top)
     result={
         "model":research.get("model"),"estimate_vintage":research.get("estimate_vintage"),
         "asof_price_date":research.get("asof_price_date"),
         "financial_period":quarter,"prior_comparable":previous,
         "financial_sources":receipts,
         "next_quarter_monthly_revenue_check":next_quarter_revenue,
+        "equity_raise_watch":share_event,
         "ranked_diagnostics":out,
         "all_ten_financial_mirrors_present":all(x["status"]=="EVIDENCE_TRIAGE_ONLY_NOT_CERTIFIED" for x in out),
         "formal_Aplus_added":0,"valuation_or_rankings_modified":False,
@@ -332,6 +397,17 @@ def run(root):
                 "|---|---:|---:|---:|---|"]
         for record in next_quarter_revenue["issuer_checks"]:
             lines.append(f"|{record['code']} {record.get('name') or ''}|{record['current_financial_H1_yoy_pct']:+.2f}%|{record['next_quarter_revenue_yoy_pct']:+.2f}%|{record['yoy_deceleration_pp']:+.2f}|{'**年增大幅減速**' if record['growth_decelerated_over_20pp'] else '季報毛利與訂單待核'}|")
+    lines+=["","## 8390 現金增資潛在稀釋（未生效、未完成，不是新 Base）","",
+            "狀態："+share_event["status"],""]
+    if share_event.get("scenarios"):
+        lines+=["|股數情境|假設新增股數|固定獲利 EPS|固定獲利合理價|對參考價漲幅|維持原 EPS 所需新增年淨利(億元)|",
+                "|---|---:|---:|---:|---:|---:|"]
+        for sc in share_event["scenarios"]:
+            lines.append(f"|{sc['label']}|{sc['new_shares']:,}|{sc['eps_2027_fixed_profit']:.2f}|{sc['target_2027_fixed_profit']:.2f}|{sc['upside_fixed_profit_pct']:+.2f}%|{sc['annual_incremental_profit_ntd_to_preserve_EPS']/100000000:.2f}|")
+        lines+=["",share_event["caveat"],"",
+                "原始決議及申報來源："+", ".join(share_event["primary_source_urls"])]
+    else:
+        lines+=["預期股數／股價日期需要重新核對，未顯示過期稀釋試算。"]
     lines+=["","## 待補證據（依原始順位）",""]
     for a in out:
         lines.append(f"- {a['code']} {a.get('name') or ''}："+("、".join(a["flags"]) if a["flags"] else "未驗證完整原件"))
