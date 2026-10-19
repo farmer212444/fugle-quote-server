@@ -35,6 +35,7 @@ TWSE_FIELDS = {
 }
 TPEX_FIELDS = {
     "foreign": "Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Difference",
+    "foreign_dealer": "ForeignDealers-Difference",
     "trust": "SecuritiesInvestmentTrustCompanies-Difference",
     "dealer": "Dealers-Difference",
     "total": "TotalDifference",
@@ -132,14 +133,15 @@ def parse_tpex(obj):
         foreign = number(raw[TPEX_FIELDS["foreign"]])
         trust = number(raw[TPEX_FIELDS["trust"]])
         dealer = number(raw[TPEX_FIELDS["dealer"]])
+        foreign_dealer = number(raw[TPEX_FIELDS["foreign_dealer"]])
         total = number(raw[TPEX_FIELDS["total"]])
         rows.append(dict(market="TPEX", code=code,
                          name=str(raw.get("SecuritiesCompanyName") or raw.get("CompanyName") or "").strip(),
                          date=date, foreign_ex_dealer_net_shares=foreign,
-                         foreign_dealer_net_shares=None,
+                         foreign_dealer_net_shares=foreign_dealer,
                          trust_net_shares=trust, dealer_net_shares=dealer,
                          official_total_net_shares=total,
-                         components_reconciled=None if total != foreign + trust + dealer else True))
+                         components_reconciled=(total == foreign + foreign_dealer + trust + dealer)))
     if len(rows) < 300 or len(days) != 1:
         raise ValueError("TPEX_LOW_COVERAGE_OR_MIXED_DATES")
     return next(iter(days)), sorted(rows, key=lambda x: x["code"])
@@ -170,6 +172,10 @@ def parse_tdcc(obj):
     grouped = defaultdict(dict)
     days = set()
     for record in obj:
+        # The official TDCC JSON uses a leading Unicode BOM inside its date key.
+        # Normalize only this encoding marker, not names or numerical content.
+        if isinstance(record, dict):
+            record = {str(k).lstrip("\ufeff"): v for k, v in record.items()}
         if not isinstance(record, dict) or any(label not in record for label in TDCC_FIELDS.values()):
             raise ValueError("TDCC_SCHEMA_CHANGED")
         code = str(record[TDCC_FIELDS["code"]]).strip()
@@ -214,6 +220,13 @@ def fetch(url, raw_dir, key):
         raw = response.read(35000001)
     raw_dir.mkdir(parents=True, exist_ok=True)
     (raw_dir / (key + ".response")).write_bytes(raw)
+    if key == "TWSE" and len(raw) < 500:
+        try:
+            status = json.loads(raw.decode("utf-8-sig")).get("stat", "")
+        except (ValueError, AttributeError):
+            status = ""
+        if status and status != "OK":
+            raise ValueError("TWSE_NO_SESSION_OR_NOT_PUBLISHED: " + str(status)[:80])
     if len(raw) < 500 or len(raw) > 35000000 or b"<html" in raw[:200].lower():
         raise ValueError("OFFICIAL_RESPONSE_INVALID_SIZE_OR_HTML")
     return raw
