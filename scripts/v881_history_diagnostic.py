@@ -21,6 +21,10 @@ def _ratio(row):
 
 def _standalone_gm(q1,h1):
     if not q1 or not h1:return None
+    v=[q1.get('revenue_ytd_k'),q1.get('gross_profit_ytd_k'),
+       h1.get('revenue_ytd_k'),h1.get('gross_profit_ytd_k')]
+    if not all(isinstance(x,(int,float)) and math.isfinite(x) for x in v):
+        return None
     rev=h1['revenue_ytd_k']-q1['revenue_ytd_k']
     gp=h1['gross_profit_ytd_k']-q1['gross_profit_ytd_k']
     if rev<=0:return None
