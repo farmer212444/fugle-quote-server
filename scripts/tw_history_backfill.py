@@ -121,7 +121,8 @@ def process(code,asof,months,fetch=request,out=OUT,rawdir=RAW,sleep=0.4):
             "HISTORICAL_ISSUER_ARCHIVE_IDENTITY_MISMATCH")
     items=dict(old_months);new=0;fails=[]
     for month in months:
-        if month in items:
+        # Current month must refresh as new sessions close; older months remain frozen.
+        if month in items and month != months[0]:
             continue
         url=historical_url(code,month)
         try:
@@ -130,6 +131,8 @@ def process(code,asof,months,fetch=request,out=OUT,rawdir=RAW,sleep=0.4):
             # Do not retain days beyond known latest official market date.
             rows=[x for x in rows if x["date"]<=asof]
             require(bool(rows),"NO_SESSIONS_UP_TO_REFERENCE_DATE")
+            if month in items and items[month].get("original_response_sha256")==sha(raw):
+                continue
             rawpath=Path(rawdir)/code/(month+".json")
             rawpath.parent.mkdir(parents=True,exist_ok=True)
             rawpath.write_bytes(raw)
