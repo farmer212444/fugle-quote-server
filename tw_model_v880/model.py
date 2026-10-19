@@ -16,7 +16,7 @@ def research_gates(primary,code,period,cash,coverage):
     gates['tradability']=gate('PENDING','SINGLE_DAY_QUOTE_IS_NOT_CONTINUOUS_TRADABILITY_CERTIFICATION')
     return gates
 
-def estimate(data,key,calibration,asof,target_date):
+def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
     market,code=key;p=data.prices.get(key);rs=data.history[key];latest=rs[data.period]
     rev=data.revenue.get(code);e=data.evidence;master=e.get('master',{}).get(code)
     def unavailable(reason):return dict(code=code,name=latest.get('name'),market=market,status=reason,rankable=False,exclusion_reasons=[reason])
@@ -26,8 +26,9 @@ def estimate(data,key,calibration,asof,target_date):
     calibration=calibration.get('sector_parameters',{}).get(rev.get('industry'),calibration)
     close=number(p['close']);volume=number(p.get('volume_shares'))
     if close is None or volume is None or close<=0 or volume<0:return unavailable('REFERENCE_PRICE_OR_VOLUME_INVALID')
-    if close<8:return unavailable('PRICE_FILTER_BELOW_8_TWD')
-    if close*volume<12000000:return unavailable('TURNOVER_FILTER_BELOW_12M_TWD')
+    thin=close<8 or close*volume<12000000
+    if close<8 and not shadow_thin:return unavailable('PRICE_FILTER_BELOW_8_TWD')
+    if close*volume<12000000 and not shadow_thin:return unavailable('TURNOVER_FILTER_BELOW_12M_TWD')
     y,q=quarter_key(data.period);fy_period=f'{y if q==4 else y-1}-Q4';prior_period=f'{y-1}-Q{q}'
     if any(k not in rs for k in data.required_periods):return dict(code=code,name=latest.get('name'),status='MISSING_NORMALIZED_EIGHT_QUARTERS',rankable=False)
     if rev.get('industry')=='金融保險業':return dict(code=code,name=latest.get('name'),status='FINANCIAL_SECTOR_REQUIRES_ROE_PB_MODEL',rankable=False)
@@ -45,6 +46,7 @@ def estimate(data,key,calibration,asof,target_date):
     r=current['revenue_k'];rfy=fyvals['revenue_k'];prior_r=number(pr['revenue_ytd_k'])
     if min(r,rfy,prior_r)<=0:return dict(code=code,name=latest.get('name'),status='NONPOSITIVE_REVENUE_SPECIAL_MODEL_REQUIRED',rankable=False)
     warnings=[]
+    if thin:warnings.append('LOW_LIQUIDITY_OR_PRICE_SHADOW_ONLY_NO_PRIMARY_RANKING')
     if primary:
         for a,b in [('revenue_k','revenue_ytd_k'),('gross_profit_k','gross_profit_ytd_k'),('operating_profit_k','operating_profit_ytd_k')]:
             if abs(current[a]-number(latest[b]))>1:raise ValueError('PRIMARY_MIRROR_'+a+'_MISMATCH')
@@ -130,6 +132,7 @@ def estimate(data,key,calibration,asof,target_date):
         and gates['forecast_bridge'].get('status')=='PASS'
         and gates['forecast_bridge'].get('margin_normalization_review_complete') is not True):
         gates['forecast_bridge']=gate('PENDING','CONDITIONAL_MARGIN_RECOVERY_ISSUER_SIGNOFF_REQUIRED')
+    if thin:gates['tradability']=gate('PENDING','LOW_SINGLE_DAY_TRADING_VALUE_OR_PRICE_REQUIRES_MULTI_SESSION_REVIEW')
     forecast=gates['forecast_bridge']
     if forecast.get('status')=='PASS' and any(forecast.get(k)!=v for k,v in [('model_code_sha256',code_fingerprint()),('target_date',target_date),('reference_price_date',data.price_date)]):
         gates['forecast_bridge']=gate('PENDING','FORECAST_CERTIFICATE_DOES_NOT_MATCH_CURRENT_RUNTIME_TARGET_AND_PRICE')
@@ -163,7 +166,7 @@ def estimate(data,key,calibration,asof,target_date):
     certification=certify(code,base['price_upside_pct'] if point else None,stress if point else None,gates,asof,data.period)
     # Evidence completeness controls formal certification. It must not impose
     # membership in a hand-selected legacy cohort on the research ranking.
-    rankable=point
+    rankable=point and not thin
     exclusions=list(specialist)
     if share['missing_legal_conversion_inputs']:exclusions.append('CB_LEGAL_CONVERSION_INPUTS_MISSING')
     if pe is None:exclusions.append('PE_SAMPLE_INSUFFICIENT')

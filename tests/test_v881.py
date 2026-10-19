@@ -10,6 +10,27 @@ from tw_model_v880.capital import apply_capital_terms
 from tw_model_v880.calibration import fit_accounting
 
 class CoverageRegressionTests(unittest.TestCase):
+    def test_full_ledger_does_not_hide_filtered_issuers_from_thin_discovery(self):
+        from scripts.v881_thin_shadow import discover_shadow
+        d=FakeData();d.prices[('TEST','SYNTHETIC_A')]['volume_shares']=1
+        report=dict(estimate_vintage=ASOF,target_date='2027-12-31',all_model_row_summary=[dict(code='SYNTHETIC_A',status='TURNOVER_FILTER_BELOW_12M_TWD'),dict(code='SYNTHETIC_B',status='PENDING')])
+        examined,eligible,rows,failures=discover_shadow(d,report,CAL)
+        self.assertEqual((examined,eligible,len(rows),len(failures)),(1,1,1,0))
+        self.assertFalse(rows[0]['rankable']);self.assertFalse(rows[0]['formal_Aplus'])
+    def test_full_ledger_preserves_input_blockers_and_master_only_identities(self):
+        from scripts.v881_unmodeled_blockers import classify
+        d=FakeData();d.prices[('TEST','SYNTHETIC_A')]['volume_shares']=1
+        d.evidence['master']['NEW']=dict(market='TEST',issued_shares=10000)
+        report=dict(model='V8.8.2',estimate_vintage=ASOF,asof_price_date='2026-10-16',data_scope=dict(normalized_issuers=2,model_rows=3),all_model_row_summary=[dict(code='SYNTHETIC_A',status='TURNOVER_FILTER_BELOW_12M_TWD'),dict(code='SYNTHETIC_B',status='PENDING'),dict(code='NEW',status='CURRENT_FINANCIAL_STATEMENT_MISSING')])
+        r=classify(d,report)
+        self.assertEqual(r['unmodeled'],1);self.assertEqual(r['tracked_rows_outside_financial_universe'],1)
+        self.assertIn('LOW_SINGLE_DAY_TRADING_VALUE_BELOW_12M_NTD',r['all_blocker_counts'])
+    def test_chip_coverage_reconciles_tracked_union_instead_of_financial_subset(self):
+        from scripts.tw_chip_diagnostic import summarize,join_market_codes
+        q=dict(normalized_financial_issuers=2,tracked_issuer_universe=3,queues=[dict(code=str(i),market='TEST') for i in range(3)],normalized_not_yet_modeled=[])
+        r=summarize(q,'2026-10-16',[],[],join_market_codes(q),[])
+        self.assertEqual(r['tracked_issuer_count'],3);self.assertEqual(r['financial_issuer_count'],2)
+        self.assertFalse(r['official_marketwide_chip_certified'])
     def test_nonlegacy_official_issuer_can_rank_but_is_not_certified(self):
         d=FakeData();primary=d.evidence['primary'].pop('SYNTHETIC_A')
         d.detailed_values=lambda key,period:primary['values'] if period==d.period else primary['prior_full_year']
