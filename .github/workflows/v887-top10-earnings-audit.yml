@@ -1,0 +1,50 @@
+name: TW V8.8.7 Top10 Earnings Evidence Audit
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'scripts/v887_top10_earnings_audit.py'
+      - 'tests/test_v887_top10_earnings_audit.py'
+      - '.github/workflows/v887-top10-earnings-audit.yml'
+  schedule:
+    # 22:10 Asia/Taipei, after the existing 21:30 research refresh.
+    - cron: '10 14 * * *'
+permissions:
+  contents: write
+concurrency:
+  group: tw-v887-top10-audit
+  cancel-in-progress: false
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate isolation and evidence invariants
+        run: python -m unittest discover -s tests -p 'test_v887_top10_earnings_audit.py' -v
+      - name: Rebuild using current research, keep original rank untouched
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          for attempt in 1 2 3; do
+            git fetch origin main
+            git reset --hard origin/main
+            python scripts/v887_top10_earnings_audit.py
+            git add tw-market-data/rankings/v887_top10_earnings_audit.json tw-market-data/rankings/v887_top10_earnings_audit.md
+            if git diff --cached --quiet; then
+              echo "Top10 source-evidence audit unchanged."
+              exit 0
+            fi
+            git commit -m 'data: refresh V8.8.7 top10 earnings evidence diagnostics'
+            if git push origin HEAD:main; then
+              exit 0
+            fi
+            echo "Remote moved while publishing; rebuild with newest data."
+          done
+          exit 1
