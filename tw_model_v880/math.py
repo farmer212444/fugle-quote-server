@@ -33,15 +33,22 @@ def share_scenarios(issued,bonds,weighted_diluted=None):
     additions=0.;missing=[];unresolved=[];detail=[]
     for b in bonds:
         face=number(b.get('face'));price=number(b.get('conversion_price'));fx=1 if b.get('currency')=='TWD' else number(b.get('fx_twd'))
-        add=face*fx/price if face is not None and face>=0 and fx is not None and fx>0 and price is not None and price>0 else None
+        price_currency=b.get('conversion_price_currency','TWD')
+        if price_currency==b.get('currency'):fx_for_shares=1
+        elif price_currency=='TWD':fx_for_shares=fx
+        else:fx_for_shares=None
+        add=face*fx_for_shares/price if face is not None and face>=0 and fx_for_shares is not None and fx_for_shares>0 and price is not None and price>0 else None
+        if b.get('underlying_share_identity_unresolved'):add=None
         if add is None:missing.append(b['code'])
         else:additions+=add
         if not b.get('current_terms_verified'):unresolved.append(b['code'])
         detail.append(dict(**b,additional_shares=add))
     weighted=number(weighted_diluted)
     base=max(issued+additions,weighted or issued)
+    reset_stress=max(issued+additions/.9,weighted or issued) if not missing else None
     return dict(issued_common_shares=issued,cb_additional_shares=additions,disclosed_weighted_diluted_shares=weighted,
       base_shares=base,denominator_method='MAX_CURRENT_COMMON_PLUS_FULL_CB_AND_DISCLOSED_WEIGHTED_NOT_SUM',
+      conversion_price_down_10pct_full_conversion_shares=reset_stress,conversion_price_stress_is_assumption_not_a_new_legal_term=True,
       missing_legal_conversion_inputs=missing,unresolved_terms=unresolved,bonds=detail,
       fully_diluted_shares_certified=False)
 

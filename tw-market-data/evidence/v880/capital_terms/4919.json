@@ -1,0 +1,45 @@
+{
+  "schema": "V881_DATED_LEGAL_CAPITAL_INPUTS_V1",
+  "code": "4919",
+  "checked_at": "2026-10-19T01:19:45.328384+00:00",
+  "sources": [
+    {
+      "id": "nuvoton_ecb_issue",
+      "url": "https://www.moneydj.com/kmdj/news/newsviewer.aspx?a=69a7f538-6e6b-41de-95b0-716e0dc1a645",
+      "path": "evidence/v880/capital_terms/sources/nuvoton_ecb_issue.json",
+      "sha256": "d260222f512ab5abe7354c6a5bad36f963aa7e3daea859d58dcecdacd969ef8a",
+      "raw_source_sha256": "479072976ee79f410e8067835d0ea4e6158b4b0d10010a7b32abea884d5be46c",
+      "available_at": "2026-10-19T01:07:54.578139+00:00",
+      "fetched_at": "2026-10-19T01:07:54.578139+00:00",
+      "source_record_type": "NUMERIC_EXTRACTION_AND_CAPTURE_RECEIPT_NOT_ORIGINAL_DOCUMENT_BYTES",
+      "source_type": "ISSUER_ANNOUNCEMENT_REPUBLICATION"
+    },
+    {
+      "id": "nuvoton_reset",
+      "url": "https://www.nuvoton.com/export/sites/nuvoton/about-nuvoton/investors/financial-information/financial-reports/2025Q4_CH.pdf",
+      "path": "evidence/v880/capital_terms/sources/nuvoton_reset.json",
+      "sha256": "a6fe71b2025b858dfe52cb39a101ac3d3d5fc8097048350afa5a158fb1dbdaa6",
+      "raw_source_sha256": null,
+      "available_at": "2026-10-19T01:19:45.328384+00:00",
+      "fetched_at": "2026-10-19T01:19:45.328384+00:00",
+      "source_record_type": "NUMERIC_EXTRACTION_AND_CAPTURE_RECEIPT_NOT_ORIGINAL_DOCUMENT_BYTES",
+      "source_type": "ORIGINAL_ISSUER_DOCUMENT_WEB_EXTRACT"
+    }
+  ],
+  "bonds": [
+    {
+      "code": "XS2972955608",
+      "currency": "USD",
+      "fixed_fx_twd": 32.917,
+      "conversion_price": 118.02,
+      "effective_at": "2025-08-03T00:00:00+08:00",
+      "price_basis": "DATED_RESET_IN_2025Q4_REPORT_LATER_RESETS_NOT_CERTIFIED",
+      "source_ids": [
+        "nuvoton_ecb_issue",
+        "nuvoton_reset"
+      ]
+    }
+  ],
+  "formal_share_certification": false,
+  "interpretation": "Known legal fixed FX and dated prices; official outstanding faces and current common shares load separately. Later reset/option completeness remains pending. Sources contain numeric extractions with original capture hashes, not original byte copies."
+}

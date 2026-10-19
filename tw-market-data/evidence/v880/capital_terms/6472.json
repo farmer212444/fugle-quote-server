@@ -1,0 +1,33 @@
+{
+  "schema": "V881_DATED_LEGAL_CAPITAL_INPUTS_V1",
+  "code": "6472",
+  "checked_at": "2026-10-19T01:11:56.016160+00:00",
+  "sources": [
+    {
+      "id": "bora_ecb_issue",
+      "url": "https://www.moneydj.com/kmdj/news/newsviewer.aspx?a=c7a9295f-9844-4e00-a13f-da495d3c3e07",
+      "path": "evidence/v880/capital_terms/sources/bora_ecb_issue.json",
+      "sha256": "0b646b3f3f053ab3e2ea04aa826c107d7c3d1337e71d8eb11bac2293785cd7d9",
+      "raw_source_sha256": "013fd22bca632240dab932de398dffe32a95f5489ba23068dcb26d4e16692c79",
+      "available_at": "2026-10-19T01:05:23.641005+00:00",
+      "fetched_at": "2026-10-19T01:05:23.641005+00:00",
+      "source_record_type": "NUMERIC_EXTRACTION_AND_CAPTURE_RECEIPT_NOT_ORIGINAL_DOCUMENT_BYTES",
+      "source_type": "ISSUER_ANNOUNCEMENT_REPUBLICATION"
+    }
+  ],
+  "bonds": [
+    {
+      "code": "XS2862889529",
+      "currency": "USD",
+      "fixed_fx_twd": 31.962,
+      "conversion_price": 964.6,
+      "effective_at": "2024-09-05T00:00:00+08:00",
+      "price_basis": "DATED_ISSUE_OR_OFFERING_PRICE_LATER_RESETS_NOT_CERTIFIED",
+      "source_ids": [
+        "bora_ecb_issue"
+      ]
+    }
+  ],
+  "formal_share_certification": false,
+  "interpretation": "Known legal fixed FX and dated prices; official outstanding faces and current common shares load separately. Later reset/option completeness remains pending. Sources contain numeric extractions with original capture hashes, not original byte copies."
+}

@@ -1,0 +1,77 @@
+{
+  "schema": "V881_DATED_LEGAL_CAPITAL_INPUTS_V1",
+  "code": "2376",
+  "checked_at": "2026-10-19T01:11:56.016160+00:00",
+  "sources": [
+    {
+      "id": "gigabyte_ecb3_issue",
+      "url": "https://www.moneydj.com/kmdj/news/newsviewer.aspx?a=ecda683b-4223-4f8a-b8a2-bbd1230c0bde",
+      "path": "evidence/v880/capital_terms/sources/gigabyte_ecb3_issue.json",
+      "sha256": "afb4e4c06aeb83e67e14c847fafeeaa3dd4c317eb7632fb0d7ecc20d511758b7",
+      "raw_source_sha256": "5cad91cabbde380e67a04ba31aa07b7d5f73e5cf3a4af13277a754602b8029d8",
+      "available_at": "2026-10-19T01:05:23.466435+00:00",
+      "fetched_at": "2026-10-19T01:05:23.466435+00:00",
+      "source_record_type": "NUMERIC_EXTRACTION_AND_CAPTURE_RECEIPT_NOT_ORIGINAL_DOCUMENT_BYTES",
+      "source_type": "ISSUER_ANNOUNCEMENT_REPUBLICATION"
+    },
+    {
+      "id": "gigabyte_ecb4_issue",
+      "url": "https://www.moneydj.com/kmdj/news/newsviewer.aspx?a=868a4899-e182-4619-a86c-77c9e0be30e1",
+      "path": "evidence/v880/capital_terms/sources/gigabyte_ecb4_issue.json",
+      "sha256": "88684740f1b97d60e01e9c5056d120722b8a3e06bbb114c3c02c555a5111cc8d",
+      "raw_source_sha256": "bf09db2e41c3453da00bdc4c6cda8bef19445fc1e18ca6fd724e707dd332a465",
+      "available_at": "2026-10-19T01:05:23.534620+00:00",
+      "fetched_at": "2026-10-19T01:05:23.534620+00:00",
+      "source_record_type": "NUMERIC_EXTRACTION_AND_CAPTURE_RECEIPT_NOT_ORIGINAL_DOCUMENT_BYTES",
+      "source_type": "ISSUER_ANNOUNCEMENT_REPUBLICATION"
+    },
+    {
+      "id": "gigabyte_ecb5_issue",
+      "url": "https://www.moneydj.com/kmdj/news/newsviewer.aspx?a=e5714e0e-5553-4847-852d-616f705571aa",
+      "path": "evidence/v880/capital_terms/sources/gigabyte_ecb5_issue.json",
+      "sha256": "8831c0f3b0c49bf2c764e2ee3c2665afd6673e99384003d8e2fdd07160ebff8c",
+      "raw_source_sha256": "7b7fe9d72ff832fa25d2e36a78382a9030e705ecea24015abb0e9c086ebee436",
+      "available_at": "2026-10-19T01:05:23.573945+00:00",
+      "fetched_at": "2026-10-19T01:05:23.573945+00:00",
+      "source_record_type": "NUMERIC_EXTRACTION_AND_CAPTURE_RECEIPT_NOT_ORIGINAL_DOCUMENT_BYTES",
+      "source_type": "ISSUER_ANNOUNCEMENT_REPUBLICATION"
+    }
+  ],
+  "bonds": [
+    {
+      "code": "XS2653508528",
+      "currency": "USD",
+      "fixed_fx_twd": 31.095,
+      "conversion_price": 375.0,
+      "effective_at": "2023-07-27T00:00:00+08:00",
+      "price_basis": "DATED_ISSUE_OR_OFFERING_PRICE_LATER_RESETS_NOT_CERTIFIED",
+      "source_ids": [
+        "gigabyte_ecb3_issue"
+      ]
+    },
+    {
+      "code": "XS2854876179",
+      "currency": "USD",
+      "fixed_fx_twd": 32.61,
+      "conversion_price": 358.87,
+      "effective_at": "2024-07-23T00:00:00+08:00",
+      "price_basis": "DATED_ISSUE_OR_OFFERING_PRICE_LATER_RESETS_NOT_CERTIFIED",
+      "source_ids": [
+        "gigabyte_ecb4_issue"
+      ]
+    },
+    {
+      "code": "XS3253754934",
+      "currency": "USD",
+      "fixed_fx_twd": 31.635,
+      "conversion_price": 371.81,
+      "effective_at": "2026-05-26T00:00:00+08:00",
+      "price_basis": "DATED_ISSUE_OR_OFFERING_PRICE_LATER_RESETS_NOT_CERTIFIED",
+      "source_ids": [
+        "gigabyte_ecb5_issue"
+      ]
+    }
+  ],
+  "formal_share_certification": false,
+  "interpretation": "Known legal fixed FX and dated prices; official outstanding faces and current common shares load separately. Later reset/option completeness remains pending. Sources contain numeric extractions with original capture hashes, not original byte copies."
+}

@@ -1,0 +1,55 @@
+{
+  "schema": "V881_DATED_LEGAL_CAPITAL_INPUTS_V1",
+  "code": "3665",
+  "checked_at": "2026-10-19T01:11:56.016160+00:00",
+  "sources": [
+    {
+      "id": "bizlink_ecb6_issue",
+      "url": "https://www.moneydj.com/kmdj/news/newsviewer.aspx?a=8a645b71-ae85-4a58-969f-d526af8e196b",
+      "path": "evidence/v880/capital_terms/sources/bizlink_ecb6_issue.json",
+      "sha256": "64b8307193945eef52c708e3aa7f3a97b5d4016845e8823b7647f25aa4ac2d9c",
+      "raw_source_sha256": "c74745e66986b3f7c789c9da77e7880f7432ebd285ca8867a9c2bea69518efbc",
+      "available_at": "2026-10-19T01:09:21.994415+00:00",
+      "fetched_at": "2026-10-19T01:09:21.994415+00:00",
+      "source_record_type": "NUMERIC_EXTRACTION_AND_CAPTURE_RECEIPT_NOT_ORIGINAL_DOCUMENT_BYTES",
+      "source_type": "ISSUER_ANNOUNCEMENT_REPUBLICATION"
+    },
+    {
+      "id": "bizlink_ecb7_issue",
+      "url": "https://www.moneydj.com/kmdj/news/newsviewer.aspx?a=0d2cf4f2-85d5-404b-a51b-02cc9e5ae24d",
+      "path": "evidence/v880/capital_terms/sources/bizlink_ecb7_issue.json",
+      "sha256": "b6f1684650425d89ab652f013016fc086cab31d7cc23c4c6d5065a17c315c648",
+      "raw_source_sha256": "67d6925065dd56a713ddbb3c3000079e70ae6426d84bca1b13e6d03878eaf6b5",
+      "available_at": "2026-10-19T01:05:29.713948+00:00",
+      "fetched_at": "2026-10-19T01:05:29.713948+00:00",
+      "source_record_type": "NUMERIC_EXTRACTION_AND_CAPTURE_RECEIPT_NOT_ORIGINAL_DOCUMENT_BYTES",
+      "source_type": "ISSUER_ANNOUNCEMENT_REPUBLICATION"
+    }
+  ],
+  "bonds": [
+    {
+      "code": "XS3186680602",
+      "currency": "USD",
+      "fixed_fx_twd": 30.287,
+      "conversion_price": 1423.5,
+      "effective_at": "2025-09-22T00:00:00+08:00",
+      "price_basis": "DATED_ISSUE_OR_OFFERING_PRICE_LATER_RESETS_NOT_CERTIFIED",
+      "source_ids": [
+        "bizlink_ecb6_issue"
+      ]
+    },
+    {
+      "code": "XS3444080413",
+      "currency": "USD",
+      "fixed_fx_twd": 32.219,
+      "conversion_price": 3249.07,
+      "effective_at": "2026-08-13T00:00:00+08:00",
+      "price_basis": "DATED_ISSUE_OR_OFFERING_PRICE_LATER_RESETS_NOT_CERTIFIED",
+      "source_ids": [
+        "bizlink_ecb7_issue"
+      ]
+    }
+  ],
+  "formal_share_certification": false,
+  "interpretation": "Known legal fixed FX and dated prices; official outstanding faces and current common shares load separately. Later reset/option completeness remains pending. Sources contain numeric extractions with original capture hashes, not original byte copies."
+}

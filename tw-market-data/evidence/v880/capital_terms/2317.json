@@ -1,0 +1,45 @@
+{
+  "schema": "V881_DATED_LEGAL_CAPITAL_INPUTS_V1",
+  "code": "2317",
+  "checked_at": "2026-10-19T01:11:56.016160+00:00",
+  "sources": [
+    {
+      "id": "honhai_ecb1_issue",
+      "url": "https://www.moneydj.com/kmdj/news/newsviewer.aspx?a=bdc39952-c5e1-4909-b1c1-a8e402046d77",
+      "path": "evidence/v880/capital_terms/sources/honhai_ecb1_issue.json",
+      "sha256": "bc46c8ecc2665cd8b4a5c0be1556678fd6b3c73d91a6f5d845d2a802028e7d6a",
+      "raw_source_sha256": "0668928ea3bb4744a5eb9a861edfd745b3f7b314d08a137ba86a62bc0de23e6c",
+      "available_at": "2026-10-19T01:05:23.361791+00:00",
+      "fetched_at": "2026-10-19T01:05:23.361791+00:00",
+      "source_record_type": "NUMERIC_EXTRACTION_AND_CAPTURE_RECEIPT_NOT_ORIGINAL_DOCUMENT_BYTES",
+      "source_type": "ISSUER_ANNOUNCEMENT_REPUBLICATION"
+    },
+    {
+      "id": "honhai_reset",
+      "url": "https://www.moneydj.com/KMDJ/news/newsviewer.aspx?a=c5a8edfa-e48a-4f6c-a75e-bcdd7b7d73c5",
+      "path": "evidence/v880/capital_terms/sources/honhai_reset.json",
+      "sha256": "07ecfe2f71aab1630b26068e19124ab428137abaf95993a566076f26a1d46562",
+      "raw_source_sha256": "e2ee413d758217b5b66a8a7c09f8ef0c1ab212b85d6cb9f72a43d8ec5b42ed6c",
+      "available_at": "2026-10-19T00:59:19.452077+00:00",
+      "fetched_at": "2026-10-19T00:59:19.452077+00:00",
+      "source_record_type": "NUMERIC_EXTRACTION_AND_CAPTURE_RECEIPT_NOT_ORIGINAL_DOCUMENT_BYTES",
+      "source_type": "ISSUER_ANNOUNCEMENT_REPUBLICATION"
+    }
+  ],
+  "bonds": [
+    {
+      "code": "XS2886113278",
+      "currency": "USD",
+      "fixed_fx_twd": 32.186,
+      "conversion_price": 281.09,
+      "effective_at": "2026-07-08T00:00:00+08:00",
+      "price_basis": "DATED_ANNOUNCEMENT_RESET_ORIGINAL_COMPLETENESS_PENDING",
+      "source_ids": [
+        "honhai_ecb1_issue",
+        "honhai_reset"
+      ]
+    }
+  ],
+  "formal_share_certification": false,
+  "interpretation": "Known legal fixed FX and dated prices; official outstanding faces and current common shares load separately. Later reset/option completeness remains pending. Sources contain numeric extractions with original capture hashes, not original byte copies."
+}

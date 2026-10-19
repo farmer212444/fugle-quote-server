@@ -1,0 +1,55 @@
+{
+  "schema": "V881_DATED_LEGAL_CAPITAL_INPUTS_V1",
+  "code": "1101",
+  "checked_at": "2026-10-19T01:11:56.016160+00:00",
+  "sources": [
+    {
+      "id": "tcc_ecb2023_issue",
+      "url": "https://www.moneydj.com/kmdj/news/newsviewer.aspx?a=ccc5a5cc-6cc1-434d-812f-bcc56be88a1c",
+      "path": "evidence/v880/capital_terms/sources/tcc_ecb2023_issue.json",
+      "sha256": "51ddafb6325e92830d6a518398f688f9782110ce9d7fcba46a109732385fc87f",
+      "raw_source_sha256": "aa5297e544cf81f359a0990db0e19239f5b3158644d0c1e416a561113f75e8f0",
+      "available_at": "2026-10-19T01:09:21.962224+00:00",
+      "fetched_at": "2026-10-19T01:09:21.962224+00:00",
+      "source_record_type": "NUMERIC_EXTRACTION_AND_CAPTURE_RECEIPT_NOT_ORIGINAL_DOCUMENT_BYTES",
+      "source_type": "ISSUER_ANNOUNCEMENT_REPUBLICATION"
+    },
+    {
+      "id": "tcc_ecb2025_issue",
+      "url": "https://www.moneydj.com/kmdj/news/newsviewer.aspx?a=3b9df639-43bf-4036-9061-564b2737c41c",
+      "path": "evidence/v880/capital_terms/sources/tcc_ecb2025_issue.json",
+      "sha256": "7f5c8c0d764e1c69ae0aea4bb58234f8a3ead377142e2b40985708ddb78b6a41",
+      "raw_source_sha256": "c74471edd44d510dc18ca7d2a9fc5c0be713e497f1b01fe30a414d521d9dfe7a",
+      "available_at": "2026-10-19T01:07:48.484133+00:00",
+      "fetched_at": "2026-10-19T01:07:48.484133+00:00",
+      "source_record_type": "NUMERIC_EXTRACTION_AND_CAPTURE_RECEIPT_NOT_ORIGINAL_DOCUMENT_BYTES",
+      "source_type": "ISSUER_ANNOUNCEMENT_REPUBLICATION"
+    }
+  ],
+  "bonds": [
+    {
+      "code": "XS2708323857",
+      "currency": "USD",
+      "fixed_fx_twd": 32.293,
+      "conversion_price": 37.27,
+      "effective_at": "2023-10-24T00:00:00+08:00",
+      "price_basis": "DATED_ISSUE_OR_OFFERING_PRICE_LATER_RESETS_NOT_CERTIFIED",
+      "source_ids": [
+        "tcc_ecb2023_issue"
+      ]
+    },
+    {
+      "code": "XS2973002707",
+      "currency": "USD",
+      "fixed_fx_twd": 33.02,
+      "conversion_price": 38.8,
+      "effective_at": "2025-03-28T00:00:00+08:00",
+      "price_basis": "DATED_ISSUE_OR_OFFERING_PRICE_LATER_RESETS_NOT_CERTIFIED",
+      "source_ids": [
+        "tcc_ecb2025_issue"
+      ]
+    }
+  ],
+  "formal_share_certification": false,
+  "interpretation": "Known legal fixed FX and dated prices; official outstanding faces and current common shares load separately. Later reset/option completeness remains pending. Sources contain numeric extractions with original capture hashes, not original byte copies."
+}

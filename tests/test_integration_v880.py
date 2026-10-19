@@ -75,6 +75,7 @@ class IntegrationTests(unittest.TestCase):
         d=FakeData();d.evidence['primary']['SYNTHETIC_A']['values']['gross_profit_k']=999
         with tempfile.TemporaryDirectory() as tmp:
             with patch('scripts.tw_v880_run.MarketData',return_value=d),patch('scripts.tw_v880_run.fit_accounting',return_value=CAL),contextlib.redirect_stdout(io.StringIO()):r=run(tmp,ASOF,'2027-12-31',tmp)
-            self.assertEqual(len(r['issuer_failures']),1);self.assertEqual(r['all_model_rows'][0]['code'],'SYNTHETIC_B');self.assertEqual(r['formal_Aplus_count'],0)
+            self.assertEqual(len(r['issuer_failures']),1);by_code={x['code']:x for x in r['all_model_rows']}
+            self.assertEqual(by_code['SYNTHETIC_A']['status'],'ISSUER_INPUT_OR_MODEL_ERROR');self.assertTrue(by_code['SYNTHETIC_B']['rankable']);self.assertEqual(r['formal_Aplus_count'],0)
             self.assertEqual(json.loads(gzip.decompress((pathlib.Path(tmp)/'v880_full_results.json.gz').read_bytes()))['issuer_failures'],r['issuer_failures'])
 if __name__=='__main__':unittest.main()

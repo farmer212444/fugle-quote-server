@@ -1,0 +1,45 @@
+{
+  "schema": "V881_DATED_LEGAL_CAPITAL_INPUTS_V1",
+  "code": "3231",
+  "checked_at": "2026-10-19T01:11:56.016160+00:00",
+  "sources": [
+    {
+      "id": "wistron_q2",
+      "url": "https://www.wistron.com/file/3f4d2ec7-4591-486f-b5c4-eb2a8220dc2d/274415_115Q2_合併_完稿財報_IMSv1-電子書_IMSv1.pdf.pdf",
+      "path": "evidence/v880/capital_terms/sources/wistron_q2.json",
+      "sha256": "1a69e27e4711e83ae356330a6db2478e829520c56bab7782fc2330a44ea16513",
+      "raw_source_sha256": "b9dd6c29ec1df7deefaf0d15e88080c2fb15e9ec99ff711a47c7efd074b74f85",
+      "available_at": "2026-10-19T00:56:04.779978+00:00",
+      "fetched_at": "2026-10-19T00:56:04.779978+00:00",
+      "source_record_type": "NUMERIC_EXTRACTION_AND_CAPTURE_RECEIPT_NOT_ORIGINAL_DOCUMENT_BYTES",
+      "source_type": "ORIGINAL_ISSUER_DOCUMENT"
+    },
+    {
+      "id": "wistron_reset",
+      "url": "https://news.cnyes.com/news/id/6534313",
+      "path": "evidence/v880/capital_terms/sources/wistron_reset.json",
+      "sha256": "8ae7a17189d7d6c6ae208b6dd17d5c07a1a7454807daf1bbce61290b282f1f50",
+      "raw_source_sha256": "4cc9f1fb8bb5e0522b4d22ff93ba2971c3293089c04717c1b3918377972f2505",
+      "available_at": "2026-10-19T00:59:18.394298+00:00",
+      "fetched_at": "2026-10-19T00:59:18.394298+00:00",
+      "source_record_type": "NUMERIC_EXTRACTION_AND_CAPTURE_RECEIPT_NOT_ORIGINAL_DOCUMENT_BYTES",
+      "source_type": "ISSUER_ANNOUNCEMENT_REPUBLICATION"
+    }
+  ],
+  "bonds": [
+    {
+      "code": "XS3202703834",
+      "currency": "USD",
+      "fixed_fx_twd": 30.629,
+      "conversion_price": 173.82,
+      "effective_at": "2026-07-14T00:00:00+08:00",
+      "price_basis": "DATED_ANNOUNCEMENT_RESET_ORIGINAL_COMPLETENESS_PENDING",
+      "source_ids": [
+        "wistron_q2",
+        "wistron_reset"
+      ]
+    }
+  ],
+  "formal_share_certification": false,
+  "interpretation": "Known legal fixed FX and dated prices; official outstanding faces and current common shares load separately. Later reset/option completeness remains pending. Sources contain numeric extractions with original capture hashes, not original byte copies."
+}

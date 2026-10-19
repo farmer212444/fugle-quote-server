@@ -1,4 +1,4 @@
-# V8.8.1 cash evidence audit
+# V8.8.2 cash evidence audit
 
 財報 2026-Q2；價格 2026-10-16。
 

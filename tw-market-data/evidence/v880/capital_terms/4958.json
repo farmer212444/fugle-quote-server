@@ -1,0 +1,55 @@
+{
+  "schema": "V881_DATED_LEGAL_CAPITAL_INPUTS_V1",
+  "code": "4958",
+  "checked_at": "2026-10-19T01:11:56.016160+00:00",
+  "sources": [
+    {
+      "id": "zdt_ecb5_issue",
+      "url": "https://www.moneydj.com/kmdj/news/newsviewer.aspx?a=2c60e08e-8a5e-4c04-a86b-0657b6d8197e",
+      "path": "evidence/v880/capital_terms/sources/zdt_ecb5_issue.json",
+      "sha256": "140ce4b7aa9d8b4ea73f14b4efc0893568a84ba4efdd75f86a83124f1e2befed",
+      "raw_source_sha256": "7383d198798a453ec7db3e69ef02756e3f141beb40cc522b91d491f4e25ec631",
+      "available_at": "2026-10-19T01:07:48.485943+00:00",
+      "fetched_at": "2026-10-19T01:07:48.485943+00:00",
+      "source_record_type": "NUMERIC_EXTRACTION_AND_CAPTURE_RECEIPT_NOT_ORIGINAL_DOCUMENT_BYTES",
+      "source_type": "ISSUER_ANNOUNCEMENT_REPUBLICATION"
+    },
+    {
+      "id": "zdt_ecb6_issue_alt",
+      "url": "https://goodinfo.tw/tw/StockAnnounceDetail.asp?CLAIM_TIME=2026%2F09%2F22+21%3A31%3A25&STOCK_ID=4958&SUBJECT=%E5%85%AC%E5%91%8A%E6%9C%AC%E5%85%AC%E5%8F%B8%E6%B5%B7%E5%A4%96%E7%AC%AC%E5%85%AD%E6%AC%A1%E7%84%A1%E6%93%94%E4%BF%9D%E8%BD%89%E6%8F%9B%E5%85%AC%E5%8F%B8%E5%82%B5%E5%AE%8C%E6%88%90%E8%A8%82%E5%83%B9",
+      "path": "evidence/v880/capital_terms/sources/zdt_ecb6_issue_alt.json",
+      "sha256": "f38370b4d3896f023dc676316d11e22769a55b482e738c87302d277e871c9e47",
+      "raw_source_sha256": "7177fa07ed62ae4a312e6e7b0ca7ddda2a2a9bd97273cea706e4281978a6bb95",
+      "available_at": "2026-10-19T01:09:23.725615+00:00",
+      "fetched_at": "2026-10-19T01:09:23.725615+00:00",
+      "source_record_type": "NUMERIC_EXTRACTION_AND_CAPTURE_RECEIPT_NOT_ORIGINAL_DOCUMENT_BYTES",
+      "source_type": "ISSUER_ANNOUNCEMENT_REPUBLICATION"
+    }
+  ],
+  "bonds": [
+    {
+      "code": "XS3170882131",
+      "currency": "USD",
+      "fixed_fx_twd": 30.073,
+      "conversion_price": 186.45,
+      "effective_at": "2025-09-25T00:00:00+08:00",
+      "price_basis": "DATED_ISSUE_OR_OFFERING_PRICE_LATER_RESETS_NOT_CERTIFIED",
+      "source_ids": [
+        "zdt_ecb5_issue"
+      ]
+    },
+    {
+      "code": "XS3505161664",
+      "currency": "USD",
+      "fixed_fx_twd": 31.715,
+      "conversion_price": 550.13,
+      "effective_at": "2026-09-29T00:00:00+08:00",
+      "price_basis": "DATED_ISSUE_OR_OFFERING_PRICE_LATER_RESETS_NOT_CERTIFIED",
+      "source_ids": [
+        "zdt_ecb6_issue_alt"
+      ]
+    }
+  ],
+  "formal_share_certification": false,
+  "interpretation": "Known legal fixed FX and dated prices; official outstanding faces and current common shares load separately. Later reset/option completeness remains pending. Sources contain numeric extractions with original capture hashes, not original byte copies."
+}

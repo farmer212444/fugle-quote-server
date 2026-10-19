@@ -1,0 +1,44 @@
+{
+  "schema": "V881_DATED_LEGAL_CAPITAL_INPUTS_V1",
+  "code": "8299",
+  "checked_at": "2026-10-19T01:11:56.016160+00:00",
+  "sources": [
+    {
+      "id": "phison_offering",
+      "url": "https://links.sgx.com/FileOpen/Phison%20Electronics%20Corporation_Final%20Offering%20Circular.ashx?App=Prospectus&FileID=70076",
+      "path": "evidence/v880/capital_terms/sources/phison_offering.json",
+      "sha256": "66515202d2f2a9f0ce840763e4d229eaf1381012c00572b6bb43d9c9c27a14c5",
+      "raw_source_sha256": "7d733ef003eddc8601b1d37b3a6f2eb44a682927823b6ea148d8abaaab81a6b9",
+      "available_at": "2026-10-19T01:09:46.138315+00:00",
+      "fetched_at": "2026-10-19T01:09:46.138315+00:00",
+      "source_record_type": "NUMERIC_EXTRACTION_AND_CAPTURE_RECEIPT_NOT_ORIGINAL_DOCUMENT_BYTES",
+      "source_type": "ORIGINAL_ISSUER_DOCUMENT"
+    }
+  ],
+  "bonds": [
+    {
+      "code": "XS3364922461",
+      "currency": "USD",
+      "fixed_fx_twd": 31.635,
+      "conversion_price": 3418.75,
+      "effective_at": "2026-05-26T00:00:00+08:00",
+      "price_basis": "DATED_ISSUE_OR_OFFERING_PRICE_LATER_RESETS_NOT_CERTIFIED",
+      "source_ids": [
+        "phison_offering"
+      ]
+    },
+    {
+      "code": "XS3364929045",
+      "currency": "USD",
+      "fixed_fx_twd": 31.635,
+      "conversion_price": 3555.5,
+      "effective_at": "2026-05-26T00:00:00+08:00",
+      "price_basis": "DATED_ISSUE_OR_OFFERING_PRICE_LATER_RESETS_NOT_CERTIFIED",
+      "source_ids": [
+        "phison_offering"
+      ]
+    }
+  ],
+  "formal_share_certification": false,
+  "interpretation": "Known legal fixed FX and dated prices; official outstanding faces and current common shares load separately. Later reset/option completeness remains pending. Sources contain numeric extractions with original capture hashes, not original byte copies."
+}
