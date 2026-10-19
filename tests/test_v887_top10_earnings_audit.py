@@ -1,5 +1,8 @@
 import importlib.util
 import unittest
+import tempfile
+import json
+import hashlib
 from pathlib import Path
 
 SPEC=importlib.util.spec_from_file_location("v887",Path(__file__).resolve().parents[1]/"scripts/v887_top10_earnings_audit.py")
@@ -44,6 +47,46 @@ class EarningsAuditTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,"VALUATION_BRIDGE_INCONSISTENT"):
             mod.analyze(dict(self.row,base=dict(eps=10,pe=15,target_price=145)),
                         self.prior,self.now,self.cash,self.fy,{},2)
+    def _make_monthly_fixture(self, folder, captured="2026-10-19T16:59:00+00:00"):
+        base=Path(folder)/"tw-market-data"
+        shard=base/"2026-09/revenue_3.json"
+        shard.parent.mkdir(parents=True,exist_ok=True)
+        row=dict(code="3305",market="TWSE",report_month="11509",
+                 ytd_revenue_k="2500000",last_year_ytd_revenue_k="1800000")
+        payload=(json.dumps([row])+"\n").encode()
+        shard.write_bytes(payload)
+        doc=dict(period="2026-09",capture_utc=captured,
+                 shards=[dict(path="tw-market-data/2026-09/revenue_3.json",
+                              records=1,sha256=hashlib.sha256(payload).hexdigest())],
+                 original_receipts=[])
+        (base/"latest_manifest.json").write_text(json.dumps(doc),encoding="utf-8")
+        research=dict(estimate_vintage="2026-10-20T03:25:00+08:00",
+                      financial_last_quarter="2026-Q2")
+        return base,shard,research
+    def test_q3_ytd_subtraction_identifies_deceleration(self):
+        with tempfile.TemporaryDirectory() as folder:
+            base,shard,research=self._make_monthly_fixture(folder)
+            out=mod.check_post_financial_quarter_revenue(base,research,
+                {("TWSE","3305"):self.now},{("TWSE","3305"):self.prior},[self.row])
+            self.assertEqual(out["status"],"NEXT_QUARTER_REVENUE_RECONCILED_BUT_MARGIN_UNVERIFIED")
+            item=out["issuer_checks"][0]
+            self.assertEqual(item["three_month_revenue_k"],1300000)
+            self.assertEqual(item["prior_three_month_revenue_k"],1000000)
+            self.assertEqual(item["next_quarter_revenue_yoy_pct"],30.0)
+            self.assertEqual(item["current_financial_H1_yoy_pct"],50.0)
+            self.assertTrue(item["growth_decelerated_over_20pp"])
+            self.assertFalse(item["gross_margin_for_next_quarter_verified"])
+    def test_monthly_revenue_tamper_or_future_capture_fails_closed(self):
+        with tempfile.TemporaryDirectory() as folder:
+            base,shard,research=self._make_monthly_fixture(folder)
+            shard.write_text("tampered",encoding="utf-8")
+            with self.assertRaisesRegex(ValueError,"SHARD_SHA_MISMATCH"):
+                mod.check_post_financial_quarter_revenue(base,research,
+                    {("TWSE","3305"):self.now},{("TWSE","3305"):self.prior},[self.row])
+            base,shard,research=self._make_monthly_fixture(folder,"2026-10-21T16:59:00+00:00")
+            with self.assertRaisesRegex(ValueError,"FUTURE_OR_UNZONED"):
+                mod.check_post_financial_quarter_revenue(base,research,
+                    {("TWSE","3305"):self.now},{("TWSE","3305"):self.prior},[self.row])
     def test_runrate_not_extrapolated_when_year_to_date_loss(self):
         r=mod.analyze(self.row,self.prior,dict(self.now,basic_eps_ytd=-2),
                       self.cash,self.fy,{},2)
