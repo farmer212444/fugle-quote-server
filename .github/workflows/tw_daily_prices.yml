@@ -2,10 +2,16 @@ name: Taiwan Official Daily Stock Prices
 on:
   workflow_dispatch:
   schedule:
-    # 19:40 Taiwan local time, Mon-Fri; GitHub scheduling can be delayed.
-    - cron: '40 11 * * 1-5'
+    # After-close primary + delayed-source retries, Taipei local time.
+    - cron: '40 11 * * 1-5'  # 19:40 Mon-Fri
+    - cron: '40 12 * * 1-5'  # 20:40 Mon-Fri
+    - cron: '40 13 * * 1-5'  # 21:40 Mon-Fri
+    - cron: '10 0 * * 2-6'   # 08:10 Tue-Sat: recover prior session
 permissions:
   contents: write
+concurrency:
+  group: tw-official-close-${{ github.ref }}
+  cancel-in-progress: false
 jobs:
   prices:
     runs-on: ubuntu-latest
@@ -13,6 +19,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Capture and validate latest TWSE TPEx prices
         shell: bash
         run: |
@@ -98,9 +106,16 @@ jobs:
           tpex, pdate, phash = gathered['TPEX']
           if tdate != pdate:
               raise ValueError(f'Exchange dates differ TWSE={tdate}, TPEx={pdate}')
-          if not 0 <= (dt.date.fromisoformat(today) - dt.date.fromisoformat(tdate)).days <= 4:
-              print(f'NO_NEW_SESSION today={today} exchange={tdate}: skip (holiday or API not yet refreshed)')
+          latest = OUTPUT / 'latest_manifest.json'
+          prior_date = json.loads(latest.read_text(encoding='utf-8'))['date'] if latest.exists() else None
+          if prior_date and tdate < prior_date:
+              raise ValueError(f'EXCHANGE_DATE_REGRESSION: incoming={tdate} published={prior_date}')
+          lag_days = (dt.date.fromisoformat(today) - dt.date.fromisoformat(tdate)).days
+          if not 0 <= lag_days <= 4:
+              print(f'::warning::NO_PUBLISHABLE_SESSION today={today} exchange={tdate}: waiting for verified exchange data')
           else:
+              if lag_days > 0:
+                  print(f'::notice::EXCHANGE_LATEST_SESSION {tdate}; current Taipei date {today}. Holiday, morning, or delayed publication may apply.')
               all_rows = sorted(twse + tpex, key=lambda x: (x['market'], x['code']))
               if len({(x['market'], x['code']) for x in all_rows}) != len(all_rows):
                   raise ValueError('Duplicate market ticker')
@@ -108,11 +123,10 @@ jobs:
               payload = (json.dumps(all_rows, ensure_ascii=False, sort_keys=True, separators=(',', ':')) + '\n').encode('utf-8')
               checksum = hashlib.sha256(payload).hexdigest()
               dest = OUTPUT / (tdate + '.json')
-              latest = OUTPUT / 'latest_manifest.json'
               if dest.exists() and hashlib.sha256(dest.read_bytes()).hexdigest() == checksum:
                   print('UNCHANGED_PRICE_DATA', tdate, len(all_rows))
               else:
-                  # Immutable correction ledger; keep old versions in an archival path.
+                  # Preserve a dated correction history. Never overwrite with a stale API session.
                   if dest.exists():
                       prior = dest.read_bytes()
                       original = hashlib.sha256(prior).hexdigest()
@@ -121,16 +135,20 @@ jobs:
                       if not revision.exists():
                           revision.write_bytes(prior)
                   dest.write_bytes(payload)
-                  latest.write_text(json.dumps({
-                      'date': tdate, 'TWSE_rows': len(twse), 'TPEX_rows': len(tpex),
-                      'total': len(all_rows), 'path': dest.as_posix(),
-                      'normalized_sha256': checksum,
-                      'raw_source_sha256': {'TWSE': thash, 'TPEX': phash},
-                      'sources': urls, 'unadjusted_quotes': True,
-                      'security_master_verified': False,
-                      'note': 'Latest daily unadjusted close; not adjusted for cash dividends, splits or corporate actions.'
-                  }, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+              manifest = json.dumps({
+                  'date': tdate, 'TWSE_rows': len(twse), 'TPEX_rows': len(tpex),
+                  'total': len(all_rows), 'path': dest.as_posix(),
+                  'normalized_sha256': checksum,
+                  'raw_source_sha256': {'TWSE': thash, 'TPEX': phash},
+                  'sources': urls, 'unadjusted_quotes': True,
+                  'security_master_verified': False,
+                  'note': 'Latest daily unadjusted close; not adjusted for cash dividends, splits or corporate actions.'
+              }, ensure_ascii=False, indent=2) + '\n'
+              if not latest.exists() or latest.read_text(encoding='utf-8') != manifest:
+                  latest.write_text(manifest, encoding='utf-8')
                   print('PUBLISHED', tdate, len(all_rows), checksum)
+              else:
+                  print('LATEST_REFERENCE_UNCHANGED', tdate, len(all_rows))
           PY
       - name: Save raw official price snapshot
         if: always()
@@ -146,10 +164,27 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add tw-market-data/prices/ || true
-          if ! git diff --cached --quiet; then
-            git commit -m 'data: archive verified official daily closing prices'
-            git push
-          else
+          git add tw-market-data/prices/
+          if git diff --cached --quiet; then
             echo 'No new closing-price data.'
+            exit 0
           fi
+          git commit -m 'data: archive verified official daily closing prices'
+          # Other daily data jobs may push to main while prices are collected.
+          # Rebase only; never force-push or lose an existing issuer snapshot.
+          for attempt in 1 2 3; do
+            git fetch origin main
+            if ! git rebase origin/main; then
+              git rebase --abort || true
+              echo '::error::Could not safely rebase price snapshot; no data overwritten.'
+              exit 1
+            fi
+            if git push origin HEAD:main; then
+              echo 'Verified official price snapshot pushed; research workflow will refresh on manifest change.'
+              exit 0
+            fi
+            echo "Price publication conflict; retry $attempt/3"
+            sleep 8
+          done
+          echo '::error::Price snapshot not published after three retries.'
+          exit 1
