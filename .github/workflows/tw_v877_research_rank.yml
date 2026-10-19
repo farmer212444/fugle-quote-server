@@ -10,6 +10,7 @@ on:
       - 'scripts/build_universe_verification_queue.py'
       - 'scripts/diagnose_unmodeled_universe.py'
       - 'scripts/v881_unmodeled_blockers.py'
+      - 'scripts/v881_thin_shadow.py'
       - 'scripts/tw_chip_diagnostic.py'
       - 'tests/**'
       - 'scripts/build_v880_evidence.py'
@@ -26,6 +27,7 @@ on:
       - 'scripts/build_universe_verification_queue.py'
       - 'scripts/diagnose_unmodeled_universe.py'
       - 'scripts/v881_unmodeled_blockers.py'
+      - 'scripts/v881_thin_shadow.py'
       - 'scripts/tw_chip_diagnostic.py'
       - 'tests/**'
       - 'scripts/build_v880_evidence.py'
@@ -61,6 +63,7 @@ jobs:
           python scripts/build_universe_verification_queue.py
           python scripts/diagnose_unmodeled_universe.py
           python scripts/v881_unmodeled_blockers.py
+          python scripts/v881_thin_shadow.py
           python scripts/tw_chip_diagnostic.py
           python scripts/v880_audit_exports.py --kind risk
           python scripts/v880_audit_exports.py --kind cash
@@ -81,6 +84,7 @@ jobs:
             python scripts/build_universe_verification_queue.py
             python scripts/diagnose_unmodeled_universe.py
             python scripts/v881_unmodeled_blockers.py
+            python scripts/v881_thin_shadow.py
             python scripts/tw_chip_diagnostic.py
             python scripts/v880_audit_exports.py --kind risk
             python scripts/v880_audit_exports.py --kind cash
