@@ -91,6 +91,57 @@ def liquidity_probe(dated,key,position_ntd=5_000_000,participation=.20):
                 spread_and_order_book_evidence_available=False,
                 tradability_gate="PENDING_NOT_CERTIFIED")
 
+def issuer_backfill_probe(root,asof,market,code):
+    """Source-receipted single-issuer monthly history, not full-market archive or PIT."""
+    path=Path(root)/"prices/issuer_history"/market/(code+".json")
+    if not path.exists():return None
+    source=read(path)
+    if (market!="TWSE" or source.get("issuer")!=code or
+            source.get("market")!=market or
+            source.get("schema")!="V889_OFFICIAL_TWSE_ISSUER_MONTHLY" or
+            source.get("formal_tradability_gate")!="PENDING_NOT_CERTIFIED"):
+        raise ValueError("ISSUER_HISTORICAL_SOURCE_IDENTITY_MISMATCH")
+    if source.get("price_reference_asof","")>asof:
+        raise ValueError("FUTURE_ISSUER_HISTORICAL_REFERENCE_DATE")
+    months=source.get("by_month",{})
+    if not months:raise ValueError("EMPTY_ISSUER_HISTORICAL_SOURCE")
+    unique={}
+    for month,entry in months.items():
+        u=entry.get("source_url","")
+        expect="stockNo="+code
+        if (not u.startswith("https://www.twse.com.tw/rwd/zh/afterTrading/STOCK_DAY?")
+                or expect not in u or not u.endswith("response=json")):
+            raise ValueError("UNTRUSTED_ISSUER_HISTORY_SOURCE_URL")
+        h=entry.get("original_response_sha256","")
+        if len(h)!=64 or any(c not in "0123456789abcdef" for c in h):
+            raise ValueError("HISTORICAL_ORIGINAL_RECEIPT_SHA_MISSING")
+        for row in entry.get("rows",[]):
+            date=row.get("date")
+            if not isinstance(date,str) or date[:7]!=month:
+                raise ValueError("ISSUER_HISTORY_MONTH_MISMATCH")
+            if date in unique:raise ValueError("ISSUER_DUPLICATE_SESSION")
+            if date>asof:continue
+            volume=row.get("turnover_ntd")
+            if not isinstance(volume,int) or isinstance(volume,bool) or volume<0:
+                raise ValueError("ISSUER_HISTORY_INVALID_TURNOVER")
+            unique[date]=volume
+    archived=source.get("sessions",[])
+    from_months=sorted(unique,reverse=True)
+    exposed=[x for x in archived if x.get("date")<=asof]
+    if [(x.get("date"),x.get("turnover_ntd")) for x in exposed] != [(d,unique[d]) for d in from_months]:
+        raise ValueError("ISSUER_HISTORY_NORMALIZED_SOURCE_MISMATCH")
+    # Historical month backfill must contain the exact exchange reference session.
+    if not from_months or from_months[0]!=asof:
+        return dict(status="PENDING_REFERENCE_SESSION_MISSING",available_sessions=len(from_months),
+                    twenty_day=None,tradability_gate="PENDING_NOT_CERTIFIED")
+    dated=[(d,{(market,code):unique[d]}) for d in from_months[:60]]
+    result=liquidity_probe(dated,(market,code))
+    return dict(status="SOURCE_CAPTURED_NOT_FULL_TRADABILITY",available_sessions=len(from_months),
+       twenty_day=result["twenty_day"],five_day=result["five_day"],sixty_day=result["sixty_day"],
+       original_capture_is_not_authenticated_issuer_PIT=True,
+       spread_and_limit_price_execution_not_verified=True,
+       tradability_gate="PENDING_NOT_CERTIFIED")
+
 def financial_probe(data,key):
     history=data.history.get(key,{})
     cf=data.cash.get(key,{})
@@ -148,8 +199,9 @@ def probe(research,dispatch,data,dated,receipts,top=50,focus_codes=()):
         code=row["code"];market=row["market"];key=(market,code)
         finance=financial_probe(data,key);capital=capital_probe(data,code)
         liq=liquidity_probe(dated,key)
+        issuer_history=issuer_backfill_probe(data.root,research["asof_price_date"],market,code)
         st=dict(code=code,name=row.get("name"),market=market,research_upside_pct=row.get("research_upside_pct"),
-                source_status=row.get("source_status"),financial=finance,capital=capital,market_history=liq,
+                source_status=row.get("source_status"),financial=finance,capital=capital,market_history=liq,issuer_historical_market_data=issuer_history,
                 pending_gates=list(row.get("pending_gates",[])),
                 ready_for_formal_certification=False,newly_passed_gates=[],
                 source_tier="NORMALIZED_ARCHIVE_AND_CAPTURE_RECEIPTS_NOT_INDEPENDENT_ORIGINAL_ATTESTATION")
@@ -157,7 +209,8 @@ def probe(research,dispatch,data,dated,receipts,top=50,focus_codes=()):
         counts["normalized_full_8q_income"]+=finance["normalized_income_8q_count"]==8
         counts["normalized_full_8q_cash"]+=finance["normalized_cashflow_8q_count"]==8
         counts["latest_primary_numbers"]+=finance["latest_primary_key_numbers_checked"]
-        counts["20_sessions_observed"]+=liq["twenty_day"] is not None
+        counts["20_sessions_observed"]+=(liq["twenty_day"] is not None or bool(issuer_history and issuer_history.get("twenty_day")))
+        counts["20_sessions_from_individual_TWSE_history"]+=bool(issuer_history and issuer_history.get("twenty_day"))
         counts["unverified_bond_terms_issuers"]+=bool(capital["unverified_bond_terms"])
         for gate in MANUAL_GATES:
             if gate in row.get("pending_gates",[]):
@@ -185,7 +238,10 @@ def summary_md(result):
          "|---:|---|---:|---:|---|---|"]
     for i,r in enumerate(result["top_priority_evidence"],1):
         a=r["financial"];b=r["capital"];c=r["market_history"]
-        out.append(f"|{i}|{r['code']} {r['name'] or ''}|{a['normalized_income_8q_count']}/8|{a['normalized_cashflow_8q_count']}/8|{'20/20' if c['twenty_day'] else str(c['observed_20_session_issuer_count'])+'/20'}|{len(b['unverified_bond_terms'])} 檔|")
+        h=r.get("issuer_historical_market_data") or {}
+        twenty=c["twenty_day"] or h.get("twenty_day")
+        tag="20/20（個股回補）" if h.get("twenty_day") and not c["twenty_day"] else ("20/20" if twenty else str(c["observed_20_session_issuer_count"])+"/20")
+        out.append(f"|{i}|{r['code']} {r['name'] or ''}|{a['normalized_income_8q_count']}/8|{a['normalized_cashflow_8q_count']}/8|{tag}|{len(b['unverified_bond_terms'])} 檔|")
     out+=["","目前只有標準化財報鏡像及價格封存收據，未完成原始附註核對、完整成交價差、正式法律稀釋與公告PIT。所有13項正式門檻仍遵守原有驗證規則。",""]
     return "\n".join(out)
 
