@@ -241,10 +241,20 @@ def save_capture(out_root, family, day, market, raw, rows, url, fetched_at):
     dest = out_root / family / day / (market + ".json")
     dest.parent.mkdir(parents=True, exist_ok=True)
     normalized = (json.dumps(rows, ensure_ascii=False, sort_keys=True, separators=(",", ":")) + "\n").encode()
+    prior_normalized_sha = None
     if dest.exists() and dest.read_bytes() != normalized:
-        raise ValueError("SAME_PERIOD_NORMALIZED_DATA_CHANGED_REQUIRES_REVISION_REVIEW")
+        # Same original HTTP bytes, but new strict parser/schema changed its normalized shape.
+        # Preserve the previously published normalization verbatim for historical PIT replay.
+        prior = dest.read_bytes()
+        prior_normalized_sha = hashlib.sha256(prior).hexdigest()
+        revision = out_root / "normalized_revisions" / family / day / market / (prior_normalized_sha + ".json")
+        revision.parent.mkdir(parents=True, exist_ok=True)
+        if revision.exists() and revision.read_bytes() != prior:
+            raise ValueError("HISTORICAL_NORMALIZATION_HASH_COLLISION")
+        revision.write_bytes(prior)
     dest.write_bytes(normalized)
     return dict(source=url, market=market, data_date=day, fetched_at=fetched_at,
+                parser_reinterpretation_from_previous_sha256=prior_normalized_sha,
                 raw_archive=archive.as_posix(), raw_sha256=hashlib.sha256(raw).hexdigest(),
                 raw_gzip_sha256=hashlib.sha256(packed).hexdigest(),
                 normalized_path=dest.as_posix(), normalized_sha256=hashlib.sha256(normalized).hexdigest(),
