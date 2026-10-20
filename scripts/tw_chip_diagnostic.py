@@ -5,8 +5,14 @@ import datetime as dt
 import gzip
 import hashlib
 import json
+import sys
 from collections import Counter
 from pathlib import Path
+
+# Supports both 'python scripts/tw_chip_diagnostic.py' and unittest imports.
+REPOSITORY_ROOT = str(Path(__file__).resolve().parents[1])
+if REPOSITORY_ROOT not in sys.path:
+    sys.path.insert(0, REPOSITORY_ROOT)
 from scripts.tw_institutional_retreat import assess_retreat, load_issued_shares
 
 def digest(raw):
