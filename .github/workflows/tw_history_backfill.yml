@@ -60,6 +60,9 @@ jobs:
               exit 0
             fi
             git commit -m 'data: archive official ranked TWSE issuer history'
+            # The local per-batch progress report is intentionally not committed;
+            # clear its unstaged changes before rebasing the source-only commit.
+            git restore -- tw-market-data/rankings/v889_backfill_progress.json tw-market-data/rankings/v889_backfill_progress.md || true
             conflict=false
             for retry in 1 2 3 4 5 6 7 8; do
               git fetch origin main
