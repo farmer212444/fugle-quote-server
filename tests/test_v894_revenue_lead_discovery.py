@@ -56,5 +56,21 @@ class RevenueLeadTests(unittest.TestCase):
         self.assertEqual(result["excluded_invalid_revenue_count"],1)
         self.assertEqual(result["excluded_invalid_revenue"][0]["code"],"3718")
 
+    def test_lumpy_property_revenue_is_kept_for_manual_review_not_top20(self):
+        property_row=rev(code="4113",my=3425111,ytd=471,monthly=1815362,prior=689457)
+        property_row["industry"]="建材營造"
+        result=build(research(),[property_row,rev()])
+        self.assertEqual([x["code"] for x in result["top20"]],["9802"])
+        self.assertEqual(result["manual_review_count"],1)
+        self.assertIn("LUMPY_PROJECT_RECOGNITION_REQUIRES_ISSUER_BRIDGE",
+                      result["manual_review"][0]["data_quality_flags"])
+
+    def test_extreme_low_base_ratio_is_not_comparable_top20_growth(self):
+        extreme=rev(code="1516",my=1473,ytd=48,monthly=11060,prior=9784)
+        result=build(research(),[extreme,rev()])
+        self.assertEqual([x["code"] for x in result["top20"]],["9802"])
+        self.assertIn("EXTREME_GROWTH_RATIO_REQUIRES_BASE_EFFECT_REVIEW",
+                      result["manual_review"][0]["data_quality_flags"])
+
 
 if __name__=="__main__":unittest.main()

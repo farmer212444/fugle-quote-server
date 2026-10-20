@@ -66,7 +66,7 @@ def build(research,revenue_rows,history_months=0):
     candidates={}
     for key in ("top30_provisional","top48_primary_research","early_recovery_watch"):
         for row in research.get(key,[]):candidates[str(row.get("code"))]=row
-    seen=set();out=[];excluded=[]
+    seen=set();out=[];excluded=[];manual_review=[]
     for row in revenue_rows:
         code=str(row.get("code",""))
         if code in seen:raise ValueError("DUPLICATE_CODE_"+code)
@@ -83,12 +83,26 @@ def build(research,revenue_rows,history_months=0):
         vp,vflag=valuation_points(candidates.get(code))
         flags=list(signal.pop("risk_flags"))
         if vflag:flags.append(vflag)
+        # Project handovers and extreme low-base ratios are real observations,
+        # but they are not comparable recurring-revenue momentum.  Preserve
+        # them for issuer-specific review instead of letting capped percentages
+        # crowd ordinary issuers out of the discovery ranking.
+        quality_flags=[]
+        if row.get("industry")=="建材營造":
+            quality_flags.append("LUMPY_PROJECT_RECOGNITION_REQUIRES_ISSUER_BRIDGE")
+        if signal["monthly_yoy_pct"]>500 or signal["ytd_yoy_pct"]>500:
+            quality_flags.append("EXTREME_GROWTH_RATIO_REQUIRES_BASE_EFFECT_REVIEW")
+        eligible=not quality_flags
         total=round(signal["revenue_points"]+vp,3)
-        out.append(dict(code=code,name=row.get("name"),market=row.get("market"),industry=row.get("industry"),
+        item=dict(code=code,name=row.get("name"),market=row.get("market"),industry=row.get("industry"),
                         report_month=str(row.get("report_month")),lead_score=total,
                         valuation_unreflected_points=vp,formal_grade_changed=False,
-                        early_layout_only=True,risk_flags=flags,**signal))
-    out.sort(key=lambda x:(-x["lead_score"],-x["monthly_yoy_pct"],x["code"]))
+                        early_layout_only=True,eligible_for_lead_ranking=eligible,
+                        data_quality_flags=quality_flags,risk_flags=flags,**signal)
+        out.append(item)
+        if not eligible:manual_review.append(item)
+    out.sort(key=lambda x:(not x["eligible_for_lead_ranking"],-x["lead_score"],-x["monthly_yoy_pct"],x["code"]))
+    ranked=[x for x in out if x["eligible_for_lead_ranking"]]
     return dict(status="REVENUE_LEADING_DISCOVERY_NOT_FORMAL_CERTIFICATION",
                 source_model=research["model"],source_model_code_sha256=research.get("model_code_sha256"),
                 estimate_vintage=research.get("estimate_vintage"),price_date=research.get("asof_price_date"),
@@ -99,10 +113,12 @@ def build(research,revenue_rows,history_months=0):
                              valuation_unreflected=20),
                 formal_Aplus_count_unchanged=research.get("formal_Aplus_count"),
                 formal_Aplusplus_count_unchanged=research.get("formal_Aplusplus_count"),
-                ranking=out,top20=out[:20],
+                manual_review_count=len(manual_review),manual_review=manual_review,
+                ranking=out,top20=ranked[:20],
                 limits=["The score is a research-ordering heuristic, not a probability or trading signal.",
                         "A single monthly snapshot cannot prove multi-month continuity; missing history receives zero points.",
                         "Revenue can surface a candidate early but does not establish margin conversion, EPS, cash flow, dilution or fair value.",
+                        "Lumpy project recognition and extreme base effects are retained in manual review, not the comparable Top20.",
                         "Base/EPS/PE and all 13 evidence gates remain unchanged."])
 
 
