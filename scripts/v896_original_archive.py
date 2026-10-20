@@ -176,8 +176,8 @@ def collect(root, issuer, asof_day, now, max_documents=12, fetcher=fetch_pdf):
         # previously captured SHA, never a superseded historical version.
         latest_receipt = item["expected_hashes"][-1] if item["expected_hashes"] else None
         known=next((x for x in records.values() if x["source_url"]==item["url"]
-                    and (x["sha256"] == latest_receipt if latest_receipt
-                         else not item["expected_hashes"])),None)
+                    and (x["sha256"] == latest_receipt or
+                         x.get("earlier_capture_sha256s")==item["expected_hashes"])),None)
         if known:
             reused+=1
             continue
