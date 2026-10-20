@@ -258,7 +258,7 @@ def build_progress(root):
         "formally_certified_Aplus_in_report":counts["formal_Aplus_total"],
         "issuer_report_limitations":[
             "Source-collected, numeric-mirror-complete, source-identity-reviewed and signed PASS are distinct stages.",
-            "Current price on 2026-10-16 does not certify original issuer point-in-time disclosure for older financial periods.",
+            f"Current reference-price date {research['asof_price_date']} does not certify original issuer point-in-time disclosure for older financial periods.",
             "Potential upside is conditional research, not a certified trading return.",
             "Reviewed packs are automatically admitted only after all archived bytes, hash, issuer identity, method and dated source predicates verify.",
             "A GitHub reviewer_id is an accountable review record, not an independent cryptographic human signature.",

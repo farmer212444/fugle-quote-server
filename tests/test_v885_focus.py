@@ -20,7 +20,12 @@ class FocusSelectionTest(unittest.TestCase):
               patch.object(mod,'capital_probe',return_value=fake_cap),
               patch.object(mod,'liquidity_probe',return_value=fake_liq)):
             out=mod.probe(research,dispatch,object(),[],[],top=1,focus_codes=['3333','1111'])
-        self.assertEqual([r['code'] for r in out['top_priority_evidence']],['1111','3333'])
+        # All three exceed the formal 30% research-upside threshold.
+        # A focused issuer must never hide another eligible issuer.
+        self.assertEqual([r['code'] for r in out['top_priority_evidence']],
+                         ['1111','2222','3333'])
+        self.assertEqual(out['high_upside_profiles_probed'], 3)
+        self.assertEqual(out['high_upside_not_probed'], 0)
         self.assertEqual(out['newly_certified_Aplus'],0)
         self.assertTrue(all(not r['ready_for_formal_certification'] for r in out['top_priority_evidence']))
 

@@ -45,6 +45,40 @@ class OfficialEvidenceProbeTests(unittest.TestCase):
             self.assertEqual(p["top_priority_evidence"][0]["capital"]["unverified_bond_terms"],["98026"])
             self.assertEqual(len(p["manual_review_queue"]),1)
 
+    def test_all_high_upside_issuers_probed_even_when_top_is_one(self):
+        # Previously the first top-N alone was probed. A high-upside issuer
+        # outside the first N silently became NOT_PROBED in gate progress.
+        from types import SimpleNamespace
+        rows = [
+            dict(code=code, name=code, market="TWSE", research_upside_pct=upside,
+                 source_status="CERTIFICATION_PENDING",
+                 evidence_state="PENDING_NOT_CERTIFIED", formal_Aplus=False,
+                 pending_gates=["original_eight_quarter_statements", "forecast_bridge"])
+            for code, upside in (("1714", 50.0), ("6494", 38.0),
+                                 ("6206", 27.0), ("9802", 12.0))
+        ]
+        asof = "2026-10-20T22:00:00+08:00"
+        research = dict(model="V8.8.2", estimate_vintage=asof,
+                        asof_price_date="2026-10-19",
+                        data_scope=dict(model_rows=len(rows)), formal_Aplus_count=0)
+        dispatch = dict(model="V8.8.2", vintage=asof,
+                        price_date="2026-10-19",
+                        tracked_issuer_count=len(rows), all_issuer_jobs=rows)
+        fake_data = SimpleNamespace(history={}, cash={}, required_periods=[],
+                        evidence=dict(master={}, bonds={}), primary=lambda code: None,
+                        root=pathlib.Path(__file__).resolve().parent)
+        result = probe(research, dispatch, fake_data, [], [], top=1,
+                       focus_codes=["9802"])
+        self.assertEqual(result["high_upside_research_candidates"], 2)
+        self.assertEqual(result["high_upside_profiles_probed"], 2)
+        self.assertEqual(result["high_upside_not_probed"], 0)
+        self.assertEqual([r["code"] for r in result["top_priority_evidence"]],
+                         ["1714", "6494", "9802"])
+        self.assertEqual(result["newly_certified_Aplus"], 0)
+        self.assertEqual(result["newly_verified_gates"], 0)
+        self.assertTrue(all(not p["ready_for_formal_certification"]
+                            for p in result["top_priority_evidence"]))
+
     def test_tampered_price_archive_fails_closed(self):
         with tempfile.TemporaryDirectory() as temp:
             root=pathlib.Path(temp);p=root/"prices";p.mkdir()
