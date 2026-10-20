@@ -16,8 +16,14 @@ def probe(url):
             data=json.loads(content.decode("utf-8-sig"))
             print("JSON_SHAPE",type(data).__name__,
                   (sorted(data.keys()) if isinstance(data,dict) else f"ROWS={len(data)}"),flush=True)
+            if isinstance(data,dict) and isinstance(data.get("tables"),list):
+                for tbl in data["tables"][:2]:
+                    print("TABLE_TITLE",tbl.get("title"),
+                          "FIELDS",repr(tbl.get("fields",[])[:24]),
+                          "TABLE_KEYS",list(tbl.keys())[:20],
+                          "FIRST_ROWS",repr(tbl.get("data",[])[:2])[:1300],flush=True)
             if isinstance(data,dict):
-                for key in ("date","reportDate","report_date","stat","tables","aaData","data"):
+                for key in ("date","reportDate","report_date","stat","aaData"):
                     v=data.get(key)
                     if v is not None:
                         print("ITEM",key,str(v)[:350],flush=True)
@@ -25,11 +31,7 @@ def probe(url):
     except Exception as e:print("SOURCE_ERROR",type(e).__name__,str(e)[:150],flush=True)
 
 def main():
-    urls=[
-      "https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes?response=json&date=115%2F10%2F16",
-      "https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes?response=json&date=2026%2F10%2F16",
-      "https://www.tpex.org.tw/web/stock/aftertrading/daily_trading_info/st43_result.php?d=115%2F10&stkno=6494",
-    ]
+    urls=["https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes?response=json&date=115%2F10%2F16"]
     for url in urls:
         print("CHECK",url,flush=True)
         probe(url)
