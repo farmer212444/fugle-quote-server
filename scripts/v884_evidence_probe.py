@@ -96,6 +96,46 @@ def issuer_backfill_probe(root,asof,market,code):
     path=Path(root)/"prices/issuer_history"/market/(code+".json")
     if not path.exists():return None
     source=read(path)
+    if source.get("schema")=="V893_OFFICIAL_TPEX_DAILY":
+        if (market!="TPEX" or source.get("issuer")!=code or source.get("market")!="TPEX"
+                or source.get("formal_tradability_gate")!="PENDING_NOT_CERTIFIED"):
+            raise ValueError("TPEX_DAILY_SOURCE_IDENTITY_MISMATCH")
+        import urllib.parse
+        unique={}
+        for day,entry in (source.get("by_day") or {}).items():
+            if entry.get("date")!=day or day>asof:
+                raise ValueError("TPEX_DAILY_DATE_MISMATCH_OR_FUTURE")
+            url=entry.get("source_url","")
+            uri=urllib.parse.urlparse(url)
+            q=urllib.parse.parse_qs(uri.query)
+            roc=str(int(day[:4])-1911)+"/"+day[5:7]+"/"+day[8:10]
+            if (uri.scheme!="https" or uri.hostname!="www.tpex.org.tw" or
+                uri.path!="/www/zh-tw/afterTrading/dailyQuotes" or
+                q.get("response")!=["json"] or q.get("date")!=[roc]):
+                raise ValueError("TPEX_DAILY_UNTRUSTED_MARKET_SOURCE")
+            hashvalue=entry.get("original_response_sha256")
+            if not isinstance(hashvalue,str) or not re.fullmatch(r"[a-f0-9]{64}",hashvalue):
+                raise ValueError("TPEX_DAILY_SOURCE_SHA_MISSING")
+            row=entry.get("row",{})
+            if row.get("date")!=day or not isinstance(row.get("turnover_ntd"),int):
+                raise ValueError("TPEX_DAILY_ROW_DATE_OR_TURNOVER_MISMATCH")
+            unique[day]=row["turnover_ntd"]
+        sorted_days=sorted(unique,reverse=True)
+        archived=source.get("sessions",[])
+        if ([(r.get("date"),r.get("turnover_ntd")) for r in archived] !=
+                [(d,unique[d]) for d in sorted_days]):
+            raise ValueError("TPEX_DAILY_NORMALIZED_SOURCE_MISMATCH")
+        if not sorted_days or sorted_days[0]!=asof:
+            return dict(status="PENDING_REFERENCE_SESSION_MISSING",available_sessions=len(sorted_days),
+                        twenty_day=None,tradability_gate="PENDING_NOT_CERTIFIED")
+        dated=[(day,{(market,code):unique[day]}) for day in sorted_days[:60]]
+        score=liquidity_probe(dated,(market,code))
+        return dict(status="SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
+                    available_sessions=len(sorted_days),twenty_day=score["twenty_day"],
+                    five_day=score["five_day"],sixty_day=score["sixty_day"],
+                    original_capture_is_not_authenticated_issuer_PIT=True,
+                    spread_and_limit_price_execution_not_verified=True,
+                    tradability_gate="PENDING_NOT_CERTIFIED")
     expected_schema={"TWSE":"V889_OFFICIAL_TWSE_ISSUER_MONTHLY",
                      "TPEX":"V892_OFFICIAL_TPEX_ISSUER_MONTHLY"}
     if (source.get("issuer")!=code or
