@@ -78,6 +78,24 @@ class Top20AuditTests(unittest.TestCase):
         self.assertIn("CB_LEGAL_TERMS_UNVERIFIED",reasons)
         self.assertNotIn("FORMAL_FAIL",reasons)
 
+    def test_severe_margin_erosion_downgrades_even_high_upside(self):
+        row=example_record()
+        original,_=priority(row)
+        row["analysis"]["gross_margin_delta_pp"]=-9.9
+        row["analysis"]["operating_margin_delta_pp"]=-4.0
+        reduced,issues=priority(row)
+        self.assertEqual(reduced,original-3)
+        self.assertIn("GROSS_MARGIN_DECLINED_AT_LEAST_3PP",issues)
+        self.assertIn("OPERATING_MARGIN_DECLINED_AT_LEAST_2PP",issues)
+
+    def test_very_aggressive_eps_and_high_pe_receive_extra_scrutiny(self):
+        row=example_record()
+        row["analysis"]["2027_eps_over_ytd_runrate"]=1.9
+        row["base_2027_pe"]=26
+        _,issues=priority(row)
+        self.assertIn("FORWARD_EPS_AT_LEAST_1_7X_H1_ANNUALIZED_HIGH_BRIDGE_RISK",issues)
+        self.assertIn("FORWARD_PE_25X_OR_HIGHER_REQUIRES_STRONGER_JUSTIFICATION",issues)
+
     def test_equity_watch_penalizes_rank_not_mutates_certification(self):
         row=example_record();row["code"]="8390"
         s,issues=priority(row)
