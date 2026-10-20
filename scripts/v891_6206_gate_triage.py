@@ -101,6 +101,41 @@ def check_report(probe, value, ir, history):
                     and math.isclose(statistics.median(amounts), reported["median_turnover_ntd"]),
                     "TWENTY_DAY_SOURCE_RECONCILIATION_FAILED")
 
+    # Fast decision sensitivity: independent of all 13 formal evidence gates.
+    # This uses the same dated quote, EPS, and PE as the common model (not a new
+    # valuation forecast). No observed security is implicitly certified.
+    eps = float(base["eps"])
+    pe = float(base["pe"])
+    require(all(math.isfinite(x) and x > 0 for x in (eps, pe, reference)),
+            "INVALID_VALUATION_BASE_INPUT")
+    require(math.isclose(eps * pe, float(base["target_price"]), rel_tol=1e-7),
+            "COMMON_EPS_PE_TARGET_INCONSISTENT")
+    threshold_target = reference * 1.30
+    threshold_eps = threshold_target / pe
+    threshold_pe = threshold_target / eps
+    changes = {
+        "eps_down_10pct": float(base["target_price"]) * .90,
+        "pe_down_10pct": float(base["target_price"]) * .90,
+        "both_down_10pct": float(base["target_price"]) * .81,
+        "share_dilution_up_5pct": float(base["target_price"]) / 1.05,
+    }
+    fast_decision = dict(
+        data_class="SENSITIVITY_ONLY_NOT_FORMAL_RATING",
+        price_date=price_date,
+        reference_close=reference,
+        required_target_for_30pct=round(threshold_target, 2),
+        common_base_price=round(float(base["target_price"]), 2),
+        target_buffer_above_Aplus_threshold=round(float(base["target_price"]) - threshold_target, 2),
+        common_eps=round(eps, 4),
+        common_pe=round(pe, 4),
+        minimum_eps_for_30pct_at_common_pe=round(threshold_eps, 4),
+        minimum_pe_for_30pct_at_common_eps=round(threshold_pe, 4),
+        max_reference_close_for_30pct_if_target_unchanged=round(float(base["target_price"]) / 1.30, 2),
+        stresses={k:dict(price=round(v, 2), upside_pct=round((v / reference - 1) * 100, 2),
+                         numerical_30pct_met=(v / reference >= 1.30)) for k, v in changes.items()},
+        disclaimer="Mechanical 2027 EPS/PE/shares sensitivity. Not 13-gate PASS, trade instruction, or calibrated probability.",
+    )
+
     coverage = {
         "original_eight_quarter_statements": covered.get("normalized_income_8q_count") == 8
             and covered.get("normalized_cashflow_8q_count") == 8,
@@ -132,6 +167,7 @@ def check_report(probe, value, ir, history):
                 valuation_model=common["model_version"], estimate_vintage=model_vintage,
                 price_date=price_date, reference_close=reference,
                 common_2027_base_price=base["target_price"], common_upside_pct=round(upside, 2),
+                fast_decision=fast_decision,
                 independent_2027_base_price=value["scenarios"]["base"]["target_price"],
                 normalized_income_quarters=covered.get("normalized_income_8q_count"),
                 normalized_cashflow_quarters=covered.get("normalized_cashflow_8q_count"),
@@ -154,6 +190,21 @@ def render_md(data):
               data["issuer_presentation_receipts_matched"], data["issuer_presentation_receipts_required"]),
              "個股歷史成交：%s日；最近20日金額驗算：%s（不等於可成交性通過）。" %
              (data["individual_history_sessions"], "一致" if data["twenty_day_turnover_reconciled"] else "待補"), "",
+             "## 即時計算：A+數字門檻與估值脆弱度（非正式認證）", "",
+             "以 %.2f元股價計，30%%門檻目標價 %.2f元；目前Base價高於數字門檻 %.2f元。" %
+             (data["reference_close"],data["fast_decision"]["required_target_for_30pct"],
+              data["fast_decision"]["target_buffer_above_Aplus_threshold"]),
+             "維持PE不變，EPS需至少 %.4f元；維持EPS不變，PE需至少 %.4f倍。" %
+             (data["fast_decision"]["minimum_eps_for_30pct_at_common_pe"],
+              data["fast_decision"]["minimum_pe_for_30pct_at_common_eps"]),
+             "若合理價不變，30%%數字門檻對應的最高參考收盤價為 %.2f元（不是買入建議）。" %
+             data["fast_decision"]["max_reference_close_for_30pct_if_target_unchanged"],
+             "", "|機械壓測|2027情境價|相對參考股價|30%數字門檻|",
+             "|---|---:|---:|---|",
+             *["|%s|%.2f|%+.2f%%|%s|" %
+               (k,v["price"],v["upside_pct"],"符合" if v["numerical_30pct_met"] else "不符合")
+               for k,v in data["fast_decision"]["stresses"].items()],
+             "", "以上為估值敏感度試算，並不表示EPS、PE或稀釋已取得正式品質PASS。", "",
              "|品質門檻|目前可觀察資料|正式認證|下一步|", "|---|---|---|---|"]
     for g in data["gates"]:
         lines.append("|%s|%s|%s|%s|" %
