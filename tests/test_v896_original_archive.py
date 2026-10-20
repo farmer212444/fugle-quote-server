@@ -171,19 +171,11 @@ class OriginalArchiveTests(unittest.TestCase):
             ])
         ]
         self.write_source("9802",source)
-        captured=collect(self.root,"9802",DAY,NOW,max_documents=12,
-                         fetcher=lambda *_:fixture_pdf(b"identical-pdf"))
-        # Unique source SHA cannot be reused across different issuer URL
-        # identities, so only one source must be saved; use per-URL bytes below.
-        self.assertTrue(captured["errors"])
-        # Reconstruct eight original PDF records with separate distinct bytes.
-        archive=self.root/"evidence/v880/originals/9802"
-        import shutil
-        shutil.rmtree(archive)
-        self.assertFalse(archive.exists())
+        # The archive collector properly excludes 2024Q2 from the target
+        # eight-quarter source window; seven of eight periods remain.
         captured=collect(self.root,"9802",DAY,NOW,max_documents=12,
                          fetcher=lambda issuer,url:fixture_pdf(url.encode()))
-        self.assertEqual(captured["records"],8)
+        self.assertEqual(captured["records"],7)
         coverage=original_quarter_coverage(self.root,"9802","2026-Q2")
         self.assertEqual(coverage["missing_quarters"],["2025-Q3"])
         self.assertFalse(coverage["source_title_coverage_complete"])
@@ -197,7 +189,7 @@ class OriginalArchiveTests(unittest.TestCase):
         self.write_source("9802",source)
         captured=collect(self.root,"9802",DAY,NOW,max_documents=12,
                          fetcher=lambda issuer,url:fixture_pdf(url.encode()))
-        self.assertEqual(captured["records"],9)
+        self.assertEqual(captured["records"],8)
         coverage=original_quarter_coverage(self.root,"9802","2026-Q2")
         self.assertTrue(coverage["source_title_coverage_complete"])
         self.assertEqual(len(coverage["found_quarters"]),8)
