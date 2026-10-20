@@ -35,32 +35,28 @@ jobs:
           set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          for rebuild in 1 2; do
+          # Publish the exact downloaded dataset; never repeat 24 large requests
+          # merely because unrelated research jobs have advanced main.
+          git add tw-market-data/prices/issuer_history/TPEX/
+          if git diff --cached --quiet; then
+            echo 'No new TPEx histories to publish.'
+            exit 0
+          fi
+          git commit -m 'data: archive modern TPEx source-backed daily issuer turnover'
+          git restore -- tw-market-data/rankings/v893_tpex_daily_history_progress.json || true
+          for retry in 1 2 3 4 5 6 7 8 9 10; do
             git fetch origin main
-            git reset --hard origin/main
-            python -m scripts.v893_tpex_daily_backfill --max-dates 24 --lookback 65
-            git add tw-market-data/prices/issuer_history/TPEX/
-            if git diff --cached --quiet; then
-              echo 'No change in source-backed TPEx daily issuer archives.'
+            if ! git rebase origin/main; then
+              git rebase --abort || true
+              echo '::error::Overlapping issuer source conflict; leave originals available as artifact.'
+              exit 1
+            fi
+            if git push origin HEAD:main; then
+              echo 'Modern TPEx official daily history published.'
               exit 0
             fi
-            git commit -m 'data: archive ranked TPEx source-backed daily issuer turnover'
-            git restore -- tw-market-data/rankings/v893_tpex_daily_history_progress.json || true
-            had_overlap=false
-            for retry in 1 2 3 4 5 6; do
-              git fetch origin main
-              if ! git rebase origin/main; then
-                git rebase --abort || true
-                had_overlap=true
-                break
-              fi
-              if git push origin HEAD:main; then
-                echo 'Modern source-backed TPEx daily history published.'
-                exit 0
-              fi
-              sleep 1
-            done
-            echo "Concurrent source conflict, rebuild $rebuild/2"
+            echo "Another writer advanced main; retry $retry/10"
+            sleep 1
           done
           echo '::error::TPEx verified source not published after retries'
           exit 1
