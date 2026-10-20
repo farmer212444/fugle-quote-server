@@ -6,6 +6,8 @@ on:
   workflow_run:
     workflows:
       - Taiwan Official Daily Stock Prices
+      - Taiwan Official TWSE Issuer History Backfill
+      - Taiwan Official TPEx Issuer History Backfill
     types:
       - completed
   pull_request:
@@ -114,15 +116,19 @@ jobs:
           # official price correction; skip if a ranking already includes it.
           price_commit=$(git log -1 --format=%H -- tw-market-data/prices/latest_manifest.json)
           ranking_commit=$(git log -1 --format=%H -- tw-market-data/rankings/latest_research.json)
+          issuer_history_commit=$(git log -1 --format=%H -- tw-market-data/prices/issuer_history/ || true)
           if [ -z "$price_commit" ] || [ -z "$ranking_commit" ]; then
             echo 'refresh=true' >> "$GITHUB_OUTPUT"
             echo '::notice::Missing source or ranked snapshot; research refresh required.'
-          elif git merge-base --is-ancestor "$price_commit" "$ranking_commit"; then
-            echo 'refresh=false' >> "$GITHUB_OUTPUT"
-            echo 'Research already uses the latest committed price manifest.'
-          else
+          elif ! git merge-base --is-ancestor "$price_commit" "$ranking_commit"; then
             echo 'refresh=true' >> "$GITHUB_OUTPUT"
             echo "Unprocessed official price update: $price_commit"
+          elif [ -n "$issuer_history_commit" ] && ! git merge-base --is-ancestor "$issuer_history_commit" "$ranking_commit"; then
+            echo 'refresh=true' >> "$GITHUB_OUTPUT"
+            echo "New official issuer-history backfill requires evidence refresh: $issuer_history_commit"
+          else
+            echo 'refresh=false' >> "$GITHUB_OUTPUT"
+            echo 'Research already incorporates current price and source-history archive.'
           fi
   validate_and_run:
     needs: price_update_check
