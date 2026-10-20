@@ -171,11 +171,11 @@ class OriginalArchiveTests(unittest.TestCase):
             ])
         ]
         self.write_source("9802",source)
-        # The archive collector properly excludes 2024Q2 from the target
-        # eight-quarter source window; seven of eight periods remain.
+        # The published archive previously held eight PDFs but accidentally
+        # included 2024Q2 and omitted the necessary 2025Q3.
         captured=collect(self.root,"9802",DAY,NOW,max_documents=12,
                          fetcher=lambda issuer,url:fixture_pdf(url.encode()))
-        self.assertEqual(captured["records"],7)
+        self.assertEqual(captured["records"],8)
         coverage=original_quarter_coverage(self.root,"9802","2026-Q2")
         self.assertEqual(coverage["missing_quarters"],["2025-Q3"])
         self.assertFalse(coverage["source_title_coverage_complete"])
@@ -189,7 +189,7 @@ class OriginalArchiveTests(unittest.TestCase):
         self.write_source("9802",source)
         captured=collect(self.root,"9802",DAY,NOW,max_documents=12,
                          fetcher=lambda issuer,url:fixture_pdf(url.encode()))
-        self.assertEqual(captured["records"],8)
+        self.assertEqual(captured["records"],9)
         coverage=original_quarter_coverage(self.root,"9802","2026-Q2")
         self.assertTrue(coverage["source_title_coverage_complete"])
         self.assertEqual(len(coverage["found_quarters"]),8)
