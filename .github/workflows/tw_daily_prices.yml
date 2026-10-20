@@ -2,11 +2,14 @@ name: Taiwan Official Daily Stock Prices
 on:
   workflow_dispatch:
   schedule:
-    # After-close primary + delayed-source retries, Taipei local time.
-    - cron: '40 11 * * 1-5'  # 19:40 Mon-Fri
-    - cron: '40 12 * * 1-5'  # 20:40 Mon-Fri
-    - cron: '40 13 * * 1-5'  # 21:40 Mon-Fri
-    - cron: '10 0 * * 2-6'   # 08:10 Tue-Sat: recover prior session
+    # Taiwan market close: schedule uses UTC, notes use Asia/Taipei (UTC+8).
+    - cron: '40 5 * * 1-5'   # 13:40 Mon-Fri: diagnostic probe ONLY
+    - cron: '20 6 * * 1-5'   # 14:20 Mon-Fri: first eligible publish
+    - cron: '45 7 * * 1-5'   # 15:45 Mon-Fri: retry
+    - cron: '45 9 * * 1-5'   # 17:45 Mon-Fri: retry
+    - cron: '40 11 * * 1-5'  # 19:40 Mon-Fri: retry
+    - cron: '40 12 * * 1-5'  # 20:40 Mon-Fri: final evening retry
+    - cron: '10 0 * * 2-6'   # 08:10 Tue-Sat: prior-session recovery
 permissions:
   contents: write
 concurrency:
@@ -23,11 +26,14 @@ jobs:
           fetch-depth: 0
       - name: Capture and validate latest TWSE TPEx prices
         shell: bash
+        env:
+          PROBE_ONLY: ${{ github.event_name == 'schedule' && github.event.schedule == '40 5 * * 1-5' }}
         run: |
           python3 - <<'PY'
           import datetime as dt
           import hashlib
           import json
+          import os
           import pathlib
           import re
           import urllib.request
@@ -104,6 +110,12 @@ jobs:
               gathered[market] = fetch(market, url)
           twse, tdate, thash = gathered['TWSE']
           tpex, pdate, phash = gathered['TPEX']
+          if os.environ.get('PROBE_ONLY', '').lower() == 'true':
+              if tdate == pdate:
+                  print(f'::notice::EARLY_PROBE_ONLY exchange_session={tdate}; no price files or ranking will be published.')
+              else:
+                  print(f'::warning::EARLY_PROBE_ONLY dates differ TWSE={tdate} TPEx={pdate}; await retry.')
+              raise SystemExit(0)
           if tdate != pdate:
               raise ValueError(f'Exchange dates differ TWSE={tdate}, TPEx={pdate}')
           latest = OUTPUT / 'latest_manifest.json'
@@ -159,7 +171,7 @@ jobs:
           if-no-files-found: ignore
           retention-days: 30
       - name: Commit verified daily price data
-        if: success()
+        if: ${{ success() && (github.event_name != 'schedule' || github.event.schedule != '40 5 * * 1-5') }}
         shell: bash
         run: |
           git config user.name 'github-actions[bot]'
