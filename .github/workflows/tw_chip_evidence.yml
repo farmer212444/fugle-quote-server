@@ -6,12 +6,14 @@ on:
       - '.github/workflows/tw_chip_evidence.yml'
       - 'scripts/tw_chip_capture.py'
       - 'scripts/tw_chip_diagnostic.py'
+      - 'scripts/tw_institutional_retreat.py'
       - 'tests/test_tw_chip_*.py'
   push:
     paths:
       - '.github/workflows/tw_chip_evidence.yml'
       - 'scripts/tw_chip_capture.py'
       - 'scripts/tw_chip_diagnostic.py'
+      - 'scripts/tw_institutional_retreat.py'
       - 'tests/test_tw_chip_*.py'
   schedule:
     # 20:10 Taiwan time, Monday-Friday; 14:00 Taiwan time Saturday for TDCC refresh.
