@@ -26,6 +26,8 @@ on:
       - 'scripts/v888_6206_valuation.py'
       - 'scripts/v891_6206_gate_triage.py'
       - 'scripts/v890_five_candidate_audit.py'
+      - 'scripts/v891_gate_certification.py'
+      - 'tw-market-data/evidence/v880/review_packs/**'
       - 'tw-market-data/ir/6206/**'
       - 'scripts/tw_chip_diagnostic.py'
       - 'tests/**'
@@ -62,6 +64,8 @@ on:
       - 'scripts/v888_6206_valuation.py'
       - 'scripts/v891_6206_gate_triage.py'
       - 'scripts/v890_five_candidate_audit.py'
+      - 'scripts/v891_gate_certification.py'
+      - 'tw-market-data/evidence/v880/review_packs/**'
       - 'tw-market-data/ir/6206/**'
       - 'scripts/tw_chip_diagnostic.py'
       - 'tests/**'
@@ -135,6 +139,8 @@ jobs:
       - name: Refresh static official sources
         if: github.event_name != 'pull_request'
         run: python scripts/refresh_v880_public.py
+      - name: Admit verified original-source review packs before valuation
+        run: python scripts/v891_gate_certification.py --issue-only
       - name: Produce dated scenarios and evidence decisions
         run: |
           python scripts/tw_v880_run.py --target-date 2027-12-31
@@ -145,6 +151,7 @@ jobs:
           python scripts/v881_thin_shadow.py
           python scripts/v883_gate_orchestrator.py --top 50
           python scripts/v884_evidence_probe.py --top 50 --focus 8390 1785 5439 4739 9802 6206
+          python scripts/v891_gate_certification.py
           python scripts/v886_9802_early_revalue.py
           python scripts/v888_6206_valuation.py
           python scripts/v891_6206_gate_triage.py
@@ -164,6 +171,7 @@ jobs:
             git fetch origin main
             git reset --hard origin/main
             python scripts/refresh_v880_public.py
+            python scripts/v891_gate_certification.py --issue-only
             python scripts/tw_v880_run.py --target-date 2027-12-31
             python scripts/v881_history_diagnostic.py
             python scripts/build_universe_verification_queue.py
@@ -172,6 +180,7 @@ jobs:
             python scripts/v881_thin_shadow.py
             python scripts/v883_gate_orchestrator.py --top 50
             python scripts/v884_evidence_probe.py --top 50 --focus 8390 1785 5439 4739 9802 6206
+          python scripts/v891_gate_certification.py
             python scripts/v886_9802_early_revalue.py
             python scripts/v888_6206_valuation.py
           python scripts/v891_6206_gate_triage.py
