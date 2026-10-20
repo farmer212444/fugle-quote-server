@@ -33,7 +33,7 @@ def sample():
             "model_vintage": "2026-10-20T08:13:00+08:00",
             "price_date": price_date,
             "Aplus": False,
-            "existing_base_2027": {"target_price": 130, "price_upside_pct": 30},
+            "existing_base_2027": {"eps": 10, "pe": 13, "target_price": 130, "price_upside_pct": 30},
         },
         "scenarios": {"base": {"parent_earnings_m": 1000, "diluted_share_proxy_m": 100,
                                "eps": 10, "pe": 13, "target_price": 130}},
@@ -58,6 +58,24 @@ class FlytechGateTriageTest(unittest.TestCase):
         self.assertTrue(all(x["formal_status"] == "PENDING" for x in result["gates"]))
         self.assertTrue(all(x["automatically_certified"] is False for x in result["gates"]))
         self.assertIn("6206", render_md(result))
+
+    def test_fast_threshold_and_stress_do_not_mint_formal_Aplus(self):
+        result = check_report(*sample())
+        risk = result["fast_decision"]
+        self.assertEqual(risk["required_target_for_30pct"], 130)
+        self.assertEqual(risk["minimum_eps_for_30pct_at_common_pe"], 10)
+        self.assertEqual(risk["minimum_pe_for_30pct_at_common_eps"], 13)
+        self.assertEqual(risk["max_reference_close_for_30pct_if_target_unchanged"], 100)
+        self.assertFalse(risk["stresses"]["both_down_10pct"]["numerical_30pct_met"])
+        self.assertEqual(risk["stresses"]["both_down_10pct"]["price"], 105.3)
+        self.assertFalse(result["formal_Aplus"])
+        self.assertIn("估值脆弱度", render_md(result))
+
+    def test_common_eps_pe_mismatch_rejected(self):
+        args = list(sample())
+        args[1]["original_common_model"]["existing_base_2027"]["eps"] = 999
+        with self.assertRaisesRegex(ValueError, "COMMON_EPS_PE_TARGET_INCONSISTENT"):
+            check_report(*args)
 
     def test_mismatched_quote_date_is_rejected(self):
         args = list(sample())
