@@ -43,5 +43,12 @@ class RevenueLeadTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,"DUPLICATE"):
             build(research(),[rev(),rev()])
 
+    def test_one_invalid_metric_row_is_retained_as_excluded_and_others_continue(self):
+        bad=rev(code="3718",monthly=0,prior=0)
+        result=build(research(),[bad,rev()])
+        self.assertEqual(result["issuer_count"],1)
+        self.assertEqual(result["excluded_invalid_revenue_count"],1)
+        self.assertEqual(result["excluded_invalid_revenue"][0]["code"],"3718")
+
 
 if __name__=="__main__":unittest.main()
