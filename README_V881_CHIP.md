@@ -65,3 +65,42 @@ Exit, or a separate scheduled task.
 
 Offline tests:
 \`python -m unittest discover -s tests -p 'test_tw_chip_*.py' -v\`.
+
+
+## 2026-09 footwear insider research shadow (2026-10-20)
+
+Supplemental source: \`tw-market-data/evidence/v880/insider_reviews/shoe_makers_202609_secondary_shadow.json\`.
+
+- Six **selected footwear companies**, not a full sector census: 9802/9910/6965/
+  6768/9904/6890. Secondary monthly market-net lots for Apr–Sep 2026:
+  **+3254 / +5033 / +1143 / +95 / 0 / −42**, respectively. Derived from
+  https://toalpha.tw/stock/{issuer}/filings; not directly from original MOPS
+  post-trade declarations.
+- \`scripts/tw_insider_shadow.py\` recalculates all six monthly totals, ensures
+  source URLs and issuer identities align, and rejects any claim of completed
+  official origin, valuation override, insider quality-gate PASS or auto Exit.
+  Offline account/role-de-duplication tests use synthetic events only.
+- Account types (personal, nominee-held, related family members, legal entities)
+  are distinct. Do not add the same holdings repeatedly for directors who also
+  appear as managers or major shareholders. Holder display names are not
+  guaranteed to be unique stable identities.
+- **9802:** Sep MEINDL INT'L +231 lots as nominee account; the month-by-month
+  change 26,715→26,946 lots does not match another September holdings table's
+  26,947. Preserve the one-lot difference until original declarations are
+  independently reconciled. Nominee purchases are not chairman's personal
+  trades.
+- **9910:** 20,000 lots recorded as Apr *other-cause decrease* must NOT be
+  classified as stock-market selling.
+- **6890:** a third-party insider-holding estimate of 104.1% is invalid for
+  share-percentage purposes; issuer identity/role de-duplication is required.
+- The \`6768\` 2026-09 +89 lots is visible in a newer indexed result but some
+  third-party snapshots still end 2026-08. Do not overwrite missing original
+  document vintages with a claimed direct MOPS check.
+- Official MOPS monthly declaration originals, their bytes/hashes, first
+  publication timestamps and stable holder/account identities were **not
+  obtained** in this pass. Official TWSE t187ap11_L is a *holdings balance*
+  endpoint, not proof of market purchases/sales, and is not a substitute for
+  the post-trade event report.
+- Formal \`insider_claims\` gate stays **PENDING**; the shadow records are
+  never PIT backtest inputs or automatic A+/A++/EPS/PE/Base/Exit changes.
+  No new scheduled job or automatic alert was created.
