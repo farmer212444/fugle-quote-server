@@ -1,19 +1,29 @@
-name: V8.9 Cycle Alpha PIT tests
+name: V8.9 PIT and evidence regression tests
 on:
   push:
-    branches: [feature/v89-cycle-alpha]
+    branches: [main, feature/v89-cycle-alpha, feature/v89-pit-sector-cert-hardening]
     paths:
       - 'tw_model_v880/cycle_alpha.py'
+      - 'tw_model_v880/model.py'
+      - 'scripts/tw_v880_run.py'
+      - 'tw_model_v880/evidence.py'
       - 'tests/test_cycle_alpha.py'
+      - 'tests/test_v880.py'
+      - 'tests/test_integration_v880.py'
       - '.github/workflows/v89-cycle-alpha-tests.yml'
   pull_request:
     paths:
       - 'tw_model_v880/cycle_alpha.py'
+      - 'tw_model_v880/model.py'
+      - 'scripts/tw_v880_run.py'
+      - 'tw_model_v880/evidence.py'
       - 'tests/test_cycle_alpha.py'
+      - 'tests/test_v880.py'
+      - 'tests/test_integration_v880.py'
       - '.github/workflows/v89-cycle-alpha-tests.yml'
   workflow_dispatch:
 jobs:
-  test:
+  regression:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -23,4 +33,5 @@ jobs:
         with:
           python-version: '3.11'
       - run: python -m pip install pytest
-      - run: python -m pytest -q tests/test_cycle_alpha.py
+      - name: PIT, valuation and certification regression
+        run: python -m pytest -q tests/test_cycle_alpha.py tests/test_v880.py tests/test_integration_v880.py
