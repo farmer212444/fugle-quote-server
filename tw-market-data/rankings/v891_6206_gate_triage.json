@@ -1,0 +1,140 @@
+{
+  "schema": "V891_6206_EVIDENCE_TRIAGE",
+  "issuer": "6206",
+  "valuation_model": "V8.8.2",
+  "estimate_vintage": "2026-10-20T08:24:28.605201+08:00",
+  "price_date": "2026-10-16",
+  "reference_close": 134.5,
+  "common_2027_base_price": 179.69203734021846,
+  "common_upside_pct": 33.6,
+  "independent_2027_base_price": 185.87281621243886,
+  "normalized_income_quarters": 8,
+  "normalized_cashflow_quarters": 8,
+  "issuer_presentation_receipts_matched": 2,
+  "issuer_presentation_receipts_required": 2,
+  "original_company_publication_time_verified": false,
+  "individual_history_sessions": 74,
+  "twenty_day_turnover_reconciled": true,
+  "formal_Aplus": false,
+  "newly_certified_gates": 0,
+  "gates": [
+    {
+      "gate": "original_eight_quarter_statements",
+      "source_coverage": "OBSERVED_PARTIAL",
+      "formal_status": "PENDING",
+      "next_action": "逐季核對官方原始四表、修訂紀錄及完整附註",
+      "automation_route": "AUTO_THEN_ORIGINAL_REVIEW",
+      "reason": "已有可交叉檢查的部分資料，但不構成完整認證",
+      "automatically_certified": false
+    },
+    {
+      "gate": "cash_and_working_capital",
+      "source_coverage": "OBSERVED_PARTIAL",
+      "formal_status": "PENDING",
+      "next_action": "以正式現金流量表對帳OCF、存貨、應收應付與實際PPE現金支出",
+      "automation_route": "AUTO_RECONCILIATION",
+      "reason": "已有可交叉檢查的部分資料，但不構成完整認證",
+      "automatically_certified": false
+    },
+    {
+      "gate": "nonoperating_components",
+      "source_coverage": "MISSING_OR_UNVERIFIED",
+      "formal_status": "PENDING",
+      "next_action": "由原始附註區分經常性及一次性業外",
+      "automation_route": "AUTO_THEN_ORIGINAL_REVIEW",
+      "reason": "尚無足夠的公司別原始證據可供簽核",
+      "automatically_certified": false
+    },
+    {
+      "gate": "fully_diluted_shares",
+      "source_coverage": "OBSERVED_PARTIAL",
+      "formal_status": "PENDING",
+      "next_action": "核對登記股數、員工認股、可轉債及潛在稀釋",
+      "automation_route": "AUTO_THEN_LEGAL_REVIEW",
+      "reason": "已有可交叉檢查的部分資料，但不構成完整認證",
+      "automatically_certified": false
+    },
+    {
+      "gate": "matched_peers_and_cycle",
+      "source_coverage": "MISSING_OR_UNVERIFIED",
+      "formal_status": "PENDING",
+      "next_action": "按產品結構比對同業Forward PE與景氣全週期",
+      "automation_route": "COMPARABLE_ANALYSIS_REVIEW",
+      "reason": "尚無足夠的公司別原始證據可供簽核",
+      "automatically_certified": false
+    },
+    {
+      "gate": "management_promises",
+      "source_coverage": "OBSERVED_PARTIAL",
+      "formal_status": "PENDING",
+      "next_action": "逐頁抽取法說承諾並與後續實績核對",
+      "automation_route": "ORIGINAL_GUIDANCE_REVIEW",
+      "reason": "已有可交叉檢查的部分資料，但不構成完整認證",
+      "automatically_certified": false
+    },
+    {
+      "gate": "auditor_scope",
+      "source_coverage": "MISSING_OR_UNVERIFIED",
+      "formal_status": "PENDING",
+      "next_action": "核對會計師意見、核閱範圍及重要性",
+      "automation_route": "ORIGINAL_FINANCIAL_NOTE_REVIEW",
+      "reason": "尚無足夠的公司別原始證據可供簽核",
+      "automatically_certified": false
+    },
+    {
+      "gate": "tradability",
+      "source_coverage": "OBSERVED_PARTIAL",
+      "formal_status": "PENDING",
+      "next_action": "補驗價差、漲跌停及持倉退出成交可行性",
+      "automation_route": "AUTO_THEN_EXECUTION_REVIEW",
+      "reason": "已有可交叉檢查的部分資料，但不構成完整認證",
+      "automatically_certified": false
+    },
+    {
+      "gate": "forecast_bridge",
+      "source_coverage": "OBSERVED_PARTIAL",
+      "formal_status": "PENDING",
+      "next_action": "用訂單、ASP、良率及軟硬體組合確認2027營益橋接",
+      "automation_route": "AUTO_THEN_OPERATING_REVIEW",
+      "reason": "已有可交叉檢查的部分資料，但不構成完整認證",
+      "automatically_certified": false
+    },
+    {
+      "gate": "insider_claims",
+      "source_coverage": "MISSING_OR_UNVERIFIED",
+      "formal_status": "PENDING",
+      "next_action": "比對內部人申報、交易日、股數及持股變化",
+      "automation_route": "OFFICIAL_DISCLOSURE_REVIEW",
+      "reason": "尚無足夠的公司別原始證據可供簽核",
+      "automatically_certified": false
+    },
+    {
+      "gate": "dividend_window",
+      "source_coverage": "OBSERVED_PARTIAL",
+      "formal_status": "PENDING",
+      "next_action": "核對除息、實際發放日期與每股股利",
+      "automation_route": "CORPORATE_ACTION_VERIFICATION",
+      "reason": "已有可交叉檢查的部分資料，但不構成完整認證",
+      "automatically_certified": false
+    },
+    {
+      "gate": "point_in_time",
+      "source_coverage": "MISSING_OR_UNVERIFIED",
+      "formal_status": "PENDING",
+      "next_action": "取得原始公告精確時點及當時可知資料版本",
+      "automation_route": "FILING_TIMESTAMP_REVIEW",
+      "reason": "尚無足夠的公司別原始證據可供簽核",
+      "automatically_certified": false
+    },
+    {
+      "gate": "out_of_sample_validation",
+      "source_coverage": "MISSING_OR_UNVERIFIED",
+      "formal_status": "PENDING",
+      "next_action": "用當時股票母體與歷史模型凍結版本做樣本外回測",
+      "automation_route": "PIT_BACKTEST_REQUIRED",
+      "reason": "尚無足夠的公司別原始證據可供簽核",
+      "automatically_certified": false
+    }
+  ],
+  "note": "Evidence reconciliation only. No synthetic/original-source claims, no gate PASS, no trade orders."
+}
