@@ -111,6 +111,10 @@ def process(code,asof,months,fetch=request,out=OUT,rawdir=RAW,sleep=0.35,referen
         except Exception as e:
             errors.append(dict(code=code,month=month,status="SOURCE_RETRY_REQUIRED",
                                error=type(e).__name__+":"+str(e)[:150]))
+            # An unavailable modern market endpoint usually fails for every
+            # month. Avoid 36 near-identical requests before investigating.
+            if not collection and month==months[0]:
+                break
         if sleep:time.sleep(sleep)
     normalized=combine({m:d["rows"] for m,d in collection.items()},asof,code)
     if reference_close is not None and normalized and normalized[0]["date"]==asof:
@@ -157,7 +161,8 @@ def run(cap=12,months=3,fetch=request,sleep=.35):
         "HTTP原始回應置於 GitHub Actions artifact；雜湊收據、網站回應及20日金額皆不代表原始公告PIT或實際可成交性已認證。"]
     (ROOT/"rankings/v892_tpex_backfill_progress.md").write_text("\n".join(lines)+"\n",encoding="utf-8")
     print(json.dumps({"selected":keys,"new_complete":sum(x["twenty"] for x in checks),
-        "source_errors":sum(len(x["source_errors"]) for x in checks)},ensure_ascii=False))
+        "source_errors":sum(len(x["source_errors"]) for x in checks),
+        "first_errors":[x["source_errors"][0] for x in checks if x["source_errors"]][:6]},ensure_ascii=False))
     if checks and not any(x["twenty"] or x["new_months"] for x in checks):
         raise RuntimeError("TPEX_HISTORICAL_BACKFILL_NOT_PROGRESSING")
 
