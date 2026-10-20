@@ -86,3 +86,22 @@ formal legal filing dates, the correct gate result is PENDING with that blocker.
 - All formal review packs remain subject to the existing validated signer/
   original-archive and timestamp requirements. The original snapshot's date,
   first observed date, and independently verified PIT date remain different.
+
+
+## 2026-10-21 eight-quarter scope fix
+
+The issuer-discovery parser had excluded every file dated before 2025, even
+though eight financial quarters ending 2026-Q2 start at **2024-Q3**.
+The parser now retains 2024 announcements, and the bounded durable originals
+collector explicitly allows the publisher's 2024-Q3 report URL:
+
+https://www.fulgentsun.com/img/Finance/202403_9802_AI1_20241128_102700.pdf
+
+The company quarterly index displays 2024-11-07, while the filename contains
+2024-11-28. This discrepancy is not independently reconciled, so company
+filing/PIT dates remain UNVERIFIED, not backdated to the index display date.
+
+The issuer's published 2025-Q3 quarterly hyperlink still points to
+\`/img/Finance/.pdf\`; that item remains MISSING, never silently replaced by
+a guessed filename or earlier report. Full 8-quarter original source coverage
+and the 13-gate A+ certification remain pending.
