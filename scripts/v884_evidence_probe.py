@@ -237,14 +237,22 @@ def probe(research,dispatch,data,dated,receipts,top=50,focus_codes=()):
     if len(live)!=len(ledger):raise ValueError("AMBIGUOUS_MARKET_ISSUER_IDENTITY")
     prioritized=[r for r in ledger if r.get("research_upside_pct") is not None]
     selected=prioritized[:top]
-    # Keep ranked top-N intact; append explicitly requested issuers without duplicates.
+    # Every issuer with 2027 Base upside >=30% must receive a diagnostic
+    # profile, even if that population exceeds the configured display top-N.
+    # Keep the top-N research order and append all remaining high-upside and
+    # explicitly requested issuers without duplicates.  This ONLY broadens
+    # source triage; it cannot certify a gate or approve a valuation.
     focus=set(focus_codes)
     selected_keys={(r["market"],r["code"]) for r in selected}
     for candidate in prioritized:
         key=(candidate["market"],candidate["code"])
-        if candidate["code"] in focus and key not in selected_keys:
+        if (candidate["research_upside_pct"] >= 30.0 or candidate["code"] in focus) and key not in selected_keys:
             selected.append(candidate)
             selected_keys.add(key)
+    high_upside_count=sum(r["research_upside_pct"] >= 30.0 for r in prioritized)
+    high_upside_selected=sum(r["research_upside_pct"] >= 30.0 for r in selected)
+    if high_upside_count != high_upside_selected:
+        raise ValueError("HIGH_UPSIDE_EVIDENCE_COVERAGE_INCOMPLETE")
     manual=[];profiles=[];counts=Counter()
     for row in selected:
         code=row["code"];market=row["market"];key=(market,code)
@@ -273,6 +281,9 @@ def probe(research,dispatch,data,dated,receipts,top=50,focus_codes=()):
     return dict(model=research["model"],estimate_vintage=research["estimate_vintage"],
                 asof_price_date=research["asof_price_date"],tracked_issuers=len(ledger),
                 valued_candidates=len(prioritized),prioritized_count=len(profiles),
+                high_upside_research_candidates=high_upside_count,
+                high_upside_profiles_probed=high_upside_selected,
+                high_upside_not_probed=high_upside_count-high_upside_selected,
                 market_price_archived_sessions=len(dated),official_price_archival_receipts=receipts,
                 counts=dict(counts),top_priority_evidence=profiles,manual_review_queue=manual,
                 formal_Aplus_source_count=research.get("formal_Aplus_count"),
@@ -285,7 +296,9 @@ def probe(research,dispatch,data,dated,receipts,top=50,focus_codes=()):
 def summary_md(result):
     out=["# V8.8.4 官方證據蒐集進度（不代表正式通過）","",
          f"估值形成：{result['estimate_vintage']}；參考價日期：{result['asof_price_date']}。","",
-         f"逐家列管 {result['tracked_issuers']}；研究候選 {result['valued_candidates']}；前 {result['prioritized_count']} 檔進行證據診斷。",
+         f"逐家列管 {result['tracked_issuers']}；研究候選 {result['valued_candidates']}；"
+         f"已診斷 {result['prioritized_count']} 檔（涵蓋全部潛在價差≥30%的 "
+         f"{result['high_upside_profiles_probed']} 檔及指定關注股）。",
          f"已封存市場交易日 {result['market_price_archived_sessions']} 日。20日成交值完整：{result['counts'].get('20_sessions_observed',0)}檔；正式新增A+：0。","",
          "|順位|公司|8季損益|8季現金流|20日成交|CB待確認|",
          "|---:|---|---:|---:|---|---|"]
