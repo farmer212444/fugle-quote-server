@@ -7,6 +7,7 @@ review or A+ certification. Failed or truncated sources cannot become evidence.
 import argparse
 import datetime as dt
 import hashlib
+import http.client
 import json
 import math
 import re
@@ -42,7 +43,7 @@ def download(url,retries=5):
             # Enforce complete valid UTF-8 JSON, not an HTML 200 or truncated HTTP body.
             json.loads(data.decode("utf-8-sig"))
             return data
-        except (ValueError,UnicodeError,EOFError,OSError,TimeoutError) as e:
+        except (ValueError,UnicodeError,EOFError,OSError,TimeoutError,http.client.IncompleteRead) as e:
             last=e
             if n<retries-1:time.sleep(min(n+1,3))
     raise RuntimeError("TPEX_DOWNLOAD_FAILED_AFTER_RETRIES:"+repr(last)[:160])
