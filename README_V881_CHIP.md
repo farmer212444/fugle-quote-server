@@ -35,3 +35,33 @@ The diagnostic reads the existing full issuer queue, then computes independently
 2. Confirm the live TWSE/TPEx/TDCC official response schemas on the GitHub runner and preserve failure receipts.
 3. Add and audit margin/short/borrow/insider public data by official identifiers and published availability.
 4. Accumulate full historical observations and calibrate chip ranking weights on genuine walk-forward tests only.
+
+## 20-session institutional retreat research watch
+
+The existing chip diagnostic also publishes an unpromoted stock-level
+\`institutional_retreat_20d\` status, never a trade, formal A+/A++ promotion,
+Exit, or a separate scheduled task.
+
+- Trigger: **trust net selling over 20 individually observed, dated exchange
+  snapshots is at least 0.30% of officially reported issued ordinary shares**.
+  Both sides are counted in **shares**, not lots; exactly -0.30% meets the
+  threshold. The denominator must come from the hashed V8.8 evidence snapshot,
+  with a dated official company share record and source receipt no later than
+  the model reference price date.
+- When 20 snapshots, source hashes, dated shares, or issuer identity are missing,
+  the value is \`PENDING_*\`, never zero. A single source outage does not
+  erase previously captured data or stop unrelated issuers.
+- An observed breach is \`OBSERVED_RETREAT_REQUIRES_FUNDAMENTAL_REVIEW\`.
+  This triggers **analyst review**, not claims that funds knew undisclosed
+  results. Require a separate, issuer-specific public accounting bridge
+  and contemporaneous publication receipts before making any stronger
+  economic inference.
+- \`complete_trading_calendar_independently_certified=false\`: twenty
+  observations do not by themselves prove twenty *consecutive* official
+  market sessions. This signal has not been PIT performance-calibrated.
+- Files are incorporated into the existing chip coverage output at
+  \`tw-market-data/rankings/chip_coverage.json\`. No extra schedule,
+  notifications, forced Exit, or EPS/PE/Base override are created.
+
+Offline tests:
+\`python -m unittest discover -s tests -p 'test_tw_chip_*.py' -v\`.
