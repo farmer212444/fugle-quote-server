@@ -24,6 +24,7 @@ on:
       - 'tw-market-data/prices/issuer_history/**'
       - 'scripts/v886_9802_early_revalue.py'
       - 'scripts/v888_6206_valuation.py'
+      - 'scripts/v891_6206_gate_triage.py'
       - 'scripts/v890_five_candidate_audit.py'
       - 'tw-market-data/ir/6206/**'
       - 'scripts/tw_chip_diagnostic.py'
@@ -59,6 +60,7 @@ on:
       - 'tw-market-data/prices/issuer_history/**'
       - 'scripts/v886_9802_early_revalue.py'
       - 'scripts/v888_6206_valuation.py'
+      - 'scripts/v891_6206_gate_triage.py'
       - 'scripts/v890_five_candidate_audit.py'
       - 'tw-market-data/ir/6206/**'
       - 'scripts/tw_chip_diagnostic.py'
@@ -126,8 +128,10 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Validate model controls
-        run: python scripts/tw_v880_run.py --self-test
+      - name: Validate model controls and independent 6206 triage
+        run: |
+          python scripts/tw_v880_run.py --self-test
+          python -m unittest discover -s tests -p test_v891_6206_gate_triage.py
       - name: Refresh static official sources
         if: github.event_name != 'pull_request'
         run: python scripts/refresh_v880_public.py
@@ -143,6 +147,7 @@ jobs:
           python scripts/v884_evidence_probe.py --top 50 --focus 8390 1785 5439 4739 9802 6206
           python scripts/v886_9802_early_revalue.py
           python scripts/v888_6206_valuation.py
+          python scripts/v891_6206_gate_triage.py
           python scripts/tw_chip_diagnostic.py
           python scripts/v880_audit_exports.py --kind risk
           python scripts/v880_audit_exports.py --kind cash
@@ -169,6 +174,7 @@ jobs:
             python scripts/v884_evidence_probe.py --top 50 --focus 8390 1785 5439 4739 9802 6206
             python scripts/v886_9802_early_revalue.py
             python scripts/v888_6206_valuation.py
+          python scripts/v891_6206_gate_triage.py
             python scripts/tw_chip_diagnostic.py
             python scripts/v880_audit_exports.py --kind risk
             python scripts/v880_audit_exports.py --kind cash
