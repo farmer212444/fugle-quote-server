@@ -34,6 +34,22 @@ class CertificationTests(unittest.TestCase):
         gs=certificates();gs['auditor_scope']['status']='FAIL';self.assertEqual(certify(CODE,100,60,gs,ASOF,PERIOD)['status'],'QUALITY_REVIEW_FAILED')
     def test_source_cannot_be_reviewed_before_available(self):
         gs=certificates();gs['auditor_scope']['sources'][0]['available_at']='2026-10-18T10:00:00+08:00';self.assertFalse(certify(CODE,100,60,gs,ASOF,PERIOD)['formal_Aplus'])
+    def test_malformed_sources_are_pending_not_exception_or_pass(self):
+        for bad in ({"url": "https://example.invalid"}, ["non-dict-source"], [], None):
+            gs=certificates()
+            gs["auditor_scope"]["sources"]=bad
+            result=certify(CODE,100,100,gs,ASOF,PERIOD)
+            self.assertFalse(result["formal_Aplus"])
+            self.assertIn("auditor_scope",result["gates_pending"])
+    def test_malformed_upside_is_unavailable_even_with_passed_gates(self):
+        for bad in ("100", float("nan"), True, None):
+            result=certify(CODE,bad,100,certificates(),ASOF,PERIOD)
+            self.assertEqual(result["status"],"VALUATION_UNAVAILABLE")
+            self.assertFalse(result["formal_Aplus"])
+        for bad in ("100", float("inf"), True):
+            result=certify(CODE,40,bad,certificates(),ASOF,PERIOD)
+            self.assertFalse(result["formal_Aplusplus"])
+
 class AccountingTests(unittest.TestCase):
     def test_future_component_receipt_blocks_backdated_research(self):
         e=dict(snapshot_available_at='2026-10-17T00:00:00+08:00',last_public_refresh=dict(at='2026-10-18T09:00:00+08:00'),
