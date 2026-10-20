@@ -6,7 +6,8 @@ import unittest
 from pathlib import Path
 
 from scripts.v896_original_archive import (
-    collect, is_official, select_sources, validate_bundle, validate_pdf
+    collect, is_official, select_sources, validate_bundle, validate_pdf,
+    original_quarter_coverage
 )
 
 DAY = "2026-10-21"
@@ -154,6 +155,55 @@ class OriginalArchiveTests(unittest.TestCase):
         self.assertEqual(result["captured"],1)
         self.assertEqual(result["receipt_hash_discrepancies"],1)
         self.assertEqual(result["formal_pass_count"],0)
+
+    def test_exact_eight_quarters_not_just_count_of_eight_pdfs(self):
+        source=self.source9802()
+        source["discovered"]=[
+            {"id":f"{idx:020x}","category":"quarterly",
+             "site_display_date":f"{year}-{month:02d}-{day:02d}",
+             "title":f"{period[:4]}年第{qname}季合併財務報告",
+             "url":f"https://www.fulgentsun.com/img/Finance/{period}.pdf"}
+            for idx,(period,year,month,day,qname) in enumerate([
+                ("2024Q2",2024,8,19,"第二"),("2024Q3",2024,11,7,"第三"),
+                ("2024Q4",2025,2,26,"第四"),("2025Q1",2025,5,8,"第一"),
+                ("2025Q2",2025,8,26,"第二"),("2025Q4",2026,2,25,"第四"),
+                ("2026Q1",2026,5,8,"第一"),("2026Q2",2026,8,18,"第二")
+            ])
+        ]
+        self.write_source("9802",source)
+        captured=collect(self.root,"9802",DAY,NOW,max_documents=12,
+                         fetcher=lambda *_:fixture_pdf(b"identical-pdf"))
+        # Unique source SHA cannot be reused across different issuer URL
+        # identities, so only one source must be saved; use per-URL bytes below.
+        self.assertTrue(captured["errors"])
+        # Reconstruct eight original PDF records with separate distinct bytes.
+        archive=self.root/"evidence/v880/originals/9802"
+        import shutil
+        shutil.rmtree(archive)
+        self.assertFalse(archive.exists())
+        captured=collect(self.root,"9802",DAY,NOW,max_documents=12,
+                         fetcher=lambda issuer,url:fixture_pdf(url.encode()))
+        self.assertEqual(captured["records"],8)
+        coverage=original_quarter_coverage(self.root,"9802","2026-Q2")
+        self.assertEqual(coverage["missing_quarters"],["2025-Q3"])
+        self.assertFalse(coverage["source_title_coverage_complete"])
+        self.assertFalse(coverage["formal_gate_pass"])
+        # Add the genuine index metadata of the official English translation.
+        source["discovered"].append({
+            "id":"f"*20,"category":"quarterly_en",
+            "site_display_date":"2025-12-05",
+            "title":"2025 Q3 Consolidated Financial Statements",
+            "url":"https://www.fulgentsun.com/img/Finance/2025Q3(EN)%201204.pdf"})
+        self.write_source("9802",source)
+        captured=collect(self.root,"9802",DAY,NOW,max_documents=12,
+                         fetcher=lambda issuer,url:fixture_pdf(url.encode()))
+        self.assertEqual(captured["records"],9)
+        coverage=original_quarter_coverage(self.root,"9802","2026-Q2")
+        self.assertTrue(coverage["source_title_coverage_complete"])
+        self.assertEqual(len(coverage["found_quarters"]),8)
+        self.assertEqual(coverage["missing_quarters"],[])
+        self.assertFalse(coverage["pdf_accounting_period_internal_identity_verified"])
+        self.assertFalse(coverage["formal_gate_pass"])
 
     def test_pdf_size_and_trailer_restrictions(self):
         for invalid in (b"%PDF-bad",b"<html>not a pdf</html>",b"%PDF-1.7"+b"x"*7000):
