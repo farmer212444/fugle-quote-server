@@ -1,0 +1,26 @@
+name: V8.9 Cycle Alpha PIT tests
+on:
+  push:
+    branches: [feature/v89-cycle-alpha]
+    paths:
+      - 'tw_model_v880/cycle_alpha.py'
+      - 'tests/test_cycle_alpha.py'
+      - '.github/workflows/v89-cycle-alpha-tests.yml'
+  pull_request:
+    paths:
+      - 'tw_model_v880/cycle_alpha.py'
+      - 'tests/test_cycle_alpha.py'
+      - '.github/workflows/v89-cycle-alpha-tests.yml'
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install pytest
+      - run: python -m pytest -q tests/test_cycle_alpha.py
