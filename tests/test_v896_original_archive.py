@@ -161,7 +161,7 @@ class OriginalArchiveTests(unittest.TestCase):
         source["discovered"]=[
             {"id":f"{idx:020x}","category":"quarterly",
              "site_display_date":f"{year}-{month:02d}-{day:02d}",
-             "title":f"{period[:4]}年第{qname}季合併財務報告",
+             "title":f"{period[:4]}年{qname}季合併財務報告",
              "url":f"https://www.fulgentsun.com/img/Finance/{period}.pdf"}
             for idx,(period,year,month,day,qname) in enumerate([
                 ("2024Q2",2024,8,19,"第二"),("2024Q3",2024,11,7,"第三"),
