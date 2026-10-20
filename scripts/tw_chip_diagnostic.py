@@ -5,8 +5,15 @@ import datetime as dt
 import gzip
 import hashlib
 import json
+import sys
 from collections import Counter
 from pathlib import Path
+
+# Supports both 'python scripts/tw_chip_diagnostic.py' and unittest imports.
+REPOSITORY_ROOT = str(Path(__file__).resolve().parents[1])
+if REPOSITORY_ROOT not in sys.path:
+    sys.path.insert(0, REPOSITORY_ROOT)
+from scripts.tw_institutional_retreat import assess_retreat, load_issued_shares
 
 def digest(raw):
     return hashlib.sha256(raw).hexdigest()
@@ -112,12 +119,13 @@ def join_market_codes(queue, reference_price_path=None):
         raise ValueError("DUPLICATE_MARKET_CODE_IN_UNIVERSE")
     return result
 
-def summarize(queue, asof, inst, ownership, base_rows, errors):
+def summarize(queue, asof, inst, ownership, base_rows, errors, share_master=None):
     if len(queue.get("queues", [])) + len(queue.get("normalized_not_yet_modeled", [])) != queue.get("tracked_issuer_universe", queue.get("normalized_financial_issuers")):
         raise ValueError("UNIVERSE_COUNT_NOT_RECONCILED")
     current_inst = inst[0][1] if inst and inst[0][0] == asof else {}
     current_own = ownership[0][1] if ownership and (dt.date.fromisoformat(asof) - dt.date.fromisoformat(ownership[0][0])).days <= 10 else {}
     previous_own = ownership[1][1] if len(ownership) >= 2 else {}
+    share_master = share_master or {}
     annotate = []
     for item in base_rows:
         market, code = item["market"], item["code"]
@@ -131,6 +139,7 @@ def summarize(queue, asof, inst, ownership, base_rows, errors):
         row["institutional_5d"] = flows(inst, (market, code), 5) if intraday else None
         row["institutional_20d"] = flows(inst, (market, code), 20) if intraday else None
         row["institutional_60d"] = flows(inst, (market, code), 60) if intraday else None
+        row["institutional_retreat_20d"] = assess_retreat(row["institutional_20d"], share_master.get((market, code)))
         row["tdcc_level_12_15_pct"] = tdcc["level_12_15_pct"] if tdcc else None
         row["tdcc_weekly_change_pp"] = (round(tdcc["level_12_15_pct"] - two_weeks["level_12_15_pct"], 4)
                                         if tdcc and two_weeks else None)
@@ -155,12 +164,14 @@ def summarize(queue, asof, inst, ownership, base_rows, errors):
         "ownership_change_complete": sum(r["tdcc_weekly_change_pp"] is not None for r in annotate),
         "status_counts": dict(stats),
         "source_audit_failures": errors,
+        "institutional_retreat_counts": dict(Counter(r["institutional_retreat_20d"]["status"] for r in annotate)),
+        "institutional_retreat_20d_is_review_only": True,
         "PIT_issuer_master_certified": False,
         "PIT_publication_audit_complete": False,
         "formal_Aplus_count_derived_from_chip": 0,
         "official_marketwide_chip_certified": False,
         "ranking_safe": False,
-        "interpretation": "Day-only institutional net values; 5/20/60 sessions need exact historical coverage. TDCC grades 12-15 are statistical buckets, not identified insiders. No forward PE/EPS/ratings changes.",
+        "interpretation": "Institutional retreat watch requires 20 dated observations and eligible dated issued-share denominator; >=0.30% net trust selling triggers research review only. Incomplete official session calendar or fundamental corroboration cannot be called a certified warning, insider information, automatic Exit or A+ change. TDCC grades 12-15 are not identified insiders.",
         "stocks": annotate,
     }
 
@@ -178,7 +189,13 @@ def main():
     issuer_list = join_market_codes(queue, p)
     institutional, errors1 = dated_sets(args.chip_dir, "institutional", asof)
     tdcc, errors2 = dated_sets(args.chip_dir, "ownership", asof)
-    report = summarize(queue, asof, institutional, tdcc, issuer_list, errors1 + errors2)
+    share_master = {}
+    try:
+        share_master = load_issued_shares("tw-market-data", asof)
+    except (OSError, ValueError, KeyError, TypeError, EOFError) as exc:
+        errors2.append({"path": "tw-market-data/evidence/v880/manifest.json",
+                        "reason": "SHARE_MASTER_UNAVAILABLE: " + str(exc)})
+    report = summarize(queue, asof, institutional, tdcc, issuer_list, errors1 + errors2, share_master)
     dest = Path(args.output)
     dest.parent.mkdir(parents=True, exist_ok=True)
     dest.write_text(json.dumps(report, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
