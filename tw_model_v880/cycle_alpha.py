@@ -5,8 +5,31 @@ silently treated as positive evidence. Weights are provisional pending
 out-of-sample validation.
 """
 from dataclasses import dataclass
+from datetime import date, datetime, time, timedelta, timezone
 from math import isfinite
 from typing import Mapping, Optional
+import re
+
+_TAIPEI = timezone(timedelta(hours=8))
+_DATE_RE = re.compile(r"\d{4}-\d{2}-\d{2}\Z")
+
+def _cutoff_time(value: str) -> datetime:
+    """Use Taipei end of day for date-only research, never for intraday signals."""
+    if not isinstance(value, str):
+        raise ValueError("ASOF_TIME_INVALID")
+    if _DATE_RE.fullmatch(value):
+        return datetime.combine(date.fromisoformat(value), time.max, _TAIPEI)
+    instant = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    if instant.tzinfo is None or instant.utcoffset() is None:
+        raise ValueError("ASOF_TIMEZONE_REQUIRED")
+    return instant
+
+def _published_by(value: object, cutoff: datetime) -> bool:
+    """Unknown release time on a date is conservatively that day's end."""
+    try:
+        return _cutoff_time(value) <= cutoff
+    except (ValueError, TypeError, OverflowError):
+        return False
 
 WEIGHTS = {
     "revenue_acceleration": 0.20,
@@ -18,7 +41,7 @@ WEIGHTS = {
 }
 CYCLICAL_INDUSTRY_TERMS = (
     "航運", "鋼鐵", "建材營造", "電子通路", "電器電纜",
-    "製鞋", "鞋", "紡織", "成衣", "塑膠", "化學", "造紙",
+    "製鞋", "鞋", "運動休閒", "紡織", "成衣", "塑膠", "化學", "造紙",
 )
 
 @dataclass(frozen=True)
@@ -37,15 +60,21 @@ def score_cycle(observations: Mapping[str, Optional[float]],
                 min_coverage: float = 0.80) -> CycleSignal:
     """Inputs are normalized 0..1 evidence scores with publication timestamps.
 
-    Excludes information released after asof. No model signal is an A+ approval.
+    Excludes information released after asof. Date-only asof means Taipei
+    end of day; date-only releases become available only at that day's end.
+    No model signal is an A+ approval.
     """
+    cutoff = _cutoff_time(asof)
+    if (isinstance(min_coverage, bool) or not isinstance(min_coverage, (int, float))
+            or not isfinite(min_coverage) or not 0 < min_coverage <= 1):
+        raise ValueError("CYCLE_COVERAGE_THRESHOLD_INVALID")
     weighted = 0.0
     covered = 0.0
     missing = []
     for key, weight in WEIGHTS.items():
         value = observations.get(key)
         released = latest_available_at.get(key)
-        if (value is None or released is None or released > asof
+        if (value is None or not _published_by(released, cutoff)
                 or isinstance(value, bool)
                 or not isinstance(value, (int, float))
                 or not isfinite(value) or not 0 <= value <= 1):
@@ -53,7 +82,7 @@ def score_cycle(observations: Mapping[str, Optional[float]],
             continue
         weighted += weight * float(value)
         covered += weight
-    if covered < min_coverage:
+    if covered + 1e-12 < min_coverage:
         return CycleSignal(None, round(covered, 6), tuple(missing),
                            "INSUFFICIENT_PIT_EVIDENCE")
     # Missing evidence is scored as zero, never renormalized into a perfect score.
