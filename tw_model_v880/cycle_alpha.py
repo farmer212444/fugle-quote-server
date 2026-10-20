@@ -56,6 +56,7 @@ def score_cycle(observations: Mapping[str, Optional[float]],
     if covered < min_coverage:
         return CycleSignal(None, round(covered, 6), tuple(missing),
                            "INSUFFICIENT_PIT_EVIDENCE")
-    score = round(100 * weighted / covered, 2)
+    # Missing evidence is scored as zero, never renormalized into a perfect score.
+    score = round(100 * weighted, 2)
     return CycleSignal(score, round(covered, 6), tuple(missing),
                        "EARLY_DISCOVERY_RESEARCH_ONLY")
