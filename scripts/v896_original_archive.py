@@ -61,14 +61,27 @@ def select_sources(issuer, source, asof_day, max_documents=12):
                 continue
             target_quarter = (category == "quarterly" and date[:7] in FOCUS_QUARTERS
                               and ("財務" in title or "合併" in title))
+            # The publisher's Chinese 2025-Q3 PDF hyperlink is malformed
+            # (/img/Finance/.pdf). The same issuer explicitly publishes the
+            # English translation of its 2025-Q3 original, dated 2025-12-05.
+            # Keep that *later* website date; never backdate it to the
+            # Chinese auditor's earlier signed review date (2025-11-06).
+            translated_q3 = (category == "quarterly_en"
+                             and date == "2025-12-05"
+                             and re.fullmatch(r"2025\s+Q3\s+Consolidated\s+Financial\s+Statements",
+                                              title,re.I) is not None
+                             and "/img/Finance/" in item["url"])
             early_q3 = (category == "news" and date.startswith("2026-10")
                         and "第三季" in title and "自結" in title)
-            if not (target_quarter or early_q3):
+            if not (target_quarter or translated_q3 or early_q3):
                 continue
             versions = receipt_map.get(item["id"], {}).get("versions", [])
             hashes = [v.get("sha256") for v in versions]
-            chosen.append(dict(id=item["id"], category=category, document_date=date,
-                               title=title, url=item["url"], expected_hashes=hashes))
+            chosen.append(dict(id=item["id"],
+                               category="quarterly" if translated_q3 else category,
+                               translation_of_chinese_original=bool(translated_q3),
+                               document_date=date,title=title,
+                               url=item["url"], expected_hashes=hashes))
         chosen.sort(key=lambda x:(x["category"] == "news", x["document_date"]), reverse=True)
     else:
         if source.get("code") != "6206":
@@ -207,7 +220,9 @@ def collect(root, issuer, asof_day, now, max_documents=12, fetcher=fetch_pdf):
             record=dict(issuer=issuer,id=item["id"],document_kind=item["category"],
                 document_date=item["document_date"],title=item["title"],source_url=item["url"],
                 archive_path=rel.as_posix(),sha256=sha,bytes=len(raw),
-                captured_at_utc=now,source_original_hash_matches_previous_receipt=not different,
+                captured_at_utc=now,
+                english_translation_of_chinese_original=item.get("translation_of_chinese_original",False),
+                source_original_hash_matches_previous_receipt=not different,
                 earlier_capture_sha256s=item["expected_hashes"],
                 source_is_official_issuer_https_domain=True,
                 issuer_pdf_content_independently_reviewed=False,

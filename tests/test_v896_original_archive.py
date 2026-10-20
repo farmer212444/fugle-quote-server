@@ -68,6 +68,30 @@ class OriginalArchiveTests(unittest.TestCase):
         self.assertTrue(any("202403_9802_AI1_20241128_102700.pdf" in x for x in urls))
         self.assertFalse(any(x.endswith("/.pdf") for x in urls))
 
+    def test_2025q3_english_official_fallback_closes_missing_quarter_only(self):
+        source=self.source9802()
+        source["discovered"].extend([
+            {"id":"e"*20, "category":"quarterly_en", "site_display_date":"2025-12-05",
+             "title":"2025 Q3 Consolidated Financial Statements",
+             "url":"https://www.fulgentsun.com/img/Finance/2025Q3(EN)%201204.pdf"},
+            {"id":"f"*20, "category":"quarterly_en", "site_display_date":"2026-09-18",
+             "title":"2026 Q2 Consolidated Financial Statements",
+             "url":"https://www.fulgentsun.com/img/Finance/2026Q2(EN).pdf"}
+        ])
+        selected=select_sources("9802", source, DAY,max_documents=12)
+        q3=[s for s in selected if "2025Q3(EN)" in s["url"]]
+        self.assertEqual(len(q3),1)
+        self.assertEqual(q3[0]["category"],"quarterly")
+        self.assertEqual(q3[0]["document_date"],"2025-12-05")
+        self.assertTrue(q3[0]["translation_of_chinese_original"])
+        self.assertFalse(any("2026Q2(EN)" in s["url"] for s in selected))
+        selected_early=select_sources("9802",source,"2025-11-30")
+        self.assertFalse(any("2025Q3(EN)" in s["url"] for s in selected_early))
+        # Do not accept fake 2025Q3 index dates that attempt historical lookahead.
+        source["discovered"][-2]["site_display_date"]="2025-11-06"
+        rejected=select_sources("9802",source,DAY,max_documents=12)
+        self.assertFalse(any("2025Q3(EN)" in s["url"] for s in rejected))
+
     def test_durable_pdf_exact_sha_and_no_rating_promotion(self):
         self.write_source("9802",self.source9802())
         documents=[fixture_pdf(b"Q3"),fixture_pdf(b"Q2")]

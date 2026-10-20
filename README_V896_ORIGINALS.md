@@ -105,3 +105,31 @@ The issuer's published 2025-Q3 quarterly hyperlink still points to
 \`/img/Finance/.pdf\`; that item remains MISSING, never silently replaced by
 a guessed filename or earlier report. Full 8-quarter original source coverage
 and the 13-gate A+ certification remain pending.
+
+
+## 2025-Q3 English original source recovery (2026-10-21)
+
+The company's **Chinese quarterly-report website** contains an invalid
+2025-Q3 PDF hyperlink ending in \`/img/Finance/.pdf\`. Its official
+**English quarterly-report index**, however, publishes the 2025-Q3
+consolidated statements at:
+
+- Index: https://www.fulgentsun.com/eng/investors03_2.asp
+- Issuer original: https://www.fulgentsun.com/img/Finance/2025Q3(EN)%201204.pdf
+- Index display date: **2025-12-05**, not 2025-11-06.
+
+The English edition is an English translation of the consolidated
+financial statements and auditor's review report originally issued in
+Chinese. On any discrepancy the Chinese original prevails. It is a
+valid **issuer-hosted English version of the document**, but its
+12/05/2025 website listing must not be backdated to the
+11/06/2025 signed review date. Original exchange/MOPS publication PIT
+is still unverified.
+
+The existing issuer collector now tracks the separate English quarterly
+listing; the durable document collector accepts **only 2025-Q3 from
+that category**, explicitly as a quarterly original translation.
+Other English quarterly files are not double-counted for the same
+accounting period. All original quarterly periods require exact
+quarter-specific coverage review and complete notes before
+\`original_eight_quarter_statements\` can receive formal PASS.
