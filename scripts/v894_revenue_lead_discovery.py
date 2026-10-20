@@ -66,11 +66,16 @@ def build(research,revenue_rows,history_months=0):
     candidates={}
     for key in ("top30_provisional","top48_primary_research","early_recovery_watch"):
         for row in research.get(key,[]):candidates[str(row.get("code"))]=row
-    seen=set();out=[]
+    seen=set();out=[];excluded=[]
     for row in revenue_rows:
         code=str(row.get("code",""))
         if not re.fullmatch(r"\d{4}",code) or code in seen:raise ValueError("INVALID_OR_DUPLICATE_CODE_"+code)
-        seen.add(code);signal=score_revenue(row,history_months)
+        seen.add(code)
+        try:signal=score_revenue(row,history_months)
+        except ValueError as exc:
+            excluded.append(dict(code=code,name=row.get("name"),market=row.get("market"),
+                                 reason=str(exc)))
+            continue
         vp,vflag=valuation_points(candidates.get(code))
         flags=list(signal.pop("risk_flags"))
         if vflag:flags.append(vflag)
@@ -84,6 +89,7 @@ def build(research,revenue_rows,history_months=0):
                 source_model=research["model"],source_model_code_sha256=research.get("model_code_sha256"),
                 estimate_vintage=research.get("estimate_vintage"),price_date=research.get("asof_price_date"),
                 revenue_month=research.get("revenue_month"),issuer_count=len(out),
+                excluded_invalid_revenue_count=len(excluded),excluded_invalid_revenue=excluded,
                 weights=dict(monthly_yoy_level=35,acceleration_vs_ytd=25,
                              observed_ytd_persistence=10,multi_month_continuity=10,
                              valuation_unreflected=20),
