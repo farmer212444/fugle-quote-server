@@ -96,6 +96,19 @@ class IntegrationTests(unittest.TestCase):
         a=estimate(d,('TEST','SYNTHETIC_A'),CAL,'2027-04-10T12:00:00+08:00','2028-12-31');self.assertEqual(a['revenue_bridge']['prior_year_annual_revenue_k'],1200)
     def test_stale_forecast_certificate_is_not_reused(self):
         d=FakeData();d.evidence['certificates']['SYNTHETIC_A']={'forecast_bridge':dict(status='PASS',model_code_sha256='old')};a=estimate(d,('TEST','SYNTHETIC_A'),CAL,ASOF,'2027-12-31');self.assertIn('DOES_NOT_MATCH',a['gates']['forecast_bridge']['reason'])
+    def test_sports_footwear_cycle_flag_does_not_silently_alter_base_pe(self):
+        d=FakeData()
+        baseline=estimate(d,('TEST','SYNTHETIC_A'),CAL,ASOF,'2027-12-31')
+        d.revenue['SYNTHETIC_A']['industry']='運動休閒'
+        footwear=estimate(d,('TEST','SYNTHETIC_A'),CAL,ASOF,'2027-12-31')
+        self.assertTrue(footwear['cycle_research']['cyclical_sector'])
+        self.assertFalse(footwear['cycle_research']['legacy_pe_cap_applied'])
+        self.assertFalse(footwear['formal_Aplus'])
+        self.assertEqual(footwear['pe_bridge']['base'],baseline['pe_bridge']['base'])
+        self.assertEqual(footwear['base']['eps'],baseline['base']['eps'])
+        self.assertIn('CYCLICAL_SECTOR_RESEARCH_ONLY_PE_UNCHANGED_PENDING_BACKTEST',
+                      footwear['warning_flags'])
+
     def test_one_bad_issuer_does_not_stop_other_issuer(self):
         d=FakeData();d.evidence['primary']['SYNTHETIC_A']['values']['gross_profit_k']=999
         with tempfile.TemporaryDirectory() as tmp:
