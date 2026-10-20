@@ -96,6 +96,16 @@ class OriginalArchiveTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,"FALSE_CERTIFICATION"):
             validate_bundle(self.root,"9802")
 
+    def test_archive_cannot_point_to_other_issuer_or_external_source(self):
+        self.write_source("9802",self.source9802())
+        collect(self.root,"9802",DAY,NOW,fetcher=lambda *_:fixture_pdf())
+        path=self.root/"evidence/v880/originals/9802/manifest.json"
+        obj=json.loads(path.read_text(encoding="utf-8"))
+        obj["documents"][0]["archive_path"]="evidence/v880/originals/6206/some.pdf"
+        path.write_text(json.dumps(obj),encoding="utf-8")
+        with self.assertRaisesRegex(ValueError,"OUTSIDE_ISSUER_DIRECTORY"):
+            validate_bundle(self.root,"9802")
+
     def test_6206_official_presentation_sha_receipt(self):
         source={"code":"6206","presentations":[
             {"event_date":"2026-08-12","title":"飛捷Q2官方法說",
