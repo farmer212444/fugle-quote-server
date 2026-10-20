@@ -67,3 +67,12 @@ jobs:
           done
           echo '::error::SOURCE_CAPTURED_BUT_PUBLICATION_NOT_CONFIRMED_AFTER_RETRIES'
           exit 1
+
+      - name: Preserve originals used in final conflict-safe publication
+        if: always() && github.event_name != 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: taiwan-twse-issuer-history-final-raw
+          path: market-raw-price-history/
+          retention-days: 90
+          if-no-files-found: ignore
