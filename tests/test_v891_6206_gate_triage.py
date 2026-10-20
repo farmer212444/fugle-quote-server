@@ -86,7 +86,7 @@ class FlytechGateTriageTest(unittest.TestCase):
 
     def test_fake_liquidity_coverage_and_price_arithmetic_fail_closed(self):
         args = list(sample())
-        args[3]["sessions"][0]["turnover_ntd"] += 99_999
+        for row in args[3]["sessions"]:\n            row["turnover_ntd"] += 100_000
         with self.assertRaisesRegex(ValueError, "TWENTY_DAY_SOURCE_RECONCILIATION_FAILED"):
             check_report(*args)
         args = list(sample())
