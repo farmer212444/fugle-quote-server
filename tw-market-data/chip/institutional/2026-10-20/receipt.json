@@ -1,0 +1,38 @@
+{
+  "date": "2026-10-20",
+  "markets": {
+    "TWSE": {
+      "market": "TWSE",
+      "url": "https://www.twse.com.tw/rwd/zh/fund/T86?response=json&date=20261020&selectType=ALL",
+      "status": "SCHEMA_CAPTURED_NOT_CERTIFIED",
+      "source": "https://www.twse.com.tw/rwd/zh/fund/T86?response=json&date=20261020&selectType=ALL",
+      "data_date": "2026-10-20",
+      "fetched_at": "2026-10-20T23:56:59.563246+08:00",
+      "parser_reinterpretation_from_previous_sha256": null,
+      "raw_archive": "tw-market-data/chip/raw/institutional/2026-10-20/TWSE.response.gz",
+      "raw_sha256": "443eff5e8d2c3fdef38f9753bb4f7475b8f39ac157f9776ac87b8752189d4503",
+      "raw_gzip_sha256": "00c41e8860583df3c573c8a9b31a9ebdb995ca57c65ef066c789eaace35a3fbe",
+      "normalized_path": "tw-market-data/chip/institutional/2026-10-20/TWSE.json",
+      "normalized_sha256": "262dcf0da8fa4f07cee77dabe6942ee9820d08d1220affe521339fd962de5752",
+      "rows": 1079,
+      "verified": "SCHEMA_DATE_HASH_ONLY_NOT_PIT_ORIGIN_CERTIFIED"
+    },
+    "TPEX": {
+      "market": "TPEX",
+      "url": "https://www.tpex.org.tw/openapi/v1/tpex_3insti_daily_trading",
+      "status": "SCHEMA_CAPTURED_NOT_CERTIFIED",
+      "source": "https://www.tpex.org.tw/openapi/v1/tpex_3insti_daily_trading",
+      "data_date": "2026-10-20",
+      "fetched_at": "2026-10-20T23:56:59.563246+08:00",
+      "parser_reinterpretation_from_previous_sha256": null,
+      "raw_archive": "tw-market-data/chip/raw/institutional/2026-10-20/TPEX.response.gz",
+      "raw_sha256": "94004341610363afde9a72e88c891a5e2574d9785b00adefa2c67ab307fbd912",
+      "raw_gzip_sha256": "7f01f888d68772e8136e7ca88c14fa113a8d346876cbbead53a33862b8cf2044",
+      "normalized_path": "tw-market-data/chip/institutional/2026-10-20/TPEX.json",
+      "normalized_sha256": "9f5dc496d48d03b322099440e21ac4044fee9685990d2121f9a2c010fb72535b",
+      "rows": 761,
+      "verified": "SCHEMA_DATE_HASH_ONLY_NOT_PIT_ORIGIN_CERTIFIED"
+    }
+  },
+  "certification": "SOURCE_SCHEMA_AND_HASH_ONLY"
+}
