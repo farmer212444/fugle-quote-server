@@ -5,6 +5,7 @@ on:
     paths:
       - '.github/workflows/tw_tpex_history_backfill.yml'
       - 'scripts/tw_tpex_history_backfill.py'
+      - 'scripts/v892_tpex_endpoint_probe.py'
       - 'tests/test_tw_tpex_history_backfill.py'
   schedule:
     # 09:10, 12:10, 15:10, 18:10, 20:10 Asia/Taipei weekdays.
@@ -25,9 +26,11 @@ jobs:
           python-version: '3.12'
       - name: Test original TPEx monthly parser, code and date guards
         run: python -m unittest -v tests.test_tw_tpex_history_backfill
+      - name: Diagnose modern official historical TPEx endpoint
+        run: python scripts/v892_tpex_endpoint_probe.py
       - name: Fetch TPEx historical monthly data for incomplete ranked candidates
         if: github.event_name != 'pull_request'
-        run: python -m scripts.tw_tpex_history_backfill --max-issuers 12 --months 3
+        run: python -m scripts.tw_tpex_history_backfill --max-issuers 1 --months 2
       - name: Publish validated and source-receipted TPEx history
         if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
         shell: bash
