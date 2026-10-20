@@ -148,7 +148,9 @@ def validate_bundle(root, issuer):
             raise ValueError("DURABLE_ORIGINAL_PDF_HASH_OR_SIZE_MISMATCH")
         if not re.fullmatch(r"20\d{2}-\d{2}-\d{2}T.+[+-]\d\d:\d\d",record.get("captured_at_utc","")):
             raise ValueError("ORIGINAL_CAPTURE_TIMESTAMP_MISSING")
-    return dict(issuer=issuer, records=len(unique),
+    kinds={k:sum(x["document_kind"]==k for x in manifest["documents"])
+           for k in ("quarterly","presentation","news")}
+    return dict(issuer=issuer, records=len(unique), document_kinds=kinds,
                 statuses=["ARCHIVED_ORIGINAL_BYTES_NOT_REVIEWED"],
                 original_archive_hashes_verified=True,
                 formal_pass_count=0)
