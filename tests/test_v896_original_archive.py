@@ -1,0 +1,120 @@
+"""V8.9.6 original PDF archiving must never fabricate issuer certification."""
+import copy
+import json
+import tempfile
+import unittest
+from pathlib import Path
+
+from scripts.v896_original_archive import (
+    collect, is_official, select_sources, validate_bundle, validate_pdf
+)
+
+DAY = "2026-10-21"
+NOW = "2026-10-20T22:00:00+00:00"
+
+
+def fixture_pdf(extra=b""):
+    return b"%PDF-1.4\n" + b"A" * 5200 + extra + b"\n%%EOF\n"
+
+
+class OriginalArchiveTests(unittest.TestCase):
+    def setUp(self):
+        self.ctx = tempfile.TemporaryDirectory()
+        self.addCleanup(self.ctx.cleanup)
+        self.root = Path(self.ctx.name)
+        (self.root / "issuer/9802").mkdir(parents=True)
+        (self.root / "ir/6206").mkdir(parents=True)
+
+    def write_source(self, issuer, item):
+        target = (self.root / "issuer/9802/manifest.json" if issuer=="9802"
+                  else self.root / "ir/6206/manifest.json")
+        target.write_text(json.dumps(item), encoding="utf-8")
+
+    def source9802(self):
+        entries=[
+            {"id":"a"*20,"category":"quarterly","site_display_date":"2026-08-18",
+             "title":"2026年第二季合併財務報告","url":"https://www.fulgentsun.com/img/Finance/115Q2.pdf"},
+            {"id":"b"*20,"category":"quarterly","site_display_date":"2025-11-06",
+             "title":"2025年第三季合併財務報告","url":"https://www.fulgentsun.com/img/Finance/.pdf"},
+            {"id":"c"*20,"category":"news","site_display_date":"2026-10-20",
+             "title":"2026年第三季自結財報新聞稿",
+             "url":"https://www.fulgentsun.com/img/News_Release/FY2026%203Q%20financial%20results%20CN.pdf"}
+        ]
+        return {"issuer":"9802","publisher":"鈺齊國際","discovered":entries,
+                "receipts":{"a"*20:{"versions":[{"sha256":"0"*64}]}}}
+
+    def test_publisher_whitelist_and_broken_quarter_link(self):
+        self.assertTrue(is_official("9802","https://www.fulgentsun.com/img/Finance/115Q2.pdf"))
+        self.assertFalse(is_official("9802","https://www.fulgentsun.com/img/Finance/.pdf"))
+        self.assertFalse(is_official("9802","http://www.fulgentsun.com/img/Finance/115Q2.pdf"))
+        self.assertFalse(is_official("9802","https://bad.example/img/Finance/115Q2.pdf"))
+        self.assertFalse(is_official("9802","https://www.fulgentsun.com/img/Finance/../secrets.pdf"))
+        self.assertFalse(is_official("6206","https://www.fulgentsun.com/img/Finance/115Q2.pdf"))
+        r=select_sources("9802",self.source9802(),DAY)
+        self.assertEqual(len(r),2)
+        self.assertEqual(r[0]["category"],"news")
+        self.assertEqual(r[1]["document_date"],"2026-08-18")
+        self.assertEqual(len(select_sources("9802",self.source9802(),"2026-09-01")),1)
+
+    def test_durable_pdf_exact_sha_and_no_rating_promotion(self):
+        self.write_source("9802",self.source9802())
+        documents=[fixture_pdf(b"Q3"),fixture_pdf(b"Q2")]
+        calls=[]
+        def fetch(issuer,url):
+            calls.append(url)
+            return documents[len(calls)-1]
+        report=collect(self.root,"9802",DAY,NOW,fetcher=fetch)
+        self.assertEqual(report["selected"],2)
+        self.assertEqual(report["captured"],2)
+        self.assertEqual(report["receipt_hash_discrepancies"],1)
+        self.assertEqual(report["formal_pass_count"],0)
+        self.assertEqual(report["errors"],[])
+        self.assertTrue(report["original_archive_hashes_verified"])
+        manifest=json.loads((self.root/"evidence/v880/originals/9802/manifest.json").read_text())
+        self.assertFalse(manifest["original_MOPS_PIT_verified"])
+        self.assertFalse(manifest["original_document_content_independently_reviewed"])
+        self.assertEqual(manifest["formally_certified_gates"],0)
+        self.assertTrue(all(not x["formal_gate_pass"] for x in manifest["documents"]))
+        # A later run retains prior captures and does not re-download them.
+        second=collect(self.root,"9802",DAY,NOW,fetcher=lambda *_: self.fail("re-fetched"))
+        self.assertEqual(second["reused"],2)
+        self.assertEqual(second["captured"],0)
+        self.assertEqual(validate_bundle(self.root,"9802")["records"],2)
+
+    def test_archive_change_or_counterfeit_certification_fails_closed(self):
+        self.write_source("9802",self.source9802())
+        collect(self.root,"9802",DAY,NOW,fetcher=lambda *_: fixture_pdf())
+        bundle_path=self.root/"evidence/v880/originals/9802/manifest.json"
+        doc=json.loads(bundle_path.read_text())
+        item=doc["documents"][0]
+        (self.root/item["archive_path"]).write_bytes(b"altered")
+        with self.assertRaisesRegex(ValueError,"INVALID_OR_OVERSIZE|HASH"):
+            validate_bundle(self.root,"9802")
+        (self.root/item["archive_path"]).write_bytes(fixture_pdf())
+        doc["formally_certified_gates"]=1
+        bundle_path.write_text(json.dumps(doc))
+        with self.assertRaisesRegex(ValueError,"FALSE_CERTIFICATION"):
+            validate_bundle(self.root,"9802")
+
+    def test_6206_official_presentation_sha_receipt(self):
+        source={"code":"6206","presentations":[
+            {"event_date":"2026-08-12","title":"飛捷Q2官方法說",
+             "source_url":"https://www.flytech.com.tw/data/investor_law/attached/1786525880605469429.pdf",
+             "pdf_sha256":"1"*64}]}
+        self.write_source("6206",source)
+        found=select_sources("6206",source,DAY)
+        self.assertEqual(len(found),1)
+        result=collect(self.root,"6206",DAY,NOW,fetcher=lambda *_:fixture_pdf())
+        self.assertEqual(result["captured"],1)
+        self.assertEqual(result["receipt_hash_discrepancies"],1)
+        self.assertEqual(result["formal_pass_count"],0)
+
+    def test_pdf_size_and_trailer_restrictions(self):
+        for invalid in (b"%PDF-bad",b"<html>not a pdf</html>",b"%PDF-1.7"+b"x"*7000):
+            with self.assertRaisesRegex(ValueError,"INVALID_OR_OVERSIZE_PDF_BYTES"):
+                validate_pdf(invalid)
+        self.assertRegex(validate_pdf(fixture_pdf()),r"^[a-f0-9]{64}$")
+
+
+if __name__=="__main__":
+    unittest.main()
