@@ -1,0 +1,58 @@
+# V8.9.2 全市場2027 Base TOP20：EPS／PE／現金流／稀釋逐檔排查
+
+更新：2026-10-20T09:03:31.644894+08:00；收盤基準 2026-10-16；已公告財務期 2026-Q2。
+
+**前20為既有Base漲幅排名；研究預檢、不產生正式A+，也不改寫EPS、PE或交易指令。**
+
+## 20檔完整風險表
+
+|原序|股票|Base漲幅|2027 EPS / H1年化EPS|模型PE|H1 OCF(億)|未核CB|EPS、PE各-20%漲幅|優先查核分|
+|---:|---|---:|---:|---:|---:|---:|---:|---:|
+|1|6494 九齊|+141.3%|1.46倍|19.73|+2.47|0|+54.4%|7|
+|2|1714 和桐|+140.4%|1.42倍|18.34|+10.51|0|+53.9%|7|
+|3|5439 高技|+112.7%|1.26倍|24.21|+8.29|1|+36.1%|9|
+|4|6574 霈方|+112.6%|0.88倍|15.56|+1.72|0|+36.1%|9|
+|5|1785 光洋科|+112.2%|1.29倍|22.39|+1.53|0|+35.8%|8|
+|6|3305 昇貿|+109.8%|1.38倍|22.39|-12.05|0|+34.2%|4|
+|7|4739 康普|+106.0%|1.21倍|20.45|-1.93|2|+31.8%|5|
+|8|8390 金益鼎|+103.9%|1.34倍|13.22|+6.75|0|+30.5%|6|
+|9|6741 91APP*-KY|+101.4%|1.19倍|19.67|+3.86|0|+28.9%|7|
+|10|1256 鮮活果汁-KY|+97.2%|1.18倍|15.79|+2.95|1|+26.2%|8|
+|11|6625 必應|+94.1%|1.18倍|13.06|+1.82|0|+24.2%|6|
+|12|2374 佳能|+93.1%|1.59倍|25.31|-0.18|1|+23.6%|1|
+|13|5388 中磊|+91.6%|1.78倍|15.68|-34.61|1|+22.6%|2|
+|14|8473 山林水|+86.7%|0.83倍|17.80|-1.49|0|+19.5%|4|
+|15|4912 聯德控股-KY|+86.6%|1.39倍|24.04|+2.71|0|+19.4%|4|
+|16|8110 華東|+86.5%|0.65倍|26.02|+3.11|0|+19.4%|6|
+|17|6763 綠界科技*|+85.5%|1.78倍|19.84|+1.91|0|+18.7%|5|
+|18|2331 精英|+80.5%|1.75倍|17.90|-4.05|0|+15.5%|2|
+|19|2348 海悅|+80.5%|4.77倍|12.58|-21.20|0|+15.5%|3|
+|20|2317 鴻海|+79.4%|1.72倍|16.23|-691.22|1|+14.8%|2|
+
+## 證據查核優先順位（不是投資報酬率排名）
+
+|優先序|股票|Base漲幅|20%雙壓漲幅|最大待解缺口|
+|---:|---|---:|---:|---|
+|1|5439 高技|+112.7%|+36.1%|HIGH_FORWARD_PE_UNVERIFIED_PEERS、CB_LEGAL_TERMS_UNVERIFIED|
+|2|6574 霈方|+112.6%|+36.1%|ISSUER_ORIGINAL_NUMERICS_NOT_CROSSCHECKED|
+|3|1785 光洋科|+112.2%|+35.8%|ISSUER_ORIGINAL_NUMERICS_NOT_CROSSCHECKED、HIGH_FORWARD_PE_UNVERIFIED_PEERS|
+|4|1256 鮮活果汁-KY|+97.2%|+26.2%|CB_LEGAL_TERMS_UNVERIFIED、EPS_PE_DOUBLE20_LOSES_30PCT_NUMERICAL_THRESHOLD|
+|5|6494 九齊|+141.3%|+54.4%|ISSUER_ORIGINAL_NUMERICS_NOT_CROSSCHECKED、FORWARD_EPS_ABOVE_1_3X_H1_ANNUALIZED_OR_UNAVAILABLE|
+|6|1714 和桐|+140.4%|+53.9%|ISSUER_ORIGINAL_NUMERICS_NOT_CROSSCHECKED、FORWARD_EPS_ABOVE_1_3X_H1_ANNUALIZED_OR_UNAVAILABLE|
+|7|6741 91APP*-KY|+101.4%|+28.9%|ISSUER_ORIGINAL_NUMERICS_NOT_CROSSCHECKED、EPS_PE_DOUBLE20_LOSES_30PCT_NUMERICAL_THRESHOLD|
+|8|8390 金益鼎|+103.9%|+30.5%|FORWARD_EPS_ABOVE_1_3X_H1_ANNUALIZED_OR_UNAVAILABLE、EQUITY_ISSUANCE_NOT_CONFIRMED、AUDITOR_QUALIFIED_SCOPE_MATERIALITY_PENDING|
+|9|6625 必應|+94.1%|+24.2%|ISSUER_ORIGINAL_NUMERICS_NOT_CROSSCHECKED、EPS_PE_DOUBLE20_LOSES_30PCT_NUMERICAL_THRESHOLD、Q3_SALES_GROWTH_UNVERIFIED_OR_NONPOSITIVE|
+|10|8110 華東|+86.5%|+19.4%|ISSUER_ORIGINAL_NUMERICS_NOT_CROSSCHECKED、HIGH_FORWARD_PE_UNVERIFIED_PEERS、EPS_PE_DOUBLE20_LOSES_30PCT_NUMERICAL_THRESHOLD|
+|11|4739 康普|+106.0%|+31.8%|ISSUER_ORIGINAL_NUMERICS_NOT_CROSSCHECKED、NEGATIVE_OR_ZERO_H1_OCF_REQUIRES_WORKING_CAPITAL_BRIDGE、HIGH_FORWARD_PE_UNVERIFIED_PEERS|
+|12|6763 綠界科技*|+85.5%|+18.7%|ISSUER_ORIGINAL_NUMERICS_NOT_CROSSCHECKED、FORWARD_EPS_ABOVE_1_3X_H1_ANNUALIZED_OR_UNAVAILABLE、EPS_PE_DOUBLE20_LOSES_30PCT_NUMERICAL_THRESHOLD|
+
+## 注意事項
+
+- YTD basic EPS annualization is a seasonal-neutral proxy, not 2027 diluted EPS validation.
+- OCF is YTD operating cash flow, not free cash flow. Negative OCF is not automatic issuer FAIL.
+- PE>20 is a peer-validation flag, not proof that a stock is overvalued.
+- The model's reported CB shares are already in its denominator; extra CB reset stress is incremental only.
+- No issuer-specific original notes, PE peer cycle, CB terms, PIT trading backtest or formal certificate is established.
+- Verification priority scores order next investigations and are NOT calibrated probabilities, formal ratings or trading signals.
+
+完整逐檔原始數值及對應風險旗標見同名JSON。
