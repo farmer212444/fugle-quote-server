@@ -47,27 +47,41 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          # Source writers are concurrent: re-select missing issuers from latest main
-          # and republish only source-consistent artifacts. NEVER rebase regenerated JSON.
-          for attempt in 1 2 3 4; do
+          # Research writers update main repeatedly. Keep independently sourced
+          # issuer-history files separate from volatile report files; rebase new
+          # nonoverlapping files instead of re-fetching on every push rejection.
+          for rebuild in 1 2 3; do
             git fetch origin main
             git reset --hard origin/main
             python scripts/tw_history_backfill.py --max-issuers 16 --months 3
-            git add tw-market-data/prices/issuer_history/ tw-market-data/rankings/v889_backfill_progress.*
+            git add tw-market-data/prices/issuer_history/TWSE/
             if git diff --cached --quiet; then
-              echo 'No outstanding TWSE issuer history work in this batch.'
+              echo 'Historical issuer files already present.'
               exit 0
             fi
-            git commit -m 'data: backfill ranked official TWSE historical issuer sessions'
-            if git push origin HEAD:main; then
-              echo 'Published against current main after issuer re-selection.'
-              exit 0
+            git commit -m 'data: archive official ranked TWSE issuer history'
+            conflict=false
+            for retry in 1 2 3 4 5 6 7 8; do
+              git fetch origin main
+              if ! git rebase origin/main; then
+                git rebase --abort || true
+                conflict=true
+                echo 'Overlap from another issuer writer, reselect backlog.'
+                break
+              fi
+              if git push origin HEAD:main; then
+                echo 'TWSE issuer historical data published.'
+                exit 0
+              fi
+              echo "Competing data writer; retry $retry/8"
+              sleep 1
+            done
+            if [ "$conflict" = false ]; then
+              echo 'No rebase conflict, but main is too busy; try fresh backlog.'
             fi
-            echo "Remote changed; re-select source backlog, attempt $attempt/4"
           done
-          echo '::error::SOURCE_CAPTURED_BUT_PUBLICATION_NOT_CONFIRMED_AFTER_RETRIES'
+          echo '::error::TWSE_HISTORY_NOT_PUBLISHED_AFTER_RETRIES'
           exit 1
-
       - name: Preserve originals used in final conflict-safe publication
         if: always() && github.event_name != 'pull_request'
         uses: actions/upload-artifact@v4
