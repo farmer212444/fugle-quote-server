@@ -1,0 +1,686 @@
+{
+  "schema": "V889_OFFICIAL_TWSE_ISSUER_MONTHLY",
+  "issuer": "6133",
+  "market": "TWSE",
+  "price_reference_asof": "2026-10-16",
+  "source_type": "OFFICIAL_TWSE_MONTHLY_STOCK_DAY",
+  "original_raw_responses_preserved_in_actions_artifact_not_repository": true,
+  "backfill_capture_not_point_in_time_trade_history": true,
+  "share_adjustments_dividends_and_spread_not_verified": true,
+  "original_source_not_cryptographically_signed": true,
+  "formal_tradability_gate": "PENDING_NOT_CERTIFIED",
+  "source_errors": [],
+  "by_month": {
+    "2026-10": {
+      "source_url": "https://www.twse.com.tw/rwd/zh/afterTrading/STOCK_DAY?date=20261001&stockNo=6133&response=json",
+      "original_response_sha256": "4060a8f0943995b6552eec44af0bd9260621bd7e0f73a119e6fcf5b044267ca6",
+      "captured_at_utc": "2026-10-20T01:01:02.038836+00:00",
+      "original_exchange_signature_verified": false,
+      "rows": [
+        {
+          "date": "2026-10-01",
+          "volume_shares": 10855089,
+          "turnover_ntd": 324307853,
+          "close": 29.3
+        },
+        {
+          "date": "2026-10-02",
+          "volume_shares": 4672601,
+          "turnover_ntd": 135379713,
+          "close": 29.1
+        },
+        {
+          "date": "2026-10-05",
+          "volume_shares": 6973736,
+          "turnover_ntd": 204366690,
+          "close": 29.25
+        },
+        {
+          "date": "2026-10-06",
+          "volume_shares": 4075089,
+          "turnover_ntd": 115992558,
+          "close": 28.0
+        },
+        {
+          "date": "2026-10-07",
+          "volume_shares": 4246208,
+          "turnover_ntd": 114903503,
+          "close": 26.95
+        },
+        {
+          "date": "2026-10-08",
+          "volume_shares": 1676379,
+          "turnover_ntd": 45514475,
+          "close": 27.05
+        },
+        {
+          "date": "2026-10-12",
+          "volume_shares": 2237368,
+          "turnover_ntd": 61730136,
+          "close": 27.7
+        },
+        {
+          "date": "2026-10-13",
+          "volume_shares": 2888640,
+          "turnover_ntd": 75648410,
+          "close": 25.8
+        },
+        {
+          "date": "2026-10-14",
+          "volume_shares": 1414915,
+          "turnover_ntd": 36551472,
+          "close": 26.0
+        },
+        {
+          "date": "2026-10-15",
+          "volume_shares": 1508258,
+          "turnover_ntd": 37736580,
+          "close": 24.8
+        },
+        {
+          "date": "2026-10-16",
+          "volume_shares": 737966,
+          "turnover_ntd": 18573294,
+          "close": 25.2
+        }
+      ]
+    },
+    "2026-09": {
+      "source_url": "https://www.twse.com.tw/rwd/zh/afterTrading/STOCK_DAY?date=20260901&stockNo=6133&response=json",
+      "original_response_sha256": "fec74fe9bcf76599f8d124861bbd10bbbaae28f83037c60f786decdee5f05fdf",
+      "captured_at_utc": "2026-10-20T01:01:03.189778+00:00",
+      "original_exchange_signature_verified": false,
+      "rows": [
+        {
+          "date": "2026-09-01",
+          "volume_shares": 452267,
+          "turnover_ntd": 10515175,
+          "close": 23.05
+        },
+        {
+          "date": "2026-09-02",
+          "volume_shares": 2110436,
+          "turnover_ntd": 50382876,
+          "close": 23.65
+        },
+        {
+          "date": "2026-09-03",
+          "volume_shares": 1537631,
+          "turnover_ntd": 37109869,
+          "close": 23.75
+        },
+        {
+          "date": "2026-09-04",
+          "volume_shares": 868657,
+          "turnover_ntd": 20608913,
+          "close": 23.75
+        },
+        {
+          "date": "2026-09-07",
+          "volume_shares": 2441605,
+          "turnover_ntd": 59748812,
+          "close": 24.8
+        },
+        {
+          "date": "2026-09-08",
+          "volume_shares": 4155855,
+          "turnover_ntd": 102902967,
+          "close": 24.5
+        },
+        {
+          "date": "2026-09-09",
+          "volume_shares": 1935532,
+          "turnover_ntd": 44228057,
+          "close": 22.65
+        },
+        {
+          "date": "2026-09-10",
+          "volume_shares": 815986,
+          "turnover_ntd": 18222821,
+          "close": 22.1
+        },
+        {
+          "date": "2026-09-11",
+          "volume_shares": 2949068,
+          "turnover_ntd": 68445212,
+          "close": 23.55
+        },
+        {
+          "date": "2026-09-14",
+          "volume_shares": 1444781,
+          "turnover_ntd": 33208669,
+          "close": 23.25
+        },
+        {
+          "date": "2026-09-15",
+          "volume_shares": 1878837,
+          "turnover_ntd": 43746950,
+          "close": 22.95
+        },
+        {
+          "date": "2026-09-16",
+          "volume_shares": 1966373,
+          "turnover_ntd": 46757463,
+          "close": 23.7
+        },
+        {
+          "date": "2026-09-17",
+          "volume_shares": 13090191,
+          "turnover_ntd": 338137093,
+          "close": 26.05
+        },
+        {
+          "date": "2026-09-18",
+          "volume_shares": 12821654,
+          "turnover_ntd": 339236709,
+          "close": 27.45
+        },
+        {
+          "date": "2026-09-21",
+          "volume_shares": 11880767,
+          "turnover_ntd": 337871281,
+          "close": 28.0
+        },
+        {
+          "date": "2026-09-22",
+          "volume_shares": 5851877,
+          "turnover_ntd": 158796062,
+          "close": 27.2
+        },
+        {
+          "date": "2026-09-23",
+          "volume_shares": 3362463,
+          "turnover_ntd": 89178045,
+          "close": 26.05
+        },
+        {
+          "date": "2026-09-24",
+          "volume_shares": 2307472,
+          "turnover_ntd": 60477780,
+          "close": 25.95
+        },
+        {
+          "date": "2026-09-29",
+          "volume_shares": 9954159,
+          "turnover_ntd": 280205836,
+          "close": 28.5
+        },
+        {
+          "date": "2026-09-30",
+          "volume_shares": 20089110,
+          "turnover_ntd": 587348192,
+          "close": 29.6
+        }
+      ]
+    },
+    "2026-08": {
+      "source_url": "https://www.twse.com.tw/rwd/zh/afterTrading/STOCK_DAY?date=20260801&stockNo=6133&response=json",
+      "original_response_sha256": "e198084b22a48df9cb4fbdafd2b1fff20df15d98c47afe676c86d9b2a7c78e1b",
+      "captured_at_utc": "2026-10-20T01:01:04.344201+00:00",
+      "original_exchange_signature_verified": false,
+      "rows": [
+        {
+          "date": "2026-08-03",
+          "volume_shares": 560055,
+          "turnover_ntd": 11224840,
+          "close": 20.05
+        },
+        {
+          "date": "2026-08-04",
+          "volume_shares": 308226,
+          "turnover_ntd": 6262786,
+          "close": 20.4
+        },
+        {
+          "date": "2026-08-05",
+          "volume_shares": 863517,
+          "turnover_ntd": 18406656,
+          "close": 21.95
+        },
+        {
+          "date": "2026-08-06",
+          "volume_shares": 650784,
+          "turnover_ntd": 13860920,
+          "close": 21.25
+        },
+        {
+          "date": "2026-08-07",
+          "volume_shares": 423141,
+          "turnover_ntd": 9026424,
+          "close": 21.3
+        },
+        {
+          "date": "2026-08-10",
+          "volume_shares": 588151,
+          "turnover_ntd": 12827929,
+          "close": 21.65
+        },
+        {
+          "date": "2026-08-11",
+          "volume_shares": 614359,
+          "turnover_ntd": 13427317,
+          "close": 22.0
+        },
+        {
+          "date": "2026-08-12",
+          "volume_shares": 647094,
+          "turnover_ntd": 14372242,
+          "close": 22.25
+        },
+        {
+          "date": "2026-08-13",
+          "volume_shares": 977912,
+          "turnover_ntd": 22126411,
+          "close": 23.0
+        },
+        {
+          "date": "2026-08-14",
+          "volume_shares": 503396,
+          "turnover_ntd": 11407710,
+          "close": 22.7
+        },
+        {
+          "date": "2026-08-17",
+          "volume_shares": 901358,
+          "turnover_ntd": 20528567,
+          "close": 22.4
+        },
+        {
+          "date": "2026-08-18",
+          "volume_shares": 410185,
+          "turnover_ntd": 9179283,
+          "close": 22.25
+        },
+        {
+          "date": "2026-08-19",
+          "volume_shares": 425179,
+          "turnover_ntd": 9488885,
+          "close": 22.15
+        },
+        {
+          "date": "2026-08-20",
+          "volume_shares": 436038,
+          "turnover_ntd": 9696528,
+          "close": 22.15
+        },
+        {
+          "date": "2026-08-21",
+          "volume_shares": 234265,
+          "turnover_ntd": 5209732,
+          "close": 22.2
+        },
+        {
+          "date": "2026-08-24",
+          "volume_shares": 434164,
+          "turnover_ntd": 9722152,
+          "close": 22.4
+        },
+        {
+          "date": "2026-08-25",
+          "volume_shares": 383648,
+          "turnover_ntd": 8583963,
+          "close": 22.4
+        },
+        {
+          "date": "2026-08-26",
+          "volume_shares": 487489,
+          "turnover_ntd": 10980817,
+          "close": 22.45
+        },
+        {
+          "date": "2026-08-27",
+          "volume_shares": 1231620,
+          "turnover_ntd": 28673502,
+          "close": 23.2
+        },
+        {
+          "date": "2026-08-28",
+          "volume_shares": 548804,
+          "turnover_ntd": 12714473,
+          "close": 23.0
+        },
+        {
+          "date": "2026-08-31",
+          "volume_shares": 481177,
+          "turnover_ntd": 11172713,
+          "close": 23.15
+        }
+      ]
+    }
+  },
+  "sessions": [
+    {
+      "date": "2026-10-16",
+      "volume_shares": 737966,
+      "turnover_ntd": 18573294,
+      "close": 25.2
+    },
+    {
+      "date": "2026-10-15",
+      "volume_shares": 1508258,
+      "turnover_ntd": 37736580,
+      "close": 24.8
+    },
+    {
+      "date": "2026-10-14",
+      "volume_shares": 1414915,
+      "turnover_ntd": 36551472,
+      "close": 26.0
+    },
+    {
+      "date": "2026-10-13",
+      "volume_shares": 2888640,
+      "turnover_ntd": 75648410,
+      "close": 25.8
+    },
+    {
+      "date": "2026-10-12",
+      "volume_shares": 2237368,
+      "turnover_ntd": 61730136,
+      "close": 27.7
+    },
+    {
+      "date": "2026-10-08",
+      "volume_shares": 1676379,
+      "turnover_ntd": 45514475,
+      "close": 27.05
+    },
+    {
+      "date": "2026-10-07",
+      "volume_shares": 4246208,
+      "turnover_ntd": 114903503,
+      "close": 26.95
+    },
+    {
+      "date": "2026-10-06",
+      "volume_shares": 4075089,
+      "turnover_ntd": 115992558,
+      "close": 28.0
+    },
+    {
+      "date": "2026-10-05",
+      "volume_shares": 6973736,
+      "turnover_ntd": 204366690,
+      "close": 29.25
+    },
+    {
+      "date": "2026-10-02",
+      "volume_shares": 4672601,
+      "turnover_ntd": 135379713,
+      "close": 29.1
+    },
+    {
+      "date": "2026-10-01",
+      "volume_shares": 10855089,
+      "turnover_ntd": 324307853,
+      "close": 29.3
+    },
+    {
+      "date": "2026-09-30",
+      "volume_shares": 20089110,
+      "turnover_ntd": 587348192,
+      "close": 29.6
+    },
+    {
+      "date": "2026-09-29",
+      "volume_shares": 9954159,
+      "turnover_ntd": 280205836,
+      "close": 28.5
+    },
+    {
+      "date": "2026-09-24",
+      "volume_shares": 2307472,
+      "turnover_ntd": 60477780,
+      "close": 25.95
+    },
+    {
+      "date": "2026-09-23",
+      "volume_shares": 3362463,
+      "turnover_ntd": 89178045,
+      "close": 26.05
+    },
+    {
+      "date": "2026-09-22",
+      "volume_shares": 5851877,
+      "turnover_ntd": 158796062,
+      "close": 27.2
+    },
+    {
+      "date": "2026-09-21",
+      "volume_shares": 11880767,
+      "turnover_ntd": 337871281,
+      "close": 28.0
+    },
+    {
+      "date": "2026-09-18",
+      "volume_shares": 12821654,
+      "turnover_ntd": 339236709,
+      "close": 27.45
+    },
+    {
+      "date": "2026-09-17",
+      "volume_shares": 13090191,
+      "turnover_ntd": 338137093,
+      "close": 26.05
+    },
+    {
+      "date": "2026-09-16",
+      "volume_shares": 1966373,
+      "turnover_ntd": 46757463,
+      "close": 23.7
+    },
+    {
+      "date": "2026-09-15",
+      "volume_shares": 1878837,
+      "turnover_ntd": 43746950,
+      "close": 22.95
+    },
+    {
+      "date": "2026-09-14",
+      "volume_shares": 1444781,
+      "turnover_ntd": 33208669,
+      "close": 23.25
+    },
+    {
+      "date": "2026-09-11",
+      "volume_shares": 2949068,
+      "turnover_ntd": 68445212,
+      "close": 23.55
+    },
+    {
+      "date": "2026-09-10",
+      "volume_shares": 815986,
+      "turnover_ntd": 18222821,
+      "close": 22.1
+    },
+    {
+      "date": "2026-09-09",
+      "volume_shares": 1935532,
+      "turnover_ntd": 44228057,
+      "close": 22.65
+    },
+    {
+      "date": "2026-09-08",
+      "volume_shares": 4155855,
+      "turnover_ntd": 102902967,
+      "close": 24.5
+    },
+    {
+      "date": "2026-09-07",
+      "volume_shares": 2441605,
+      "turnover_ntd": 59748812,
+      "close": 24.8
+    },
+    {
+      "date": "2026-09-04",
+      "volume_shares": 868657,
+      "turnover_ntd": 20608913,
+      "close": 23.75
+    },
+    {
+      "date": "2026-09-03",
+      "volume_shares": 1537631,
+      "turnover_ntd": 37109869,
+      "close": 23.75
+    },
+    {
+      "date": "2026-09-02",
+      "volume_shares": 2110436,
+      "turnover_ntd": 50382876,
+      "close": 23.65
+    },
+    {
+      "date": "2026-09-01",
+      "volume_shares": 452267,
+      "turnover_ntd": 10515175,
+      "close": 23.05
+    },
+    {
+      "date": "2026-08-31",
+      "volume_shares": 481177,
+      "turnover_ntd": 11172713,
+      "close": 23.15
+    },
+    {
+      "date": "2026-08-28",
+      "volume_shares": 548804,
+      "turnover_ntd": 12714473,
+      "close": 23.0
+    },
+    {
+      "date": "2026-08-27",
+      "volume_shares": 1231620,
+      "turnover_ntd": 28673502,
+      "close": 23.2
+    },
+    {
+      "date": "2026-08-26",
+      "volume_shares": 487489,
+      "turnover_ntd": 10980817,
+      "close": 22.45
+    },
+    {
+      "date": "2026-08-25",
+      "volume_shares": 383648,
+      "turnover_ntd": 8583963,
+      "close": 22.4
+    },
+    {
+      "date": "2026-08-24",
+      "volume_shares": 434164,
+      "turnover_ntd": 9722152,
+      "close": 22.4
+    },
+    {
+      "date": "2026-08-21",
+      "volume_shares": 234265,
+      "turnover_ntd": 5209732,
+      "close": 22.2
+    },
+    {
+      "date": "2026-08-20",
+      "volume_shares": 436038,
+      "turnover_ntd": 9696528,
+      "close": 22.15
+    },
+    {
+      "date": "2026-08-19",
+      "volume_shares": 425179,
+      "turnover_ntd": 9488885,
+      "close": 22.15
+    },
+    {
+      "date": "2026-08-18",
+      "volume_shares": 410185,
+      "turnover_ntd": 9179283,
+      "close": 22.25
+    },
+    {
+      "date": "2026-08-17",
+      "volume_shares": 901358,
+      "turnover_ntd": 20528567,
+      "close": 22.4
+    },
+    {
+      "date": "2026-08-14",
+      "volume_shares": 503396,
+      "turnover_ntd": 11407710,
+      "close": 22.7
+    },
+    {
+      "date": "2026-08-13",
+      "volume_shares": 977912,
+      "turnover_ntd": 22126411,
+      "close": 23.0
+    },
+    {
+      "date": "2026-08-12",
+      "volume_shares": 647094,
+      "turnover_ntd": 14372242,
+      "close": 22.25
+    },
+    {
+      "date": "2026-08-11",
+      "volume_shares": 614359,
+      "turnover_ntd": 13427317,
+      "close": 22.0
+    },
+    {
+      "date": "2026-08-10",
+      "volume_shares": 588151,
+      "turnover_ntd": 12827929,
+      "close": 21.65
+    },
+    {
+      "date": "2026-08-07",
+      "volume_shares": 423141,
+      "turnover_ntd": 9026424,
+      "close": 21.3
+    },
+    {
+      "date": "2026-08-06",
+      "volume_shares": 650784,
+      "turnover_ntd": 13860920,
+      "close": 21.25
+    },
+    {
+      "date": "2026-08-05",
+      "volume_shares": 863517,
+      "turnover_ntd": 18406656,
+      "close": 21.95
+    },
+    {
+      "date": "2026-08-04",
+      "volume_shares": 308226,
+      "turnover_ntd": 6262786,
+      "close": 20.4
+    },
+    {
+      "date": "2026-08-03",
+      "volume_shares": 560055,
+      "turnover_ntd": 11224840,
+      "close": 20.05
+    }
+  ],
+  "liquidity": {
+    "5": {
+      "sessions": 5,
+      "first": "2026-10-12",
+      "last": "2026-10-16",
+      "median_turnover_ntd": 37736580,
+      "min_turnover_ntd": 18573294,
+      "zero_turnover_sessions": 0,
+      "idealized_5m_exit_sessions_at_20pct": 0.66
+    },
+    "20": {
+      "sessions": 20,
+      "first": "2026-09-16",
+      "last": "2026-10-16",
+      "median_turnover_ntd": 115448030.5,
+      "min_turnover_ntd": 18573294,
+      "zero_turnover_sessions": 0,
+      "idealized_5m_exit_sessions_at_20pct": 0.22
+    },
+    "60": null
+  }
+}
