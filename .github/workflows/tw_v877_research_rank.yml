@@ -1,6 +1,13 @@
 name: TW V8.8.2 research evidence model
 on:
   workflow_dispatch:
+  # GITHUB_TOKEN price commits do not fire downstream "push" workflows;
+  # workflow_run independently observes completed price collector jobs.
+  workflow_run:
+    workflows:
+      - Taiwan Official Daily Stock Prices
+    types:
+      - completed
   pull_request:
     paths:
       - '.github/workflows/tw_v877_research_rank.yml'
@@ -80,7 +87,38 @@ concurrency:
   group: tw-v880-research-${{ github.ref }}
   cancel-in-progress: false
 jobs:
+  price_update_check:
+    # Only eligible completion events need verification. Early diagnostic probes
+    # and retries without new verified prices do not require an extra model run.
+    if: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    outputs:
+      refresh: ${{ steps.determine.outputs.refresh }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Check latest committed price source against last model publication
+        id: determine
+        shell: bash
+        run: |
+          # Compare commit ancestry rather than clock time. Re-run on a same-date
+          # official price correction; skip if a ranking already includes it.
+          price_commit=$(git log -1 --format=%H -- tw-market-data/prices/latest_manifest.json)
+          ranking_commit=$(git log -1 --format=%H -- tw-market-data/rankings/latest_research.json)
+          if [ -z "$price_commit" ] || [ -z "$ranking_commit" ]; then
+            echo 'refresh=true' >> "$GITHUB_OUTPUT"
+            echo '::notice::Missing source or ranked snapshot; research refresh required.'
+          elif git merge-base --is-ancestor "$price_commit" "$ranking_commit"; then
+            echo 'refresh=false' >> "$GITHUB_OUTPUT"
+            echo 'Research already uses the latest committed price manifest.'
+          else
+            echo 'refresh=true' >> "$GITHUB_OUTPUT"
+            echo "Unprocessed official price update: $price_commit"
+          fi
   validate_and_run:
+    needs: price_update_check
+    if: ${{ always() && (github.event_name != 'workflow_run' || (github.event.workflow_run.conclusion == 'success' && needs.price_update_check.outputs.refresh == 'true')) }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
