@@ -1,10 +1,10 @@
 {
-  "status": "V890_FIVE_STOCK_RESEARCH_AUDIT_NOT_CERTIFIED",
+  "status": "V890_CURRENT_TOP30_SUBSET_AUDIT_NOT_CERTIFIED",
   "model": "V8.8.2",
-  "estimate_vintage": "2026-10-20T16:16:41.326308+08:00",
+  "estimate_vintage": "2026-10-20T16:22:26.603552+08:00",
   "asof_price_date": "2026-10-19",
   "latest_available_quarter": "2026-Q2",
-  "issuer_count": 5,
+  "issuer_count": 4,
   "securities": [
     {
       "code": "8390",
@@ -495,128 +495,10 @@
       "issuer_specific_original_notes_and_PIT_verified": false,
       "internal_Aplus_upgrade": false,
       "proof_status": "RESEARCH_ONLY_NOT_A_FORMAL_Aplus"
-    },
-    {
-      "code": "5388",
-      "name": "中磊",
-      "market": "TWSE",
-      "base_close": 74.3,
-      "price_date": "2026-10-19",
-      "research_rank_within_all_786": null,
-      "base_2027_eps": 9.227,
-      "base_2027_pe": 15.68,
-      "base_2027_target_price": 144.68,
-      "base_2027_upside_pct": 94.72,
-      "valuation_stress": {
-        "base": {
-          "eps": 9.227,
-          "pe": 15.68,
-          "target_price": 144.68,
-          "upside_pct": 94.72
-        },
-        "double10": {
-          "eps": 8.304,
-          "pe": 14.112,
-          "target_price": 117.19,
-          "upside_pct": 57.72
-        },
-        "double20": {
-          "eps": 7.381,
-          "pe": 12.544,
-          "target_price": 92.59,
-          "upside_pct": 24.62
-        },
-        "double30": {
-          "eps": 6.459,
-          "pe": 10.976,
-          "target_price": 70.89,
-          "upside_pct": -4.59
-        },
-        "double10_plus_CB_reset_sensitivity": {
-          "additional_shares_over_baseline": 2298851,
-          "dilution_from_additional_reset_pct": 0.7,
-          "target_price": 116.37,
-          "upside_pct": 56.61,
-          "current_legal_terms_verified": false
-        }
-      },
-      "observed_2025FY_eps": 4.04,
-      "observed_H1_eps": 2.59,
-      "observed_H1_ocf_ntd_100m": -34.615,
-      "observed_H1_gm_pct": 12.91,
-      "q3_revenue_yoy": {
-        "code": "5388",
-        "name": "中磊",
-        "market": "TWSE",
-        "latest_monthly_report": "2026-09",
-        "three_month_revenue_k": 21831133,
-        "prior_three_month_revenue_k": 14747191,
-        "current_financial_H1_yoy_pct": 58.1,
-        "next_quarter_revenue_yoy_pct": 48.04,
-        "yoy_deceleration_pp": -10.06,
-        "growth_decelerated_over_20pp": false,
-        "monthly_revenue_individual_PIT_verified": false,
-        "gross_margin_for_next_quarter_verified": false
-      },
-      "cashflow_H1": {
-        "cash_k": null,
-        "ocf_k": -3461479.0,
-        "ppe_purchase_cash_signed_k": null,
-        "fcf_after_ppe_k": null,
-        "equipment_prepaid_cash_signed_k": null,
-        "cash_after_separately_reported_prepaid_k": null,
-        "indicative_dividend_k": null,
-        "full_cb_put_sensitivity_k": null,
-        "old_cash_less_dividend_and_full_put_k": null,
-        "static_cash_sensitivity_is_actual_funding_gap": false,
-        "review_working_capital": true,
-        "negative_ocf_automatic_failure": false
-      },
-      "cb_current_legal_terms_verified": false,
-      "existing_model_cb_shares_count": 20689655,
-      "CB_bond_issues": [
-        {
-          "code": "53887",
-          "face": 3000000000.0,
-          "conversion_price_from_snapshot": 145.0,
-          "put_date": "20261206",
-          "maturity": "20281206",
-          "legal_price_and_outstanding_verified": false
-        }
-      ],
-      "remaining_unverified_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ],
-      "flags": [
-        "NEGATIVE_YTD_OPERATING_CASHFLOW_CHECK_WORKING_CAPITAL",
-        "GROSS_MARGIN_DOWN_AT_LEAST_3PP",
-        "FORWARD_EPS_AT_LEAST_30PCT_ABOVE_NONSEASONAL_YTD_RUNRATE",
-        "CURRENT_NUMERICS_BULK_ONLY_NOT_ORIGINAL_CHECKED",
-        "LISTED_CB_TERMS_UNVERIFIED",
-        "MANUAL_FILING_NOTES_AND_PIT_UNVERIFIED",
-        "NEGATIVE_OCF_IS_CYCLE_OR_WORKING_CAPITAL_REVIEW_NOT_AUTO_EXIT",
-        "CB_LEGAL_TERMS_RECONCILE_53887",
-        "CB_PUT_REDEMPTION_WINDOW_WITHIN_2026",
-        "GROSS_MARGIN_RECOVERY_CAUSAL_DRIVER_UNVERIFIED"
-      ],
-      "forward_peer_PE_verified": false,
-      "actual_Q3_gm_and_eps_verified": false,
-      "issuer_specific_original_notes_and_PIT_verified": false,
-      "internal_Aplus_upgrade": false,
-      "proof_status": "RESEARCH_ONLY_NOT_A_FORMAL_Aplus"
     }
+  ],
+  "legacy_focus_not_in_current_top30": [
+    "5388"
   ],
   "official_mirror_receipts": [
     {
