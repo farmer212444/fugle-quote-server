@@ -4,11 +4,11 @@ on:
   push:
     paths:
       - '.github/workflows/tw_tpex_history_backfill.yml'
-      - 'scripts/tw_tpex_history_backfill.py'
-      - 'scripts/v892_tpex_endpoint_probe.py'
-      - 'tests/test_tw_tpex_history_backfill.py'
+      - 'scripts/v893_tpex_daily_backfill.py'
+      - 'tests/test_v893_tpex_daily_backfill.py'
+      - 'scripts/v884_evidence_probe.py'
   schedule:
-    # 09:10, 12:10, 15:10, 18:10, 20:10 Asia/Taipei weekdays.
+    # Taiwan local 09:10, 12:10, 15:10, 18:10, 20:10 weekdays.
     - cron: '10 1,4,7,10,12 * * 1-5'
 permissions:
   contents: write
@@ -18,49 +18,57 @@ concurrency:
 jobs:
   backfill:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Test original TPEx monthly parser, code and date guards
-        run: python -m unittest -v tests.test_tw_tpex_history_backfill
-      - name: Diagnose modern official historical TPEx endpoint
-        run: python scripts/v892_tpex_endpoint_probe.py
-      - name: Fetch TPEx historical monthly data for incomplete ranked candidates
-        if: github.event_name != 'pull_request'
-        run: python -m scripts.tw_tpex_history_backfill --max-issuers 1 --months 2
-      - name: Publish validated and source-receipted TPEx history
-        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+      - name: Test modern TPEx daily market source and PIT safeguards
+        run: python -m unittest -v tests.test_v893_tpex_daily_backfill
+      - name: Fetch modern official market-wide dated TPEx sessions
+        run: python -m scripts.v893_tpex_daily_backfill --max-dates 24 --lookback 65
+      - name: Publish verified TPEx issuer source files against current main
+        if: github.ref == 'refs/heads/main'
         shell: bash
         run: |
           set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          for attempt in 1 2 3 4; do
+          for rebuild in 1 2; do
             git fetch origin main
             git reset --hard origin/main
-            python -m scripts.tw_tpex_history_backfill --max-issuers 12 --months 3
-            git add tw-market-data/prices/issuer_history/TPEX/ tw-market-data/rankings/v892_tpex_backfill_progress.*
+            python -m scripts.v893_tpex_daily_backfill --max-dates 24 --lookback 65
+            git add tw-market-data/prices/issuer_history/TPEX/
             if git diff --cached --quiet; then
-              echo 'No new TPEx monthly archive source.'
+              echo 'No change in source-backed TPEx daily issuer archives.'
               exit 0
             fi
-            git commit -m 'data: archive official TPEx ranked monthly issuer turnover'
-            if git push origin HEAD:main; then
-              echo 'New TPEx source histories published.'
-              exit 0
-            fi
-            echo "Remote advanced; rerun against latest main: $attempt/4"
+            git commit -m 'data: archive ranked TPEx source-backed daily issuer turnover'
+            git restore -- tw-market-data/rankings/v893_tpex_daily_history_progress.json || true
+            had_overlap=false
+            for retry in 1 2 3 4 5 6; do
+              git fetch origin main
+              if ! git rebase origin/main; then
+                git rebase --abort || true
+                had_overlap=true
+                break
+              fi
+              if git push origin HEAD:main; then
+                echo 'Modern source-backed TPEx daily history published.'
+                exit 0
+              fi
+              sleep 1
+            done
+            echo "Concurrent source conflict, rebuild $rebuild/2"
           done
-          echo '::error::TPEx source data not published after retries'
+          echo '::error::TPEx verified source not published after retries'
           exit 1
-      - name: Preserve original TPEx HTTP source bytes for independent review
+      - name: Preserve raw official TPEx HTTP response receipts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: taiwan-tpex-monthly-issuer-original-responses
-          path: market-raw-tpex-history/
+          name: taiwan-tpex-dated-market-raw-http-responses
+          path: market-raw-tpex-daily/
           retention-days: 90
           if-no-files-found: ignore
