@@ -4,6 +4,8 @@ on:
   push:
     paths:
       - 'scripts/tw_9802_ir.py'
+      - 'scripts/v896_original_archive.py'
+      - 'tests/test_v896_original_archive.py'
       - '.github/workflows/tw_9802_ir.yml'
   schedule:
     # 14:40 and 20:40 Asia/Taipei; existing model runs at 21:30.
@@ -28,6 +30,12 @@ jobs:
         run: python scripts/tw_9802_ir.py --self-test
       - name: Check official IR releases and download bounded originals
         run: python scripts/tw_9802_ir.py --max-docs 6
+      - name: Offline source archive integrity tests
+        run: python -m unittest -v tests.test_v896_original_archive
+      - name: Preserve official 9802 quarterly PDF originals in durable immutable archive
+        run: |
+          python scripts/v896_original_archive.py --issuer 9802 --max-documents 10
+          python scripts/v896_original_archive.py --issuer 9802 --verify-only
       - name: Retain downloaded HTML and original PDFs
         if: always()
         uses: actions/upload-artifact@v4
@@ -42,7 +50,7 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add tw-market-data/issuer/9802/manifest.json
+          git add tw-market-data/issuer/9802/manifest.json tw-market-data/evidence/v880/originals/9802/
           if git diff --cached --quiet; then
             echo "No issuer source changes."
           else
