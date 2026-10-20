@@ -36,3 +36,46 @@ def certify(code,upside,stressed_upside,gates,asof,financial_period,*,policy=Non
       else 'A++' if aplusplus else 'A+' if aplus else 'A_DISCOVERY' if upside>=p['discovery_price_upside_pct'] else 'WATCH')
     return dict(status=status,formal_Aplus=aplus,formal_Aplusplus=aplusplus,gates_passed=passed,gates_pending=pending,
       gates_failed=failed,quality_complete=quality_complete,stress_passed=stress_ok,no_trade_instruction=True)
+
+
+def verify_certificate_archives(document, data_root):
+    """Do not trust directly uploaded PASS/FAIL JSON without local original bytes.
+
+    This is an independently recomputed byte-integrity check, NOT an external
+    regulator digital signature or a substitute for documented human review.
+    """
+    import hashlib
+    from pathlib import Path
+    root = Path(data_root).resolve()
+    code = document.get("code")
+    gates = document.get("gates")
+    if not isinstance(gates,dict) or not isinstance(code,str):
+        raise ValueError("CERTIFICATE_DOCUMENT_INVALID")
+    for name, item in gates.items():
+        if name not in GATES or not isinstance(item,dict):
+            raise ValueError("CERTIFICATE_UNKNOWN_GATE")
+        if item.get("status") not in ("PASS","FAIL"):
+            raise ValueError("CERTIFICATE_NOT_DECIDED")
+        if item.get("issuer")!=code or item.get("reviewed_by") is None:
+            raise ValueError("CERTIFICATE_REVIEWER_OR_ISSUER_INVALID")
+        if item.get("original_archive_sha256_recomputed") is not True or item.get("human_source_identity_review_documented") is not True:
+            raise ValueError("CERTIFICATE_ORIGINAL_REVIEW_NOT_DOCUMENTED")
+        sources=item.get("sources")
+        if not isinstance(sources,list) or not sources:
+            raise ValueError("CERTIFICATE_SOURCES_MISSING")
+        for source in sources:
+            relpath=source.get("archive_path")
+            if not isinstance(relpath,str) or not relpath:
+                raise ValueError("CERTIFICATE_SOURCE_ARCHIVE_REQUIRED")
+            rel=Path(relpath)
+            if rel.is_absolute() or ".." in rel.parts:
+                raise ValueError("CERTIFICATE_SOURCE_ARCHIVE_UNSAFE_PATH")
+            orig=(root/rel).resolve()
+            if orig==root or root not in orig.parents or not orig.is_file():
+                raise ValueError("CERTIFICATE_ORIGINAL_BYTES_MISSING")
+            digest=source.get("sha256")
+            if not isinstance(digest,str) or not re.fullmatch("[0-9a-f]{64}",digest):
+                raise ValueError("CERTIFICATE_SOURCE_DIGEST_MISSING")
+            if hashlib.sha256(orig.read_bytes()).hexdigest()!=digest:
+                raise ValueError("CERTIFICATE_SOURCE_HASH_MISMATCH")
+    return True
