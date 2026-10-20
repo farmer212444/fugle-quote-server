@@ -2,7 +2,7 @@
   "reference_date": "2026-10-16",
   "issuer_probes": [
     {
-      "code": "6206",
+      "code": "1256",
       "months": 4,
       "new_months": 4,
       "days": 74,
@@ -10,7 +10,7 @@
       "source_errors": []
     },
     {
-      "code": "9802",
+      "code": "6625",
       "months": 4,
       "new_months": 4,
       "days": 74,
@@ -18,7 +18,7 @@
       "source_errors": []
     },
     {
-      "code": "1714",
+      "code": "2374",
       "months": 4,
       "new_months": 4,
       "days": 74,
@@ -26,7 +26,7 @@
       "source_errors": []
     },
     {
-      "code": "3305",
+      "code": "5388",
       "months": 4,
       "new_months": 4,
       "days": 74,
@@ -34,7 +34,7 @@
       "source_errors": []
     },
     {
-      "code": "4739",
+      "code": "8473",
       "months": 4,
       "new_months": 4,
       "days": 74,
@@ -42,7 +42,7 @@
       "source_errors": []
     },
     {
-      "code": "2317",
+      "code": "4912",
       "months": 4,
       "new_months": 4,
       "days": 74,
@@ -50,6 +50,16 @@
       "source_errors": []
     }
   ],
+  "issuer_priority": "HIGH_UPSIDE_GE30_MISSING_20_DAY_SOURCE",
+  "selected_codes": [
+    "1256",
+    "6625",
+    "2374",
+    "5388",
+    "8473",
+    "4912"
+  ],
+  "dynamic_priority_and_existing_completed_skip": true,
   "source_scope": "TWSE_ISSUERS_ONLY_TPEX_NOT_YET_INCLUDED",
   "original_capture_not_independent_PIT_certificate": true,
   "formal_Aplus_issuers_created": 0
