@@ -121,7 +121,12 @@ def freeze(root,now,version,source_git_commit=None):
     src=load_inputs(root,now,version)
     vintage=src["vintage"]
     day=vintage.astimezone(TAIPEI).date().isoformat()
-    short=sha(src["payloads"]["research"])[:20]
+    # A same-day rerun may use identical printed valuations but different
+    # source-mirror vintages. Distinguish the complete input identity, never
+    # silently reuse an old receipt for newly captured source data.
+    identity_parts=[sha(src["payloads"][k]) for k,_ in FILES]
+    identity_parts.extend(sha(src["raw_manifests"][k]) for k in SOURCES)
+    short=sha(("|".join(identity_parts)).encode())[:20]
     folder=src["root"]/"pit_vintages"/day/short
     receipt_path=folder/"receipt.json"
     if receipt_path.exists():
