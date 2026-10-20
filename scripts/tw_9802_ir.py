@@ -86,7 +86,9 @@ def items(category, html):
         if not match:
             continue
         month, day, year = map(int, match.groups())
-        if year < 2025:
+        # Eight quarters ending 2026-Q2 begin at 2024-Q3; rejecting 2024
+        # previously prevented the original-quarter evidence from completing.
+        if year < 2024:
             continue
         try:
             released = dt.date(year, month, day).isoformat()
@@ -224,6 +226,10 @@ def self_test():
     assert not q3_early_candidate(q[0])
     n = items("news", '<tr><td>10/19/2026</td><td><a href="ir.asp?seq=1">2026年第三季自結財報新聞稿</a></td></tr>')
     assert q3_early_candidate(n[0])
+    old = items("quarterly", '<tr><td>11/07/2024</td><td><a href="img/Finance/202403_9802_AI1_20241128_102700.pdf">2024年第三季合併財務報告</a></td></tr>')
+    assert len(old) == 1 and old[0]["site_display_date"] == "2024-11-07"
+    stale = items("quarterly", '<tr><td>11/06/2023</td><td><a href="img/Finance/202303.pdf">2023年第三季合併財務報告</a></td></tr>')
+    assert stale == []
     assert not allowed("https://example.org/bad.pdf")
     spaced = items("news", '<tr><td>10/19/2026</td><td><a href="img/News_Release/My PDF_CN(1).pdf">test</a></td></tr>')
     assert "%20" in spaced[0]["url"] and " " not in spaced[0]["url"]

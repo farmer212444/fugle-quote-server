@@ -56,6 +56,18 @@ class OriginalArchiveTests(unittest.TestCase):
         self.assertEqual(r[1]["document_date"],"2026-08-18")
         self.assertEqual(len(select_sources("9802",self.source9802(),"2026-09-01")),1)
 
+    def test_2024q3_official_pdf_is_in_eight_quarter_intake_window(self):
+        source=self.source9802()
+        source["discovered"].append({
+            "id":"d"*20,"category":"quarterly",
+            "site_display_date":"2024-11-07",
+            "title":"2024年第三季合併財務報告",
+            "url":"https://www.fulgentsun.com/img/Finance/202403_9802_AI1_20241128_102700.pdf"
+        })
+        urls=[r["url"] for r in select_sources("9802",source,DAY,max_documents=12)]
+        self.assertTrue(any("202403_9802_AI1_20241128_102700.pdf" in x for x in urls))
+        self.assertFalse(any(x.endswith("/.pdf") for x in urls))
+
     def test_durable_pdf_exact_sha_and_no_rating_promotion(self):
         self.write_source("9802",self.source9802())
         documents=[fixture_pdf(b"Q3"),fixture_pdf(b"Q2")]
