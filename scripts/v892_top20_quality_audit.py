@@ -30,7 +30,7 @@ def indexed(rows,kind):
     ret={}
     for r in rows:
         code=str(r.get("code",""))
-        require(re.fullmatch(r"\\d{4}",code) and code not in ret,
+        require(re.fullmatch(r"\d{4}",code) and code not in ret,
                 "INVALID_OR_DUPLICATE_"+kind+"_"+code)
         ret[code]=r
     return ret
@@ -58,7 +58,7 @@ def validate(research,audits):
                 and doc.get("source_model_code_sha256")==sha,
                 "AUDIT_VINTAGE_OR_MODEL_MISMATCH_"+kind)
     quarter=research["financial_last_quarter"]
-    match=re.fullmatch(r"(20\\d{2})-Q([1-4])",quarter)
+    match=re.fullmatch(r"(20\d{2})-Q([1-4])",quarter)
     require(match is not None,"INVALID_QUARTER")
     year,q=map(int,match.groups())
     require(year>=2025,"INVALID_QUARTER_YEAR")
