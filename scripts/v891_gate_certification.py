@@ -20,7 +20,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
-from tw_model_v880.evidence import GATES, certify, timestamp
+from tw_model_v880.evidence import GATES, certify, timestamp, verify_certificate_archives
 
 MANUAL_REVIEW_GATES = frozenset((
     "matched_peers_and_cycle", "management_promises", "auditor_scope",
@@ -114,7 +114,7 @@ def validate_review_pack(pack, path, data_root, cutoff, financial_period):
             if strong_iso(src.get("available_at"))>checked:
                 raise ValueError("REVIEW_SOURCE_NOT_PUBLISHED_AT_SIGNOFF")
             cert_sources.append(dict(url=url,sha256=sha,origin_authenticated=True,
-                                     available_at=src["available_at"]))
+                                     archive_path=file_path,available_at=src["available_at"]))
         assembled[name]=dict(
             issuer=code,financial_period=financial_period,status=status,
             reason=item["review_note"].strip(),method=item["method"].strip(),
@@ -221,6 +221,7 @@ def build_progress(root):
             obj=load(cert_path)
             if obj.get("code")!=code or obj.get("financial_period")!=period:
                 raise ValueError("CERTIFICATE_ISSUER_PERIOD_MISMATCH")
+            verify_certificate_archives(obj,root)
             cert=obj.get("gates",{})
         evaluated=certify(code,upside,None,cert,asof,period)
         stage={}
