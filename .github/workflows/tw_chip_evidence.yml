@@ -7,6 +7,8 @@ on:
       - 'scripts/tw_chip_capture.py'
       - 'scripts/tw_chip_diagnostic.py'
       - 'scripts/tw_institutional_retreat.py'
+      - 'scripts/tw_insider_shadow.py'
+      - 'tw-market-data/evidence/v880/insider_reviews/**'
       - 'tests/test_tw_chip_*.py'
   push:
     paths:
@@ -14,6 +16,8 @@ on:
       - 'scripts/tw_chip_capture.py'
       - 'scripts/tw_chip_diagnostic.py'
       - 'scripts/tw_institutional_retreat.py'
+      - 'scripts/tw_insider_shadow.py'
+      - 'tw-market-data/evidence/v880/insider_reviews/**'
       - 'tests/test_tw_chip_*.py'
   schedule:
     # 20:10 Taiwan time, Monday-Friday; 14:00 Taiwan time Saturday for TDCC refresh.
@@ -34,7 +38,9 @@ jobs:
         with:
           python-version: '3.12'
       - name: Offline parser, audit and chronology tests
-        run: python -m unittest discover -s tests -p 'test_tw_chip_*.py' -v
+        run: |
+          python -m unittest discover -s tests -p 'test_tw_chip_*.py' -v
+          python scripts/tw_insider_shadow.py --output /tmp/shoe_insider_202609_shadow_audit.json
   capture:
     needs: tests
     if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
