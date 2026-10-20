@@ -96,9 +96,11 @@ def issuer_backfill_probe(root,asof,market,code):
     path=Path(root)/"prices/issuer_history"/market/(code+".json")
     if not path.exists():return None
     source=read(path)
-    if (market!="TWSE" or source.get("issuer")!=code or
+    expected_schema={"TWSE":"V889_OFFICIAL_TWSE_ISSUER_MONTHLY",
+                     "TPEX":"V892_OFFICIAL_TPEX_ISSUER_MONTHLY"}
+    if (source.get("issuer")!=code or
             source.get("market")!=market or
-            source.get("schema")!="V889_OFFICIAL_TWSE_ISSUER_MONTHLY" or
+            source.get("schema")!=expected_schema.get(market) or
             source.get("formal_tradability_gate")!="PENDING_NOT_CERTIFIED"):
         raise ValueError("ISSUER_HISTORICAL_SOURCE_IDENTITY_MISMATCH")
     if source.get("price_reference_asof","")>asof:
@@ -108,9 +110,18 @@ def issuer_backfill_probe(root,asof,market,code):
     unique={}
     for month,entry in months.items():
         u=entry.get("source_url","")
-        expect="stockNo="+code
-        if (not u.startswith("https://www.twse.com.tw/rwd/zh/afterTrading/STOCK_DAY?")
-                or expect not in u or not u.endswith("response=json")):
+        import urllib.parse
+        uri=urllib.parse.urlparse(u)
+        query=urllib.parse.parse_qs(uri.query)
+        verified_url=(uri.scheme=="https" and
+            ((market=="TWSE" and uri.hostname=="www.twse.com.tw" and
+              uri.path=="/rwd/zh/afterTrading/STOCK_DAY" and
+              query.get("stockNo")==[code] and query.get("response")==["json"])
+             or (market=="TPEX" and uri.hostname=="www.tpex.org.tw" and
+              uri.path=="/web/stock/aftertrading/daily_trading_info/st43_result.php" and
+              query.get("stkno")==[code] and query.get("d")==[
+                  str(int(month[:4])-1911)+"/"+month[5:7]])))
+        if not verified_url:
             raise ValueError("UNTRUSTED_ISSUER_HISTORY_SOURCE_URL")
         h=entry.get("original_response_sha256","")
         if len(h)!=64 or any(c not in "0123456789abcdef" for c in h):
