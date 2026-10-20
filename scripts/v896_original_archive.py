@@ -170,8 +170,11 @@ def collect(root, issuer, asof_day, now, max_documents=12, fetcher=fetch_pdf):
     records={x["sha256"]:x for x in (old or {}).get("documents",[])}
     errors=[];bytes_total=0;captured=0;reused=0;hash_discrepancies=0
     for item in selected:
+        # A publisher may revise an existing URL. Reuse only the *latest*
+        # previously captured SHA, never a superseded historical version.
+        latest_receipt = item["expected_hashes"][-1] if item["expected_hashes"] else None
         known=next((x for x in records.values() if x["source_url"]==item["url"]
-                    and x["sha256"] in item["expected_hashes"]),None)
+                    and x["sha256"] == latest_receipt),None)
         if known:
             reused+=1
             continue
@@ -212,7 +215,7 @@ def collect(root, issuer, asof_day, now, max_documents=12, fetcher=fetch_pdf):
     if not records:
         raise ValueError("NO_ORIGINALS_ARCHIVED; ERRORS="+str(errors)[:300])
     document_list=sorted(records.values(),key=lambda x:(x["document_date"],x["sha256"]),reverse=True)
-    manifest=dict(schema=SCHEMA,issuer=issuer,asof_reporting_date=asof_day,
+    manifest=dict(schema=SCHEMA,issuer=issuer,
         archival_status="ORIGINAL_BYTES_SHA256_CHECKED_NOT_A_FORMAL_GATE",
         source_discovered_from_publisher_manifest=True,
         original_MOPS_PIT_verified=False,original_document_content_independently_reviewed=False,
