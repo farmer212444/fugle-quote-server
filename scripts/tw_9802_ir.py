@@ -14,6 +14,7 @@ from pathlib import Path
 BASE = "https://www.fulgentsun.com/"
 SOURCES = {
     "quarterly": "investors03_2.asp",
+    "quarterly_en": "eng/investors03_2.asp",
     "monthly": "investors03_1.asp",
     "news": "investors04_1.asp",
     "events": "investors05_1.asp",
@@ -230,6 +231,10 @@ def self_test():
     assert len(old) == 1 and old[0]["site_display_date"] == "2024-11-07"
     stale = items("quarterly", '<tr><td>11/06/2023</td><td><a href="img/Finance/202303.pdf">2023年第三季合併財務報告</a></td></tr>')
     assert stale == []
+    english = items("quarterly_en", '<table><tr><td>12/05/2025</td><td><a href="../img/Finance/2025Q3(EN) 1204.pdf">2025 Q3 Consolidated Financial Statements</a></td></tr></table>')
+    assert len(english) == 1 and english[0]["category"] == "quarterly_en"
+    assert english[0]["site_display_date"] == "2025-12-05"
+    assert english[0]["url"] == "https://www.fulgentsun.com/img/Finance/2025Q3(EN)%201204.pdf"
     assert not allowed("https://example.org/bad.pdf")
     spaced = items("news", '<tr><td>10/19/2026</td><td><a href="img/News_Release/My PDF_CN(1).pdf">test</a></td></tr>')
     assert "%20" in spaced[0]["url"] and " " not in spaced[0]["url"]
