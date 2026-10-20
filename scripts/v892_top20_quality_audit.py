@@ -78,9 +78,23 @@ def priority(record):
     else: reasons.append("OCF_MISSING")
     if record["base_2027_pe"]<=20: strength+=1
     else: reasons.append("HIGH_FORWARD_PE_UNVERIFIED_PEERS")
+    if record["base_2027_pe"]>=25:
+        strength-=1
+        reasons.append("FORWARD_PE_25X_OR_HIGHER_REQUIRES_STRONGER_JUSTIFICATION")
     x=v.get("2027_eps_over_ytd_runrate")
     if x is not None and 0<x<=1.30: strength+=2
     else: reasons.append("FORWARD_EPS_ABOVE_1_3X_H1_ANNUALIZED_OR_UNAVAILABLE")
+    if x is not None and x>=1.70:
+        strength-=2
+        reasons.append("FORWARD_EPS_AT_LEAST_1_7X_H1_ANNUALIZED_HIGH_BRIDGE_RISK")
+    gm=v.get("gross_margin_delta_pp")
+    if gm is not None and gm<=-3.0:
+        strength-=2
+        reasons.append("GROSS_MARGIN_DECLINED_AT_LEAST_3PP")
+    om=v.get("operating_margin_delta_pp")
+    if om is not None and om<=-2.0:
+        strength-=1
+        reasons.append("OPERATING_MARGIN_DECLINED_AT_LEAST_2PP")
     if not record["cb_unverified_issues"]: strength+=1
     else: reasons.append("CB_LEGAL_TERMS_UNVERIFIED")
     if record["stress_double20_upside_pct"]>=30: strength+=2
@@ -88,6 +102,10 @@ def priority(record):
     q3=record["q3_revenue_yoy_pct"]
     if q3 is not None and q3>0:strength+=1
     else: reasons.append("Q3_SALES_GROWTH_UNVERIFIED_OR_NONPOSITIVE")
+    if (q3 is not None and v.get("revenue_yoy_pct") is not None
+            and q3-v["revenue_yoy_pct"]<=-20):
+        strength-=1
+        reasons.append("Q3_REVENUE_GROWTH_DECELERATED_AT_LEAST_20PP")
     if record["code"]=="8390":
         strength-=3
         reasons.append("EQUITY_ISSUANCE_NOT_CONFIRMED")
