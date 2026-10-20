@@ -139,6 +139,9 @@ def validate_bundle(root, issuer):
                 or record.get("independently_verified_issuer_filing_time") is not False):
             raise ValueError("SOURCE_BUNDLE_INVALID_RECORD")
         path_str=record.get("archive_path","")
+        parts=Path(path_str).parts
+        if parts[:4] != ("evidence","v880","originals",issuer) or len(parts)!=5:
+            raise ValueError("SOURCE_BUNDLE_ARCHIVE_OUTSIDE_ISSUER_DIRECTORY")
         if path_str in unique:
             raise ValueError("DUPLICATE_ORIGINAL_ARCHIVE_PATH")
         unique.add(path_str)
