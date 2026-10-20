@@ -9,10 +9,13 @@ class ConditionalMarginRecoveryTests(unittest.TestCase):
         return {'2024-Q4':row(older),'2025-Q4':row(recent)}
     def assess(self,h=None,industry='運動休閒',monthly=72,ytd=13,raw=.152883,current=.1472):
         return assess_margin_recovery(h if h is not None else self.h(),'2026-Q2',raw,current,monthly,ytd,industry)
-    def test_9802_like_history_has_conditional_base_but_not_certification(self):
+    def test_9802_like_history_is_discovery_only_without_issuer_bridge(self):
         r=self.assess()
-        self.assertTrue(r['applied'])
-        self.assertAlmostEqual(r['provisional_base_gm'],.17835825,places=6)
+        self.assertFalse(r['applied'])
+        self.assertEqual(r['provisional_base_gm'],r['unadjusted_base_gm'])
+        self.assertAlmostEqual(r['research_case_gm'],.17835825,places=6)
+        self.assertTrue(r['base_override_blocked'])
+        self.assertEqual(r['status'],'REVENUE_LEAD_DISCOVERY_ONLY_ISSUER_BRIDGE_REQUIRED')
         self.assertEqual(r['recovery_fraction'],.75)
         self.assertFalse(r['causal_factory_evidence_verified'])
         self.assertFalse(r['holdout_validation_complete'])
@@ -37,13 +40,16 @@ class ConditionalMarginRecoveryTests(unittest.TestCase):
     def test_no_raise_if_already_fairly_normalized(self):
         r=self.assess(raw=.185)
         self.assertFalse(r['applied'])
-    def test_moderate_revenue_only_gets_half_gap(self):
+    def test_moderate_revenue_only_gets_half_gap_in_research_case(self):
         r=self.assess(monthly=12,ytd=5)
-        self.assertTrue(r['applied'])
+        self.assertFalse(r['applied'])
+        self.assertEqual(r['provisional_base_gm'],r['unadjusted_base_gm'])
         self.assertAlmostEqual(r['recovery_fraction'],.5)
+        self.assertGreater(r['research_case_gm'],r['unadjusted_base_gm'])
     def test_target_is_capped_below_historical_average(self):
         r=self.assess(raw=.01,current=.01)
-        self.assertLessEqual(r['provisional_base_gm'],r['normalized_gm'])
+        self.assertEqual(r['provisional_base_gm'],r['unadjusted_base_gm'])
+        self.assertLessEqual(r['research_case_gm'],r['normalized_gm'])
         self.assertLessEqual(r['base_uplift_pp'],3.5+1e-10)
 
 if __name__ == '__main__':unittest.main()
