@@ -5,6 +5,7 @@ from .evidence import GATES,POLICY,certify,gate
 from .specialists import issuer_case
 from .provenance import code_fingerprint
 from .margin_recovery import assess_margin_recovery
+from .revenue_leading import revenue_leading_signal
 
 # A low-turnover issuer can be researched without passing the execution gate.
 RESEARCH_MIN_TURNOVER_NTD = 1_000_000
@@ -128,6 +129,7 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
     flow=liquidity(cash_k,ocf,ppe,prepaid,div,put)
     if ocf is not None and ocf<0:warnings.append('NEGATIVE_OCF_CYCLE_AND_COLLECTION_REVIEW')
     if gm_now<gm_prior:warnings.append('YTD_GROSS_MARGIN_DECLINED')
+    leading_signal=revenue_leading_signal(my,yy,gh,gm_now,gm_prior)
     if my<=0 or yy<=0:warnings.append('MONTHLY_OR_YTD_REVENUE_GROWTH_NONPOSITIVE')
     coverage=e.get('primary_cash_eight_quarters',{}).get(code,{})
     gates=research_gates(primary,code,data.period,flow,coverage.get('eight_quarter_key_income_cash_values_reconciled'))
@@ -204,6 +206,7 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
       business_profile=dict(property_development_observed=developer,engineering_business_observed=contractor,classification_source='ISSUER_HISTORY_AND_ORGANIZATION_NOTE' if business else 'INDUSTRY_ONLY'),
       base_scenario_role='RESEARCH_FORECAST_UNCERTIFIED' if point else 'DIAGNOSTIC_ONLY_NOT_ADMISSIBLE_BASE',
       early_recovery_watch=my>0 and yy>0 and gm_now<gm_prior and bull['target_price'] is not None,
+      revenue_leading_discovery=leading_signal,
       research_target_price_scenario=base['target_price'] if point else None,target_year_eps_scenario=base['eps'] if point else None,
       research_2027_price_scenario=base['target_price'] if point and target_year==2027 else None,eps_2027_base_scenario=base['eps'] if point and target_year==2027 else None,
       research_pe_assumption=pe,scenario_upside_pct=base['price_upside_pct'] if point else None,
