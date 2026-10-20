@@ -1,6 +1,6 @@
 # V8.9.1 A+ 13項證據認證與障礙追蹤
 
-模型：V8.8.2；估值：2026-10-21T07:13:52.414579+08:00；股價基準：2026-10-19。
+模型：V8.8.2；估值：2026-10-21T07:28:23.281393+08:00；股價基準：2026-10-19。
 研究估值候選：785，潛在漲幅≥30%：117；正式A+：**0**。
 
 本報告區分「來源齊全／數值鏡像／核閱待辦／有效PASS／有效FAIL」，不以蒐集收據冒充正式通過。
@@ -40,7 +40,7 @@
 |2382 廣達|+69.4%|0/13|0|13|8季財報鏡像、20日成交額、CB條款待核|
 |2103 台橡|+68.8%|0/13|0|13|8季財報鏡像、20日成交額|
 |6206 飛捷|+36.6%|0/13|0|13|8季財報鏡像|
-|9802 鈺齊-KY|-17.1%|0/13|0|13|8季財報鏡像、CB條款待核|
+|9802 鈺齊-KY|-17.1%|0/13|0|13|CB條款待核|
 
 ## 外部核閱／證書發行紀錄
 
@@ -48,7 +48,7 @@
 
 ## 安全邊界
 
-- Source-collected, numeric-mirror-complete, source-identity-reviewed and signed PASS are distinct stages.
+- Source-collected, original PDF bytes durably archived, numeric-mirror-complete, source-identity-reviewed and signed PASS are distinct stages.
 - Current reference-price date 2026-10-19 does not certify original issuer point-in-time disclosure for older financial periods.
 - Potential upside is conditional research, not a certified trading return.
 - Reviewed packs are automatically admitted only after all archived bytes, hash, issuer identity, method and dated source predicates verify.
