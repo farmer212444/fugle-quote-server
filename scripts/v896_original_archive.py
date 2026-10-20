@@ -172,6 +172,59 @@ def validate_bundle(root, issuer):
                 formal_pass_count=0)
 
 
+
+def original_quarter_coverage(root, issuer, last_quarter):
+    """Identify distinct eight historical periods from SHA-checked issuer URLs.
+
+    Title/index coverage is useful source progress but not PDF-note review,
+    issuer filing time proof, or a formal financial evidence certificate.
+    """
+    end=re.fullmatch(r"(20\d{2})-Q([1-4])",str(last_quarter))
+    if not end:
+        raise ValueError("INVALID_EIGHT_QUARTER_END_PERIOD")
+    final=int(end[1])*4+int(end[2])-1
+    required=[f"{i//4}-Q{i%4+1}" for i in range(final-7,final+1)]
+    bundle=validate_bundle(root,issuer)
+    if not bundle["original_archive_hashes_verified"]:
+        return dict(required_quarters=required,found_quarters=[],
+                    missing_quarters=required,source_title_coverage_complete=False,
+                    full_original_pdf_content_reviewed=False,formal_gate_pass=False)
+    manifest=read_original_archive(Path(root),issuer)
+    found={}
+    ignored=[]
+    for entry in manifest["documents"]:
+        if entry.get("document_kind")!="quarterly":
+            continue
+        title=str(entry["title"])
+        zh=re.search(r"(20\d{2})年(第一|第二|第三|第四)季",title)
+        en=re.search(r"(20\d{2})\s+Q([1-4])\s+Consolidated\s+Financial\s+Statements",title,re.I)
+        if zh:
+            number={"第一":1,"第二":2,"第三":3,"第四":4}[zh[2]]
+            period=f"{zh[1]}-Q{number}"
+        elif en:
+            period=f"{en[1]}-Q{int(en[2])}"
+        else:
+            ignored.append(entry["title"])
+            continue
+        found.setdefault(period,[]).append(entry["sha256"])
+    missing=[x for x in required if x not in found]
+    duplicated={x:len(found[x]) for x in required if len(found.get(x,[]))>1}
+    return dict(required_quarters=required,
+                found_quarters=[x for x in required if x in found],
+                missing_quarters=missing,
+                duplicate_period_original_sources=duplicated,
+                unparsed_quarter_titles=ignored,
+                source_title_coverage_complete=not missing,
+                source_dates_are_company_index_not_MOPS_PIT=True,
+                pdf_accounting_period_internal_identity_verified=False,
+                eight_full_report_notes_and_auditor_scope_reviewed=False,
+                full_original_pdf_content_reviewed=False,
+                formal_gate_pass=False)
+
+
+def read_original_archive(root,issuer):
+    return json.loads((Path(root)/"evidence/v880/originals"/issuer/"manifest.json").read_text(encoding="utf-8"))
+
 def collect(root, issuer, asof_day, now, max_documents=12, fetcher=fetch_pdf):
     root=Path(root).resolve()
     source_path=(root/("issuer/9802/manifest.json" if issuer=="9802"

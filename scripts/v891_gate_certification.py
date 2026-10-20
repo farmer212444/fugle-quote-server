@@ -21,7 +21,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 from tw_model_v880.evidence import GATES, certify, timestamp, verify_certificate_archives
-from scripts.v896_original_archive import validate_bundle
+from scripts.v896_original_archive import validate_bundle, original_quarter_coverage
 
 MANUAL_REVIEW_GATES = frozenset((
     "matched_peers_and_cycle", "management_promises", "auditor_scope",
@@ -205,6 +205,7 @@ def build_progress(root):
     # A corrupt existing archive must fail closed rather than silently count
     # a non-existent source or mint a PASS.
     original_bundles={code:validate_bundle(root,code) for code in ("6206","9802")}
+    original_quarter_windows={"9802":original_quarter_coverage(root,"9802",period)}
     jobs=dispatch.get("all_issuer_jobs",[])
     if len(jobs)!=dispatch.get("tracked_issuer_count") or len(jobs)!=research["data_scope"]["model_rows"]:
         raise ValueError("GATE_CERTIFICATION_LEDGER_INCOMPLETE")
@@ -243,9 +244,15 @@ def build_progress(root):
                         kinds.get("quarterly",0)>0 and
                         state in ("MIRROR_CAPTURED","SOURCE_MISSING")):
                     state="SOURCE_CAPTURED"
-                    reason=(str(kinds["quarterly"])+" dated issuer-hosted original quarterly "
-                            "PDFs permanently archived with verified bytes; full 8q note, "
-                            "audit-scope and publication-PIT review still missing")
+                    coverage=original_quarter_windows.get(code)
+                    if coverage is None:
+                        reason=(str(kinds["quarterly"])+" issuer original quarterly PDFs SHA-archived; "
+                                "quarter-by-quarter coverage, notes, review and PIT are not certified")
+                    else:
+                        reason=(str(len(coverage["found_quarters"]))+"/"+str(len(coverage["required_quarters"]))
+                                +" period-specific original PDFs SHA-archived, missing "+
+                                ",".join(coverage["missing_quarters"])+"; issuer PDF internal identity, "
+                                "full notes, auditor scope and MOPS publication PIT unreviewed")
                 if (gate=="management_promises" and kinds.get("presentation",0)>0
                         and state=="REVIEW_PENDING"):
                     state="SOURCE_CAPTURED"
@@ -278,6 +285,7 @@ def build_progress(root):
         "stage_counts_for_upside_ge30":dict(sorted(counts.items())),
         "formally_certified_Aplus_in_report":counts["formal_Aplus_total"],
         "durable_original_archive_receipts":original_bundles,
+        "source_quarter_coverage_diagnostic":original_quarter_windows,
         "durable_original_capture_does_not_certify_a_gate":True,
         "issuer_report_limitations":[
             "Source-collected, original PDF bytes durably archived, numeric-mirror-complete, source-identity-reviewed and signed PASS are distinct stages.",
