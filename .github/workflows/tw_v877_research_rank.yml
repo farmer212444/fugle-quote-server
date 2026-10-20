@@ -28,6 +28,7 @@ on:
       - 'scripts/v888_6206_valuation.py'
       - 'scripts/v891_6206_gate_triage.py'
       - 'scripts/v890_five_candidate_audit.py'
+      - 'scripts/v892_top20_quality_audit.py'
       - 'scripts/v891_gate_certification.py'
       - 'tw-market-data/evidence/v880/review_packs/**'
       - 'tw-market-data/evidence/v880/originals/**'
@@ -67,6 +68,7 @@ on:
       - 'scripts/v888_6206_valuation.py'
       - 'scripts/v891_6206_gate_triage.py'
       - 'scripts/v890_five_candidate_audit.py'
+      - 'scripts/v892_top20_quality_audit.py'
       - 'scripts/v891_gate_certification.py'
       - 'tw-market-data/evidence/v880/review_packs/**'
       - 'tw-market-data/evidence/v880/originals/**'
@@ -144,6 +146,7 @@ jobs:
         run: |
           python scripts/tw_v880_run.py --self-test
           python -m unittest discover -s tests -p test_v891_6206_gate_triage.py
+          python -m unittest discover -s tests -p test_v892_top20_quality_audit.py
       - name: Refresh static official sources
         if: github.event_name != 'pull_request'
         run: python scripts/refresh_v880_public.py
@@ -168,6 +171,7 @@ jobs:
           python scripts/v880_audit_exports.py --kind cash
           python scripts/v880_audit_exports.py --kind shares
           python scripts/v890_five_candidate_audit.py
+          python scripts/v892_top20_quality_audit.py
       - name: Save current results on main only (retry from fresh origin)
         if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
         run: |
@@ -188,15 +192,16 @@ jobs:
             python scripts/v881_thin_shadow.py
             python scripts/v883_gate_orchestrator.py --top 50
             python scripts/v884_evidence_probe.py --top 50 --focus 8390 1785 5439 4739 9802 6206
-          python scripts/v891_gate_certification.py
+            python scripts/v891_gate_certification.py
             python scripts/v886_9802_early_revalue.py
             python scripts/v888_6206_valuation.py
-          python scripts/v891_6206_gate_triage.py
+            python scripts/v891_6206_gate_triage.py
             python scripts/tw_chip_diagnostic.py
             python scripts/v880_audit_exports.py --kind risk
             python scripts/v880_audit_exports.py --kind cash
             python scripts/v880_audit_exports.py --kind shares
             python scripts/v890_five_candidate_audit.py
+            python scripts/v892_top20_quality_audit.py
             git add tw-market-data/evidence/v880 tw-market-data/rankings
             if git diff --cached --quiet; then exit 0; fi
             git commit -m 'data: refresh V8.8.2 research and evidence status'
