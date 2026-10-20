@@ -4,6 +4,8 @@ on:
   push:
     paths:
       - 'scripts/tw_6206_ir.py'
+      - 'scripts/v896_original_archive.py'
+      - 'tests/test_v896_original_archive.py'
       - 'tests/test_tw_6206_ir.py'
       - '.github/workflows/tw_6206_ir.yml'
   pull_request:
@@ -35,6 +37,11 @@ jobs:
       - name: Fetch published official presentation PDFs
         if: github.event_name != 'pull_request'
         run: python scripts/tw_6206_ir.py --max-documents 4
+      - name: Persist SHA-checked official 6206 presentation originals in Git
+        if: github.event_name != 'pull_request'
+        run: |
+          python scripts/v896_original_archive.py --issuer 6206 --max-documents 3
+          python scripts/v896_original_archive.py --issuer 6206 --verify-only
       - name: Archive original PDF bytes for traceability
         if: github.event_name != 'pull_request'
         uses: actions/upload-artifact@v4
@@ -48,7 +55,7 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add tw-market-data/ir/6206/
+          git add tw-market-data/ir/6206/ tw-market-data/evidence/v880/originals/6206/
           if git diff --cached --quiet; then
             echo 'No new or changed Flytech briefing.'
             exit 0

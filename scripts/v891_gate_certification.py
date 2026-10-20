@@ -21,6 +21,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 from tw_model_v880.evidence import GATES, certify, timestamp, verify_certificate_archives
+from scripts.v896_original_archive import validate_bundle
 
 MANUAL_REVIEW_GATES = frozenset((
     "matched_peers_and_cycle", "management_promises", "auditor_scope",
@@ -200,6 +201,10 @@ def build_progress(root):
     asof=research["estimate_vintage"]
     period=research["financial_last_quarter"]
     profiles={(p["market"],p["code"]):p for p in probe["top_priority_evidence"]}
+    # Recompute durable original bytes, not just source URLs or stored hashes.
+    # A corrupt existing archive must fail closed rather than silently count
+    # a non-existent source or mint a PASS.
+    original_bundles={code:validate_bundle(root,code) for code in ("6206","9802")}
     jobs=dispatch.get("all_issuer_jobs",[])
     if len(jobs)!=dispatch.get("tracked_issuer_count") or len(jobs)!=research["data_scope"]["model_rows"]:
         raise ValueError("GATE_CERTIFICATION_LEDGER_INCOMPLETE")
@@ -232,6 +237,21 @@ def build_progress(root):
                 state,reason="FORMAL_FAIL","Dated reviewed certificate explicitly FAIL"
             else:
                 state,reason=stage_for(gate,profile)
+                archives=original_bundles.get(code) or {}
+                kinds=archives.get("document_kinds") or {}
+                if (gate=="original_eight_quarter_statements" and
+                        kinds.get("quarterly",0)>0 and
+                        state in ("MIRROR_CAPTURED","SOURCE_MISSING")):
+                    state="SOURCE_CAPTURED"
+                    reason=(str(kinds["quarterly"])+" dated issuer-hosted original quarterly "
+                            "PDFs permanently archived with verified bytes; full 8q note, "
+                            "audit-scope and publication-PIT review still missing")
+                if (gate=="management_promises" and kinds.get("presentation",0)>0
+                        and state=="REVIEW_PENDING"):
+                    state="SOURCE_CAPTURED"
+                    reason=(str(kinds["presentation"])+" issuer-hosted IR presentation PDFs "
+                            "permanently archived with verified bytes; management guidance "
+                            "and subsequent delivery have not yet been reviewed")
             stage[gate]={"stage":state,"reason":reason,"formal_pass":gate in evaluated["gates_passed"]}
             if is_high:counts[gate+"__"+state]+=1
         if is_high and (evaluated["gates_passed"] or evaluated["gates_failed"]):
@@ -246,7 +266,8 @@ def build_progress(root):
                  formally_failed_gates=evaluated["gates_failed"],
                  still_pending_gates=evaluated["gates_pending"],
                  formal_Aplus=evaluated["formal_Aplus"],formal_Aplusplus=evaluated["formal_Aplusplus"],
-                 gate_stage=stage))
+                 gate_stage=stage,
+                 durable_original_archive=original_bundles.get(code,{})))
     issuer_reports.sort(key=lambda x:(not x["formal_Aplus"],-x["research_upside_pct"],x["code"]))
     status={
         "model":research["model"],"estimate_vintage":asof,
@@ -256,8 +277,10 @@ def build_progress(root):
         "issuer_diagnostics":issuer_reports,
         "stage_counts_for_upside_ge30":dict(sorted(counts.items())),
         "formally_certified_Aplus_in_report":counts["formal_Aplus_total"],
+        "durable_original_archive_receipts":original_bundles,
+        "durable_original_capture_does_not_certify_a_gate":True,
         "issuer_report_limitations":[
-            "Source-collected, numeric-mirror-complete, source-identity-reviewed and signed PASS are distinct stages.",
+            "Source-collected, original PDF bytes durably archived, numeric-mirror-complete, source-identity-reviewed and signed PASS are distinct stages.",
             f"Current reference-price date {research['asof_price_date']} does not certify original issuer point-in-time disclosure for older financial periods.",
             "Potential upside is conditional research, not a certified trading return.",
             "Reviewed packs are automatically admitted only after all archived bytes, hash, issuer identity, method and dated source predicates verify.",
