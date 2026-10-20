@@ -2,7 +2,7 @@
   "schema": "V893_OFFICIAL_TPEX_DAILY",
   "issuer": "6126",
   "market": "TPEX",
-  "price_reference_asof": "2026-10-16",
+  "price_reference_asof": "2026-10-19",
   "source_type": "OFFICIAL_TPEX_DAILY_MARKET",
   "original_raw_responses_preserved_in_actions_artifact_not_repository": true,
   "original_source_not_cryptographically_signed": true,
@@ -310,9 +310,27 @@
         "turnover_ntd": 9890753,
         "volume_shares": 342708
       }
+    },
+    "2026-10-19": {
+      "date": "2026-10-19",
+      "source_url": "https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes?response=json&date=115%2F10%2F19",
+      "original_response_sha256": "2a85eb38e960014cbc47ebb2be4b8b8da25c802f2cf8119840583d7df5184461",
+      "raw_market_response_stored_in_artifact": true,
+      "row": {
+        "date": "2026-10-19",
+        "close": 29.35,
+        "turnover_ntd": 13679340,
+        "volume_shares": 466969
+      }
     }
   },
   "sessions": [
+    {
+      "date": "2026-10-19",
+      "close": 29.35,
+      "turnover_ntd": 13679340,
+      "volume_shares": 466969
+    },
     {
       "date": "2026-10-16",
       "close": 29.85,
@@ -467,21 +485,21 @@
   "liquidity": {
     "5": {
       "sessions": 5,
-      "first": "2026-10-12",
-      "last": "2026-10-16",
-      "median_turnover_ntd": 20530001,
+      "first": "2026-10-13",
+      "last": "2026-10-19",
+      "median_turnover_ntd": 13679340,
       "min_turnover_ntd": 12385509,
       "zero_turnover_sessions": 0,
-      "idealized_5m_exit_sessions_at_20pct": 1.22
+      "idealized_5m_exit_sessions_at_20pct": 1.83
     },
     "20": {
       "sessions": 20,
-      "first": "2026-09-16",
-      "last": "2026-10-16",
-      "median_turnover_ntd": 16327999.0,
+      "first": "2026-09-17",
+      "last": "2026-10-19",
+      "median_turnover_ntd": 14909414.5,
       "min_turnover_ntd": 5847055,
       "zero_turnover_sessions": 0,
-      "idealized_5m_exit_sessions_at_20pct": 1.53
+      "idealized_5m_exit_sessions_at_20pct": 1.68
     },
     "60": null
   }

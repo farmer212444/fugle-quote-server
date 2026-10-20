@@ -2,7 +2,7 @@
   "schema": "V893_OFFICIAL_TPEX_DAILY",
   "issuer": "3556",
   "market": "TPEX",
-  "price_reference_asof": "2026-10-16",
+  "price_reference_asof": "2026-10-19",
   "source_type": "OFFICIAL_TPEX_DAILY_MARKET",
   "original_raw_responses_preserved_in_actions_artifact_not_repository": true,
   "original_source_not_cryptographically_signed": true,
@@ -310,9 +310,27 @@
         "turnover_ntd": 12465706,
         "volume_shares": 218821
       }
+    },
+    "2026-10-19": {
+      "date": "2026-10-19",
+      "source_url": "https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes?response=json&date=115%2F10%2F19",
+      "original_response_sha256": "2a85eb38e960014cbc47ebb2be4b8b8da25c802f2cf8119840583d7df5184461",
+      "raw_market_response_stored_in_artifact": true,
+      "row": {
+        "date": "2026-10-19",
+        "close": 61.9,
+        "turnover_ntd": 12955893,
+        "volume_shares": 213658
+      }
     }
   },
   "sessions": [
+    {
+      "date": "2026-10-19",
+      "close": 61.9,
+      "turnover_ntd": 12955893,
+      "volume_shares": 213658
+    },
     {
       "date": "2026-10-16",
       "close": 61.5,
@@ -467,21 +485,21 @@
   "liquidity": {
     "5": {
       "sessions": 5,
-      "first": "2026-10-12",
-      "last": "2026-10-16",
-      "median_turnover_ntd": 19510529,
+      "first": "2026-10-13",
+      "last": "2026-10-19",
+      "median_turnover_ntd": 12955893,
       "min_turnover_ntd": 9552591,
       "zero_turnover_sessions": 0,
-      "idealized_5m_exit_sessions_at_20pct": 1.28
+      "idealized_5m_exit_sessions_at_20pct": 1.93
     },
     "20": {
       "sessions": 20,
-      "first": "2026-09-16",
-      "last": "2026-10-16",
-      "median_turnover_ntd": 9369986.0,
+      "first": "2026-09-17",
+      "last": "2026-10-19",
+      "median_turnover_ntd": 10005125.5,
       "min_turnover_ntd": 4210194,
       "zero_turnover_sessions": 0,
-      "idealized_5m_exit_sessions_at_20pct": 2.67
+      "idealized_5m_exit_sessions_at_20pct": 2.5
     },
     "60": null
   }

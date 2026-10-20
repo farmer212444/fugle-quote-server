@@ -2,7 +2,7 @@
   "schema": "V893_OFFICIAL_TPEX_DAILY",
   "issuer": "3546",
   "market": "TPEX",
-  "price_reference_asof": "2026-10-16",
+  "price_reference_asof": "2026-10-19",
   "source_type": "OFFICIAL_TPEX_DAILY_MARKET",
   "original_raw_responses_preserved_in_actions_artifact_not_repository": true,
   "original_source_not_cryptographically_signed": true,
@@ -310,9 +310,27 @@
         "turnover_ntd": 7293125,
         "volume_shares": 99171
       }
+    },
+    "2026-10-19": {
+      "date": "2026-10-19",
+      "source_url": "https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes?response=json&date=115%2F10%2F19",
+      "original_response_sha256": "2a85eb38e960014cbc47ebb2be4b8b8da25c802f2cf8119840583d7df5184461",
+      "raw_market_response_stored_in_artifact": true,
+      "row": {
+        "date": "2026-10-19",
+        "close": 73.0,
+        "turnover_ntd": 10261424,
+        "volume_shares": 140703
+      }
     }
   },
   "sessions": [
+    {
+      "date": "2026-10-19",
+      "close": 73.0,
+      "turnover_ntd": 10261424,
+      "volume_shares": 140703
+    },
     {
       "date": "2026-10-16",
       "close": 74.3,
@@ -467,8 +485,8 @@
   "liquidity": {
     "5": {
       "sessions": 5,
-      "first": "2026-10-12",
-      "last": "2026-10-16",
+      "first": "2026-10-13",
+      "last": "2026-10-19",
       "median_turnover_ntd": 9808607,
       "min_turnover_ntd": 6340722,
       "zero_turnover_sessions": 0,
@@ -476,12 +494,12 @@
     },
     "20": {
       "sessions": 20,
-      "first": "2026-09-16",
-      "last": "2026-10-16",
-      "median_turnover_ntd": 6372125.0,
+      "first": "2026-09-17",
+      "last": "2026-10-19",
+      "median_turnover_ntd": 6473576.0,
       "min_turnover_ntd": 3253894,
       "zero_turnover_sessions": 0,
-      "idealized_5m_exit_sessions_at_20pct": 3.92
+      "idealized_5m_exit_sessions_at_20pct": 3.86
     },
     "60": null
   }
