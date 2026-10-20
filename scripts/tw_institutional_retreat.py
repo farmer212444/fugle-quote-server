@@ -8,6 +8,7 @@ import datetime as dt
 import gzip
 import hashlib
 import json
+import math
 import re
 from pathlib import Path
 
@@ -74,16 +75,26 @@ def load_issued_shares(data_root, asof):
         try:
             source_date = _date(record.get("date"))
             shares = record.get("issued_shares")
-            if (source_date > asof or not isinstance(shares, int)
-                    or isinstance(shares, bool) or shares <= 0):
+            # Official capital adapters serialize numeric counts as floats.
+            # Accept only positive, exactly integral, finite quantities.
+            if (source_date > asof or isinstance(shares, bool)
+                    or not isinstance(shares, (int, float))
+                    or not math.isfinite(shares) or shares <= 0
+                    or int(shares) != shares):
                 continue
+            original_hash = record.get("source_sha256")
+            if (not isinstance(original_hash, str)
+                    or not re.fullmatch(r"[0-9a-f]{64}", original_hash)):
+                continue
+            shares = int(shares)
         except (TypeError, ValueError):
             continue
         key = (market, code)
         if key in result:
             raise ValueError("DUPLICATE_ISSUER_SHARE_ID")
         result[key] = {"issued_shares": shares, "source_date": source_date,
-                       "receipt_hash": manifest["json_sha256"]}
+                       "receipt_hash": manifest["json_sha256"],
+                       "official_source_receipt_hash": original_hash}
     if not result:
         raise ValueError("NO_ELIGIBLE_DATED_ISSUED_SHARE_DENOMINATORS")
     return result
@@ -121,6 +132,7 @@ def assess_retreat(flow20, shares):
         "issued_shares": denominator,
         "share_master_date": shares["source_date"],
         "share_master_receipt_hash": shares["receipt_hash"],
+        "official_source_receipt_hash": shares["official_source_receipt_hash"],
         "trust_net_20d_pct_issued_shares": round(100 * trust / denominator, 5),
         "observation_start": flow20["first_session"],
         "observation_end": flow20["last_session"],
