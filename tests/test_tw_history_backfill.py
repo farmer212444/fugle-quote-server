@@ -5,7 +5,7 @@ import unittest
 from pathlib import Path
 from scripts.tw_history_backfill import (
     parse, process, iso_roc, historical_url, stats, combine, recent_months,
-    candidates
+    candidates, prioritized_candidates
 )
 
 def response(month,dates):
@@ -84,6 +84,27 @@ class HistoricalTWSETests(unittest.TestCase):
         self.assertEqual(candidates(raw,6),["6206","9802","1714"])
         self.assertEqual(recent_months(dt.date(2026,1,20),3),["2026-01","2025-12","2025-11"])
         self.assertIsNone(stats([], "2026-10-16")["20"])
+    def test_priority_skips_completed_20_day_archive_and_keeps_high_upside(self):
+        raw=json.dumps([
+            dict(code="6206",market="TWSE"),dict(code="9802",market="TWSE"),
+            dict(code="1714",market="TWSE"),dict(code="3305",market="TWSE"),
+            dict(code="4739",market="TWSE"),dict(code="6494",market="TPEX")]).encode()
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp)
+            (root/"rankings").mkdir()
+            progress=dict(asof_price_date="2026-10-16",issuer_diagnostics=[
+                dict(code="6494",market="TPEX",research_upside_pct=141),
+                dict(code="1714",market="TWSE",research_upside_pct=140),
+                dict(code="3305",market="TWSE",research_upside_pct=110),
+                dict(code="4739",market="TWSE",research_upside_pct=106)])
+            (root/"rankings/v891_gate_progress.json").write_text(json.dumps(progress))
+            hist=root/"prices/issuer_history/TWSE"
+            hist.mkdir(parents=True)
+            (hist/"1714.json").write_text(json.dumps(dict(issuer="1714",market="TWSE",
+                  price_reference_asof="2026-10-16",liquidity={"20":{"sessions":20}})))
+            self.assertEqual(prioritized_candidates(raw,"2026-10-16",2,root),["3305","4739"])
+            with self.assertRaisesRegex(ValueError,"PRICE_DATE_MISMATCH"):
+                prioritized_candidates(raw,"2026-10-17",2,root)
     def test_future_date_never_included(self):
         rows={"2026-10":[dict(date="2026-10-18",turnover_ntd=3,close=12)]}
         self.assertEqual(combine(rows,"2026-10-16","6206"),[])
