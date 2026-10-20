@@ -164,7 +164,13 @@ def conduct(root=DATA):
     for market in ("TWSE","TPEX"):
         for code,item in income[(market,"2026-Q2","income")].items():now_map[(market,code)]=item
         for code,item in income[(market,"2025-Q2","income")].items():prior_map[(market,code)]=item
-    selected=[unique(rows,c,"FOCUS_TOP30") for c in FOCUS]
+    selected=[];missing_focus=[]
+    for code in FOCUS:
+        matches=[x for x in rows if x.get("code")==code]
+        fail(len(matches)<=1,"DUPLICATE_FOCUS_TOP30_"+code)
+        if matches:selected.append(matches[0])
+        else:missing_focus.append(code)
+    fail(bool(selected),"ALL_LEGACY_FOCUS_NAMES_LEFT_CURRENT_TOP30")
     revenue_watch=check_post_financial_quarter_revenue(root,research,now_map,prior_map,selected)
     index={x["code"]:x for x in revenue_watch.get("issuer_checks",[])}
     issuer_review=load(root/"evidence/v880/issuer_reviews/top3_20261020.json")
@@ -222,12 +228,14 @@ def conduct(root=DATA):
         if code=="8390":record["equity_raise_sensitivity"]=equity_watch(
             issuer_review,shares,eps,modeled_target,px,asof)
         result.append(record)
-    fail(len(result)==5,"INCOMPLETE_FIVE_STOCK_REVIEW")
-    return dict(status="V890_FIVE_STOCK_RESEARCH_AUDIT_NOT_CERTIFIED",
+    return dict(status=("V890_FIVE_STOCK_RESEARCH_AUDIT_NOT_CERTIFIED"
+                        if not missing_focus else
+                        "V890_CURRENT_TOP30_SUBSET_AUDIT_NOT_CERTIFIED"),
         model=research["model"],estimate_vintage=research["estimate_vintage"],
         asof_price_date=research["asof_price_date"],
         latest_available_quarter=research["financial_last_quarter"],
         issuer_count=len(result),securities=result,
+        legacy_focus_not_in_current_top30=missing_focus,
         official_mirror_receipts=source_receipts,
         next_quarter_revenue_status=revenue_watch["status"],
         publication_PIT_documented=False,

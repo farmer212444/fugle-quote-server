@@ -41,8 +41,9 @@ def assess_margin_recovery(history,financial_period,unadjusted_gm,current_ytd_gm
                 unadjusted_base_gm=unadjusted_gm,
                 provisional_base_gm=unadjusted_gm,
                 annual_reference_years=years,annual_gm=[older,recent],
-                normalized_gm=None,recovery_fraction=0.0,
-                base_uplift_pp=0.0,causal_factory_evidence_verified=False,
+                normalized_gm=None,recovery_fraction=0.0,research_case_gm=None,
+                base_uplift_pp=0.0,base_override_blocked=True,
+                causal_factory_evidence_verified=False,
                 holdout_validation_complete=False)
     if older is None or recent is None or current_ytd_gm is None:
         return result
@@ -72,7 +73,10 @@ def assess_margin_recovery(history,financial_period,unadjusted_gm,current_ytd_gm
     lift=max(0,min(MAX_BASE_LIFT,fraction*(anchor-unadjusted_gm),anchor-unadjusted_gm))
     if lift<=0:
         result['status']='NO_POSITIVE_BASE_ADJUSTMENT';return result
-    result.update(status='PROVISIONAL_HISTORY_AND_REVENUE_RECOVERY',
-                  applied=True,provisional_base_gm=unadjusted_gm+lift,
+    # Revenue is a discovery input.  Without a signed issuer operating
+    # bridge it must not convert an historical-margin sensitivity into Base.
+    result.update(status='REVENUE_LEAD_DISCOVERY_ONLY_ISSUER_BRIDGE_REQUIRED',
+                  applied=False,provisional_base_gm=unadjusted_gm,
+                  research_case_gm=unadjusted_gm+lift,
                   recovery_fraction=fraction,base_uplift_pp=100*lift)
     return result
