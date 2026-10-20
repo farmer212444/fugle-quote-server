@@ -10,7 +10,7 @@ def test_future_release_cannot_leak_into_past():
     times = {key: "2026-10-01" for key in WEIGHTS}
     times["peer_breadth"] = "2026-11-01"
     result = score_cycle(values, asof="2026-10-20", latest_available_at=times)
-    assert result.score == 100.0
+    assert result.score == 80.0
     assert result.observed_weight == 0.8
     assert not result.a_plus_certified
 
@@ -27,3 +27,10 @@ def test_invalid_input_rejected():
     dates = {key: "2026-10-01" for key in WEIGHTS}
     result = score_cycle(values, asof="2026-10-20", latest_available_at=dates)
     assert "margin_leading" in result.missing
+
+def test_missing_factor_reduces_score():
+    values = {key: 1.0 for key in WEIGHTS}
+    dates = {key: "2026-10-01" for key in WEIGHTS}
+    dates["peer_breadth"] = "2026-11-01"
+    result = score_cycle(values, asof="2026-10-20", latest_available_at=dates)
+    assert result.score == 80.0
