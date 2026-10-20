@@ -12,8 +12,9 @@ on:
       - 'scripts/tw_history_backfill.py'
       - 'tests/test_tw_history_backfill.py'
   schedule:
-    # 20:05 Taipei each trading day, after 19:40 latest price collector.
-    - cron: '5 12 * * 1-5'
+    # Priority TWSE source batches at 09:05, 12:05, 15:05, 18:05 and 20:05 TPE.
+    # Earlier runs work on the latest verified price snapshot, not a live unverified close.
+    - cron: '5 1,4,7,10,12 * * 1-5'
 permissions:
   contents: write
 concurrency:
@@ -32,7 +33,7 @@ jobs:
         run: python -m unittest -v tests.test_tw_history_backfill
       - name: Backfill official TWSE monthly sessions for focus issuers
         if: github.event_name != 'pull_request'
-        run: python scripts/tw_history_backfill.py --max-issuers 6 --months 4
+        run: python scripts/tw_history_backfill.py --max-issuers 16 --months 3
       - name: Archive unmodified monthly exchange JSON
         if: always() && github.event_name != 'pull_request'
         uses: actions/upload-artifact@v4
