@@ -108,5 +108,51 @@ class GateAdmissionTests(unittest.TestCase):
         self.assertEqual(stages["tradability"]["stage"],"SOURCE_CAPTURED")
         self.assertFalse(stages["tradability"]["formal_pass"])
 
+    def test_durable_issuer_originals_advance_source_stage_but_never_formal_pass(self):
+        from scripts.v896_original_archive import collect
+        source_dir=self.root/"ir/6206"
+        source_dir.mkdir(parents=True)
+        pdf_url="https://www.flytech.com.tw/data/investor_law/attached/1786525880605469429.pdf"
+        source_dir.joinpath("manifest.json").write_text(json.dumps({
+            "code":"6206","presentations":[{
+                "event_date":"2026-08-12","title":"飛捷官方簡報",
+                "source_url":pdf_url,"pdf_sha256":"0"*64}]}),encoding="utf-8")
+        dummy_pdf=b"%PDF-1.4\\n"+b"original-test"*600+b"\\n%%EOF\\n"
+        captured=collect(self.root,"6206","2026-10-20",
+                         "2026-10-20T12:00:00+00:00",
+                         fetcher=lambda *_:dummy_pdf)
+        self.assertEqual(captured["records"],1)
+        rank=self.root/"rankings"
+        rank.mkdir(parents=True)
+        research=dict(model="V8.8.2",
+                      estimate_vintage="2026-10-20T12:30:00+00:00",
+                      financial_last_quarter="2026-Q2",
+                      asof_price_date="2026-10-19",formal_Aplus_count=0,
+                      data_scope={"model_rows":1})
+        job=dict(code="6206",name="飛捷",market="TWSE",research_upside_pct=45)
+        dispatch=dict(vintage=research["estimate_vintage"],
+                      price_date=research["asof_price_date"],
+                      tracked_issuer_count=1,eligible_research_count=1,
+                      all_issuer_jobs=[job])
+        probe=dict(estimate_vintage=research["estimate_vintage"],
+                   asof_price_date=research["asof_price_date"],
+                   top_priority_evidence=[dict(
+                       code="6206",market="TWSE",
+                       financial=dict(normalized_income_8q_count=8,
+                                      normalized_cashflow_8q_count=8),
+                       capital=dict(issued_share_master_present=True,unverified_bond_terms=[]),
+                       market_history=dict(twenty_day=None))])
+        for name,obj in (("latest_research.json",research),
+                          ("v883_gate_dispatch.json",dispatch),
+                          ("v884_evidence_progress.json",probe)):
+            (rank/name).write_text(json.dumps(obj),encoding="utf-8")
+        report=mod.build_progress(self.root)
+        stock=report["issuer_diagnostics"][0]
+        self.assertEqual(stock["gate_stage"]["management_promises"]["stage"],"SOURCE_CAPTURED")
+        self.assertFalse(stock["gate_stage"]["management_promises"]["formal_pass"])
+        self.assertEqual(report["durable_original_archive_receipts"]["6206"]["records"],1)
+        self.assertEqual(report["formally_certified_Aplus_in_report"],0)
+        self.assertEqual(stock["formally_passed_gates"],[])
+
 if __name__=="__main__":
     unittest.main()
