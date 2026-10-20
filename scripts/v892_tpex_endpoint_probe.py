@@ -1,15 +1,17 @@
 #!/usr/bin/env python3
 """Inspect modern official TPEx historical endpoints; diagnostic only, never publish prices."""
 import datetime as dt
+import gzip
 import json
 import urllib.error
 import urllib.request
 
 def probe(url):
-    req=urllib.request.Request(url,headers={"User-Agent":"Mozilla/5.0 (historical source diagnostic)","Accept":"application/json,*/*"})
+    req=urllib.request.Request(url,headers={"User-Agent":"Mozilla/5.0 (historical source diagnostic)","Accept":"application/json,*/*","Accept-Encoding":"gzip"})
     try:
         with urllib.request.urlopen(req,timeout=18) as r:
             content=r.read(12000000)
+            if r.headers.get("Content-Encoding","").lower()=="gzip":content=gzip.decompress(content)
             print("STATUS",r.status,"CONTENT_TYPE",r.headers.get("Content-Type"),"LEN",len(content),
                   "HEAD",repr(content[:130]),flush=True)
         try:
