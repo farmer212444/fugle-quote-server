@@ -2,7 +2,7 @@ import contextlib,datetime as dt,gzip,io,json,pathlib,tempfile,unittest
 from unittest.mock import patch
 from tw_model_v880.model import estimate
 from tw_model_v880.math import previous_periods
-from scripts.tw_v880_run import run,ordered_recovery_watch,resolve_asof
+from scripts.tw_v880_run import run,ordered_recovery_watch,resolve_asof,public_row
 from tw_model_v880.data import ensure_vintage
 ASOF='2026-10-18T19:30:00+08:00';CAL=dict(train_count=60,train_target='2025-Q4',revenue_persistence=.5,margin_persistence=.5,cost_persistence=.5)
 class FakeData:
@@ -102,6 +102,7 @@ class IntegrationTests(unittest.TestCase):
         d.revenue['SYNTHETIC_A']['industry']='運動休閒'
         footwear=estimate(d,('TEST','SYNTHETIC_A'),CAL,ASOF,'2027-12-31')
         self.assertTrue(footwear['cycle_research']['cyclical_sector'])
+        self.assertTrue(public_row(footwear)['cycle_research']['research_only'])
         self.assertFalse(footwear['cycle_research']['legacy_pe_cap_applied'])
         self.assertFalse(footwear['formal_Aplus'])
         self.assertEqual(footwear['pe_bridge']['base'],baseline['pe_bridge']['base'])
