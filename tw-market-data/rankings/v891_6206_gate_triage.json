@@ -2,43 +2,43 @@
   "schema": "V891_6206_EVIDENCE_TRIAGE",
   "issuer": "6206",
   "valuation_model": "V8.8.2",
-  "estimate_vintage": "2026-10-20T09:16:30.587545+08:00",
-  "price_date": "2026-10-16",
-  "reference_close": 134.5,
+  "estimate_vintage": "2026-10-20T12:42:07.955436+08:00",
+  "price_date": "2026-10-19",
+  "reference_close": 131.5,
   "common_2027_base_price": 179.69203734021846,
-  "common_upside_pct": 33.6,
+  "common_upside_pct": 36.65,
   "fast_decision": {
     "data_class": "SENSITIVITY_ONLY_NOT_FORMAL_RATING",
-    "price_date": "2026-10-16",
-    "reference_close": 134.5,
-    "required_target_for_30pct": 174.85,
+    "price_date": "2026-10-19",
+    "reference_close": 131.5,
+    "required_target_for_30pct": 170.95,
     "common_base_price": 179.69,
-    "target_buffer_above_Aplus_threshold": 4.84,
+    "target_buffer_above_Aplus_threshold": 8.74,
     "common_eps": 11.5669,
     "common_pe": 15.535,
-    "minimum_eps_for_30pct_at_common_pe": 11.2552,
-    "minimum_pe_for_30pct_at_common_eps": 15.1164,
+    "minimum_eps_for_30pct_at_common_pe": 11.0042,
+    "minimum_pe_for_30pct_at_common_eps": 14.7792,
     "max_reference_close_for_30pct_if_target_unchanged": 138.22,
     "stresses": {
       "eps_down_10pct": {
         "price": 161.72,
-        "upside_pct": 20.24,
+        "upside_pct": 22.98,
         "numerical_30pct_met": false
       },
       "pe_down_10pct": {
         "price": 161.72,
-        "upside_pct": 20.24,
+        "upside_pct": 22.98,
         "numerical_30pct_met": false
       },
       "both_down_10pct": {
         "price": 145.55,
-        "upside_pct": 8.22,
+        "upside_pct": 10.68,
         "numerical_30pct_met": false
       },
       "share_dilution_up_5pct": {
         "price": 171.14,
-        "upside_pct": 27.24,
-        "numerical_30pct_met": false
+        "upside_pct": 30.14,
+        "numerical_30pct_met": true
       }
     },
     "disclaimer": "Mechanical 2027 EPS/PE/shares sensitivity. Not 13-gate PASS, trade instruction, or calibrated probability."
@@ -50,7 +50,7 @@
   "issuer_presentation_receipts_required": 2,
   "original_company_publication_time_verified": false,
   "individual_history_sessions": 74,
-  "twenty_day_turnover_reconciled": true,
+  "twenty_day_turnover_reconciled": false,
   "formal_Aplus": false,
   "newly_certified_gates": 0,
   "gates": [
@@ -119,11 +119,11 @@
     },
     {
       "gate": "tradability",
-      "source_coverage": "OBSERVED_PARTIAL",
+      "source_coverage": "MISSING_OR_UNVERIFIED",
       "formal_status": "PENDING",
       "next_action": "補驗價差、漲跌停及持倉退出成交可行性",
       "automation_route": "AUTO_THEN_EXECUTION_REVIEW",
-      "reason": "已有可交叉檢查的部分資料，但不構成完整認證",
+      "reason": "尚無足夠的公司別原始證據可供簽核",
       "automatically_certified": false
     },
     {

@@ -1,24 +1,24 @@
 # 6206 飛捷｜13項A+認證障礙自動查核
 
-估值形成：2026-10-20T09:16:30.587545+08:00；官方參考股價日：2026-10-16。
+估值形成：2026-10-20T12:42:07.955436+08:00；官方參考股價日：2026-10-19。
 
-共同模型2027 Base價 179.69元、研究價差 +33.60%；獨立Base價 185.87元。
+共同模型2027 Base價 179.69元、研究價差 +36.65%；獨立Base價 185.87元。
 
 已取得標準化財報：損益 8/8季、現金流 8/8季；官方法說SHA收據交叉匹配 2/2份；
-個股歷史成交：74日；最近20日金額驗算：一致（不等於可成交性通過）。
+個股歷史成交：74日；最近20日金額驗算：待補（不等於可成交性通過）。
 
 ## 即時計算：A+數字門檻與估值脆弱度（非正式認證）
 
-以 134.50元股價計，30%門檻目標價 174.85元；目前Base價高於數字門檻 4.84元。
-維持PE不變，EPS需至少 11.2552元；維持EPS不變，PE需至少 15.1164倍。
+以 131.50元股價計，30%門檻目標價 170.95元；目前Base價高於數字門檻 8.74元。
+維持PE不變，EPS需至少 11.0042元；維持EPS不變，PE需至少 14.7792倍。
 若合理價不變，30%數字門檻對應的最高參考收盤價為 138.22元（不是買入建議）。
 
 |機械壓測|2027情境價|相對參考股價|30%數字門檻|
 |---|---:|---:|---|
-|eps_down_10pct|161.72|+20.24%|不符合|
-|pe_down_10pct|161.72|+20.24%|不符合|
-|both_down_10pct|145.55|+8.22%|不符合|
-|share_dilution_up_5pct|171.14|+27.24%|不符合|
+|eps_down_10pct|161.72|+22.98%|不符合|
+|pe_down_10pct|161.72|+22.98%|不符合|
+|both_down_10pct|145.55|+10.68%|不符合|
+|share_dilution_up_5pct|171.14|+30.14%|符合|
 
 以上為估值敏感度試算，並不表示EPS、PE或稀釋已取得正式品質PASS。
 
@@ -31,7 +31,7 @@
 |matched_peers_and_cycle|MISSING_OR_UNVERIFIED|PENDING|按產品結構比對同業Forward PE與景氣全週期|
 |management_promises|OBSERVED_PARTIAL|PENDING|逐頁抽取法說承諾並與後續實績核對|
 |auditor_scope|MISSING_OR_UNVERIFIED|PENDING|核對會計師意見、核閱範圍及重要性|
-|tradability|OBSERVED_PARTIAL|PENDING|補驗價差、漲跌停及持倉退出成交可行性|
+|tradability|MISSING_OR_UNVERIFIED|PENDING|補驗價差、漲跌停及持倉退出成交可行性|
 |forecast_bridge|OBSERVED_PARTIAL|PENDING|用訂單、ASP、良率及軟硬體組合確認2027營益橋接|
 |insider_claims|MISSING_OR_UNVERIFIED|PENDING|比對內部人申報、交易日、股數及持股變化|
 |dividend_window|OBSERVED_PARTIAL|PENDING|核對除息、實際發放日期與每股股利|
