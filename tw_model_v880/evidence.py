@@ -18,19 +18,24 @@ def certify(code,upside,stressed_upside,gates,asof,financial_period,*,policy=Non
     p=policy or POLICY;cut=timestamp(asof);pending=[];failed=[];passed=[]
     for name in GATES:
         g=gates.get(name,{})
-        valid=(g.get('issuer')==code and g.get('financial_period')==financial_period and bool(g.get('sources')) and bool(g.get('method')))
+        sources=g.get('sources')
+        valid=(g.get('issuer')==code and g.get('financial_period')==financial_period
+               and isinstance(sources,list) and bool(sources)
+               and all(isinstance(s,dict) for s in sources)
+               and isinstance(g.get('method'),str) and bool(g['method'].strip()))
         try:
             checked=timestamp(g['checked_at']);available=timestamp(g['available_at']);expires=timestamp(g['expires_at'])
             valid=valid and available<=checked<=cut<=expires
             valid=valid and all(s.get('url') and re.fullmatch('[0-9a-f]{64}',s.get('sha256','')) and s.get('origin_authenticated') is True
-               and timestamp(s['available_at'])<=checked for s in g['sources'])
-        except (KeyError,TypeError,ValueError):valid=False
+               and timestamp(s['available_at'])<=checked for s in sources)
+        except (KeyError,TypeError,ValueError,AttributeError):valid=False
         if not valid or g.get('status') not in ('PASS','FAIL'):pending.append(name)
         elif g['status']=='FAIL':failed.append(name)
         else:passed.append(name)
-    quality_complete=not pending and not failed;numeric=upside is not None and math.isfinite(upside)
+    quality_complete=not pending and not failed
+    numeric=isinstance(upside,(int,float)) and not isinstance(upside,bool) and math.isfinite(upside)
     aplus=quality_complete and numeric and upside>=p['Aplus_price_upside_pct']
-    stress_ok=stressed_upside is not None and math.isfinite(stressed_upside) and stressed_upside>=p['stress_min_upside_pct'] and gates.get('fully_diluted_shares',{}).get('stress_verified') is True
+    stress_ok=isinstance(stressed_upside,(int,float)) and not isinstance(stressed_upside,bool) and math.isfinite(stressed_upside) and stressed_upside>=p['stress_min_upside_pct'] and gates.get('fully_diluted_shares',{}).get('stress_verified') is True
     aplusplus=aplus and upside>=p['Aplusplus_price_upside_pct'] and stress_ok
     status=('QUALITY_REVIEW_FAILED' if failed else 'CERTIFICATION_PENDING' if not quality_complete else 'VALUATION_UNAVAILABLE' if not numeric
       else 'A++' if aplusplus else 'A+' if aplus else 'A_DISCOVERY' if upside>=p['discovery_price_upside_pct'] else 'WATCH')
