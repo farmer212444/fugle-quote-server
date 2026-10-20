@@ -65,7 +65,8 @@ class OfficialEvidenceProbeTests(unittest.TestCase):
                         price_date="2026-10-19",
                         tracked_issuer_count=len(rows), all_issuer_jobs=rows)
         fake_data = SimpleNamespace(history={}, cash={}, required_periods=[],
-                        evidence=dict(master={}, bonds={}), primary=lambda code: None)
+                        evidence=dict(master={}, bonds={}), primary=lambda code: None,
+                        root=pathlib.Path(__file__).resolve().parent)
         result = probe(research, dispatch, fake_data, [], [], top=1,
                        focus_codes=["9802"])
         self.assertEqual(result["high_upside_research_candidates"], 2)
