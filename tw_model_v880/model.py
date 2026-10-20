@@ -6,6 +6,7 @@ from .specialists import issuer_case
 from .provenance import code_fingerprint
 from .margin_recovery import assess_margin_recovery
 from .revenue_leading import revenue_leading_signal
+from .cycle_alpha import is_cyclical
 
 # A low-turnover issuer can be researched without passing the execution gate.
 RESEARCH_MIN_TURNOVER_NTD = 1_000_000
@@ -111,10 +112,16 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
     pe=min(pct(own,.5),pct(peers,.5)) if len(own)>=8 and len(peers)>=5 else None
     pe_bear=min(pct(own,.25),pct(peers,.25)) if pe else None;pe_bull=min(pct(own,.75),pct(peers,.75)) if pe else None
     if pe is None:warnings.append('HISTORICAL_OR_PEER_PE_SAMPLE_INSUFFICIENT')
-    industry=rev.get('industry','');cyclical=any(x in industry for x in ('鋼鐵','航運','建材營造','電子通路','電器電纜'))
-    if cyclical:
+    industry=rev.get('industry','')
+    cyclical=is_cyclical(industry)
+    # Retain legacy valuation caps. Recognizing a new cyclical sector must not
+    # silently lower its Base PE before a sector-specific holdout evaluation.
+    legacy_cycle_pe_cap=any(x in industry for x in ('鋼鐵','航運','建材營造','電子通路','電器電纜'))
+    if legacy_cycle_pe_cap:
         warnings.append('CYCLICAL_OR_PROJECT_DELIVERY_REQUIRES_COMPANY_BRIDGE')
-        if pe:pe=min(pe,pe_bear)
+        if pe is not None:pe=min(pe,pe_bear)
+    elif cyclical:
+        warnings.append('CYCLICAL_SECTOR_RESEARCH_ONLY_PE_UNCHANGED_PENDING_BACKTEST')
     base=operating_scenario(r_base,gm,cost,nonop,tax,fraction,share['base_shares'],pe)
     bear=operating_scenario(r_current_year*max(.05,1+g_bear)**years,max(0,raw_base_gm-gm_spread),cost+gm_spread/2,nonop,min(.5,tax+.02),fraction,share['base_shares'],pe_bear)
     recovery_gm=min(1,max(gm+gm_spread,pct(historical_gm,.75)))
@@ -207,6 +214,8 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
       base_scenario_role='RESEARCH_FORECAST_UNCERTIFIED' if point else 'DIAGNOSTIC_ONLY_NOT_ADMISSIBLE_BASE',
       early_recovery_watch=my>0 and yy>0 and gm_now<gm_prior and bull['target_price'] is not None,
       revenue_leading_discovery=leading_signal,
+      cycle_research=dict(cyclical_sector=cyclical,sector_classification='INDUSTRY_PROXY_NOT_ISSUER_VERIFIED',
+        legacy_pe_cap_applied=legacy_cycle_pe_cap,research_only=True,cycle_score_not_calibrated=True),
       research_target_price_scenario=base['target_price'] if point else None,target_year_eps_scenario=base['eps'] if point else None,
       research_2027_price_scenario=base['target_price'] if point and target_year==2027 else None,eps_2027_base_scenario=base['eps'] if point and target_year==2027 else None,
       research_pe_assumption=pe,scenario_upside_pct=base['price_upside_pct'] if point else None,
