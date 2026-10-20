@@ -97,6 +97,43 @@ def candidates(raw_price,cap=8):
     ordered=[x for x in PREFERRED if x in bycode]
     require("6206" in ordered and "9802" in ordered,"CORE_6206_9802_NOT_IN_OFFICIAL_TWSE_PRICE_ARCHIVE")
     return ordered[:cap]
+def prioritized_candidates(raw_price,asof,cap=16,root=ROOT):
+    """Use current A+ research order; skip issuers already backed up at reference date.
+
+    Incomplete TPEX names are separately recorded by gate diagnostics: this TWSE
+    fetcher must never claim to backfill them.
+    """
+    data=json.loads(raw_price)
+    twse={str(x["code"]):x for x in data if x.get("market")=="TWSE"
+          and CODE.fullmatch(str(x.get("code","")))}
+    pending=[]
+    path=Path(root)/"rankings/v891_gate_progress.json"
+    if path.is_file():
+        progress=json.loads(path.read_text(encoding="utf-8"))
+        # A dated research snapshot after asof may include later signals: fail closed.
+        require(progress.get("asof_price_date")==asof,
+                "HISTORY_PRIORITY_SNAPSHOT_PRICE_DATE_MISMATCH")
+        ranked=progress.get("issuer_diagnostics",[])
+        require(isinstance(ranked,list),"INVALID_GATE_PROGRESS_DIAGNOSTICS")
+        pending=[str(x.get("code")) for x in ranked
+                 if x.get("market")=="TWSE" and x.get("research_upside_pct") is not None
+                 and x.get("research_upside_pct")>=30]
+    order=list(dict.fromkeys(pending+list(PREFERRED)))
+    order=[c for c in order if c in twse]
+    # Existing fully covered archives do not monopolize the same daily fetch budget.
+    backlog=[]
+    for code in order:
+        loc=Path(root)/"prices/issuer_history/TWSE"/(code+".json")
+        if not loc.is_file():
+            backlog.append(code)
+            continue
+        doc=json.loads(loc.read_text(encoding="utf-8"))
+        if doc.get("issuer")!=code or doc.get("market")!="TWSE":
+            raise ValueError("PRIORITY_ISSUER_ARCHIVE_IDENTITY_MISMATCH")
+        if doc.get("price_reference_asof")!=asof or not doc.get("liquidity",{}).get("20"):
+            backlog.append(code)
+    return backlog[:cap]
+
 def combine(records,asof,code):
     dates={}
     for month,rows in records.items():
@@ -180,13 +217,15 @@ def run(max_issuers=6,months=4,fetch=request,sleep=0.4):
     asof=manifest["date"]
     rawfile=(ROOT/"prices"/(asof+".json")).read_bytes()
     require(sha(rawfile)==manifest["normalized_sha256"],"LATEST_REFERENCE_PRICE_HASH_MISMATCH")
-    ids=candidates(rawfile,max_issuers)
+    ids=prioritized_candidates(rawfile,asof,max_issuers,ROOT)
     close_by_code={x["code"]:x.get("close") for x in json.loads(rawfile) if x.get("market")=="TWSE"}
     rr=[];window=recent_months(dt.date.fromisoformat(asof),months)
     for code in ids:
         rr.append(process(code,asof,window,fetch=fetch,sleep=sleep,
                           reference_close=close_by_code[code]))
     result=dict(reference_date=asof,issuer_probes=rr,
+        issuer_priority="HIGH_UPSIDE_GE30_MISSING_20_DAY_SOURCE",selected_codes=ids,
+        dynamic_priority_and_existing_completed_skip=True,
         source_scope="TWSE_ISSUERS_ONLY_TPEX_NOT_YET_INCLUDED",
         original_capture_not_independent_PIT_certificate=True,
         formal_Aplus_issuers_created=0)
@@ -201,7 +240,7 @@ def run(max_issuers=6,months=4,fetch=request,sleep=0.4):
             "未納入櫃買TPEx歷史資料、價差、漲跌停實際可成交量、股利還原、資料發布PIT；因此正式流動性與A+門檻維持PENDING。"]
     (ROOT/"rankings/v889_backfill_progress.md").write_text("\n".join(lines)+"\n",encoding="utf-8")
     print(json.dumps(result,ensure_ascii=False))
-    if not any(x["days"]>=20 for x in rr) and not any(x["new_months"]>0 for x in rr):
+    if rr and not any(x["days"]>=20 for x in rr) and not any(x["new_months"]>0 for x in rr):
         raise RuntimeError("HISTORY_BACKFILL_NOT_PROGRESSING_REVIEW_SOURCE_ERRORS")
 
 def main():
@@ -209,6 +248,6 @@ def main():
     p.add_argument("--max-issuers",type=int,default=6)
     p.add_argument("--months",type=int,default=4)
     a=p.parse_args()
-    require(1<=a.max_issuers<=10 and 2<=a.months<=12,"INVALID_FETCH_BUDGET")
+    require(1<=a.max_issuers<=25 and 2<=a.months<=12,"INVALID_FETCH_BUDGET")
     run(max_issuers=a.max_issuers,months=a.months)
 if __name__=="__main__":main()
