@@ -1,6 +1,6 @@
 {
   "model": "V8.8.2",
-  "estimate_vintage": "2026-10-21T07:41:42.201690+08:00",
+  "estimate_vintage": "2026-10-21T07:46:26.253317+08:00",
   "asof_price_date": "2026-10-19",
   "financial_period": "2026-Q2",
   "research_candidates": 785,
@@ -11045,7 +11045,7 @@
       "gate_stage": {
         "original_eight_quarter_statements": {
           "stage": "SOURCE_CAPTURED",
-          "reason": "9 dated issuer-hosted original quarterly PDFs permanently archived with verified bytes; full 8q note, audit-scope and publication-PIT review still missing",
+          "reason": "8/8 period-specific original PDFs SHA-archived, missing ; issuer PDF internal identity, full notes, auditor scope and MOPS publication PIT unreviewed",
           "formal_pass": false
         },
         "cash_and_working_capital": {
@@ -11173,6 +11173,39 @@
       ],
       "original_archive_hashes_verified": true,
       "formal_pass_count": 0
+    }
+  },
+  "source_quarter_coverage_diagnostic": {
+    "9802": {
+      "required_quarters": [
+        "2024-Q3",
+        "2024-Q4",
+        "2025-Q1",
+        "2025-Q2",
+        "2025-Q3",
+        "2025-Q4",
+        "2026-Q1",
+        "2026-Q2"
+      ],
+      "found_quarters": [
+        "2024-Q3",
+        "2024-Q4",
+        "2025-Q1",
+        "2025-Q2",
+        "2025-Q3",
+        "2025-Q4",
+        "2026-Q1",
+        "2026-Q2"
+      ],
+      "missing_quarters": [],
+      "duplicate_period_original_sources": {},
+      "unparsed_quarter_titles": [],
+      "source_title_coverage_complete": true,
+      "source_dates_are_company_index_not_MOPS_PIT": true,
+      "pdf_accounting_period_internal_identity_verified": false,
+      "eight_full_report_notes_and_auditor_scope_reviewed": false,
+      "full_original_pdf_content_reviewed": false,
+      "formal_gate_pass": false
     }
   },
   "durable_original_capture_does_not_certify_a_gate": true,
