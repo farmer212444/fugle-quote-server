@@ -69,8 +69,12 @@ def build(research,revenue_rows,history_months=0):
     seen=set();out=[];excluded=[]
     for row in revenue_rows:
         code=str(row.get("code",""))
-        if not re.fullmatch(r"\d{4}",code) or code in seen:raise ValueError("INVALID_OR_DUPLICATE_CODE_"+code)
+        if code in seen:raise ValueError("DUPLICATE_CODE_"+code)
         seen.add(code)
+        if not re.fullmatch(r"\d{4}",code):
+            excluded.append(dict(code=code,name=row.get("name"),market=row.get("market"),
+                                 reason="NON_COMMON_STOCK_CODE_REQUIRES_IDENTITY_MODEL"))
+            continue
         try:signal=score_revenue(row,history_months)
         except ValueError as exc:
             excluded.append(dict(code=code,name=row.get("name"),market=row.get("market"),
