@@ -43,6 +43,12 @@ class RevenueLeadTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,"DUPLICATE"):
             build(research(),[rev(),rev()])
 
+    def test_non_four_digit_identity_is_excluded_without_stopping_common_stocks(self):
+        result=build(research(),[rev(code="912000"),rev()])
+        self.assertEqual([x["code"] for x in result["ranking"]],["9802"])
+        self.assertEqual(result["excluded_invalid_revenue"][0]["reason"],
+                         "NON_COMMON_STOCK_CODE_REQUIRES_IDENTITY_MODEL")
+
     def test_one_invalid_metric_row_is_retained_as_excluded_and_others_continue(self):
         bad=rev(code="3718",monthly=0,prior=0)
         result=build(research(),[bad,rev()])
