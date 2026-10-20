@@ -2,11 +2,47 @@
   "schema": "V891_6206_EVIDENCE_TRIAGE",
   "issuer": "6206",
   "valuation_model": "V8.8.2",
-  "estimate_vintage": "2026-10-20T08:31:16.976979+08:00",
+  "estimate_vintage": "2026-10-20T08:43:58.623692+08:00",
   "price_date": "2026-10-16",
   "reference_close": 134.5,
   "common_2027_base_price": 179.69203734021846,
   "common_upside_pct": 33.6,
+  "fast_decision": {
+    "data_class": "SENSITIVITY_ONLY_NOT_FORMAL_RATING",
+    "price_date": "2026-10-16",
+    "reference_close": 134.5,
+    "required_target_for_30pct": 174.85,
+    "common_base_price": 179.69,
+    "target_buffer_above_Aplus_threshold": 4.84,
+    "common_eps": 11.5669,
+    "common_pe": 15.535,
+    "minimum_eps_for_30pct_at_common_pe": 11.2552,
+    "minimum_pe_for_30pct_at_common_eps": 15.1164,
+    "max_reference_close_for_30pct_if_target_unchanged": 138.22,
+    "stresses": {
+      "eps_down_10pct": {
+        "price": 161.72,
+        "upside_pct": 20.24,
+        "numerical_30pct_met": false
+      },
+      "pe_down_10pct": {
+        "price": 161.72,
+        "upside_pct": 20.24,
+        "numerical_30pct_met": false
+      },
+      "both_down_10pct": {
+        "price": 145.55,
+        "upside_pct": 8.22,
+        "numerical_30pct_met": false
+      },
+      "share_dilution_up_5pct": {
+        "price": 171.14,
+        "upside_pct": 27.24,
+        "numerical_30pct_met": false
+      }
+    },
+    "disclaimer": "Mechanical 2027 EPS/PE/shares sensitivity. Not 13-gate PASS, trade instruction, or calibrated probability."
+  },
   "independent_2027_base_price": 185.87281621243886,
   "normalized_income_quarters": 8,
   "normalized_cashflow_quarters": 8,
