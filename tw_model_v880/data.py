@@ -81,6 +81,9 @@ class MarketData:
                 try:
                     obj=read(p);code=obj['code']
                     if p.stem!=code:raise ValueError('EVIDENCE_LEDGER_ISSUER_MISMATCH')
+                    if target=='certificates':
+                        from .evidence import verify_certificate_archives
+                        verify_certificate_archives(obj,self.root)
                     self.evidence.setdefault(target,{})[code]=obj['gates'] if target=='certificates' else obj
                 except (ValueError,KeyError,OSError) as ex:self.errors.append(dict(source=str(p),error=str(ex)))
         from .capital import apply_capital_terms
