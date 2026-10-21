@@ -1,0 +1,44 @@
+{
+  "issuer": "9802",
+  "kind": "PUBLISHED_GROUP_COST_OF_SALES_COMPOSITION",
+  "source": {
+    "reference_kind": "USER_UPLOADED_ISSUER_PRESENTATION_PDF",
+    "issuer_publication_url": "https://mopsov.twse.com.tw/nas/STR/980220260917M001.pdf",
+    "report_published_on": "2026-09-17",
+    "available_at_conservative": "2026-09-17T23:59:59+08:00",
+    "original_pdf_sha256": "44973cb7cbfabd9d601271647eecf5391f01d56ff1c62030870aebcdd9726a3b",
+    "source_pdf_bytes_verified_in_analysis": true,
+    "in_repository_original_pdf_archived": false,
+    "source_page_pdf_one_indexed": 20,
+    "source_page_printed": 23,
+    "original_file_name": "980220260917M001.pdf",
+    "pdf_pages": 29,
+    "source_evidence_type": "original issuer investor presentation uploaded previously by user; manually inspected table image and computed SHA256 of original file; not independently replayable in GitHub without archived PDF"
+  },
+  "figures": {
+    "2025-Q2": {
+      "revenue_million": 5232,
+      "gross_profit_million": 968,
+      "direct_materials_million": 2382,
+      "direct_labor_million": 990,
+      "manufacturing_overhead_million": 892
+    },
+    "2026-Q2": {
+      "revenue_million": 5258,
+      "gross_profit_million": 732,
+      "direct_materials_million": 2515,
+      "direct_labor_million": 1150,
+      "manufacturing_overhead_million": 861
+    }
+  },
+  "methodology": "Standalone quarterly consolidated income figures (NTD millions, rounded by issuer). Annual comparison uses 2025Q2 and 2026Q2. Manufacturing overhead contains depreciation plus other fixed and variable expenses; direct labor may contain new-plant training cost; manufacturing output shares are not plant capacity utilization. No breakdown into irreversible vs temporary factors.",
+  "expected_2025_q2_gm_pct_from_issuer_release": 18.49,
+  "expected_2026_q2_gm_pct_from_issuer_release": 13.94,
+  "prohibits": [
+    "AUTOMATIC_GM_LIFT",
+    "AUTOMATIC_FORECAST_BRIDGE_PASS",
+    "FACTORY_CAUSALITY_PROVEN",
+    "OVERHEAD_PURE_FIXED_COST",
+    "COUNTRY_OUTPUT_SHARE_EQUALS_UTILIZATION"
+  ]
+}
