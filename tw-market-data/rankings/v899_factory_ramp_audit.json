@@ -1,6 +1,6 @@
 {
   "model": "V8.9.9_FACTORY_MARGIN_CAUSAL_AUDIT_RESEARCH_ONLY",
-  "estimate_vintage": "2026-10-21T06:12:51.293540+00:00",
+  "estimate_vintage": "2026-10-21T12:44:24.763684+00:00",
   "latest_financial_period": "2026-Q2",
   "comparable_period": "2025-Q2",
   "archive_source": {
@@ -1335,6 +1335,59 @@
       "factory_cost_bridge": {
         "status": "NO_ORIGINAL_UNIT_ECONOMICS_ARCHIVE",
         "base_gm_override_allowed": false
+      },
+      "disclosed_cogs_review": {
+        "issuer": "9802",
+        "period_current": "2026-Q2",
+        "period_prior": "2025-Q2",
+        "status": "PUBLISHED_CONSOLIDATED_COGS_SPLIT_NOT_PLANT_CAUSALITY",
+        "original_source_sha256": "44973cb7cbfabd9d601271647eecf5391f01d56ff1c62030870aebcdd9726a3b",
+        "original_pdf_archived_in_repository": false,
+        "source_pdf_verified_in_analysis": true,
+        "source_url": "https://mopsov.twse.com.tw/nas/STR/980220260917M001.pdf",
+        "financial_publication_date": "2026-09-17",
+        "source_pdf_page": 20,
+        "source_printed_page": 23,
+        "figures_unit": "TWD_MILLIONS_ROUNDED",
+        "burdens": {
+          "direct_materials_million": {
+            "prior_pct": 45.5275,
+            "current_pct": 47.8319,
+            "burden_change_pp": 2.3044,
+            "gm_contribution_pp": -2.3044
+          },
+          "direct_labor_million": {
+            "prior_pct": 18.922,
+            "current_pct": 21.8714,
+            "burden_change_pp": 2.9494,
+            "gm_contribution_pp": -2.9494
+          },
+          "manufacturing_overhead_million": {
+            "prior_pct": 17.0489,
+            "current_pct": 16.375,
+            "burden_change_pp": -0.6739,
+            "gm_contribution_pp": 0.6739
+          }
+        },
+        "displayed_gross_margin_prior_pct": 18.5015,
+        "displayed_gross_margin_current_pct": 13.9216,
+        "displayed_gross_margin_change_pp": -4.5799,
+        "materials_plus_labor_gm_effect_pp": -5.2538,
+        "manufacturing_overhead_gm_effect_pp": 0.6739,
+        "reconciled_to_standardized_q2_accounting": true,
+        "issuer_note": "Materials + labor burden grew, overhead-to-revenue fell; gross margin decline cannot be attributed wholly to depreciation.",
+        "overhead_contains_mixed_fixed_and_variable_costs": true,
+        "direct_labor_contains_possible_new_factory_training": true,
+        "factory_yield_actual_verified": false,
+        "factory_utilization_actual_verified": false,
+        "segment_asp_and_product_mix_verified": false,
+        "wage_and_learning_driver_split_verified": false,
+        "price_material_cost_driver_split_verified": false,
+        "plant_ramp_causally_proven": false,
+        "recovery_time_estimated": false,
+        "base_gm_override_allowed": false,
+        "formal_a_plus_changed": false,
+        "model_eps_pe_target_changed": false
       }
     },
     "9910": {
@@ -30849,6 +30902,59 @@
       "factory_cost_bridge": {
         "status": "NO_ORIGINAL_UNIT_ECONOMICS_ARCHIVE",
         "base_gm_override_allowed": false
+      },
+      "disclosed_cogs_review": {
+        "issuer": "9802",
+        "period_current": "2026-Q2",
+        "period_prior": "2025-Q2",
+        "status": "PUBLISHED_CONSOLIDATED_COGS_SPLIT_NOT_PLANT_CAUSALITY",
+        "original_source_sha256": "44973cb7cbfabd9d601271647eecf5391f01d56ff1c62030870aebcdd9726a3b",
+        "original_pdf_archived_in_repository": false,
+        "source_pdf_verified_in_analysis": true,
+        "source_url": "https://mopsov.twse.com.tw/nas/STR/980220260917M001.pdf",
+        "financial_publication_date": "2026-09-17",
+        "source_pdf_page": 20,
+        "source_printed_page": 23,
+        "figures_unit": "TWD_MILLIONS_ROUNDED",
+        "burdens": {
+          "direct_materials_million": {
+            "prior_pct": 45.5275,
+            "current_pct": 47.8319,
+            "burden_change_pp": 2.3044,
+            "gm_contribution_pp": -2.3044
+          },
+          "direct_labor_million": {
+            "prior_pct": 18.922,
+            "current_pct": 21.8714,
+            "burden_change_pp": 2.9494,
+            "gm_contribution_pp": -2.9494
+          },
+          "manufacturing_overhead_million": {
+            "prior_pct": 17.0489,
+            "current_pct": 16.375,
+            "burden_change_pp": -0.6739,
+            "gm_contribution_pp": 0.6739
+          }
+        },
+        "displayed_gross_margin_prior_pct": 18.5015,
+        "displayed_gross_margin_current_pct": 13.9216,
+        "displayed_gross_margin_change_pp": -4.5799,
+        "materials_plus_labor_gm_effect_pp": -5.2538,
+        "manufacturing_overhead_gm_effect_pp": 0.6739,
+        "reconciled_to_standardized_q2_accounting": true,
+        "issuer_note": "Materials + labor burden grew, overhead-to-revenue fell; gross margin decline cannot be attributed wholly to depreciation.",
+        "overhead_contains_mixed_fixed_and_variable_costs": true,
+        "direct_labor_contains_possible_new_factory_training": true,
+        "factory_yield_actual_verified": false,
+        "factory_utilization_actual_verified": false,
+        "segment_asp_and_product_mix_verified": false,
+        "wage_and_learning_driver_split_verified": false,
+        "price_material_cost_driver_split_verified": false,
+        "plant_ramp_causally_proven": false,
+        "recovery_time_estimated": false,
+        "base_gm_override_allowed": false,
+        "formal_a_plus_changed": false,
+        "model_eps_pe_target_changed": false
       }
     },
     {
@@ -57171,6 +57277,61 @@
       }
     }
   ],
+  "issuer_disclosed_costs": {
+    "9802": {
+      "issuer": "9802",
+      "period_current": "2026-Q2",
+      "period_prior": "2025-Q2",
+      "status": "PUBLISHED_CONSOLIDATED_COGS_SPLIT_NOT_PLANT_CAUSALITY",
+      "original_source_sha256": "44973cb7cbfabd9d601271647eecf5391f01d56ff1c62030870aebcdd9726a3b",
+      "original_pdf_archived_in_repository": false,
+      "source_pdf_verified_in_analysis": true,
+      "source_url": "https://mopsov.twse.com.tw/nas/STR/980220260917M001.pdf",
+      "financial_publication_date": "2026-09-17",
+      "source_pdf_page": 20,
+      "source_printed_page": 23,
+      "figures_unit": "TWD_MILLIONS_ROUNDED",
+      "burdens": {
+        "direct_materials_million": {
+          "prior_pct": 45.5275,
+          "current_pct": 47.8319,
+          "burden_change_pp": 2.3044,
+          "gm_contribution_pp": -2.3044
+        },
+        "direct_labor_million": {
+          "prior_pct": 18.922,
+          "current_pct": 21.8714,
+          "burden_change_pp": 2.9494,
+          "gm_contribution_pp": -2.9494
+        },
+        "manufacturing_overhead_million": {
+          "prior_pct": 17.0489,
+          "current_pct": 16.375,
+          "burden_change_pp": -0.6739,
+          "gm_contribution_pp": 0.6739
+        }
+      },
+      "displayed_gross_margin_prior_pct": 18.5015,
+      "displayed_gross_margin_current_pct": 13.9216,
+      "displayed_gross_margin_change_pp": -4.5799,
+      "materials_plus_labor_gm_effect_pp": -5.2538,
+      "manufacturing_overhead_gm_effect_pp": 0.6739,
+      "reconciled_to_standardized_q2_accounting": true,
+      "issuer_note": "Materials + labor burden grew, overhead-to-revenue fell; gross margin decline cannot be attributed wholly to depreciation.",
+      "overhead_contains_mixed_fixed_and_variable_costs": true,
+      "direct_labor_contains_possible_new_factory_training": true,
+      "factory_yield_actual_verified": false,
+      "factory_utilization_actual_verified": false,
+      "segment_asp_and_product_mix_verified": false,
+      "wage_and_learning_driver_split_verified": false,
+      "price_material_cost_driver_split_verified": false,
+      "plant_ramp_causally_proven": false,
+      "recovery_time_estimated": false,
+      "base_gm_override_allowed": false,
+      "formal_a_plus_changed": false,
+      "model_eps_pe_target_changed": false
+    }
+  },
   "top20_margin_decline_not_plant_attribution": [
     {
       "code": "5905",
