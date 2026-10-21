@@ -149,7 +149,7 @@ class FactoryProxyBacktestTests(unittest.TestCase):
         self.assertFalse(r["historical_issuer_financial_release_PIT_verified"])
         self.assertFalse(r["formal_Aplus_changed"])
         self.assertFalse(r["base_eps_pe_target_changed"])
-        self.assertIn("不是新廠成功率",report_md(r))
+        self.assertIn("非新廠成功率",report_md(r))
 
 
 if __name__=="__main__":
