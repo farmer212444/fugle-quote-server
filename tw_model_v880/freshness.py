@@ -46,7 +46,7 @@ def assess_price_freshness(estimate_vintage,reference_close_day):
         "market_holiday_calendar_certified":False,
         "equity_source_may_be_stale":bool(missing),
         "quotes_imputed_or_backfilled":False,
-        "2027_research_model_unchanged":True,
+        "research_model_2027_unchanged":True,
         "formal_Aplus_status_unchanged":True,
         "note":("Weekday-only screening does not establish an actual exchange"
                 " session or data delivery time. Confirm TWSE/TPEx official"
