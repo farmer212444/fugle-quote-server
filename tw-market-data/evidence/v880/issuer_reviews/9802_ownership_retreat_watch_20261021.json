@@ -1,0 +1,91 @@
+{
+  "document_type": "RESEARCH_ONLY_9802_TDCC_OWNERSHIP_RETREAT_WATCH",
+  "issuer": "9802",
+  "issued_on": "2026-10-21",
+  "current_tdcc_date": "2026-10-16",
+  "not_intraday_ownership": true,
+  "formal_Aplus_status_unchanged": true,
+  "official_tdcc_mirror": {
+    "date": "2026-10-16",
+    "level_12_15_pct": 63.19,
+    "total_deposited_shares": 200991673,
+    "total_holders": 12130,
+    "receipt": "tw-market-data/chip/ownership/2026-10-16/TDCC.json",
+    "source_url": "https://openapi.tdcc.com.tw/v1/opendata/1-5",
+    "note": "Official open data grade12-15 definition and third party strictly >400 may differ at rounding/boundaries; do not mix time series without matching level definitions."
+  },
+  "crosschecked_public_series": [
+    {
+      "date": "2026-07-31",
+      "small_le10_pct": 10.5,
+      "over400_pct": 65.18,
+      "over1000_pct": 56.31,
+      "holders": 12009
+    },
+    {
+      "date": "2026-10-08",
+      "small_le10_pct": 10.85,
+      "over400_pct": 62.97,
+      "over1000_pct": 54.13,
+      "holders": 12185
+    },
+    {
+      "date": "2026-10-16",
+      "small_le10_pct": 10.83,
+      "over400_pct": 63.21,
+      "over1000_pct": 53.64,
+      "holders": 12130
+    }
+  ],
+  "comparisons": {
+    "20260731_to_20261016": {
+      "small_le10_change_pp": 0.33,
+      "over400_change_pp": -1.97,
+      "over1000_change_pp": -2.67,
+      "holders_change": 121
+    },
+    "20261008_to_20261016": {
+      "small_le10_change_pp": -0.02,
+      "over400_change_pp": 0.24,
+      "over1000_change_pp": -0.49,
+      "holders_change": -55
+    }
+  },
+  "institutional": {
+    "date": "2026-10-20",
+    "foreign_ex_dealer_net_shares": -91915,
+    "trust_net_shares": 0,
+    "dealer_net_shares": -4000,
+    "total_three_category_net_shares": -95915,
+    "mirror": "tw-market-data/chip/institutional/2026-10-20/TWSE.json",
+    "note": "Institutional trades reflect that date only; buyer category not identifiable, not equal to 10-share TDCC holders."
+  },
+  "signals": {
+    "medium_term_holder_concentration": "DECLINING_20260731_TO_20261016",
+    "latest_week_small_account_acceleration": "NOT_SUPPORTED_20261008_TO_20261016",
+    "latest_week_over400_decline": "NOT_SUPPORTED_20261008_TO_20261016",
+    "over1000_weekly_change": "NEGATIVE_0_49PP",
+    "quality_context": "2026Q3 self-reported unaudited GM approx 13.23%, EPS0.68; operating profit bridge requires published full notes",
+    "assessment": "WATCH_MEDIUM_TERM_DISTRIBUTION_UNCONFIRMED_RECENT_RETAIL_ABSORPTION",
+    "Aplus_automatic_promotion": false,
+    "Exit_signal_automatic": false
+  },
+  "next_week_observation": {
+    "anticipated_tdcc_reference": "2026-10-23",
+    "not_yet_published_as_of": "2026-10-21",
+    "monitor": "Match level-definition, check <=10 vs over400 and over1000, shareholders, official 5d institutional flows, full Q3 operating evidence",
+    "escalation_heuristic_NOT_backtested": "If over400 falls below 62.97% together with <=10 above 10.85%, investigate renewed concentration transfer; do not assert insiders or sell signal."
+  },
+  "sources": [
+    "https://www.twsthr.info/StockHolders.aspx?stock=9802",
+    "https://www.istock.tw/stock/9802/chips-long",
+    "https://www.tdcc.com.tw/portal/zh/smWeb/qryStock",
+    "https://www.twse.com.tw/rwd/zh/fund/T86?response=json&date=20261020&selectType=ALL"
+  ],
+  "restrictions": [
+    "No 2026-10-21 TDCC intraday grades available",
+    "Ownership shifts not equal institutional sells",
+    "May include transfers and custodian concentration, not necessarily exchange trades",
+    "No statistical forecast validation"
+  ]
+}
