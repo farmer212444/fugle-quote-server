@@ -12,13 +12,14 @@ ROOT=Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:sys.path.insert(0,str(ROOT))
 from tw_model_v880 import VERSION
 from tw_model_v880.data import model_source_state
-from tw_model_v880.provenance import code_fingerprint
+from tw_model_v880.provenance import code_fingerprint,runtime_dependencies
 
 
 def stale_reasons(root,meta,*,runtime_hash=None):
     root=Path(root).resolve();reasons=[]
     if meta.get('model')!=VERSION:reasons.append('MODEL_VERSION_CHANGED')
     if meta.get('model_code_sha256')!=(runtime_hash or code_fingerprint()):reasons.append('RUNTIME_CODE_CHANGED')
+    if meta.get('runtime_dependencies')!=runtime_dependencies():reasons.append('RUNTIME_DEPENDENCIES_CHANGED')
     if meta.get('model_source_state')!=model_source_state(root):reasons.append('SOURCE_MANIFEST_OR_LEDGER_CHANGED')
     if meta.get('strategy_variant','current-information')!='current-information':reasons.append('SHADOW_VARIANT_IS_NOT_CURRENT_RESEARCH')
     for receipt in meta.get('input_receipts',[]):

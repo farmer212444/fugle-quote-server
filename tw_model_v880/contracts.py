@@ -36,6 +36,8 @@ def economic_method_hash():
     h = hashlib.sha256()
     for name in ECONOMIC_MODULES:
         h.update(name.encode() + b"\0" + (folder / name).read_bytes() + b"\0")
+    pins=folder.parent/'requirements-model.txt'
+    if pins.exists():h.update(b'requirements-model.txt\0'+pins.read_bytes()+b'\0')
     return h.hexdigest()
 
 

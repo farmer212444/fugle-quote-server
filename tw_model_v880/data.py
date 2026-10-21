@@ -103,6 +103,9 @@ class MarketData:
         apply_capital_terms(self,asof)
         from .events import load_earnings_events
         self.earnings_events,self.earnings_event_states=load_earnings_events(self.root,asof,self.period)
+        for code,state in self.earnings_event_states.items():
+            if state.get('blocks_current_decision'):
+                self.errors.append(dict(source='issuer_earnings_event:'+code,error=state.get('reason',state['status'])))
         for event in self.earnings_events.values():
             self.receipt(self.path(event['archive_path']),'ISSUER_SELF_REPORTED_EARNINGS_TABLE_RECONCILED_NOT_AUDITED')
         self.model_source_state=model_source_state(self.root)
