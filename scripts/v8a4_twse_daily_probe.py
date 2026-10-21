@@ -15,6 +15,13 @@ def probe(day="2026-10-20"):
         body=r.read(18000001)
         print("HTTP_STATUS",r.status,"BYTES",len(body),"CONTENT_TYPE",r.headers.get("content-type"),flush=True)
     record=json.loads(body.decode("utf-8-sig"))
+    # Acceptance-test the production parser on actual original dated HTTP bytes.
+    from scripts.v8a4_market_close_recovery import parse
+    normalized=parse("TWSE",body,day,min_issuers=800)
+    print("PRODUCTION_FALLBACK_SCHEMA_VERIFIED",len(normalized),
+          "9802",next((x["close"] for x in normalized if x["code"]=="9802"),None),
+          "6206",next((x["close"] for x in normalized if x["code"]=="6206"),None),flush=True)
+
     print("RESPONSE_KEYS",list(record)[:30],flush=True)
     print("STAT",record.get("stat"),"RESPONSE_DATE",record.get("date"),flush=True)
     if isinstance(record.get("tables"),list):
