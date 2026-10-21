@@ -8,6 +8,7 @@
 - 基金份額增加（申購大於贖回）代表基金級資產變化；仍可能透過實物申贖、庫存、其他交易方式完成，不保證等額交易所買盤。
 - 成分股**持股權重變動**還包含股價變動和再平衡，不能直接用權重差推論買賣股數。程式只以 **前日 NAV × 當日ETF單位數變化 × 前日已揭露股票籃子權重** 作保守曝險代理。
 - 需逐ETF建置相鄰有效交易日資料，5日需6個有效交易日、20日需21個；缺其中一日就不給該ETF該期數值。不同ETF覆蓋率不一致時，**不得稱為ETF全市場排名**。
+- **基金單位數截至日（units_asof_date）**、PCF申購籃子生效日（basket_effective_date）與正式發布時間（published_at）是三項獨立欄位；不能拿前一日晚間的下一日PCF推算前一日單位數，更不得把盤後PCF當當日盤中資訊。
 - PCF 含有強制現金替代時，相關股票不得假設隨申購直接交割；程式剔除現金替代。
 - 同樣追蹤臺灣50的0050、006208等，並不是兩名獨立的主動經理人選股。輸入 \`index_family\` 記錄相同追蹤族群，不將重複持有解讀為相互獨立的選股判斷。
 - 反向／槓桿／境外／債券 ETF、不確定產品類型與無法核對的來源，全部拒絕進入同一股票曝險研究母體。
@@ -36,8 +37,9 @@
   "source_url": "https://issuer.example.invalid/issuer-pcf-original",
   "raw_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
   "issuer_source_verified": false,
-  "effective_date": "2026-10-20",
-  "published_at": "2026-10-19T17:30:00+08:00",
+  "units_asof_date": "2026-10-20",
+  "basket_effective_date": "2026-10-21",
+  "published_at": "2026-10-20T16:10:50+08:00",
   "units_outstanding": 10000000,
   "nav_per_unit_twd": 50,
   "constituents": [
