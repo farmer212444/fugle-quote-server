@@ -7,7 +7,7 @@ from pathlib import Path
 from .evidence import GATES
 
 FORECAST_CONTRACT = "V810_ECONOMIC_INPUTS_V1"
-ECONOMIC_MODULES = ("model.py", "math.py", "calibration.py", "capital.py",
+ECONOMIC_MODULES = ("model.py", "data.py", "math.py", "calibration.py", "capital.py",
                     "specialists.py", "margin_recovery.py", "events.py", "peers.py", "contracts.py")
 OBLIGATIONS = {
     "original_eight_quarter_statements": ("ISSUER", "逐季原始四表、附註、重編及完整性核對", "財報／重編更新"),

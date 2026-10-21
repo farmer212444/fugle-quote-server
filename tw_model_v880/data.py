@@ -4,6 +4,15 @@ from .evidence import timestamp
 from .math import number,quarter_key,quarter_end,previous_periods
 def read(p):return json.loads(pathlib.Path(p).read_text())
 def sha(b):return hashlib.sha256(b).hexdigest()
+def model_source_state(root):
+    root=pathlib.Path(root).resolve()
+    required=('prices/latest_manifest.json','fundamentals/latest_scan.json','latest_manifest.json','evidence/v880/manifest.json')
+    state={name:sha((root/name).read_bytes()) for name in required}
+    folder=root/'evidence/v880'
+    for sub in ('certificates','issuer_bridges','matched_peers','capital_terms'):
+        for path in sorted((folder/sub).rglob('*.json')):state[path.relative_to(root).as_posix()]=sha(path.read_bytes())
+    for path in sorted((folder/'originals').glob('*/manifest.json')):state[path.relative_to(root).as_posix()]=sha(path.read_bytes())
+    return state
 def ensure_vintage(e,asof):
     cut=timestamp(asof)
     if timestamp(e['snapshot_available_at'])>cut:raise ValueError('EVIDENCE_VINTAGE_FROM_FUTURE')
@@ -84,6 +93,10 @@ class MarketData:
                     if target=='certificates':
                         from .evidence import verify_certificate_archives
                         verify_certificate_archives(obj,self.root)
+                        for item in obj['gates'].values():
+                            for source in item['sources']:
+                                self.receipt(self.path(source['archive_path']),'CERTIFICATE_ORIGINAL_BYTES_RECHECKED')
+                    self.receipt(p,'DATED_ISSUER_LEDGER_WITH_SEPARATE_ORIGINAL_SOURCE_REVIEW')
                     self.evidence.setdefault(target,{})[code]=obj['gates'] if target=='certificates' else obj
                 except (ValueError,KeyError,OSError) as ex:self.errors.append(dict(source=str(p),error=str(ex)))
         from .capital import apply_capital_terms
@@ -92,6 +105,7 @@ class MarketData:
         self.earnings_events,self.earnings_event_states=load_earnings_events(self.root,asof,self.period)
         for event in self.earnings_events.values():
             self.receipt(self.path(event['archive_path']),'ISSUER_SELF_REPORTED_EARNINGS_TABLE_RECONCILED_NOT_AUDITED')
+        self.model_source_state=model_source_state(self.root)
     def path(self,s):
         p=pathlib.Path(s)
         if p.parts and p.parts[0]==self.root.name:p=pathlib.Path(*p.parts[1:])

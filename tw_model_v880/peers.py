@@ -28,6 +28,7 @@ def matched_multiples(ledger,data,code,period,target_date,asof,cyclical):
                 timestamp(item['available_at'])>timestamp(ledger['checked_at']) or
                 hashlib.sha256(path.read_bytes()).hexdigest()!=item.get('sha256')):
             raise ValueError('MATCHED_PEER_SOURCE_HASH_OR_DATE_MISMATCH')
+        if hasattr(data,'receipt'):data.receipt(path,'MATCHED_PEER_ORIGINAL_SOURCE_BYTES_RECHECKED')
     peers=ledger.get('peers',[])
     ids=[(p.get('market'),p.get('code')) for p in peers]
     if len(peers)<3 or len(set(ids))!=len(peers) or any(c==code for _,c in ids):
