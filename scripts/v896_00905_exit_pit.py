@@ -8,7 +8,8 @@ without the full historical eligible universe and issuer/PIT inputs.
 This research never changes EPS, PE, Base/Bear/Bull, A+ gates, or holdings.
 """
 import argparse
-from datetime import datetime, date, timezone
+from datetime import datetime, date, timezone, timedelta
+TAIPEI = timezone(timedelta(hours=8))
 import json
 import math
 from pathlib import Path
@@ -63,7 +64,7 @@ def validate_case(item):
     published = instant(item.get("announced_at"))
     effective = day(item.get("effective_date"))
     data_cutoff = day(item.get("index_data_cutoff"))
-    if published.date() <= data_cutoff or effective <= published.date():
+    if published.astimezone(TAIPEI).date() <= data_cutoff or effective <= published.astimezone(TAIPEI).date():
         raise ValueError("INDEX_EVENT_DATE_INCONSISTENT")
     if item.get("source_document_verified") is not True:
         raise ValueError("INDEX_NOTICE_NOT_CHECKED")
@@ -84,7 +85,7 @@ def validate_case(item):
     if not isinstance(observation, dict) or observation.get("code") != "9802":
         raise ValueError("ISSUER_OBSERVATION_MISSING")
     observed_at = instant(observation.get("available_at"))
-    if observed_at >= published or observed_at.date() > data_cutoff:
+    if observed_at >= published or observed_at.astimezone(TAIPEI).date() > data_cutoff:
         raise ValueError("ISSUER_FINANCIAL_POSTCUTOFF_OR_POSTNOTICE")
     if observation.get("period") != "2025-Q1" or not str(observation.get("source_url", "")).startswith("https://www.fulgentsun.com/"):
         raise ValueError("ISSUER_SOURCE_ID_OR_PERIOD_INVALID")
@@ -130,7 +131,7 @@ def evaluate(item, asof):
     when = instant(asof)
     issuer_available = observed <= when
     event_known = published <= when
-    event_effective = event_known and when.date() >= effective
+    event_effective = event_known and when.astimezone(TAIPEI).date() >= effective
     observation = issuer_warning(item["issuer_observation"]) if issuer_available else None
     if event_effective:
         event_status = "PUBLIC_INDEX_EXIT_EFFECTIVE"
