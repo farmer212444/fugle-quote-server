@@ -1,7 +1,7 @@
 {
   "model": "V8.10.0",
   "asof_price_date": "2026-10-20",
-  "source_estimate_vintage": "2026-10-21T13:56:16.196538+08:00",
+  "source_estimate_vintage": "2026-10-21T13:58:50.012673+08:00",
   "universe_priced": 1987,
   "normalized_financial_issuers": 1978,
   "model_issuer_rows": 1998,
@@ -11672,6 +11672,32 @@
       "name": "永豐餘",
       "lane": "OTHER_VALUED_EVIDENCE_REVIEW",
       "research_upside_pct": -20.307118061116924,
+      "certification": "NOT_CERTIFIED",
+      "required_gates": [
+        "original_eight_quarter_statements",
+        "cash_and_working_capital",
+        "nonoperating_components",
+        "fully_diluted_shares",
+        "matched_peers_and_cycle",
+        "management_promises",
+        "auditor_scope",
+        "tradability",
+        "forecast_bridge",
+        "insider_claims",
+        "dividend_window",
+        "point_in_time",
+        "out_of_sample_validation"
+      ],
+      "review_state": "PENDING_SOURCE_VERIFICATION",
+      "source_status": "CERTIFICATION_PENDING",
+      "exclusion_reasons": []
+    },
+    {
+      "code": "9802",
+      "market": "TWSE",
+      "name": "鈺齊-KY",
+      "lane": "OTHER_VALUED_EVIDENCE_REVIEW",
+      "research_upside_pct": -20.315642574000325,
       "certification": "NOT_CERTIFIED",
       "required_gates": [
         "original_eight_quarter_statements",
@@ -54237,34 +54263,6 @@
       ]
     },
     {
-      "code": "9802",
-      "market": "TWSE",
-      "name": "鈺齊-KY",
-      "lane": "UNVALUED_INPUT_REPAIR",
-      "research_upside_pct": null,
-      "certification": "NOT_CERTIFIED",
-      "required_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ],
-      "review_state": "PENDING_SOURCE_VERIFICATION",
-      "source_status": "CERTIFICATION_PENDING",
-      "exclusion_reasons": [
-        "NEW_ORIGINAL_EARNINGS_NOT_RECONCILED_OLD_VALUATION_DIAGNOSTIC_ONLY"
-      ]
-    },
-    {
       "code": "9902",
       "market": "TWSE",
       "name": "台火",
@@ -54722,8 +54720,8 @@
   ],
   "counts": {
     "HIGH_UPSIDE_EVIDENCE_REVIEW": 117,
-    "OTHER_VALUED_EVIDENCE_REVIEW": 673,
-    "UNVALUED_INPUT_REPAIR": 1208
+    "OTHER_VALUED_EVIDENCE_REVIEW": 674,
+    "UNVALUED_INPUT_REPAIR": 1207
   },
   "blocking_rules": [
     "Never mark PASS without issuer-specific source, publication time, financial period and document hash.",

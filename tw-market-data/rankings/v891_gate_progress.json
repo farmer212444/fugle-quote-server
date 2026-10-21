@@ -1,9 +1,9 @@
 {
   "model": "V8.10.0",
-  "estimate_vintage": "2026-10-21T13:56:16.196538+08:00",
+  "estimate_vintage": "2026-10-21T13:58:50.012673+08:00",
   "asof_price_date": "2026-10-20",
   "financial_period": "2026-Q2",
-  "research_candidates": 790,
+  "research_candidates": 791,
   "high_upside_research_candidates": 117,
   "issuer_diagnostics": [
     {
@@ -11016,6 +11016,113 @@
         }
       },
       "durable_original_archive": {}
+    },
+    {
+      "code": "9802",
+      "name": "鈺齊-KY",
+      "market": "TWSE",
+      "research_upside_pct": -20.32,
+      "pre_certification_status": "CERTIFICATION_PENDING",
+      "formally_passed_gates": [],
+      "formally_failed_gates": [],
+      "still_pending_gates": [
+        "original_eight_quarter_statements",
+        "cash_and_working_capital",
+        "nonoperating_components",
+        "fully_diluted_shares",
+        "matched_peers_and_cycle",
+        "management_promises",
+        "auditor_scope",
+        "tradability",
+        "forecast_bridge",
+        "insider_claims",
+        "dividend_window",
+        "point_in_time",
+        "out_of_sample_validation"
+      ],
+      "formal_Aplus": false,
+      "formal_Aplusplus": false,
+      "gate_stage": {
+        "original_eight_quarter_statements": {
+          "stage": "SOURCE_CAPTURED",
+          "reason": "8/8 period-specific original PDFs SHA-archived, missing ; issuer PDF internal identity, full notes, auditor scope and MOPS publication PIT unreviewed",
+          "formal_pass": false
+        },
+        "cash_and_working_capital": {
+          "stage": "MIRROR_CAPTURED",
+          "reason": "Cashflow mirror 8/8; receivable/inventory/capex notes need reconciliation",
+          "formal_pass": false
+        },
+        "nonoperating_components": {
+          "stage": "REVIEW_PENDING",
+          "reason": "Dated issuer source, analytical bridge and evidence signoff outstanding",
+          "formal_pass": false
+        },
+        "fully_diluted_shares": {
+          "stage": "REVIEW_PENDING",
+          "reason": "Convertible legal conversion/reset terms remain unverified",
+          "formal_pass": false
+        },
+        "matched_peers_and_cycle": {
+          "stage": "REVIEW_PENDING",
+          "reason": "Dated issuer source, analytical bridge and evidence signoff outstanding",
+          "formal_pass": false
+        },
+        "management_promises": {
+          "stage": "REVIEW_PENDING",
+          "reason": "Dated issuer source, analytical bridge and evidence signoff outstanding",
+          "formal_pass": false
+        },
+        "auditor_scope": {
+          "stage": "REVIEW_PENDING",
+          "reason": "Issuer numeric origin checked; full auditor scope and important qualifications not reviewed",
+          "formal_pass": false
+        },
+        "tradability": {
+          "stage": "SOURCE_CAPTURED",
+          "reason": "20 daily turnovers archived; bid/ask spread and actual executable exit not verified",
+          "formal_pass": false
+        },
+        "forecast_bridge": {
+          "stage": "REVIEW_PENDING",
+          "reason": "Dated issuer source, analytical bridge and evidence signoff outstanding",
+          "formal_pass": false
+        },
+        "insider_claims": {
+          "stage": "REVIEW_PENDING",
+          "reason": "Dated issuer source, analytical bridge and evidence signoff outstanding",
+          "formal_pass": false
+        },
+        "dividend_window": {
+          "stage": "REVIEW_PENDING",
+          "reason": "Dated issuer source, analytical bridge and evidence signoff outstanding",
+          "formal_pass": false
+        },
+        "point_in_time": {
+          "stage": "REVIEW_PENDING",
+          "reason": "Issuer-specific publication and restatement timestamps not verified",
+          "formal_pass": false
+        },
+        "out_of_sample_validation": {
+          "stage": "REVIEW_PENDING",
+          "reason": "No frozen PIT trading and total-return backtest",
+          "formal_pass": false
+        }
+      },
+      "durable_original_archive": {
+        "issuer": "9802",
+        "records": 10,
+        "document_kinds": {
+          "quarterly": 9,
+          "presentation": 0,
+          "news": 1
+        },
+        "statuses": [
+          "ARCHIVED_ORIGINAL_BYTES_NOT_REVIEWED"
+        ],
+        "original_archive_hashes_verified": true,
+        "formal_pass_count": 0
+      }
     }
   ],
   "stage_counts_for_upside_ge30": {
