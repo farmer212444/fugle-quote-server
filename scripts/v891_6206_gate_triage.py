@@ -43,7 +43,7 @@ def require(condition, message):
         raise ValueError(message)
 
 
-def check_report(probe, value, ir, history):
+def check_report(probe, value, ir, history, independently_verified_daily_archives=None):
     require(probe.get("code") == CODE and probe.get("market") == "TWSE", "WRONG_ISSUER_PROBE")
     require(value.get("issuer") == CODE, "WRONG_ISSUER_VALUATION")
     common = value.get("original_common_model", {})
@@ -91,6 +91,24 @@ def check_report(probe, value, ir, history):
     history_dates = {s["date"] for s in history_sessions}
     require(len(history_dates) == len(history_sessions), "DUPLICATE_ISSUER_HISTORY_SESSION")
     sessions = list(history_sessions)
+    # A derived probe receipt alone is insufficient: independently re-hash
+    # the actual repository daily price archives in main() and compare exact
+    # issuer/date turnover values against proposed additional sessions.
+    archive_lookup = {}
+    if independently_verified_daily_archives is not None:
+        for day, stocks in independently_verified_daily_archives:
+            if day > price_date:
+                raise ValueError("FUTURE_DAILY_PRICE_ARCHIVE")
+            value_ntd = stocks.get(("TWSE", CODE))
+            if value_ntd is None:
+                continue
+            require(day not in archive_lookup and type(value_ntd) is int and value_ntd >= 0,
+                    "INVALID_DUPLICATE_OR_TURNOVER_IN_ARCHIVE")
+            archive_lookup[day] = value_ntd
+            if day in history_dates:
+                original = next(row["turnover_ntd"] for row in history_sessions
+                                if row["date"] == day)
+                require(original == value_ntd, "OFFICIAL_OVERLAP_SOURCE_CONFLICT")
     additions = h.get("validated_archive_added_sessions", [])
     require(isinstance(additions, list), "INVALID_REFERENCE_ADDITION_PROVENANCE")
     if h.get("validated_archive_additions") is not None:
@@ -103,6 +121,9 @@ def check_report(probe, value, ir, history):
                 and type(turnover) is int and turnover >= 0
                 and new_session.get("source") == "SHA_CHECKED_MARKET_DAILY_ARCHIVE",
                 "INVALID_VALIDATED_REFERENCE_SESSION")
+        require(independently_verified_daily_archives is not None and
+                day in archive_lookup and archive_lookup[day] == turnover,
+                "REFERENCE_SESSION_NOT_IDENTICAL_TO_HASHED_OFFICIAL_ARCHIVE")
         history_dates.add(day)
         sessions.append(dict(date=day,turnover_ntd=turnover))
     sessions.sort(key=lambda s: s["date"], reverse=True)
@@ -258,7 +279,13 @@ def main():
     require(common.get("model_vintage") == p884.get("estimate_vintage")
             and common.get("price_date") == p884.get("asof_price_date"),
             "STALE_6206_EVIDENCE_MIX")
-    result = check_report(probe, value, ir, history)
+    # Cross-check v884's proposed appended reference days against official
+    # daily bytes again, independent of the model's cached probe result.
+    from scripts.v884_evidence_probe import price_archive
+    manifest = load("prices/latest_manifest.json")
+    official_days, _ = price_archive(root, common["price_date"], manifest)
+    result = check_report(probe, value, ir, history,
+                          independently_verified_daily_archives=official_days)
     dst = root / "rankings"
     (dst / "v891_6206_gate_triage.json").write_text(
         json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
