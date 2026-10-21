@@ -48,7 +48,13 @@ def compact(value):
     return re.sub(r"\s+","",unicodedata.normalize("NFKC",str(value))).lower()
 
 def period_of_title(title):
-    zh=re.search(r"(20\d{2})年(第一|第二|第三|第四)季",str(title))
+    # A self-reported earnings *press release* is not an eight-quarter
+    # consolidated financial report, even if its title includes a quarter.
+    title=str(title)
+    if "合併財務報告" not in title and not re.search(
+            r"Consolidated\s+Financial\s+Statements",title,re.I):
+        return None
+    zh=re.search(r"(20\d{2})年(第一|第二|第三|第四)季",title)
     if zh:
         q={"第一":1,"第二":2,"第三":3,"第四":4}[zh[2]]
         return f"{zh[1]}-Q{q}"
