@@ -4,16 +4,20 @@ on:
   pull_request:
     paths:
       - 'tw_model_v880/factory_ramp.py'
+      - 'tw_model_v880/disclosed_cogs.py'
       - 'scripts/v899_factory_ramp_audit.py'
       - 'tests/test_v899_factory_ramp.py'
+      - 'tests/test_v8a0_9802_disclosed_cogs.py'
       - 'README_V899_FACTORY_RAMP.md'
       - 'tw-market-data/evidence/v880/factory_ramp/**'
       - '.github/workflows/v899-factory-ramp-audit.yml'
   push:
     paths:
       - 'tw_model_v880/factory_ramp.py'
+      - 'tw_model_v880/disclosed_cogs.py'
       - 'scripts/v899_factory_ramp_audit.py'
       - 'tests/test_v899_factory_ramp.py'
+      - 'tests/test_v8a0_9802_disclosed_cogs.py'
       - 'README_V899_FACTORY_RAMP.md'
       - 'tw-market-data/evidence/v880/factory_ramp/**'
       - 'tw-market-data/fundamentals/2025-Q1/**'
@@ -40,8 +44,8 @@ jobs:
           python-version: '3.12'
       - name: Test PIT, inventory COGS, source hashes, synthetic opposing scenarios
         run: |
-          python -m py_compile tw_model_v880/factory_ramp.py scripts/v899_factory_ramp_audit.py
-          python -m unittest -v tests.test_v899_factory_ramp
+          python -m py_compile tw_model_v880/factory_ramp.py tw_model_v880/disclosed_cogs.py scripts/v899_factory_ramp_audit.py
+          python -m unittest -v tests.test_v899_factory_ramp tests.test_v8a0_9802_disclosed_cogs
       - name: Audit every issuer from current and comparable standalone quarter income
         run: python scripts/v899_factory_ramp_audit.py --data-dir tw-market-data
       - name: Ensure 9802 and 2330 included without valuation or grade promotion
@@ -55,6 +59,13 @@ jobs:
           assert j['formal_Aplus_changes'] == 0 and j['base_eps_pe_target_changes'] == 0
           assert all(not x['base_gm_override_allowed'] for x in j['all_issuer_accounting'])
           assert all(not x['formal_a_plus_changed'] for x in j['all_issuer_accounting'])
+          c=j['issuer_disclosed_costs']['9802']
+          assert c['status']=='PUBLISHED_CONSOLIDATED_COGS_SPLIT_NOT_PLANT_CAUSALITY'
+          assert c['reconciled_to_standardized_q2_accounting']
+          assert -5.3 < c['materials_plus_labor_gm_effect_pp'] < -5.2
+          assert .6 < c['manufacturing_overhead_gm_effect_pp'] < .75
+          assert c['original_pdf_archived_in_repository'] is False
+          assert c['base_gm_override_allowed'] is False
           print('Research evidence separate from formal A+ or trading rules')
           PY
   publish:
@@ -77,7 +88,7 @@ jobs:
           for attempt in 1 2 3; do
             git fetch origin main
             git reset --hard origin/main
-            latest_input=$(git log -1 --format=%H -- tw_model_v880/factory_ramp.py scripts/v899_factory_ramp_audit.py tw-market-data/evidence/v880/factory_ramp/ tw-market-data/fundamentals/2025-Q1/ tw-market-data/fundamentals/2025-Q2/ tw-market-data/fundamentals/2026-Q1/ tw-market-data/fundamentals/2026-Q2/)
+            latest_input=$(git log -1 --format=%H -- tw_model_v880/factory_ramp.py tw_model_v880/disclosed_cogs.py scripts/v899_factory_ramp_audit.py tw-market-data/evidence/v880/factory_ramp/ tw-market-data/fundamentals/2025-Q1/ tw-market-data/fundamentals/2025-Q2/ tw-market-data/fundamentals/2026-Q1/ tw-market-data/fundamentals/2026-Q2/)
             last_report=$(git log -1 --format=%H -- tw-market-data/rankings/v899_factory_ramp_audit.json)
             if [ -n "$last_report" ] && [ -n "$latest_input" ] && git merge-base --is-ancestor "$latest_input" "$last_report"; then
               echo 'Same original quarterly evidence and factory causal code already analyzed.'
