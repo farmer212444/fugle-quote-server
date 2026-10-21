@@ -32,7 +32,7 @@ def require(test,error):
 def load_json(path):
     return json.loads(Path(path).read_text(encoding="utf-8"))
 
-def prepare(top,gate,price_manifest,focus=None):
+def prepare(top,gate,price_manifest,focus=None,etf_overlay=None):
     """Check input vintages before sorting; never splice a stale snapshot."""
     asof=top.get("asof_price_date")
     require(asof and asof==gate.get("asof_price_date")==price_manifest.get("date"),
@@ -43,6 +43,16 @@ def prepare(top,gate,price_manifest,focus=None):
     gate_index={x["code"]:x for x in gate.get("issuer_diagnostics",[])}
     require(len(gate_index)==len(gate.get("issuer_diagnostics",[])),
             "DECISION_LANE_DUPLICATE_GATE_ISSUER")
+    etf_index={}
+    if etf_overlay is not None:
+        require(etf_overlay.get("schema")=="V8A6_ETF_INDEX_ROTATION_RESEARCH_WATCH"
+                and etf_overlay.get("asof_price_date")==asof
+                and etf_overlay.get("estimate_vintage")==top.get("estimate_vintage")
+                and etf_overlay.get("formal_Aplus_created")==0
+                and etf_overlay.get("base_ranking_and_2027_model_unchanged") is True,
+                "ETF_OVERLAY_VINTAGE_OR_FORMAL_CERTIFICATE_INCONSISTENT")
+        etf_index=etf_overlay.get("stocks",{})
+        require(isinstance(etf_index,dict),"ETF_OVERLAY_STOCKS_INVALID")
     result=[]
     for r in top["issuer_ranked"]:
         code=r["code"]
@@ -64,6 +74,10 @@ def prepare(top,gate,price_manifest,focus=None):
             status="BATCH_ONLY_ORIGINAL_FILING_REVIEW"
         else:
             status="CURRENT_NUMERICS_VERIFIED_OTHER_GATES_PENDING"
+        constituent=etf_index.get(code,{})
+        etf_convergent=constituent.get("three_way_convergence_observed") is True
+        if etf_convergent:
+            status="ETF_CHIP_EARNINGS_CONVERGENT_RISK_REVIEW"
         stress=r.get("stress_double20_upside_pct")
         stress_survives=isinstance(stress,(int,float)) and not isinstance(stress,bool) and stress>=30
         formal_passed=evidence.get("formally_passed_gates",[])
@@ -88,9 +102,17 @@ def prepare(top,gate,price_manifest,focus=None):
             model_13_gate_pending_count=len(pending),
             model_13_gate_failed_count=len(evidence.get("formally_failed_gates",[])),
             quality_review_status=status,
+            etf_constituent_research_context=(
+                {k:constituent.get(k) for k in
+                 ("research_review_status","event_history_count",
+                  "live_archived_deletions_120d","three_way_convergence_observed")}
+                if constituent else None),
+            etf_warning_active=etf_convergent,
+            ETF_history_is_not_evidence_of_manager_forecast_accuracy=True,
             high_confidence_buy_or_Aplus_certified=False))
     # Review order is an explicit heuristic, NOT an objective return ranking.
-    priority={"CURRENT_NUMERICS_VERIFIED_OTHER_GATES_PENDING":0,
+    priority={"ETF_CHIP_EARNINGS_CONVERGENT_RISK_REVIEW":3,
+              "CURRENT_NUMERICS_VERIFIED_OTHER_GATES_PENDING":0,
               "BATCH_ONLY_ORIGINAL_FILING_REVIEW":1,
               "OPERATING_PE_OR_DILUTION_RED_FLAGS_REVIEW":2}
     for_review=sorted(result,key=lambda r:(
@@ -107,6 +129,14 @@ def prepare(top,gate,price_manifest,focus=None):
         uncertainty_from_not_yet_disclosed_Q3_profit_retained=True,
         full_market_certified_rank=False,
         formal_Aplus_added=0,
+        etf_index_event_overlay_present=etf_overlay is not None,
+        etf_overlay_is_not_a_fourteenth_gate=True,
+        etf_origin_publication_PIT_and_backtest_not_certified=True,
+        etf_focus_9802=(
+            {k:etf_index["9802"].get(k) for k in
+              ("deletes","adds","last_event","live_archived_deletions_120d",
+               "research_review_status")}
+            if "9802" in etf_index else None),
         issuer_count=len(result),
         verification_order=for_review,
         base_upside_order=result,
@@ -116,6 +146,7 @@ def prepare(top,gate,price_manifest,focus=None):
             "Double20 stress assumes EPS and PE each minus20%; not a tail-loss probability or adjusted Base.",
             "Revenue deceleration is not proven earnings deceleration, and negative OCF can arise during expansion.",
             "CB terms and industry peer PE require dated original evidence; ranking never grants A+.",
+            "ETF constituent index changes are not actual ETF fund orders, never automatically promote A+ or Exit; incomplete coverage is not zero ETF exposure.",
         ])
     if focus:
         report["9802_Q3_self_report"]=dict(period=focus.get("period"),
@@ -143,6 +174,13 @@ def markdown(report):
                      f"{fmt(x['base_upside_pct'])}|{fmt(x['sensitivity_eps20_pe20_upside_pct'])}|"
                      f"{'已核數值' if x['original_current_numerics_checked'] else '待核原件'}|"
                      f"{brief}|{x['quality_review_status']}|")
+    if report.get("etf_focus_9802"):
+        x=report["etf_focus_9802"]
+        lines += ["", "## ETF成分股異動研究警示（9802）","",
+            f"官方指數歷史：剔除{x['deletes']}次、納入{x['adds']}次；"
+            f"最近120日有永久原件且符合提醒條件的剔除：{x['live_archived_deletions_120d']}次。",
+            f"訊號：{x['research_review_status']}。2025歷史剔除不能充作今日的新撤退警示。",
+            "未驗證ETF實際下單、全市場歷史成分股、真實PIT回測，僅作風險查核，不能調整Base或正式A+。"]
     lines+=["","## 適用限制","",
         "這是20檔研究估值的**查核排程**，未將任何股票認證為安全或可重押。",
         "Q3營收明顯減速／現金流缺口／CB條款及PE未核者顯示警戒，**不機械下修Base**，以免製造沒有事實支持的新版EPS。",
@@ -162,9 +200,11 @@ def main():
     root=Path(args.data_dir)
     focuspath=root/"evidence/v880/issuer_reviews/9802_q3_20261020_self_report.json"
     focus=load_json(focuspath) if focuspath.exists() else None
+    etf_path=root/"rankings/v8a6_etf_rotation_watch.json"
+    etf=load_json(etf_path) if etf_path.exists() else None
     result=prepare(load_json(root/"rankings/v892_top20_quality_audit.json"),
                    load_json(root/"rankings/v891_gate_progress.json"),
-                   load_json(root/"prices/latest_manifest.json"),focus)
+                   load_json(root/"prices/latest_manifest.json"),focus,etf)
     (root/"rankings/v8a5_quality_decision_lane.json").write_text(
         json.dumps(result,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
     (root/"rankings/v8a5_quality_decision_lane.md").write_text(
