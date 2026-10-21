@@ -172,7 +172,8 @@ def chip_weakness(chip, code, asof_market):
             or not isinstance(weekly,(int,float)) or not math.isfinite(weekly)):
         weekly=None
     retreat=(flow.get("status") == "OBSERVED_RETREAT_REQUIRES_FUNDAMENTAL_REVIEW"
-             and flow.get("observation_end") <= asof_market)
+             and isinstance(flow.get("observation_end"),str)
+             and flow["observation_end"] <= asof_market)
     return dict(status="SOME_CHIP_SOURCE_OBSERVED_NOT_CERTIFIED",
                 big_holder_change_pp=weekly,
                 tdcc_level_12_15_is_not_identified_insider=True,
