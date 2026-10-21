@@ -31,7 +31,10 @@ on:
       - 'scripts/v892_top20_quality_audit.py'
       - 'scripts/v894_revenue_lead_discovery.py'
       - 'scripts/v8a5_quality_decision_lane.py'
+      - 'scripts/v8a6_etf_rotation_watch.py'
+      - 'tw-market-data/evidence/v880/etf_index_constituent_events.json'
       - 'tests/test_v8a5_quality_decision_lane.py'
+      - 'tests/test_v8a6_etf_rotation_watch.py'
       - 'scripts/v897_freeze_model_vintage.py'
       - 'README_V894.md'
       - 'scripts/v891_gate_certification.py'
@@ -76,7 +79,10 @@ on:
       - 'scripts/v892_top20_quality_audit.py'
       - 'scripts/v894_revenue_lead_discovery.py'
       - 'scripts/v8a5_quality_decision_lane.py'
+      - 'scripts/v8a6_etf_rotation_watch.py'
+      - 'tw-market-data/evidence/v880/etf_index_constituent_events.json'
       - 'tests/test_v8a5_quality_decision_lane.py'
+      - 'tests/test_v8a6_etf_rotation_watch.py'
       - 'scripts/v897_freeze_model_vintage.py'
       - 'README_V894.md'
       - 'scripts/v891_gate_certification.py'
@@ -184,6 +190,7 @@ jobs:
           python scripts/v890_five_candidate_audit.py
           python scripts/v892_top20_quality_audit.py
           python scripts/v894_revenue_lead_discovery.py
+          python scripts/v8a6_etf_rotation_watch.py
           python scripts/v8a5_quality_decision_lane.py
       - name: Save current results on main only (retry from fresh origin)
         if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
@@ -216,7 +223,8 @@ jobs:
             python scripts/v890_five_candidate_audit.py
             python scripts/v892_top20_quality_audit.py
             python scripts/v894_revenue_lead_discovery.py
-          python scripts/v8a5_quality_decision_lane.py
+            python scripts/v8a6_etf_rotation_watch.py
+            python scripts/v8a5_quality_decision_lane.py
             python scripts/v897_freeze_model_vintage.py --git-source-sha "$(git rev-parse HEAD)"
             git add tw-market-data/evidence/v880 tw-market-data/rankings tw-market-data/pit_vintages
             if git diff --cached --quiet; then exit 0; fi
