@@ -60,12 +60,15 @@ def _snapshot(raw, asof):
         raise ValueError("ETF_CODE_INVALID")
     if raw.get("fund_type") != "TAIWAN_EQUITY_UNLEVERAGED":
         raise ValueError("ETF_FUND_TYPE_UNSUPPORTED")
-    effective = _date(raw.get("effective_date"))
+    units_date = _date(raw.get("units_asof_date"))
+    basket_effective = _date(raw.get("basket_effective_date"))
     published = _time(raw.get("published_at"))
-    if published > asof or effective > asof.astimezone(TAIPEI).date():
+    if published > asof or units_date > asof.astimezone(TAIPEI).date():
         raise ValueError("ETF_FUTURE_PIT_INPUT")
-    if effective > published.astimezone(TAIPEI).date() + timedelta(days=7):
-        raise ValueError("ETF_EFFECTIVE_DATE_IMPLAUSIBLE")
+    if published.astimezone(TAIPEI).date() < units_date:
+        raise ValueError("ETF_UNITS_PUBLISHED_BEFORE_ASOF_DATE")
+    if not units_date <= basket_effective <= units_date + timedelta(days=7):
+        raise ValueError("ETF_BASKET_EFFECTIVE_DATE_IMPLAUSIBLE")
     source = str(raw.get("source_url", ""))
     url = urlparse(source)
     if url.scheme != "https" or not url.hostname or not raw.get("issuer"):
@@ -106,15 +109,18 @@ def _snapshot(raw, asof):
     if total > 1.0001:
         raise ValueError("ETF_WEIGHTS_EXCEED_100PCT")
     index_family = str(raw.get("index_family", "")).strip()
-    return dict(etf_code=code, effective_date=effective.isoformat(),
+    return dict(etf_code=code, units_asof_date=units_date.isoformat(),
+                basket_effective_date=basket_effective.isoformat(),
                 published_at=published.isoformat(), units=units, nav=nav,
                 source_url=source, raw_sha256=raw["raw_sha256"], issuer=raw["issuer"],
                 weight_basis=basis, index_family=index_family or None,
                 weights=weights, substitutions=substitutes)
 
 def _interval(old, new, prices):
-    if old["etf_code"] != new["etf_code"] or old["effective_date"] >= new["effective_date"]:
+    if old["etf_code"] != new["etf_code"] or old["units_asof_date"] >= new["units_asof_date"]:
         raise ValueError("ETF_INTERVAL_INVALID")
+    # Align fund-unit snapshots by their own as-of date, not the future
+    # effective date of the ETF's subscription basket.
     # Prior NAV and prior constituents isolate share-unit creation exposure
     # without incorrectly calling price-driven weight changes ETF trades.
     delta = new["units"] - old["units"]
@@ -123,8 +129,8 @@ def _interval(old, new, prices):
     for stock, weight in old["weights"].items():
         if stock not in new["substitutions"] and stock in prices:
             by_stock[stock] = flow_ntd * weight
-    return dict(etf_code=old["etf_code"], date=new["effective_date"],
-                prior_date=old["effective_date"], units_change=int(delta),
+    return dict(etf_code=old["etf_code"], units_asof_date=new["units_asof_date"],
+                prior_units_date=old["units_asof_date"], units_change=int(delta),
                 units_change_pct=round(100 * delta / old["units"], 5),
                 estimated_fund_creation_ntd=round(flow_ntd, 2),
                 stock_flow_exposure_ntd=by_stock, weight_basis=old["weight_basis"],
@@ -167,7 +173,7 @@ def analyze(records, session_dates, price_rows, price_date, *, asof, research=No
     for ix, raw in enumerate(records):
         try:
             row = _snapshot(raw, cut)
-            key, d = row["etf_code"], row["effective_date"]
+            key, d = row["etf_code"], row["units_asof_date"]
             if d not in sessions:
                 raise ValueError("ETF_EFFECTIVE_SESSION_NOT_ARCHIVED")
             if d in valid[key]:
@@ -181,7 +187,7 @@ def analyze(records, session_dates, price_rows, price_date, *, asof, research=No
     for etf, data in sorted(valid.items()):
         latest = data.get(price_date)
         if not latest:
-            per_etf.append(dict(etf_code=etf, status="CURRENT_SESSION_PCF_MISSING"))
+            per_etf.append(dict(etf_code=etf, status="CURRENT_SESSION_UNITS_SNAPSHOT_MISSING"))
             continue
         available = []
         for days in (1, 5, 20):
@@ -199,7 +205,8 @@ def analyze(records, session_dates, price_rows, price_date, *, asof, research=No
                 horizons[days][stock] += flow
             available.append(days)
         per_etf.append(dict(etf_code=etf, status="RESEARCH_PROXY_ONLY" if available else "INSUFFICIENT_SESSION_HISTORY",
-                            effective_date=price_date, horizons_available=available,
+                            units_asof_date=price_date, basket_effective_date=latest["basket_effective_date"],
+                            horizons_available=available,
                             weight_basis=latest["weight_basis"], index_family=latest["index_family"],
                             source_url=latest["source_url"], raw_sha256=latest["raw_sha256"]))
     full_5 = sum(5 in x.get("horizons_available", []) for x in per_etf)
