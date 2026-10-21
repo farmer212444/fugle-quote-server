@@ -4,7 +4,11 @@ import argparse
 from datetime import datetime, timezone
 import json
 from pathlib import Path
+import sys
 
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0,str(ROOT))
 from tw_model_v880.factory_ramp import accounting_only, assess_factory_ramp
 
 FOCUS = ("9802","2330","9910","6768","6890","6965","1476","6206")
