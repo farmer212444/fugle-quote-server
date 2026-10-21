@@ -39,6 +39,7 @@ on:
       - 'tw-market-data/experiments/**'
       - 'tw-market-data/evidence/v880/risk_profiles/**'
       - 'scripts/v8a6_etf_rotation_watch.py'
+      - 'scripts/v8a7_2069_independent_valuation.py'
       - 'tw-market-data/evidence/v880/etf_index_constituent_events.json'
       - 'tests/test_v8a5_quality_decision_lane.py'
       - 'tests/test_v8a6_etf_rotation_watch.py'
@@ -94,6 +95,7 @@ on:
       - 'tw-market-data/experiments/**'
       - 'tw-market-data/evidence/v880/risk_profiles/**'
       - 'scripts/v8a6_etf_rotation_watch.py'
+      - 'scripts/v8a7_2069_independent_valuation.py'
       - 'tw-market-data/evidence/v880/etf_index_constituent_events.json'
       - 'tests/test_v8a5_quality_decision_lane.py'
       - 'tests/test_v8a6_etf_rotation_watch.py'
@@ -207,6 +209,7 @@ jobs:
           python scripts/v892_top20_quality_audit.py
           python scripts/v894_revenue_lead_discovery.py
           python scripts/v8a6_etf_rotation_watch.py
+          python scripts/v8a7_2069_independent_valuation.py
           python scripts/v8a5_quality_decision_lane.py
           python scripts/institutional_shadow.py
           python scripts/institutional_review.py
@@ -242,6 +245,7 @@ jobs:
             python scripts/v892_top20_quality_audit.py
             python scripts/v894_revenue_lead_discovery.py
             python scripts/v8a6_etf_rotation_watch.py
+            python scripts/v8a7_2069_independent_valuation.py
             python scripts/v8a5_quality_decision_lane.py
             python scripts/v897_freeze_model_vintage.py --git-source-sha "$(git rev-parse HEAD)"
             python scripts/institutional_shadow.py
