@@ -1,0 +1,20 @@
+name: V8.A4 Official Dated TWSE Price Source Probe
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'scripts/v8a4_twse_daily_probe.py'
+      - '.github/workflows/v8a4-dated-price-probe.yml'
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Inspect date-scoped exchange source before permitting live recovery
+        run: python scripts/v8a4_twse_daily_probe.py
