@@ -1,0 +1,84 @@
+name: V8.9.6 00905 PIT index-exit research
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'scripts/v896_00905_exit_pit.py'
+      - 'tests/test_v896_00905_exit_pit.py'
+      - 'tw-market-data/etf/index_reviews/**'
+      - 'README_V896_00905_PIT.md'
+      - '.github/workflows/v896-00905-index-exit-pit.yml'
+  push:
+    paths:
+      - 'scripts/v896_00905_exit_pit.py'
+      - 'tests/test_v896_00905_exit_pit.py'
+      - 'tw-market-data/etf/index_reviews/**'
+      - 'README_V896_00905_PIT.md'
+      - '.github/workflows/v896-00905-index-exit-pit.yml'
+permissions:
+  contents: write
+concurrency:
+  group: v896-index-exit-PIT
+  cancel-in-progress: false
+jobs:
+  pit_research_tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate timeline, source data, membership cohort, model unchanged
+        run: |
+          python -m py_compile scripts/v896_00905_exit_pit.py
+          python -m unittest -v tests.test_v896_00905_exit_pit
+      - name: Build historical audit report from the archived primary event
+        run: python scripts/v896_00905_exit_pit.py --data-dir tw-market-data
+      - name: Assert that no ahead-of-time index event or trading signal was emitted
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          j=json.loads(Path('tw-market-data/rankings/v896_00905_exit_pit.json').read_text())
+          checkpoints=j['input_checkpoints']
+          assert checkpoints[1]['membership_decision_known_at_asof'] is False
+          assert checkpoints[2]['membership_decision_known_at_asof'] is False
+          assert checkpoints[3]['membership_decision_known_at_asof'] is True
+          assert checkpoints[1]['issuer_observation_available_at_asof'] is True
+          assert j['backtest_alpha_verified'] is False
+          assert j['formal_Aplus_changed'] is False
+          assert j['base_target_price_changed'] is False
+          assert all(x['trading_action'] is None for x in checkpoints)
+          print('PIT chronology and no-auto-trade guard passed.')
+          PY
+  publish:
+    needs: pit_research_tests
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Publish frozen event report only when relevant evidence changes
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          for attempt in 1 2 3; do
+            git fetch origin main
+            git reset --hard origin/main
+            python scripts/v896_00905_exit_pit.py --data-dir tw-market-data
+            git add tw-market-data/rankings/v896_00905_exit_pit.json tw-market-data/rankings/v896_00905_exit_pit.md
+            if git diff --cached --quiet; then
+              echo 'No index-PIT report change to publish.'
+              exit 0
+            fi
+            git commit -m 'data: archive 00905 2025 index-exit PIT audit'
+            if git push origin HEAD:main; then exit 0; fi
+            echo "Concurrent main update; safely retrying $attempt/3"
+          done
+          exit 1
