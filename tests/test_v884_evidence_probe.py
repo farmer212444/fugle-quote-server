@@ -5,9 +5,51 @@ import pathlib
 import tempfile
 import unittest
 from types import SimpleNamespace
-from scripts.v884_evidence_probe import price_archive,liquidity_probe,probe,financial_probe,capital_probe
+from scripts.v884_evidence_probe import price_archive,liquidity_probe,probe,financial_probe,capital_probe,issuer_backfill_probe,reconcile_issuer_reference_history
 
 class OfficialEvidenceProbeTests(unittest.TestCase):
+    def test_stale_monthly_history_merged_with_real_dated_official_reference(self):
+        # This regression uses the exact preserved official 2026-10-19 TWSE
+        # normalized price, and pre-existing monthly issuer-history snapshots
+        # whose latest session is 2026-10-16. No invented fill-in dates.
+        root=pathlib.Path(__file__).resolve().parents[1]/"tw-market-data"
+        official=json.loads((root/"prices/2026-10-19.json").read_text())
+        for code in ("6206","9802"):
+            rows=[x for x in official if x.get("market")=="TWSE" and x.get("code")==code]
+            self.assertEqual(len(rows),1)
+            self.assertEqual(rows[0]["date"],"2026-10-19")
+            sample=[("2026-10-19",{("TWSE",code):rows[0]["turnover_ntd"]})]
+            older=issuer_backfill_probe(root,"2026-10-19","TWSE",code)
+            self.assertEqual(older["status"],"PENDING_REFERENCE_SESSION_MISSING")
+            merged=issuer_backfill_probe(root,"2026-10-19","TWSE",code,
+                                          reference_archives=sample)
+            self.assertEqual(merged["status"],"SOURCE_CAPTURED_NOT_FULL_TRADABILITY")
+            self.assertEqual(merged["validated_archive_additions"],1)
+            self.assertEqual(merged["twenty_day"]["sessions"],20)
+            self.assertEqual(merged["twenty_day"]["last"],"2026-10-19")
+            self.assertIsInstance(merged["twenty_day"]["median_turnover_ntd"],(int,float))
+            self.assertEqual(merged["tradability_gate"],"PENDING_NOT_CERTIFIED")
+
+    def test_contradictory_same_day_turnover_stays_pending(self):
+        historical={"2026-10-16":100_000_000,"2026-10-19":20_000_000}
+        ref=[("2026-10-19",{("TWSE","6206"):20_000_001})]
+        result=reconcile_issuer_reference_history(historical,ref,"2026-10-19","TWSE","6206")
+        self.assertEqual(result["status"],"SOURCE_CONFLICT_REVIEW_REQUIRED")
+        self.assertIsNone(result["twenty_day"])
+        self.assertEqual(result["turnover_conflicts"][0]["date"],"2026-10-19")
+        self.assertEqual(result["tradability_gate"],"PENDING_NOT_CERTIFIED")
+
+    def test_no_newer_reference_no_20day_fill_and_no_lookahead(self):
+        historical={(dt.date(2026,9,1)+dt.timedelta(days=i)).isoformat():
+                    5_000_000 for i in range(30)}
+        result=reconcile_issuer_reference_history(historical,[],"2026-10-19","TWSE","9802")
+        self.assertEqual(result["status"],"PENDING_REFERENCE_SESSION_MISSING")
+        self.assertIsNone(result["twenty_day"])
+        with self.assertRaisesRegex(ValueError,"DAILY_ARCHIVE_AFTER_PRICE_REFERENCE_DATE"):
+            reconcile_issuer_reference_history(
+                historical,[("2026-10-20",{("TWSE","9802"):1})],
+                "2026-10-19","TWSE","9802")
+
     def test_hash_checked_20_sessions_and_no_false_gate_pass(self):
         with tempfile.TemporaryDirectory() as temp:
             root=pathlib.Path(temp);folder=root/"prices";folder.mkdir()
