@@ -101,6 +101,28 @@ class OperatingBridge2069Tests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,"FINANCIAL_BASIS_CHANGED"):
             analyze(self.root)
 
+    def test_mops_integral_float_normalization_does_not_create_fake_missing_data(self):
+        path=self.root/"fundamentals/2026-Q2/TWSE_income.json"
+        data=json.loads(path.read_text())
+        for f in ("revenue_ytd_k","gross_profit_ytd_k","operating_profit_ytd_k"):
+            data["rows"][0][f]=float(data["rows"][0][f])
+        path.write_text(json.dumps(data))
+        flow=self.root/"fundamentals/2026-Q2/TWSE_cashflow.json"
+        cash=json.loads(flow.read_text())
+        cash["rows"][0]["operating_cashflow_ytd_k"]=-114454.0
+        flow.write_text(json.dumps(cash))
+        out=analyze(self.root,27.35)
+        self.assertEqual(out["scenarios"]["Base"]["fair_price_scenario"],27.37)
+        self.assertEqual(out["historical"]["reported_2026_q2_operating_expense_pct"],7.9)
+
+    def test_nonintegral_mops_thousand_amount_is_not_silently_rounded(self):
+        path=self.root/"fundamentals/2026-Q2/TWSE_income.json"
+        data=json.loads(path.read_text())
+        data["rows"][0]["revenue_ytd_k"]=4999074.1
+        path.write_text(json.dumps(data))
+        with self.assertRaisesRegex(ValueError,"FINANCIAL_BASIS_CHANGED"):
+            analyze(self.root,27.35)
+
     def test_margin_break_even_and_strictly_pit_separated_compare(self):
         self.assertEqual(margin_needed_for_return(27.35,30,ASSUMPTIONS["Base"]),13.97)
         with self.assertRaisesRegex(ValueError,"INVALID_USER_QUOTED_REFERENCE"):
