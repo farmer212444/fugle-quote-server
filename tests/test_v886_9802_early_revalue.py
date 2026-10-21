@@ -28,7 +28,8 @@ class EarlyQ3Tests(unittest.TestCase):
         }
         target=root/"issuer/9802/manifest.json"
         target.write_text(json.dumps(source),encoding="utf-8")
-        captured=collect(root,"9802","2026-10-21",now,
+        captured=collect(root,"9802","2026-10-21",
+                         "2026-10-20T23:41:00+00:00",
                          fetcher=lambda issuer,url:raw)
         self.assertEqual(captured["records"],1)
         return target,source
@@ -43,6 +44,8 @@ class EarlyQ3Tests(unittest.TestCase):
                              "OFFICIAL_ISSUER_Q3_SELF_REPORTED_SOURCE_ARCHIVED")
             self.assertTrue(result["original_bytes_sha256_checked"])
             self.assertEqual(result["issuer_website_display_date"],"2026-10-20")
+            self.assertNotEqual(result["first_source_receipt_at_utc"],
+                                result["original_pdf_archived_at_utc"])
             self.assertFalse(result["certified_Aplus"])
             self.assertFalse(result["issuer_company_publication_PIT_verified"])
             self.assertEqual(result["formal_gate_PASSES_created"],0)
