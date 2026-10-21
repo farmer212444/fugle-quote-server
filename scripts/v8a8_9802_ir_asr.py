@@ -32,8 +32,9 @@ def download_mp4(day,output):
         "User-Agent":"Mozilla/5.0 (compatible; FulgentSunIRSourceAudit/1.0)",
         "Accept":"video/mp4,application/octet-stream;q=0.9,*/*;q=0.5",
     })
-    expected={"2026-09-17":81463384,"2025-09-03":58718487}
-    max_bytes=160_000_000
+    expected={"2026-09-17":81463384,"2025-09-03":58718487,
+              "2025-11-26":1421397287}
+    max_bytes=1_600_000_000 if day=="2025-11-26" else 160_000_000
     with urllib.request.urlopen(req,timeout=60) as res:
         if res.status not in (200,206):
             raise ValueError("Unexpected TWSE video response code")
@@ -127,7 +128,7 @@ def transcribe(day,model_name,output_dir):
 
 def main():
     p=argparse.ArgumentParser()
-    p.add_argument("--date",default="2026-09-17",choices=["2026-09-17","2025-09-03"])
+    p.add_argument("--date",default="2026-09-17",choices=["2026-09-17","2025-09-03","2025-11-26"])
     p.add_argument("--model",default="small")
     p.add_argument("--output",default="temp_9802_ir_draft")
     opts=p.parse_args()
