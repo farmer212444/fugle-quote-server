@@ -2,7 +2,7 @@
   "schema": "V889_OFFICIAL_TWSE_ISSUER_MONTHLY",
   "issuer": "4155",
   "market": "TWSE",
-  "price_reference_asof": "2026-10-19",
+  "price_reference_asof": "2026-10-20",
   "source_type": "OFFICIAL_TWSE_MONTHLY_STOCK_DAY",
   "original_raw_responses_preserved_in_actions_artifact_not_repository": true,
   "backfill_capture_not_point_in_time_trade_history": true,
@@ -13,8 +13,8 @@
   "by_month": {
     "2026-10": {
       "source_url": "https://www.twse.com.tw/rwd/zh/afterTrading/STOCK_DAY?date=20261001&stockNo=4155&response=json",
-      "original_response_sha256": "a92cd47e34ab8e4a259b5228b9c890986c0e75e177ad6746830f9f0c125f6b88",
-      "captured_at_utc": "2026-10-20T05:51:49.231914+00:00",
+      "original_response_sha256": "6b2b5b8504c5960d3eb0b173f008a3b0651eee2f8114e192744ab01133fab930",
+      "captured_at_utc": "2026-10-21T05:53:59.151471+00:00",
       "original_exchange_signature_verified": false,
       "rows": [
         {
@@ -46,6 +46,12 @@
           "volume_shares": 1409387,
           "turnover_ntd": 22598550,
           "close": 16.1
+        },
+        {
+          "date": "2026-10-20",
+          "volume_shares": 3792863,
+          "turnover_ntd": 64016312,
+          "close": 16.15
         }
       ]
     },
@@ -313,6 +319,12 @@
     }
   },
   "sessions": [
+    {
+      "date": "2026-10-20",
+      "volume_shares": 3792863,
+      "turnover_ntd": 64016312,
+      "close": 16.15
+    },
     {
       "date": "2026-10-19",
       "volume_shares": 1409387,
@@ -594,12 +606,12 @@
     "5": null,
     "20": {
       "sessions": 20,
-      "first": "2026-09-08",
-      "last": "2026-10-19",
-      "median_turnover_ntd": 2830695.5,
+      "first": "2026-09-09",
+      "last": "2026-10-20",
+      "median_turnover_ntd": 2941231.0,
       "min_turnover_ntd": 1064384,
       "zero_turnover_sessions": 0,
-      "idealized_5m_exit_sessions_at_20pct": 8.83
+      "idealized_5m_exit_sessions_at_20pct": 8.5
     },
     "60": null
   }

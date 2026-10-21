@@ -2,7 +2,7 @@
   "schema": "V889_OFFICIAL_TWSE_ISSUER_MONTHLY",
   "issuer": "2376",
   "market": "TWSE",
-  "price_reference_asof": "2026-10-19",
+  "price_reference_asof": "2026-10-20",
   "source_type": "OFFICIAL_TWSE_MONTHLY_STOCK_DAY",
   "original_raw_responses_preserved_in_actions_artifact_not_repository": true,
   "backfill_capture_not_point_in_time_trade_history": true,
@@ -13,8 +13,8 @@
   "by_month": {
     "2026-10": {
       "source_url": "https://www.twse.com.tw/rwd/zh/afterTrading/STOCK_DAY?date=20261001&stockNo=2376&response=json",
-      "original_response_sha256": "e145737b7f8dda9e60e7dea17b9e1128211713e660be1bdfca368c2d91ae6810",
-      "captured_at_utc": "2026-10-20T12:40:32.354845+00:00",
+      "original_response_sha256": "40b5e98264fca8b83ea57c0e451a765f223f061ce0cc2b4cf4b449d4de55f02b",
+      "captured_at_utc": "2026-10-21T05:54:03.955375+00:00",
       "original_exchange_signature_verified": false,
       "rows": [
         {
@@ -88,6 +88,12 @@
           "volume_shares": 2588321,
           "turnover_ntd": 907898818,
           "close": 352.0
+        },
+        {
+          "date": "2026-10-20",
+          "volume_shares": 2902559,
+          "turnover_ntd": 1034334209,
+          "close": 355.0
         }
       ]
     },
@@ -355,6 +361,12 @@
     }
   },
   "sessions": [
+    {
+      "date": "2026-10-20",
+      "volume_shares": 2902559,
+      "turnover_ntd": 1034334209,
+      "close": 355.0
+    },
     {
       "date": "2026-10-19",
       "volume_shares": 2588321,
@@ -677,17 +689,17 @@
   "liquidity": {
     "5": {
       "sessions": 5,
-      "first": "2026-10-13",
-      "last": "2026-10-19",
-      "median_turnover_ntd": 1269268757,
+      "first": "2026-10-14",
+      "last": "2026-10-20",
+      "median_turnover_ntd": 1085061760,
       "min_turnover_ntd": 907898818,
       "zero_turnover_sessions": 0,
       "idealized_5m_exit_sessions_at_20pct": 0.02
     },
     "20": {
       "sessions": 20,
-      "first": "2026-09-17",
-      "last": "2026-10-19",
+      "first": "2026-09-18",
+      "last": "2026-10-20",
       "median_turnover_ntd": 1883597987.0,
       "min_turnover_ntd": 907898818,
       "zero_turnover_sessions": 0,
