@@ -2,7 +2,7 @@
   "schema": "V891_6206_EVIDENCE_TRIAGE",
   "issuer": "6206",
   "valuation_model": "V8.8.2",
-  "estimate_vintage": "2026-10-21T10:33:23.067259+08:00",
+  "estimate_vintage": "2026-10-21T10:40:25.445354+08:00",
   "price_date": "2026-10-19",
   "reference_close": 131.5,
   "common_2027_base_price": 179.69203734021846,
@@ -50,7 +50,9 @@
   "issuer_presentation_receipts_required": 2,
   "original_company_publication_time_verified": false,
   "individual_history_sessions": 74,
-  "twenty_day_turnover_reconciled": false,
+  "merged_reference_daily_sessions": 1,
+  "all_reconciled_history_sessions": 75,
+  "twenty_day_turnover_reconciled": true,
   "formal_Aplus": false,
   "newly_certified_gates": 0,
   "gates": [
@@ -119,11 +121,11 @@
     },
     {
       "gate": "tradability",
-      "source_coverage": "MISSING_OR_UNVERIFIED",
+      "source_coverage": "OBSERVED_PARTIAL",
       "formal_status": "PENDING",
       "next_action": "補驗價差、漲跌停及持倉退出成交可行性",
       "automation_route": "AUTO_THEN_EXECUTION_REVIEW",
-      "reason": "尚無足夠的公司別原始證據可供簽核",
+      "reason": "已有可交叉檢查的部分資料，但不構成完整認證",
       "automatically_certified": false
     },
     {

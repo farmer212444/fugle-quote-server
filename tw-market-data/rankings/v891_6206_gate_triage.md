@@ -1,11 +1,11 @@
 # 6206 飛捷｜13項A+認證障礙自動查核
 
-估值形成：2026-10-21T10:33:23.067259+08:00；官方參考股價日：2026-10-19。
+估值形成：2026-10-21T10:40:25.445354+08:00；官方參考股價日：2026-10-19。
 
 共同模型2027 Base價 179.69元、研究價差 +36.65%；獨立Base價 185.87元。
 
 已取得標準化財報：損益 8/8季、現金流 8/8季；官方法說SHA收據交叉匹配 2/2份；
-個股歷史成交：74日；最近20日金額驗算：待補（不等於可成交性通過）。
+個股歷史成交：74日，追加核對官方全市場日收盤：1日，合計：75日；最近20日金額驗算：一致（不等於可成交性通過）。
 
 ## 即時計算：A+數字門檻與估值脆弱度（非正式認證）
 
@@ -31,7 +31,7 @@
 |matched_peers_and_cycle|MISSING_OR_UNVERIFIED|PENDING|按產品結構比對同業Forward PE與景氣全週期|
 |management_promises|OBSERVED_PARTIAL|PENDING|逐頁抽取法說承諾並與後續實績核對|
 |auditor_scope|MISSING_OR_UNVERIFIED|PENDING|核對會計師意見、核閱範圍及重要性|
-|tradability|MISSING_OR_UNVERIFIED|PENDING|補驗價差、漲跌停及持倉退出成交可行性|
+|tradability|OBSERVED_PARTIAL|PENDING|補驗價差、漲跌停及持倉退出成交可行性|
 |forecast_bridge|OBSERVED_PARTIAL|PENDING|用訂單、ASP、良率及軟硬體組合確認2027營益橋接|
 |insider_claims|MISSING_OR_UNVERIFIED|PENDING|比對內部人申報、交易日、股數及持股變化|
 |dividend_window|OBSERVED_PARTIAL|PENDING|核對除息、實際發放日期與每股股利|
