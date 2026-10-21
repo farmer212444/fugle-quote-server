@@ -47,7 +47,7 @@ class EarlyQ3Tests(unittest.TestCase):
             self.assertFalse(result["issuer_company_publication_PIT_verified"])
             self.assertEqual(result["formal_gate_PASSES_created"],0)
             self.assertTrue(result["issuer_Q3_press_numbers_not_yet_reconciled_with_signed_MOPS_income"])
-            self.assertTrue(result["2027_eps_pe_and_base_unchanged"])
+            self.assertTrue(result["eps_pe_base_2027_unchanged"])
 
     def test_press_original_source_must_be_public_by_research_vintage(self):
         with tempfile.TemporaryDirectory() as d:
