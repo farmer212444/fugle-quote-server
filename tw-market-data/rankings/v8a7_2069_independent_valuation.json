@@ -1,0 +1,119 @@
+{
+  "schema": "V8A7_2069_INDEPENDENT_OPERATING_BRIDGE",
+  "issuer": "2069",
+  "name": "運錩",
+  "financial_last_used": "2026-Q2",
+  "upstream_financial_last_eligible": "2026-Q2",
+  "status": "INDEPENDENT_2027_CYCLICAL_SCENARIO_RESEARCH_ONLY",
+  "official_reference_price_date": "2026-10-20",
+  "official_reference_close": 24.9,
+  "comparison_reference_close": 24.9,
+  "comparison_source": "SHA_CHECKED_DAILY_ARCHIVE_NOT_A_BROKER_FILL",
+  "official_current_financials_are_batch_not_issuer_PIT_certified": true,
+  "source_receipts": {
+    "official_price_sha256": "34b232b2adba334f82b9128338e93f9fc5e2cd176b11f3867ec00350ab81de1d",
+    "official_price_archive": "tw-market-data/prices/2026-10-20.json",
+    "first_half_2026_operating_cashflow_is_ytd": true
+  },
+  "historical": {
+    "reported_2025_fy_revenue_yi": 100.9307,
+    "reported_2025_fy_eps": 1.62,
+    "reported_2026_h1_revenue_yi": 49.9907,
+    "reported_2026_h1_gross_margin_pct": 14.66,
+    "reported_2026_h1_operating_expense_pct": 7.05,
+    "reported_2026_q2_operating_expense_pct": 7.9,
+    "reported_2026_h1_operating_profit_yi": 3.8049,
+    "reported_2026_h1_eps": 1.66,
+    "reported_2026_h1_operating_cashflow_yi": -1.14454,
+    "h1_nonop_net_yi_republished_not_sha_certified": -0.39657,
+    "research_dividend_issued_share_count": 166386836,
+    "original_diluted_share_reconciliation_complete": false
+  },
+  "original_shares_source": "https://stockgo.tw/stock/2069/",
+  "nonop_source": "https://m.esunsec.com.tw/news/instant-detail.aspx?id=%7BB1C04183-0628-46B6-8299-4ECF75F96661%7D",
+  "scenarios": {
+    "Bear": {
+      "name": "Bear",
+      "assumptions": {
+        "revenue_2027_yi": 95.0,
+        "gross_margin_pct": 11.0,
+        "operating_expense_pct": 7.25,
+        "nonop_2027_yi": -0.8,
+        "cash_tax_rate_pct": 20.0,
+        "reasonable_pe": 9.0
+      },
+      "operating_profit_2027_yi": 3.5625,
+      "pre_tax_income_2027_yi": 2.7625,
+      "net_income_2027_yi": 2.21,
+      "issued_shares_denominator": 166386836,
+      "eps_2027_scenario": 1.3282,
+      "fair_price_scenario": 11.95,
+      "reference_price_upside_pct": -51.99,
+      "earnings_forecast_is_verified": false,
+      "peer_pe_original_audit_complete": false,
+      "share_dilution_fully_certified": false
+    },
+    "Base": {
+      "name": "Base",
+      "assumptions": {
+        "revenue_2027_yi": 105.0,
+        "gross_margin_pct": 12.5,
+        "operating_expense_pct": 7.0,
+        "nonop_2027_yi": -0.6,
+        "cash_tax_rate_pct": 20.0,
+        "reasonable_pe": 11.0
+      },
+      "operating_profit_2027_yi": 5.775,
+      "pre_tax_income_2027_yi": 5.175,
+      "net_income_2027_yi": 4.14,
+      "issued_shares_denominator": 166386836,
+      "eps_2027_scenario": 2.4882,
+      "fair_price_scenario": 27.37,
+      "reference_price_upside_pct": 9.92,
+      "earnings_forecast_is_verified": false,
+      "peer_pe_original_audit_complete": false,
+      "share_dilution_fully_certified": false
+    },
+    "Bull": {
+      "name": "Bull",
+      "assumptions": {
+        "revenue_2027_yi": 110.0,
+        "gross_margin_pct": 15.0,
+        "operating_expense_pct": 7.0,
+        "nonop_2027_yi": -0.4,
+        "cash_tax_rate_pct": 20.0,
+        "reasonable_pe": 12.5
+      },
+      "operating_profit_2027_yi": 8.8,
+      "pre_tax_income_2027_yi": 8.4,
+      "net_income_2027_yi": 6.72,
+      "issued_shares_denominator": 166386836,
+      "eps_2027_scenario": 4.0388,
+      "fair_price_scenario": 50.48,
+      "reference_price_upside_pct": 102.75,
+      "earnings_forecast_is_verified": false,
+      "peer_pe_original_audit_complete": false,
+      "share_dilution_fully_certified": false
+    }
+  },
+  "old_33_valuation_assumptions_rejected": {
+    "operating_expense_pct": 6.0,
+    "nonop_yi": -0.15,
+    "comparable_price": 32.53,
+    "previous_33_is_validated": false
+  },
+  "at_27_35_only_if_user_provided": true,
+  "margin_needed_to_break_even_at_reference_pct": 12.06,
+  "margin_needed_for_30pct_upside_at_reference_pct": 13.4,
+  "gross_margin_reversion_will_change_eps_materially": true,
+  "q3_2026_earnings_not_yet_verified": true,
+  "RnD_2026Q2_67_55m_secondary_source_not_normalized_and_nonrecurring_not_proven": true,
+  "standard_fcf_after_only_ppe_purchase_not_derived_due_to_missing_capex": true,
+  "all_investing_cash_flow_not_identical_to_capex": true,
+  "original_financial_notes_and_dilution_pending": true,
+  "formal_gates_passed_by_this_work": 0,
+  "formal_Aplus_added": 0,
+  "base_2027_model_auto_modified": false,
+  "no_calibrated_scenario_probabilities": true,
+  "no_trade_or_automatic_exit": true
+}

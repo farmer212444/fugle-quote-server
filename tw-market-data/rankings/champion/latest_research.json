@@ -1,14 +1,17 @@
 {
-  "model": "V8.10.0",
-  "model_code_sha256": "b60ab1f9acc313c83f5fa7b99858429527125d0974ac7e98d2fc418420dfd4f1",
+  "model": "V8.10.1",
+  "model_code_sha256": "74a7deeb36532ea8974dd06ce7a4658b21102dd03dbea393ad488496c4e8ef81",
+  "runtime_dependencies": {
+    "PyMuPDF": "1.26.6"
+  },
   "strategy_variant": "without-earnings-events",
-  "strategy_variant_sha256": "0f6543e8633dfe2adb4c625c704a8bf7a6e9aa09f72c9d8808f3dff675206651",
-  "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+  "strategy_variant_sha256": "5b394b3e3baf8ac8a0a3844353fcfe8b89c24c8cdeb85785eb0bb1017caa01da",
+  "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
   "asof_price_date": "2026-10-20",
   "price_freshness": {
     "status": "NO_POTENTIAL_WEEKDAY_PRICE_GAP",
     "reference_close_date": "2026-10-20",
-    "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+    "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
     "potentially_missing_weekdays": [],
     "possible_completed_weekday_gap_count": 0,
     "quote_is_confirmed_latest_session": false,
@@ -23,7 +26,7 @@
     "prices/latest_manifest.json": "6d9da6429888bf485b781da04fa2f467ff825431850f78e1ccba9d1a835a5a07",
     "fundamentals/latest_scan.json": "5338ee262f5b3cbb44884cc8365a298fb6b16201af24260a5ff3defebd3b2352",
     "latest_manifest.json": "b1888352c5d37ea711a8ab43b3248c8b3419c216ac0c01a0af172f5d8a35f831",
-    "evidence/v880/manifest.json": "f2b1cc0bfe309c5ab5a2672d184968bb2b85594e0f108e1346fb4636394d4151",
+    "evidence/v880/manifest.json": "b1ee48ec9314481c38fc3ba123b1e5009964515b97e9654cad51e547e5ed48c7",
     "evidence/v880/capital_terms/1101.json": "55eacebe4acb819c9ad6bee00241769b857030d5494df39bb0f7fa1c4d3f5031",
     "evidence/v880/capital_terms/2303.json": "1ff54ed6b062ca50412928ac902dba7e776866dc7890ce83258ab1413a1c1ff3",
     "evidence/v880/capital_terms/2317.json": "d485fc391521001f365b8a594fc9914b032c3e49d03196c82fa83416d0a0e1cd",
@@ -333,7 +336,7 @@
     },
     {
       "path": "evidence/v880/snapshot.json.gz",
-      "sha256": "7a75521fbabf6de387e582397486f6f34ccf650bc6598a10a706c87786f0cb63",
+      "sha256": "f36737dac7bee94567ff55239ecac3bca163292e90ee1db9c94b04aa2ce74e73",
       "meaning": "HASHED_ORIGINAL_EVIDENCE_ADAPTER_NOT_FULL_CERTIFICATION"
     },
     {
@@ -1599,7 +1602,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 19.1,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "rankable": true,
@@ -1699,7 +1702,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "8b5f00a29e34fc43678fd597d139d78964cfa955c070eb957da972f373206633",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -1727,7 +1730,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 47.3,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "rankable": true,
@@ -1827,7 +1830,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "4015a188d60a2c4c9bc02f61c8181a800c1dc08b4936f02053c4d70d63028e3d",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -1855,7 +1858,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 220.0,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -1955,7 +1958,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "44f5a9c2f17c00229b657f29058e675bfc8c6244328c4e0d9b48c8a10400782d",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -1983,7 +1986,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 95.5,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "rankable": true,
@@ -2082,7 +2085,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "462c9dc9e4a6ad054af0fb57278b4200bb05a35e7a72e771d11b034df0f4ea82",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -2110,7 +2113,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 50.0,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "rankable": true,
@@ -2209,7 +2212,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "3cbdeae3cba739c70fb7f58fc6e9008221bfbd6c64d47efe02fa5a9e540b0eb1",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -2237,7 +2240,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 81.5,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "rankable": true,
@@ -2339,7 +2342,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "f0261c2ebd68111f1c2370674fa62419e322f09ac2d1f4e90d228414d141b07c",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -2367,7 +2370,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 41.85,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "rankable": true,
@@ -2467,7 +2470,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "ebcbe7decfa67f4c970ac1949bb91f6eeeaeb2b4f3c83e9d3d1a86f5bf4688a0",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -2495,7 +2498,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 113.5,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "rankable": true,
@@ -2595,7 +2598,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "17818f668bf576e58402f693e7b2db0534a3942c142ef272a78bfb507b0df03b",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -2623,7 +2626,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 88.6,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -2722,7 +2725,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "52f9a86671a4a519ed1f098a36be5e144ce37703b55eb083f15812ea7a685782",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -2750,7 +2753,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 169.0,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -2850,7 +2853,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "7ee954bc04ff77468d1943d6ed13339049b925febded8b420b7f64c45b93bfdc",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -2880,7 +2883,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 220.0,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -2980,7 +2983,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "44f5a9c2f17c00229b657f29058e675bfc8c6244328c4e0d9b48c8a10400782d",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -3008,7 +3011,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 88.6,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -3107,7 +3110,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "52f9a86671a4a519ed1f098a36be5e144ce37703b55eb083f15812ea7a685782",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -3135,7 +3138,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 169.0,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -3235,7 +3238,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "7ee954bc04ff77468d1943d6ed13339049b925febded8b420b7f64c45b93bfdc",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -3263,7 +3266,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 78.1,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -3366,7 +3369,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "c00da4f9601ecaae628e68a9f5a41ca12d3020247cf1ec0b5900ea2dcdd790a9",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -3394,7 +3397,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 355.0,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -3496,7 +3499,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "73d4ff6f5e28fd84dca6e1db5fa26be325014deb8b48c3e6a16dc7fbf3d8debc",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -3524,7 +3527,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 320.5,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -3625,7 +3628,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "8936e332cda3a3054400d2c22cca04db8d0730836aaedd0d1d6ba0f81087ab44",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -3653,7 +3656,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 70.2,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -3753,7 +3756,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "57bc7090644b2804a9d4d3344b1b1bd348c9d855e8db59bae6c0333366f11b65",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -3781,7 +3784,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 120.0,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -3882,7 +3885,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "82e579343c08d9b984d989df1f91f7c491a6467aa038c6159f01a1d53a908274",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -3910,7 +3913,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 49.75,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -4010,7 +4013,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "e94d6107a06d737382318ecd6f2006f8d9bd75bb99906ee52b8d7e152dad2e1a",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -4038,7 +4041,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 49.95,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -4138,7 +4141,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "00ee4c723dd1e681e0ccfce86d6fca6cf7c1bd6f3f69ac19ae3212d0d692c80e",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -4169,7 +4172,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 19.1,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "rankable": true,
@@ -4269,7 +4272,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "8b5f00a29e34fc43678fd597d139d78964cfa955c070eb957da972f373206633",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -4297,7 +4300,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 47.3,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "rankable": true,
@@ -4397,7 +4400,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "4015a188d60a2c4c9bc02f61c8181a800c1dc08b4936f02053c4d70d63028e3d",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -4425,7 +4428,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 220.0,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -4525,7 +4528,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "44f5a9c2f17c00229b657f29058e675bfc8c6244328c4e0d9b48c8a10400782d",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -4553,7 +4556,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 95.5,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "rankable": true,
@@ -4652,7 +4655,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "462c9dc9e4a6ad054af0fb57278b4200bb05a35e7a72e771d11b034df0f4ea82",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -4680,7 +4683,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 50.0,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "rankable": true,
@@ -4779,7 +4782,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "3cbdeae3cba739c70fb7f58fc6e9008221bfbd6c64d47efe02fa5a9e540b0eb1",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -4807,7 +4810,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 81.5,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "rankable": true,
@@ -4909,7 +4912,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "f0261c2ebd68111f1c2370674fa62419e322f09ac2d1f4e90d228414d141b07c",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -4937,7 +4940,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 41.85,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "rankable": true,
@@ -5037,7 +5040,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "ebcbe7decfa67f4c970ac1949bb91f6eeeaeb2b4f3c83e9d3d1a86f5bf4688a0",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -5065,7 +5068,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 113.5,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "rankable": true,
@@ -5165,7 +5168,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "17818f668bf576e58402f693e7b2db0534a3942c142ef272a78bfb507b0df03b",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -5193,7 +5196,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 88.6,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -5292,7 +5295,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "52f9a86671a4a519ed1f098a36be5e144ce37703b55eb083f15812ea7a685782",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -5320,7 +5323,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 169.0,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -5420,7 +5423,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "7ee954bc04ff77468d1943d6ed13339049b925febded8b420b7f64c45b93bfdc",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -5448,7 +5451,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 63.9,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "rankable": true,
@@ -5550,7 +5553,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "074e79a7c9e1794dee9acc2f0c6203936c458fdee2f658592aa2f7dbd762e26b",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -5578,7 +5581,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 72.8,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "rankable": true,
@@ -5679,7 +5682,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "591cd78d1ddf06492e1144b4a29e35c97699318ab9229923e486b60fe3f88bf0",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -5707,7 +5710,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 45.2,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "rankable": true,
@@ -5806,7 +5809,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "b91ad0d85a5ec548648e349aeff4a540d52827a1427e4e28f14df473786ab603",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -5834,7 +5837,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 37.8,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "rankable": true,
@@ -5935,7 +5938,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "3c407302155f6ef109862667c27ab658f9b7f217a3e76f0da7742e35219ea376",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -5963,7 +5966,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 99.9,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "rankable": true,
@@ -6062,7 +6065,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "945d49c8d336294bc29bcfebb98b121b09d542f6fb90d7621589ff3eb25345c7",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -6090,7 +6093,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 40.6,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "rankable": true,
@@ -6192,7 +6195,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "970e700b141c072aaaea2ebd9a6fccd302f18689e576a93ccb6c85e17c9d4d29",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -6220,7 +6223,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 18.0,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "rankable": true,
@@ -6324,7 +6327,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "0dad00529cb0ef1d53a4e6183822ac90ab5ad51b328d43c57bf13762b354b071",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -6352,7 +6355,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 33.9,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "rankable": true,
@@ -6453,7 +6456,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "f5d0636c00ea2c6f67aa981daf51dadad1f37fa6759ac9c33ca2fc04d59bb949",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -6481,7 +6484,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 16.15,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "rankable": true,
@@ -6580,7 +6583,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "415ab68ef6c0bdc6ac6b369bef06d500c9d1b932ffc445b53239e6afe8afffc6",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -6608,7 +6611,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 241.5,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "rankable": true,
@@ -6710,7 +6713,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "6df1ec3177f0ec911fce6c70f037c352c9a93ef099a35a3c871da3d49383f3b9",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -6738,7 +6741,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 35.75,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "rankable": true,
@@ -6840,7 +6843,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "54b991521b9f3f9ac1bc84151d474206b8555fd5535e0309849adb71509e93a6",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -6868,7 +6871,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 72.7,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "rankable": true,
@@ -6969,7 +6972,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "e93a347f2e84b6b7dade45c33ed82dddae69deeca45db8dda3dc323e22ed35dd",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -6997,7 +7000,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 76.0,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "rankable": true,
@@ -7098,7 +7101,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "f23cb919924d3d1016671045375ee23e1728d76ea209d64928fa02137e28d9d7",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -7126,7 +7129,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 28.95,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "rankable": true,
@@ -7227,7 +7230,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "36c5da23b52e2ea45c5bc8d8b95d12bb22a88e03f21e065607e53389b7c1a5ed",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -7255,7 +7258,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 295.5,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "rankable": true,
@@ -7354,7 +7357,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "e9fe93580dabdbd9b6fc0ea39e847828a7993bb41e89eaef18700bc18d01ffa3",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -7382,7 +7385,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 78.1,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -7485,7 +7488,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "c00da4f9601ecaae628e68a9f5a41ca12d3020247cf1ec0b5900ea2dcdd790a9",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -7513,7 +7516,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 355.0,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -7615,7 +7618,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "73d4ff6f5e28fd84dca6e1db5fa26be325014deb8b48c3e6a16dc7fbf3d8debc",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -7643,7 +7646,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 28.5,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "rankable": true,
@@ -7742,7 +7745,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "fd22c41de32377c884e4bed5ee8861ecbb6e0c3a857a8b9aa441a9ecf993234e",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -7770,7 +7773,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 30.55,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "rankable": true,
@@ -7873,7 +7876,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "2275f3a3e2edd0eef1dcc79ca203d27a45e5c8bb32a64ee01e7568821755502d",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -7901,7 +7904,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 60.7,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "rankable": true,
@@ -8001,7 +8004,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "aa4c317949ee154bcada70e3ba2f95899f627ec12e1baad9ba176ea01e84a9bb",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -8031,7 +8034,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 220.0,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -8131,7 +8134,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "44f5a9c2f17c00229b657f29058e675bfc8c6244328c4e0d9b48c8a10400782d",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -8159,7 +8162,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 88.6,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -8258,7 +8261,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "52f9a86671a4a519ed1f098a36be5e144ce37703b55eb083f15812ea7a685782",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -8286,7 +8289,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 169.0,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -8386,7 +8389,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "7ee954bc04ff77468d1943d6ed13339049b925febded8b420b7f64c45b93bfdc",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -8414,7 +8417,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 78.1,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -8517,7 +8520,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "c00da4f9601ecaae628e68a9f5a41ca12d3020247cf1ec0b5900ea2dcdd790a9",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -8545,7 +8548,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 355.0,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -8647,7 +8650,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "73d4ff6f5e28fd84dca6e1db5fa26be325014deb8b48c3e6a16dc7fbf3d8debc",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -8675,7 +8678,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 320.5,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -8776,7 +8779,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "8936e332cda3a3054400d2c22cca04db8d0730836aaedd0d1d6ba0f81087ab44",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -8804,7 +8807,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 70.2,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -8904,7 +8907,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "57bc7090644b2804a9d4d3344b1b1bd348c9d855e8db59bae6c0333366f11b65",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -8932,7 +8935,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 120.0,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -9033,7 +9036,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "82e579343c08d9b984d989df1f91f7c491a6467aa038c6159f01a1d53a908274",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -9061,7 +9064,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 49.75,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -9161,7 +9164,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "e94d6107a06d737382318ecd6f2006f8d9bd75bb99906ee52b8d7e152dad2e1a",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -9189,7 +9192,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 49.95,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -9289,7 +9292,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "00ee4c723dd1e681e0ccfce86d6fca6cf7c1bd6f3f69ac19ae3212d0d692c80e",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -9317,7 +9320,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 203.0,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -9414,7 +9417,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "0f41010279c69bbe6115a00fca24435a23dde87c3c64ea7a135ec131e9295456",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -9442,7 +9445,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 121.5,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -9542,7 +9545,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "c83db0515415ea4aa66eb194d2b402de53e67c26e27cb13e3c4fe77c76ebaa8d",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -9570,7 +9573,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 129.5,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -9669,7 +9672,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "ceb1bc498c99d2b6fee7ab0923494d4d4373ddc22978fb9aa9efe68211c5be2c",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -9697,7 +9700,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 207.0,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -9797,7 +9800,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "e2c4bf576d43610ffeedfca73f8cd4e0ddd04ea8647767dd5fd43d712f0c4bae",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -9825,7 +9828,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 47.0,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -9927,7 +9930,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "a2b62a7ef90582ba750d309d3c9cf80ed53792e6180992d9ef0387e0ec2a6ad6",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -9955,7 +9958,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 80.2,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -10058,7 +10061,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "a03de8a087747f89466180dad464f767b78db9a27d3cbc94574fde643a10c76b",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -10086,7 +10089,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 80.7,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -10189,7 +10192,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "fb55b8324458926c9297169f2c7eac17325af246bebe825996ea3d4fb31f9f7f",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -10217,7 +10220,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 77.1,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -10319,7 +10322,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "96588d3fcce8f07ce0661e579a2ed4cc97b6677ef129039a916d20fb54875be6",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -10347,7 +10350,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 120.5,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -10448,7 +10451,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "2ec1beb4485e1f885751784bf275b6696ddb57464c17e901dd326f28750bd5c0",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -10476,7 +10479,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 100.5,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -10575,7 +10578,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "a127f48c5fa13dd19b95df19756f16f8b56357c2d3bebd3e4a9c2a30ba15a01a",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -10603,7 +10606,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 175.0,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -10704,7 +10707,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "2919ab5424f52434df29860f7e8ee2a44a00a5392eecfe47b8d3e38d1c4f46c3",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -10732,7 +10735,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 50.1,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -10832,7 +10835,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "dc7ce5463c04e9819126c03f4775a491d1d197c085cc7848afff2a7c2613f515",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -10860,7 +10863,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 264.5,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -10961,7 +10964,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "70fbafdb22c19a839c6ed383ea86e9838025dc53c962f702486678bb7d668f64",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -10989,7 +10992,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 127.0,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -11089,7 +11092,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "353d39501bce260fe2e4c646f447357f89b8bbb312ed2a14259e9b24085d91fd",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -11117,7 +11120,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 106.5,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -11216,7 +11219,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "a453b931a424c82ee316752fa8a4e12b750f4363c74d98c9dee2d26e6559e70d",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -11244,7 +11247,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 251.5,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -11344,7 +11347,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "054eccb54f8ef6f687466ba744feae901f04f80d0cfb8f7819d575f068953b05",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -11372,7 +11375,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 366.5,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -11472,7 +11475,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "bc7e1c8feba364ef07785a3c416e848d80892a12938d8c3a7f88fc80bdc39aa3",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -11500,7 +11503,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 85.9,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -11601,7 +11604,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "a491277578abc55953b386f4657909e08f6942d262c2d291674798b8b75ac0a0",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -11629,7 +11632,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 56.9,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -11728,7 +11731,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "1e40b43bac9c7407186dc48b7d7b745307f37dfd021f5838047121e407fafe23",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -11756,7 +11759,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 55.6,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -11853,7 +11856,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "2b5d0c86a7c8f9fd7f2e6e39eafefef1afa88f76474edf934aa8859e30c9ef29",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -11883,7 +11886,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 19.1,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "rankable": true,
@@ -11983,7 +11986,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "8b5f00a29e34fc43678fd597d139d78964cfa955c070eb957da972f373206633",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -12011,7 +12014,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 47.3,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "rankable": true,
@@ -12111,7 +12114,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "4015a188d60a2c4c9bc02f61c8181a800c1dc08b4936f02053c4d70d63028e3d",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -12139,7 +12142,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 220.0,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -12239,7 +12242,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "44f5a9c2f17c00229b657f29058e675bfc8c6244328c4e0d9b48c8a10400782d",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -12267,7 +12270,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 95.5,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "rankable": true,
@@ -12366,7 +12369,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "462c9dc9e4a6ad054af0fb57278b4200bb05a35e7a72e771d11b034df0f4ea82",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -12394,7 +12397,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 50.0,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "rankable": true,
@@ -12493,7 +12496,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "3cbdeae3cba739c70fb7f58fc6e9008221bfbd6c64d47efe02fa5a9e540b0eb1",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -12521,7 +12524,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 81.5,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "rankable": true,
@@ -12623,7 +12626,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "f0261c2ebd68111f1c2370674fa62419e322f09ac2d1f4e90d228414d141b07c",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -12651,7 +12654,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 41.85,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "rankable": true,
@@ -12751,7 +12754,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "ebcbe7decfa67f4c970ac1949bb91f6eeeaeb2b4f3c83e9d3d1a86f5bf4688a0",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -12779,7 +12782,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 113.5,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "rankable": true,
@@ -12879,7 +12882,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "17818f668bf576e58402f693e7b2db0534a3942c142ef272a78bfb507b0df03b",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -12907,7 +12910,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 88.6,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -13006,7 +13009,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "52f9a86671a4a519ed1f098a36be5e144ce37703b55eb083f15812ea7a685782",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -13034,7 +13037,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 169.0,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -13134,7 +13137,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "7ee954bc04ff77468d1943d6ed13339049b925febded8b420b7f64c45b93bfdc",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -13162,7 +13165,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 63.9,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "rankable": true,
@@ -13264,7 +13267,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "074e79a7c9e1794dee9acc2f0c6203936c458fdee2f658592aa2f7dbd762e26b",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -13292,7 +13295,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 72.8,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "rankable": true,
@@ -13393,7 +13396,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "591cd78d1ddf06492e1144b4a29e35c97699318ab9229923e486b60fe3f88bf0",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -13421,7 +13424,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 45.2,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "rankable": true,
@@ -13520,7 +13523,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "b91ad0d85a5ec548648e349aeff4a540d52827a1427e4e28f14df473786ab603",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -13548,7 +13551,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 37.8,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "rankable": true,
@@ -13649,7 +13652,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "3c407302155f6ef109862667c27ab658f9b7f217a3e76f0da7742e35219ea376",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -13677,7 +13680,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 99.9,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "rankable": true,
@@ -13776,7 +13779,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "945d49c8d336294bc29bcfebb98b121b09d542f6fb90d7621589ff3eb25345c7",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -13804,7 +13807,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 40.6,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "rankable": true,
@@ -13906,7 +13909,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "970e700b141c072aaaea2ebd9a6fccd302f18689e576a93ccb6c85e17c9d4d29",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -13934,7 +13937,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 18.0,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "rankable": true,
@@ -14038,7 +14041,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "0dad00529cb0ef1d53a4e6183822ac90ab5ad51b328d43c57bf13762b354b071",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -14066,7 +14069,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 33.9,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "rankable": true,
@@ -14167,7 +14170,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "f5d0636c00ea2c6f67aa981daf51dadad1f37fa6759ac9c33ca2fc04d59bb949",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -14195,7 +14198,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 16.15,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "rankable": true,
@@ -14294,7 +14297,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "415ab68ef6c0bdc6ac6b369bef06d500c9d1b932ffc445b53239e6afe8afffc6",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -14322,7 +14325,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 241.5,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "rankable": true,
@@ -14424,7 +14427,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "6df1ec3177f0ec911fce6c70f037c352c9a93ef099a35a3c871da3d49383f3b9",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -14452,7 +14455,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 35.75,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "rankable": true,
@@ -14554,7 +14557,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "54b991521b9f3f9ac1bc84151d474206b8555fd5535e0309849adb71509e93a6",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -14582,7 +14585,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 72.7,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "rankable": true,
@@ -14683,7 +14686,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "e93a347f2e84b6b7dade45c33ed82dddae69deeca45db8dda3dc323e22ed35dd",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -14711,7 +14714,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 76.0,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "rankable": true,
@@ -14812,7 +14815,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "f23cb919924d3d1016671045375ee23e1728d76ea209d64928fa02137e28d9d7",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -14840,7 +14843,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 28.95,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "rankable": true,
@@ -14941,7 +14944,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "36c5da23b52e2ea45c5bc8d8b95d12bb22a88e03f21e065607e53389b7c1a5ed",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -14969,7 +14972,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 295.5,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "rankable": true,
@@ -15068,7 +15071,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "e9fe93580dabdbd9b6fc0ea39e847828a7993bb41e89eaef18700bc18d01ffa3",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -15096,7 +15099,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 78.1,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -15199,7 +15202,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "c00da4f9601ecaae628e68a9f5a41ca12d3020247cf1ec0b5900ea2dcdd790a9",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -15227,7 +15230,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 355.0,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -15329,7 +15332,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "73d4ff6f5e28fd84dca6e1db5fa26be325014deb8b48c3e6a16dc7fbf3d8debc",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -15357,7 +15360,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 28.5,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "rankable": true,
@@ -15456,7 +15459,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "fd22c41de32377c884e4bed5ee8861ecbb6e0c3a857a8b9aa441a9ecf993234e",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -15484,7 +15487,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 30.55,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "rankable": true,
@@ -15587,7 +15590,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "2275f3a3e2edd0eef1dcc79ca203d27a45e5c8bb32a64ee01e7568821755502d",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -15615,7 +15618,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 60.7,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "rankable": true,
@@ -15715,7 +15718,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "aa4c317949ee154bcada70e3ba2f95899f627ec12e1baad9ba176ea01e84a9bb",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -41649,7 +41652,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 220.0,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -41749,7 +41752,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "44f5a9c2f17c00229b657f29058e675bfc8c6244328c4e0d9b48c8a10400782d",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -41777,7 +41780,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 88.6,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -41876,7 +41879,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "52f9a86671a4a519ed1f098a36be5e144ce37703b55eb083f15812ea7a685782",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -41904,7 +41907,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 169.0,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -42004,7 +42007,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "7ee954bc04ff77468d1943d6ed13339049b925febded8b420b7f64c45b93bfdc",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -42032,7 +42035,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 78.1,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -42135,7 +42138,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "c00da4f9601ecaae628e68a9f5a41ca12d3020247cf1ec0b5900ea2dcdd790a9",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -42163,7 +42166,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 355.0,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -42265,7 +42268,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "73d4ff6f5e28fd84dca6e1db5fa26be325014deb8b48c3e6a16dc7fbf3d8debc",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -42293,7 +42296,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 320.5,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -42394,7 +42397,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "8936e332cda3a3054400d2c22cca04db8d0730836aaedd0d1d6ba0f81087ab44",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -42422,7 +42425,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 70.2,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -42522,7 +42525,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "57bc7090644b2804a9d4d3344b1b1bd348c9d855e8db59bae6c0333366f11b65",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -42550,7 +42553,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 120.0,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -42651,7 +42654,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "82e579343c08d9b984d989df1f91f7c491a6467aa038c6159f01a1d53a908274",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -42679,7 +42682,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 49.75,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -42779,7 +42782,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "e94d6107a06d737382318ecd6f2006f8d9bd75bb99906ee52b8d7e152dad2e1a",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -42807,7 +42810,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 49.95,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -42907,7 +42910,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "00ee4c723dd1e681e0ccfce86d6fca6cf7c1bd6f3f69ac19ae3212d0d692c80e",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -42935,7 +42938,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 203.0,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -43032,7 +43035,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "0f41010279c69bbe6115a00fca24435a23dde87c3c64ea7a135ec131e9295456",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -43060,7 +43063,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 121.5,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -43160,7 +43163,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "c83db0515415ea4aa66eb194d2b402de53e67c26e27cb13e3c4fe77c76ebaa8d",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -43188,7 +43191,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 129.5,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -43287,7 +43290,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "ceb1bc498c99d2b6fee7ab0923494d4d4373ddc22978fb9aa9efe68211c5be2c",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -43315,7 +43318,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 207.0,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -43415,7 +43418,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "e2c4bf576d43610ffeedfca73f8cd4e0ddd04ea8647767dd5fd43d712f0c4bae",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -43443,7 +43446,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 47.0,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -43545,7 +43548,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "a2b62a7ef90582ba750d309d3c9cf80ed53792e6180992d9ef0387e0ec2a6ad6",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -43573,7 +43576,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 80.2,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -43676,7 +43679,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "a03de8a087747f89466180dad464f767b78db9a27d3cbc94574fde643a10c76b",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -43704,7 +43707,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 80.7,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -43807,7 +43810,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "fb55b8324458926c9297169f2c7eac17325af246bebe825996ea3d4fb31f9f7f",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -43835,7 +43838,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 77.1,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -43937,7 +43940,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "96588d3fcce8f07ce0661e579a2ed4cc97b6677ef129039a916d20fb54875be6",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -43965,7 +43968,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 120.5,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -44066,7 +44069,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "2ec1beb4485e1f885751784bf275b6696ddb57464c17e901dd326f28750bd5c0",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -44094,7 +44097,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 100.5,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -44193,7 +44196,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "a127f48c5fa13dd19b95df19756f16f8b56357c2d3bebd3e4a9c2a30ba15a01a",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -44221,7 +44224,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 175.0,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -44322,7 +44325,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "2919ab5424f52434df29860f7e8ee2a44a00a5392eecfe47b8d3e38d1c4f46c3",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -44350,7 +44353,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 50.1,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -44450,7 +44453,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "dc7ce5463c04e9819126c03f4775a491d1d197c085cc7848afff2a7c2613f515",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -44478,7 +44481,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 264.5,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -44579,7 +44582,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "70fbafdb22c19a839c6ed383ea86e9838025dc53c962f702486678bb7d668f64",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -44607,7 +44610,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 127.0,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -44707,7 +44710,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "353d39501bce260fe2e4c646f447357f89b8bbb312ed2a14259e9b24085d91fd",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -44735,7 +44738,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 106.5,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -44834,7 +44837,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "a453b931a424c82ee316752fa8a4e12b750f4363c74d98c9dee2d26e6559e70d",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -44862,7 +44865,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 251.5,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -44962,7 +44965,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "054eccb54f8ef6f687466ba744feae901f04f80d0cfb8f7819d575f068953b05",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -44990,7 +44993,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 366.5,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -45090,7 +45093,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "bc7e1c8feba364ef07785a3c416e848d80892a12938d8c3a7f88fc80bdc39aa3",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -45118,7 +45121,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 85.9,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -45219,7 +45222,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "a491277578abc55953b386f4657909e08f6942d262c2d291674798b8b75ac0a0",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -45247,7 +45250,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 56.9,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -45346,7 +45349,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "1e40b43bac9c7407186dc48b7d7b745307f37dfd021f5838047121e407fafe23",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -45374,7 +45377,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 55.6,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -45471,7 +45474,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "2b5d0c86a7c8f9fd7f2e6e39eafefef1afa88f76474edf934aa8859e30c9ef29",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -45499,7 +45502,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 26.7,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -45600,7 +45603,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "5b5c82123a34d5508c857b89a76673d233fb8d27470f5915cb32fd612d332dd8",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -45628,7 +45631,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 113.5,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -45727,7 +45730,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "24ceace76d28bdd4da64186fda01b6a8227a30eeb0090935e7adf2ce9c9add8d",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -45755,7 +45758,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 80.6,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -45855,7 +45858,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "14d1a4257004afa330af4a665f48b5e1cbcc69af9acbfdac9adf32102f4f73da",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -45883,7 +45886,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 23.1,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -45984,7 +45987,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "2ec1e1d28f9290cfab3f4e1c7fb3fab74142a498ff81ae370313b292f36f6907",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -46012,7 +46015,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 981.0,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -46113,7 +46116,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "22ef2cce68896af232e13ac8484e456463fd370cf848afdc7aeb715d3eadd396",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -46141,7 +46144,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 61.7,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -46242,7 +46245,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "b9ab6e430fcac8ea67fde686aa1410063a221c5f75bfa5e537e6d73f4cbed78f",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -46270,7 +46273,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 112.0,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -46371,7 +46374,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "2076349ebe670d0085dd8b5f833fa2d1f9f261ed2dbf055bb06f30f3ba849132",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -46399,7 +46402,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 135.0,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -46499,7 +46502,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "b97a60100fea633f3943b5e077a316efaec2085addf87d8784c588148fc07bea",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -46527,7 +46530,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 122.5,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -46627,7 +46630,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "b42096da066f44d954ae18accdfb8e8796ef0cbf42791ac914f853f8721a0c9c",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -46655,7 +46658,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 29.25,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -46756,7 +46759,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "1f21db87a79979a8dbc6e8c5d8eb804471905b92a53abb6a6e696b0bb35f50b7",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -46784,7 +46787,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 155.0,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -46886,7 +46889,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "d94c9c6c52fa48bd78513c17d871538f21e455d24162c4f8bb269fad0b35412e",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -46914,7 +46917,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 59.5,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -47016,7 +47019,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "c7c95c456d729ba084242cd8692d001c0bfc693be3c06d455890133f2941fc14",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -47044,7 +47047,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 50.9,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -47144,7 +47147,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "9ecc06179c138a0481c18c09044303f619aa2fd231d5f8634485c52539c0d5ef",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -47172,7 +47175,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 142.5,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -47272,7 +47275,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "6f09fa6f36e8696fa892d191fb62729e3783ec5b7059283c56e2097d04315096",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -47300,7 +47303,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 52.6,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -47401,7 +47404,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "c933c22eb61097753576736e1dd95ce36ba3109123c1b64cc879957fddfb36e7",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -47429,7 +47432,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 37.9,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -47530,7 +47533,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "2bebb4ba6a9df75db9ac085c52252158a38f8fba0aeda06e24fe1adefdb63f22",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -47558,7 +47561,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 68.2,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -47657,7 +47660,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "54e26f128032c7b83fbd66a81777008dd283ebda7fe840233179d9257106cf94",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -47685,7 +47688,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 66.1,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -47789,7 +47792,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "5516a39760cdeb9d01c210a2014fa9c28a04c73fdccde2d86b684631b0a5f3b1",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -47821,7 +47824,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 175.0,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -47922,7 +47925,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "2919ab5424f52434df29860f7e8ee2a44a00a5392eecfe47b8d3e38d1c4f46c3",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -47950,7 +47953,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 52.6,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -48051,7 +48054,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "c933c22eb61097753576736e1dd95ce36ba3109123c1b64cc879957fddfb36e7",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -48079,7 +48082,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 355.0,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -48181,7 +48184,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "73d4ff6f5e28fd84dca6e1db5fa26be325014deb8b48c3e6a16dc7fbf3d8debc",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -48209,7 +48212,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 320.5,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -48310,7 +48313,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "8936e332cda3a3054400d2c22cca04db8d0730836aaedd0d1d6ba0f81087ab44",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -48338,7 +48341,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 142.5,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -48438,7 +48441,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "6f09fa6f36e8696fa892d191fb62729e3783ec5b7059283c56e2097d04315096",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -48466,7 +48469,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 89.7,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -48569,7 +48572,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "ae11b452f74077abe7e0d9dfcf4e6707c8aa52617f8de4742764e1fa8865b7d5",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -48597,7 +48600,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 120.5,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -48698,7 +48701,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "2ec1beb4485e1f885751784bf275b6696ddb57464c17e901dd326f28750bd5c0",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -48726,7 +48729,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 45.35,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": false,
@@ -48833,7 +48836,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "dea26603e7a7479c37607aca3712ca2314e5b47c46e8cafe7d98d4d8cb9522b9",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -48861,7 +48864,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 189.0,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": false,
@@ -48967,7 +48970,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "3d0e1181aa9738e10e9a475bb352216470a78919bcaa01370026db572226f072",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -48995,7 +48998,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 80.7,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -49098,7 +49101,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "fb55b8324458926c9297169f2c7eac17325af246bebe825996ea3d4fb31f9f7f",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -49126,7 +49129,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 80.6,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -49226,7 +49229,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "14d1a4257004afa330af4a665f48b5e1cbcc69af9acbfdac9adf32102f4f73da",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -49254,7 +49257,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 80.2,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -49357,7 +49360,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "a03de8a087747f89466180dad464f767b78db9a27d3cbc94574fde643a10c76b",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -49385,7 +49388,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 155.0,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -49487,7 +49490,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "d94c9c6c52fa48bd78513c17d871538f21e455d24162c4f8bb269fad0b35412e",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -49515,7 +49518,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 61.7,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -49616,7 +49619,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "b9ab6e430fcac8ea67fde686aa1410063a221c5f75bfa5e537e6d73f4cbed78f",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -49644,7 +49647,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 120.0,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -49745,7 +49748,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "82e579343c08d9b984d989df1f91f7c491a6467aa038c6159f01a1d53a908274",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -49773,7 +49776,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 44.6,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -49875,7 +49878,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "014f93cc0ddf1ae095b7af30ccba8a6c2baf1d42f071bf40d1950b3d8f486450",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -49903,7 +49906,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 113.5,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -50002,7 +50005,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "24ceace76d28bdd4da64186fda01b6a8227a30eeb0090935e7adf2ce9c9add8d",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -50030,7 +50033,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 112.0,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -50131,7 +50134,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "2076349ebe670d0085dd8b5f833fa2d1f9f261ed2dbf055bb06f30f3ba849132",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -50159,7 +50162,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 135.0,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -50259,7 +50262,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "b97a60100fea633f3943b5e077a316efaec2085addf87d8784c588148fc07bea",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -50287,7 +50290,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 264.5,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -50388,7 +50391,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "70fbafdb22c19a839c6ed383ea86e9838025dc53c962f702486678bb7d668f64",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -50416,7 +50419,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 70.2,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -50516,7 +50519,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "57bc7090644b2804a9d4d3344b1b1bd348c9d855e8db59bae6c0333366f11b65",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -50544,7 +50547,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 66.1,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -50648,7 +50651,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "5516a39760cdeb9d01c210a2014fa9c28a04c73fdccde2d86b684631b0a5f3b1",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -50676,7 +50679,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 59.5,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "rankable": true,
@@ -50778,7 +50781,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "c7c95c456d729ba084242cd8692d001c0bfc693be3c06d455890133f2941fc14",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -50806,7 +50809,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 51.1,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "rankable": true,
@@ -50906,7 +50909,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "bf1956dec4989435bc59692c9bc1d880d7476f0478bebf6bc9c4b7a03ffe4fb6",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -50934,7 +50937,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 105.5,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "rankable": true,
@@ -51034,7 +51037,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "384988cc54b2ef6c3719d0c378545e2210d4cb7542d91454754464f6f0ac712c",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -51062,7 +51065,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 9.85,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "rankable": true,
@@ -51163,7 +51166,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "d877bb6f9f439cad9ba98ab324957f0cb51b277a6d7b8a1a8a5b4003444536b7",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -51191,7 +51194,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 27.75,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "rankable": true,
@@ -51291,7 +51294,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "0b7fbd5d4345d7f2f6fe090436a31e41aa5153ef88790067f8ee4fb29b516517",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -51319,7 +51322,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 30.7,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "rankable": true,
@@ -51421,7 +51424,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "fd3ca11364ae9e210dfe12a6bd5bd47c82c59e2a32bae4ebd1efa979c190556b",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -51449,7 +51452,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 17.95,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "rankable": true,
@@ -51551,7 +51554,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "c9b8daf6674365d34b5a387ba90fd0a27605f56124922befd09d4e05de11d146",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -51579,7 +51582,7 @@
       "financial_period": "2026-Q2",
       "reference_close": 28.5,
       "price_date": "2026-10-20",
-      "estimate_vintage": "2026-10-21T14:15:03.507666+08:00",
+      "estimate_vintage": "2026-10-21T14:17:55.912281+08:00",
       "target_date": "2027-12-31",
       "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "rankable": true,
@@ -51681,7 +51684,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "32e63fc78af22aa858ba4b3ff27f768cda408b80ca12fda8bf36d6734959cc3d",
-        "forecast_method_sha256": "35ab322910e122b6ea83d7c6df8d23ddceb73b836769d1637d325ffc25a4a9e9",
+        "forecast_method_sha256": "aef035963656d4cf05d2c65d265a8073a6e50b206a9df2b312c136c80362278c",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -51706,8 +51709,8 @@
   "pending_work_path": "v880_pending_work.json",
   "full_results": {
     "path": "v880_full_results.json.gz",
-    "sha256": "f3b49845197067032250e5a1b7871c63590b013285cbf5a436ae3a83fadaf09f",
-    "json_sha256": "931864b5ffa5c6669f1fb4494808fe90613c2df550bd8f8d421ac4a9204dfcf4"
+    "sha256": "90ff26165375ea7b3faf3fc8e2f3f3da99022a1a6fe37df018cd7df8db73da4d",
+    "json_sha256": "6de78a51efce7e9bbac60a5ee75e91faf72e6400471169e0c1f15352740aec8c"
   },
   "research_universe": 1998,
   "quality_priority_count": 52
