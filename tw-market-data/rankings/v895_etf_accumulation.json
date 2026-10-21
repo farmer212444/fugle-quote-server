@@ -1,0 +1,25 @@
+{
+  "status": "BLOCKED_MISSING_VERIFIED_ETF_PCF",
+  "price_date": "2026-10-20",
+  "estimate_vintage": "2026-10-21T12:49:26.673634+08:00",
+  "etf_count_with_at_least_1d": 0,
+  "etf_count_with_full_5d": 0,
+  "etf_count_with_full_20d": 0,
+  "excluded_records": [],
+  "etf_coverage": [],
+  "stock_flow_research": [],
+  "top20": [],
+  "formal_Aplus_count_unchanged": 0,
+  "formal_Aplusplus_count_unchanged": 0,
+  "model_pe_or_eps_changed": false,
+  "stock_buy_execution_verified": false,
+  "source_evidence_independently_audited": false,
+  "limits": [
+    "ETF share creations/redemptions are not executed exchange stock buy/sell orders.",
+    "PCF basket weights can differ from actual fund holdings; cash substitutions are excluded.",
+    "Changes in published weights also reflect market price drift, not just trades.",
+    "Multiple ETFs tracking the same index do not provide independent active-manager confirmation.",
+    "Only provenance-checked, dated issuer snapshots and eligible official sessions enter flow estimates.",
+    "No calibrated expected returns, ETF trade execution claims, valuation/PE changes, or A+ certification."
+  ]
+}
