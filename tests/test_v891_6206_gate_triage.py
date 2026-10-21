@@ -86,7 +86,10 @@ class FlytechGateTriageTest(unittest.TestCase):
         details=args[0]["issuer_historical_market_data"]
         details["validated_archive_additions"]=1
         details["validated_archive_added_sessions"]=[dict(
-            date=last["date"],turnover_ntd=last["turnover_ntd"]*2,
+            # Push the last ranked session below the first: changing the
+            # max alone would not move the 20-session median and is therefore
+            # not a valid test of an independently recomputed median.
+            date=last["date"],turnover_ntd=0,
             source="SHA_CHECKED_MARKET_DAILY_ARCHIVE")]
         with self.assertRaisesRegex(ValueError,"TWENTY_DAY_SOURCE_RECONCILIATION_FAILED"):
             check_report(*args)
