@@ -17,4 +17,4 @@ jobs:
         with:
           python-version: '3.12'
       - name: Inspect date-scoped exchange source before permitting live recovery
-        run: python scripts/v8a4_twse_daily_probe.py
+        run: python -m scripts.v8a4_twse_daily_probe
