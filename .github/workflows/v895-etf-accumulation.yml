@@ -1,0 +1,76 @@
+name: V8.9.5 ETF PCF exposure research
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'scripts/v895_etf_accumulation.py'
+      - 'tests/test_v895_etf_accumulation.py'
+      - 'README_V895_ETF.md'
+      - 'tw-market-data/etf/pcf/**'
+      - '.github/workflows/v895-etf-accumulation.yml'
+  push:
+    paths:
+      - 'scripts/v895_etf_accumulation.py'
+      - 'tests/test_v895_etf_accumulation.py'
+      - 'README_V895_ETF.md'
+      - 'tw-market-data/etf/pcf/**'
+      - 'tw-market-data/prices/latest_manifest.json'
+      - '.github/workflows/v895-etf-accumulation.yml'
+  schedule:
+    # 22:15 Taipei, weekdays. Missing issuer PCFs remain BLOCKED.
+    - cron: '15 14 * * 1-5'
+permissions:
+  contents: write
+concurrency:
+  group: v895-etf-evidence-{github.ref}
+  cancel-in-progress: false
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Fail-closed ETF proxy, PIT and 5/20 day horizon tests
+        run: python -m unittest -v tests.test_v895_etf_accumulation
+      - name: Parse new ETF research script
+        run: python -m py_compile scripts/v895_etf_accumulation.py
+  report:
+    needs: tests
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Recompute with current evidence and save only if changed
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          for attempt in 1 2 3; do
+            git fetch origin main
+            git reset --hard origin/main
+            # Avoid hourly/daily commits repeatedly restating absence of source.
+            if [ ! -d tw-market-data/etf/pcf ] &&
+               [ -f tw-market-data/rankings/v895_etf_accumulation.json ] &&
+               grep -q BLOCKED_MISSING_VERIFIED_ETF_PCF tw-market-data/rankings/v895_etf_accumulation.json; then
+              echo 'ETF PCF archive remains absent; existing BLOCKED result retained.'
+              exit 0
+            fi
+            python scripts/v895_etf_accumulation.py
+            git add tw-market-data/rankings/v895_etf_accumulation.json tw-market-data/rankings/v895_etf_accumulation.md
+            if git diff --cached --quiet; then
+              echo 'ETF exposure report unchanged.'
+              exit 0
+            fi
+            git commit -m 'data: document ETF PCF research coverage or verified proxy flows'
+            if git push origin HEAD:main; then exit 0; fi
+            echo "Concurrent official data update, retry $attempt/3"
+          done
+          exit 1
