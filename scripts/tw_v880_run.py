@@ -11,6 +11,7 @@ from tw_model_v880.model import estimate
 from tw_model_v880.backtest import live_backtest_status
 from tw_model_v880.evidence import POLICY
 from tw_model_v880.provenance import code_fingerprint
+from tw_model_v880.freshness import assess_price_freshness
 def atomic(path,content):
     path.parent.mkdir(parents=True,exist_ok=True);fd,tmp=tempfile.mkstemp(prefix=path.name+'.',dir=path.parent)
     try:
@@ -43,7 +44,7 @@ def tracked_universe(data):
         if row.get('market'):keys.add((row['market'],code))
     return sorted(keys)
 def run(data_dir,asof,target_date,out_dir=None):
-    data=MarketData(data_dir,asof);cal=fit_accounting(data.history,data.period,{c:r.get('industry','') for c,r in data.revenue.items()});rows=[];failures=[]
+    data=MarketData(data_dir,asof);price_freshness=assess_price_freshness(asof,data.price_date);cal=fit_accounting(data.history,data.period,{c:r.get('industry','') for c,r in data.revenue.items()});rows=[];failures=[]
     universe=tracked_universe(data)
     for key in universe:
         history=data.history.get(key,{})
@@ -62,7 +63,8 @@ def run(data_dir,asof,target_date,out_dir=None):
     formal=sorted([r for r in rows if r.get('formal_Aplus')],key=lambda r:r['base']['price_upside_pct'],reverse=True)
     aq=[r for r in formal if r['formal_Aplusplus']];backtest=live_backtest_status(data.evidence)
     pending=[dict(code=r['code'],name=r.get('name'),status=r['status'],pending_gates=r.get('certification',{}).get('gates_pending',[])) for r in rows if not r.get('formal_Aplus')]
-    result=dict(model=VERSION,model_code_sha256=code_fingerprint(),estimate_vintage=asof,asof_price_date=data.price_date,revenue_month=data.revenue_month,
+    result=dict(model=VERSION,model_code_sha256=code_fingerprint(),estimate_vintage=asof,asof_price_date=data.price_date,
+      price_freshness=price_freshness,revenue_month=data.revenue_month,
       financial_last_quarter=data.period,required_quarters=data.required_periods,target_date=target_date,policy=POLICY,
       policy_notes=['Approved A+/A++ price-upside thresholds retain 30/35 pct','Research min one-day turnover 1m NTD; 1m-12m research requires multi-session liquidity/exit review for formal tradability','A++ stress assumes EPS and PE each -10%, CB conversion price -10%, and nonnegative upside; stress design is an explicit implementation assumption'],
       data_scope=dict(normalized_issuers=len(data.history),priced_issuers=len(data.prices),model_rows=len(rows),tracked_issuer_universe=len(universe),original_latest_issuer_numeric_coverage=len(data.evidence.get('primary',{})),
@@ -89,6 +91,15 @@ def run(data_dir,asof,target_date,out_dir=None):
       '以下依 Base 價差排序，已移除既有66家名單限制。來源層級逐列標示；歷史明細與完整附註仍待驗，並非全市場正式 A+ 排名。未知未來股息及交易成本不列入價差，不附未校準的機率。','',
       '毛利率恢復沿用既有條件式研究假設，Base最多加3.5個百分點；Bear保留未恢復毛利率，仍須營運歸因及樣本外驗證。','',
       '|序|公司|收盤|2027 EPS|PE|2027 Base價|潛在漲幅|Bear價|Bull價|當期來源|','|---:|---|---:|---:|---:|---:|---:|---:|---:|---|']
+    if price_freshness["equity_source_may_be_stale"]:
+        report[3:3]=[
+            "⚠️ **收盤參考價可能落後**：截至估計形成時間，尚有 "+
+            "、".join(price_freshness["potentially_missing_weekdays"])+
+            " 等可能完成的平日交易日未納入。交易所休市與官方資料延遲尚未獨立確認；"+
+            "以下只能當歷史參考價，不可視為最新可成交買入價。",
+            "此警示不會自行編造新股價、改變2027 Base/EPS/PE或增加正式A+。",""]
+    else:
+        report[3:3]=["目前的參考日未發現潛在平日缺口，但仍非盤中即時報價。",""]
     for i,r in enumerate(broad[:10],1):
         b=r['base'];tier='原始核對' if r['original_current_issuer_numeric_checked'] else '官方彙總'
         report.append(f"|{i}|{r['code']} {r['name']}|{fmt(r['reference_close'])}|{fmt(b['eps'])}|{fmt(b['pe'])}|{fmt(b['target_price'])}|{b['price_upside_pct']:+.1f}%|{fmt(r['bear']['target_price'])}|{fmt(r['bull']['target_price'])}|{tier}|")
