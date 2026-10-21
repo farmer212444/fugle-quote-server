@@ -76,7 +76,7 @@ class MarketData:
                 if len(row.get('headers',[]))!=len(row.get('cells',[])):continue
                 key=(market,row['code'],period)
                 if key not in self.detailed:self.detailed[key]=dict(zip(row['headers'],row['cells']))
-        for folder,target in [('certificates','certificates'),('issuer_bridges','issuer_operating_bridges')]:
+        for folder,target in [('certificates','certificates'),('issuer_bridges','issuer_operating_bridges'),('matched_peers','matched_peers')]:
             for p in sorted((self.root/'evidence/v880'/folder).glob('[0-9]*.json')):
                 try:
                     obj=read(p);code=obj['code']
@@ -88,6 +88,10 @@ class MarketData:
                 except (ValueError,KeyError,OSError) as ex:self.errors.append(dict(source=str(p),error=str(ex)))
         from .capital import apply_capital_terms
         apply_capital_terms(self,asof)
+        from .events import load_earnings_events
+        self.earnings_events,self.earnings_event_states=load_earnings_events(self.root,asof,self.period)
+        for event in self.earnings_events.values():
+            self.receipt(self.path(event['archive_path']),'ISSUER_SELF_REPORTED_EARNINGS_TABLE_RECONCILED_NOT_AUDITED')
     def path(self,s):
         p=pathlib.Path(s)
         if p.parts and p.parts[0]==self.root.name:p=pathlib.Path(*p.parts[1:])

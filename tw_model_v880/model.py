@@ -1,12 +1,14 @@
 """Independent operating forecasts with consistently applied evidence gates."""
 import math,statistics,re
-from .math import number,pct,quarter_key,share_scenarios,liquidity,operating_scenario,returns
-from .evidence import GATES,POLICY,certify,gate
+from .math import number,pct,quarter_key,quarter_end,share_scenarios,liquidity,operating_scenario,returns
+from .evidence import GATES,POLICY,certify,gate,timestamp
 from .specialists import issuer_case
 from .provenance import code_fingerprint
 from .margin_recovery import assess_margin_recovery
 from .revenue_leading import revenue_leading_signal
 from .cycle_alpha import is_cyclical
+from .contracts import forecast_binding,matches_forecast
+from .peers import matched_multiples
 
 # A low-turnover issuer can be researched without passing the execution gate.
 RESEARCH_MIN_TURNOVER_NTD = 1_000_000
@@ -25,6 +27,8 @@ def research_gates(primary,code,period,cash,coverage):
 def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
     market,code=key;p=data.prices.get(key);rs=data.history[key];latest=rs[data.period]
     rev=data.revenue.get(code);e=data.evidence;master=e.get('master',{}).get(code)
+    event=getattr(data,'earnings_events',{}).get(code)
+    valuation_period=event['financial_period'] if event else data.period
     def unavailable(reason):return dict(code=code,name=latest.get('name'),market=market,status=reason,rankable=False,exclusion_reasons=[reason])
     if not p:return unavailable('REFERENCE_PRICE_MISSING')
     if not rev:return unavailable('MONTHLY_REVENUE_MISSING')
@@ -37,14 +41,30 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
     low_turnover_review=turnover<TRADABILITY_REVIEW_TURNOVER_NTD
     if close<8 and not shadow_thin:return unavailable('PRICE_FILTER_BELOW_8_TWD')
     if turnover<RESEARCH_MIN_TURNOVER_NTD and not shadow_thin:return unavailable('TURNOVER_FILTER_BELOW_1M_TWD')
-    y,q=quarter_key(data.period);fy_period=f'{y if q==4 else y-1}-Q4';prior_period=f'{y-1}-Q{q}'
+    y,q=quarter_key(valuation_period);fy_period=f'{y if q==4 else y-1}-Q4';prior_period=f'{y-1}-Q{q}'
     if any(k not in rs for k in data.required_periods):return dict(code=code,name=latest.get('name'),status='MISSING_NORMALIZED_EIGHT_QUARTERS',rankable=False)
     if rev.get('industry')=='金融保險業':return dict(code=code,name=latest.get('name'),status='FINANCIAL_SECTOR_REQUIRES_ROE_PB_MODEL',rankable=False)
     # Profit / actual issued shares does not assume a NT$10 par value. A star in
     # the name alone must not exclude a company with a real share denominator.
-    primary=data.primary(code);cur=primary['values'] if primary else data.detailed_values(key,data.period)
+    primary=None if event else data.primary(code)
+    cur=event['current'] if event else primary['values'] if primary else data.detailed_values(key,data.period)
     fy=(cur if q==4 else (primary.get('prior_full_year') if primary else None)) or data.detailed_values(key,fy_period)
-    fyop=rs[fy_period];pr=rs[prior_period]
+    fyop=rs[fy_period];pr=dict(rs[prior_period])
+    if event:
+        if timestamp(event['available_at'])>timestamp(asof):raise ValueError('FUTURE_EARNINGS_EVENT_SOURCE')
+        if event['prior_period']!=prior_period:raise ValueError('EARNINGS_EVENT_PRIOR_PERIOD_MISMATCH')
+        if quarter_end(valuation_period)>timestamp(asof).date():raise ValueError('FUTURE_EARNINGS_EVENT_PERIOD')
+        old_year,old_q=quarter_key(data.period)
+        if y!=old_year or q!=old_q+1:raise ValueError('EARNINGS_EVENT_REQUIRES_ADJACENT_COMPARABLE_QUARTER')
+        old_primary=data.primary(code)
+        old_values=old_primary['values'] if old_primary else data.detailed_values(key,data.period)
+        for field in ('revenue_k','gross_profit_k','operating_profit_k','pretax_profit_k','net_income_k','parent_net_income_k'):
+            old_value=number((old_values or {}).get(field))
+            if old_value is None or abs(event['current'][field]-event['single_quarter'][field]-old_value)>1:
+                raise ValueError('EARNINGS_EVENT_PRIOR_YTD_OR_RESTATEMENT_NOT_RECONCILED_'+field)
+        for a,b in [('revenue_k','revenue_ytd_k'),('gross_profit_k','gross_profit_ytd_k'),('operating_profit_k','operating_profit_ytd_k')]:
+            if abs(event['prior'][a]-number(pr[b]))>1:raise ValueError('EARNINGS_EVENT_PRIOR_YEAR_RESTATEMENT_NOT_RECONCILED_'+a)
+            pr[b]=event['prior'][a]
     current={'revenue_k':number(latest['revenue_ytd_k']),'gross_profit_k':number(latest['gross_profit_ytd_k']),'operating_profit_k':number(latest['operating_profit_ytd_k'])}
     if cur:current.update({k:v for k,v in cur.items() if v is not None})
     fyvals={'revenue_k':number(fyop['revenue_ytd_k']),'gross_profit_k':number(fyop['gross_profit_ytd_k']),'operating_profit_k':number(fyop['operating_profit_ytd_k'])}
@@ -59,11 +79,14 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
     if primary:
         for a,b in [('revenue_k','revenue_ytd_k'),('gross_profit_k','gross_profit_ytd_k'),('operating_profit_k','operating_profit_ytd_k')]:
             if abs(current[a]-number(latest[b]))>1:raise ValueError('PRIMARY_MIRROR_'+a+'_MISMATCH')
+    elif event:warnings.append('LATEST_EARNINGS_IS_ISSUER_SELF_REPORT_NOT_REVIEWED_FULL_STATEMENTS')
     else:warnings.append('CURRENT_DETAIL_IS_OFFICIAL_BATCH_SUMMARY_NOT_ORIGINAL_ISSUER_NOTES')
-    for a,b in [('revenue_k','revenue_ytd_k'),('gross_profit_k','gross_profit_ytd_k'),('operating_profit_k','operating_profit_ytd_k')]:
-        if abs(current[a]-number(latest[b]))>1:return unavailable('CURRENT_OFFICIAL_AND_HISTORY_BASIS_MISMATCH')
+    if not event:
+        for a,b in [('revenue_k','revenue_ytd_k'),('gross_profit_k','gross_profit_ytd_k'),('operating_profit_k','operating_profit_ytd_k')]:
+            if abs(current[a]-number(latest[b]))>1:return unavailable('CURRENT_OFFICIAL_AND_HISTORY_BASIS_MISMATCH')
     month_year,month=map(int,data.revenue_month.split('-'))
     if month_year<y or month_year>y+1:return dict(code=code,name=latest.get('name'),status='MONTHLY_FINANCIAL_YEAR_BRIDGE_NOT_ALIGNED',rankable=False)
+    if event and (month_year,month)<(y,q*3):return unavailable('EARNINGS_EVENT_AHEAD_OF_MONTHLY_REVENUE_BASIS')
     ytd=number(rev.get('ytd_revenue_k'));oldytd=number(rev.get('last_year_ytd_revenue_k'));my=number(rev.get('monthly_yoy_pct'));yy=number(rev.get('ytd_yoy_pct'))
     monthly_prior_annual=rfy
     if month_year==y+1 and q!=4:
@@ -88,7 +111,7 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
     historical_gm=[number(v['gross_profit_ytd_k'])/number(v['revenue_ytd_k']) for v in rs.values() if number(v.get('revenue_ytd_k')) and number(v.get('gross_profit_ytd_k')) is not None]
     gm_spread=max(.01,(pct(historical_gm,.75)-pct(historical_gm,.25))/2)
     raw_base_gm=gm
-    recovery=assess_margin_recovery(rs,data.period,raw_base_gm,gm_now,my,yy,rev.get('industry',''))
+    recovery=assess_margin_recovery(rs,valuation_period,raw_base_gm,gm_now,my,yy,rev.get('industry',''))
     if recovery['applied']:
         gm=recovery['provisional_base_gm'];warnings.append('CONDITIONAL_GM_RECOVERY_RESEARCH_ASSUMPTION_NOT_CERTIFIED')
     elif recovery['candidate']:
@@ -100,6 +123,9 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
             nonop=nofy['sensitivity_gap_ex_volatile_k']+no['sensitivity_gap_ex_volatile_k']-nopr['sensitivity_gap_ex_volatile_k'];nonop_status='OBSERVED_COMPONENT_ZERO_FX_FV_DISPOSAL_SENSITIVITY_IMPAIRMENT_RETAINED'
         elif no['sensitivity_gap_ex_volatile_k'] is not None:
             nonop=no['sensitivity_gap_ex_volatile_k']*4/q;nonop_status='YTD_COMPONENT_SENSITIVITY_ANNUAL_SEASONALITY_UNVERIFIED'
+    elif event and fyvals.get('pretax_profit_k') is not None:
+        nonop=(fyvals['pretax_profit_k']-fyvals['operating_profit_k']+event['current']['nonoperating_k']-event['prior']['nonoperating_k'])
+        nonop_status='ISSUER_SELF_REPORT_YTD_NONOPERATING_DELTA_WITH_PRIOR_FY_COMPONENTS_UNRESOLVED'
     elif fyvals.get('pretax_profit_k') is not None:nonop=fyvals['pretax_profit_k']-fyvals['operating_profit_k']
     tax=(current['pretax_profit_k']-current['net_income_k'])/current['pretax_profit_k'] if current['pretax_profit_k']>0 else None
     if tax is None or not 0<=tax<=.5:tax=.2;warnings.append('TAX_RATE_20PCT_SENSITIVITY_NOT_VERIFIED')
@@ -114,10 +140,14 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
     if pe is None:warnings.append('HISTORICAL_OR_PEER_PE_SAMPLE_INSUFFICIENT')
     industry=rev.get('industry','')
     cyclical=is_cyclical(industry)
+    matched_peer_review=None
+    if e.get('matched_peers',{}).get(code):
+        matched_peer_review=matched_multiples(e['matched_peers'][code],data,code,valuation_period,target_date,asof,cyclical)
+        pe,pe_bear,pe_bull=(matched_peer_review[k] for k in ('base','bear','bull'))
     # Retain legacy valuation caps. Recognizing a new cyclical sector must not
     # silently lower its Base PE before a sector-specific holdout evaluation.
     legacy_cycle_pe_cap=any(x in industry for x in ('鋼鐵','航運','建材營造','電子通路','電器電纜'))
-    if legacy_cycle_pe_cap:
+    if legacy_cycle_pe_cap and not matched_peer_review:
         warnings.append('CYCLICAL_OR_PROJECT_DELIVERY_REQUIRES_COMPANY_BRIDGE')
         if pe is not None:pe=min(pe,pe_bear)
     elif cyclical:
@@ -129,19 +159,25 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
     bull['gross_margin_case']='CONDITIONAL_RECOVERY_TO_PRIOR_UPPER_QUARTILE_NOT_A_PROBABILITY'
     for sc in (base,bear,bull):sc.update(returns(sc['target_price'],close,None,asof[:10],target_date))
     cf=data.cash.get(key,{}).get(data.period,{});ocf=number(cf.get('operating_cashflow_ytd_k'));ppe=prepaid=cash_k=None
-    if primary:ocf=current.get('ocf_k');ppe=current.get('ppe_cash_flow_signed_k');prepaid=primary.get('equipment_prepaid_signed_k');cash_k=current.get('cash_k')
-    event=e.get('issuer_events',{}).get(code);div=put=None
-    if event:
-        div=event['dividend']['indicative_cash_twd']/1000;put=event['convertible_put']['full_exercise_sensitivity_twd']/1000;warnings.append('OLD_CASH_DIVIDEND_AND_CB_PUT_STATIC_SENSITIVITY_ONLY')
+    cash_primary=data.primary(code)
+    if cash_primary:
+        cash_values=cash_primary['values'];ocf=cash_values.get('ocf_k');ppe=cash_values.get('ppe_cash_flow_signed_k');prepaid=cash_primary.get('equipment_prepaid_signed_k');cash_k=cash_values.get('cash_k')
+    if event:warnings.append('CASHFLOW_AND_NOTES_STILL_REFER_TO_PRIOR_REVIEWED_PERIOD')
+    capital_event=e.get('issuer_events',{}).get(code);div=put=None
+    if capital_event:
+        div=capital_event['dividend']['indicative_cash_twd']/1000;put=capital_event['convertible_put']['full_exercise_sensitivity_twd']/1000;warnings.append('OLD_CASH_DIVIDEND_AND_CB_PUT_STATIC_SENSITIVITY_ONLY')
     flow=liquidity(cash_k,ocf,ppe,prepaid,div,put)
     if ocf is not None and ocf<0:warnings.append('NEGATIVE_OCF_CYCLE_AND_COLLECTION_REVIEW')
     if gm_now<gm_prior:warnings.append('YTD_GROSS_MARGIN_DECLINED')
     leading_signal=revenue_leading_signal(my,yy,gh,gm_now,gm_prior)
     if my<=0 or yy<=0:warnings.append('MONTHLY_OR_YTD_REVENUE_GROWTH_NONPOSITIVE')
     coverage=e.get('primary_cash_eight_quarters',{}).get(code,{})
-    gates=research_gates(primary,code,data.period,flow,coverage.get('eight_quarter_key_income_cash_values_reconciled'))
+    gates=research_gates(primary,code,valuation_period,flow,coverage.get('eight_quarter_key_income_cash_values_reconciled'))
     for name,value in e.get('certificates',{}).get(code,{}).items():
         if name in GATES:gates[name]=value
+    if event:
+        gates['original_eight_quarter_statements']=gate('PENDING','LATEST_SELF_REPORT_IS_NOT_REVIEWED_QUARTERLY_STATEMENTS')
+        gates['forecast_bridge']=gate('PENDING','LATEST_EARNINGS_EVENT_REBASED_ISSUER_2027_OPERATING_BRIDGE_REQUIRED')
     # A provisional normalized Base cannot inherit a generic forecast PASS:
     # the issuer-specific recovery mechanism needs a documented signoff.
     if (recovery['applied'] and not e.get('issuer_operating_bridges',{}).get(code)
@@ -156,9 +192,6 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
         t=gates['tradability']
         if not (t.get('multi_session_liquidity_verified') is True and t.get('exit_capacity_verified') is True):
             gates['tradability']=gate('PENDING','BELOW_12M_DAILY_TURNOVER_REQUIRES_MULTI_SESSION_SPREAD_AND_EXIT_CAPACITY_REVIEW')
-    forecast=gates['forecast_bridge']
-    if forecast.get('status')=='PASS' and any(forecast.get(k)!=v for k,v in [('model_code_sha256',code_fingerprint()),('target_date',target_date),('reference_price_date',data.price_date)]):
-        gates['forecast_bridge']=gate('PENDING','FORECAST_CERTIFICATE_DOES_NOT_MATCH_CURRENT_RUNTIME_TARGET_AND_PRICE')
     if primary and primary['qualified_review'] and gates['auditor_scope'].get('status')=='PASS' and not gates['auditor_scope'].get('materiality_assessment_complete'):
         gates['auditor_scope']=gate('PENDING','QUALIFIED_SCOPE_MATERIALITY_SIGNOFF_REQUIRED')
     if gates['fully_diluted_shares'].get('status')=='PASS' and (share['unresolved_terms'] or share['missing_legal_conversion_inputs'] or gates['fully_diluted_shares'].get('forecast_denominator_shares')!=share['base_shares']):
@@ -179,27 +212,40 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
         if recovery['applied']:
             recovery['status']='SPECIFIC_ISSUER_BRIDGE_OVERRIDES_GENERIC_RECOVERY'
             recovery['applied']=False
-        cases=issuer_case(bridge,code,data.period,asof,target_date,share['base_shares'],{'base':pe,'bear':pe_bear,'bull':pe_bull});base,bear,bull=(cases[n] for n in ('base','bear','bull'))
+        cases=issuer_case(bridge,code,valuation_period,asof,target_date,share['base_shares'],{'base':pe,'bear':pe_bear,'bull':pe_bull});base,bear,bull=(cases[n] for n in ('base','bear','bull'))
         for sc in (base,bear,bull):sc.update(returns(sc['target_price'],close,None,asof[:10],target_date))
         if developer and any(cases[n]['valuation_method']!='NAV' for n in cases):raise ValueError('PROPERTY_DEVELOPER_REQUIRES_ASSET_VALUE_BRIDGE')
         specialist=[];stress=(base['target_price']*.81*dilution_stress_factor/close-1)*100 if base['target_price'] is not None and dilution_stress_factor is not None and base.get('valuation_method')=='PE' else None
     elif specialist and gates['forecast_bridge'].get('status')=='PASS':gates['forecast_bridge']=gate('PENDING','SPECIALIST_OPERATING_INPUTS_REQUIRED')
-    point=base['target_price'] is not None and not share['missing_legal_conversion_inputs'] and not specialist
+    new_information_blocked=getattr(data,'earnings_event_states',{}).get(code,{}).get('blocks_current_decision',False)
+    point=base['target_price'] is not None and not share['missing_legal_conversion_inputs'] and not specialist and not new_information_blocked
     if not point:warnings.append('POINT_VALUATION_NOT_COMPARABLE_WITH_UNRESOLVED_INPUTS')
-    certification=certify(code,base['price_upside_pct'] if point else None,stress if point else None,gates,asof,data.period)
+    binding=forecast_binding(code,valuation_period,target_date,dict(base=base,bear=bear,bull=bull),event)
+    if getattr(data,'strategy_variant','current-information')!='current-information':
+        gates['forecast_bridge']=gate('PENDING','COUNTERFACTUAL_SHADOW_VARIANT_NOT_CURRENT_INFORMATION')
+    forecast=gates['forecast_bridge']
+    if forecast.get('status')=='PASS' and not matches_forecast(forecast,binding,code_fingerprint(),data.price_date,target_date):
+        gates['forecast_bridge']=gate('PENDING','FORECAST_CERTIFICATE_DOES_NOT_MATCH_CURRENT_ECONOMIC_INPUTS_OR_METHOD')
+    certification=certify(code,base['price_upside_pct'] if point else None,stress if point else None,gates,asof,valuation_period)
     # Evidence completeness controls formal certification. It must not impose
     # membership in a hand-selected legacy cohort on the research ranking.
     rankable=point and not thin
     exclusions=list(specialist)
+    if new_information_blocked:exclusions.append('NEW_ORIGINAL_EARNINGS_NOT_RECONCILED_OLD_VALUATION_DIAGNOSTIC_ONLY')
     if share['missing_legal_conversion_inputs']:exclusions.append('CB_LEGAL_CONVERSION_INPUTS_MISSING')
     if pe is None:exclusions.append('PE_SAMPLE_INSUFFICIENT')
     if base['eps']<=0:exclusions.append('NONPOSITIVE_EARNINGS_REQUIRES_NON_PE_VALUATION')
-    return dict(code=code,name=latest.get('name'),market=market,industry=industry,financial_period=data.period,
+    return dict(code=code,name=latest.get('name'),market=market,industry=industry,financial_period=valuation_period,
+      reviewed_financial_period=data.period,cashflow_financial_period=data.period,forecast_binding=binding,
+      fresh_earnings_update=dict(applied=bool(event),source_kind=event['source_kind'] if event else None,event=event,
+        method='EXISTING_CALIBRATED_ACCOUNTING_EQUATIONS_WITH_NEW_RECONCILED_YTD_FACTS' if event else None,
+        annual_forecast_still_requires_issuer_operating_bridge=True,
+        event_state=getattr(data,'earnings_event_states',{}).get(code)),
       reference_close=close,single_day_turnover_ntd=turnover,
       liquidity_research_band=('SHADOW_BELOW_1M_OR_PRICE_FLOOR' if thin else 'RESEARCH_1M_TO_12M_PENDING_EXECUTION' if low_turnover_review else 'RESEARCH_AT_LEAST_12M_PENDING_EVIDENCE'),
       price_date=data.price_date,revenue_month=data.revenue_month,estimate_vintage=asof,target_date=target_date,
-      source_tier='ORIGINAL_CURRENT_ISSUER_NUMERICS' if primary else 'OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL',rankable=rankable,point_valuation_available=point,
-      original_current_issuer_numeric_checked=primary is not None,exclusion_reasons=exclusions,
+      source_tier='ISSUER_SELF_REPORTED_ORIGINAL_TABLE' if event else 'ORIGINAL_CURRENT_ISSUER_NUMERICS' if primary else 'OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL',rankable=rankable,point_valuation_available=point,
+      original_current_issuer_numeric_checked=primary is not None or bool(event),exclusion_reasons=exclusions,
       base=base,bear=bear,bull=bull,share_bridge=share,liquidity=flow,primary_ttm_cash=coverage or None,
       revenue_bridge=dict(actual_ytd_k=ytd,prior_year_annual_revenue_k=monthly_prior_annual,prior_year_remaining_k=monthly_prior_annual-oldytd,annual_current_year_estimate_k=r_current_year,assumed_annual_growth=g,observed_growth=observed,
         trend_inputs=dict(financial_ytd_yoy=gh,monthly_ytd_yoy=yy/100,latest_month_yoy=my/100),
@@ -207,7 +253,8 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
       coefficient_training=dict(train_target=calibration.get('train_target'),training_cases=calibration['train_count'],revenue_persistence=calibration['revenue_persistence'],margin_persistence=calibration['margin_persistence'],cost_persistence=calibration['cost_persistence']),
       margin_bridge=dict(prior_full_year_gm=gm_fy,current_ytd_gm=gm_now,prior_ytd_gm=gm_prior,unadjusted_base_gm=raw_base_gm,base_gm=base['gross_margin'],base_opex_ratio=cost),margin_recovery=recovery,
       nonoperating_bridge=dict(base_k=nonop,method=nonop_status,component_assumptions_certified=False),
-      pe_bridge=dict(issuer_samples=len(own),peer_samples=len(peers),base=pe,bear=pe_bear,bull=pe_bull,exact_matched_peer_review_complete=False),
+      pe_bridge=dict(issuer_samples=len(own),peer_samples=len(peers),base=pe,bear=pe_bear,bull=pe_bull,matched_forward_peer_review=matched_peer_review,
+        exact_matched_peer_review_complete='matched_peers_and_cycle' in certification['gates_passed']),
       gates=gates,certification=certification,formal_Aplus=certification['formal_Aplus'],formal_Aplusplus=certification['formal_Aplusplus'],status=certification['status'],warning_flags=warnings,
       stress_eps90_pe90_upside_pct=stress,specialist_model_requirements=specialist,base_scenario_is_admissible=point,
       business_profile=dict(property_development_observed=developer,engineering_business_observed=contractor,classification_source='ISSUER_HISTORY_AND_ORGANIZATION_NOTE' if business else 'INDUSTRY_ONLY'),

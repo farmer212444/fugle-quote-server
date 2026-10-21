@@ -1,0 +1,29 @@
+{
+  "schema": "V810_RESEARCH_POLICY_NOT_A_TRADING_MANDATE",
+  "reference_capital_ntd": 10000000,
+  "actual_holdings_assumed": false,
+  "risk_policy": {
+    "max_stock_weight": 0.1,
+    "max_sector_weight": 0.25,
+    "max_common_risk_weight": 0.35,
+    "max_portfolio_bear_loss": 0.1,
+    "max_daily_participation": 0.05,
+    "max_exit_sessions": 5
+  },
+  "cost_policy": null,
+  "cost_policy_status": "EXPLICIT_BROKER_FEES_TAX_AND_SPREAD_SLIPPAGE_ASSUMPTIONS_REQUIRED",
+  "experiment_policy": {
+    "minimum_nonoverlapping_oos_periods": 60,
+    "minimum_market_regimes": 2,
+    "block_size": 5,
+    "promotion_requires_positive_trial_adjusted_lower_bound": true,
+    "promotion_requires_no_larger_observed_drawdown": true,
+    "automatic_deployment": false
+  },
+  "notes": [
+    "All numeric risk limits are explicit illustrative research assumptions, not calibrated optimal limits or the user's actual portfolio.",
+    "Preserve A+ 30%, A++ 35%, and every existing formal evidence gate.",
+    "No subjective scenario weights are treated as calibrated probabilities.",
+    "No actual stock purchase, sale or broker order is authorized by this file."
+  ]
+}

@@ -189,7 +189,25 @@ def main():
     rankings=DATA/"rankings"
     research=read(rankings/"latest_research.json")
     early=DATA/"fundamentals/early_watch/9802_2026-Q3.json"
-    if not early.exists():
+    packed=(rankings/'v880_full_results.json.gz').read_bytes()
+    if hashlib.sha256(packed).hexdigest()!=research['full_results']['sha256']:
+        raise ValueError('MAIN_RESEARCH_FULL_RESULTS_HASH_MISMATCH')
+    full=json.loads(gzip.decompress(packed))
+    if full.get('estimate_vintage')!=research['estimate_vintage']:
+        raise ValueError('MAIN_RESEARCH_EARNINGS_VINTAGE_MISMATCH')
+    issuer=next((r for r in full.get('all_model_rows',[]) if r.get('code')=='9802'),{})
+    update=issuer.get('fresh_earnings_update') or {}
+    if update.get('applied'):
+        result=dict(status='MAIN_RESEARCH_REBASED_ON_ISSUER_SELF_REPORT',code='9802',
+                    quarter=issuer['financial_period'],source=update['event']['source_url'],
+                    original_source_sha256=update['event']['source_sha256'],
+                    estimate_vintage=research['estimate_vintage'],
+                    early_2027_eps_margin_sensitivity_updated=True,eps_pe_base_2027_unchanged=False,
+                    old=update['baseline_without_new_event'],new=issuer['base'],
+                    cashflow_financial_period=issuer['cashflow_financial_period'],
+                    certified_Aplus=False,formal_gate_PASSES_created=0,
+                    source_is_self_reported_press_not_full_quarterly_statement=True)
+    elif not early.exists():
         try:
             result=issuer_press_source_status(research,DATA)
         except (OSError,ValueError,KeyError,TypeError) as e:
@@ -211,7 +229,10 @@ def main():
     rankings.mkdir(exist_ok=True,parents=True)
     (rankings/"v886_9802_early_q3.json").write_text(json.dumps(result,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
     body=["# 9802 Q3提前公告估值研究","",f"狀態：{result['status']}","",
-          "提前Q3資料只產生獨立研究影子估值，不修改正式全市場排名或13項認證。"]
+          "公司自結可在原始表格勾稽後更新研究估值；正式季度附註、現金流期間與13項認證分別管理。"]
+    if result['status']=='MAIN_RESEARCH_REBASED_ON_ISSUER_SELF_REPORT':
+        body += ['',f"同一模型／價格下，EPS {result['old']['eps']:.2f}→{result['new']['eps']:.2f}；Base {result['old']['target_price']:.2f}→{result['new']['target_price']:.2f}。",
+                 f"現金流仍屬{result['cashflow_financial_period']}；完整2027廠務成本與利用率橋接仍待查核。"]
     if result["status"]=="RESEARCH_ONLY_EARLY_Q3_REVALUED":
         body+=[f"Q3單季毛利率：**{result['standalone_q3_gm_pct']:.2f}%**；前三季累計毛利率：{result['q3_ytd_gm_pct']:.2f}%。",
                "", "|情境|原EPS|更新EPS|原價|更新價|","|---|---:|---:|---:|---:|"]

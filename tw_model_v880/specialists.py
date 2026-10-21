@@ -15,12 +15,24 @@ def segment(s):
             revenue+=remaining*fraction;cost+=remaining*fraction*(1-gm)
     elif kind in ('distributor','manufacturing'):
         if kind=='manufacturing':
-            capacity=nonnegative(s['capacity_units'],'CAPACITY');util=s['utilization']
-            if not 0<=util<=1:raise ValueError('INVALID_UTILIZATION')
-            units=capacity*util
+            if 'quarterly_capacity_schedule' in s:
+                schedule=s['quarterly_capacity_schedule']
+                if not isinstance(schedule,list) or len(schedule)!=4 or sorted(p['quarter'] for p in schedule)!=[1,2,3,4]:raise ValueError('FULL_FOUR_QUARTER_CAPACITY_SCHEDULE_REQUIRED')
+                units=0.
+                for period in schedule:
+                    capacity=nonnegative(period['capacity_units_for_quarter'],'QUARTERLY_CAPACITY');util=period['utilization']
+                    if not isinstance(util,(int,float)) or isinstance(util,bool) or not math.isfinite(util) or not 0<=util<=1:raise ValueError('INVALID_UTILIZATION')
+                    units+=capacity*util
+            else:
+                capacity=nonnegative(s['capacity_units'],'CAPACITY');util=s['utilization']
+                if not 0<=util<=1:raise ValueError('INVALID_UTILIZATION')
+                units=capacity*util
         else:units=nonnegative(s['units_sold'],'UNITS_SOLD')
         revenue=units*nonnegative(s['asp_twd'],'ASP')/1000;cost=units*nonnegative(s['unit_cost_twd'],'UNIT_COST')/1000
         cost+=nonnegative(s.get('fixed_factory_cost_k',0),'FIXED_FACTORY_COST')+nonnegative(s.get('inventory_provision_k',0),'INVENTORY_PROVISION')
+        if 'depreciation_k' in s:
+            if 'fixed_factory_cost_ex_depreciation_k' not in s or s.get('fixed_factory_cost_k',0)!=0:raise ValueError('DEPRECIATION_MUST_NOT_BE_DOUBLE_COUNTED')
+            cost+=nonnegative(s['fixed_factory_cost_ex_depreciation_k'],'FACTORY_COST_EX_DEPRECIATION')+nonnegative(s['depreciation_k'],'DEPRECIATION')
     else:raise ValueError('UNSUPPORTED_OPERATING_SEGMENT')
     opex=nonnegative(s['opex_fixed_k'],'FIXED_OPEX')+revenue*nonnegative(s['opex_rate'],'VARIABLE_OPEX_RATE')
     return dict(revenue_k=revenue,gross_profit_k=revenue-cost,opex_k=opex,operating_profit_k=revenue-cost-opex)

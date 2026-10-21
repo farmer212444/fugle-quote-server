@@ -62,7 +62,7 @@ def valuation_points(model_row):
 
 
 def build(research,revenue_rows,history_months=0):
-    if research.get("model")!="V8.8.2":raise ValueError("MODEL_REQUIRES_REVIEW")
+    if research.get("model") not in ("V8.8.2","V8.10.0"):raise ValueError("MODEL_REQUIRES_REVIEW")
     candidates={}
     for key in ("top30_provisional","top48_primary_research","early_recovery_watch"):
         for row in research.get(key,[]):candidates[str(row.get("code"))]=row

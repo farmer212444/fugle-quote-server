@@ -7,6 +7,8 @@ existing ranks, 13 formal A+ gates, or automated trade decisions.
 """
 import argparse
 import datetime as dt
+import gzip
+import hashlib
 import json
 from pathlib import Path
 
@@ -32,7 +34,7 @@ def require(test,error):
 def load_json(path):
     return json.loads(Path(path).read_text(encoding="utf-8"))
 
-def prepare(top,gate,price_manifest,focus=None,etf_overlay=None):
+def prepare(top,gate,price_manifest,focus=None,etf_overlay=None,*,main_update=None):
     """Check input vintages before sorting; never splice a stale snapshot."""
     asof=top.get("asof_price_date")
     require(asof and asof==gate.get("asof_price_date")==price_manifest.get("date"),
@@ -155,7 +157,7 @@ def prepare(top,gate,price_manifest,focus=None,etf_overlay=None):
            gross_margin_pct=round(100*focus["q3_2026"]["gross_profit"]/
                               focus["q3_2026"]["revenue"],2),
            official_full_quarter_notes_verified=False,
-           impact_on_2027_base="NOT_AUTOMATICALLY_RESTATED",
+           impact_on_2027_base="UPDATED_FROM_RECONCILED_ORIGINAL_SELF_REPORT" if (main_update or {}).get('applied') else "NOT_AUTOMATICALLY_RESTATED",
            needs="Reconcile Q3 source and forward factory cost/GM bridge before relying on 2027 PE/EPS")
     return report
 
@@ -190,7 +192,7 @@ def markdown(report):
         x=report["9802_Q3_self_report"]
         lines+=["## 9802 特別提示（不在Top20）","",
             f"2026Q3自結未經查核 EPS {x['eps']}元、毛利率{x['gross_margin_pct']}%；此資訊已揭露，但2026Q3詳細附註與2027廠務成本橋接未完備。",
-            "過往2027 Base或條件式毛利復甦價不可視為已經受新Q3獲利校正。",""]
+            "本次研究Base已依原始自結表重算；公司別2027營運橋接及完整季度認證仍待完成。" if x['impact_on_2027_base']=='UPDATED_FROM_RECONCILED_ORIGINAL_SELF_REPORT' else "過往2027 Base或條件式毛利復甦價不可視為已經受新Q3獲利校正。",""]
     return "\n".join(lines)+"\n"
 
 def main():
@@ -200,11 +202,17 @@ def main():
     root=Path(args.data_dir)
     focuspath=root/"evidence/v880/issuer_reviews/9802_q3_20261020_self_report.json"
     focus=load_json(focuspath) if focuspath.exists() else None
+    research=load_json(root/'rankings/latest_research.json')
+    packed=(root/'rankings/v880_full_results.json.gz').read_bytes()
+    require(hashlib.sha256(packed).hexdigest()==research['full_results']['sha256'],'DECISION_LANE_FULL_RESULTS_HASH_MISMATCH')
+    full=json.loads(gzip.decompress(packed))
+    require(full.get('estimate_vintage')==research['estimate_vintage'],'DECISION_LANE_MAIN_RESEARCH_VINTAGE_MISMATCH')
+    main_update=next((r.get('fresh_earnings_update') for r in full.get('all_model_rows',[]) if r.get('code')=='9802'),None)
     etf_path=root/"rankings/v8a6_etf_rotation_watch.json"
     etf=load_json(etf_path) if etf_path.exists() else None
     result=prepare(load_json(root/"rankings/v892_top20_quality_audit.json"),
                    load_json(root/"rankings/v891_gate_progress.json"),
-                   load_json(root/"prices/latest_manifest.json"),focus,etf)
+                   load_json(root/"prices/latest_manifest.json"),focus,etf_overlay=etf,main_update=main_update)
     (root/"rankings/v8a5_quality_decision_lane.json").write_text(
         json.dumps(result,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
     (root/"rankings/v8a5_quality_decision_lane.md").write_text(

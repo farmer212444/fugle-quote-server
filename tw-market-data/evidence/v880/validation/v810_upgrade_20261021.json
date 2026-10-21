@@ -1,0 +1,54 @@
+{
+  "model": "V8.10.0",
+  "validated_at": "2026-10-21T05:41:15.435393+00:00",
+  "source_base_commit": "ac79b6790767a65286e8f3676f0ff862fd8a102f",
+  "model_code_sha256": "9cd8dc22de62d9d6aa0bcfbf9fce92282e9c2df20bc9abb15f33c9adbc0a70a7",
+  "price_date": "2026-10-20",
+  "estimate_vintage": "2026-10-21T13:40:04.979348+08:00",
+  "local_unittest_passed": 361,
+  "root_runtime_version_contract_passed": true,
+  "workflow_yaml_bash_and_embedded_python_checked": true,
+  "complete_research_workflow_offline_pipeline_exit": 0,
+  "data_scope": {
+    "normalized_issuers": 1978,
+    "priced_issuers": 1987,
+    "model_rows": 1998,
+    "tracked_issuer_universe": 1998,
+    "original_latest_issuer_numeric_coverage": 66,
+    "official_current_bulk_issuers": 1936,
+    "primary_research_rankable": 52,
+    "market_research_rankable": 791,
+    "not_rankable": 1207,
+    "broad_unverified_historical_detail_rankable": 791,
+    "source_errors": 0,
+    "issuer_failures": 0
+  },
+  "formal_Aplus": 0,
+  "formal_Aplusplus": 0,
+  "earnings_event_updates": 1,
+  "changed_operating_forecast_issuers_vs_no_event_counterfactual": [
+    "9802"
+  ],
+  "q3_example": {
+    "code": "9802",
+    "before": {
+      "eps": 4.592329887248016,
+      "pe": 11.99,
+      "target_price": 55.06203534810371,
+      "price_upside_pct": -16.698887521779547
+    },
+    "after": {
+      "eps": 4.392940805553443,
+      "pe": 11.99,
+      "target_price": 52.67136025858578,
+      "price_upside_pct": -20.315642574000325
+    },
+    "latest_income_period": "2026-Q3",
+    "cashflow_period": "2026-Q2"
+  },
+  "top10_research_unchanged_vs_counterfactual": true,
+  "investment_outperformance_verified": false,
+  "scenario_probabilities_calibrated": false,
+  "complete_13_gate_issuer_certification_not_claimed": true,
+  "broker_orders_created": 0
+}

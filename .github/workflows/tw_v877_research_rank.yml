@@ -31,6 +31,13 @@ on:
       - 'scripts/v892_top20_quality_audit.py'
       - 'scripts/v894_revenue_lead_discovery.py'
       - 'scripts/v8a5_quality_decision_lane.py'
+      - 'scripts/institutional_review.py'
+      - 'scripts/institutional_shadow.py'
+      - 'requirements-model.txt'
+      - 'VERSION'
+      - 'tw-market-data/config/institutional_research.json'
+      - 'tw-market-data/experiments/**'
+      - 'tw-market-data/evidence/v880/risk_profiles/**'
       - 'scripts/v8a6_etf_rotation_watch.py'
       - 'tw-market-data/evidence/v880/etf_index_constituent_events.json'
       - 'tests/test_v8a5_quality_decision_lane.py'
@@ -79,6 +86,13 @@ on:
       - 'scripts/v892_top20_quality_audit.py'
       - 'scripts/v894_revenue_lead_discovery.py'
       - 'scripts/v8a5_quality_decision_lane.py'
+      - 'scripts/institutional_review.py'
+      - 'scripts/institutional_shadow.py'
+      - 'requirements-model.txt'
+      - 'VERSION'
+      - 'tw-market-data/config/institutional_research.json'
+      - 'tw-market-data/experiments/**'
+      - 'tw-market-data/evidence/v880/risk_profiles/**'
       - 'scripts/v8a6_etf_rotation_watch.py'
       - 'tw-market-data/evidence/v880/etf_index_constituent_events.json'
       - 'tests/test_v8a5_quality_decision_lane.py'
@@ -158,6 +172,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Install original earnings table reader
+        run: python -m pip install -r requirements-model.txt
       - name: Validate model controls and independent 6206 triage
         run: |
           python scripts/tw_v880_run.py --self-test
@@ -192,6 +208,8 @@ jobs:
           python scripts/v894_revenue_lead_discovery.py
           python scripts/v8a6_etf_rotation_watch.py
           python scripts/v8a5_quality_decision_lane.py
+          python scripts/institutional_shadow.py
+          python scripts/institutional_review.py
       - name: Save current results on main only (retry from fresh origin)
         if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
         run: |
@@ -226,9 +244,11 @@ jobs:
             python scripts/v8a6_etf_rotation_watch.py
             python scripts/v8a5_quality_decision_lane.py
             python scripts/v897_freeze_model_vintage.py --git-source-sha "$(git rev-parse HEAD)"
-            git add tw-market-data/evidence/v880 tw-market-data/rankings tw-market-data/pit_vintages
+            python scripts/institutional_shadow.py
+            python scripts/institutional_review.py
+            git add tw-market-data/evidence/v880 tw-market-data/rankings tw-market-data/pit_vintages tw-market-data/experiments
             if git diff --cached --quiet; then exit 0; fi
-            git commit -m 'data: refresh V8.8.2 research and evidence status'
+            git commit -m 'data: refresh institutional research, earnings revisions and evidence status'
             if git push origin HEAD:main; then exit 0; fi
             echo "Remote moved during generated data publication; retrying from latest data"
           done

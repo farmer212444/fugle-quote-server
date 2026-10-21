@@ -129,7 +129,10 @@ def validate_review_pack(pack, path, data_root, cutoff, financial_period):
             **({"margin_normalization_review_complete":True} if name=="forecast_bridge" and item.get("margin_normalization_review_complete") is True else {}),
             **({"model_code_sha256":item.get("model_code_sha256"),
                 "target_date":item.get("target_date"),
-                "reference_price_date":item.get("reference_price_date")} if name=="forecast_bridge" else {}),
+                "reference_price_date":item.get("reference_price_date"),
+                "forecast_contract_version":item.get("forecast_contract_version"),
+                "forecast_input_sha256":item.get("forecast_input_sha256"),
+                "forecast_method_sha256":item.get("forecast_method_sha256")} if name=="forecast_bridge" else {}),
             **({"forecast_denominator_shares":item.get("forecast_denominator_shares")} if name=="fully_diluted_shares" else {}),
             **({"multi_session_liquidity_verified":item.get("multi_session_liquidity_verified"),
                 "exit_capacity_verified":item.get("exit_capacity_verified")} if name=="tradability" else {})

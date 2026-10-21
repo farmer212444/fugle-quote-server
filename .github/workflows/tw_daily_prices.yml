@@ -2,9 +2,11 @@ name: Taiwan Official Daily Stock Prices
 on:
   workflow_dispatch:
   push:
+    branches: [main]
     paths:
       - '.github/workflows/tw_daily_prices.yml'
       - 'scripts/v8a4_market_close_recovery.py'
+      - 'scripts/execution_quote_archive.py'
       - 'tests/test_v8a4_market_close_recovery.py'
   schedule:
     # Taiwan market close: schedule uses UTC, notes use Asia/Taipei (UTC+8).
@@ -44,6 +46,7 @@ jobs:
           import pathlib
           import re
           import urllib.request
+          from scripts.execution_quote_archive import add_execution_fields, persist_price_originals
 
           OUTPUT = pathlib.Path('tw-market-data/prices')
           RAW = pathlib.Path('market-raw-daily')
@@ -105,6 +108,7 @@ jobs:
                   amount = integer(record.get('TradeValue' if market == 'TWSE' else 'TransactionAmount'))
                   parsed.append({'market': market, 'date': d, 'code': code, 'name': name,
                                  'close': close, 'volume_shares': volume, 'turnover_ntd': amount})
+                  parsed[-1] = add_execution_fields(parsed[-1], record, market)
               if len(all_dates) != 1 or not parsed or len({x['code'] for x in parsed}) != len(parsed):
                   raise ValueError(market + ' inconsistent trade dates, tickers or no 4-digit stocks')
               if sum(x['close'] is not None for x in parsed) < 250:
@@ -164,6 +168,7 @@ jobs:
                       if not revision.exists():
                           revision.write_bytes(prior)
                   dest.write_bytes(payload)
+              persist_price_originals(OUTPUT, RAW, tdate, checksum, {'TWSE': thash, 'TPEX': phash}, source_routes)
               manifest = json.dumps({
                   'date': tdate, 'TWSE_rows': len(twse), 'TPEX_rows': len(tpex),
                   'total': len(all_rows), 'path': dest.as_posix(),
@@ -188,7 +193,7 @@ jobs:
           if-no-files-found: ignore
           retention-days: 30
       - name: Commit verified daily price data
-        if: ${{ success() && (github.event_name != 'schedule' || github.event.schedule != '40 5 * * 1-5') }}
+        if: ${{ success() && github.ref == 'refs/heads/main' && (github.event_name != 'schedule' || github.event.schedule != '40 5 * * 1-5') }}
         shell: bash
         run: |
           git config user.name 'github-actions[bot]'
