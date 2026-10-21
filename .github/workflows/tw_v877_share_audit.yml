@@ -8,6 +8,9 @@ on:
       - 'scripts/tw_v880_run.py'
       - 'tests/**'
       - 'scripts/v880_audit_exports.py'
+      - 'scripts/ensure_research_current.py'
+      - 'requirements-model.txt'
+      - 'VERSION'
   push:
     paths:
       - '.github/workflows/tw_v877_share_audit.yml'
@@ -15,6 +18,9 @@ on:
       - 'scripts/tw_v880_run.py'
       - 'tests/**'
       - 'scripts/v880_audit_exports.py'
+      - 'scripts/ensure_research_current.py'
+      - 'requirements-model.txt'
+      - 'VERSION'
   schedule:
     - cron: '25 13 * * *'
 permissions:
@@ -31,8 +37,11 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Install original earnings table reader
+        run: python -m pip install -r requirements-model.txt
       - name: Validate model controls
         run: python scripts/tw_v880_run.py --self-test
       - name: Produce dated scenarios and evidence decisions
         run: |
+          python scripts/ensure_research_current.py
           python scripts/v880_audit_exports.py --kind shares

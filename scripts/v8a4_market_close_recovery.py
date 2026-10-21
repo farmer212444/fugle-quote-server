@@ -115,6 +115,10 @@ def parse(market,raw,day,min_issuers=300):
         parsed.append(dict(market=market,date=day,code=code,
             name=str(rec[indices["name"]]).strip(),close=close,
             volume_shares=volume,turnover_ntd=amount))
+        opening_field='開盤價' if market=='TWSE' else '開盤'
+        from scripts.execution_quote_archive import execution_fields
+        opening=rec[fields.index(opening_field)] if fields.count(opening_field)==1 else None
+        parsed[-1].update(execution_fields(day,opening))
     if len(parsed)<min_issuers or sum(x["close"] is not None for x in parsed)<min_issuers-20:
         raise ValueError("DATED_MARKET_INSUFFICIENT_ORDINARY_STOCKS")
     return parsed

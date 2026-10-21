@@ -46,9 +46,10 @@ def path_inside_root(root, raw):
     return result
 
 
-def load_inputs(root, now, code_version):
+def load_inputs(root, now, code_version, rankings_subdir='rankings'):
     root=Path(root).resolve()
-    research_path=root/"rankings/latest_research.json"
+    rankings=path_inside_root(root,rankings_subdir)
+    research_path=rankings/"latest_research.json"
     research_blob=research_path.read_bytes()
     research=json.loads(research_blob)
     vintage=aware(research["estimate_vintage"])
@@ -87,7 +88,7 @@ def load_inputs(root, now, code_version):
     full_path=full_manifest.get("path")
     if not isinstance(full_path,str) or Path(full_path).name!="v880_full_results.json.gz":
         raise ValueError("FULL_ISSUER_UNIVERSE_PATH_INVALID")
-    full_blob=(root/"rankings"/"v880_full_results.json.gz").read_bytes()
+    full_blob=(rankings/"v880_full_results.json.gz").read_bytes()
     if sha(full_blob)!=full_manifest.get("sha256"):
         raise ValueError("FULL_MARKET_RESEARCH_GZIP_HASH_MISMATCH")
     raw_full=gzip.decompress(full_blob)
@@ -117,8 +118,8 @@ def _ensure_immutable(path,blob):
     return True
 
 
-def freeze(root,now,version,source_git_commit=None):
-    src=load_inputs(root,now,version)
+def freeze(root,now,version,source_git_commit=None,rankings_subdir='rankings'):
+    src=load_inputs(root,now,version,rankings_subdir)
     vintage=src["vintage"]
     day=vintage.astimezone(TAIPEI).date().isoformat()
     # A same-day rerun may use identical printed valuations but different
@@ -146,6 +147,8 @@ def freeze(root,now,version,source_git_commit=None):
         "revenue_month":src["research"]["revenue_month"],
         "model":version,
         "model_code_sha256":src["research"].get("model_code_sha256"),
+        "strategy_variant":src["research"].get("strategy_variant","current-information"),
+        "strategy_variant_sha256":src["research"].get("strategy_variant_sha256"),
         "model_repo_commit_before_generated_files":source_git_commit,
         "model_issuer_universe_count":src["market_rows"],
         "source_manifest_digests":{
@@ -215,11 +218,12 @@ def main():
     ap=argparse.ArgumentParser()
     ap.add_argument("--data-root",default="tw-market-data")
     ap.add_argument("--git-source-sha",default=None)
+    ap.add_argument("--rankings-subdir",default="rankings")
     args=ap.parse_args()
     root=Path(args.data_root).resolve()
     now=dt.datetime.now(dt.timezone.utc)
     version=(root.parent/"VERSION").read_text(encoding="utf-8").strip()
-    result=freeze(root,now,version,args.git_source_sha)
+    result=freeze(root,now,version,args.git_source_sha,args.rankings_subdir)
     print(json.dumps(result,ensure_ascii=False))
 
 

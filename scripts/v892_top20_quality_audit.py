@@ -36,7 +36,9 @@ def indexed(rows,kind):
     return ret
 
 def validate(research,audits):
-    require(research.get("model")=="V8.8.2","MODEL_REQUIRES_NEW_AUDIT")
+    # V8.10.0 retains this audit's operating scenario/share/price contracts;
+    # issuer self-reports disclose their separate financial period explicitly.
+    require(research.get("model") in ("V8.8.2","V8.10.0"),"MODEL_REQUIRES_NEW_AUDIT")
     instant=dt.datetime.fromisoformat(research["estimate_vintage"])
     require(instant.tzinfo is not None,"UNZONED_VINTAGE")
     require(research.get("asof_price_date") and
