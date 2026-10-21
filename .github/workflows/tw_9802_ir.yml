@@ -5,7 +5,9 @@ on:
     paths:
       - 'scripts/tw_9802_ir.py'
       - 'scripts/v896_original_archive.py'
+      - 'scripts/v8a0_9802_pdf_outline.py'
       - 'tests/test_v896_original_archive.py'
+      - 'tests/test_v8a0_9802_pdf_outline.py'
       - '.github/workflows/tw_9802_ir.yml'
   schedule:
     # 14:40 and 20:40 Asia/Taipei; existing model runs at 21:30.
@@ -36,6 +38,12 @@ jobs:
         run: |
           python scripts/v896_original_archive.py --issuer 9802 --max-documents 10
           python scripts/v896_original_archive.py --issuer 9802 --verify-only
+      - name: Install native issuer PDF text extractor
+        run: python -m pip install 'pymupdf>=1.24,<2'
+      - name: Validate original PDF text preflight without false certifications
+        run: python -m unittest -v tests.test_v8a0_9802_pdf_outline
+      - name: Produce page-located eight-quarter native PDF section outline
+        run: python scripts/v8a0_9802_pdf_outline.py
       - name: Retain downloaded HTML and original PDFs
         if: always()
         uses: actions/upload-artifact@v4
