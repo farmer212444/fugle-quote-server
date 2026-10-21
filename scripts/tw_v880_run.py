@@ -10,7 +10,7 @@ from tw_model_v880.calibration import fit_accounting
 from tw_model_v880.model import estimate
 from tw_model_v880.backtest import live_backtest_status
 from tw_model_v880.evidence import POLICY
-from tw_model_v880.provenance import code_fingerprint
+from tw_model_v880.provenance import code_fingerprint,runtime_dependencies
 from tw_model_v880.freshness import assess_price_freshness
 from tw_model_v880.contracts import canonical_hash
 def atomic(path,content):
@@ -74,8 +74,9 @@ def run(data_dir,asof,target_date,out_dir=None,variant='current-information'):
     formal=sorted([r for r in rows if r.get('formal_Aplus')],key=lambda r:r['base']['price_upside_pct'],reverse=True)
     aq=[r for r in formal if r['formal_Aplusplus']];backtest=live_backtest_status(data.evidence)
     pending=[dict(code=r['code'],name=r.get('name'),status=r['status'],pending_gates=r.get('certification',{}).get('gates_pending',[])) for r in rows if not r.get('formal_Aplus')]
-    result=dict(model=VERSION,model_code_sha256=code_fingerprint(),strategy_variant=variant,
-      strategy_variant_sha256=canonical_hash(dict(runtime_code_sha256=code_fingerprint(),variant=variant)),estimate_vintage=asof,asof_price_date=data.price_date,
+    dependencies=runtime_dependencies()
+    result=dict(model=VERSION,model_code_sha256=code_fingerprint(),runtime_dependencies=dependencies,strategy_variant=variant,
+      strategy_variant_sha256=canonical_hash(dict(runtime_code_sha256=code_fingerprint(),runtime_dependencies=dependencies,variant=variant)),estimate_vintage=asof,asof_price_date=data.price_date,
       price_freshness=price_freshness,model_source_state=getattr(data,'model_source_state',None),revenue_month=data.revenue_month,
       financial_last_quarter=data.period,required_quarters=data.required_periods,target_date=target_date,policy=POLICY,
       policy_notes=['Approved A+/A++ price-upside thresholds retain 30/35 pct','Research min one-day turnover 1m NTD; 1m-12m research requires multi-session liquidity/exit review for formal tradability','A++ stress assumes EPS and PE each -10%, CB conversion price -10%, and nonnegative upside; stress design is an explicit implementation assumption'],

@@ -223,6 +223,9 @@ jobs:
             # Rebuild against the newest main rather than rebasing generated artifacts.
             git fetch origin main
             git reset --hard origin/main
+            # A queued run can adopt newer code here; synchronize its runtime
+            # too, rather than publishing a new model from an older environment.
+            python -m pip install -r requirements-model.txt
             python scripts/refresh_v880_public.py
             python scripts/v891_gate_certification.py --issue-only
             python scripts/tw_v880_run.py --target-date 2027-12-31

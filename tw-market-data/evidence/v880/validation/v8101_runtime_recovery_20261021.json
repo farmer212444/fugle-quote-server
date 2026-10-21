@@ -1,0 +1,40 @@
+{
+  "model": "V8.10.1",
+  "validated_at": "2026-10-21T06:08:03.629659+00:00",
+  "runtime_sha256": "483482e378bf4d66bf84d931bd912f1e95a9dcb8ea6f691bda9155e8bcc1b0d2",
+  "runtime_dependencies": {
+    "PyMuPDF": "1.26.6"
+  },
+  "unittest_passed": 367,
+  "source_data_base": "ac79b6790767a65286e8f3676f0ff862fd8a102f",
+  "code_base": "74995204c8abfac3675e09726756ddc83e7cf17f",
+  "price_date": "2026-10-20",
+  "data_scope": {
+    "normalized_issuers": 1978,
+    "priced_issuers": 1987,
+    "model_rows": 1998,
+    "tracked_issuer_universe": 1998,
+    "original_latest_issuer_numeric_coverage": 66,
+    "official_current_bulk_issuers": 1936,
+    "primary_research_rankable": 52,
+    "market_research_rankable": 791,
+    "not_rankable": 1207,
+    "broad_unverified_historical_detail_rankable": 791,
+    "source_errors": 0,
+    "issuer_failures": 0
+  },
+  "earnings_event_states": {
+    "9802": {
+      "status": "NEW_ORIGINAL_EARNINGS_RECONCILED",
+      "period": "2026-Q3",
+      "event_sha256": "9e953d8c9c81ea4dcd100ae11fdecd565c67ca506496005a7efb0f568960a5e2",
+      "blocks_current_decision": false
+    }
+  },
+  "primary_and_three_auxiliary_pipeline_exit": 0,
+  "source_and_runtime_cache_reuse_tested": true,
+  "production_issue": "Pre-upgrade workflow adopted new source code during publication retry without installing the new PDF reader",
+  "production_version_before_patch": "V8.10.0",
+  "investment_outperformance_verified": false,
+  "certified_Aplus": 0
+}
