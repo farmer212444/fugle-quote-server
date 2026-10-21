@@ -1,0 +1,94 @@
+name: V8.9.9 Factory ramp causal margin research
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'tw_model_v880/factory_ramp.py'
+      - 'scripts/v899_factory_ramp_audit.py'
+      - 'tests/test_v899_factory_ramp.py'
+      - 'README_V899_FACTORY_RAMP.md'
+      - 'tw-market-data/evidence/v880/factory_ramp/**'
+      - '.github/workflows/v899-factory-ramp-audit.yml'
+  push:
+    paths:
+      - 'tw_model_v880/factory_ramp.py'
+      - 'scripts/v899_factory_ramp_audit.py'
+      - 'tests/test_v899_factory_ramp.py'
+      - 'README_V899_FACTORY_RAMP.md'
+      - 'tw-market-data/evidence/v880/factory_ramp/**'
+      - 'tw-market-data/fundamentals/2025-Q1/**'
+      - 'tw-market-data/fundamentals/2025-Q2/**'
+      - 'tw-market-data/fundamentals/2026-Q1/**'
+      - 'tw-market-data/fundamentals/2026-Q2/**'
+      - '.github/workflows/v899-factory-ramp-audit.yml'
+  schedule:
+    # 22:55 Taipei: after official financial collection/research publication.
+    - cron: '55 14 * * *'
+permissions:
+  contents: write
+concurrency:
+  group: factory-margin-causal-research
+  cancel-in-progress: false
+jobs:
+  test_and_audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test PIT, inventory COGS, source hashes, synthetic opposing scenarios
+        run: |
+          python -m py_compile tw_model_v880/factory_ramp.py scripts/v899_factory_ramp_audit.py
+          python -m unittest -v tests.test_v899_factory_ramp
+      - name: Audit every issuer from current and comparable standalone quarter income
+        run: python scripts/v899_factory_ramp_audit.py --data-dir tw-market-data
+      - name: Ensure 9802 and 2330 included without valuation or grade promotion
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          j=json.loads(Path('tw-market-data/rankings/v899_factory_ramp_audit.json').read_text())
+          assert j['universe_checked'] > 1000
+          assert {'9802','2330'} <= set(j['issuer_focus_cases'])
+          assert j['formal_Aplus_changes'] == 0 and j['base_eps_pe_target_changes'] == 0
+          assert all(not x['base_gm_override_allowed'] for x in j['all_issuer_accounting'])
+          assert all(not x['formal_a_plus_changed'] for x in j['all_issuer_accounting'])
+          print('Research evidence separate from formal A+ or trading rules')
+          PY
+  publish:
+    needs: test_and_audit
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Publish only for new source/model revisions, not daily timestamp churn
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          for attempt in 1 2 3; do
+            git fetch origin main
+            git reset --hard origin/main
+            latest_input=$(git log -1 --format=%H -- tw_model_v880/factory_ramp.py scripts/v899_factory_ramp_audit.py tw-market-data/evidence/v880/factory_ramp/ tw-market-data/fundamentals/2025-Q1/ tw-market-data/fundamentals/2025-Q2/ tw-market-data/fundamentals/2026-Q1/ tw-market-data/fundamentals/2026-Q2/)
+            last_report=$(git log -1 --format=%H -- tw-market-data/rankings/v899_factory_ramp_audit.json)
+            if [ -n "$last_report" ] && [ -n "$latest_input" ] && git merge-base --is-ancestor "$latest_input" "$last_report"; then
+              echo 'Same original quarterly evidence and factory causal code already analyzed.'
+              exit 0
+            fi
+            python scripts/v899_factory_ramp_audit.py --data-dir tw-market-data
+            git add tw-market-data/rankings/v899_factory_ramp_audit.json tw-market-data/rankings/v899_factory_ramp_audit.md
+            if git diff --cached --quiet; then exit 0; fi
+            git commit -m 'data: publish accounting-only factory causal evidence review'
+            if git push origin HEAD:main; then exit 0; fi
+            echo "Concurrent official source publication, refresh and retry $attempt/3"
+          done
+          echo '::error::Failed to publish evidence report after retry.'
+          exit 1
