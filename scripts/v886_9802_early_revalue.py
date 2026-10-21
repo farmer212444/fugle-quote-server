@@ -163,8 +163,8 @@ def issuer_press_source_status(research,data_root=DATA):
         raise ValueError("PUBLISHER_PRESS_RECEIPT_TIME_MISMATCH")
     if captured_at>timestamp(research["estimate_vintage"]):
         raise ValueError("Q3_PRESS_NOT_AVAILABLE_AT_RESEARCH_VINTAGE")
-    if doc["formal_gate_pass"] is not False or
-       doc["independently_verified_issuer_filing_time"] is not False:
+    if (doc["formal_gate_pass"] is not False or
+            doc["independently_verified_issuer_filing_time"] is not False):
         raise ValueError("FALSE_PUBLISHER_PRESS_MOPS_OR_FORMAL_CLAIM")
     return dict(status="OFFICIAL_ISSUER_Q3_SELF_REPORTED_SOURCE_ARCHIVED",
                 code="9802",quarter="2026-Q3",
