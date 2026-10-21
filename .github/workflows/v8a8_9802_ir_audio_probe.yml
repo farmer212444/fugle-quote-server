@@ -31,7 +31,8 @@ jobs:
           python-version: '3.12'
       - name: Install local speech recognition on runner CPU
         run: |
-          python -m pip install --disable-pip-version-check faster-whisper==1.2.1
+          python -m pip install --disable-pip-version-check 'faster-whisper==1.2.1' 'av==15.1.0'
+          python -c 'import av; print("Pinned PyAV",av.__version__)'
       - name: Produce source-hashed and timecoded 2026-09-17 ASR candidate workpaper
         run: |
           python scripts/v8a8_9802_ir_asr.py --date 2026-09-17 --model small --output temp_9802_ir_draft
