@@ -10,6 +10,7 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:sys.path.insert(0,str(ROOT))
 from tw_model_v880.math import operating_scenario, returns
+from scripts.v896_original_archive import validate_bundle, read_original_archive
 
 DATA=Path("tw-market-data")
 SOURCE="https://mopsov.twse.com.tw/mops/web/ajax_t163sb04"
@@ -117,13 +118,84 @@ def revalue(research,full,receipt,prior):
                 revenue_PE_and_dilution_denominator_unchanged=True,
                 margin_persistence_is_unvalidated_sensitivity=True)
 
+def issuer_press_source_status(research,data_root=DATA):
+    """Cross-verify archived publisher Q3 press release and discovery receipts.
+
+    A company-published *self-reported press release* is a research source,
+    never a signed MOPS quarterly financial row or a formal gate PASS.
+    """
+    data_root=Path(data_root)
+    original_status=validate_bundle(data_root,"9802")
+    if not original_status.get("original_archive_hashes_verified"):
+        return dict(status="WAITING_ISSUER_Q3_ARCHIVED_ORIGINAL",code="9802",
+                    certified_Aplus=False,formal_gate_PASSES_created=0,
+                    estimate_vintage=research.get("estimate_vintage"))
+    source=read(data_root/"issuer/9802/manifest.json")
+    if source.get("issuer")!="9802" or source.get("publisher")!="鈺齊國際":
+        raise ValueError("PUBLISHER_ISSUER_IDENTITY_MISMATCH")
+    archive=read_original_archive(data_root,"9802")
+    candidates=[d for d in archive["documents"] if
+                d.get("document_kind")=="news" and
+                d.get("title")=="2026年第三季自結財報新聞稿" and
+                d.get("document_date")=="2026-10-20"]
+    if not candidates:
+        return dict(status="WAITING_ISSUER_Q3_ARCHIVED_ORIGINAL",code="9802",
+                    certified_Aplus=False,formal_gate_PASSES_created=0)
+    if len(candidates)!=1:
+        raise ValueError("AMBIGUOUS_PUBLISHER_Q3_NEWS_VERSION")
+    doc=candidates[0]
+    matches=[item for item in source.get("discovered",[]) if
+             item.get("id")==doc["id"] and
+             item.get("url")==doc["source_url"] and
+             item.get("category")=="news" and
+             item.get("site_display_date")==doc["document_date"]]
+    if len(matches)!=1:
+        raise ValueError("PUBLISHER_PRESS_SOURCE_MISSING_IN_DISCOVERY")
+    original_versions=(source.get("receipts",{}).get(doc["id"],{}).get("versions",[]))
+    receipts=[v for v in original_versions if v.get("sha256")==doc["sha256"]
+              and v.get("bytes")==doc["bytes"]
+              and v.get("source_url")==doc["source_url"]]
+    if len(receipts)!=1:
+        raise ValueError("PUBLISHER_PRESS_HASH_OR_SIZE_MISMATCH")
+    archived_at=timestamp(doc["captured_at_utc"])
+    first_source_receipt_at=timestamp(receipts[0]["captured_at_utc"])
+    # The issuer website collector and durable PDF collector run separately.
+    # Their capture timestamps are intentionally different and must both
+    # precede the research-vintage timestamp; never demand artificial equality
+    # or backdate the later original-byte capture to the source discovery time.
+    if (archived_at>timestamp(research["estimate_vintage"]) or
+            first_source_receipt_at>timestamp(research["estimate_vintage"])):
+        raise ValueError("Q3_PRESS_NOT_AVAILABLE_AT_RESEARCH_VINTAGE")
+    if (doc["formal_gate_pass"] is not False or
+            doc["independently_verified_issuer_filing_time"] is not False):
+        raise ValueError("FALSE_PUBLISHER_PRESS_MOPS_OR_FORMAL_CLAIM")
+    return dict(status="OFFICIAL_ISSUER_Q3_SELF_REPORTED_SOURCE_ARCHIVED",
+                code="9802",quarter="2026-Q3",
+                source=doc["source_url"],original_source_sha256=doc["sha256"],
+                original_pdf_size_bytes=doc["bytes"],
+                first_source_receipt_at_utc=receipts[0]["captured_at_utc"],
+                original_pdf_archived_at_utc=doc["captured_at_utc"],
+                issuer_website_display_date=doc["document_date"],
+                issuer_company_publication_PIT_verified=False,
+                issuer_Q3_press_numbers_not_yet_reconciled_with_signed_MOPS_income=True,
+                main_model_financial_last_quarter="2026-Q2",
+                early_2027_eps_margin_sensitivity_updated=False,
+                eps_pe_base_2027_unchanged=True,
+                formal_gate_PASSES_created=0,certified_Aplus=False,
+                original_bytes_sha256_checked=True,
+                source_is_self_reported_press_not_full_quarterly_statement=True)
+
 def main():
     rankings=DATA/"rankings"
     research=read(rankings/"latest_research.json")
     early=DATA/"fundamentals/early_watch/9802_2026-Q3.json"
     if not early.exists():
-        result=dict(status="WAITING_EARLY_Q3_9802_REPORT",code="9802",
-                    certified_Aplus=False,source=SOURCE)
+        try:
+            result=issuer_press_source_status(research,DATA)
+        except (OSError,ValueError,KeyError,TypeError) as e:
+            result=dict(status="ISSUER_Q3_PRESS_EVIDENCE_UNVERIFIED",code="9802",
+                        certified_Aplus=False,formal_gate_PASSES_created=0,
+                        reason=type(e).__name__+":"+str(e)[:180])
     else:
         try:
             packed=(rankings/"v880_full_results.json.gz").read_bytes()
@@ -147,6 +219,11 @@ def main():
             a=result["old"][k];b=result["new"][k]
             body.append(f"|{k}|{a['eps']:.2f}|{b['eps']:.2f}|{a['target_price'] or 0:.2f}|{b['target_price'] or 0:.2f}|")
         body+=["",f"原榜暫定替換排名：{result['shadow_if_substituted_rank']} / {result['comparator_sample_count']}（研究用，其他公司仍採Q2）。"]
+    elif result.get("status")=="OFFICIAL_ISSUER_Q3_SELF_REPORTED_SOURCE_ARCHIVED":
+        body+=["","公司2026Q3官方自結新聞稿PDF已封存並完成SHA256及網址日期對帳。",
+               "然而原始自結稿尚非經公司當季MOPS核驗的合併財報；毛利、淨利與EPS尚未獲正式逐項對帳，不能以此直接調整2027合理價。",
+               "",f"公司原件：{result['source']}。",
+               f"原始網站來源首次觀察：{result['first_source_receipt_at_utc']}；PDF永久入庫：{result['original_pdf_archived_at_utc']}（均非獨立認證的MOPS公告時點）。"]
     elif result.get("reason"):body+=["","待補證據："+result["reason"]]
     (rankings/"v886_9802_early_q3.md").write_text("\n".join(body)+"\n",encoding="utf-8")
     print(json.dumps({k:result.get(k) for k in ("status","standalone_q3_gm_pct",
