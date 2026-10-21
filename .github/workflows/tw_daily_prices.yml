@@ -1,6 +1,11 @@
 name: Taiwan Official Daily Stock Prices
 on:
   workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/tw_daily_prices.yml'
+      - 'scripts/v8a4_market_close_recovery.py'
+      - 'tests/test_v8a4_market_close_recovery.py'
   schedule:
     # Taiwan market close: schedule uses UTC, notes use Asia/Taipei (UTC+8).
     - cron: '40 5 * * 1-5'   # 13:40 Mon-Fri: diagnostic probe ONLY
@@ -24,6 +29,8 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - name: Verify strictly dated bulk-market exchange fallback
+        run: python -m unittest -v tests.test_v8a4_market_close_recovery
       - name: Capture and validate latest TWSE TPEx prices
         shell: bash
         env:
@@ -116,8 +123,18 @@ jobs:
               else:
                   print(f'::warning::EARLY_PROBE_ONLY dates differ TWSE={tdate} TPEx={pdate}; await retry.')
               raise SystemExit(0)
+          source_routes = dict(urls)
+          if tdate < pdate:
+              # Only confirmed same-day exchange quotes may replace a stale bulk OpenAPI.
+              from scripts.v8a4_market_close_recovery import recover
+              twse, tdate, thash, source_routes['TWSE'] = recover('TWSE', pdate, tdate, RAW)
+              print(f'::notice::OFFICIAL_TWSE_DATED_FALLBACK_USED asof={tdate}', flush=True)
+          elif pdate < tdate:
+              from scripts.v8a4_market_close_recovery import recover
+              tpex, pdate, phash, source_routes['TPEX'] = recover('TPEX', tdate, pdate, RAW)
+              print(f'::notice::OFFICIAL_TPEX_DATED_FALLBACK_USED asof={pdate}', flush=True)
           if tdate != pdate:
-              raise ValueError(f'Exchange dates differ TWSE={tdate}, TPEx={pdate}')
+              raise ValueError(f'Exchange dates differ even after official dated recovery TWSE={tdate}, TPEx={pdate}')
           latest = OUTPUT / 'latest_manifest.json'
           prior_date = json.loads(latest.read_text(encoding='utf-8'))['date'] if latest.exists() else None
           if prior_date and tdate < prior_date:
@@ -152,7 +169,7 @@ jobs:
                   'total': len(all_rows), 'path': dest.as_posix(),
                   'normalized_sha256': checksum,
                   'raw_source_sha256': {'TWSE': thash, 'TPEX': phash},
-                  'sources': urls, 'unadjusted_quotes': True,
+                  'sources': source_routes, 'unadjusted_quotes': True,
                   'security_master_verified': False,
                   'note': 'Latest daily unadjusted close; not adjusted for cash dividends, splits or corporate actions.'
               }, ensure_ascii=False, indent=2) + '\n'
