@@ -1,6 +1,6 @@
 {
   "model": "V8.10.1",
-  "estimate_vintage": "2026-10-21T20:46:09.344644+08:00",
+  "estimate_vintage": "2026-10-21T20:54:11.640381+08:00",
   "asof_price_date": "2026-10-21",
   "tracked_issuers": 1998,
   "valued_candidates": 795,
@@ -43,8 +43,8 @@
     "normalized_full_8q_income": 121,
     "normalized_full_8q_cash": 121,
     "latest_primary_numbers": 22,
-    "20_sessions_observed": 60,
-    "20_sessions_from_individual_TWSE_history": 60,
+    "20_sessions_observed": 61,
+    "20_sessions_from_individual_TWSE_history": 61,
     "unverified_bond_terms_issuers": 22
   },
   "top_priority_evidence": [
@@ -84,7 +84,42 @@
         "spread_and_order_book_evidence_available": false,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
       },
-      "issuer_historical_market_data": null,
+      "issuer_historical_market_data": {
+        "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
+        "available_sessions": 55,
+        "twenty_day": {
+          "sessions": 20,
+          "first": "2026-09-21",
+          "last": "2026-10-21",
+          "median_turnover_ntd": 5900247969.0,
+          "min_turnover_ntd": 3777479677,
+          "zero_turnover_days": 0,
+          "hypothetical_position_ntd": 5000000,
+          "participation_cap": 0.2,
+          "exit_sessions_at_median": 0.0,
+          "estimates_are_idealized_not_fills": true
+        },
+        "five_day": {
+          "sessions": 5,
+          "first": "2026-10-15",
+          "last": "2026-10-21",
+          "median_turnover_ntd": 13413215407,
+          "min_turnover_ntd": 4309269495,
+          "zero_turnover_days": 0,
+          "hypothetical_position_ntd": 5000000,
+          "participation_cap": 0.2,
+          "exit_sessions_at_median": 0.0,
+          "estimates_are_idealized_not_fills": true
+        },
+        "sixty_day": null,
+        "validated_archive_additions": 0,
+        "validated_archive_added_sessions": [],
+        "overlapping_sessions_checked": 4,
+        "reused_issuer_history_sessions": 55,
+        "original_capture_is_not_authenticated_issuer_PIT": true,
+        "spread_and_limit_price_execution_not_verified": true,
+        "tradability_gate": "PENDING_NOT_CERTIFIED"
+      },
       "pending_gates": [
         "original_eight_quarter_statements",
         "cash_and_working_capital",
@@ -177,16 +212,10 @@
           "exit_sessions_at_median": 0.11,
           "estimates_are_idealized_not_fills": true
         },
-        "validated_archive_additions": 1,
-        "validated_archive_added_sessions": [
-          {
-            "date": "2026-10-21",
-            "turnover_ntd": 347576287,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          }
-        ],
-        "overlapping_sessions_checked": 3,
-        "reused_issuer_history_sessions": 76,
+        "validated_archive_additions": 0,
+        "validated_archive_added_sessions": [],
+        "overlapping_sessions_checked": 4,
+        "reused_issuer_history_sessions": 77,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -639,16 +668,10 @@
           "exit_sessions_at_median": 0.21,
           "estimates_are_idealized_not_fills": true
         },
-        "validated_archive_additions": 1,
-        "validated_archive_added_sessions": [
-          {
-            "date": "2026-10-21",
-            "turnover_ntd": 441280367,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          }
-        ],
-        "overlapping_sessions_checked": 3,
-        "reused_issuer_history_sessions": 76,
+        "validated_archive_additions": 0,
+        "validated_archive_added_sessions": [],
+        "overlapping_sessions_checked": 4,
+        "reused_issuer_history_sessions": 77,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -748,16 +771,10 @@
           "exit_sessions_at_median": 0.24,
           "estimates_are_idealized_not_fills": true
         },
-        "validated_archive_additions": 1,
-        "validated_archive_added_sessions": [
-          {
-            "date": "2026-10-21",
-            "turnover_ntd": 36251547,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          }
-        ],
-        "overlapping_sessions_checked": 3,
-        "reused_issuer_history_sessions": 76,
+        "validated_archive_additions": 0,
+        "validated_archive_added_sessions": [],
+        "overlapping_sessions_checked": 4,
+        "reused_issuer_history_sessions": 77,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -915,16 +932,10 @@
           "exit_sessions_at_median": 3.27,
           "estimates_are_idealized_not_fills": true
         },
-        "validated_archive_additions": 1,
-        "validated_archive_added_sessions": [
-          {
-            "date": "2026-10-21",
-            "turnover_ntd": 3465239,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          }
-        ],
-        "overlapping_sessions_checked": 3,
-        "reused_issuer_history_sessions": 76,
+        "validated_archive_additions": 0,
+        "validated_archive_added_sessions": [],
+        "overlapping_sessions_checked": 4,
+        "reused_issuer_history_sessions": 77,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -1021,16 +1032,10 @@
           "exit_sessions_at_median": 5.14,
           "estimates_are_idealized_not_fills": true
         },
-        "validated_archive_additions": 1,
-        "validated_archive_added_sessions": [
-          {
-            "date": "2026-10-21",
-            "turnover_ntd": 4393286,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          }
-        ],
-        "overlapping_sessions_checked": 3,
-        "reused_issuer_history_sessions": 76,
+        "validated_archive_additions": 0,
+        "validated_archive_added_sessions": [],
+        "overlapping_sessions_checked": 4,
+        "reused_issuer_history_sessions": 77,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -1127,16 +1132,10 @@
           "exit_sessions_at_median": 0.64,
           "estimates_are_idealized_not_fills": true
         },
-        "validated_archive_additions": 1,
-        "validated_archive_added_sessions": [
-          {
-            "date": "2026-10-21",
-            "turnover_ntd": 19416748,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          }
-        ],
-        "overlapping_sessions_checked": 3,
-        "reused_issuer_history_sessions": 76,
+        "validated_archive_additions": 0,
+        "validated_archive_added_sessions": [],
+        "overlapping_sessions_checked": 4,
+        "reused_issuer_history_sessions": 77,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -1222,16 +1221,10 @@
           "estimates_are_idealized_not_fills": true
         },
         "sixty_day": null,
-        "validated_archive_additions": 1,
-        "validated_archive_added_sessions": [
-          {
-            "date": "2026-10-21",
-            "turnover_ntd": 73139354,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          }
-        ],
-        "overlapping_sessions_checked": 3,
-        "reused_issuer_history_sessions": 54,
+        "validated_archive_additions": 0,
+        "validated_archive_added_sessions": [],
+        "overlapping_sessions_checked": 4,
+        "reused_issuer_history_sessions": 55,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -1328,16 +1321,10 @@
           "exit_sessions_at_median": 1.3,
           "estimates_are_idealized_not_fills": true
         },
-        "validated_archive_additions": 1,
-        "validated_archive_added_sessions": [
-          {
-            "date": "2026-10-21",
-            "turnover_ntd": 15158662,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          }
-        ],
-        "overlapping_sessions_checked": 3,
-        "reused_issuer_history_sessions": 76,
+        "validated_archive_additions": 0,
+        "validated_archive_added_sessions": [],
+        "overlapping_sessions_checked": 4,
+        "reused_issuer_history_sessions": 77,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -1495,16 +1482,10 @@
           "exit_sessions_at_median": 0.18,
           "estimates_are_idealized_not_fills": true
         },
-        "validated_archive_additions": 1,
-        "validated_archive_added_sessions": [
-          {
-            "date": "2026-10-21",
-            "turnover_ntd": 288293080,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          }
-        ],
-        "overlapping_sessions_checked": 3,
-        "reused_issuer_history_sessions": 76,
+        "validated_archive_additions": 0,
+        "validated_archive_added_sessions": [],
+        "overlapping_sessions_checked": 4,
+        "reused_issuer_history_sessions": 77,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -1590,16 +1571,10 @@
           "estimates_are_idealized_not_fills": true
         },
         "sixty_day": null,
-        "validated_archive_additions": 1,
-        "validated_archive_added_sessions": [
-          {
-            "date": "2026-10-21",
-            "turnover_ntd": 8420293,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          }
-        ],
-        "overlapping_sessions_checked": 3,
-        "reused_issuer_history_sessions": 54,
+        "validated_archive_additions": 0,
+        "validated_archive_added_sessions": [],
+        "overlapping_sessions_checked": 4,
+        "reused_issuer_history_sessions": 55,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -1685,16 +1660,10 @@
           "estimates_are_idealized_not_fills": true
         },
         "sixty_day": null,
-        "validated_archive_additions": 1,
-        "validated_archive_added_sessions": [
-          {
-            "date": "2026-10-21",
-            "turnover_ntd": 2292058,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          }
-        ],
-        "overlapping_sessions_checked": 3,
-        "reused_issuer_history_sessions": 54,
+        "validated_archive_additions": 0,
+        "validated_archive_added_sessions": [],
+        "overlapping_sessions_checked": 4,
+        "reused_issuer_history_sessions": 55,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -1898,16 +1867,10 @@
           "estimates_are_idealized_not_fills": true
         },
         "sixty_day": null,
-        "validated_archive_additions": 1,
-        "validated_archive_added_sessions": [
-          {
-            "date": "2026-10-21",
-            "turnover_ntd": 5834491,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          }
-        ],
-        "overlapping_sessions_checked": 3,
-        "reused_issuer_history_sessions": 54,
+        "validated_archive_additions": 0,
+        "validated_archive_added_sessions": [],
+        "overlapping_sessions_checked": 4,
+        "reused_issuer_history_sessions": 55,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -2006,16 +1969,10 @@
           "exit_sessions_at_median": 0.0,
           "estimates_are_idealized_not_fills": true
         },
-        "validated_archive_additions": 1,
-        "validated_archive_added_sessions": [
-          {
-            "date": "2026-10-21",
-            "turnover_ntd": 13534908870,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          }
-        ],
-        "overlapping_sessions_checked": 3,
-        "reused_issuer_history_sessions": 76,
+        "validated_archive_additions": 0,
+        "validated_archive_added_sessions": [],
+        "overlapping_sessions_checked": 4,
+        "reused_issuer_history_sessions": 77,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -2149,16 +2106,10 @@
         },
         "five_day": null,
         "sixty_day": null,
-        "validated_archive_additions": 1,
-        "validated_archive_added_sessions": [
-          {
-            "date": "2026-10-21",
-            "turnover_ntd": 58847053,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          }
-        ],
-        "overlapping_sessions_checked": 2,
-        "reused_issuer_history_sessions": 47,
+        "validated_archive_additions": 0,
+        "validated_archive_added_sessions": [],
+        "overlapping_sessions_checked": 3,
+        "reused_issuer_history_sessions": 48,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -2244,21 +2195,10 @@
           "estimates_are_idealized_not_fills": true
         },
         "sixty_day": null,
-        "validated_archive_additions": 2,
-        "validated_archive_added_sessions": [
-          {
-            "date": "2026-10-21",
-            "turnover_ntd": 67209752,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          },
-          {
-            "date": "2026-10-20",
-            "turnover_ntd": 48708282,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          }
-        ],
-        "overlapping_sessions_checked": 2,
-        "reused_issuer_history_sessions": 53,
+        "validated_archive_additions": 0,
+        "validated_archive_added_sessions": [],
+        "overlapping_sessions_checked": 4,
+        "reused_issuer_history_sessions": 55,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -2348,16 +2288,10 @@
           "estimates_are_idealized_not_fills": true
         },
         "sixty_day": null,
-        "validated_archive_additions": 1,
-        "validated_archive_added_sessions": [
-          {
-            "date": "2026-10-21",
-            "turnover_ntd": 1518332416,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          }
-        ],
-        "overlapping_sessions_checked": 3,
-        "reused_issuer_history_sessions": 54,
+        "validated_archive_additions": 0,
+        "validated_archive_added_sessions": [],
+        "overlapping_sessions_checked": 4,
+        "reused_issuer_history_sessions": 55,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"

@@ -1,8 +1,8 @@
 {
   "schema": "V810_INSTITUTIONAL_RESEARCH_CONTROLS",
   "model": "V8.10.1",
-  "estimate_vintage": "2026-10-21T20:46:09.344644+08:00",
-  "report_observed_at": "2026-10-21T12:46:22.273077+00:00",
+  "estimate_vintage": "2026-10-21T20:54:11.640381+08:00",
+  "report_observed_at": "2026-10-21T12:54:22.301099+00:00",
   "asof_price_date": "2026-10-21",
   "source_model_sha256": "9b3fc07b357503f09988d7a77a5bf84646a9a2ca269077c24af71e891867543a",
   "policy_sha256": "09318d35db81b5532cbef6c8a76361ca4e9d914cc50ae4bd1051f87f09c14e67",
@@ -209,11 +209,14 @@
         "event_state": null
       },
       "liquidity": {
-        "status": "MULTI_SESSION_TURNOVER_SOURCE_MISSING",
-        "median20_turnover_ntd": null,
+        "status": "TWENTY_SESSION_TURNOVER_PROXY_NOT_EXECUTION_REVIEW",
+        "sessions": 20,
+        "first_date": "2026-09-21",
+        "last_date": "2026-10-21",
+        "median20_turnover_ntd": 5900247969.0,
         "spread_and_exit_verified": false
       },
-      "capacity_weight_at_reference_capital": null,
+      "capacity_weight_at_reference_capital": 1.0,
       "formal_Aplus": false,
       "risk_profile": {
         "status": "REVIEWED_COMMON_RISK_AND_STRESS_PROFILE_MISSING"
@@ -221,8 +224,11 @@
       "common_risk_tags": null,
       "reviewed_stress_loss_fraction": null,
       "execution_review": {
-        "status": "MULTI_SESSION_TURNOVER_SOURCE_MISSING",
-        "median20_turnover_ntd": null,
+        "status": "TWENTY_SESSION_TURNOVER_PROXY_NOT_EXECUTION_REVIEW",
+        "sessions": 20,
+        "first_date": "2026-09-21",
+        "last_date": "2026-10-21",
+        "median20_turnover_ntd": 5900247969.0,
         "spread_and_exit_verified": false
       }
     },
@@ -4705,7 +4711,6 @@
         "reasons": [
           "FORMAL_QUALITY_NOT_COMPLETE",
           "EXECUTION_REVIEW_MISSING",
-          "MEDIAN20_TURNOVER_MISSING",
           "COMMON_RISK_EXPOSURES_UNREVIEWED",
           "POSITIVE_REVIEWED_STRESS_LOSS_REQUIRED"
         ]
