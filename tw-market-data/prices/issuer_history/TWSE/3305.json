@@ -2,7 +2,7 @@
   "schema": "V889_OFFICIAL_TWSE_ISSUER_MONTHLY",
   "issuer": "3305",
   "market": "TWSE",
-  "price_reference_asof": "2026-10-20",
+  "price_reference_asof": "2026-10-21",
   "source_type": "OFFICIAL_TWSE_MONTHLY_STOCK_DAY",
   "original_raw_responses_preserved_in_actions_artifact_not_repository": true,
   "backfill_capture_not_point_in_time_trade_history": true,
@@ -13,8 +13,8 @@
   "by_month": {
     "2026-10": {
       "source_url": "https://www.twse.com.tw/rwd/zh/afterTrading/STOCK_DAY?date=20261001&stockNo=3305&response=json",
-      "original_response_sha256": "806d657da8ee323c1e39167af5ae3264d67faa0c039a23d3398efe896ea536a7",
-      "captured_at_utc": "2026-10-21T05:53:47.489022+00:00",
+      "original_response_sha256": "0c511213155c42f95747d87683cb9f6d122c7faf7150a884a85c7468784f6f0b",
+      "captured_at_utc": "2026-10-21T12:52:09.215493+00:00",
       "original_exchange_signature_verified": false,
       "rows": [
         {
@@ -94,6 +94,12 @@
           "volume_shares": 9492706,
           "turnover_ntd": 1108530825,
           "close": 113.5
+        },
+        {
+          "date": "2026-10-21",
+          "volume_shares": 3868185,
+          "turnover_ntd": 441280367,
+          "close": 112.0
         }
       ]
     },
@@ -501,6 +507,12 @@
     }
   },
   "sessions": [
+    {
+      "date": "2026-10-21",
+      "volume_shares": 3868185,
+      "turnover_ntd": 441280367,
+      "close": 112.0
+    },
     {
       "date": "2026-10-20",
       "volume_shares": 9492706,
@@ -961,26 +973,26 @@
   "liquidity": {
     "5": {
       "sessions": 5,
-      "first": "2026-10-14",
-      "last": "2026-10-20",
-      "median_turnover_ntd": 276456222,
-      "min_turnover_ntd": 63203357,
+      "first": "2026-10-15",
+      "last": "2026-10-21",
+      "median_turnover_ntd": 441280367,
+      "min_turnover_ntd": 94821609,
       "zero_turnover_sessions": 0,
-      "idealized_5m_exit_sessions_at_20pct": 0.09
+      "idealized_5m_exit_sessions_at_20pct": 0.06
     },
     "20": {
       "sessions": 20,
-      "first": "2026-09-18",
-      "last": "2026-10-20",
-      "median_turnover_ntd": 83202978.5,
+      "first": "2026-09-21",
+      "last": "2026-10-21",
+      "median_turnover_ntd": 85606834.5,
       "min_turnover_ntd": 36497963,
       "zero_turnover_sessions": 0,
-      "idealized_5m_exit_sessions_at_20pct": 0.3
+      "idealized_5m_exit_sessions_at_20pct": 0.29
     },
     "60": {
       "sessions": 60,
-      "first": "2026-07-24",
-      "last": "2026-10-20",
+      "first": "2026-07-27",
+      "last": "2026-10-21",
       "median_turnover_ntd": 119167118.5,
       "min_turnover_ntd": 36497963,
       "zero_turnover_sessions": 0,
