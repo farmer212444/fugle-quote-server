@@ -56,6 +56,44 @@ class QualityLaneTests(unittest.TestCase):
         self.assertAlmostEqual(out["9802_Q3_self_report"]["gross_margin_pct"],13.23)
         self.assertIn("NOT_AUTOMATICALLY_RESTATED",str(out["9802_Q3_self_report"]))
         self.assertIn("2026Q3",markdown(out))
+    def test_etf_overlay_preserves_base_and_formal_13_gates(self):
+        a,b,c=fixtures()
+        shadow=dict(schema="V8A6_ETF_INDEX_ROTATION_RESEARCH_WATCH",
+            asof_price_date=a["asof_price_date"],
+            estimate_vintage=a["estimate_vintage"],formal_Aplus_created=0,
+            base_ranking_and_2027_model_unchanged=True,
+            stocks={
+                "2000":dict(research_review_status="THREE_WAY_ETF_CHIP_EARNINGS_REVIEW_ONLY",
+                            event_history_count=1,live_archived_deletions_120d=1,
+                            three_way_convergence_observed=True),
+                "9802":dict(deletes=3,adds=1,last_event=dict(effective_date="2025-07-17"),
+                            live_archived_deletions_120d=0,
+                            research_review_status="HISTORICAL_ETF_EVENT_CONTEXT_NOT_CURRENT_SIGNAL")
+            })
+        out=prepare(a,b,c,etf_overlay=shadow)
+        first=out["base_upside_order"][0]
+        self.assertEqual(first["code"],"2000")
+        self.assertEqual(first["quality_review_status"],
+                         "ETF_CHIP_EARNINGS_CONVERGENT_RISK_REVIEW")
+        self.assertTrue(first["etf_warning_active"])
+        self.assertNotEqual(out["verification_order"][0]["code"],"2000")
+        self.assertEqual(out["formal_Aplus_added"],0)
+        self.assertEqual(first["model_13_gate_pending_count"],13)
+        self.assertTrue(out["etf_overlay_is_not_a_fourteenth_gate"])
+        self.assertIn("ETF成分股異動",markdown(out))
+
+    def test_etf_overlay_wrong_vintage_or_fake_certification_rejected(self):
+        a,b,c=fixtures()
+        shadow=dict(schema="V8A6_ETF_INDEX_ROTATION_RESEARCH_WATCH",
+            asof_price_date="2026-10-19",estimate_vintage=a["estimate_vintage"],
+            formal_Aplus_created=0,base_ranking_and_2027_model_unchanged=True,stocks={})
+        with self.assertRaisesRegex(ValueError,"ETF_OVERLAY_VINTAGE"):
+            prepare(a,b,c,etf_overlay=shadow)
+        shadow["asof_price_date"]=a["asof_price_date"]
+        shadow["formal_Aplus_created"]=1
+        with self.assertRaisesRegex(ValueError,"ETF_OVERLAY_VINTAGE"):
+            prepare(a,b,c,etf_overlay=shadow)
+
     def test_numeric_only_stress_no_probabilities(self):
         a,b,c=fixtures();out=prepare(a,b,c)
         self.assertTrue(out["verification_order"][0]["high_confidence_buy_or_Aplus_certified"] is False)
