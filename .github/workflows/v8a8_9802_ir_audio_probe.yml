@@ -1,0 +1,20 @@
+name: V8.A8 9802 official IR audio reachability (one-off)
+on:
+  pull_request:
+    paths:
+      - 'scripts/v8a8_9802_ir_audio_probe.py'
+      - '.github/workflows/v8a8_9802_ir_audio_probe.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify official MP4 container bytes are actually reachable
+        run: python scripts/v8a8_9802_ir_audio_probe.py
