@@ -1,0 +1,176 @@
+#!/usr/bin/env python3
+"""Separate Top20 mathematical 2027 upside from evidence-based decision readiness.
+
+This is a conservative RESEARCH REVIEW QUEUE, not stock recommendations or
+statistically calibrated probabilities. No modification to frozen Base EPS/PE,
+existing ranks, 13 formal A+ gates, or automated trade decisions.
+"""
+import argparse
+import datetime as dt
+import json
+from pathlib import Path
+
+ROOT=Path(__file__).resolve().parents[1]/"tw-market-data"
+SHOCK_FLAGS=(
+    "Q3_REVENUE_GROWTH_DECELERATED_AT_LEAST_20PP",
+    "Q3_REVENUE_YOY_GROWTH_DECELERATED_OVER_20PP",
+    "OPERATING_MARGIN_DECLINED_AT_LEAST_2PP",
+    "NEGATIVE_OR_ZERO_H1_OCF_REQUIRES_WORKING_CAPITAL_BRIDGE",
+    "NEGATIVE_YTD_OPERATING_CASHFLOW_CHECK_WORKING_CAPITAL",
+    "LOW_OCF_RELATIVE_TO_TOTAL_NET_INCOME",
+    "AUDITOR_QUALIFIED_SCOPE_MATERIALITY_PENDING",
+    "AUDITOR_SCOPE_MATERIALITY_OPEN",
+    "EQUITY_ISSUANCE_NOT_CONFIRMED",
+)
+SHARE_FLAGS=("CB_LEGAL_TERMS_UNVERIFIED","LISTED_CB_TERMS_UNVERIFIED","CASH_EQUITY_RAISE_STATUS_UNVERIFIED")
+PE_FLAGS=("HIGH_FORWARD_PE_UNVERIFIED_PEERS","FORWARD_PE_AT_LEAST_20_REQUIRES_MATCHED_PEERS")
+ORIGINAL_FLAG="ISSUER_ORIGINAL_NUMERICS_NOT_CROSSCHECKED"
+
+def require(test,error):
+    if not test:raise ValueError(error)
+
+def load_json(path):
+    return json.loads(Path(path).read_text(encoding="utf-8"))
+
+def prepare(top,gate,price_manifest,focus=None):
+    """Check input vintages before sorting; never splice a stale snapshot."""
+    asof=top.get("asof_price_date")
+    require(asof and asof==gate.get("asof_price_date")==price_manifest.get("date"),
+            "DECISION_LANE_VINTAGE_MISMATCH")
+    require(isinstance(top.get("issuer_ranked"),list) and len(top["issuer_ranked"])>=10,
+            "DECISION_LANE_TOP20_MISSING")
+    require(top.get("automatically_certified_Aplus")==0,"DECISION_LANE_UNEXPECTED_NEW_CERTIFICATION_REVIEW")
+    gate_index={x["code"]:x for x in gate.get("issuer_diagnostics",[])}
+    require(len(gate_index)==len(gate.get("issuer_diagnostics",[])),
+            "DECISION_LANE_DUPLICATE_GATE_ISSUER")
+    result=[]
+    for r in top["issuer_ranked"]:
+        code=r["code"]
+        require(code in gate_index,"DECISION_LANE_ISSUER_GATE_MISSING_"+code)
+        evidence=gate_index[code]
+        require(not r.get("formal_Aplus") and not evidence.get("formal_Aplus"),
+                "DECISION_LANE_FORMAL_A_PLUS_REQUIRES_SEPARATE_CERTIFICATE")
+        critical=list(r.get("critical_evidence_gaps",[]))
+        warnings=list(r.get("analysis",{}).get("flags",[]))
+        bag=set(critical+warnings)
+        operating=sorted(x for x in bag if x in SHOCK_FLAGS)
+        dilution=sorted(x for x in bag if x in SHARE_FLAGS)
+        valuation=sorted(x for x in bag if x in PE_FLAGS)
+        original_verified=(r.get("source_tier")=="ORIGINAL_CURRENT_ISSUER_NUMERICS"
+                           and ORIGINAL_FLAG not in bag)
+        if operating or dilution or valuation:
+            status="OPERATING_PE_OR_DILUTION_RED_FLAGS_REVIEW"
+        elif not original_verified:
+            status="BATCH_ONLY_ORIGINAL_FILING_REVIEW"
+        else:
+            status="CURRENT_NUMERICS_VERIFIED_OTHER_GATES_PENDING"
+        stress=r.get("stress_double20_upside_pct")
+        stress_survives=isinstance(stress,(int,float)) and not isinstance(stress,bool) and stress>=30
+        formal_passed=evidence.get("formally_passed_gates",[])
+        pending=evidence.get("still_pending_gates",[])
+        require(len(formal_passed)+len(pending)+len(evidence.get("formally_failed_gates",[]))==13,
+                "DECISION_LANE_INCOMPLETE_THIRTEEN_GATE_RECORD_"+code)
+        result.append(dict(
+            prior_base_rank=r["rank"],code=code,name=r.get("name"),price_date=asof,
+            source_tier=r.get("source_tier"),original_current_numerics_checked=original_verified,
+            base_2027_eps_scenario=r.get("base_2027_eps"),
+            base_2027_pe_assumption=r.get("base_2027_pe"),
+            base_target_price_scenario=r.get("base_2027_target"),
+            base_upside_pct=r.get("base_2027_upside_pct"),
+            q3_revenue_yoy_pct=r.get("q3_revenue_yoy_pct"),
+            sensitivity_eps20_pe20_upside_pct=stress,
+            sensitivity_survives_30pct_threshold=stress_survives,
+            operating_evidence_gaps=operating,pe_evidence_gaps=valuation,
+            capital_evidence_gaps=dilution,
+            official_original_financial_review_needed=not original_verified,
+            other_critical_gaps=sorted(bag-set(operating)-set(valuation)-set(dilution)),
+            model_13_gate_passed_count=len(formal_passed),
+            model_13_gate_pending_count=len(pending),
+            model_13_gate_failed_count=len(evidence.get("formally_failed_gates",[])),
+            quality_review_status=status,
+            high_confidence_buy_or_Aplus_certified=False))
+    # Review order is an explicit heuristic, NOT an objective return ranking.
+    priority={"CURRENT_NUMERICS_VERIFIED_OTHER_GATES_PENDING":0,
+              "BATCH_ONLY_ORIGINAL_FILING_REVIEW":1,
+              "OPERATING_PE_OR_DILUTION_RED_FLAGS_REVIEW":2}
+    for_review=sorted(result,key=lambda r:(
+        priority[r["quality_review_status"]],
+        -int(r["sensitivity_survives_30pct_threshold"]),
+        -(r["sensitivity_eps20_pe20_upside_pct"] if isinstance(r["sensitivity_eps20_pe20_upside_pct"],(int,float)) else -1000),
+        r["prior_base_rank"]))
+    for i,x in enumerate(for_review,1):x["verification_priority_rank"]=i
+    report=dict(schema="V8A5_QUALITY_DECISION_RESEARCH_SHADOW",
+        asof_price_date=asof,estimate_vintage=top.get("estimate_vintage"),
+        current_financial_period=top.get("financial_last_quarter"),
+        top20_base_ranking_untouched=True,
+        has_statistical_outperformance_calibration=False,
+        uncertainty_from_not_yet_disclosed_Q3_profit_retained=True,
+        full_market_certified_rank=False,
+        formal_Aplus_added=0,
+        issuer_count=len(result),
+        verification_order=for_review,
+        base_upside_order=result,
+        limits=[
+            "Top20 research queue only; NOT 791-issuer formal quality rankings.",
+            "Official current value mirroring does not mean original detailed notes or published PIT verified.",
+            "Double20 stress assumes EPS and PE each minus20%; not a tail-loss probability or adjusted Base.",
+            "Revenue deceleration is not proven earnings deceleration, and negative OCF can arise during expansion.",
+            "CB terms and industry peer PE require dated original evidence; ranking never grants A+.",
+        ])
+    if focus:
+        report["9802_Q3_self_report"]=dict(period=focus.get("period"),
+           status=focus.get("status"),disclosed_at=focus.get("disclosed_at"),
+           eps=focus.get("q3_2026",{}).get("eps"),
+           gross_margin_pct=round(100*focus["q3_2026"]["gross_profit"]/
+                              focus["q3_2026"]["revenue"],2),
+           official_full_quarter_notes_verified=False,
+           impact_on_2027_base="NOT_AUTOMATICALLY_RESTATED",
+           needs="Reconcile Q3 source and forward factory cost/GM bridge before relying on 2027 PE/EPS")
+    return report
+
+def markdown(report):
+    fmt=lambda x:"待驗" if x is None else f"{x:+.1f}%"
+    lines=["# V8.A5 2027報酬率與品質可信度分流（研究版）","",
+        f"股票收盤基準：{report['asof_price_date']}；財報：{report['current_financial_period']}；正式新增A+：**0檔**。",
+        "**第一軌是既有Base潛在漲幅；第二軌僅作證據查核優先序，不是買進信心或實證勝率排名。**",
+        "","|查核順位|股票|原Base序|Base漲幅|EPS與PE各-20%|原始當期數字|主要障礙|狀態|",
+        "|---:|---|---:|---:|---:|---|---|---|"]
+    for x in report["verification_order"]:
+        flags=(x["operating_evidence_gaps"]+x["capital_evidence_gaps"]+
+               x["pe_evidence_gaps"]+x["other_critical_gaps"])
+        brief="、".join(flags[:2]) if flags else "完整附註與PIT待驗"
+        lines.append(f"|{x['verification_priority_rank']}|{x['code']} {x['name']}|{x['prior_base_rank']}|"
+                     f"{fmt(x['base_upside_pct'])}|{fmt(x['sensitivity_eps20_pe20_upside_pct'])}|"
+                     f"{'已核數值' if x['original_current_numerics_checked'] else '待核原件'}|"
+                     f"{brief}|{x['quality_review_status']}|")
+    lines+=["","## 適用限制","",
+        "這是20檔研究估值的**查核排程**，未將任何股票認證為安全或可重押。",
+        "Q3營收明顯減速／現金流缺口／CB條款及PE未核者顯示警戒，**不機械下修Base**，以免製造沒有事實支持的新版EPS。",
+        "正式A+需要13項原始證據全數通過；目前全部個股仍列未完成。",
+        "完整數值、核對原因、未簽核的13項情況見同名JSON。",""]
+    if "9802_Q3_self_report" in report:
+        x=report["9802_Q3_self_report"]
+        lines+=["## 9802 特別提示（不在Top20）","",
+            f"2026Q3自結未經查核 EPS {x['eps']}元、毛利率{x['gross_margin_pct']}%；此資訊已揭露，但2026Q3詳細附註與2027廠務成本橋接未完備。",
+            "過往2027 Base或條件式毛利復甦價不可視為已經受新Q3獲利校正。",""]
+    return "\n".join(lines)+"\n"
+
+def main():
+    p=argparse.ArgumentParser()
+    p.add_argument("--data-dir",default=str(ROOT))
+    args=p.parse_args()
+    root=Path(args.data_dir)
+    focuspath=root/"evidence/v880/issuer_reviews/9802_q3_20261020_self_report.json"
+    focus=load_json(focuspath) if focuspath.exists() else None
+    result=prepare(load_json(root/"rankings/v892_top20_quality_audit.json"),
+                   load_json(root/"rankings/v891_gate_progress.json"),
+                   load_json(root/"prices/latest_manifest.json"),focus)
+    (root/"rankings/v8a5_quality_decision_lane.json").write_text(
+        json.dumps(result,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+    (root/"rankings/v8a5_quality_decision_lane.md").write_text(
+        markdown(result),encoding="utf-8")
+    print(json.dumps({"asof":result["asof_price_date"],
+        "verified_formal_Aplus_added":0,"top20":result["issuer_count"],
+        "priority":[x["code"] for x in result["verification_order"][:8]]},ensure_ascii=False))
+
+if __name__=="__main__":main()
