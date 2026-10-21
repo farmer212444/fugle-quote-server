@@ -157,11 +157,14 @@ def issuer_press_source_status(research,data_root=DATA):
               and v.get("source_url")==doc["source_url"]]
     if len(receipts)!=1:
         raise ValueError("PUBLISHER_PRESS_HASH_OR_SIZE_MISMATCH")
-    captured_at=timestamp(doc["captured_at_utc"])
-    recorded_at=timestamp(receipts[0]["captured_at_utc"])
-    if captured_at!=recorded_at:
-        raise ValueError("PUBLISHER_PRESS_RECEIPT_TIME_MISMATCH")
-    if captured_at>timestamp(research["estimate_vintage"]):
+    archived_at=timestamp(doc["captured_at_utc"])
+    first_source_receipt_at=timestamp(receipts[0]["captured_at_utc"])
+    # The issuer website collector and durable PDF collector run separately.
+    # Their capture timestamps are intentionally different and must both
+    # precede the research-vintage timestamp; never demand artificial equality
+    # or backdate the later original-byte capture to the source discovery time.
+    if (archived_at>timestamp(research["estimate_vintage"]) or
+            first_source_receipt_at>timestamp(research["estimate_vintage"])):
         raise ValueError("Q3_PRESS_NOT_AVAILABLE_AT_RESEARCH_VINTAGE")
     if (doc["formal_gate_pass"] is not False or
             doc["independently_verified_issuer_filing_time"] is not False):
@@ -170,7 +173,8 @@ def issuer_press_source_status(research,data_root=DATA):
                 code="9802",quarter="2026-Q3",
                 source=doc["source_url"],original_source_sha256=doc["sha256"],
                 original_pdf_size_bytes=doc["bytes"],
-                first_captured_at_utc=doc["captured_at_utc"],
+                first_source_receipt_at_utc=receipts[0]["captured_at_utc"],
+                original_pdf_archived_at_utc=doc["captured_at_utc"],
                 issuer_website_display_date=doc["document_date"],
                 issuer_company_publication_PIT_verified=False,
                 issuer_Q3_press_numbers_not_yet_reconciled_with_signed_MOPS_income=True,
@@ -219,7 +223,7 @@ def main():
         body+=["","公司2026Q3官方自結新聞稿PDF已封存並完成SHA256及網址日期對帳。",
                "然而原始自結稿尚非經公司當季MOPS核驗的合併財報；毛利、淨利與EPS尚未獲正式逐項對帳，不能以此直接調整2027合理價。",
                "",f"公司原件：{result['source']}。",
-               f"首次擷取：{result['first_captured_at_utc']}（非獨立認證的MOPS公告時點）。"]
+               f"原始網站來源首次觀察：{result['first_source_receipt_at_utc']}；PDF永久入庫：{result['original_pdf_archived_at_utc']}（均非獨立認證的MOPS公告時點）。"]
     elif result.get("reason"):body+=["","待補證據："+result["reason"]]
     (rankings/"v886_9802_early_q3.md").write_text("\n".join(body)+"\n",encoding="utf-8")
     print(json.dumps({k:result.get(k) for k in ("status","standalone_q3_gm_pct",
