@@ -103,6 +103,7 @@ def reconcile_issuer_reference_history(source_values, dated, asof, market, code)
     combined=dict(source_values)
     joined=0
     confirmed=0
+    additions=[]
     conflicts=[]
     for day, universe in dated:
         if day>asof:
@@ -123,6 +124,8 @@ def reconcile_issuer_reference_history(source_values, dated, asof, market, code)
         else:
             combined[day]=value
             joined+=1
+            additions.append(dict(date=day,turnover_ntd=value,
+                                  source="SHA_CHECKED_MARKET_DAILY_ARCHIVE"))
     if conflicts:
         return dict(status="SOURCE_CONFLICT_REVIEW_REQUIRED",
                     available_sessions=len(combined),twenty_day=None,
@@ -143,6 +146,7 @@ def reconcile_issuer_reference_history(source_values, dated, asof, market, code)
                 available_sessions=len(from_dates),twenty_day=score["twenty_day"],
                 five_day=score["five_day"],sixty_day=score["sixty_day"],
                 validated_archive_additions=joined,
+                validated_archive_added_sessions=sorted(additions,key=lambda x:x["date"],reverse=True),
                 overlapping_sessions_checked=confirmed,
                 reused_issuer_history_sessions=len(source_values),
                 original_capture_is_not_authenticated_issuer_PIT=True,

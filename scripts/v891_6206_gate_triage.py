@@ -43,7 +43,7 @@ def require(condition, message):
         raise ValueError(message)
 
 
-def check_report(probe, value, ir, history):
+def check_report(probe, value, ir, history, independently_verified_daily_archives=None):
     require(probe.get("code") == CODE and probe.get("market") == "TWSE", "WRONG_ISSUER_PROBE")
     require(value.get("issuer") == CODE, "WRONG_ISSUER_VALUATION")
     common = value.get("original_common_model", {})
@@ -83,11 +83,52 @@ def check_report(probe, value, ir, history):
     required_docs = len(value.get("source_receipts", []))
     original_pdf_match = required_docs > 0 and source_matches == required_docs
 
-    # Recompute the 20-day median from dated snapshots to catch internal drift.
-    sessions = [s for s in history.get("sessions", [])
-                if isinstance(s.get("date"), str) and s["date"] <= price_date]
+    # Recompute the 20-session median from the actual individual monthly
+    # history AND exact separately validated daily sessions. Do not simply
+    # trust the evidence probe's 20-day coverage status or reported median.
+    history_sessions = [s for s in history.get("sessions", [])
+                        if isinstance(s.get("date"), str) and s["date"] <= price_date]
+    history_dates = {s["date"] for s in history_sessions}
+    require(len(history_dates) == len(history_sessions), "DUPLICATE_ISSUER_HISTORY_SESSION")
+    sessions = list(history_sessions)
+    # A derived probe receipt alone is insufficient: independently re-hash
+    # the actual repository daily price archives in main() and compare exact
+    # issuer/date turnover values against proposed additional sessions.
+    archive_lookup = {}
+    if independently_verified_daily_archives is not None:
+        for day, stocks in independently_verified_daily_archives:
+            if day > price_date:
+                raise ValueError("FUTURE_DAILY_PRICE_ARCHIVE")
+            value_ntd = stocks.get(("TWSE", CODE))
+            if value_ntd is None:
+                continue
+            require(day not in archive_lookup and type(value_ntd) is int and value_ntd >= 0,
+                    "INVALID_DUPLICATE_OR_TURNOVER_IN_ARCHIVE")
+            archive_lookup[day] = value_ntd
+            if day in history_dates:
+                original = next(row["turnover_ntd"] for row in history_sessions
+                                if row["date"] == day)
+                require(original == value_ntd, "OFFICIAL_OVERLAP_SOURCE_CONFLICT")
+    additions = h.get("validated_archive_added_sessions", [])
+    require(isinstance(additions, list), "INVALID_REFERENCE_ADDITION_PROVENANCE")
+    if h.get("validated_archive_additions") is not None:
+        require(h["validated_archive_additions"] == len(additions),
+                "UNVERIFIED_REFERENCE_ADDITION_COUNT")
+    for new_session in additions:
+        day = new_session.get("date")
+        turnover = new_session.get("turnover_ntd")
+        require(isinstance(day, str) and day <= price_date and day not in history_dates
+                and type(turnover) is int and turnover >= 0
+                and new_session.get("source") == "SHA_CHECKED_MARKET_DAILY_ARCHIVE",
+                "INVALID_VALIDATED_REFERENCE_SESSION")
+        require(independently_verified_daily_archives is not None and
+                day in archive_lookup and archive_lookup[day] == turnover,
+                "REFERENCE_SESSION_NOT_IDENTICAL_TO_HASHED_OFFICIAL_ARCHIVE")
+        history_dates.add(day)
+        sessions.append(dict(date=day,turnover_ntd=turnover))
     sessions.sort(key=lambda s: s["date"], reverse=True)
-    complete_20 = len(sessions) >= 20 and sessions[0]["date"] == price_date
+    complete_20 = (h.get("status") != "SOURCE_CONFLICT_REVIEW_REQUIRED"
+                   and len(sessions) >= 20 and sessions[0]["date"] == price_date)
     if complete_20:
         top = sessions[:20]
         amounts = [s.get("turnover_ntd") for s in top]
@@ -100,6 +141,8 @@ def check_report(probe, value, ir, history):
                     and reported.get("first") == top[-1]["date"]
                     and math.isclose(statistics.median(amounts), reported["median_turnover_ntd"]),
                     "TWENTY_DAY_SOURCE_RECONCILIATION_FAILED")
+    if not complete_20 and h.get("twenty_day") is not None:
+        raise ValueError("UNRECONCILED_20DAY_COVERAGE_CLAIM")
 
     # Fast decision sensitivity: independent of all 13 formal evidence gates.
     # This uses the same dated quote, EPS, and PE as the common model (not a new
@@ -174,7 +217,10 @@ def check_report(probe, value, ir, history):
                 issuer_presentation_receipts_matched=source_matches,
                 issuer_presentation_receipts_required=required_docs,
                 original_company_publication_time_verified=False,
-                individual_history_sessions=len(sessions), twenty_day_turnover_reconciled=complete_20,
+                individual_history_sessions=len(history_sessions),
+                merged_reference_daily_sessions=len(additions),
+                all_reconciled_history_sessions=len(sessions),
+                twenty_day_turnover_reconciled=complete_20,
                 formal_Aplus=bool(common.get("Aplus", False)), newly_certified_gates=0,
                 gates=gates, note="Evidence reconciliation only. No synthetic/original-source claims, no gate PASS, no trade orders.")
 
@@ -188,8 +234,10 @@ def render_md(data):
              "已取得標準化財報：損益 %s/8季、現金流 %s/8季；官方法說SHA收據交叉匹配 %s/%s份；" %
              (data["normalized_income_quarters"], data["normalized_cashflow_quarters"],
               data["issuer_presentation_receipts_matched"], data["issuer_presentation_receipts_required"]),
-             "個股歷史成交：%s日；最近20日金額驗算：%s（不等於可成交性通過）。" %
-             (data["individual_history_sessions"], "一致" if data["twenty_day_turnover_reconciled"] else "待補"), "",
+             "個股歷史成交：%s日，追加核對官方全市場日收盤：%s日，合計：%s日；最近20日金額驗算：%s（不等於可成交性通過）。" %
+             (data["individual_history_sessions"], data["merged_reference_daily_sessions"],
+              data["all_reconciled_history_sessions"],
+              "一致" if data["twenty_day_turnover_reconciled"] else "待補"), "",
              "## 即時計算：A+數字門檻與估值脆弱度（非正式認證）", "",
              "以 %.2f元股價計，30%%門檻目標價 %.2f元；目前Base價高於數字門檻 %.2f元。" %
              (data["reference_close"],data["fast_decision"]["required_target_for_30pct"],
@@ -231,7 +279,13 @@ def main():
     require(common.get("model_vintage") == p884.get("estimate_vintage")
             and common.get("price_date") == p884.get("asof_price_date"),
             "STALE_6206_EVIDENCE_MIX")
-    result = check_report(probe, value, ir, history)
+    # Cross-check v884's proposed appended reference days against official
+    # daily bytes again, independent of the model's cached probe result.
+    from scripts.v884_evidence_probe import price_archive
+    manifest = load("prices/latest_manifest.json")
+    official_days, _ = price_archive(root, common["price_date"], manifest)
+    result = check_report(probe, value, ir, history,
+                          independently_verified_daily_archives=official_days)
     dst = root / "rankings"
     (dst / "v891_6206_gate_triage.json").write_text(
         json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

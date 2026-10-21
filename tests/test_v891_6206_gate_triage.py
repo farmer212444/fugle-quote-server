@@ -59,6 +59,88 @@ class FlytechGateTriageTest(unittest.TestCase):
         self.assertTrue(all(x["automatically_certified"] is False for x in result["gates"]))
         self.assertIn("6206", render_md(result))
 
+    def test_newer_official_daily_session_replays_20day_6206_median(self):
+        args = list(sample())
+        last = args[3]["sessions"].pop()
+        self.assertEqual(last["date"],args[1]["official_reference_price"]["date"])
+        details=args[0]["issuer_historical_market_data"]
+        details["status"]="SOURCE_CAPTURED_NOT_FULL_TRADABILITY"
+        details["validated_archive_additions"]=1
+        details["validated_archive_added_sessions"]=[dict(
+            date=last["date"],turnover_ntd=last["turnover_ntd"],
+            source="SHA_CHECKED_MARKET_DAILY_ARCHIVE"
+        )]
+        independently_verified=[(last["date"],{("TWSE","6206"):last["turnover_ntd"]})]
+        result=check_report(*args,independently_verified_daily_archives=independently_verified)
+        self.assertTrue(result["twenty_day_turnover_reconciled"])
+        self.assertEqual(result["individual_history_sessions"],19)
+        self.assertEqual(result["merged_reference_daily_sessions"],1)
+        self.assertEqual(result["all_reconciled_history_sessions"],20)
+        row=next(g for g in result["gates"] if g["gate"]=="tradability")
+        self.assertEqual(row["source_coverage"],"OBSERVED_PARTIAL")
+        self.assertEqual(row["formal_status"],"PENDING")
+        self.assertIn("追加核對官方全市場",render_md(result))
+
+    def test_inaccurate_reference_turnover_cannot_claim_reconciled_20day(self):
+        args=list(sample())
+        last=args[3]["sessions"].pop()
+        details=args[0]["issuer_historical_market_data"]
+        details["validated_archive_additions"]=1
+        details["validated_archive_added_sessions"]=[dict(
+            # Push the last ranked session below the first: changing the
+            # max alone would not move the 20-session median and is therefore
+            # not a valid test of an independently recomputed median.
+            date=last["date"],turnover_ntd=0,
+            source="SHA_CHECKED_MARKET_DAILY_ARCHIVE")]
+        with self.assertRaisesRegex(ValueError,"TWENTY_DAY_SOURCE_RECONCILIATION_FAILED"):
+            check_report(*args, independently_verified_daily_archives=[
+                (last["date"],{("TWSE","6206"):0})])
+
+    def test_invalid_pit_session_conflict_or_fake_count_rejected(self):
+        for mode in ("future","duplicate","fake","conflict"):
+            args=list(sample())
+            last=args[3]["sessions"].pop()
+            details=args[0]["issuer_historical_market_data"]
+            details["validated_archive_additions"]=1
+            details["validated_archive_added_sessions"]=[dict(
+                date=last["date"],turnover_ntd=last["turnover_ntd"],
+                source="SHA_CHECKED_MARKET_DAILY_ARCHIVE")]
+            if mode=="future":
+                details["validated_archive_added_sessions"][0]["date"]="2026-10-25"
+            elif mode=="duplicate":
+                details["validated_archive_added_sessions"][0]["date"]=args[3]["sessions"][0]["date"]
+            elif mode=="fake":
+                details["validated_archive_additions"]=2
+            else:
+                details["status"]="SOURCE_CONFLICT_REVIEW_REQUIRED"
+            expected=("UNVERIFIED_REFERENCE_ADDITION_COUNT" if mode=="fake" else
+                      "UNRECONCILED_20DAY_COVERAGE_CLAIM" if mode=="conflict" else
+                      "INVALID_VALIDATED_REFERENCE_SESSION")
+            with self.assertRaisesRegex(ValueError,expected):
+                check_report(*args,independently_verified_daily_archives=[
+                    (last["date"],{("TWSE","6206"):last["turnover_ntd"]})])
+
+    def test_forged_daily_addition_fails_even_if_twenty_day_median_unchanged(self):
+        args=list(sample())
+        last=args[3]["sessions"].pop()
+        details=args[0]["issuer_historical_market_data"]
+        details["validated_archive_additions"]=1
+        # An altered extreme value does NOT change the median, so checking
+        # the 20-day median alone cannot guarantee an exact source match.
+        details["validated_archive_added_sessions"]=[dict(
+            date=last["date"],turnover_ntd=last["turnover_ntd"]*2,
+            source="SHA_CHECKED_MARKET_DAILY_ARCHIVE")]
+        with self.assertRaisesRegex(ValueError,"REFERENCE_SESSION_NOT_IDENTICAL_TO_HASHED_OFFICIAL_ARCHIVE"):
+            check_report(*args,independently_verified_daily_archives=[(
+                last["date"],{("TWSE","6206"):last["turnover_ntd"]})])
+
+    def test_daily_source_overlap_disagreement_is_an_explicit_conflict(self):
+        args=list(sample())
+        d=args[3]["sessions"][-1]["date"]
+        with self.assertRaisesRegex(ValueError,"OFFICIAL_OVERLAP_SOURCE_CONFLICT"):
+            check_report(*args,independently_verified_daily_archives=[(
+                d,{("TWSE","6206"):999999999})])
+
     def test_fast_threshold_and_stress_do_not_mint_formal_Aplus(self):
         result = check_report(*sample())
         risk = result["fast_decision"]
