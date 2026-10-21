@@ -91,7 +91,66 @@ def liquidity_probe(dated,key,position_ntd=5_000_000,participation=.20):
                 spread_and_order_book_evidence_available=False,
                 tradability_gate="PENDING_NOT_CERTIFIED")
 
-def issuer_backfill_probe(root,asof,market,code):
+def reconcile_issuer_reference_history(source_values, dated, asof, market, code):
+    """Fuse official daily quote archives with issuer monthly trading records.
+
+    The dated argument is SHA-checked by price_archive(). One date/stock
+    can appear in both inputs: different turnover is a SOURCE_CONFLICT,
+    never a synthetic average, override or silent selection. The reference
+    session itself must exist, and formal execution remains unverified.
+    """
+    key=(market,code)
+    combined=dict(source_values)
+    joined=0
+    confirmed=0
+    conflicts=[]
+    for day, universe in dated:
+        if day>asof:
+            raise ValueError("DAILY_ARCHIVE_AFTER_PRICE_REFERENCE_DATE")
+        value=universe.get(key)
+        if value is None:
+            continue
+        if (not isinstance(value,(int,float)) or isinstance(value,bool)
+                or not math.isfinite(value) or value<0):
+            raise ValueError("INVALID_VALIDATED_DAILY_ARCHIVE_TURNOVER")
+        value=int(value)
+        if day in combined:
+            if combined[day]!=value:
+                conflicts.append(dict(date=day,historical_turnover_ntd=combined[day],
+                                      daily_archive_turnover_ntd=value))
+            else:
+                confirmed+=1
+        else:
+            combined[day]=value
+            joined+=1
+    if conflicts:
+        return dict(status="SOURCE_CONFLICT_REVIEW_REQUIRED",
+                    available_sessions=len(combined),twenty_day=None,
+                    turnover_conflicts=conflicts,validated_archive_additions=joined,
+                    overlapping_sessions_checked=confirmed,
+                    tradability_gate="PENDING_NOT_CERTIFIED",
+                    spread_and_limit_price_execution_not_verified=True)
+    from_dates=sorted(combined,reverse=True)
+    if not from_dates or from_dates[0]!=asof:
+        return dict(status="PENDING_REFERENCE_SESSION_MISSING",
+                    available_sessions=len(from_dates),twenty_day=None,
+                    validated_archive_additions=joined,
+                    overlapping_sessions_checked=confirmed,
+                    tradability_gate="PENDING_NOT_CERTIFIED")
+    series=[(day,{key:combined[day]}) for day in from_dates[:60]]
+    score=liquidity_probe(series,key)
+    return dict(status="SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
+                available_sessions=len(from_dates),twenty_day=score["twenty_day"],
+                five_day=score["five_day"],sixty_day=score["sixty_day"],
+                validated_archive_additions=joined,
+                overlapping_sessions_checked=confirmed,
+                reused_issuer_history_sessions=len(source_values),
+                original_capture_is_not_authenticated_issuer_PIT=True,
+                spread_and_limit_price_execution_not_verified=True,
+                tradability_gate="PENDING_NOT_CERTIFIED")
+
+
+def issuer_backfill_probe(root,asof,market,code,reference_archives=()):
     """Source-receipted single-issuer monthly history, not full-market archive or PIT."""
     path=Path(root)/"prices/issuer_history"/market/(code+".json")
     if not path.exists():return None
@@ -181,17 +240,11 @@ def issuer_backfill_probe(root,asof,market,code):
     exposed=[x for x in archived if x.get("date")<=asof]
     if [(x.get("date"),x.get("turnover_ntd")) for x in exposed] != [(d,unique[d]) for d in from_months]:
         raise ValueError("ISSUER_HISTORY_NORMALIZED_SOURCE_MISMATCH")
-    # Historical month backfill must contain the exact exchange reference session.
-    if not from_months or from_months[0]!=asof:
-        return dict(status="PENDING_REFERENCE_SESSION_MISSING",available_sessions=len(from_months),
-                    twenty_day=None,tradability_gate="PENDING_NOT_CERTIFIED")
-    dated=[(d,{(market,code):unique[d]}) for d in from_months[:60]]
-    result=liquidity_probe(dated,(market,code))
-    return dict(status="SOURCE_CAPTURED_NOT_FULL_TRADABILITY",available_sessions=len(from_months),
-       twenty_day=result["twenty_day"],five_day=result["five_day"],sixty_day=result["sixty_day"],
-       original_capture_is_not_authenticated_issuer_PIT=True,
-       spread_and_limit_price_execution_not_verified=True,
-       tradability_gate="PENDING_NOT_CERTIFIED")
+    # Monthly TWSE sources may end at the previous exchange day even when
+    # the model's latest officially archived full-market quote is newer.
+    # Reconcile identical overlaps before appending later dated observations.
+    # No future days, no extrapolation, and no certification of execution.
+    return reconcile_issuer_reference_history(unique,reference_archives,asof,market,code)
 
 def financial_probe(data,key):
     history=data.history.get(key,{})
@@ -259,7 +312,8 @@ def probe(research,dispatch,data,dated,receipts,top=50,focus_codes=()):
         finance=financial_probe(data,key);capital=capital_probe(data,code)
         liq=liquidity_probe(dated,key)
         # Synthetic gate-dispatch fixtures may intentionally use a minimal data stub.
-        issuer_history=(issuer_backfill_probe(data.root,research["asof_price_date"],market,code)
+        issuer_history=(issuer_backfill_probe(data.root,research["asof_price_date"],
+                                              market,code,reference_archives=dated)
                         if hasattr(data,"root") else None)
         st=dict(code=code,name=row.get("name"),market=market,research_upside_pct=row.get("research_upside_pct"),
                 source_status=row.get("source_status"),financial=finance,capital=capital,market_history=liq,issuer_historical_market_data=issuer_history,
