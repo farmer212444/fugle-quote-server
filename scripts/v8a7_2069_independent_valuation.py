@@ -136,7 +136,12 @@ def analyze(root, comparison_price=None):
             and q2["basic_eps_ytd"]==1.66 and
             p25["basic_eps_ytd"]==1.62 and
             flow["operating_cashflow_ytd_k"]==-114454,
-            "2069_FINANCIAL_BASIS_CHANGED_REVIEW_ASSUMPTIONS")
+            "2069_FINANCIAL_BASIS_CHANGED_REVIEW_ASSUMPTIONS:"+
+            json.dumps(dict(sales=sales,gross=gross,operating=operating,cost=cost,
+                q2_sales=quarter_sales,q2_cost=quarter_cost,
+                q2_eps=q2["basic_eps_ytd"],prior_eps=p25["basic_eps_ytd"],
+                h1_cfo=flow["operating_cashflow_ytd_k"],
+                data_sources=[q2.get("source"),flow.get("source")]),sort_keys=True))
     # Captured source data is company_PIT_verified=False; don't relabel.
     income_revenue_2025_yi=round(p25["revenue_ytd_k"]/100000,4)
     scenarios={k:scenario(k,v,price) for k,v in ASSUMPTIONS.items()}
