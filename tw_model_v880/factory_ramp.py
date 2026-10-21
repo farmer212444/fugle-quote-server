@@ -75,7 +75,7 @@ def _receipt(receipt, *, cutoff, archive_root):
 def _unit_economics(snapshot):
     if not isinstance(snapshot, dict):
         raise ValueError("FACTORY_COST_SCOPE_MISSING")
-    vals = {k: _num(snapshot.get(k), nonnegative=True) for k in REQUIRED}
+    vals = {k: _num(snapshot.get(k), nonnegative=(k != "inventory_delta_good_units")) for k in REQUIRED}
     revenue = vals["revenue_twd"]
     units = vals["units_sold"]
     good = vals["good_units_produced"]
