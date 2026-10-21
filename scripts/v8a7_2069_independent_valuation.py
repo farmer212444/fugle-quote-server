@@ -40,6 +40,15 @@ def require(condition,message):
 def read(path):
     return json.loads(Path(path).read_text(encoding="utf-8"))
 
+def official_integral_thousands(v):
+    """MOPS normalization may serialize exact integer NTD-thousands as 1.0.
+
+    Accept only genuinely integral, finite values; never truncate an amount,
+    accept bools, or round away a sub-thousand accounting discrepancy.
+    """
+    return (type(v) in (int,float) and math.isfinite(v)
+            and v>=0 and int(v)==v)
+
 def result_row(root,quarter,kind):
     path=Path(root)/f"fundamentals/{quarter}/TWSE_{kind}.json"
     data=read(path)
@@ -130,7 +139,7 @@ def analyze(root, comparison_price=None):
     cost=gross-operating
     quarter_sales=sales-q1["revenue_ytd_k"]
     quarter_cost=cost-(q1["gross_profit_ytd_k"]-q1["operating_profit_ytd_k"])
-    require(all(type(v) is int and v>=0 for v in
+    require(all(official_integral_thousands(v) for v in
                 (sales,gross,operating,cost,quarter_sales,quarter_cost))
             and sales>0 and quarter_sales>0
             and q2["basic_eps_ytd"]==1.66 and
