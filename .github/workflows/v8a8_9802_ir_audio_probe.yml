@@ -22,8 +22,12 @@ jobs:
 
   timestamped_ASR_draft:
     needs: probe
+    strategy:
+      fail-fast: false
+      matrix:
+        date: ['2025-09-03', '2025-11-26']
     runs-on: ubuntu-latest
-    timeout-minutes: 32
+    timeout-minutes: 40
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -35,12 +39,12 @@ jobs:
           python -c 'import av; print("Pinned PyAV",av.__version__)'
       - name: Produce source-hashed and timecoded 2026-09-17 ASR candidate workpaper
         run: |
-          python scripts/v8a8_9802_ir_asr.py --date 2026-09-17 --model small --output temp_9802_ir_draft
+          python scripts/v8a8_9802_ir_asr.py --date ${{ matrix.date }} --model small --output temp_9802_ir_draft
       - name: Publish private-duration ASR draft and claim-review queue for manual listening
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: 9802-20260917-ASR-not-verbatim-verified
+          name: 9802-${{ matrix.date }}-ASR-not-verbatim-verified
           path: |
             temp_9802_ir_draft/asr_timed_workpaper.json
             temp_9802_ir_draft/qa_keyword_review_queue.json
