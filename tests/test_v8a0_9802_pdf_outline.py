@@ -41,6 +41,26 @@ class PDFOutlineTests(unittest.TestCase):
         self.assertFalse(p["source_issuer_filing_PIT_verified"])
         self.assertFalse(p["formal_original_eight_quarter_gate_pass"])
 
+    def test_real_2025q3_english_auditor_heading_variants(self):
+        # The issuer PDF at the company URL has singular Auditor’s in the
+        # cover and plural Auditors’ in its actual review report title.
+        for phrase in ("Independent Auditor’s Review Report",
+                       "Independent Auditors’ Review Report",
+                       "Independent Auditor's Review Report",
+                       "Independent Auditors' Review Report"):
+            sample=["Fulgent Sun International (Holding) Co., Ltd. "
+                    "September 30, 2025 "+phrase,
+                    "Consolidated Balance Sheets Consolidated Statements of "
+                    "Comprehensive Income Consolidated Statements of Changes "
+                    "in Equity Consolidated Statements of Cash Flows",
+                    ("Notes to the Consolidated Financial Statements "
+                     "accounting details and supplementary notes ")*55]
+            result=inspect_native_text(sample,"2025-Q3")
+            self.assertTrue(result["section_page_keyword_hits"]["auditor_report_text"])
+            self.assertNotIn("auditor_report_text",
+                             result["missing_native_text_section_markers"])
+            self.assertFalse(result["formal_original_eight_quarter_gate_pass"])
+
     def test_missing_auditor_report_or_wrong_period_requires_human_review(self):
         pages=["鈺齊國際 民國115年6月30日",
                "合併資產負債表 綜合損益表 合併權益變動表 合併現金流量表",
