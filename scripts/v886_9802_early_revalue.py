@@ -176,7 +176,7 @@ def issuer_press_source_status(research,data_root=DATA):
                 issuer_Q3_press_numbers_not_yet_reconciled_with_signed_MOPS_income=True,
                 main_model_financial_last_quarter="2026-Q2",
                 early_2027_eps_margin_sensitivity_updated=False,
-                2027_eps_pe_and_base_unchanged=True,
+                eps_pe_base_2027_unchanged=True,
                 formal_gate_PASSES_created=0,certified_Aplus=False,
                 original_bytes_sha256_checked=True,
                 source_is_self_reported_press_not_full_quarterly_statement=True)
