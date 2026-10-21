@@ -23,7 +23,8 @@ def pcf(date, units=10000000, *, etf="0050", published=None, weight=.1,
                 weight_basis=basis, index_family=index_family,
                 source_url="https://example.invalid/synthetic-pcf",
                 raw_sha256="a"*64, issuer_source_verified=True,
-                effective_date=date, published_at=published or date+"T17:30:00+08:00",
+                units_asof_date=date, basket_effective_date=(__import__("datetime").date.fromisoformat(date)+__import__("datetime").timedelta(days=1)).isoformat(),
+                published_at=published or date+"T17:30:00+08:00",
                 units_outstanding=units, nav_per_unit_twd=50,
                 constituents=[
                     dict(code="6206", weight=weight, cash_substitution=substitute),
@@ -85,6 +86,23 @@ class EtfEvidenceTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 _snapshot(row, __import__("datetime").datetime.fromisoformat(ASOF))
 
+    def test_unit_asof_and_next_session_basket_are_distinct(self):
+        r = pcf("2026-10-20", published="2026-10-20T16:10:50+08:00")
+        checked = _snapshot(r, __import__("datetime").datetime.fromisoformat(ASOF))
+        self.assertEqual(checked["units_asof_date"], "2026-10-20")
+        self.assertEqual(checked["basket_effective_date"], "2026-10-21")
+        # A next-day PCF may be published after today's close; cannot be
+        # used to infer the morning's stock trades.
+        old = pcf("2026-10-20", published="2026-10-19T16:10:50+08:00")
+        with self.assertRaisesRegex(ValueError, "UNITS_PUBLISHED_BEFORE"):
+            _snapshot(old, __import__("datetime").datetime.fromisoformat(ASOF))
+
+    def test_future_effective_basket_not_backdated_into_yesterday(self):
+        r = pcf("2026-10-20")
+        r["basket_effective_date"] = "2026-10-29"
+        with self.assertRaisesRegex(ValueError, "BASKET_EFFECTIVE_DATE"):
+            _snapshot(r, __import__("datetime").datetime.fromisoformat(ASOF))
+
     def test_cash_substitution_not_counted_as_stock_exposure(self):
         old = pcf("2026-10-19", substitute=True)
         new = pcf("2026-10-20", units=10100000)
@@ -135,7 +153,7 @@ class EtfEvidenceTests(unittest.TestCase):
         self.assertEqual(r["etf_count_with_full_5d"], 1)
         self.assertEqual(r["etf_count_with_full_20d"], 1)
         self.assertEqual(next(x for x in r["top20"] if x["code"]=="6206")["estimated_20d_exposure_ntd"], 10000000)
-        missing = [row for row in all_pcf if row["effective_date"] != sessions[13]]
+        missing = [row for row in all_pcf if row["units_asof_date"] != sessions[13]]
         r2 = analyze(missing, sessions, prices, sessions[-1],
                      asof="2026-10-21T23:00:00+08:00")
         self.assertEqual(r2["etf_count_with_full_20d"], 0)
