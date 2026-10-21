@@ -10,6 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0,str(ROOT))
 from tw_model_v880.factory_ramp import accounting_only, assess_factory_ramp
+from tw_model_v880.disclosed_cogs import assess_disclosed_cogs, render_disclosed_cogs
 
 FOCUS = ("9802","2330","9910","6768","6890","6965","1476","6206")
 QUARTERS = ("2025-Q1","2025-Q2","2026-Q1","2026-Q2")
@@ -109,6 +110,24 @@ def build(root, asof):
                     focus[code]=item
             except (ValueError,KeyError,TypeError) as ex:
                 failed.append(dict(market=market,code=code,name=q2.get("name"),error=str(ex)[:180]))
+    # 9802 released a consolidated quarterly material/labor/overhead COGS
+    # split on 2026-09-17. This permits a *reported burden* decomposition,
+    # NOT a factory-level depreciation/learning-curve or permanent-cost claim.
+    cost_research = {}
+    filing = root/"evidence"/"v880"/"factory_ramp"/"9802_disclosed_cogs.json"
+    if "9802" in focus and filing.is_file():
+        try:
+            e=json.loads(filing.read_text(encoding="utf-8"))
+            old_q2=standalone(db["2025-Q1"]["TWSE"].get("9802"),db["2025-Q2"]["TWSE"].get("9802"))
+            now_q2=standalone(db["2026-Q1"]["TWSE"].get("9802"),db["2026-Q2"]["TWSE"].get("9802"))
+            cost_research["9802"]=assess_disclosed_cogs(e,asof=asof,
+                standardized_accounting={"2025-Q2":old_q2,"2026-Q2":now_q2})
+            focus["9802"]["disclosed_cogs_review"]=cost_research["9802"]
+        except (OSError,KeyError,TypeError,ValueError) as ex:
+            cost_research["9802"]={"status":"REPORTED_COGS_EVIDENCE_PENDING",
+                                    "reason":str(ex)[:200],
+                                    "base_gm_override_allowed":False,
+                                    "formal_a_plus_changed":False}
     short=sorted((i for i in checked if i["gm_yoy_change_pp"]<=-1 and i["q2_revenue_twd"]>=1e9),
                  key=lambda x:(x["gm_yoy_change_pp"],x["code"]))
     verified=sum(x.get("factory_cost_bridge",{}).get("accounting_reconciliation_verified") is True for x in checked)
@@ -116,6 +135,7 @@ def build(root, asof):
                 estimate_vintage=asof,latest_financial_period="2026-Q2",comparable_period="2025-Q2",
                 archive_source=provenance,universe_checked=len(checked),excluded_count=len(failed),
                 excluded_issuers=failed,issuer_focus_cases=focus,all_issuer_accounting=checked,
+                issuer_disclosed_costs=cost_research,
                 top20_margin_decline_not_plant_attribution=short[:20],
                 original_factory_unit_cost_bridges_verified=verified,
                 formal_Aplus_changes=0,base_eps_pe_target_changes=0,
@@ -149,6 +169,12 @@ def render(r):
             status=("待原始廠別單位成本、產能及存貨成本" if a["classification_plant_ramp_vs_structural"]=="INSUFFICIENT_ORIGINAL_CAUSAL_EVIDENCE"
                     else a["classification_plant_ramp_vs_structural"])
             lines.append(f"|{code} {a['name']}|{a['prior_gm_pct']:.2f}%|{a['current_gm_pct']:.2f}%|{a['gm_yoy_change_pp']:+.2f}pp|{a['operating_margin_yoy_change_pp']:+.2f}pp|{status}|")
+    special=r.get("issuer_disclosed_costs",{}).get("9802")
+    if special and special.get("status")=="PUBLISHED_CONSOLIDATED_COGS_SPLIT_NOT_PLANT_CAUSALITY":
+        lines += ["",render_disclosed_cogs(special)]
+    elif special:
+        lines += ["", "## 9802成本結構核對狀態："+special.get("status","UNKNOWN"),
+                  "未列入已驗證的材料/人工/製造費用拆解："+special.get("reason","來源待補"), ""]
     lines += [
         "","## 9802：公司確有提及新廠，但同時有其他成本",
         "",
