@@ -3,6 +3,7 @@ on:
   pull_request:
     paths:
       - 'scripts/v8a8_9802_ir_audio_probe.py'
+      - 'scripts/v8a8_9802_ir_asr.py'
       - '.github/workflows/v8a8_9802_ir_audio_probe.yml'
   workflow_dispatch:
 permissions:
@@ -18,3 +19,29 @@ jobs:
           python-version: '3.12'
       - name: Verify official MP4 container bytes are actually reachable
         run: python scripts/v8a8_9802_ir_audio_probe.py
+
+  timestamped_ASR_draft:
+    needs: probe
+    runs-on: ubuntu-latest
+    timeout-minutes: 32
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install local speech recognition on runner CPU
+        run: |
+          python -m pip install --disable-pip-version-check faster-whisper==1.2.1
+      - name: Produce source-hashed and timecoded 2026-09-17 ASR candidate workpaper
+        run: |
+          python scripts/v8a8_9802_ir_asr.py --date 2026-09-17 --model small --output temp_9802_ir_draft
+      - name: Publish private-duration ASR draft and claim-review queue for manual listening
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: 9802-20260917-ASR-not-verbatim-verified
+          path: |
+            temp_9802_ir_draft/asr_timed_workpaper.json
+            temp_9802_ir_draft/qa_keyword_review_queue.json
+          retention-days: 1
+          if-no-files-found: ignore
