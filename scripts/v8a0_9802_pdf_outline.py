@@ -40,12 +40,16 @@ SECTIONS={
     "footnotes":("財務報告附註","合併財務報告附註","notes to consolidated financial statements".replace(" ",""),
                  "notestotheconsolidatedfinancialstatements"),
     "auditor_report_text":(
-        "會計師核閱報告","會計師查核報告","independentauditorsreviewreport",
-        "independentauditorsreport","independentauditorsauditreport")
+        "會計師核閱報告","會計師查核報告",
+        "independentauditorsreviewreport","independentauditorreviewreport",
+        "independentauditorsreport","independentauditorreport",
+        "independentauditorsauditreport","independentauditorauditreport")
 }
 
 def compact(value):
-    return re.sub(r"\s+","",unicodedata.normalize("NFKC",str(value))).lower()
+    # Official reports use singular and plural auditor headings, with
+    # ASCII and curly apostrophes. Remove only typography, not financial data.
+    return re.sub(r"[\s'’‘ʼ]+","",unicodedata.normalize("NFKC",str(value))).lower()
 
 def period_of_title(title):
     # A self-reported earnings *press release* is not an eight-quarter
