@@ -31,6 +31,10 @@ class HistoricalTWSETests(unittest.TestCase):
         self.assertTrue(len(records)>=19)
         self.assertEqual(records[0]["date"],days("2026-09")[0])
         self.assertEqual(records[0]["turnover_ntd"],1000000)
+        self.assertEqual(records[0]['open'],20.5)
+        self.assertEqual(records[0]['high'],21.5)
+        self.assertEqual(records[0]['low'],20.2)
+        self.assertFalse(records[0]['fillability_verified'])
         self.assertEqual(iso_roc("115/09/30"),"2026-09-30")
         self.assertIn("stockNo=6206",historical_url("6206","2026-09"))
     def test_bad_month_duplicate_and_invalid_amount_fail(self):
@@ -108,4 +112,37 @@ class HistoricalTWSETests(unittest.TestCase):
     def test_future_date_never_included(self):
         rows={"2026-10":[dict(date="2026-10-18",turnover_ntd=3,close=12)]}
         self.assertEqual(combine(rows,"2026-10-16","6206"),[])
+
+    def test_legacy_month_is_upgraded_to_durable_ohlc_and_bounded_backfill_advances(self):
+        from scripts.history_archive import verify_original
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp);out=root/'prices/issuer_history/TWSE';out.mkdir(parents=True)
+            legacy=dict(issuer='6206',market='TWSE',by_month={'2026-09':dict(
+                rows=[dict(date='2026-09-01',close=21,turnover_ntd=1000000)])})
+            (out/'6206.json').write_text(json.dumps(legacy))
+            requested=[]
+            def fetch(url):
+                month='2026-'+url.split('date=2026')[1][:2]
+                requested.append(month)
+                return response(month,days(month))
+            first=process('6206','2026-10-16',['2026-10','2026-09'],fetch,out,root/'raw',
+                          sleep=0,root=root,max_new_months=1)
+            self.assertEqual(first['new_months'],1)
+            second=process('6206','2026-10-16',['2026-10','2026-09'],fetch,out,root/'raw',
+                           sleep=0,root=root,max_new_months=1)
+            self.assertEqual(second['new_months'],1)
+            self.assertEqual(requested,['2026-10','2026-09'])
+            current=json.loads((out/'6206.json').read_text())
+            original=current['by_month']['2026-09']['original_archive']
+            self.assertEqual(verify_original(root,original),response('2026-09',days('2026-09')))
+            self.assertFalse(current['original_raw_responses_preserved_in_actions_artifact_not_repository'])
+
+    def test_archive_upgrade_priority_does_not_treat_20_closes_as_ohlc_complete(self):
+        raw=json.dumps([dict(code='6206',market='TWSE'),dict(code='9802',market='TWSE')]).encode()
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp);out=root/'prices/issuer_history/TWSE';out.mkdir(parents=True)
+            (out/'6206.json').write_text(json.dumps(dict(issuer='6206',market='TWSE',
+                price_reference_asof='2026-10-16',liquidity={'20':{'sessions':20}})))
+            selected=prioritized_candidates(raw,'2026-10-16',2,root,execution_archive=True,months=24)
+            self.assertIn('6206',selected)
 if __name__=="__main__":unittest.main()

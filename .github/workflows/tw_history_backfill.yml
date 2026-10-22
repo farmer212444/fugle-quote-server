@@ -5,11 +5,17 @@ on:
     paths:
       - '.github/workflows/tw_history_backfill.yml'
       - 'scripts/tw_history_backfill.py'
+      - 'scripts/history_archive.py'
+      - 'scripts/execution_quote_archive.py'
+      - 'tests/test_history_archive.py'
       - 'tests/test_tw_history_backfill.py'
   pull_request:
     paths:
       - '.github/workflows/tw_history_backfill.yml'
       - 'scripts/tw_history_backfill.py'
+      - 'scripts/history_archive.py'
+      - 'scripts/execution_quote_archive.py'
+      - 'tests/test_history_archive.py'
       - 'tests/test_tw_history_backfill.py'
   schedule:
     # Priority TWSE source batches at 09:05, 12:05, 15:05, 18:05 and 20:05 TPE.
@@ -30,10 +36,10 @@ jobs:
         with:
           python-version: '3.12'
       - name: Validate official monthly parser and PIT guards
-        run: python -m unittest -v tests.test_tw_history_backfill
+        run: python -m unittest -v tests.test_tw_history_backfill tests.test_history_archive
       - name: Backfill official TWSE monthly sessions for focus issuers
-        if: github.event_name != 'pull_request'
-        run: python scripts/tw_history_backfill.py --max-issuers 16 --months 3
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        run: python scripts/tw_history_backfill.py --max-issuers 8 --months 24 --max-new-months 3
       - name: Archive unmodified monthly exchange JSON
         if: always() && github.event_name != 'pull_request'
         uses: actions/upload-artifact@v4
@@ -53,8 +59,11 @@ jobs:
           for rebuild in 1 2 3; do
             git fetch origin main
             git reset --hard origin/main
-            python scripts/tw_history_backfill.py --max-issuers 16 --months 3
+            python scripts/tw_history_backfill.py --max-issuers 8 --months 24 --max-new-months 3
             git add tw-market-data/prices/issuer_history/TWSE/
+            if [ -d tw-market-data/prices/originals/history/TWSE ]; then
+              git add tw-market-data/prices/originals/history/TWSE/
+            fi
             if git diff --cached --quiet; then
               echo 'Historical issuer files already present.'
               exit 0

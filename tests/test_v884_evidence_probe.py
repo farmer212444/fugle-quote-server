@@ -9,9 +9,9 @@ from scripts.v884_evidence_probe import price_archive,liquidity_probe,probe,fina
 
 class OfficialEvidenceProbeTests(unittest.TestCase):
     def test_stale_monthly_history_merged_with_real_dated_official_reference(self):
-        # This regression uses the exact preserved official 2026-10-19 TWSE
-        # normalized price, and pre-existing monthly issuer-history snapshots
-        # whose latest session is 2026-10-16. No invented fill-in dates.
+        # Keep the real dated exchange values, but isolate this old regression
+        # from the live issuer file that the collector legitimately advances.
+        # Trim actual rows to 10/16; do not fabricate missing trading dates.
         root=pathlib.Path(__file__).resolve().parents[1]/"tw-market-data"
         official=json.loads((root/"prices/2026-10-19.json").read_text())
         for code in ("6206","9802"):
@@ -19,16 +19,36 @@ class OfficialEvidenceProbeTests(unittest.TestCase):
             self.assertEqual(len(rows),1)
             self.assertEqual(rows[0]["date"],"2026-10-19")
             sample=[("2026-10-19",{("TWSE",code):rows[0]["turnover_ntd"]})]
-            older=issuer_backfill_probe(root,"2026-10-19","TWSE",code)
-            self.assertEqual(older["status"],"PENDING_REFERENCE_SESSION_MISSING")
-            merged=issuer_backfill_probe(root,"2026-10-19","TWSE",code,
-                                          reference_archives=sample)
+            history=json.loads((root/'prices/issuer_history/TWSE'/f'{code}.json').read_text())
+            history['price_reference_asof']='2026-10-16'
+            for item in history['by_month'].values():
+                item['rows']=[row for row in item['rows'] if row['date']<='2026-10-16']
+            history['sessions']=sorted([row for item in history['by_month'].values() for row in item['rows']],
+                                       key=lambda row:row['date'],reverse=True)
+            with tempfile.TemporaryDirectory() as temporary:
+                frozen=pathlib.Path(temporary)
+                folder=frozen/'prices/issuer_history/TWSE';folder.mkdir(parents=True)
+                (folder/f'{code}.json').write_text(json.dumps(history))
+                older=issuer_backfill_probe(frozen,"2026-10-19","TWSE",code)
+                self.assertEqual(older["status"],"PENDING_REFERENCE_SESSION_MISSING")
+                merged=issuer_backfill_probe(frozen,"2026-10-19","TWSE",code,
+                                              reference_archives=sample)
             self.assertEqual(merged["status"],"SOURCE_CAPTURED_NOT_FULL_TRADABILITY")
             self.assertEqual(merged["validated_archive_additions"],1)
             self.assertEqual(merged["twenty_day"]["sessions"],20)
             self.assertEqual(merged["twenty_day"]["last"],"2026-10-19")
             self.assertIsInstance(merged["twenty_day"]["median_turnover_ntd"],(int,float))
             self.assertEqual(merged["tradability_gate"],"PENDING_NOT_CERTIFIED")
+
+    def test_newer_issuer_snapshot_is_still_rejected_for_older_reference(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root=pathlib.Path(temporary);folder=root/'prices/issuer_history/TWSE'
+            folder.mkdir(parents=True)
+            (folder/'6206.json').write_text(json.dumps(dict(issuer='6206',market='TWSE',
+                schema='V889_OFFICIAL_TWSE_ISSUER_MONTHLY',price_reference_asof='2026-10-21',
+                formal_tradability_gate='PENDING_NOT_CERTIFIED',by_month={})))
+            with self.assertRaisesRegex(ValueError,'FUTURE_ISSUER_HISTORICAL_REFERENCE_DATE'):
+                issuer_backfill_probe(root,'2026-10-19','TWSE','6206')
 
     def test_contradictory_same_day_turnover_stays_pending(self):
         historical={"2026-10-16":100_000_000,"2026-10-19":20_000_000}

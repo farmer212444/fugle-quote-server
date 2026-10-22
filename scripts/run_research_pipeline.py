@@ -38,6 +38,7 @@ def research_stages(phase='full'):
         ('etf_rotation', ['v8a6_etf_rotation_watch.py']),
         ('2069_valuation', ['v8a7_2069_independent_valuation.py']),
         ('quality_decision', ['v8a5_quality_decision_lane.py']),
+        ('historical_source_readiness', ['historical_pit_readiness.py']),
         ('shadow_comparison', ['institutional_shadow.py']),
         ('institutional_review', ['institutional_review.py']),
     ]
