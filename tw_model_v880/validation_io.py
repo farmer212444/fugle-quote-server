@@ -1,4 +1,5 @@
 """Consume registered trials and recompute outcomes from hashed source files."""
+import datetime as dt
 import hashlib
 import json
 import re
@@ -7,6 +8,14 @@ from pathlib import Path
 from .contracts import canonical_hash
 from .evidence import timestamp
 from .execution import net_trade,COST_FIELDS
+
+
+TAIPEI = dt.timezone(dt.timedelta(hours=8))
+
+
+def taipei_signal_date(when):
+    """Resolve cohort and predeclared lookup keys using the trading timezone."""
+    return timestamp(when).astimezone(TAIPEI).date().isoformat()
 
 
 def source(root,reference,decode=True):
@@ -118,19 +127,18 @@ def collect_trials(root,asof):
                                                       requested_notional_ntd=spec['reference_notional_ntd']/len(legs),
                                                       max_participation=spec['max_daily_participation'])['net_total_return'])
                         returns[variant]=sum(leg_returns)/len(leg_returns)
-                    import datetime as dt
-                    signal_day=signal.astimezone(dt.timezone(dt.timedelta(hours=8))).date().isoformat()
+                    signal_day=taipei_signal_date(signal)
                     pairs.append(dict(signal_date=signal_day,signal_at=signal.isoformat(),
                                       champion_net_return=returns['champion'],challenger_net_return=returns['challenger'],
                                       champion_frozen_at=frozen_times['champion'],challenger_frozen_at=frozen_times['challenger'],
                                       execution_and_actions_verified=True,
                                       cost_policy_sha256_champion=canonical_hash(costs),cost_policy_sha256_challenger=canonical_hash(costs),
                                       outcome_end_champion=end.isoformat(),outcome_end_challenger=end.isoformat(),
-                                      market_regime=(spec.get('predeclared_market_regimes') or {}).get(signal.date().isoformat())))
+                                      market_regime=(spec.get('predeclared_market_regimes') or {}).get(signal_day)))
                     valid_trade_count+=2
-                    prediction=(spec.get('preissued_positive_return_probabilities') or {}).get(signal.date().isoformat())
+                    prediction=(spec.get('preissued_positive_return_probabilities') or {}).get(signal_day)
                     if prediction is not None:
-                        probability_records.append(dict(sample_id=path.stem+':'+signal.date().isoformat(),
+                        probability_records.append(dict(sample_id=path.stem+':'+signal_day,
                                                         predicted_probability=prediction,
                                                         outcome=returns['challenger']>0,
                                                         probability_issued_at=registration['registered_at'],
