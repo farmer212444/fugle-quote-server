@@ -1,16 +1,16 @@
 {
-  "date": "2026-10-21",
+  "date": "2026-10-22",
   "TWSE_rows": 1096,
-  "TPEX_rows": 891,
-  "total": 1987,
-  "path": "tw-market-data/prices/2026-10-21.json",
-  "normalized_sha256": "c57a7681960f8932983049395460ae5d41c8734b727f85639df81474bbee7761",
+  "TPEX_rows": 892,
+  "total": 1988,
+  "path": "tw-market-data/prices/2026-10-22.json",
+  "normalized_sha256": "cf770e6bffc0de5c371098d11b730d95807e428266c82fd4a22c5e26749ccf2c",
   "raw_source_sha256": {
-    "TWSE": "720a2c1bc6b7b8629daa38a4e4a816c01836e9f7ea6e460b55562550d2836ef6",
-    "TPEX": "a46da0a1b5e670015db2fea04419a90eb05059f4a725c6fb89e935692ae6fe61"
+    "TWSE": "3348a0574662d856c1d2948862641c65fadfb7568576a10298dce5ab71f299b6",
+    "TPEX": "ddc08c4711de348b2403ff97a1d53e6a174cedd3fae8ef4b9b9e77b5f1562643"
   },
   "sources": {
-    "TWSE": "https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL",
+    "TWSE": "https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX?date=20261022&type=ALLBUT0999&response=json",
     "TPEX": "https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_close_quotes"
   },
   "unadjusted_quotes": true,
