@@ -1,13 +1,31 @@
 {
   "schema": "HISTORICAL_PIT_SOURCE_READINESS_V1",
-  "observed_at": "2026-10-22T06:04:34.510254+00:00",
+  "observed_at": "2026-10-22T06:08:47.082621+00:00",
   "historical_start": "2025-01-01",
   "historical_end": "2026-10-21",
-  "verified_durable_original_receipts": 46,
+  "verified_durable_original_receipts": 94,
   "issuer_price_coverage": [
     {
       "market": "TWSE",
       "code": "1256",
+      "source_sessions": 118,
+      "sessions_with_observed_open": 118,
+      "first": "2026-05-04",
+      "last": "2026-10-21",
+      "fillability_verified": false
+    },
+    {
+      "market": "TWSE",
+      "code": "1714",
+      "source_sessions": 118,
+      "sessions_with_observed_open": 118,
+      "first": "2026-05-04",
+      "last": "2026-10-21",
+      "fillability_verified": false
+    },
+    {
+      "market": "TWSE",
+      "code": "2103",
       "source_sessions": 55,
       "sessions_with_observed_open": 55,
       "first": "2026-08-03",
@@ -16,7 +34,25 @@
     },
     {
       "market": "TWSE",
-      "code": "1714",
+      "code": "2317",
+      "source_sessions": 55,
+      "sessions_with_observed_open": 55,
+      "first": "2026-08-03",
+      "last": "2026-10-21",
+      "fillability_verified": false
+    },
+    {
+      "market": "TWSE",
+      "code": "2331",
+      "source_sessions": 55,
+      "sessions_with_observed_open": 55,
+      "first": "2026-08-03",
+      "last": "2026-10-21",
+      "fillability_verified": false
+    },
+    {
+      "market": "TWSE",
+      "code": "2374",
       "source_sessions": 55,
       "sessions_with_observed_open": 55,
       "first": "2026-08-03",
@@ -26,15 +62,33 @@
     {
       "market": "TWSE",
       "code": "3231",
-      "source_sessions": 55,
-      "sessions_with_observed_open": 55,
-      "first": "2026-08-03",
+      "source_sessions": 118,
+      "sessions_with_observed_open": 118,
+      "first": "2026-05-04",
       "last": "2026-10-21",
       "fillability_verified": false
     },
     {
       "market": "TWSE",
       "code": "3305",
+      "source_sessions": 118,
+      "sessions_with_observed_open": 118,
+      "first": "2026-05-04",
+      "last": "2026-10-21",
+      "fillability_verified": false
+    },
+    {
+      "market": "TWSE",
+      "code": "4155",
+      "source_sessions": 48,
+      "sessions_with_observed_open": 48,
+      "first": "2026-08-03",
+      "last": "2026-10-21",
+      "fillability_verified": false
+    },
+    {
+      "market": "TWSE",
+      "code": "4560",
       "source_sessions": 55,
       "sessions_with_observed_open": 55,
       "first": "2026-08-03",
@@ -44,15 +98,24 @@
     {
       "market": "TWSE",
       "code": "4739",
-      "source_sessions": 55,
-      "sessions_with_observed_open": 55,
-      "first": "2026-08-03",
+      "source_sessions": 118,
+      "sessions_with_observed_open": 118,
+      "first": "2026-05-04",
       "last": "2026-10-21",
       "fillability_verified": false
     },
     {
       "market": "TWSE",
       "code": "4912",
+      "source_sessions": 118,
+      "sessions_with_observed_open": 118,
+      "first": "2026-05-04",
+      "last": "2026-10-21",
+      "fillability_verified": false
+    },
+    {
+      "market": "TWSE",
+      "code": "5538",
       "source_sessions": 55,
       "sessions_with_observed_open": 55,
       "first": "2026-08-03",
@@ -62,15 +125,24 @@
     {
       "market": "TWSE",
       "code": "6625",
-      "source_sessions": 55,
-      "sessions_with_observed_open": 55,
-      "first": "2026-08-03",
+      "source_sessions": 118,
+      "sessions_with_observed_open": 118,
+      "first": "2026-05-04",
       "last": "2026-10-21",
       "fillability_verified": false
     },
     {
       "market": "TWSE",
       "code": "8110",
+      "source_sessions": 118,
+      "sessions_with_observed_open": 118,
+      "first": "2026-05-04",
+      "last": "2026-10-21",
+      "fillability_verified": false
+    },
+    {
+      "market": "TWSE",
+      "code": "8473",
       "source_sessions": 55,
       "sessions_with_observed_open": 55,
       "first": "2026-08-03",
@@ -511,7 +583,7 @@
     }
   ],
   "source_backed_price_sessions_by_market": {
-    "TWSE": 440,
+    "TWSE": 1377,
     "TPEX": 1008
   },
   "financial_mirrors": [
@@ -805,40 +877,7 @@
     }
   ],
   "admitted_historical_financial_pit_batches": 0,
-  "source_rejections": [
-    {
-      "path": "prices/issuer_history/TWSE/2103.json",
-      "reason": "HISTORICAL_ORIGINAL_NOT_VERIFIED"
-    },
-    {
-      "path": "prices/issuer_history/TWSE/2317.json",
-      "reason": "HISTORICAL_ORIGINAL_NOT_VERIFIED"
-    },
-    {
-      "path": "prices/issuer_history/TWSE/2331.json",
-      "reason": "HISTORICAL_ORIGINAL_NOT_VERIFIED"
-    },
-    {
-      "path": "prices/issuer_history/TWSE/2374.json",
-      "reason": "HISTORICAL_ORIGINAL_NOT_VERIFIED"
-    },
-    {
-      "path": "prices/issuer_history/TWSE/4155.json",
-      "reason": "HISTORICAL_ORIGINAL_NOT_VERIFIED"
-    },
-    {
-      "path": "prices/issuer_history/TWSE/4560.json",
-      "reason": "HISTORICAL_ORIGINAL_NOT_VERIFIED"
-    },
-    {
-      "path": "prices/issuer_history/TWSE/5538.json",
-      "reason": "HISTORICAL_ORIGINAL_NOT_VERIFIED"
-    },
-    {
-      "path": "prices/issuer_history/TWSE/8473.json",
-      "reason": "HISTORICAL_ORIGINAL_NOT_VERIFIED"
-    }
-  ],
+  "source_rejections": [],
   "retrospective_replay_status": "BLOCKED_MISSING_ORIGINAL_PIT_INPUTS",
   "blockers": [
     "ISSUER_ORIGINAL_PUBLICATION_AND_REVISION_VERSIONS_REQUIRED",
