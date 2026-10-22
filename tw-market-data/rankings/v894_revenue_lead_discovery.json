@@ -2,7 +2,7 @@
   "status": "REVENUE_LEADING_DISCOVERY_NOT_FORMAL_CERTIFICATION",
   "source_model": "V8.10.3",
   "source_model_code_sha256": "b6fb491e787e151f87abf127d7c6586bcd773f7578f04928ecd7038b2ca24e99",
-  "estimate_vintage": "2026-10-22T20:00:40.757217+08:00",
+  "estimate_vintage": "2026-10-22T20:57:57.811838+08:00",
   "price_date": "2026-10-22",
   "revenue_month": "2026-09",
   "issuer_count": 1968,
@@ -7147,7 +7147,8 @@
       "eligible_for_lead_ranking": true,
       "data_quality_flags": [],
       "risk_flags": [
-        "MULTI_MONTH_CONTINUITY_NOT_YET_OBSERVED"
+        "MULTI_MONTH_CONTINUITY_NOT_YET_OBSERVED",
+        "VALUATION_NOT_COMPARABLE"
       ],
       "monthly_yoy_pct": 71.997,
       "ytd_yoy_pct": 12.97,
@@ -24446,31 +24447,6 @@
       "revenue_points": 21.509
     },
     {
-      "code": "1419",
-      "name": "新紡",
-      "market": "TWSE",
-      "industry": "紡織纖維",
-      "report_month": "11509",
-      "lead_score": 21.435,
-      "valuation_unreflected_points": 2.806,
-      "formal_grade_changed": false,
-      "early_layout_only": true,
-      "eligible_for_lead_ranking": true,
-      "data_quality_flags": [],
-      "risk_flags": [
-        "MULTI_MONTH_CONTINUITY_NOT_YET_OBSERVED"
-      ],
-      "monthly_yoy_pct": 18.381,
-      "ytd_yoy_pct": 23.72,
-      "acceleration_pp": -5.339,
-      "mom_pct": 2.843,
-      "revenue_level_points": 10.722,
-      "acceleration_points": 0.0,
-      "observed_persistence_points": 7.907,
-      "continuity_points": 0,
-      "revenue_points": 18.629
-    },
-    {
       "code": "2331",
       "name": "精英",
       "market": "TWSE",
@@ -25988,6 +25964,32 @@
       "observed_persistence_points": 1.093,
       "continuity_points": 0,
       "revenue_points": 18.637
+    },
+    {
+      "code": "1419",
+      "name": "新紡",
+      "market": "TWSE",
+      "industry": "紡織纖維",
+      "report_month": "11509",
+      "lead_score": 18.629,
+      "valuation_unreflected_points": 0.0,
+      "formal_grade_changed": false,
+      "early_layout_only": true,
+      "eligible_for_lead_ranking": true,
+      "data_quality_flags": [],
+      "risk_flags": [
+        "MULTI_MONTH_CONTINUITY_NOT_YET_OBSERVED",
+        "VALUATION_NOT_COMPARABLE"
+      ],
+      "monthly_yoy_pct": 18.381,
+      "ytd_yoy_pct": 23.72,
+      "acceleration_pp": -5.339,
+      "mom_pct": 2.843,
+      "revenue_level_points": 10.722,
+      "acceleration_points": 0.0,
+      "observed_persistence_points": 7.907,
+      "continuity_points": 0,
+      "revenue_points": 18.629
     },
     {
       "code": "7811",
