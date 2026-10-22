@@ -58,8 +58,10 @@ jobs:
           # nonoverlapping files instead of re-fetching on every push rejection.
           for rebuild in 1 2 3; do
             git fetch origin main
-            git reset --hard origin/main
-            python scripts/tw_history_backfill.py --max-issuers 8 --months 24 --max-new-months 3
+            if [ "$rebuild" != 1 ] || [ "$(git rev-parse HEAD)" != "$(git rev-parse origin/main)" ]; then
+              git reset --hard origin/main
+              python scripts/tw_history_backfill.py --max-issuers 8 --months 24 --max-new-months 3
+            fi
             git add tw-market-data/prices/issuer_history/TWSE/
             if [ -d tw-market-data/prices/originals/history/TWSE ]; then
               git add tw-market-data/prices/originals/history/TWSE/
