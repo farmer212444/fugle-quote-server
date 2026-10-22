@@ -1,12 +1,12 @@
 {
   "schema": "V8102_CACHE_AND_PROSPECTIVE_ACCEPTANCE",
-  "validated_at": "2026-10-22T00:17:37.878887+00:00",
+  "validated_at": "2026-10-22T00:21:30.219675+00:00",
   "model": "V8.10.2",
   "source_data_git_commit": "ad55738d9ddf7178ee997a1d0ce980807ecd1370",
-  "runtime_code_sha256": "782af9a90f00cd8c5c52513ed750efb8c1c897b4c42cefe57676dd2b1d4f57db",
+  "runtime_code_sha256": "c0f994f2a404e43163158e92768f73d5313b062ae2aa9ea7cd3267f29290e1c6",
   "engineering_tests": {
     "command": "python -m unittest discover -s tests -q",
-    "passed": 428,
+    "passed": 429,
     "failures": 0,
     "investment_backtest": false,
     "root_runtime_version_contract": "PASS_INCLUDED_IN_UNITTEST_DISCOVERY"
@@ -31,10 +31,11 @@
     "Full-result hashes and compact/full context must match",
     "Both actual archive and estimate clocks must precede the signal",
     "Frozen receipt identity must match its frozen payload",
-    "Legacy Top20/revenue discovery explicitly accept the reviewed current runtime and reject unknown versions; current VERSION is tested."
+    "Legacy Top20/revenue discovery explicitly accept the reviewed current runtime and reject unknown versions; current VERSION is tested.",
+    "Visible report title and EPS/Base column years follow the requested target year."
   ],
   "real_archived_data_smoke": {
-    "asof": "2026-10-22T08:15:46.282805+08:00",
+    "asof": "2026-10-22T08:21:04.903730+08:00",
     "price_date": "2026-10-21",
     "normalized_issuers": 1978,
     "priced_issuers": 1987,
@@ -56,14 +57,13 @@
   },
   "real_cache_rebuild_reuse_and_target_switch": {
     "schema": "V8102_CACHE_ACCEPTANCE",
-    "asof": "2026-10-22T08:16:56.492485+08:00",
+    "asof": "2026-10-22T08:21:23.128267+08:00",
     "first": {
       "status": "REBUILT_FROM_VALIDATED_SOURCES",
       "rebuilt": true,
       "reasons": [
-        "MODEL_VERSION_CHANGED",
         "RUNTIME_CODE_CHANGED",
-        "SOURCE_MANIFEST_OR_LEDGER_CHANGED"
+        "FORECAST_TARGET_DATE_CHANGED"
       ]
     },
     "unchanged_second": {
@@ -77,7 +77,8 @@
         "FORECAST_TARGET_DATE_CHANGED"
       ]
     },
-    "verified_final_target": "2028-12-31"
+    "verified_final_target": "2028-12-31",
+    "visible_report_year_matches_target": true
   },
   "limits": [
     "Engineering controls and cached-data reproduction are not investment outperformance evidence.",
