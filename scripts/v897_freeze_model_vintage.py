@@ -11,7 +11,11 @@ import gzip
 import hashlib
 import json
 import re
+import sys
 from pathlib import Path
+
+PACKAGE_ROOT=Path(__file__).resolve().parents[1]
+if str(PACKAGE_ROOT) not in sys.path:sys.path.insert(0,str(PACKAGE_ROOT))
 
 SCHEMA="V897_PROSPECTIVE_SNAPSHOT_NOT_PIT_CERTIFIED"
 TAIPEI=dt.timezone(dt.timedelta(hours=8))
@@ -227,11 +231,15 @@ def main():
     ap.add_argument("--data-root",default="tw-market-data")
     ap.add_argument("--git-source-sha",default=None)
     ap.add_argument("--rankings-subdir",default="rankings")
+    ap.add_argument("--register-benchmark",action="store_true")
     args=ap.parse_args()
     root=Path(args.data_root).resolve()
     now=dt.datetime.now(dt.timezone.utc)
     version=(root.parent/"VERSION").read_text(encoding="utf-8").strip()
     result=freeze(root,now,version,args.git_source_sha,args.rankings_subdir)
+    if args.register_benchmark:
+        from scripts.benchmark_validation import register
+        result['benchmark_registration']=register(root,result['path'],dt.datetime.now(dt.timezone.utc).isoformat())
     print(json.dumps(result,ensure_ascii=False))
 
 

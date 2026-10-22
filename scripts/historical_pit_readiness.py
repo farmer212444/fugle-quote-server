@@ -105,6 +105,8 @@ def build(root,start_date='2025-01-01'):
     policy=config.get('cost_policy')
     blockers=['ISSUER_ORIGINAL_PUBLICATION_AND_REVISION_VERSIONS_REQUIRED',
               'CONTEMPORANEOUS_LISTING_DELISTING_UNIVERSE_REQUIRED',
+              'DATED_MONTHLY_REVENUE_RELEASE_VERSIONS_REQUIRED',
+              'HISTORICAL_SHARES_CB_TERMS_AND_VALUATION_INPUTS_REQUIRED',
               'COMPLETE_DIVIDEND_SPLIT_RIGHTS_AND_DELISTING_ACTIONS_REQUIRED',
               'HISTORICAL_EXECUTION_CAPACITY_AND_NEXT_OPEN_REVIEW_REQUIRED',
               'TRAINING_ONLY_MODEL_FIT_AND_HELD_OUT_REPLAY_NOT_COMPLETED']
@@ -136,6 +138,7 @@ def render(report):
     lines+=['','## 待補的驗證依據','',
         '- 個股原始公告時間、重編時間與對應的當時文件版本。',
         '- 當時上市、下市及停牌母體，避免僅採今天仍存在的公司。',
+        '- 當時可取得的月營收版本、股數／可轉債條件，以及歷史PE與產業分類。',
         '- 完整股利、分割、減資、現增及下市事件。',
         '- 下一開盤、價差、成交限制及清倉能力。',
         '- 只使用訓練期資料選參數，再執行未參與調參的保留期驗證。',

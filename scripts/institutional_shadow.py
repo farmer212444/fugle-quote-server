@@ -36,7 +36,8 @@ def main():
     print(json.dumps(dict(trial_id=spec['trial_id'],registered_at=registered['registered_at'],
                           current_archive=frozen_current['path'],baseline_archive=frozen_baseline['path'],
                           cost_policy_fixed=config['cost_policy'] is not None,
-                          evaluation_status='AWAITING_PREDECLARED_COSTS_AND_FUTURE_OUTCOME_SOURCES'),ensure_ascii=False))
+                          evaluation_status=('AWAITING_FUTURE_OUTCOME_SOURCES' if config['cost_policy'] is not None
+                                             else 'AWAITING_PREDECLARED_COSTS_AND_FUTURE_OUTCOME_SOURCES')),ensure_ascii=False))
 
 
 if __name__=='__main__':main()
