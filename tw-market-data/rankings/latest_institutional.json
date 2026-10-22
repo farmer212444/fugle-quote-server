@@ -1,13 +1,13 @@
 {
   "schema": "V810_INSTITUTIONAL_RESEARCH_CONTROLS",
   "model": "V8.10.3",
-  "estimate_vintage": "2026-10-22T18:13:45.816868+08:00",
-  "report_observed_at": "2026-10-22T10:14:05.410203+00:00",
+  "estimate_vintage": "2026-10-22T18:16:34.317959+08:00",
+  "report_observed_at": "2026-10-22T10:16:54.469136+00:00",
   "asof_price_date": "2026-10-21",
   "source_model_sha256": "b6fb491e787e151f87abf127d7c6586bcd773f7578f04928ecd7038b2ca24e99",
   "policy_sha256": "3f378fb673213f6178983a4698ed80c7e5a8c5b62e82192a85eea1c6a3b0b493",
   "universe": {
-    "normalized_issuers": 1979,
+    "normalized_issuers": 1980,
     "priced_issuers": 1987,
     "model_rows": 1999,
     "tracked_issuer_universe": 1999,
@@ -5291,14 +5291,14 @@
       {
         "model": "V8.10.3",
         "model_code_sha256": "b6fb491e787e151f87abf127d7c6586bcd773f7578f04928ecd7038b2ca24e99",
-        "strategy_variant_sha256": "d5187a2fd18acdba2670c40948adaf9fcc1a7a97aba8469aa00459b77bfc52bb",
-        "strategy_variant": "without-earnings-events",
+        "strategy_variant_sha256": "3c67061e50710fdc36addcac73ea82c4c5418253cf303be0e9037284c9a18801",
+        "strategy_variant": "current-information",
         "estimate_vintage": "2026-10-22T18:13:45.816868+08:00",
-        "archived_at_utc": "2026-10-22T10:14:03.025025+00:00",
-        "prospective_signal_at": "2026-10-22T10:14:03.025025+00:00",
+        "archived_at_utc": "2026-10-22T10:13:59.114672+00:00",
+        "prospective_signal_at": "2026-10-22T10:13:59.114672+00:00",
         "prospective_signal_clock": "LATER_OF_ESTIMATE_AND_REAL_ARCHIVE",
         "reference_price_date": "2026-10-21",
-        "receipt_path": "pit_vintages/2026-10-22/98a3773d575779c9bac0/receipt.json",
+        "receipt_path": "pit_vintages/2026-10-22/b3af5330973a897ff48c/receipt.json",
         "status": "AWAITING_SUBSEQUENT_SESSION",
         "formal_out_of_sample_pass": false,
         "missing_for_certified_return": [
@@ -5311,14 +5311,14 @@
       {
         "model": "V8.10.3",
         "model_code_sha256": "b6fb491e787e151f87abf127d7c6586bcd773f7578f04928ecd7038b2ca24e99",
-        "strategy_variant_sha256": "3c67061e50710fdc36addcac73ea82c4c5418253cf303be0e9037284c9a18801",
-        "strategy_variant": "current-information",
+        "strategy_variant_sha256": "d5187a2fd18acdba2670c40948adaf9fcc1a7a97aba8469aa00459b77bfc52bb",
+        "strategy_variant": "without-earnings-events",
         "estimate_vintage": "2026-10-22T18:13:45.816868+08:00",
-        "archived_at_utc": "2026-10-22T10:13:59.114672+00:00",
-        "prospective_signal_at": "2026-10-22T10:13:59.114672+00:00",
+        "archived_at_utc": "2026-10-22T10:14:03.025025+00:00",
+        "prospective_signal_at": "2026-10-22T10:14:03.025025+00:00",
         "prospective_signal_clock": "LATER_OF_ESTIMATE_AND_REAL_ARCHIVE",
         "reference_price_date": "2026-10-21",
-        "receipt_path": "pit_vintages/2026-10-22/b3af5330973a897ff48c/receipt.json",
+        "receipt_path": "pit_vintages/2026-10-22/98a3773d575779c9bac0/receipt.json",
         "status": "AWAITING_SUBSEQUENT_SESSION",
         "formal_out_of_sample_pass": false,
         "missing_for_certified_return": [
@@ -5451,7 +5451,7 @@
   },
   "benchmark_validation": {
     "schema": "TOP30_VS_TAIEX_TR_V1",
-    "observed_at": "2026-10-22T10:14:05.410203+00:00",
+    "observed_at": "2026-10-22T10:16:54.469136+00:00",
     "benchmark_id": "TAIEX_TR",
     "trials": [
       {
@@ -5512,8 +5512,11 @@
     "registered_benchmark_trials": 1,
     "all_registered_designs": 13,
     "verified_outcomes": 0,
-    "benchmark_sessions": 78,
+    "benchmark_sessions": 139,
     "benchmark_months": [
+      "2026-04",
+      "2026-05",
+      "2026-06",
       "2026-07",
       "2026-08",
       "2026-09",
@@ -5732,11 +5735,7 @@
         ]
       }
     ],
-    "benchmark_months_required": [
-      "2026-04",
-      "2026-05",
-      "2026-06"
-    ],
+    "benchmark_months_required": [],
     "missing_for_certified_historical_replay": [
       "Original issuer publication/revision versions before each historical signal",
       "Contemporaneous listings/delistings and original model training vintages",

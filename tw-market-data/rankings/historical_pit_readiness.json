@@ -1,6 +1,6 @@
 {
   "schema": "HISTORICAL_PIT_SOURCE_READINESS_V1",
-  "observed_at": "2026-10-22T10:13:59.048770+00:00",
+  "observed_at": "2026-10-22T10:16:48.015330+00:00",
   "historical_start": "2025-01-01",
   "historical_end": "2026-10-21",
   "verified_durable_original_receipts": 130,
@@ -587,6 +587,42 @@
     "TPEX": 1584
   },
   "financial_mirrors": [
+    {
+      "path": "fundamentals/2024-Q1/TWSE_income.json",
+      "period": "2024-Q1",
+      "market": "TWSE",
+      "kind": "income",
+      "captured_at": "2026-10-22T10:15:02.435098+00:00",
+      "historical_publication_and_revision_proof_admitted": false,
+      "reason": "NORMALIZED_MIRROR_IS_NOT_ORIGINAL_FILING_VERSION_OR_PUBLICATION_PROOF"
+    },
+    {
+      "path": "fundamentals/2024-Q2/TPEX_cashflow.json",
+      "period": "2024-Q2",
+      "market": "TPEX",
+      "kind": "cashflow",
+      "captured_at": "2026-10-22T10:14:26.376915+00:00",
+      "historical_publication_and_revision_proof_admitted": false,
+      "reason": "NORMALIZED_MIRROR_IS_NOT_ORIGINAL_FILING_VERSION_OR_PUBLICATION_PROOF"
+    },
+    {
+      "path": "fundamentals/2024-Q2/TPEX_income.json",
+      "period": "2024-Q2",
+      "market": "TPEX",
+      "kind": "income",
+      "captured_at": "2026-10-22T10:14:10.362066+00:00",
+      "historical_publication_and_revision_proof_admitted": false,
+      "reason": "NORMALIZED_MIRROR_IS_NOT_ORIGINAL_FILING_VERSION_OR_PUBLICATION_PROOF"
+    },
+    {
+      "path": "fundamentals/2024-Q2/TWSE_cashflow.json",
+      "period": "2024-Q2",
+      "market": "TWSE",
+      "kind": "cashflow",
+      "captured_at": "2026-10-22T10:13:20.504265+00:00",
+      "historical_publication_and_revision_proof_admitted": false,
+      "reason": "NORMALIZED_MIRROR_IS_NOT_ORIGINAL_FILING_VERSION_OR_PUBLICATION_PROOF"
+    },
     {
       "path": "fundamentals/2024-Q2/TWSE_income.json",
       "period": "2024-Q2",
