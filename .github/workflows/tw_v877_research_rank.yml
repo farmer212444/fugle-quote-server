@@ -32,6 +32,8 @@ on:
       - 'scripts/v894_revenue_lead_discovery.py'
       - 'scripts/v8a5_quality_decision_lane.py'
       - 'scripts/institutional_review.py'
+      - 'scripts/run_research_pipeline.py'
+      - 'scripts/research_work_queue.py'
       - 'scripts/institutional_shadow.py'
       - 'requirements-model.txt'
       - 'VERSION'
@@ -88,6 +90,8 @@ on:
       - 'scripts/v894_revenue_lead_discovery.py'
       - 'scripts/v8a5_quality_decision_lane.py'
       - 'scripts/institutional_review.py'
+      - 'scripts/run_research_pipeline.py'
+      - 'scripts/research_work_queue.py'
       - 'scripts/institutional_shadow.py'
       - 'requirements-model.txt'
       - 'VERSION'
@@ -188,71 +192,29 @@ jobs:
       - name: Admit verified original-source review packs before valuation
         run: python scripts/v891_gate_certification.py --issue-only
       - name: Produce dated scenarios and evidence decisions
-        run: |
-          python scripts/tw_v880_run.py --target-date 2027-12-31
-          python scripts/v881_history_diagnostic.py
-          python scripts/build_universe_verification_queue.py
-          python scripts/diagnose_unmodeled_universe.py
-          python scripts/v881_unmodeled_blockers.py
-          python scripts/v881_thin_shadow.py
-          python scripts/v883_gate_orchestrator.py --top 50
-          python scripts/v884_evidence_probe.py --top 50 --focus 8390 1785 5439 4739 9802 6206
-          python scripts/v891_gate_certification.py
-          python scripts/v886_9802_early_revalue.py
-          python scripts/v888_6206_valuation.py
-          python scripts/v891_6206_gate_triage.py
-          python scripts/tw_chip_diagnostic.py
-          python scripts/v880_audit_exports.py --kind risk
-          python scripts/v880_audit_exports.py --kind cash
-          python scripts/v880_audit_exports.py --kind shares
-          python scripts/v890_five_candidate_audit.py
-          python scripts/v892_top20_quality_audit.py
-          python scripts/v894_revenue_lead_discovery.py
-          python scripts/v8a6_etf_rotation_watch.py
-          python scripts/v8a7_2069_independent_valuation.py
-          python scripts/v8a5_quality_decision_lane.py
-          python scripts/institutional_shadow.py
-          python scripts/institutional_review.py
+        run: python scripts/run_research_pipeline.py --phase core
+      - name: Validate observation reports without publishing a PR vintage
+        if: github.event_name == 'pull_request'
+        run: python scripts/run_research_pipeline.py --phase observation
       - name: Save current results on main only (retry from fresh origin)
         if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           for attempt in 1 2 3; do
-            # Competing scheduled data writers can update snapshots while this job runs.
-            # Rebuild against the newest main rather than rebasing generated artifacts.
+            # Reuse the validated outputs if the checked-out source commit is
+            # still main. Any concurrent writer forces a rebuild from its state;
+            # generated files are never rebased or merged across source vintages.
             git fetch origin main
-            git reset --hard origin/main
-            # A queued run can adopt newer code here; synchronize its runtime
-            # too, rather than publishing a new model from an older environment.
-            python -m pip install -r requirements-model.txt
-            python scripts/refresh_v880_public.py
-            python scripts/v891_gate_certification.py --issue-only
-            python scripts/tw_v880_run.py --target-date 2027-12-31
-            python scripts/v881_history_diagnostic.py
-            python scripts/build_universe_verification_queue.py
-            python scripts/diagnose_unmodeled_universe.py
-            python scripts/v881_unmodeled_blockers.py
-            python scripts/v881_thin_shadow.py
-            python scripts/v883_gate_orchestrator.py --top 50
-            python scripts/v884_evidence_probe.py --top 50 --focus 8390 1785 5439 4739 9802 6206
-            python scripts/v891_gate_certification.py
-            python scripts/v886_9802_early_revalue.py
-            python scripts/v888_6206_valuation.py
-            python scripts/v891_6206_gate_triage.py
-            python scripts/tw_chip_diagnostic.py
-            python scripts/v880_audit_exports.py --kind risk
-            python scripts/v880_audit_exports.py --kind cash
-            python scripts/v880_audit_exports.py --kind shares
-            python scripts/v890_five_candidate_audit.py
-            python scripts/v892_top20_quality_audit.py
-            python scripts/v894_revenue_lead_discovery.py
-            python scripts/v8a6_etf_rotation_watch.py
-            python scripts/v8a7_2069_independent_valuation.py
-            python scripts/v8a5_quality_decision_lane.py
+            if [ "$(git rev-parse HEAD)" != "$(git rev-parse origin/main)" ]; then
+              git reset --hard origin/main
+              python -m pip install -r requirements-model.txt
+              python scripts/refresh_v880_public.py
+              python scripts/v891_gate_certification.py --issue-only
+              python scripts/run_research_pipeline.py --phase core
+            fi
             python scripts/v897_freeze_model_vintage.py --git-source-sha "$(git rev-parse HEAD)"
-            python scripts/institutional_shadow.py
-            python scripts/institutional_review.py
+            python scripts/run_research_pipeline.py --phase observation
             git add tw-market-data/evidence/v880 tw-market-data/rankings tw-market-data/pit_vintages tw-market-data/experiments
             if git diff --cached --quiet; then exit 0; fi
             git commit -m 'data: refresh institutional research, earnings revisions and evidence status'
@@ -260,3 +222,11 @@ jobs:
             echo "Remote moved during generated data publication; retrying from latest data"
           done
           exit 1
+      - name: Preserve research stage timings including failed runs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: research-pipeline-timing
+          path: tw-market-data/rankings/latest*_timing.json
+          if-no-files-found: ignore
+          retention-days: 14

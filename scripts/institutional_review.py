@@ -24,7 +24,57 @@ def read(path):
     return json.loads(Path(path).read_text(encoding='utf-8'))
 
 
-def liquidity_history(root,row,asof):
+class DailyTurnoverSnapshot:
+    """Read each market session once, scoped to one report and its cutoff.
+
+    No persistent cache: corrections are reread on the next report. Keep raw
+    rows by issuer so an invalid date still rejects the affected issuer.
+    """
+    def __init__(self,root,asof,price_date):
+        self.root=Path(root).resolve()
+        self.asof=asof
+        self.price_date=price_date
+        self.rows={}
+        self.daily_files_read=0
+        self.error=None
+        self.day_errors={}
+        try:
+            manifest=read(self.root/'prices/latest_manifest.json')
+        except (OSError,ValueError,KeyError,TypeError) as exc:
+            self.error=str(exc)
+            return
+        for daily in sorted((self.root/'prices').glob('20??-??-??.json')):
+            day=daily.stem
+            if day>price_date or day>asof[:10]:
+                continue
+            try:
+                raw=daily.read_bytes()
+                self.daily_files_read+=1
+                if day==manifest['date'] and hashlib.sha256(raw).hexdigest()!=manifest['normalized_sha256']:
+                    raise ValueError('LATEST_LIQUIDITY_MARKET_SOURCE_HASH_MISMATCH')
+                bars=json.loads(raw)
+                if not isinstance(bars,list) or any(not isinstance(bar,dict) for bar in bars):
+                    raise ValueError('LIQUIDITY_MARKET_SOURCE_NOT_A_ROW_LIST')
+                for bar in bars:
+                    key=(bar.get('market'),bar.get('code'))
+                    self.rows.setdefault(key,[]).append((day,bar))
+            except (OSError,ValueError,KeyError,TypeError) as exc:
+                self.day_errors[day]=str(exc)
+
+    def issuer_rows(self,root,row,asof):
+        if (Path(root).resolve()!=self.root or asof!=self.asof
+                or row['price_date']>self.price_date):
+            raise ValueError('LIQUIDITY_SNAPSHOT_CONTEXT_MISMATCH')
+        if self.error is not None:
+            raise ValueError(self.error)
+        for day,error in sorted(self.day_errors.items()):
+            if day<=row['price_date']:
+                raise ValueError(error)
+        return [(day,bar) for day,bar in self.rows.get((row['market'],row['code']),[])
+                if day<=row['price_date']]
+
+
+def liquidity_history(root,row,asof,daily_snapshot=None):
     path=root/'prices/issuer_history'/row['market']/(row['code']+'.json')
     if not path.exists():
         return dict(status='MULTI_SESSION_TURNOVER_SOURCE_MISSING',median20_turnover_ntd=None)
@@ -48,20 +98,13 @@ def liquidity_history(root,row,asof):
             observations[day]=turnover
     # Merge subsequently archived whole-market sessions instead of silently
     # calling a 10/16 window the current 20-day window on 10/20.
-    manifest=read(root/'prices/latest_manifest.json')
-    for daily in sorted((root/'prices').glob('20??-??-??.json')):
-        day=daily.stem
-        if day>row['price_date'] or day>asof[:10]:continue
-        raw=daily.read_bytes()
-        if day==manifest['date'] and hashlib.sha256(raw).hexdigest()!=manifest['normalized_sha256']:
-            raise ValueError('LATEST_LIQUIDITY_MARKET_SOURCE_HASH_MISMATCH')
-        for bar in json.loads(raw):
-            if bar.get('market')!=row['market'] or bar.get('code')!=row['code']:continue
-            if bar.get('date')!=day:raise ValueError('DAILY_LIQUIDITY_DATE_MISMATCH')
-            turnover=bar.get('turnover_ntd')
-            if not finite(turnover) or turnover<0:continue
-            if day in observations and observations[day]!=turnover:raise ValueError('CONFLICTING_MARKET_AND_ISSUER_TURNOVER')
-            observations[day]=turnover
+    snapshot=daily_snapshot or DailyTurnoverSnapshot(root,asof,row['price_date'])
+    for day,bar in snapshot.issuer_rows(root,row,asof):
+        if bar.get('date')!=day:raise ValueError('DAILY_LIQUIDITY_DATE_MISMATCH')
+        turnover=bar.get('turnover_ntd')
+        if not finite(turnover) or turnover<0:continue
+        if day in observations and observations[day]!=turnover:raise ValueError('CONFLICTING_MARKET_AND_ISSUER_TURNOVER')
+        observations[day]=turnover
     trailing=sorted(observations)[-20:]
     return dict(status='TWENTY_SESSION_TURNOVER_PROXY_NOT_EXECUTION_REVIEW' if len(trailing)==20 else 'LESS_THAN_TWENTY_SESSIONS',
                 sessions=len(trailing),first_date=trailing[0] if trailing else None,
@@ -104,10 +147,11 @@ def build(root):
     config=read(root/'config/institutional_research.json')
     broad=full['all_market_research']
     focus=broad[:20]+[r for r in full['all_model_rows'] if r['code'] in ('6206','9802') and r not in broad[:20]]
+    daily_snapshot=DailyTurnoverSnapshot(root,research['estimate_vintage'],research['asof_price_date'])
     output=[]
     for row in focus:
         try:
-            liq=liquidity_history(root,row,research['estimate_vintage'])
+            liq=liquidity_history(root,row,research['estimate_vintage'],daily_snapshot)
         except (OSError,ValueError,KeyError,TypeError) as exc:
             liq=dict(status='LIQUIDITY_SOURCE_REJECTED',reason=str(exc),median20_turnover_ntd=None)
         try:
@@ -153,7 +197,9 @@ def build(root):
                 probability_validation=calibration_summary(collected['probability_records']),
                 scenario_probabilities=None,expected_net_return=None,
                 implemented_controls_are_not_evidence_of_investment_outperformance=True,
-                operations=dict(existing_schedule_reused=True,trade_orders_created=0))
+                operations=dict(existing_schedule_reused=True,trade_orders_created=0,
+                                liquidity_daily_files_read=daily_snapshot.daily_files_read,
+                                liquidity_snapshot_scope='ONE_REPORT_NO_PERSISTENT_CACHE'))
 
 
 def render(report):
