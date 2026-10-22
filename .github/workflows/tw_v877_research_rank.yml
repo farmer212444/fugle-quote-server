@@ -48,6 +48,9 @@ on:
       - 'tests/test_v8a5_quality_decision_lane.py'
       - 'tests/test_v8a6_etf_rotation_watch.py'
       - 'scripts/v897_freeze_model_vintage.py'
+      - 'scripts/v8a8_forward_top30_0050.py'
+      - 'tw-market-data/config/forward_top30_0050_v1.json'
+      - 'tests/test_v8a8_forward_top30_0050.py'
       - 'README_V894.md'
       - 'scripts/v891_gate_certification.py'
       - 'tw-market-data/evidence/v880/review_packs/**'
@@ -108,6 +111,9 @@ on:
       - 'tests/test_v8a5_quality_decision_lane.py'
       - 'tests/test_v8a6_etf_rotation_watch.py'
       - 'scripts/v897_freeze_model_vintage.py'
+      - 'scripts/v8a8_forward_top30_0050.py'
+      - 'tw-market-data/config/forward_top30_0050_v1.json'
+      - 'tests/test_v8a8_forward_top30_0050.py'
       - 'README_V894.md'
       - 'scripts/v891_gate_certification.py'
       - 'tw-market-data/evidence/v880/review_packs/**'
@@ -187,6 +193,7 @@ jobs:
       - name: Validate model controls and independent 6206 triage
         run: |
           python scripts/tw_v880_run.py --self-test
+          python -m unittest -v tests.test_v8a8_forward_top30_0050
           python -m unittest discover -s tests -p test_v891_6206_gate_triage.py
           python -m unittest discover -s tests -p test_v892_top20_quality_audit.py
           python -m unittest discover -s tests -p test_v894_revenue_lead_discovery.py
@@ -200,6 +207,9 @@ jobs:
       - name: Validate observation reports without publishing a PR vintage
         if: github.event_name == 'pull_request'
         run: python scripts/run_research_pipeline.py --phase observation
+      - name: Verify forward challenge readiness on PR
+        if: github.event_name == 'pull_request'
+        run: python scripts/v8a8_forward_top30_0050.py
       - name: Save current results on main only (retry from fresh origin)
         if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
         run: |
@@ -219,6 +229,7 @@ jobs:
             fi
             python scripts/v897_freeze_model_vintage.py --git-source-sha "$(git rev-parse HEAD)"
             python scripts/run_research_pipeline.py --phase observation
+            python scripts/v8a8_forward_top30_0050.py
             git add tw-market-data/evidence/v880 tw-market-data/rankings tw-market-data/pit_vintages tw-market-data/experiments
             if git diff --cached --quiet; then exit 0; fi
             git commit -m 'data: refresh institutional research, earnings revisions and evidence status'
