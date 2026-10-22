@@ -1,0 +1,261 @@
+{
+  "schema": "RESEARCH_PIPELINE_TIMING_V1",
+  "started_at_utc": "2026-10-22T05:25:42.664397+00:00",
+  "status": "SUCCESS",
+  "phase": "core",
+  "stages": [
+    {
+      "stage": "valuation",
+      "argv": [
+        "python",
+        "scripts/tw_v880_run.py",
+        "--target-date",
+        "2027-12-31"
+      ],
+      "status": "SUCCESS",
+      "elapsed_seconds": 2.677029,
+      "returncode": 0
+    },
+    {
+      "stage": "accounting_history",
+      "argv": [
+        "python",
+        "scripts/v881_history_diagnostic.py"
+      ],
+      "status": "SUCCESS",
+      "elapsed_seconds": 0.158739,
+      "returncode": 0
+    },
+    {
+      "stage": "universe_queue",
+      "argv": [
+        "python",
+        "scripts/build_universe_verification_queue.py"
+      ],
+      "status": "SUCCESS",
+      "elapsed_seconds": 0.164625,
+      "returncode": 0
+    },
+    {
+      "stage": "unmodeled_diagnostic",
+      "argv": [
+        "python",
+        "scripts/diagnose_unmodeled_universe.py"
+      ],
+      "status": "SUCCESS",
+      "elapsed_seconds": 0.05177,
+      "returncode": 0
+    },
+    {
+      "stage": "unmodeled_blockers",
+      "argv": [
+        "python",
+        "scripts/v881_unmodeled_blockers.py"
+      ],
+      "status": "SUCCESS",
+      "elapsed_seconds": 0.816202,
+      "returncode": 0
+    },
+    {
+      "stage": "thin_liquidity",
+      "argv": [
+        "python",
+        "scripts/v881_thin_shadow.py"
+      ],
+      "status": "SUCCESS",
+      "elapsed_seconds": 1.192452,
+      "returncode": 0
+    },
+    {
+      "stage": "gate_dispatch",
+      "argv": [
+        "python",
+        "scripts/v883_gate_orchestrator.py",
+        "--top",
+        "50"
+      ],
+      "status": "SUCCESS",
+      "elapsed_seconds": 0.211063,
+      "returncode": 0
+    },
+    {
+      "stage": "source_probe",
+      "argv": [
+        "python",
+        "scripts/v884_evidence_probe.py",
+        "--top",
+        "50",
+        "--focus",
+        "8390",
+        "1785",
+        "5439",
+        "4739",
+        "9802",
+        "6206"
+      ],
+      "status": "SUCCESS",
+      "elapsed_seconds": 0.909419,
+      "returncode": 0
+    },
+    {
+      "stage": "gate_progress",
+      "argv": [
+        "python",
+        "scripts/v891_gate_certification.py"
+      ],
+      "status": "SUCCESS",
+      "elapsed_seconds": 0.970526,
+      "returncode": 0
+    },
+    {
+      "stage": "review_work_queue",
+      "argv": [
+        "python",
+        "scripts/research_work_queue.py"
+      ],
+      "status": "SUCCESS",
+      "elapsed_seconds": 0.08881,
+      "returncode": 0
+    },
+    {
+      "stage": "9802_early_revalue",
+      "argv": [
+        "python",
+        "scripts/v886_9802_early_revalue.py"
+      ],
+      "status": "SUCCESS",
+      "elapsed_seconds": 0.419457,
+      "returncode": 0
+    },
+    {
+      "stage": "6206_valuation",
+      "argv": [
+        "python",
+        "scripts/v888_6206_valuation.py"
+      ],
+      "status": "SUCCESS",
+      "elapsed_seconds": 0.404616,
+      "returncode": 0
+    },
+    {
+      "stage": "6206_triage",
+      "argv": [
+        "python",
+        "scripts/v891_6206_gate_triage.py"
+      ],
+      "status": "SUCCESS",
+      "elapsed_seconds": 0.088645,
+      "returncode": 0
+    },
+    {
+      "stage": "chip_diagnostic",
+      "argv": [
+        "python",
+        "scripts/tw_chip_diagnostic.py"
+      ],
+      "status": "SUCCESS",
+      "elapsed_seconds": 0.229781,
+      "returncode": 0
+    },
+    {
+      "stage": "risk_audit",
+      "argv": [
+        "python",
+        "scripts/v880_audit_exports.py",
+        "--kind",
+        "risk"
+      ],
+      "status": "SUCCESS",
+      "elapsed_seconds": 0.432948,
+      "returncode": 0
+    },
+    {
+      "stage": "cash_audit",
+      "argv": [
+        "python",
+        "scripts/v880_audit_exports.py",
+        "--kind",
+        "cash"
+      ],
+      "status": "SUCCESS",
+      "elapsed_seconds": 0.434045,
+      "returncode": 0
+    },
+    {
+      "stage": "shares_audit",
+      "argv": [
+        "python",
+        "scripts/v880_audit_exports.py",
+        "--kind",
+        "shares"
+      ],
+      "status": "SUCCESS",
+      "elapsed_seconds": 0.438175,
+      "returncode": 0
+    },
+    {
+      "stage": "five_candidate_audit",
+      "argv": [
+        "python",
+        "scripts/v890_five_candidate_audit.py"
+      ],
+      "status": "SUCCESS",
+      "elapsed_seconds": 0.20052,
+      "returncode": 0
+    },
+    {
+      "stage": "top20_quality",
+      "argv": [
+        "python",
+        "scripts/v892_top20_quality_audit.py"
+      ],
+      "status": "SUCCESS",
+      "elapsed_seconds": 0.209449,
+      "returncode": 0
+    },
+    {
+      "stage": "revenue_discovery",
+      "argv": [
+        "python",
+        "scripts/v894_revenue_lead_discovery.py"
+      ],
+      "status": "SUCCESS",
+      "elapsed_seconds": 0.134862,
+      "returncode": 0
+    },
+    {
+      "stage": "etf_rotation",
+      "argv": [
+        "python",
+        "scripts/v8a6_etf_rotation_watch.py"
+      ],
+      "status": "SUCCESS",
+      "elapsed_seconds": 0.0827,
+      "returncode": 0
+    },
+    {
+      "stage": "2069_valuation",
+      "argv": [
+        "python",
+        "scripts/v8a7_2069_independent_valuation.py"
+      ],
+      "status": "SUCCESS",
+      "elapsed_seconds": 0.070918,
+      "returncode": 0
+    },
+    {
+      "stage": "quality_decision",
+      "argv": [
+        "python",
+        "scripts/v8a5_quality_decision_lane.py"
+      ],
+      "status": "SUCCESS",
+      "elapsed_seconds": 0.409023,
+      "returncode": 0
+    }
+  ],
+  "measures": "ORDERED_RESEARCH_STAGES_EXCLUDING_TESTS_SOURCE_REFRESH_AND_PUBLICATION",
+  "engineering_timing_is_not_investment_validation": true,
+  "total_elapsed_seconds": 10.813799,
+  "completed_at_utc": "2026-10-22T05:25:53.478201+00:00"
+}
