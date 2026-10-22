@@ -14,8 +14,11 @@ TAIPEI = dt.timezone(dt.timedelta(hours=8))
 
 
 def taipei_signal_date(when):
-    """Resolve cohort and predeclared lookup keys using the trading timezone."""
-    return timestamp(when).astimezone(TAIPEI).date().isoformat()
+    """Resolve either an aware datetime or ISO timestamp to the Taiwan cohort."""
+    instant = when if isinstance(when, dt.datetime) else timestamp(when)
+    if instant.tzinfo is None:
+        raise ValueError('TIMEZONE_REQUIRED')
+    return instant.astimezone(TAIPEI).date().isoformat()
 
 
 def source(root,reference,decode=True):
