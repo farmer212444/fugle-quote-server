@@ -10,18 +10,23 @@ those source+review requirements actually exist. No trades or forecasts change.
 import argparse
 import collections
 import datetime as dt
+import gzip
 import hashlib
 import json
 import math
+import os
 import re
 import sys
+import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 from tw_model_v880.evidence import GATES, certify, timestamp, verify_certificate_archives
+from tw_model_v880.contracts import OBLIGATIONS
 from scripts.v896_original_archive import validate_bundle, original_quarter_coverage
+from scripts.ensure_research_current import full_result_reasons
 
 MANUAL_REVIEW_GATES = frozenset((
     "matched_peers_and_cycle", "management_promises", "auditor_scope",
@@ -35,6 +40,20 @@ STATUS_RANK = {"NOT_PROBED":0, "SOURCE_MISSING":1, "MIRROR_CAPTURED":2,
                "FORMAL_FAIL":5, "FORMAL_PASS":6}
 CODE_RE = re.compile(r"[0-9]{4,6}")
 SHA_RE = re.compile(r"[0-9a-f]{64}")
+GATE_LABELS = dict(zip(GATES, (
+    "八季原始財報與附註", "現金流與營運資金", "業外組成", "完整稀釋股數",
+    "匹配同業與景氣", "管理承諾兌現", "會計師核閱範圍", "連續可交易性",
+    "目標年度營運推導", "內部人申報", "股利適用時窗", "公告與修訂時間", "樣本外驗證")))
+MODEL_REASON_TEXT = {
+    "KEY_VALUES_RECONCILED_NOT_FULL_NOTES_AUDIT": "主要數值已勾稽，完整四表及附註待核",
+    "LATEST_SELF_REPORT_IS_NOT_REVIEWED_QUARTERLY_STATEMENTS": "最新自結不能取代完整核閱季報",
+    "NEGATIVE_OCF_REQUIRES_CYCLE_AND_FUNDING_REVIEW": "負營業現金流須拆解營運資金、擴產與資金來源",
+    "MULTI_PERIOD_WORKING_CAPITAL_AND_LIQUIDITY_REVIEW_REQUIRED": "多期營運資金及流動性對帳待核",
+    "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED": "原始證據、公司別勾稽與核閱紀錄待補",
+    "SINGLE_DAY_QUOTE_IS_NOT_CONTINUOUS_TRADABILITY_CERTIFICATION": "成交額資料不能取代價差與清倉能力驗證",
+    "HISTORICAL_SCOPE_AND_NOTES_SIGNOFF_REQUIRED": "歷史核閱範圍與完整附註待核",
+    "LATEST_EARNINGS_EVENT_REBASED_ISSUER_2027_OPERATING_BRIDGE_REQUIRED": "納入最新自結後，目標年度營運推導仍須重新核對",
+}
 
 def load(p):
     return json.loads(Path(p).read_text(encoding="utf-8"))
@@ -44,7 +63,14 @@ def write_if_changed(p, s):
     p.parent.mkdir(parents=True, exist_ok=True)
     if p.exists() and p.read_text(encoding="utf-8") == s:
         return False
-    p.write_text(s, encoding="utf-8")
+    fd, temporary = tempfile.mkstemp(prefix=p.name+".", dir=p.parent)
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as stream:
+            stream.write(s)
+        os.replace(temporary, p)
+    finally:
+        if os.path.exists(temporary):
+            os.unlink(temporary)
     return True
 
 def strong_iso(s):
@@ -146,16 +172,50 @@ def emit_certificates(root, cutoff, period):
     certificates = root/"evidence"/"v880"/"certificates"
     reports=[]
     for p in sorted(reviews.glob("*.json")):
+        out=certificates/(p.stem+".json")
         try:
-            cert=validate_review_pack(load(p), p, root, cutoff, period)
-            out=certificates/(p.stem+".json")
+            pack=load(p)
+            if not isinstance(pack,dict):
+                raise ValueError("REVIEW_PACK_INVALID_DOCUMENT")
+            # Check the envelope once, before admitting gates independently.
+            if (not isinstance(pack.get("code"),str) or not CODE_RE.fullmatch(pack["code"])
+                    or p.stem!=pack["code"]):
+                raise ValueError("REVIEW_PACK_ISSUER_PATH_MISMATCH")
+            if pack.get("financial_period")!=period:
+                raise ValueError("REVIEW_PACK_FINANCIAL_PERIOD_STALE")
+            gates=pack.get("gates")
+            if not isinstance(gates,dict) or not gates:
+                raise ValueError("REVIEW_PACK_EMPTY")
+            accepted={}
+            rejected={}
+            cert=None
+            for name,item in gates.items():
+                try:
+                    # Same original-source, time and named-review predicates;
+                    # one incomplete gate must not discard another valid FAIL
+                    # or PASS. Never merge back decisions from the old pack.
+                    single=dict(code=pack["code"],financial_period=period,gates={name:item})
+                    checked=validate_review_pack(single,p,root,cutoff,period)
+                    accepted.update(checked["gates"])
+                    cert=checked
+                except (ValueError,KeyError,TypeError,OSError,AttributeError) as exc:
+                    rejected[name]=str(exc)
+            if cert is None:
+                raise ValueError("; ".join(name+":"+reason for name,reason in rejected.items()))
+            cert["gates"]=accepted
             changed=write_if_changed(out,json.dumps(cert,ensure_ascii=False,indent=2)+"\n")
-            reports.append(dict(code=p.stem,status="CERTIFICATE_EMITTED" if changed else "CERTIFICATE_UNCHANGED",
-                                gates=list(cert["gates"])))
-        except (ValueError,KeyError,TypeError,OSError,json.JSONDecodeError) as e:
+            reports.append(dict(code=p.stem,status="CERTIFICATE_PARTIALLY_ADMITTED" if rejected else
+                                "CERTIFICATE_EMITTED" if changed else "CERTIFICATE_UNCHANGED",
+                                gates=list(accepted),rejected_gates=rejected))
+        except (ValueError,KeyError,TypeError,OSError,AttributeError) as e:
+            # A newly rejected/superseded pack cannot leave its previous PASS
+            # file active. The prior version remains available in Git history.
+            revoked=out.exists()
+            if revoked:
+                out.unlink()
             # Never manufacture a PASS or halt independent companies.
             reports.append(dict(code=p.stem,status="REVIEW_PACK_REJECTED",
-                                rejection=str(e),gates=[]))
+                                rejection=str(e),gates=[],previous_certificate_revoked=revoked))
     return reports
 
 def stage_for(gate_name, profile):
@@ -191,7 +251,26 @@ def stage_for(gate_name, profile):
         return "REVIEW_PENDING", "Issuer numeric origin checked; full auditor scope and important qualifications not reviewed"
     return "REVIEW_PENDING", "Dated issuer source, analytical bridge and evidence signoff outstanding"
 
+def model_decisions(root, research):
+    """Use the published engine's effective gates, including issuer overrides.
+
+    Re-certifying raw certificate files bypassed the engine's forecast binding,
+    CB denominator, qualified-auditor and new-self-report safeguards.
+    """
+    reasons=full_result_reasons(root,research)
+    if reasons:
+        raise ValueError("GATE_MODEL_SNAPSHOT_INVALID:"+",".join(reasons))
+    full=json.loads(gzip.decompress((root/"rankings/v880_full_results.json.gz").read_bytes()))
+    rows={}
+    for row in full["all_model_rows"]:
+        key=(row["market"],row["code"])
+        if key in rows:
+            raise ValueError("GATE_MODEL_DUPLICATE_ISSUER")
+        rows[key]=row
+    return rows
+
 def build_progress(root):
+    root=Path(root)
     rankings=root/"rankings"
     research=load(rankings/"latest_research.json")
     dispatch=load(rankings/"v883_gate_dispatch.json")
@@ -203,38 +282,77 @@ def build_progress(root):
         raise ValueError("GATE_CERTIFICATION_INPUT_VINTAGES_MISMATCH")
     asof=research["estimate_vintage"]
     period=research["financial_last_quarter"]
+    rows=model_decisions(root,research)
     profiles={(p["market"],p["code"]):p for p in probe["top_priority_evidence"]}
     # Recompute durable original bytes, not just source URLs or stored hashes.
     # A corrupt existing archive must fail closed rather than silently count
     # a non-existent source or mint a PASS.
-    original_bundles={code:validate_bundle(root,code) for code in ("6206","9802")}
-    original_quarter_windows={"9802":original_quarter_coverage(root,"9802",period)}
+    original_bundles={}
+    original_quarter_windows={}
+    source_rejections=[]
+    for code in ("6206","9802"):
+        try:
+            original_bundles[code]=validate_bundle(root,code)
+            if code=="9802":
+                original_quarter_windows[code]=original_quarter_coverage(root,code,period)
+        except (ValueError,KeyError,TypeError,OSError,AttributeError) as exc:
+            # A damaged issuer source cannot halt the other companies or count
+            # as captured evidence. Formal source predicates remain unchanged.
+            original_bundles[code]=dict(issuer=code,records=0,
+                statuses=["ORIGINAL_SOURCE_REJECTED"],reason=str(exc),
+                original_archive_hashes_verified=False,formal_pass_count=0)
+            source_rejections.append(dict(code=code,source="original_bundle",reason=str(exc)))
     jobs=dispatch.get("all_issuer_jobs",[])
     if len(jobs)!=dispatch.get("tracked_issuer_count") or len(jobs)!=research["data_scope"]["model_rows"]:
         raise ValueError("GATE_CERTIFICATION_LEDGER_INCOMPLETE")
     issuer_reports=[]
     counts=collections.Counter()
+    gate_counts={gate:collections.Counter() for gate in GATES}
+    covered=set()
+    evaluated_count=0
     high_upside=0
     for item in jobs:
         upside=item.get("research_upside_pct")
-        if upside is None:continue
         code=str(item["code"])
-        if not (isinstance(upside,(float,int)) and not isinstance(upside,bool) and math.isfinite(upside)):
+        key=(item["market"],code)
+        if key in covered or key not in rows:
+            raise ValueError("GATE_DISPATCH_MODEL_UNIVERSE_MISMATCH")
+        covered.add(key)
+        row=rows[key]
+        if upside!=row.get("scenario_upside_pct"):
+            raise ValueError("GATE_DISPATCH_MODEL_UPSIDE_MISMATCH")
+        if upside is not None and not (isinstance(upside,(float,int)) and not isinstance(upside,bool) and math.isfinite(upside)):
             raise ValueError("NONFINITE_DISPATCH_UPSIDE")
-        is_high=upside >= 30.0
+        is_high=upside is not None and upside >= 30.0
         high_upside+=is_high
         profile=profiles.get((item["market"],code))
-        cert_path=root/"evidence"/"v880"/"certificates"/(code+".json")
-        cert={}
-        if cert_path.exists():
-            obj=load(cert_path)
-            if obj.get("code")!=code or obj.get("financial_period")!=period:
-                raise ValueError("CERTIFICATE_ISSUER_PERIOD_MISMATCH")
-            verify_certificate_archives(obj,root)
-            cert=obj.get("gates",{})
-        evaluated=certify(code,upside,None,cert,asof,period)
+        effective_gates=row.get("gates",{})
+        issuer_period=row.get("financial_period",period)
+        evaluated=certify(code,upside,row.get("stress_eps90_pe90_upside_pct"),
+                          effective_gates,asof,issuer_period,policy=research.get("policy"))
+        has_decision=isinstance(row.get("certification"),dict)
+        if has_decision:
+            evaluated_count+=1
+            if evaluated!=row["certification"]:
+                raise ValueError("GATE_MODEL_DECISION_MISMATCH:"+code)
+        # Recheck each decided gate's archived originals at report time. Do not
+        # let a newly corrupted source preserve an earlier PASS in this audit.
+        invalid_sources={}
+        for name in evaluated["gates_passed"]+evaluated["gates_failed"]:
+            try:
+                verify_certificate_archives(dict(code=code,gates={name:effective_gates[name]}),root)
+            except (ValueError,KeyError,TypeError,OSError,AttributeError) as exc:
+                invalid_sources[name]=str(exc)
+                source_rejections.append(dict(code=code,gate=name,source="certificate_original",reason=str(exc)))
+        if invalid_sources:
+            effective_gates={name:value for name,value in effective_gates.items() if name not in invalid_sources}
+            evaluated=certify(code,upside,row.get("stress_eps90_pe90_upside_pct"),
+                              effective_gates,asof,issuer_period,policy=research.get("policy"))
         stage={}
         for gate in GATES:
+            decision=("PASS" if gate in evaluated["gates_passed"] else "FAIL"
+                      if gate in evaluated["gates_failed"] else "PENDING" if has_decision else "NOT_EVALUATED")
+            gate_counts[gate][decision]+=1
             if gate in evaluated["gates_passed"]:
                 state,reason="FORMAL_PASS","Dated original reviewed certificate passes the model's metadata gate"
             elif gate in evaluated["gates_failed"]:
@@ -254,7 +372,7 @@ def build_progress(root):
                     else:
                         reason=(str(len(coverage["found_quarters"]))+"/"+str(len(coverage["required_quarters"]))
                                 +" period-specific original PDFs SHA-archived, missing "+
-                                ",".join(coverage["missing_quarters"])+"; issuer PDF internal identity, "
+                                (",".join(coverage["missing_quarters"]) or "none")+"; issuer PDF internal identity, "
                                 "full notes, auditor scope and MOPS publication PIT unreviewed")
                 if (gate=="management_promises" and kinds.get("presentation",0)>0
                         and state=="REVIEW_PENDING"):
@@ -262,33 +380,52 @@ def build_progress(root):
                     reason=(str(kinds["presentation"])+" issuer-hosted IR presentation PDFs "
                             "permanently archived with verified bytes; management guidance "
                             "and subsequent delivery have not yet been reviewed")
-            stage[gate]={"stage":state,"reason":reason,"formal_pass":gate in evaluated["gates_passed"]}
+                if gate in invalid_sources:
+                    state,reason="SOURCE_MISSING",invalid_sources[gate]
+            scope,required,expiry=OBLIGATIONS[gate]
+            stage[gate]={"stage":state,"reason":reason,"decision":decision,
+                         "model_reason":row.get("gates",{}).get(gate,{}).get("reason",row.get("status")),
+                         "scope":scope,"required_evidence":required,"invalidates_on":expiry,
+                         "formal_pass":gate in evaluated["gates_passed"]}
             if is_high:counts[gate+"__"+state]+=1
         if is_high and (evaluated["gates_passed"] or evaluated["gates_failed"]):
             counts["high_upside_with_decided_gates"]+=1
         if is_high and not evaluated["formal_Aplus"]:
             counts["high_upside_formal_pending"]+=1
         if evaluated["formal_Aplus"]:counts["formal_Aplus_total"]+=1
-        if (is_high or profile is not None):
+        if (is_high or profile is not None or code in ("6206","9802")):
             issuer_reports.append(dict(code=code,name=item.get("name"),market=item.get("market"),
-                 research_upside_pct=round(upside,2),pre_certification_status=evaluated["status"],
+                 research_upside_pct=round(upside,2) if upside is not None else None,
+                 financial_period=issuer_period,reviewed_financial_period=row.get("reviewed_financial_period",period),
+                 model_evaluated=has_decision,model_status=row.get("status"),
+                 pre_certification_status=evaluated["status"],
                  formally_passed_gates=evaluated["gates_passed"],
                  formally_failed_gates=evaluated["gates_failed"],
                  still_pending_gates=evaluated["gates_pending"],
                  formal_Aplus=evaluated["formal_Aplus"],formal_Aplusplus=evaluated["formal_Aplusplus"],
                  gate_stage=stage,
                  durable_original_archive=original_bundles.get(code,{})))
-    issuer_reports.sort(key=lambda x:(not x["formal_Aplus"],-x["research_upside_pct"],x["code"]))
+    if covered!=set(rows):
+        raise ValueError("GATE_DISPATCH_MODEL_UNIVERSE_MISMATCH")
+    issuer_reports.sort(key=lambda x:(not x["formal_Aplus"],
+        -x["research_upside_pct"] if x["research_upside_pct"] is not None else math.inf,x["code"]))
     status={
         "model":research["model"],"estimate_vintage":asof,
         "asof_price_date":research["asof_price_date"],"financial_period":period,
         "research_candidates":dispatch["eligible_research_count"],
         "high_upside_research_candidates":high_upside,
+        "tracked_issuer_count":len(rows),"model_evaluated_issuer_count":evaluated_count,
+        "not_evaluated_issuer_count":len(rows)-evaluated_count,
+        "gate_summary":{name:dict(scope=OBLIGATIONS[name][0],label=GATE_LABELS[name],
+             **{state:gate_counts[name][state] for state in ("PASS","FAIL","PENDING","NOT_EVALUATED")}) for name in GATES},
         "issuer_diagnostics":issuer_reports,
         "stage_counts_for_upside_ge30":dict(sorted(counts.items())),
         "formally_certified_Aplus_in_report":counts["formal_Aplus_total"],
         "durable_original_archive_receipts":original_bundles,
         "source_quarter_coverage_diagnostic":original_quarter_windows,
+        "source_rejections":source_rejections,
+        "decisions_from_hashed_effective_model_gates":True,
+        "requires_model_refresh_after_source_rejection":bool(source_rejections),
         "durable_original_capture_does_not_certify_a_gate":True,
         "issuer_report_limitations":[
             "Source-collected, original PDF bytes durably archived, numeric-mirror-complete, source-identity-reviewed and signed PASS are distinct stages.",
@@ -298,7 +435,8 @@ def build_progress(root):
             "A GitHub reviewer_id is an accountable review record, not an independent cryptographic human signature.",
             "An individual gate can be eligible for PASS while other 12 remain PENDING; A+ requires all original model gates."
         ]}
-    if status["formally_certified_Aplus_in_report"]!=research["formal_Aplus_count"]:
+    if (status["formally_certified_Aplus_in_report"]!=research["formal_Aplus_count"]
+            and not source_rejections):
         raise ValueError("CURRENT_CERTIFICATION_REPORT_DISAGREES_WITH_MAIN_MODEL")
     return status
 
@@ -308,6 +446,17 @@ def render_md(r, admitted):
       f"模型：{r['model']}；估值：{r['estimate_vintage']}；股價基準：{r['asof_price_date']}。",
       f"研究估值候選：{r['research_candidates']}，潛在漲幅≥30%：{r['high_upside_research_candidates']}；正式A+：**{r['formally_certified_Aplus_in_report']}**。","",
       "本報告區分「來源齊全／數值鏡像／核閱待辦／有效PASS／有效FAIL」，不以蒐集收據冒充正式通過。","",
+      f"追蹤母體 {r['tracked_issuer_count']} 家；模型已逐項判定 {r['model_evaluated_issuer_count']} 家；"
+      f"尚未進入判定 {r['not_evaluated_issuer_count']} 家（來源或估值缺件，不冒充品質FAIL）。","",
+      "## 13項實際卡關","",
+      "以下採用同一份雜湊封存的主模型判定，保留自結、CB、預測契約與核閱範圍的實際擋關原因。","",
+      "|品質門檻|通過|失敗|待驗|未進入判定|仍需完成的查核|",
+      "|---|---:|---:|---:|---:|---|"]
+    for gate in GATES:
+        summary=r['gate_summary'][gate]
+        out.append(f"|{summary['label']}|{summary['PASS']}|{summary['FAIL']}|{summary['PENDING']}|"
+                   f"{summary['NOT_EVALUATED']}|{OBLIGATIONS[gate][1]}|")
+    out += ["", "樣本外驗證是策略層級的共同缺口；重跑同一天不增加獨立報酬樣本。", "",
       "## 個股工作進度（前30檔及指定關注）","",
       "|股票|模型漲幅|正式通過|正式失敗|待驗|目前已有的資料|",
       "|---|---:|---:|---:|---:|---|"]
@@ -317,17 +466,45 @@ def render_md(r, admitted):
         observable=[]
         if stages["original_eight_quarter_statements"]["stage"]=="MIRROR_CAPTURED":
             observable.append("8季財報鏡像")
+        elif stages["original_eight_quarter_statements"]["stage"]=="SOURCE_CAPTURED":
+            coverage=r['source_quarter_coverage_diagnostic'].get(x['code'])
+            if coverage:
+                observable.append(f"{len(coverage['found_quarters'])}/{len(coverage['required_quarters'])}季原始PDF（全文待核）")
+            else:
+                observable.append("原始財報PDF已封存（逐季待核）")
+        originals=x.get('durable_original_archive',{})
+        presentations=originals.get('document_kinds',{}).get('presentation',0)
+        if presentations:
+            observable.append(f"{presentations}份法說原件")
         if stages["tradability"]["stage"]=="SOURCE_CAPTURED":
             observable.append("20日成交額")
-        if stages["fully_diluted_shares"]["stage"]=="REVIEW_PENDING":
+        if "Convertible legal" in stages["fully_diluted_shares"]["reason"]:
             observable.append("CB條款待核")
         if not observable:observable.append("原始證據待補")
-        out.append(f"|{x['code']} {x['name'] or ''}|{x['research_upside_pct']:+.1f}%|{len(x['formally_passed_gates'])}/13|{len(x['formally_failed_gates'])}|{len(x['still_pending_gates'])}|{'、'.join(observable)}|")
+        upside='無可比估值' if x['research_upside_pct'] is None else f"{x['research_upside_pct']:+.1f}%"
+        out.append(f"|{x['code']} {x['name'] or ''}|{upside}|{len(x['formally_passed_gates'])}/13|{len(x['formally_failed_gates'])}|{len(x['still_pending_gates'])}|{'、'.join(observable)}|")
+    focus={x['code']:x for x in rows if x['code'] in ('6206','9802')}
+    if focus:
+        out += ['', '## 飛捷與鈺齊：主模型實際擋關原因', '',
+                '|門檻|6206 飛捷|9802 鈺齊-KY|', '|---|---|---|']
+        for name in GATES:
+            raw_reasons=[focus.get(code,{}).get('gate_stage',{}).get(name,{}).get('model_reason','未評估')
+                         for code in ('6206','9802')]
+            reasons=[MODEL_REASON_TEXT.get(reason,reason) for reason in raw_reasons]
+            out.append(f"|{GATE_LABELS[name]}|{reasons[0]}|{reasons[1]}|")
+        for code,row in focus.items():
+            out.append(f"\n{code}估值資料期 {row['financial_period']}；財報／現金流資料基期 {row['reviewed_financial_period']}（完整核閱門檻另行待驗）。")
     out.extend(["","## 外部核閱／證書發行紀錄",""])
     if admitted:
         for entry in admitted:
             out.append(f"- {entry['code']}：{entry['status']}"+("，原因："+entry["rejection"] if entry.get("rejection") else ""))
+            for name,reason in entry.get('rejected_gates',{}).items():
+                out.append(f"  - {GATE_LABELS.get(name,name)}：{reason}")
     else:out.append("未發現已完成有原始檔案位元組與核閱簽認的 review_packs；本輪不能自動產生正式PASS。")
+    if r['source_rejections']:
+        out += ['', '## 已隔離的來源錯誤', '',
+                '下列公司需修復來源並重跑主模型；其他公司繼續查核。']
+        out += [f"- {entry['code']}：{entry['reason']}" for entry in r['source_rejections']]
     out+=["","## 安全邊界",""]
     out+=["- "+a for a in r["issuer_report_limitations"]]
     return "\n".join(out)+"\n"
