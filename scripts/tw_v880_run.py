@@ -46,6 +46,7 @@ def tracked_universe(data):
         if row.get('market'):keys.add((row['market'],code))
     return sorted(keys)
 def run(data_dir,asof,target_date,out_dir=None,variant='current-information'):
+    target_year=dt.date.fromisoformat(target_date).year
     if variant not in ('current-information','without-earnings-events'):raise ValueError('UNKNOWN_MODEL_VARIANT')
     if variant!='current-information' and (out_dir is None or pathlib.Path(out_dir).resolve()==(pathlib.Path(data_dir)/'rankings').resolve()):raise ValueError('SHADOW_VARIANT_REQUIRES_SEPARATE_OUTPUT_DIRECTORY')
     data=MarketData(data_dir,asof);price_freshness=assess_price_freshness(asof,data.price_date);cal=fit_accounting(data.history,data.period,{c:r.get('industry','') for c,r in data.revenue.items()});rows=[];failures=[]
@@ -99,19 +100,19 @@ def run(data_dir,asof,target_date,out_dir=None,variant='current-information'):
       pending_work=pending,source_failures=data.errors,issuer_failures=failures)
     out=pathlib.Path(out_dir) if out_dir else pathlib.Path(data_dir)/'rankings';out.mkdir(parents=True,exist_ok=True)
     fmt=lambda v:'待補' if v is None else f'{v:.2f}'
-    report=[f'# {VERSION} 台股 2027 營運情境與證據分級','',f'估計形成：{asof}；參考收盤：{data.price_date}；目標：{target_date}。',
+    report=[f'# {VERSION} 台股 {target_year} 營運情境與證據分級','',f'估計形成：{asof}；參考收盤：{data.price_date}；目標：{target_date}。',
       f"正式 A+ {len(formal)} 檔，A++ {len(aq)} 檔。未決證據不等於市場沒有機會。",'',
       f'追蹤母體 {len(universe)} 家，逐家保留結果或排除理由；可比較研究估值 {len(broad)} 家，其中原始當期數字核對 {len(primary)} 家。',
       '以下依 Base 價差排序，已移除既有66家名單限制。來源層級逐列標示；歷史明細與完整附註仍待驗，並非全市場正式 A+ 排名。未知未來股息及交易成本不列入價差，不附未校準的機率。','',
       '營收加速與歷史毛利恢復只產生觀察情境，不能自行提高Base；公司別營運推導另需原始證據。已核對的公司自結表可更新研究估計，來源與現金流期間分開標示。','',
-      '|序|公司|收盤|2027 EPS|PE|2027 Base價|潛在漲幅|Bear價|Bull價|當期來源|','|---:|---|---:|---:|---:|---:|---:|---:|---:|---|']
+      f'|序|公司|收盤|{target_year} EPS|PE|{target_year} Base價|潛在漲幅|Bear價|Bull價|當期來源|','|---:|---|---:|---:|---:|---:|---:|---:|---:|---|']
     if price_freshness["equity_source_may_be_stale"]:
         report[3:3]=[
             "⚠️ **收盤參考價可能落後**：截至估計形成時間，尚有 "+
             "、".join(price_freshness["potentially_missing_weekdays"])+
             " 等可能完成的平日交易日未納入。交易所休市與官方資料延遲尚未獨立確認；"+
             "以下只能當歷史參考價，不可視為最新可成交買入價。",
-            "此警示不會自行編造新股價、改變2027 Base/EPS/PE或增加正式A+。",""]
+            f"此警示不會自行編造新股價、改變{target_year} Base/EPS/PE或增加正式A+。",""]
     else:
         report[3:3]=["目前的參考日未發現潛在平日缺口，但仍非盤中即時報價。",""]
     for i,r in enumerate(broad[:10],1):
@@ -122,7 +123,7 @@ def run(data_dir,asof,target_date,out_dir=None,variant='current-information'):
         report+=['','## 新資訊估值修訂','']
         for r in updates:
             old=r['fresh_earnings_update']['baseline_without_new_event'];b=r['base']
-            report.append(f"- {r['code']} {r['name']}：納入{r['financial_period']}公司自結原始表格；同一價格及模型下，EPS {fmt(old['eps'])}→{fmt(b['eps'])}、Base {fmt(old['target_price'])}→{fmt(b['target_price'])}。現金流仍為{r['cashflow_financial_period']}，2027營運橋接及正式認證仍待完成。")
+            report.append(f"- {r['code']} {r['name']}：納入{r['financial_period']}公司自結原始表格；同一價格及模型下，EPS {fmt(old['eps'])}→{fmt(b['eps'])}、Base {fmt(old['target_price'])}→{fmt(b['target_price'])}。現金流仍為{r['cashflow_financial_period']}，{target_year}營運橋接及正式認證仍待完成。")
     cm=cal.get('deployed_sector_or_global_holdout_metrics') or {};bm=cal.get('holdout_no_change_baseline') or {}
     report+=['','## 跨期會計預測驗證','',f"訓練 {cal.get('train_target')}：{cal['train_count']} 家；保留 {cal.get('holdout_target')}：{cal.get('holdout_count',0)} 家。係數只用訓練期選定。",'',
       '|保留期指標|新模型|去年同期不變基準|','|---|---:|---:|',
@@ -130,7 +131,7 @@ def run(data_dir,asof,target_date,out_dir=None,variant='current-information'):
       f"|營收 WAPE|{fmt(cm.get('revenue_wape_pct'))}%|{fmt(bm.get('revenue_wape_pct'))}%|",
       f"|毛利率中位絕對誤差|{fmt(cm.get('gross_margin_median_abs_pp'))} 百分點|{fmt(bm.get('gross_margin_median_abs_pp'))} 百分點|",
       f"|費用率中位絕對誤差|{fmt(cm.get('opex_ratio_median_abs_pp'))} 百分點|{fmt(bm.get('opex_ratio_median_abs_pp'))} 百分點|",'',
-      '營收係數改以未發生的單季校準，保留期採已知Q1加預測Q2。2027全年仍屬此外推情境，尚未完成全年成長／訂單／產能驗證。',
+      f'營收係數改以未發生的單季校準，保留期採已知Q1加預測Q2。{target_year}全年仍屬此外推情境，尚未完成全年成長／訂單／產能驗證。',
       '這是會計預測跨期驗證。原始公告時間與當時股票母體未全部驗證，不能稱為 PIT 投資回測或股價準確率。','',
       '## 決策與未完成事項','', '13項證據門檻逐檔判定，未知與失敗分開；完整合成測試不計入真實股票。',
       '八季主要欄位和總額勾稽不等於完整四表及附註簽核；保留核閱須評估重要性。',

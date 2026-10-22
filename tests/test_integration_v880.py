@@ -23,6 +23,16 @@ class FakeData:
     def primary(self,c):return self.evidence['primary'].get(c)
     def detailed_values(self,*a):return None
 class IntegrationTests(unittest.TestCase):
+    def test_requested_target_year_labels_the_report_and_valuation_columns(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            with patch('scripts.tw_v880_run.MarketData',return_value=FakeData()),patch('scripts.tw_v880_run.fit_accounting',return_value=CAL),contextlib.redirect_stdout(io.StringIO()):
+                result=run(tmp,ASOF,'2028-12-31',tmp)
+            text=(pathlib.Path(tmp)/'latest_research.md').read_text()
+            self.assertEqual(result['target_date'],'2028-12-31')
+            self.assertIn('台股 2028 營運情境',text)
+            self.assertIn('|2028 EPS|PE|2028 Base價|',text)
+            self.assertNotIn('|2027 EPS|',text)
+
     def test_same_second_fresh_source_is_not_misclassified_as_future(self):
         now=dt.datetime.fromisoformat('2026-10-18T21:45:20.780000+08:00')
         e=dict(snapshot_available_at='2026-10-18T11:29:14+00:00',official_current_bulk=dict(TPEX_balance=dict(fetched_at='2026-10-18T13:45:20.410000+00:00')))

@@ -121,6 +121,24 @@ class FrozenVintageTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,"REFERENCE_QUOTE_ORIGINAL_SNAPSHOT_HASH_MISMATCH"):
             load_inputs(self.root,NOW,"V8.8.2")
 
+    def test_receipt_cannot_change_model_identity_without_changing_frozen_payload(self):
+        out=freeze(self.root,NOW,'V8.8.2');path=self.root/out['path']
+        original=path.read_text()
+        for key,value in (('model_code_sha256','c'*64),('strategy_variant_sha256','d'*64),
+                          ('financial_last_quarter','2026-Q3'),('issuer_market_reference_date','2026-10-19')):
+            with self.subTest(key=key):
+                receipt=json.loads(original);receipt[key]=value;path.write_text(json.dumps(receipt))
+                with self.assertRaisesRegex(ValueError,'FROZEN_MODEL_IDENTITY_MISMATCH'):
+                    verify_frozen_receipt(path)
+        path.write_text(original)
+
+    def test_archive_clock_cannot_precede_estimate_creation(self):
+        out=freeze(self.root,NOW,'V8.8.2');path=self.root/out['path']
+        receipt=json.loads(path.read_text());receipt['archived_at_utc']='2026-10-20T00:00:00+00:00'
+        path.write_text(json.dumps(receipt))
+        with self.assertRaisesRegex(ValueError,'FROZEN_ARCHIVE_BEFORE_ESTIMATE'):
+            verify_frozen_receipt(path)
+
 
 if __name__=="__main__":
     unittest.main()

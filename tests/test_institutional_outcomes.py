@@ -77,6 +77,22 @@ class TrialSourceIntegration(unittest.TestCase):
         trial=collect_trials(self.root,'2026-10-21T13:00:00+08:00')['trials'][0]
         self.assertFalse(trial['pairs'])
 
+    def test_model_archived_after_signal_is_not_prospective_even_with_old_estimate(self):
+        for variant in ('champion','challenger'):
+            with self.subTest(variant=variant):
+                path=self.root/self.outcome[variant]['frozen_receipt_path']
+                original=path.read_text();receipt=json.loads(original)
+                receipt['archived_at_utc']='2026-10-21T10:00:00+00:00'
+                path.write_text(json.dumps(receipt))
+                trial=collect_trials(self.root,'2026-10-22T12:00:00+08:00')['trials'][0]
+                self.assertFalse(trial['pairs'])
+                self.assertIn('NOT_FROZEN_BEFORE_SIGNAL',trial['rejected_outcomes'][0]['reason'])
+                path.write_text(original)
+
+    def test_pair_uses_actual_archive_clock_not_the_earlier_estimate_label(self):
+        trial=collect_trials(self.root,'2026-10-22T12:00:00+08:00')['trials'][0]
+        self.assertEqual(trial['pairs'][0]['champion_frozen_at'],'2026-10-21T00:10:00+00:00')
+
 
 class MatchedPeerInputs(unittest.TestCase):
     def setUp(self):

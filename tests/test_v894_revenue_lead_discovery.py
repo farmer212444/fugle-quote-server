@@ -1,4 +1,5 @@
 import unittest
+from tw_model_v880 import VERSION
 from scripts.v894_revenue_lead_discovery import score_revenue, valuation_points, build
 
 
@@ -16,6 +17,14 @@ def research():
 
 
 class RevenueLeadTests(unittest.TestCase):
+    def test_current_runtime_keeps_the_reviewed_discovery_contract(self):
+        r=research();r['model']=VERSION
+        self.assertEqual(build(r,[rev()])['source_model'],VERSION)
+
+    def test_unknown_model_still_requires_review(self):
+        r=research();r['model']='UNREVIEWED_FUTURE_MODEL'
+        with self.assertRaisesRegex(ValueError,'MODEL_REQUIRES_REVIEW'):build(r,[rev()])
+
     def test_revenue_acceleration_scores_before_margin(self):
         row=score_revenue(rev())
         self.assertGreater(row["revenue_points"],60)
