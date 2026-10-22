@@ -14,7 +14,7 @@ from tw_model_v880.execution import COST_FIELDS,net_trade
 from tw_model_v880.experiments import purged_walk_forward,compare_models,calibration_summary
 from tw_model_v880.portfolio import constrained_portfolio,reverse_execution_capacity
 from tw_model_v880.specialists import segment
-from tw_model_v880.validation_io import immutable_registration,collect_trials,source
+from tw_model_v880.validation_io import immutable_registration,collect_trials,source,taipei_signal_date
 from scripts.tw_v880_run import run
 from tests.test_integration_v880 import FakeData,CAL
 from tw_model_v880.model import estimate
@@ -334,6 +334,25 @@ class WalkForwardControls(unittest.TestCase):
         for r in records:r['market_regime']='up'
         self.assertFalse(compare_models(records,trials=1)['promotion_eligible'])
         self.assertFalse(compare_models(self.pairs(),trials=1000)['promotion_eligible'])
+
+    def test_missing_or_blank_regime_labels_never_pass_multi_regime_gate(self):
+        for missing in (None, '', '   '):
+            pairs=self.pairs()
+            pairs[5]['market_regime']=missing
+            result=compare_models(pairs,trials=1)
+            self.assertFalse(result['promotion_eligible'])
+            self.assertFalse(result['regime_coverage_complete'])
+            self.assertEqual(result['regime_count'],0)
+        complete=compare_models(self.pairs(),trials=1)
+        self.assertTrue(complete['regime_coverage_complete'])
+        self.assertEqual(complete['regime_count'],2)
+
+    def test_local_signal_day_is_not_previous_utc_day_before_eight_am(self):
+        self.assertEqual(taipei_signal_date('2026-10-21T00:10:00+08:00'),'2026-10-21')
+        self.assertEqual(taipei_signal_date('2026-10-20T16:10:00+00:00'),'2026-10-21')
+        self.assertEqual(taipei_signal_date(dt.datetime.fromisoformat('2026-10-20T16:10:00+00:00')),'2026-10-21')
+        with self.assertRaisesRegex(ValueError,'TIMEZONE_REQUIRED'):
+            taipei_signal_date(dt.datetime(2026,10,21,0,10))
 
     def test_post_outcome_probabilities_cannot_be_calibrated(self):
         row=dict(sample_id='X',predicted_probability=.9,outcome=True,
