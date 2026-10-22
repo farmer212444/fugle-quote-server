@@ -79,8 +79,13 @@ def compare_models(pairs, *, trials, block_size=5, min_dates=60, draws=2000, see
         means.append(statistics.fmean(sample[:len(differences)]))
     means.sort()
     lower = means[max(0,int(draws*.025/trials)-1)]
-    regimes = {p.get('market_regime') for p in pairs if p.get('market_regime')}
-    enough_regimes = len(regimes)>=2
+    # A partial or blank regime ledger must not be represented as a
+    # multi-regime prospective test merely because two cohorts were labeled.
+    labels = [p.get('market_regime') for p in pairs]
+    complete_regime_coverage = all(
+        isinstance(label, str) and bool(label.strip()) for label in labels)
+    regimes = set(labels) if complete_regime_coverage else set()
+    enough_regimes = complete_regime_coverage and len(regimes)>=2
     # Return improvement alone is not sufficient when the challenger has
     # materially greater observed peak-to-trough loss on the same periods.
     def drawdown(key):
@@ -95,7 +100,8 @@ def compare_models(pairs, *, trials, block_size=5, min_dates=60, draws=2000, see
                 mean_net_return_improvement=statistics.fmean(differences),
                 trial_adjusted_lower_bound=lower, declared_trials=trials,
                 correction="BONFERRONI_BLOCK_BOOTSTRAP_NOT_PBO", block_size=block_size,
-                regime_count=len(regimes), champion_max_drawdown=champion_dd,
+                regime_count=len(regimes), regime_coverage_complete=complete_regime_coverage,
+                champion_max_drawdown=champion_dd,
                 challenger_max_drawdown=challenger_dd, promotion_eligible=eligible,
                 automatic_deployment=False)
 
