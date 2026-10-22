@@ -1,15 +1,20 @@
 {
-  "model": "V8.10.2",
+  "model": "V8.10.3",
   "asof_price_date": "2026-10-21",
-  "source_estimate_vintage": "2026-10-22T17:14:34.426833+08:00",
+  "source_estimate_vintage": "2026-10-22T18:13:45.816868+08:00",
   "universe_priced": 1987,
-  "normalized_financial_issuers": 1978,
-  "model_issuer_rows": 1998,
+  "normalized_financial_issuers": 1979,
+  "model_issuer_rows": 1999,
   "model_rows_meaning": "TRACKED_ISSUER_LEDGER_ROWS_NOT_COMPLETED_VALUATIONS_OR_CERTIFICATIONS",
-  "tracked_issuer_universe": 1998,
+  "tracked_issuer_universe": 1999,
   "not_yet_in_model_count": 0,
   "not_yet_in_model_note": "Identifiers are derived from hashed normalized financial mirrors and remain NOT_CERTIFIED. They must be reconciled against a dated official PIT issuer master before full coverage can be declared.",
   "normalized_universe_identity_receipts": [
+    {
+      "path": "tw-market-data/fundamentals/2024-Q2/TWSE_income.json",
+      "sha256": "9e4670a0a29676417353756dfaac5a7f2aa5d47e8ac4f7ef6f768ab523242809",
+      "meaning": "NORMALIZED_MIRROR_IDENTITY_ONLY_NOT_INDEPENDENT_OFFICIAL_PIT_PROOF"
+    },
     {
       "path": "tw-market-data/fundamentals/2024-Q3/TPEX_income.json",
       "sha256": "f95590c6c1f8e1d7e8dd78c78677a63881b578cd6612531614bbd5d5e280fc92",
@@ -25788,6 +25793,34 @@
       "source_status": "TURNOVER_FILTER_BELOW_1M_TWD",
       "exclusion_reasons": [
         "TURNOVER_FILTER_BELOW_1M_TWD"
+      ]
+    },
+    {
+      "code": "2249",
+      "market": "TPEX",
+      "name": "湧盛",
+      "lane": "UNVALUED_INPUT_REPAIR",
+      "research_upside_pct": null,
+      "certification": "NOT_CERTIFIED",
+      "required_gates": [
+        "original_eight_quarter_statements",
+        "cash_and_working_capital",
+        "nonoperating_components",
+        "fully_diluted_shares",
+        "matched_peers_and_cycle",
+        "management_promises",
+        "auditor_scope",
+        "tradability",
+        "forecast_bridge",
+        "insider_claims",
+        "dividend_window",
+        "point_in_time",
+        "out_of_sample_validation"
+      ],
+      "review_state": "PENDING_SOURCE_VERIFICATION",
+      "source_status": "CURRENT_FINANCIAL_STATEMENT_MISSING",
+      "exclusion_reasons": [
+        "CURRENT_FINANCIAL_STATEMENT_MISSING"
       ]
     },
     {
@@ -54712,7 +54745,7 @@
   "counts": {
     "HIGH_UPSIDE_EVIDENCE_REVIEW": 120,
     "OTHER_VALUED_EVIDENCE_REVIEW": 675,
-    "UNVALUED_INPUT_REPAIR": 1203
+    "UNVALUED_INPUT_REPAIR": 1204
   },
   "blocking_rules": [
     "Never mark PASS without issuer-specific source, publication time, financial period and document hash.",
