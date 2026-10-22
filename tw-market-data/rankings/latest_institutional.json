@@ -1,10 +1,10 @@
 {
   "schema": "V810_INSTITUTIONAL_RESEARCH_CONTROLS",
   "model": "V8.10.2",
-  "estimate_vintage": "2026-10-22T08:24:42.657961+08:00",
-  "report_observed_at": "2026-10-22T00:24:58.654109+00:00",
+  "estimate_vintage": "2026-10-22T10:11:52.225184+08:00",
+  "report_observed_at": "2026-10-22T02:12:08.635210+00:00",
   "asof_price_date": "2026-10-21",
-  "source_model_sha256": "c0f994f2a404e43163158e92768f73d5313b062ae2aa9ea7cd3267f29290e1c6",
+  "source_model_sha256": "2cdc15e451d8048afef167ce55d7298caf8eebb475a20328f841921625065d67",
   "policy_sha256": "09318d35db81b5532cbef6c8a76361ca4e9d914cc50ae4bd1051f87f09c14e67",
   "universe": {
     "normalized_issuers": 1978,
@@ -4926,7 +4926,7 @@
   "forward_observations": {
     "status": "PROSPECTIVE_OBSERVATION_NOT_CERTIFIED_INVESTMENT_PERFORMANCE",
     "distinct_signal_days": 2,
-    "strategy_date_cohorts": 14,
+    "strategy_date_cohorts": 16,
     "cohorts": [
       {
         "model": "V8.8.2",
@@ -5165,6 +5165,40 @@
           "Dividends/splits/rights/delistings coverage for full holding period",
           "Matched benchmark total returns and predeclared evaluation horizon"
         ]
+      },
+      {
+        "model": "V8.10.2",
+        "model_code_sha256": "2cdc15e451d8048afef167ce55d7298caf8eebb475a20328f841921625065d67",
+        "strategy_variant_sha256": "310147fee004ba12cb701d824bf7f4c93c202d2f4353ea748d405421d5abe54f",
+        "strategy_variant": "current-information",
+        "estimate_vintage": "2026-10-22T10:10:38.368709+08:00",
+        "reference_price_date": "2026-10-21",
+        "receipt_path": "pit_vintages/2026-10-22/686b1be207f4bb4a6e29/receipt.json",
+        "status": "AWAITING_SUBSEQUENT_SESSION",
+        "formal_out_of_sample_pass": false,
+        "missing_for_certified_return": [
+          "Verified next-session open and fillability",
+          "Explicit spread/slippage/fees/tax policy fixed before outcome",
+          "Dividends/splits/rights/delistings coverage for full holding period",
+          "Matched benchmark total returns and predeclared evaluation horizon"
+        ]
+      },
+      {
+        "model": "V8.10.2",
+        "model_code_sha256": "2cdc15e451d8048afef167ce55d7298caf8eebb475a20328f841921625065d67",
+        "strategy_variant_sha256": "ae833c8f1d54997d99986546b088033316a146d5095f496bb9a678255a00fae7",
+        "strategy_variant": "without-earnings-events",
+        "estimate_vintage": "2026-10-22T10:10:38.368709+08:00",
+        "reference_price_date": "2026-10-21",
+        "receipt_path": "pit_vintages/2026-10-22/c781288b7fd17597034c/receipt.json",
+        "status": "AWAITING_SUBSEQUENT_SESSION",
+        "formal_out_of_sample_pass": false,
+        "missing_for_certified_return": [
+          "Verified next-session open and fillability",
+          "Explicit spread/slippage/fees/tax policy fixed before outcome",
+          "Dividends/splits/rights/delistings coverage for full holding period",
+          "Matched benchmark total returns and predeclared evaluation horizon"
+        ]
       }
     ],
     "archive_errors": [],
@@ -5189,6 +5223,13 @@
     },
     {
       "trial_id": "earnings-events-8d5c4dfe79ed6bed12f1",
+      "status": "AWAITING_INDEPENDENT_OOS_DATES",
+      "independent_dates": 0,
+      "required_dates": 60,
+      "promotion_eligible": false
+    },
+    {
+      "trial_id": "earnings-events-a4951492b1526ac5446b",
       "status": "AWAITING_INDEPENDENT_OOS_DATES",
       "independent_dates": 0,
       "required_dates": 60,
@@ -5230,6 +5271,12 @@
         "promotion_eligible": false
       },
       {
+        "trial_id": "earnings-events-a4951492b1526ac5446b",
+        "status": "AWAITING_FUTURE_OUTCOME_INPUTS",
+        "pairs": [],
+        "promotion_eligible": false
+      },
+      {
         "trial_id": "earnings-events-b927f52d6897ef33cabe",
         "status": "AWAITING_FUTURE_OUTCOME_INPUTS",
         "pairs": [],
@@ -5244,7 +5291,7 @@
     ],
     "errors": [],
     "probability_records": [],
-    "registered_trial_count": 5,
+    "registered_trial_count": 6,
     "validated_trade_observations": 0,
     "formal_out_of_sample_pass": false
   },
