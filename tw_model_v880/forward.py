@@ -6,6 +6,9 @@ from pathlib import Path
 from .evidence import timestamp
 
 
+TAIPEI = dt.timezone(dt.timedelta(hours=8))
+
+
 def forward_observations(root, asof):
     from scripts.v897_freeze_model_vintage import verify_frozen_receipt
     root=Path(root)
@@ -15,18 +18,26 @@ def forward_observations(root, asof):
         try:
             receipt=verify_frozen_receipt(path)
             vintage=timestamp(receipt['estimate_vintage'])
-            if vintage>cutoff:
+            archived=timestamp(receipt['archived_at_utc'])
+            # Model estimates are not independently observable until their
+            # actual archive exists. Never backdate a prospective cohort to
+            # an earlier estimate label, nor expose a later archive at asof.
+            prospective_start=max(vintage,archived)
+            if prospective_start>cutoff:
                 continue
-            # Many reruns on one date are one temporal cohort per strategy,
-            # never independent statistical trials or extra trading sessions.
-            key=(vintage.astimezone(dt.timezone(dt.timedelta(hours=8))).date().isoformat(),
+            # Same-day reruns are one temporal cohort per strategy; choose the
+            # earliest genuinely archived signal, not the oldest printed date.
+            key=(prospective_start.astimezone(TAIPEI).date().isoformat(),
                  receipt.get('strategy_variant_sha256') or receipt['model_code_sha256'])
-            if key in cohorts and timestamp(cohorts[key]['estimate_vintage'])<=vintage:
+            if key in cohorts and timestamp(cohorts[key]['prospective_signal_at'])<=prospective_start:
                 continue
             cohorts[key]=dict(model=receipt['model'],model_code_sha256=receipt['model_code_sha256'],
                               strategy_variant_sha256=receipt.get('strategy_variant_sha256'),
                               strategy_variant=receipt.get('strategy_variant','current-information'),
                               estimate_vintage=receipt['estimate_vintage'],
+                              archived_at_utc=receipt['archived_at_utc'],
+                              prospective_signal_at=prospective_start.isoformat(),
+                              prospective_signal_clock='LATER_OF_ESTIMATE_AND_REAL_ARCHIVE',
                               reference_price_date=receipt['issuer_market_reference_date'],
                               receipt_path=path.relative_to(root).as_posix(),
                               status='AWAITING_SUBSEQUENT_SESSION',

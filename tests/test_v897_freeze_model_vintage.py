@@ -9,6 +9,7 @@ import unittest
 from pathlib import Path
 
 from scripts.v897_freeze_model_vintage import freeze, load_inputs, sha, verify_frozen_receipt
+from tw_model_v880.forward import forward_observations
 
 VINTAGE="2026-10-21T07:20:00+08:00"
 NOW=dt.datetime.fromisoformat("2026-10-21T00:10:00+00:00")
@@ -131,6 +132,31 @@ class FrozenVintageTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError,'FROZEN_MODEL_IDENTITY_MISMATCH'):
                     verify_frozen_receipt(path)
         path.write_text(original)
+
+    def test_prospective_observation_rejects_receipt_archived_after_asof(self):
+        out=freeze(self.root,NOW,'V8.8.2')
+        before=forward_observations(self.root,'2026-10-21T08:00:00+08:00')
+        self.assertEqual(before['distinct_signal_days'],0)
+        self.assertFalse(before['cohorts'])
+        after=forward_observations(self.root,'2026-10-21T08:11:00+08:00')
+        self.assertEqual(after['distinct_signal_days'],1)
+        self.assertEqual(after['cohorts'][0]['receipt_path'],out['path'])
+        self.assertEqual(after['cohorts'][0]['prospective_signal_at'],'2026-10-21T00:10:00+00:00')
+        self.assertFalse(after['formal_out_of_sample_pass'])
+
+    def test_late_archived_estimate_cannot_create_earlier_signal_day(self):
+        next_day=dt.datetime.fromisoformat('2026-10-22T00:10:00+00:00')
+        freeze(self.root,next_day,'V8.8.2')
+        (self.root/'prices/2026-10-21.json').write_text('[]')
+        before=forward_observations(self.root,'2026-10-21T23:59:00+08:00')
+        self.assertEqual(before['distinct_signal_days'],0)
+        after=forward_observations(self.root,'2026-10-22T08:11:00+08:00')
+        self.assertEqual(after['distinct_signal_days'],1)
+        row=after['cohorts'][0]
+        self.assertEqual(row['estimate_vintage'],VINTAGE)
+        self.assertEqual(row['prospective_signal_at'],'2026-10-22T00:10:00+00:00')
+        self.assertEqual(row['status'],'AWAITING_SUBSEQUENT_SESSION')
+        self.assertFalse(after['formal_out_of_sample_pass'])
 
     def test_archive_clock_cannot_precede_estimate_creation(self):
         out=freeze(self.root,NOW,'V8.8.2');path=self.root/out['path']
