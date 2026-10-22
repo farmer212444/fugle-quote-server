@@ -1,4 +1,5 @@
 import unittest
+from tw_model_v880 import VERSION
 
 from scripts.v892_top20_quality_audit import validate, indexed, priority
 
@@ -29,6 +30,14 @@ def example_record():
 
 
 class Top20AuditTests(unittest.TestCase):
+    def test_current_runtime_keeps_the_reviewed_scenario_contract(self):
+        r,d=fixture();r['model']=VERSION
+        self.assertEqual(len(validate(r,d)[0]),20)
+
+    def test_unknown_model_still_requires_a_new_audit(self):
+        r,d=fixture();r['model']='UNREVIEWED_FUTURE_MODEL'
+        with self.assertRaisesRegex(ValueError,'MODEL_REQUIRES_NEW_AUDIT'):validate(r,d)
+
     def test_matching_vintage_validates_twenty_rows(self):
         r,d=fixture()
         top,instant,quarter,prior,fy,n=validate(r,d)

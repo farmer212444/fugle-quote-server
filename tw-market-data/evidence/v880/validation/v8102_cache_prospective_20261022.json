@@ -6,10 +6,10 @@
   "runtime_code_sha256": "782af9a90f00cd8c5c52513ed750efb8c1c897b4c42cefe57676dd2b1d4f57db",
   "engineering_tests": {
     "command": "python -m unittest discover -s tests -q",
-    "passed": 423,
+    "passed": 428,
     "failures": 0,
-    "separate_root_runtime_version_contract": "PASS",
-    "investment_backtest": false
+    "investment_backtest": false,
+    "root_runtime_version_contract": "PASS_INCLUDED_IN_UNITTEST_DISCOVERY"
   },
   "reproduced_before_patch": [
     {
@@ -30,7 +30,8 @@
     "New, revised, deleted or repaired dynamic inputs and linked bytes invalidate cache",
     "Full-result hashes and compact/full context must match",
     "Both actual archive and estimate clocks must precede the signal",
-    "Frozen receipt identity must match its frozen payload"
+    "Frozen receipt identity must match its frozen payload",
+    "Legacy Top20/revenue discovery explicitly accept the reviewed current runtime and reject unknown versions; current VERSION is tested."
   ],
   "real_archived_data_smoke": {
     "asof": "2026-10-22T08:15:46.282805+08:00",
