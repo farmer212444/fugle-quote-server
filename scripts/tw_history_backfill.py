@@ -13,9 +13,14 @@ import math
 from pathlib import Path
 import re
 import statistics
+import sys
 import time
 import urllib.parse
 import urllib.request
+
+PACKAGE_ROOT=Path(__file__).resolve().parents[1]
+if str(PACKAGE_ROOT) not in sys.path:sys.path.insert(0,str(PACKAGE_ROOT))
+from scripts.history_archive import archive_original, observed_ohlc, quote_source_ready
 
 ROOT=Path("tw-market-data")
 OUT=ROOT/"prices/issuer_history/TWSE"
@@ -70,7 +75,8 @@ def parse(raw,code,month):
         require(len(hits)==1,"TWSE_HISTORY_VOL_FIELD_MISSING_OR_AMBIGUOUS")
         return hits[0]
     cols={"日期":locate("日期"),"交易股數":alias("成交股數","交易股數"),
-          "成交金額":locate("成交金額"),"收盤價":locate("收盤價")}
+          "成交金額":locate("成交金額"),"收盤價":locate("收盤價"),
+          "開盤價":locate("開盤價"),"最高價":locate("最高價"),"最低價":locate("最低價")}
     values=j.get("data")
     require(isinstance(values,list) and 5<=len(values)<=32,"MONTH_HISTORY_ROW_COUNT_INVALID")
     data={}
@@ -82,7 +88,8 @@ def parse(raw,code,month):
         vol=integer(r[cols["交易股數"]]);amount=integer(r[cols["成交金額"]]);close=price(r[cols["收盤價"]])
         require(vol is not None and amount is not None and vol>=0 and amount>=0,
                 "INVALID_TWSE_TURNOVER_OR_VOLUME")
-        data[d]=dict(date=d,volume_shares=vol,turnover_ntd=amount,close=close)
+        data[d]=observed_ohlc(dict(date=d,code=code,market='TWSE',volume_shares=vol,turnover_ntd=amount,close=close),
+                             r[cols["開盤價"]],r[cols["最高價"]],r[cols["最低價"]])
     return [data[k] for k in sorted(data)]
 def recent_months(asof,limit=4):
     y,m=asof.year,asof.month;out=[]
@@ -97,7 +104,7 @@ def candidates(raw_price,cap=8):
     ordered=[x for x in PREFERRED if x in bycode]
     require("6206" in ordered and "9802" in ordered,"CORE_6206_9802_NOT_IN_OFFICIAL_TWSE_PRICE_ARCHIVE")
     return ordered[:cap]
-def prioritized_candidates(raw_price,asof,cap=16,root=ROOT):
+def prioritized_candidates(raw_price,asof,cap=16,root=ROOT,*,execution_archive=False,months=3):
     """Use current A+ research order; skip issuers already backed up at reference date.
 
     Incomplete TPEX names are separately recorded by gate diagnostics: this TWSE
@@ -130,7 +137,10 @@ def prioritized_candidates(raw_price,asof,cap=16,root=ROOT):
         doc=json.loads(loc.read_text(encoding="utf-8"))
         if doc.get("issuer")!=code or doc.get("market")!="TWSE":
             raise ValueError("PRIORITY_ISSUER_ARCHIVE_IDENTITY_MISMATCH")
-        if doc.get("price_reference_asof")!=asof or not doc.get("liquidity",{}).get("20"):
+        depth_ready=(not execution_archive or all(
+            quote_source_ready(root,doc.get("by_month",{}).get(month,{}))
+            for month in recent_months(dt.date.fromisoformat(asof),months)))
+        if doc.get("price_reference_asof")!=asof or not doc.get("liquidity",{}).get("20") or not depth_ready:
             backlog.append(code)
     return backlog[:cap]
 
@@ -158,32 +168,41 @@ def stats(dates,asof):
           idealized_5m_exit_sessions_at_20pct=(round(5_000_000/(.20*med),2) if med>0 else None))
     return result
 
-def process(code,asof,months,fetch=request,out=OUT,rawdir=RAW,sleep=0.4,reference_close=None):
+def process(code,asof,months,fetch=request,out=OUT,rawdir=RAW,sleep=0.4,reference_close=None,
+            *,root=None,max_new_months=None):
+    root=Path(root) if root is not None else Path(out).parent
     path=Path(out)/(code+".json")
     old=json.loads(path.read_text("utf-8")) if path.exists() else {}
     old_months=old.get("by_month",{})
     require(not old or old.get("issuer")==code and old.get("market")=="TWSE",
             "HISTORICAL_ISSUER_ARCHIVE_IDENTITY_MISMATCH")
-    items=dict(old_months);new=0;fails=[]
+    items=dict(old_months);new=0;attempted=0;fails=[]
     for month in months:
-        # Current month must refresh as new sessions close; older months remain frozen.
-        if month in items and month != months[0]:
-            continue
+        cached=items.get(month,{})
+        if quote_source_ready(root,cached):
+            latest=max(cached['rows'],key=lambda row:row['date'])
+            if (month!=asof[:7] or (latest['date']==asof and
+                    (reference_close is None or latest.get('close')==float(reference_close)))):
+                continue
+        if max_new_months is not None and attempted>=max_new_months:break
+        attempted+=1
         url=historical_url(code,month)
         try:
             raw=fetch(url)
-            rows=parse(raw,code,month)
+            parsed=parse(raw,code,month)
+            original=archive_original(root,'TWSE',code+'-'+month,url,raw,parsed)
+            rows=parsed
             # Do not retain days beyond known latest official market date.
             rows=[x for x in rows if x["date"]<=asof]
             require(bool(rows),"NO_SESSIONS_UP_TO_REFERENCE_DATE")
             if (month in items and items[month].get("original_response_sha256")==sha(raw)
-                    and items[month].get("rows")==rows):
+                    and items[month].get("rows")==rows and items[month].get('original_archive')==original):
                 continue
             rawpath=Path(rawdir)/code/(month+".json")
             rawpath.parent.mkdir(parents=True,exist_ok=True)
             rawpath.write_bytes(raw)
             items[month]=dict(source_url=url,original_response_sha256=sha(raw),
-                captured_at_utc=dt.datetime.now(dt.timezone.utc).isoformat(),
+                captured_at_utc=original['captured_at_utc'],original_archive=original,
                 original_exchange_signature_verified=False,rows=rows)
             new+=1
         except Exception as exc:
@@ -199,7 +218,9 @@ def process(code,asof,months,fetch=request,out=OUT,rawdir=RAW,sleep=0.4,referenc
     oldstats=stats(normalized,asof)
     result=dict(schema="V889_OFFICIAL_TWSE_ISSUER_MONTHLY",issuer=code,market="TWSE",
       price_reference_asof=asof,source_type="OFFICIAL_TWSE_MONTHLY_STOCK_DAY",
-      original_raw_responses_preserved_in_actions_artifact_not_repository=True,
+      original_raw_responses_preserved_in_actions_artifact_not_repository=not all(
+          quote_source_ready(root,item) for item in items.values()),
+      durable_original_months=sum(quote_source_ready(root,item) for item in items.values()),
       backfill_capture_not_point_in_time_trade_history=True,
       share_adjustments_dividends_and_spread_not_verified=True,
       original_source_not_cryptographically_signed=True,
@@ -212,19 +233,20 @@ def process(code,asof,months,fetch=request,out=OUT,rawdir=RAW,sleep=0.4,referenc
     return dict(code=code,months=len(items),new_months=new,days=len(normalized),
                 twenty=oldstats["20"] is not None,source_errors=fails)
 
-def run(max_issuers=6,months=4,fetch=request,sleep=0.4):
+def run(max_issuers=6,months=4,fetch=request,sleep=0.4,max_new_months=3):
     manifest=json.loads((ROOT/"prices/latest_manifest.json").read_text("utf-8"))
     asof=manifest["date"]
     rawfile=(ROOT/"prices"/(asof+".json")).read_bytes()
     require(sha(rawfile)==manifest["normalized_sha256"],"LATEST_REFERENCE_PRICE_HASH_MISMATCH")
-    ids=prioritized_candidates(rawfile,asof,max_issuers,ROOT)
+    ids=prioritized_candidates(rawfile,asof,max_issuers,ROOT,execution_archive=True,months=months)
     close_by_code={x["code"]:x.get("close") for x in json.loads(rawfile) if x.get("market")=="TWSE"}
     rr=[];window=recent_months(dt.date.fromisoformat(asof),months)
     for code in ids:
         rr.append(process(code,asof,window,fetch=fetch,sleep=sleep,
-                          reference_close=close_by_code[code]))
+                          reference_close=close_by_code[code],root=ROOT,max_new_months=max_new_months))
     result=dict(reference_date=asof,issuer_probes=rr,
-        issuer_priority="HIGH_UPSIDE_GE30_MISSING_20_DAY_SOURCE",selected_codes=ids,
+        issuer_priority="HIGH_UPSIDE_GE30_MISSING_DURABLE_OHLC_OR_REQUESTED_HISTORY",selected_codes=ids,
+        requested_months_per_issuer=months,max_requests_per_issuer=max_new_months,
         dynamic_priority_and_existing_completed_skip=True,
         source_scope="TWSE_ISSUERS_ONLY_TPEX_NOT_YET_INCLUDED",
         original_capture_not_independent_PIT_certificate=True,
@@ -236,7 +258,7 @@ def run(max_issuers=6,months=4,fetch=request,sleep=0.4):
            f"參考收盤：{asof}；僅覆蓋證交所TWSE個股，不代表全市場交易歷史完整。","",
            "|股票|已取得月數|交易日|20日成交值|尚待重試月份|","|---|---:|---:|---|---:|"]
     for x in rr:lines.append(f"|{x['code']}|{x['months']}|{x['days']}|{'20/20' if x['twenty'] else '不足'}|{len(x['source_errors'])}|")
-    lines+=["","原始HTTP位元組保留於本次GitHub Actions artifact；雜湊為蒐集收據，不是獨立官方數位簽章。",
+    lines+=["","新下載的開高低收及原始HTTP位元組永久封存於 prices/originals/history；既有缺原件月份按預算重新取得。",
             "未納入櫃買TPEx歷史資料、價差、漲跌停實際可成交量、股利還原、資料發布PIT；因此正式流動性與A+門檻維持PENDING。"]
     (ROOT/"rankings/v889_backfill_progress.md").write_text("\n".join(lines)+"\n",encoding="utf-8")
     print(json.dumps(result,ensure_ascii=False))
@@ -247,7 +269,8 @@ def main():
     p=argparse.ArgumentParser()
     p.add_argument("--max-issuers",type=int,default=6)
     p.add_argument("--months",type=int,default=4)
+    p.add_argument("--max-new-months",type=int,default=3)
     a=p.parse_args()
-    require(1<=a.max_issuers<=25 and 2<=a.months<=12,"INVALID_FETCH_BUDGET")
-    run(max_issuers=a.max_issuers,months=a.months)
+    require(1<=a.max_issuers<=25 and 2<=a.months<=36 and 1<=a.max_new_months<=6,"INVALID_FETCH_BUDGET")
+    run(max_issuers=a.max_issuers,months=a.months,max_new_months=a.max_new_months)
 if __name__=="__main__":main()

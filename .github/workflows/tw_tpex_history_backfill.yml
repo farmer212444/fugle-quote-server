@@ -5,8 +5,19 @@ on:
     paths:
       - '.github/workflows/tw_tpex_history_backfill.yml'
       - 'scripts/v893_tpex_daily_backfill.py'
+      - 'scripts/history_archive.py'
+      - 'scripts/execution_quote_archive.py'
+      - 'tests/test_history_archive.py'
       - 'tests/test_v893_tpex_daily_backfill.py'
       - 'scripts/v884_evidence_probe.py'
+  pull_request:
+    paths:
+      - '.github/workflows/tw_tpex_history_backfill.yml'
+      - 'scripts/v893_tpex_daily_backfill.py'
+      - 'scripts/history_archive.py'
+      - 'scripts/execution_quote_archive.py'
+      - 'tests/test_history_archive.py'
+      - 'tests/test_v893_tpex_daily_backfill.py'
   schedule:
     # Taiwan local 09:10, 12:10, 15:10, 18:10, 20:10 weekdays.
     - cron: '10 1,4,7,10,12 * * 1-5'
@@ -25,11 +36,15 @@ jobs:
         with:
           python-version: '3.12'
       - name: Test modern TPEx daily market source and PIT safeguards
-        run: python -m unittest -v tests.test_v893_tpex_daily_backfill
+        run: python -m unittest -v tests.test_v893_tpex_daily_backfill tests.test_history_archive
       - name: Fetch modern official market-wide dated TPEx sessions
-        run: python -m scripts.v893_tpex_daily_backfill --max-dates 24 --lookback 65
+        id: collect
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        run: python -m scripts.v893_tpex_daily_backfill --max-dates 12 --lookback 730 --target-sessions 450
       - name: Publish verified TPEx issuer source files against current main
-        if: github.ref == 'refs/heads/main'
+        # Persist a retry queue even when a validated collection attempt finds
+        # no usable source. The failed collection still leaves the run failed.
+        if: ${{ always() && github.ref == 'refs/heads/main' && (steps.collect.outcome == 'success' || steps.collect.outcome == 'failure') }}
         shell: bash
         run: |
           set -euo pipefail
@@ -38,6 +53,12 @@ jobs:
           # Publish the exact downloaded dataset; never repeat 24 large requests
           # merely because unrelated research jobs have advanced main.
           git add tw-market-data/prices/issuer_history/TPEX/
+          if [ -d tw-market-data/prices/history_backfill_state ]; then
+            git add tw-market-data/prices/history_backfill_state/
+          fi
+          if [ -d tw-market-data/prices/originals/history/TPEX ]; then
+            git add tw-market-data/prices/originals/history/TPEX/
+          fi
           if git diff --cached --quiet; then
             echo 'No new TPEx histories to publish.'
             exit 0

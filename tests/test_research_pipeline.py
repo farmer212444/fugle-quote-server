@@ -110,6 +110,7 @@ class PipelineTiming(unittest.TestCase):
         self.assertEqual(core+observation,research_stages())
         self.assertEqual([name for name,_ in observation],['shadow_comparison','institutional_review'])
         self.assertFalse(set(name for name,_ in core)&set(name for name,_ in observation))
+        self.assertIn(('historical_source_readiness',['historical_pit_readiness.py']),core)
 
     def test_records_measured_stages_in_order(self):
         with tempfile.TemporaryDirectory() as t:
