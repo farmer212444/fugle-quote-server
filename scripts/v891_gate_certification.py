@@ -44,6 +44,16 @@ GATE_LABELS = dict(zip(GATES, (
     "八季原始財報與附註", "現金流與營運資金", "業外組成", "完整稀釋股數",
     "匹配同業與景氣", "管理承諾兌現", "會計師核閱範圍", "連續可交易性",
     "目標年度營運推導", "內部人申報", "股利適用時窗", "公告與修訂時間", "樣本外驗證")))
+MODEL_REASON_TEXT = {
+    "KEY_VALUES_RECONCILED_NOT_FULL_NOTES_AUDIT": "主要數值已勾稽，完整四表及附註待核",
+    "LATEST_SELF_REPORT_IS_NOT_REVIEWED_QUARTERLY_STATEMENTS": "最新自結不能取代完整核閱季報",
+    "NEGATIVE_OCF_REQUIRES_CYCLE_AND_FUNDING_REVIEW": "負營業現金流須拆解營運資金、擴產與資金來源",
+    "MULTI_PERIOD_WORKING_CAPITAL_AND_LIQUIDITY_REVIEW_REQUIRED": "多期營運資金及流動性對帳待核",
+    "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED": "原始證據、公司別勾稽與核閱紀錄待補",
+    "SINGLE_DAY_QUOTE_IS_NOT_CONTINUOUS_TRADABILITY_CERTIFICATION": "成交額資料不能取代價差與清倉能力驗證",
+    "HISTORICAL_SCOPE_AND_NOTES_SIGNOFF_REQUIRED": "歷史核閱範圍與完整附註待核",
+    "LATEST_EARNINGS_EVENT_REBASED_ISSUER_2027_OPERATING_BRIDGE_REQUIRED": "納入最新自結後，目標年度營運推導仍須重新核對",
+}
 
 def load(p):
     return json.loads(Path(p).read_text(encoding="utf-8"))
@@ -478,8 +488,9 @@ def render_md(r, admitted):
         out += ['', '## 飛捷與鈺齊：主模型實際擋關原因', '',
                 '|門檻|6206 飛捷|9802 鈺齊-KY|', '|---|---|---|']
         for name in GATES:
-            reasons=[focus.get(code,{}).get('gate_stage',{}).get(name,{}).get('model_reason','未評估')
-                     for code in ('6206','9802')]
+            raw_reasons=[focus.get(code,{}).get('gate_stage',{}).get(name,{}).get('model_reason','未評估')
+                         for code in ('6206','9802')]
+            reasons=[MODEL_REASON_TEXT.get(reason,reason) for reason in raw_reasons]
             out.append(f"|{GATE_LABELS[name]}|{reasons[0]}|{reasons[1]}|")
         for code,row in focus.items():
             out.append(f"\n{code}估值資料期 {row['financial_period']}；財報／現金流資料基期 {row['reviewed_financial_period']}（完整核閱門檻另行待驗）。")
