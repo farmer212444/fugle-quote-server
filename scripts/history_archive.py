@@ -18,6 +18,23 @@ HOST_PREFIXES = {'TWSE': 'https://www.twse.com.tw/rwd/zh/afterTrading/STOCK_DAY?
                  'TPEX': 'https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes?'}
 
 
+def outstanding_benchmark_codes(root,market):
+    """Collection priority only; never substitute it for a PIT selection universe."""
+    path=Path(root)/'rankings/latest_benchmark_validation.json'
+    if not path.exists():return []
+    doc=json.loads(path.read_text())
+    if doc.get('schema')!='TOP30_VS_TAIEX_TR_V1':
+        raise ValueError('UNKNOWN_BENCHMARK_COLLECTION_QUEUE_SCHEMA')
+    codes=[]
+    for row in doc['collection_queue']:
+        if row.get('market')!=market:continue
+        code=row.get('code')
+        if not isinstance(code,str) or not re.fullmatch(r'\d{4}',code):
+            raise ValueError('INVALID_BENCHMARK_COLLECTION_ISSUER')
+        if code not in codes:codes.append(code)
+    return codes
+
+
 def digest(raw):
     return hashlib.sha256(raw).hexdigest()
 

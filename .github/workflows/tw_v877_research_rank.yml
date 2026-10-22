@@ -32,6 +32,9 @@ on:
       - 'scripts/v894_revenue_lead_discovery.py'
       - 'scripts/v8a5_quality_decision_lane.py'
       - 'scripts/institutional_review.py'
+      - 'scripts/benchmark_sources.py'
+      - 'scripts/benchmark_validation.py'
+      - 'tw-market-data/benchmarks/**'
       - 'scripts/historical_pit_readiness.py'
       - 'scripts/history_archive.py'
       - 'scripts/run_research_pipeline.py'
@@ -95,6 +98,9 @@ on:
       - 'scripts/v894_revenue_lead_discovery.py'
       - 'scripts/v8a5_quality_decision_lane.py'
       - 'scripts/institutional_review.py'
+      - 'scripts/benchmark_sources.py'
+      - 'scripts/benchmark_validation.py'
+      - 'tw-market-data/benchmarks/**'
       - 'scripts/historical_pit_readiness.py'
       - 'scripts/history_archive.py'
       - 'scripts/run_research_pipeline.py'
@@ -200,6 +206,9 @@ jobs:
       - name: Refresh static official sources
         if: github.event_name != 'pull_request'
         run: python scripts/refresh_v880_public.py
+      - name: Archive official total-return benchmark and recent regime history
+        if: github.event_name != 'pull_request'
+        run: python scripts/benchmark_sources.py
       - name: Admit verified original-source review packs before valuation
         run: python scripts/v891_gate_certification.py --issue-only
       - name: Produce dated scenarios and evidence decisions
@@ -224,13 +233,14 @@ jobs:
               git reset --hard origin/main
               python -m pip install -r requirements-model.txt
               python scripts/refresh_v880_public.py
+              python scripts/benchmark_sources.py
               python scripts/v891_gate_certification.py --issue-only
               python scripts/run_research_pipeline.py --phase core
             fi
-            python scripts/v897_freeze_model_vintage.py --git-source-sha "$(git rev-parse HEAD)"
+            python scripts/v897_freeze_model_vintage.py --git-source-sha "$(git rev-parse HEAD)" --register-benchmark
             python scripts/run_research_pipeline.py --phase observation
             python scripts/v8a8_forward_top30_0050.py
-            git add tw-market-data/evidence/v880 tw-market-data/rankings tw-market-data/pit_vintages tw-market-data/experiments
+            git add tw-market-data/evidence/v880 tw-market-data/rankings tw-market-data/pit_vintages tw-market-data/experiments tw-market-data/benchmarks
             if git diff --cached --quiet; then exit 0; fi
             git commit -m 'data: refresh institutional research, earnings revisions and evidence status'
             if git push origin HEAD:main; then exit 0; fi

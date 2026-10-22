@@ -25,7 +25,11 @@ def research_gates(primary,code,period,cash,coverage):
     return gates
 
 def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
-    market,code=key;p=data.prices.get(key);rs=data.history[key];latest=rs[data.period]
+    market,code=key;p=data.prices.get(key)
+    # Training/backfill may retain older observations; forecast statistics use
+    # the declared eight-quarter window, never an expanding or future window.
+    rs={period:row for period,row in data.history[key].items() if period in data.required_periods}
+    latest=rs[data.period]
     rev=data.revenue.get(code);e=data.evidence;master=e.get('master',{}).get(code)
     event=getattr(data,'earnings_events',{}).get(code)
     valuation_period=event['financial_period'] if event else data.period

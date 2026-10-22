@@ -40,12 +40,13 @@ def research_stages(phase='full'):
         ('quality_decision', ['v8a5_quality_decision_lane.py']),
         ('historical_source_readiness', ['historical_pit_readiness.py']),
         ('shadow_comparison', ['institutional_shadow.py']),
+        ('benchmark_validation', ['benchmark_validation.py']),
         ('institutional_review', ['institutional_review.py']),
     ]
     if phase=='core':
-        return stages[:-2]
+        return stages[:-3]
     if phase=='observation':
-        return stages[-2:]
+        return stages[-3:]
     if phase!='full':
         raise ValueError('UNKNOWN_RESEARCH_PHASE')
     return stages

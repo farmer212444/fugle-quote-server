@@ -9,6 +9,7 @@ from __future__ import annotations
 import argparse
 import datetime as dt
 import hashlib
+import gzip
 import io
 import json
 import pathlib
@@ -301,9 +302,35 @@ def estimate(code, points, r):
                 model_warning='Proxy uses EPS subtraction despite weighted-share variation; experimental only; NOT a target price.')
 
 
-def scan(asof, max_fetches=12, offline=False):
+def archive_response(body,year,quarter,market,kind,captured_at):
+    """Durable original retrieval, explicitly separate from historical publication."""
+    plain=re.sub(r'\s+','',re.sub('<[^>]+>',' ',body.decode('utf-8-sig')))
+    venue='上市' if market=='TWSE' else '上櫃'
+    ordinal={1:'一',2:'二',3:'三',4:'四'}[quarter]
+    heading=re.search(r'公開資訊觀測站(上市|上櫃)公司(第([一二三四1234])季|年度)資料',plain[:700])
+    if heading and (heading[1]!=venue or (heading[3] not in (ordinal,str(quarter))
+                                        and not (quarter==4 and heading[2]=='年度'))):
+        raise ValueError('HISTORICAL_FINANCIAL_VENUE_OR_QUARTER_NOT_CONFIRMED')
+    label=f'{year}-Q{quarter}';sha=hashlib.sha256(body).hexdigest()
+    path=FIN/'originals'/label/(market+'_'+kind+'_'+sha+'.html.gz')
+    path.parent.mkdir(parents=True,exist_ok=True)
+    packed=gzip.compress(body,mtime=0)
+    if path.exists() and path.read_bytes()!=packed:raise ValueError('FINANCIAL_ORIGINAL_IMMUTABILITY_CONFLICT')
+    if not path.exists():path.write_bytes(packed)
+    receipt=dict(period=label,market=market,kind=kind,source=MOPS+KINDS[kind],
+                 requested_roc_year=year-1911,requested_quarter=quarter,
+                 captured_at_utc=captured_at,raw_path=path.as_posix(),raw_sha256=sha,
+                 venue_and_quarter_header_verified=bool(heading),fiscal_year_in_response_verified=False,
+                 original_publication_and_revision_PIT_verified=False)
+    receipt_path=path.with_suffix('.receipt.json')
+    if receipt_path.exists():return json.loads(receipt_path.read_text())
+    dump(receipt_path,receipt)
+    return receipt
+
+
+def scan(asof, max_fetches=12, offline=False, *, archive_only=False, extra_training_quarters=0):
     end = allowed_end(asof)
-    want = periods(end)
+    want = periods(end,8+extra_training_quarters)
     tasks = [(y, q, market, kind) for y, q in want[::-1] for market in MARKETS for kind in KINDS]
     count, saved, errors = 0, 0, []
     for y, q, market, kind in tasks:
@@ -320,8 +347,10 @@ def scan(asof, max_fetches=12, offline=False):
             rawpath = RAW / label / f'{market}_{kind}.html'
             rawpath.parent.mkdir(parents=True, exist_ok=True)
             rawpath.write_bytes(body)
+            captured=dt.datetime.now(dt.timezone.utc).isoformat()
+            original=archive_response(body,y,q,market,kind,captured)
             dump(path, {'period': label, 'kind': kind, 'market': market,
-                        'capture_utc': dt.datetime.now(dt.timezone.utc).isoformat(),
+                        'capture_utc': captured,'original_retrieval':original,
                         'raw_sha256': hashlib.sha256(body).hexdigest(),
                         'company_PIT_verified': False, 'rows': data})
             saved += 1
@@ -329,6 +358,8 @@ def scan(asof, max_fetches=12, offline=False):
         except Exception as exc:
             errors.append({'period': label, 'market': market, 'kind': kind, 'error': str(exc)})
             print('CAPTURE_FAILED', label, market, kind, exc, flush=True)
+            if archive_only and any(s in str(exc).lower() for s in ('http error 307','http error 403','access denied')):
+                break
         time.sleep(1.4)
     observations, loaded = {}, []
     for y, q in want:
@@ -341,6 +372,19 @@ def scan(asof, max_fetches=12, offline=False):
                 loaded.append(f'{label}/{market}/{kind}')
                 for record in cached['rows']:
                     observations.setdefault((market, record['code']), {})[(label, kind)] = record
+    if archive_only:
+        summary=dict(schema='HISTORICAL_FINANCIAL_RETRIEVAL_NOT_PIT_CERTIFICATION',
+                     asof_taipei=asof.isoformat(),last_eligible_quarter=f'{end[0]}-Q{end[1]}',
+                     required_periods=[f'{y}-Q{q}' for y,q in want],
+                     observed_at=dt.datetime.now(dt.timezone.utc).isoformat(),
+                     verified_batches=len(loaded),missing_batches=len(tasks)-len(loaded),
+                     new_batches_this_run=saved,failures=errors,
+                     status='ALL_MIRRORS_PRESENT_PIT_UNVERIFIED' if len(loaded)==len(tasks) else 'PARTIAL',
+                     training_history_is_separate_from_eight_quarter_forecast_window=True,
+                     current_latest_scan_not_replaced=True,admitted_historical_PIT_batches=0,
+                     formal_Aplus_count=0,original_publication_and_revision_PIT_verified=False)
+        dump(FIN/'historical_readiness'/(asof.isoformat()+'.json'),summary)
+        return summary
     revenue = revenue_rows()
     results = []
     for (market, code), rows in observations.items():
@@ -400,16 +444,21 @@ def main():
     p.add_argument('--offline', action='store_true')
     p.add_argument('--asof', help='YYYY-MM-DD in Taipei')
     p.add_argument('--max-fetches', type=int, default=12)
+    p.add_argument('--archive-only',action='store_true',help='Backfill without overwriting current scan or generating dated forecasts')
+    p.add_argument('--extra-training-quarters',type=int,default=0)
     args = p.parse_args()
     if args.self_test:
         self_test()
         return
     asof = dt.date.fromisoformat(args.asof) if args.asof else dt.datetime.now(TZ).date()
-    if asof > dt.datetime.now(TZ).date() or not 0 <= args.max_fetches <= 40:
+    if (asof > dt.datetime.now(TZ).date() or not 0 <= args.max_fetches <= 40
+            or not 0<=args.extra_training_quarters<=8 or (args.extra_training_quarters and not args.archive_only)):
         p.error('No future asof; max-fetches must be 0..40')
-    early_result = early_watch_9802(asof, args.offline)
-    print('EARLY_9802_Q3_WATCH',json.dumps(early_result,ensure_ascii=False))
-    result = scan(asof, args.max_fetches, args.offline)
+    if not args.archive_only:
+        early_result = early_watch_9802(asof, args.offline)
+        print('EARLY_9802_Q3_WATCH',json.dumps(early_result,ensure_ascii=False))
+    result = scan(asof, args.max_fetches, args.offline,archive_only=args.archive_only,
+                  extra_training_quarters=args.extra_training_quarters)
     print(json.dumps({k: result[k] for k in ('status', 'verified_batches', 'missing_batches',
                                             'new_batches_this_run', 'formal_Aplus_count')},
                      ensure_ascii=False))

@@ -108,7 +108,7 @@ class PipelineTiming(unittest.TestCase):
     def test_core_defers_expensive_observation_until_after_vintage_freeze(self):
         core=research_stages('core');observation=research_stages('observation')
         self.assertEqual(core+observation,research_stages())
-        self.assertEqual([name for name,_ in observation],['shadow_comparison','institutional_review'])
+        self.assertEqual([name for name,_ in observation],['shadow_comparison','benchmark_validation','institutional_review'])
         self.assertFalse(set(name for name,_ in core)&set(name for name,_ in observation))
         self.assertIn(('historical_source_readiness',['historical_pit_readiness.py']),core)
 
@@ -190,7 +190,7 @@ class PublicationRace(unittest.TestCase):
             self.git(root,'clone',str(remote),str(writer))
             self.git(writer,'config','user.name','Test');self.git(writer,'config','user.email','test@example.invalid')
             data=writer/'tw-market-data'
-            for folder in ('evidence/v880','rankings','pit_vintages','experiments'):
+            for folder in ('evidence/v880','rankings','pit_vintages','experiments','benchmarks'):
                 path=data/folder;path.mkdir(parents=True,exist_ok=True);(path/'seed').write_text('seed')
             (writer/'source.txt').write_text('original')
             self.git(writer,'add','.');self.git(writer,'commit','-m','seed');self.git(writer,'push','origin','main')

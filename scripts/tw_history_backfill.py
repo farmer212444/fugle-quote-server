@@ -20,7 +20,7 @@ import urllib.request
 
 PACKAGE_ROOT=Path(__file__).resolve().parents[1]
 if str(PACKAGE_ROOT) not in sys.path:sys.path.insert(0,str(PACKAGE_ROOT))
-from scripts.history_archive import archive_original, observed_ohlc, quote_source_ready
+from scripts.history_archive import archive_original, observed_ohlc, quote_source_ready,outstanding_benchmark_codes
 
 ROOT=Path("tw-market-data")
 OUT=ROOT/"prices/issuer_history/TWSE"
@@ -125,7 +125,7 @@ def prioritized_candidates(raw_price,asof,cap=16,root=ROOT,*,execution_archive=F
         pending=[str(x.get("code")) for x in ranked
                  if x.get("market")=="TWSE" and x.get("research_upside_pct") is not None
                  and x.get("research_upside_pct")>=30]
-    order=list(dict.fromkeys(pending+list(PREFERRED)))
+    order=list(dict.fromkeys(outstanding_benchmark_codes(root,'TWSE')+pending+list(PREFERRED)))
     order=[c for c in order if c in twse]
     # Existing fully covered archives do not monopolize the same daily fetch budget.
     backlog=[]
