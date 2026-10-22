@@ -16,6 +16,7 @@ def apply_capital_terms(data,asof):
                 raw_path=data.path(source['path']);packed=raw_path.read_bytes()
                 raw=gzip.decompress(packed) if raw_path.suffix=='.gz' else packed
                 if hashlib.sha256(raw).hexdigest()!=source['sha256']:raise ValueError('CAPITAL_SOURCE_HASH_MISMATCH')
+                data.receipt(raw_path,'CAPITAL_LINKED_SOURCE_BYTES_RECHECKED_NOT_FULL_SHARE_CERTIFICATION')
                 if source.get('source_record_type')=='NUMERIC_EXTRACTION_AND_CAPTURE_RECEIPT_NOT_ORIGINAL_DOCUMENT_BYTES':
                     record=json.loads(raw);extracted[source['id']]=record['facts']
             # Validate the entire book before mutating any bond in this issuer.

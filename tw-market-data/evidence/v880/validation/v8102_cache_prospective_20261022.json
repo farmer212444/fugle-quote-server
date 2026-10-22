@@ -1,0 +1,87 @@
+{
+  "schema": "V8102_CACHE_AND_PROSPECTIVE_ACCEPTANCE",
+  "validated_at": "2026-10-22T00:17:37.878887+00:00",
+  "model": "V8.10.2",
+  "source_data_git_commit": "ad55738d9ddf7178ee997a1d0ce980807ecd1370",
+  "runtime_code_sha256": "782af9a90f00cd8c5c52513ed750efb8c1c897b4c42cefe57676dd2b1d4f57db",
+  "engineering_tests": {
+    "command": "python -m unittest discover -s tests -q",
+    "passed": 423,
+    "failures": 0,
+    "separate_root_runtime_version_contract": "PASS",
+    "investment_backtest": false
+  },
+  "reproduced_before_patch": [
+    {
+      "case": "TARGET_CHANGED_2027_TO_2028_AND_OLD_DATE",
+      "incorrectly_reused": true
+    },
+    {
+      "case": "NEW_UNINDEXED_FINANCIAL_INPUT",
+      "stale_reasons": []
+    },
+    {
+      "case": "MODEL_ARCHIVED_AFTER_OUTCOME",
+      "incorrectly_accepted_pairs": 1
+    }
+  ],
+  "corrected_behaviors": [
+    "Target change and clock boundaries require recomputation",
+    "New, revised, deleted or repaired dynamic inputs and linked bytes invalidate cache",
+    "Full-result hashes and compact/full context must match",
+    "Both actual archive and estimate clocks must precede the signal",
+    "Frozen receipt identity must match its frozen payload"
+  ],
+  "real_archived_data_smoke": {
+    "asof": "2026-10-22T08:15:46.282805+08:00",
+    "price_date": "2026-10-21",
+    "normalized_issuers": 1978,
+    "priced_issuers": 1987,
+    "model_rows": 1998,
+    "tracked_issuer_universe": 1998,
+    "original_latest_issuer_numeric_coverage": 66,
+    "official_current_bulk_issuers": 1936,
+    "primary_research_rankable": 53,
+    "market_research_rankable": 795,
+    "not_rankable": 1203,
+    "broad_unverified_historical_detail_rankable": 795,
+    "source_errors": 0,
+    "issuer_failures": 0,
+    "formal_Aplus": 0,
+    "formal_Aplusplus": 0,
+    "changed_scenario_or_rating_issuers": [],
+    "existing_frozen_receipts_verified": 56,
+    "existing_frozen_receipt_errors": 0
+  },
+  "real_cache_rebuild_reuse_and_target_switch": {
+    "schema": "V8102_CACHE_ACCEPTANCE",
+    "asof": "2026-10-22T08:16:56.492485+08:00",
+    "first": {
+      "status": "REBUILT_FROM_VALIDATED_SOURCES",
+      "rebuilt": true,
+      "reasons": [
+        "MODEL_VERSION_CHANGED",
+        "RUNTIME_CODE_CHANGED",
+        "SOURCE_MANIFEST_OR_LEDGER_CHANGED"
+      ]
+    },
+    "unchanged_second": {
+      "status": "CURRENT_HASHED_RESEARCH_REUSED",
+      "rebuilt": false
+    },
+    "changed_target_third": {
+      "status": "REBUILT_FROM_VALIDATED_SOURCES",
+      "rebuilt": true,
+      "reasons": [
+        "FORECAST_TARGET_DATE_CHANGED"
+      ]
+    },
+    "verified_final_target": "2028-12-31"
+  },
+  "limits": [
+    "Engineering controls and cached-data reproduction are not investment outperformance evidence.",
+    "Full original notes, issuer 2027 operating bridges and mature net-of-cost OOS remain pending.",
+    "Archive clocks are system records, not independently notarized timestamps.",
+    "Remote CI and merged publication must be checked separately after this receipt."
+  ]
+}

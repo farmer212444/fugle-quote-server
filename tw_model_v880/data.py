@@ -4,14 +4,48 @@ from .evidence import timestamp
 from .math import number,quarter_key,quarter_end,previous_periods
 def read(p):return json.loads(pathlib.Path(p).read_text())
 def sha(b):return hashlib.sha256(b).hexdigest()
+SOURCE_JSON_PATTERNS=('evidence/v880/certificates/*.json','evidence/v880/issuer_bridges/*.json',
+    'evidence/v880/matched_peers/*.json','evidence/v880/capital_terms/*.json',
+    'evidence/v880/originals/*/manifest.json')
+
+def source_ledgers(root):
+    return sorted({p for pattern in SOURCE_JSON_PATTERNS for p in root.glob(pattern)})
+
+def nested_records(value):
+    if isinstance(value,dict):
+        yield value
+        for child in value.values():yield from nested_records(child)
+    elif isinstance(value,list):
+        for child in value:yield from nested_records(child)
+
 def model_source_state(root):
+    """Inventory dynamic inputs and linked bytes, including currently missing files.
+
+    Old consumption receipts alone cannot discover a newly added statement or a
+    repaired source that the previous run could not consume.
+    """
     root=pathlib.Path(root).resolve()
     required=('prices/latest_manifest.json','fundamentals/latest_scan.json','latest_manifest.json','evidence/v880/manifest.json')
     state={name:sha((root/name).read_bytes()) for name in required}
-    folder=root/'evidence/v880'
-    for sub in ('certificates','issuer_bridges','matched_peers','capital_terms'):
-        for path in sorted((folder/sub).rglob('*.json')):state[path.relative_to(root).as_posix()]=sha(path.read_bytes())
-    for path in sorted((folder/'originals').glob('*/manifest.json')):state[path.relative_to(root).as_posix()]=sha(path.read_bytes())
+    paths=set(source_ledgers(root))
+    for pattern in ('financial_history/*/*_income_shard*.json','*-12/revenue_*.json'):
+        paths.update(root.glob(pattern))
+    paths.update(p for p in (root/'fundamentals').glob('*/*_*.json')
+                 if p.name in ('TWSE_income.json','TPEX_income.json','TWSE_cashflow.json','TPEX_cashflow.json'))
+    for ledger in source_ledgers(root):
+        try:document=read(ledger)
+        except (ValueError,OSError):continue  # Content hash still invalidates the cache; loader isolates the error.
+        for item in nested_records(document):
+            rel=item.get('archive_path') or (item.get('path') if 'sha256' in item else None)
+            if not isinstance(rel,str) or not rel:continue
+            rel=pathlib.Path(rel)
+            if rel.parts and rel.parts[0]==root.name:rel=pathlib.Path(*rel.parts[1:])
+            target=(root/rel).resolve()
+            if rel.is_absolute() or '..' in rel.parts or root not in target.parents:
+                raise ValueError('SOURCE_STATE_UNSAFE_ARCHIVE_PATH')
+            paths.add(target)
+    for path in sorted(paths):
+        state[path.relative_to(root).as_posix()]=sha(path.read_bytes()) if path.is_file() else None
     return state
 def ensure_vintage(e,asof):
     cut=timestamp(asof)
@@ -41,6 +75,7 @@ class MarketData:
             try:
                 year=int(p.parent.name[:4])
                 if year>=self.asof.year:continue
+                self.receipt(p,'DATED_DECEMBER_MONTHLY_REVENUE_BRIDGE_NOT_AUDITED_ANNUAL')
                 for row in read(p):
                     d=str(row.get('batch_date',''));release=f'{int(d[:3])+1911}-{d[3:5]}-{d[5:7]}' if len(d)==7 else d
                     if release and release<=asof[:10] and str(row.get('report_month','')).endswith('12'):

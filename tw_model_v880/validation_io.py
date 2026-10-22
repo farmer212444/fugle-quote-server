@@ -84,9 +84,10 @@ def collect_trials(root,asof):
                             raise ValueError('UNSAFE_FROZEN_MODEL_PATH')
                         receipt=verify_frozen_receipt(frozen)
                         strategy_id=receipt.get('strategy_variant_sha256') or receipt['model_code_sha256']
-                        if strategy_id!=spec[variant+'_model_sha256'] or timestamp(receipt['estimate_vintage'])>signal:
+                        frozen_at=max(timestamp(receipt['estimate_vintage']),timestamp(receipt['archived_at_utc']))
+                        if strategy_id!=spec[variant+'_model_sha256'] or frozen_at>signal:
                             raise ValueError('MODEL_NOT_FROZEN_BEFORE_SIGNAL_OR_WRONG_VARIANT')
-                        frozen_times[variant]=receipt['estimate_vintage']
+                        frozen_times[variant]=frozen_at.isoformat()
                         if spec.get('selection_rule')!='RESEARCH_TOP10_EQUAL_WEIGHT_NEXT_OPEN':
                             raise ValueError('UNSUPPORTED_PREDECLARED_SELECTION_RULE')
                         frozen_model=json.loads((frozen.parent/'latest_research.json').read_text())

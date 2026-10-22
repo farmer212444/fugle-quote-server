@@ -207,6 +207,14 @@ def verify_frozen_receipt(receipt_path):
     compact=json.loads((receipt_path.parent/"latest_research.json").read_bytes())
     full_bytes=gzip.decompress((receipt_path.parent/"full_results.json.gz").read_bytes())
     full=json.loads(full_bytes)
+    if aware(receipt['archived_at_utc'])<aware(receipt['estimate_vintage']):
+        raise ValueError('FROZEN_ARCHIVE_BEFORE_ESTIMATE')
+    for key in ('model','model_code_sha256','strategy_variant_sha256','financial_last_quarter','revenue_month'):
+        if receipt.get(key)!=compact.get(key) or (key in full and full[key]!=compact.get(key)):
+            raise ValueError('FROZEN_MODEL_IDENTITY_MISMATCH_'+key)
+    if (receipt.get('strategy_variant','current-information')!=compact.get('strategy_variant','current-information')
+            or receipt.get('issuer_market_reference_date')!=compact.get('asof_price_date')):
+        raise ValueError('FROZEN_MODEL_IDENTITY_MISMATCH_CONTEXT')
     if (compact.get("estimate_vintage")!=receipt.get("estimate_vintage")
             or full.get("estimate_vintage")!=receipt.get("estimate_vintage")
             or len(full.get("all_model_rows",[]))!=receipt.get("model_issuer_universe_count")):
