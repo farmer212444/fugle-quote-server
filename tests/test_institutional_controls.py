@@ -350,6 +350,9 @@ class WalkForwardControls(unittest.TestCase):
     def test_local_signal_day_is_not_previous_utc_day_before_eight_am(self):
         self.assertEqual(taipei_signal_date('2026-10-21T00:10:00+08:00'),'2026-10-21')
         self.assertEqual(taipei_signal_date('2026-10-20T16:10:00+00:00'),'2026-10-21')
+        self.assertEqual(taipei_signal_date(dt.datetime.fromisoformat('2026-10-20T16:10:00+00:00')),'2026-10-21')
+        with self.assertRaisesRegex(ValueError,'TIMEZONE_REQUIRED'):
+            taipei_signal_date(dt.datetime(2026,10,21,0,10))
 
     def test_post_outcome_probabilities_cannot_be_calibrated(self):
         row=dict(sample_id='X',predicted_probability=.9,outcome=True,
