@@ -1,0 +1,60 @@
+{
+  "schema": "ISSUER_EARNINGS_VERSION_REVIEW_V1",
+  "issuer": "9802",
+  "financial_period": "2026-Q3",
+  "extraction_recipe": "9802_2026Q3_ISSUER_PRESS_TABLE_V1",
+  "reviewed_at": "2026-10-23T23:12:56.935219+00:00",
+  "decision": "EQUIVALENT_FINANCIAL_CONTENT_REVIEWED_COLOUR_CHANGE_ONLY",
+  "full_two_page_text_and_table_reviewed": true,
+  "canonical_source_sha256": "db0e21319d08c090541994e0c3b5d5d9173566f32fedcabdcb79d2a3bd2d6b9f",
+  "normalized_all_pages_sha256": "4d27a6e58346c743b24040741830f94d8abb1a7ec99351cd70a128a7c0ef6def",
+  "parsed_facts_sha256": "7f7f4ef5ea525e2adde94c6db40509dbf16c3d642110797257317d4b704e2a4b",
+  "versions": [
+    {
+      "source_url": "https://www.fulgentsun.com/img/News_Release/FY2026%203Q%20financial%20results%20CN.pdf",
+      "archive_path": "evidence/v880/originals/9802/2026-10-20_a76fdaea143f3b809835_db0e21319d08c090.pdf",
+      "sha256": "db0e21319d08c090541994e0c3b5d5d9173566f32fedcabdcb79d2a3bd2d6b9f",
+      "bytes": 356486,
+      "captured_at_utc": "2026-10-20T23:27:43.391629+00:00",
+      "rendered_page_sha256_144dpi_rgb": [
+        "4d916ce2054650e874c7ba832b7b75f26e95073130f55393e822759ab5b3dc2d",
+        "2973f69ea4118414dd965a053629f535aca23126d66fa294bc85d0dc8a4cd803"
+      ]
+    },
+    {
+      "source_url": "https://www.fulgentsun.com/img/News_Release/FY2026%203Q%20financial%20results%20CN(1).pdf",
+      "archive_path": "evidence/v880/originals/9802/2026-10-20_1d2e2fa0b8cdc20a3231_b0284bd81dd8af47.pdf",
+      "sha256": "b0284bd81dd8af47c87fec41cf250eb5442fa61eb8689beaa4ff50c977e899a5",
+      "bytes": 356509,
+      "captured_at_utc": "2026-10-22T12:20:09.559354+00:00",
+      "rendered_page_sha256_144dpi_rgb": [
+        "4d916ce2054650e874c7ba832b7b75f26e95073130f55393e822759ab5b3dc2d",
+        "999b4b8c85481e3ea26015962dc66ea9ca56bf4bb16230e6a37fc451bc547140"
+      ]
+    }
+  ],
+  "current_issuer_source_rechecks": [
+    {
+      "source_url": "https://www.fulgentsun.com/img/News_Release/FY2026%203Q%20financial%20results%20CN.pdf",
+      "sha256": "db0e21319d08c090541994e0c3b5d5d9173566f32fedcabdcb79d2a3bd2d6b9f",
+      "bytes": 356486,
+      "checked_at_utc": "2026-10-23T23:10:16.062650+00:00"
+    },
+    {
+      "source_url": "https://www.fulgentsun.com/img/News_Release/FY2026%203Q%20financial%20results%20CN(1).pdf",
+      "sha256": "b0284bd81dd8af47c87fec41cf250eb5442fa61eb8689beaa4ff50c977e899a5",
+      "bytes": 356509,
+      "checked_at_utc": "2026-10-23T23:10:16.260713+00:00"
+    }
+  ],
+  "visual_difference": {
+    "page": 2,
+    "item": "2026/Q2 業外匯兌評價影響數 (0.19)",
+    "change": "原件 CN(1) 將該負數文字由黑色改為紅色；括號、金額、欄位及其他全文相同。"
+  },
+  "financial_numeric_changes_found": false,
+  "source_kind": "ISSUER_SELF_REPORTED_UNAUDITED",
+  "formal_quality_pass": false,
+  "historical_issuer_publication_PIT_verified": false,
+  "limitations": "Limited to the two exact archived SHA256 originals. This dated review is not retroactive filing-time proof, an audited Q3 statement, a forecast bridge, or a quality-gate certification."
+}

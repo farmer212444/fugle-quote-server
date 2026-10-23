@@ -9,6 +9,7 @@ SOURCE_JSON_PATTERNS=('evidence/v880/certificates/*.json','evidence/v880/issuer_
     'evidence/v880/governance/*.json','evidence/v880/equity_offerings/*.json',
     'evidence/v880/auditor_scope_watch/*.json',
     'evidence/v880/working_capital_watch/*.json',
+    'evidence/v880/earnings_version_reviews/*.json',
     'evidence/v880/originals/*/manifest.json')
 
 def source_ledgers(root):
@@ -150,7 +151,11 @@ class MarketData:
             if state.get('blocks_current_decision'):
                 self.errors.append(dict(source='issuer_earnings_event:'+code,error=state.get('reason',state['status'])))
         for event in self.earnings_events.values():
-            self.receipt(self.path(event['archive_path']),'ISSUER_ORIGINAL_EARNINGS_TABLE_RECONCILED_NOT_FULL_NOTES_CERTIFICATION')
+            for source in event.get('equivalent_originals',[event]):
+                self.receipt(self.path(source['archive_path']),'ISSUER_ORIGINAL_EARNINGS_TABLE_RECONCILED_NOT_FULL_NOTES_CERTIFICATION')
+            if event.get('source_version_review'):
+                self.receipt(self.path(event['source_version_review']['archive_path']),
+                             'DATED_EXACT_ORIGINAL_VERSION_CONTENT_REVIEW_NOT_FORMAL_QUALITY_PASS')
         from .governance import load_governance_reviews
         self.governance_reviews,governance_errors,governance_receipts=load_governance_reviews(self.root,asof)
         self.errors.extend(governance_errors)
