@@ -27,6 +27,7 @@ from tw_model_v880.evidence import timestamp
 from tw_model_v880.execution import COST_FIELDS,net_trade
 from tw_model_v880.portfolio import finite
 from tw_model_v880.validation_io import source,taipei_signal_date
+from tw_model_v880.return_search import registered_trial_count
 
 PROTOCOL='TOP30_VS_TAIEX_TR_V1'
 SELECTION='RESEARCH_TOP30_EQUAL_WEIGHT_NEXT_SESSION_CLOSE'
@@ -352,7 +353,7 @@ def build(root,asof):
     root=Path(root).resolve();index=load_index(root,asof);trials=[];queue={};cache={};needed_months=set()
     paths=sorted((root/'experiments/benchmark_registrations').glob('*.json'))
     # Count every registered design, including prior model comparisons.
-    trial_count=len(paths)+len(list((root/'experiments/registrations').glob('*.json')))
+    trial_count=len(paths)+len(list((root/'experiments/registrations').glob('*.json')))+registered_trial_count(root)
     primary_policy=root/'config/forward_top30_0050_v1.json'
     if primary_policy.exists():
         # Preserve the separate primary-original Top30/0050 experiment and

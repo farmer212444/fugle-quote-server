@@ -18,6 +18,7 @@ from scripts.history_archive import (archive_original, canonical, digest,
                                      frozen_forward_selections, verify_original)
 from scripts.run_research_pipeline import atomic_json
 from scripts.tw_history_backfill import historical_url, parse, request
+from tw_model_v880.return_search import frozen_search_cohorts
 
 SCHEMA='OFFICIAL_0050_UNADJUSTED_QUOTE_SOURCE_V1'
 TAIPEI=dt.timezone(dt.timedelta(hours=8))
@@ -71,10 +72,15 @@ def refresh(root,max_requests=2,fetcher=request,*,now=None):
     if digest(raw)!=manifest['normalized_sha256']:
         raise ValueError('ETF_REFERENCE_PRICE_RECEIPT_MISMATCH')
     selections=frozen_forward_selections(root)
+    search_cohorts=frozen_search_cohorts(root)
     months=set()
     for selection in selections:
         start=dt.datetime.fromisoformat(selection['next_eligible_open_only_after']).astimezone(TAIPEI)
         if start<=now:
+            months.update(month_range(start.date().isoformat(),asof))
+    for receipt,_ in search_cohorts:
+        start=dt.datetime.fromisoformat(receipt['signal_at']).astimezone(TAIPEI)
+        if start<=now and start.date().isoformat()<=asof:
             months.update(month_range(start.date().isoformat(),asof))
     required=sorted(months,reverse=True)
     pending_refresh=set(required)
@@ -121,7 +127,7 @@ def refresh(root,max_requests=2,fetcher=request,*,now=None):
     reference_covered=any(row['date']==asof for row in verified.get(asof[:7],[]))
     report=dict(schema=SCHEMA,benchmark_id='0050',reference_price_date=asof,
                 observed_at=dt.datetime.now(dt.timezone.utc).isoformat(),
-                frozen_monthly_cohorts=len(selections),required_months=required,
+                frozen_monthly_cohorts=len(selections),frozen_return_search_cohorts=len(search_cohorts),required_months=required,
                 verified_months=sorted(verified),missing_months=sorted(set(required)-set(verified)),
                 reference_session_quote_present=reference_covered,
                 months_needing_refresh=sorted(pending_refresh),
@@ -129,7 +135,7 @@ def refresh(root,max_requests=2,fetcher=request,*,now=None):
                                                         for rows in verified.values()),
                 requests_attempted=attempted,updated_months=updated,reused_months=reused,
                 source_errors=errors,
-                status=('NO_FROZEN_COHORT' if not selections else
+                status=('NO_FROZEN_COHORT' if not selections and not search_cohorts else
                         'QUOTE_SOURCES_COLLECTED_TOTAL_RETURN_PENDING' if len(verified)==len(required)
                         and not errors and reference_covered and not pending_refresh
                         else 'QUOTE_SOURCE_COLLECTION_INCOMPLETE'),

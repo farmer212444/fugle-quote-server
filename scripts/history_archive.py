@@ -32,6 +32,10 @@ def outstanding_benchmark_codes(root,market):
     # the broad TAIEX diagnostic. Collect both without mixing their outcomes.
     for selection in frozen_forward_selections(root):
         rows.extend(selection['research_top30'])
+    from tw_model_v880.return_search import frozen_search_cohorts
+    for _,cohort in frozen_search_cohorts(root):
+        for selection in cohort['selections'].values():
+            if selection['parameter_inputs_ready']:rows.extend(selection['positions'])
     for row in rows:
         if row.get('market')!=market:continue
         code=row.get('code')

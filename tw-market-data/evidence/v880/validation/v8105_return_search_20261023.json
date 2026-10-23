@@ -1,0 +1,65 @@
+{
+  "schema": "V8105_RETURN_SEARCH_VALIDATION",
+  "checked_at": "2026-10-23T08:43:49.469859+00:00",
+  "model": "V8.10.5",
+  "base_commit_sha": "754bd18ef8007333ff1338bdcc8abc4ad2d010fa",
+  "local_unittest_count": 549,
+  "new_unittest_count": 24,
+  "local_unittest_status": "PASS",
+  "full_pipeline_status": "SUCCESS",
+  "full_pipeline_elapsed_seconds": 60.134297,
+  "price_date": "2026-10-22",
+  "parameter_count": 240,
+  "family_count": 5,
+  "source_universe_count": 795,
+  "adv20_coverage": 59,
+  "feature_coverage": {
+    "forward_upside_pct": 795,
+    "revenue_acceleration_pp": 795,
+    "gross_margin_delta_pp": 795,
+    "ocf_to_sales": 795,
+    "momentum_63_21_pct": 0
+  },
+  "horizons": [
+    {
+      "holding_sessions": 21,
+      "parameter_count": 80,
+      "current_ready_parameter_count": 30,
+      "verified_return_periods": 0,
+      "walk_forward_test_periods": 0
+    },
+    {
+      "holding_sessions": 63,
+      "parameter_count": 80,
+      "current_ready_parameter_count": 30,
+      "verified_return_periods": 0,
+      "walk_forward_test_periods": 0
+    },
+    {
+      "holding_sessions": 126,
+      "parameter_count": 80,
+      "current_ready_parameter_count": 30,
+      "verified_return_periods": 0,
+      "walk_forward_test_periods": 0
+    }
+  ],
+  "preexisting_estimate_or_governance_changes": [],
+  "comparison_fields": [
+    "base",
+    "bear",
+    "bull",
+    "scenario_upside_pct",
+    "recommendation_blocked"
+  ],
+  "selected_live_model": null,
+  "formal_Aplus_count": 0,
+  "search_feature_source_errors": [],
+  "search_calendar_errors": [],
+  "regime_source_errors": [],
+  "retained_unrelated_model_source_error_count": 1,
+  "limitations": [
+    "Verified investment outcome periods are zero; engineering tests do not establish outperformance.",
+    "Historical financial PIT, full-window action/fillability reviews and 50-stock coverage remain incomplete.",
+    "Only source, fixed policy, documentation and this receipt are submitted; production creates fresh, actually timed cohorts."
+  ]
+}
