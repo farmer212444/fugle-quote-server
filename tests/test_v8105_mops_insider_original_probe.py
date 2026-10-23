@@ -122,6 +122,31 @@ class OriginalProbeTests(unittest.TestCase):
             self.assertIsNone(receipt["raw_report_rows"])
             self.assertIsNone(receipt["official_historical_published_at"])
 
+    def test_actual_original_sha_and_white_space_aliases_not_double_counted(self):
+        """Real archived MOPS payload invariants, not execution/PIT certification."""
+        import gzip
+        import hashlib
+        base = Path("tw-market-data/evidence/v880/insider_reviews/original_probe_archive/run_39946736657_1")
+        expected = {
+            ("9802", "2026-07"): 464,
+            ("9802", "2026-08"): 1101,
+            ("9802", "2026-09"): 231,
+            ("6965", "2026-07"): 63,
+            ("6965", "2026-08"): 20.052,
+            ("6965", "2026-09"): 228,
+        }
+        for (issuer, month), expected_net in expected.items():
+            with self.subTest(issuer=issuer, month=month):
+                folder = base / month / issuer
+                receipt = json.loads((folder / "receipt.json").read_bytes())
+                raw = gzip.decompress((folder / "original_http_response.gz").read_bytes())
+                self.assertEqual(hashlib.sha256(raw).hexdigest(), receipt["original_response_sha256"])
+                parsed = parse_api(raw, issuer, month)
+                group = provisional_role_dedup(parsed)
+                self.assertEqual(group["market_net_lots_provisional"], expected_net)
+                self.assertFalse(group["account_identity_certified"])
+                self.assertIsNone(receipt["official_historical_published_at"])
+
     def test_no_empty_results_mistaken_as_zero_trade(self):
         with self.assertRaisesRegex(ValueError, "API_HAS_NO_REPORT_ROWS"):
             parse_api(response([]), "9802", "2026-09")
