@@ -81,7 +81,7 @@ class MarketClosurePITTests(unittest.TestCase):
             ('source_url','https://example.com/typhoon'),
             ('markets',['TWSE']),
             ('observed_public_at','2026-10-24T12:00:00+08:00'),
-            ('date','2026-10-22')]:
+            ('date','2026-10-26')]:
             with self.subTest(change=change),tempfile.TemporaryDirectory() as tmp:
                 root=Path(tmp)
                 (root/'config').mkdir()
