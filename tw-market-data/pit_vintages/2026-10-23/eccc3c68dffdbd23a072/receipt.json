@@ -1,0 +1,53 @@
+{
+  "schema": "V897_PROSPECTIVE_SNAPSHOT_NOT_PIT_CERTIFIED",
+  "archived_at_utc": "2026-10-23T09:28:27.220470+00:00",
+  "issuer_market_reference_date": "2026-10-22",
+  "estimate_vintage": "2026-10-23T17:28:08.596096+08:00",
+  "financial_last_quarter": "2026-Q2",
+  "revenue_month": "2026-09",
+  "model": "V8.10.5",
+  "model_code_sha256": "420c2cc4c70a722f86c0f81f03fc58f98c677e732b72fc522ddb32373b17cb3d",
+  "strategy_variant": "current-information",
+  "strategy_variant_sha256": "183cf9de9b30280f1580d11a100d1973f6936ac68061ac8946b15294e108a8f1",
+  "model_repo_commit_before_generated_files": "0e7505e8f6cdaf07893c609df57357cddddba7da",
+  "model_issuer_universe_count": 2001,
+  "source_manifest_digests": {
+    "prices/latest_manifest.json": "ee307effc0db824acb781c51eac36d9d77369b5f3eb29788cbb4697b708b84ab",
+    "fundamentals/latest_scan.json": "ba66395135dc1659753c183f5286f84a1e372cb0861bb42051dceafea8d405bc",
+    "latest_manifest.json": "7c02f00bb378407c6f832404cfc15dcd6289257314bf967f97c311c5156f85e8",
+    "evidence/v880/manifest.json": "422c10b33d92633489cc2aef334dfdde3b76c328ce546df62423673e2cfef4fd"
+  },
+  "referenced_price_archive_path": "prices/2026-10-22.json",
+  "reference_quote_is_unadjusted": true,
+  "files": {
+    "research": {
+      "file": "latest_research.json",
+      "sha256": "a30f10a4e5d2bbf13a98ef65e1c853fd2bea894f34b9433c231094cd0230f03f",
+      "bytes": 1909580
+    },
+    "full": {
+      "file": "full_results.json.gz",
+      "sha256": "34096dc90bc33b0d9854feb68b0f23f10b24adb1366997bcb9cf51c2d2932f48",
+      "bytes": 2743909
+    },
+    "reference_price": {
+      "file": "reference_prices.json",
+      "sha256": "c05dbe58749d6b925a8c49f24c742d5097101b83084d92305edc3a021cfc2afe",
+      "bytes": 589591
+    }
+  },
+  "full_results_are_current_runtime_only": true,
+  "historical_original_filing_PIT_verified": false,
+  "historic_issuer_universe_PIT_verified": false,
+  "future_return_total_share_actions_verified": false,
+  "out_of_sample_trading_backtest_verified": false,
+  "formal_point_in_time_gate_pass": false,
+  "formal_out_of_sample_gate_pass": false,
+  "formal_Aplus_count_unmodified": 0,
+  "limitations": [
+    "The record freezes this model run; it does NOT retroactively certify prior models.",
+    "Time first seen by the model is not proof of historic issuer announcement time.",
+    "Unadjusted closes omit dividends, splits, delistings, fees, spreads and actual execution.",
+    "Future out-of-sample investment returns require subsequent dated prices and a formal PIT audit."
+  ]
+}
