@@ -46,7 +46,7 @@ class IRB110ProbeTests(unittest.TestCase):
     def test_capture_original_bytes_and_pit_pending(self):
         raw = html_doc()
         def opener(req, timeout):
-            self.assertIn("115IRB110_9.HTM", req.full_url)
+            self.assertIn("115IRB110_09.HTM", req.full_url)
             return FakeResponse(raw)
         with tempfile.TemporaryDirectory() as temp:
             rec = capture_month("2026-09", temp, opener=opener)
