@@ -70,6 +70,12 @@ class MarginReversionRiskTests(unittest.TestCase):
         self.assertLess(old["hypothetical_upside_at_original_PE_pct"],41)
         self.assertGreater(company["latest_halfyear_ocf_k_normalized_not_filing_original"],0)
         self.assertFalse(company["ocf_sustainability_verified"])
+        r=company["balance_sheet_risk_metrics"]
+        self.assertGreater(r["accounts_receivable_yoy_pct"],58)
+        self.assertGreater(r["inventory_yoy_pct"],30)
+        self.assertGreater(r["noncurrent_ppe_yoy_pct"],49)
+        self.assertTrue(r["receivable_growth_exceeds_Q2_revenue_growth"])
+        self.assertTrue(r["PPE_yearly_growth_exceeds_40_pct"])
 
     def test_bogus_current_gross_margin_disagreement_is_blocked(self):
         data,p,g=fixtures()
