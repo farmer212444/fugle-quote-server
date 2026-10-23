@@ -150,6 +150,7 @@ def run(data_dir,asof,target_date,out_dir=None,variant='current-information'):
     for r in evidence_priority['top10_evidence_first']:
         review_issues=[]
         if r['latest_month_reversal_warning']:review_issues.append('最新月營收轉弱')
+        if r['latest_standalone_quarter_margin_compression_warning']:review_issues.append('單季毛利率季減≥3pp')
         if r['reported_ytd_material_nonoperating_gap']:review_issues.append('業外比重較高')
         if r['reported_ytd_nonoperating_gap_exceeds_pretax']:review_issues.append('業外差額大於稅前淨利')
         if r['eps_runrate_near_zero_denominator']:review_issues.append('年化EPS分母過小')
@@ -162,6 +163,18 @@ def run(data_dir,asof,target_date,out_dir=None,variant='current-information'):
         tier='原始當期數字' if r['original_current_numeric_reconciled'] else '官方彙總'
         report.append(f"|{r['review_rank']}|{r['code']} {r['name']}|{tier}|{r['base_upside_pct']:+.1f}%|"
                       f"{fmt(r['eps_pe_each_minus20_upside_pct'])}%|{'、'.join(review_issues)}|")
+    margin_watch=[x for x in evidence_priority['top10_evidence_first']
+                  if x['latest_standalone_quarter_margin_compression_warning']]
+    if margin_watch:
+        report+=['','### 單季毛利率變化（累計財報相減）','',
+            '以同一年度累計營收與毛利相減，還原單季毛利率，對比上一單季。'
+            '這是營運品質研究警示，不代表全年毛利轉折已確立，也不直接調低2027 Base EPS、PE或A+。','']
+        for x in margin_watch:
+            report.append(f"- {x['code']} {x['name']}：前一單季毛利率 "
+                          f"{x['prior_standalone_quarter_gm_pct']:.2f}% → 最新單季 "
+                          f"{x['latest_standalone_quarter_gm_pct']:.2f}%（季差 "
+                          f"{x['latest_quarter_gm_qoq_change_pp']:+.2f}百分點）；"
+                          '需補公司各業務毛利、收入認列、成本分攤及存貨等原始附註。')
     priority_eps_watch=[x for x in evidence_priority['top10_evidence_first']
                         if x['reported_ytd_material_nonoperating_gap'] or x['requires_2027_eps_stepup_bridge']]
     if priority_eps_watch:
