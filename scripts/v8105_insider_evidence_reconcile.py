@@ -17,7 +17,11 @@ import pathlib
 import re
 import unicodedata
 from collections import Counter
+import sys
 
+REPO_ROOT = pathlib.Path(__file__).resolve().parents[1]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
 from scripts.v8105_mops_insider_original_probe import parse_api, provisional_role_dedup
 
 CODES = ("9802", "6965")
