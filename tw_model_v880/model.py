@@ -5,6 +5,7 @@ from .evidence import GATES,POLICY,certify,gate,timestamp
 from .specialists import issuer_case
 from .provenance import code_fingerprint
 from .margin_recovery import assess_margin_recovery
+from .margin_velocity import recent_quarter_gm_velocity
 from .revenue_leading import revenue_leading_signal
 from .cycle_alpha import is_cyclical
 from .contracts import forecast_binding,matches_forecast
@@ -110,6 +111,7 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
     if years<0 or years>3:raise ValueError('FORECAST_HORIZON_OUTSIDE_SUPPORTED_RANGE')
     r_base=r_current_year*max(.05,1+g)**years
     gm_fy=fyvals['gross_profit_k']/rfy;gm_now=current['gross_profit_k']/r;gm_prior=number(pr['gross_profit_ytd_k'])/prior_r
+    quarter_margin_velocity=recent_quarter_gm_velocity(rs,valuation_period)
     cost_fy=(fyvals['gross_profit_k']-fyvals['operating_profit_k'])/rfy;cost_now=(current['gross_profit_k']-current['operating_profit_k'])/r
     cost_prior=(number(pr['gross_profit_ytd_k'])-number(pr['operating_profit_ytd_k']))/prior_r
     if min(cost_fy,cost_now,cost_prior)<0:return dict(code=code,name=latest.get('name'),status='OPERATING_OTHER_GAINS_OR_SEGMENT_MODEL_REQUIRED',rankable=False)
@@ -265,7 +267,8 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
         trend_inputs=dict(financial_ytd_yoy=gh,monthly_ytd_yoy=yy/100,latest_month_yoy=my/100),
         annual_forward_growth_is_extrapolation_not_validated=True,issuer_capacity_order_ASP_cost_bridge_complete=bool(e.get('issuer_operating_bridges',{}).get(code))),
       coefficient_training=dict(train_target=calibration.get('train_target'),training_cases=calibration['train_count'],revenue_persistence=calibration['revenue_persistence'],margin_persistence=calibration['margin_persistence'],cost_persistence=calibration['cost_persistence']),
-      margin_bridge=dict(prior_full_year_gm=gm_fy,current_ytd_gm=gm_now,prior_ytd_gm=gm_prior,unadjusted_base_gm=raw_base_gm,base_gm=base['gross_margin'],base_opex_ratio=cost),margin_recovery=recovery,
+      margin_bridge=dict(prior_full_year_gm=gm_fy,current_ytd_gm=gm_now,prior_ytd_gm=gm_prior,unadjusted_base_gm=raw_base_gm,base_gm=base['gross_margin'],base_opex_ratio=cost,
+        quarter_margin_velocity=quarter_margin_velocity),margin_recovery=recovery,
       nonoperating_bridge=dict(base_k=nonop,method=nonop_status,component_assumptions_certified=False,
         reported_ytd_gap_k=current['pretax_profit_k']-current['operating_profit_k'],
         reported_ytd_pretax_k=current['pretax_profit_k'],

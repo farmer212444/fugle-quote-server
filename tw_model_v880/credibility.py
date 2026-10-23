@@ -35,6 +35,13 @@ def research_priority_entry(row,holdout=None):
     if ocf is None:warning.append('OCF_SOURCE_INCOMPLETE')
     if special:warning.append('SPECIALIST_BUSINESS_FORECAST_REQUIRED')
     if row.get('margin_recovery',{}).get('applied'):warning.append('MARGIN_RECOVERY_NOT_ISSUER_CERTIFIED')
+    margin_velocity=(row.get('margin_bridge') or {}).get('quarter_margin_velocity') or {}
+    latest_gm_qoq_delta_pp=margin_velocity.get('recent_standalone_vs_previous_gm_delta_pp')
+    strong_recent_margin_compression=(_finite(latest_gm_qoq_delta_pp) and
+        latest_gm_qoq_delta_pp<=-3)
+    if strong_recent_margin_compression:
+        warning.append('LATEST_STANDALONE_QUARTER_GM_FELL_GE3PP_QOQ')
+
     if not (row.get('pe_bridge') or {}).get('exact_matched_peer_review_complete'):
         warning.append('PEER_PE_NOT_CERTIFIED')
     if not row.get('company_forecast_confirmed'):
@@ -121,6 +128,12 @@ def research_priority_entry(row,holdout=None):
         requires_2027_eps_stepup_bridge=requires_eps_bridge,
         ytd_annualized_reference_not_profit_forecast=True,
         earnings_quality_flags_do_not_change_base_or_priority=True,
+        latest_standalone_quarter_gm_pct=margin_velocity.get('current_standalone_gm_pct'),
+        prior_standalone_quarter_gm_pct=margin_velocity.get('previous_standalone_gm_pct'),
+        latest_quarter_gm_qoq_change_pp=latest_gm_qoq_delta_pp if _finite(latest_gm_qoq_delta_pp) else None,
+        latest_standalone_quarter_margin_compression_warning=strong_recent_margin_compression,
+        standalone_quarter_margin_source_not_full_original_notes_verified=True,
+        quarterly_margin_warning_changes_base_or_rank=False,
         research_decision='REVIEW_ONLY_NOT_BUY'
     )
     # Explicit, auditable lexicographic research-order policy:
