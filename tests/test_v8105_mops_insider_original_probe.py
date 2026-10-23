@@ -5,7 +5,7 @@ import unittest
 from pathlib import Path
 
 from scripts.v8105_mops_insider_original_probe import (
-    capture_single, digest, json_bytes, month_parts, parse_api,
+    capture_single, digest, json_bytes, month_parts, parse_api, provisional_role_dedup,
 )
 
 
@@ -88,6 +88,30 @@ class OriginalProbeTests(unittest.TestCase):
             self.assertEqual(gzip.decompress(saved.read_bytes()), raw)
             normalized = json.loads((Path(folder)/"2026-09"/"9802"/"unverified_rows.json").read_text())
             self.assertTrue(normalized["net_sum_is_not_certified"])
+
+    def test_unnamed_spouse_rows_are_valid_but_not_identity_certified(self):
+        one = row()
+        one[0] = "董事本人之配偶及未成年子女"
+        one[1] = ""
+        parsed = parse_api(response([one]), "6965", "2026-09")
+        self.assertEqual(parsed[0]["name"], "")
+        result = provisional_role_dedup(parsed)
+        self.assertEqual(result["unidentified_related_position_count"], 1)
+        self.assertFalse(result["account_identity_certified"])
+
+    def test_same_holder_five_roles_count_once_provisionally(self):
+        original = row()
+        original[1] = "MEINDL INT'L Co., LTD."
+        original[8] = "231,000"
+        other = original.copy()
+        other[0] = "總經理利用他人名義持有者"
+        more = original.copy()
+        more[0] = "大股東本人"
+        raw = response([original, other, more])
+        result = provisional_role_dedup(parse_api(raw, "9802", "2026-09"))
+        self.assertEqual(result["market_net_lots_provisional"], 230.8)
+        self.assertEqual(result["repeated_role_group_count"], 1)
+        self.assertFalse(result["formal_insider_quality_pass"])
 
     def test_network_failure_cannot_fake_original_hash(self):
         def opener(req, timeout):
