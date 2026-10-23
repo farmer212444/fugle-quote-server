@@ -80,6 +80,8 @@ def research_priority_entry(row,holdout=None):
     special=bool(row.get('specialist_model_requirements'))
     cash=row.get('liquidity') or {}
     ocf=cash.get('ocf_k')
+    cash_quarter=cash.get('operating_cashflow_quarter_bridge') or {}
+    cash_quarter_recovery=bool(cash_quarter.get('changed_sign_after_q1'))
     warning=[]
     if not source_original:warning.append('HISTORICAL_OR_ORIGINAL_ISSUER_DETAILS_UNVERIFIED')
     if pending_offering:warning.append('ANNOUNCED_EQUITY_OFFERING_REQUIRES_SHARE_RECONCILIATION')
@@ -193,6 +195,9 @@ def research_priority_entry(row,holdout=None):
         standalone_quarter_margin_source_not_full_original_notes_verified=True,
         quarterly_margin_warning_changes_base_or_rank=False,
         recent_quarter_gm_flat_2027_sensitivity=recent_margin_flat,
+        operating_cashflow_quarter_bridge=cash_quarter,
+        latest_q2_standalone_ocf_recovered_after_q1=cash_quarter_recovery,
+        quarterly_ocf_observation_not_certified=True,
         mechanical_margin_sensitivity_changes_base_or_rank=False,
         research_decision='REVIEW_ONLY_NOT_BUY'
     )
