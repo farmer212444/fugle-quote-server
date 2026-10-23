@@ -160,11 +160,29 @@ def run(data_dir,asof,target_date,out_dir=None,variant='current-information'):
         if r['pending_offering']:review_issues.append('現增')
         if r['cb_terms_or_shares_unresolved']:review_issues.append('CB/股數')
         if 'NEGATIVE_OCF_REQUIRES_WORKING_CAPITAL_BRIDGE_NOT_AUTOMATIC_FAIL' in r['warning_flags']:review_issues.append('OCF/營運資金')
+        if r['latest_q2_standalone_ocf_recovered_after_q1']:review_issues.append('Q2單季OCF轉正（未認證）')
         if 'MARGIN_RECOVERY_NOT_ISSUER_CERTIFIED' in r['warning_flags']:review_issues.append('毛利恢復')
         review_issues+=['全年EPS/PE、13門檻']
         tier='原始當期數字' if r['original_current_numeric_reconciled'] else '官方彙總'
         report.append(f"|{r['review_rank']}|{r['code']} {r['name']}|{tier}|{r['base_upside_pct']:+.1f}%|"
                       f"{fmt(r['eps_pe_each_minus20_upside_pct'])}%|{'、'.join(review_issues)}|")
+    ocf_recovery=[x for x in evidence_priority['top10_evidence_first']
+                  if x['latest_q2_standalone_ocf_recovered_after_q1']]
+    if ocf_recovery:
+        report+=['','### 單季營業現金流（累計現金流量表相減）','',
+            'Q2 單季OCF＝上半年累計OCF－第一季OCF。數字單位為億元新台幣；'
+            '這是標準化官方累計資料之研究計算，尚非原始逐筆應收／存貨／應付及附註稽核。','',
+            '|公司|Q1 OCF|Q2 單季OCF|上半年累計 OCF|現金流解讀|',
+            '|---|---:|---:|---:|---|']
+        for x in ocf_recovery:
+            v=x['operating_cashflow_quarter_bridge']
+            label='上半年仍負' if v['h1_or_current_ytd_ocf_still_negative'] else '上半年轉正'
+            report.append(f"|{x['code']} {x['name']}|{v['previous_ytd_ocf_k']/100000:+.2f}|"
+                          f"{v['latest_standalone_ocf_k']/100000:+.2f}|"
+                          f"{v['latest_ytd_ocf_k']/100000:+.2f}|{label}；仍需營運資金及收款勾稽|")
+        report+=['',
+          '⚠️ 單季轉正不是現金品質PASS，亦不能據此認定應收回收良好或恢復長期自由現金流；'
+          '上半年負OCF個股仍保留負OCF警示和待驗門檻。','']
     margin_watch=[x for x in evidence_priority['top10_evidence_first']
                   if x['latest_standalone_quarter_margin_compression_warning']]
     if margin_watch:

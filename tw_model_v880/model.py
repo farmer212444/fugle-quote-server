@@ -6,6 +6,7 @@ from .specialists import issuer_case
 from .provenance import code_fingerprint
 from .margin_recovery import assess_margin_recovery
 from .margin_velocity import recent_quarter_gm_velocity
+from .cashflow_velocity import operating_cashflow_quarter_bridge
 from .revenue_leading import revenue_leading_signal
 from .cycle_alpha import is_cyclical
 from .contracts import forecast_binding,matches_forecast
@@ -175,6 +176,8 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
     if capital_event:
         div=capital_event['dividend']['indicative_cash_twd']/1000;put=capital_event['convertible_put']['full_exercise_sensitivity_twd']/1000;warnings.append('OLD_CASH_DIVIDEND_AND_CB_PUT_STATIC_SENSITIVITY_ONLY')
     flow=liquidity(cash_k,ocf,ppe,prepaid,div,put)
+    flow['operating_cashflow_quarter_bridge']=operating_cashflow_quarter_bridge(
+        data.cash.get(key,{}),data.period,ocf)
     if ocf is not None and ocf<0:warnings.append('NEGATIVE_OCF_CYCLE_AND_COLLECTION_REVIEW')
     if gm_now<gm_prior:warnings.append('YTD_GROSS_MARGIN_DECLINED')
     leading_signal=revenue_leading_signal(my,yy,gh,gm_now,gm_prior)

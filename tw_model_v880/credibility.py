@@ -80,12 +80,18 @@ def research_priority_entry(row,holdout=None):
     special=bool(row.get('specialist_model_requirements'))
     cash=row.get('liquidity') or {}
     ocf=cash.get('ocf_k')
+    cash_quarter=cash.get('operating_cashflow_quarter_bridge') or {}
+    cash_quarter_recovery=bool(cash_quarter.get('changed_sign_after_q1'))
     warning=[]
     if not source_original:warning.append('HISTORICAL_OR_ORIGINAL_ISSUER_DETAILS_UNVERIFIED')
     if pending_offering:warning.append('ANNOUNCED_EQUITY_OFFERING_REQUIRES_SHARE_RECONCILIATION')
     if cb_unresolved:warning.append('CB_TERMS_OR_DENOMINATOR_NOT_SIGNED_OFF')
     if _finite(ocf) and ocf<0:warning.append('NEGATIVE_OCF_REQUIRES_WORKING_CAPITAL_BRIDGE_NOT_AUTOMATIC_FAIL')
     if ocf is None:warning.append('OCF_SOURCE_INCOMPLETE')
+    if cash_quarter_recovery:
+        warning.append('Q2_OCF_POSITIVE_WHILE_PRIOR_Q1_NEGATIVE_NOT_SUSTAINED_PROOF')
+    if cash_quarter.get('status')=='EFFECTIVE_CASHFLOW_SOURCE_MISMATCH_RECONCILIATION_REQUIRED':
+        warning.append('OCF_PRIMARY_AND_NORMALIZED_SOURCES_REQUIRE_RECONCILIATION')
     if special:warning.append('SPECIALIST_BUSINESS_FORECAST_REQUIRED')
     if row.get('margin_recovery',{}).get('applied'):warning.append('MARGIN_RECOVERY_NOT_ISSUER_CERTIFIED')
     margin_velocity=(row.get('margin_bridge') or {}).get('quarter_margin_velocity') or {}
@@ -193,6 +199,9 @@ def research_priority_entry(row,holdout=None):
         standalone_quarter_margin_source_not_full_original_notes_verified=True,
         quarterly_margin_warning_changes_base_or_rank=False,
         recent_quarter_gm_flat_2027_sensitivity=recent_margin_flat,
+        operating_cashflow_quarter_bridge=cash_quarter,
+        latest_q2_standalone_ocf_recovered_after_q1=cash_quarter_recovery,
+        quarterly_ocf_observation_not_certified=True,
         mechanical_margin_sensitivity_changes_base_or_rank=False,
         research_decision='REVIEW_ONLY_NOT_BUY'
     )
