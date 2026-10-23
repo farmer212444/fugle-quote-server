@@ -177,8 +177,10 @@ def prepare(evidence, rank, gate):
       "realized_2027_return_vs_0050":None,
       "formal_Aplus_additions":0,"orders_placed":0,
       "source_references":{
-         code:{year:original["observation_2025q2"]["release_url"]
-               for year in ["2025q2"]} for code,original in evidence["cases"].items()
+         code:{"2025q2_dated_release":original["observation_2025q2"]["release_url"],
+               "2026q2_dated_release":original["observation_2026q2"]["release_url"],
+               "original_full_issuer_filings_and_PIT_attested":False}
+         for code,original in evidence["cases"].items()
       },
       "issuers":out,
     }
