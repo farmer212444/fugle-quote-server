@@ -1,0 +1,84 @@
+{
+  "schema": "BUYBACK_SOURCE_READINESS_V1",
+  "as_of_taipei_date": "2026-10-24",
+  "research_only": true,
+  "formal_a_plus_unchanged": true,
+  "orders_created": false,
+  "historical_index_control": {
+    "id": "TWSE_TAIWAN50_TOTAL_RETURN_INDEX_NOT_ETF_0050",
+    "capture_run": "https://github.com/farmer212444/fugle-quote-server/actions/runs/40040560674",
+    "status": "MONTHLY_ORIGINALS_COLLECTED_AUDIT_PENDING",
+    "months_expected": 72,
+    "months_collected": 72,
+    "trading_date_rows": 1459,
+    "years": [
+      {
+        "year": 2020,
+        "months": 12,
+        "rows": 245
+      },
+      {
+        "year": 2021,
+        "months": 12,
+        "rows": 244
+      },
+      {
+        "year": 2022,
+        "months": 12,
+        "rows": 246
+      },
+      {
+        "year": 2023,
+        "months": 12,
+        "rows": 239
+      },
+      {
+        "year": 2024,
+        "months": 12,
+        "rows": 242
+      },
+      {
+        "year": 2025,
+        "months": 12,
+        "rows": 243
+      }
+    ],
+    "note": "Raw data and hashes live in short-retention CI artifacts, not committed as durable dataset. Index is not 0050 ETF total return."
+  },
+  "buyback_events": {
+    "source": "https://mops.twse.com.tw/mops/#/web/t35sc09",
+    "old_form_probe": "https://github.com/farmer212444/fugle-quote-server/actions/runs/40040712021",
+    "status": "ACCESS_RESTRICTED_SECURITY_PAGE_NOT_ZERO_EVENTS",
+    "historical_events_imported": 0,
+    "exact_publication_timestamps_verified": 0,
+    "observed_stock_returns": null,
+    "win_rate_3m": null,
+    "win_rate_6m": null,
+    "win_rate_12m": null,
+    "beat_0050_3m": null,
+    "beat_0050_6m": null,
+    "beat_0050_12m": null,
+    "alternative_data_source": {
+      "product": "TEJ TQuant Lab",
+      "dataset": "TWN/APITRS",
+      "license": "LICENSED_REQUIRE_USER_PERMISSION",
+      "page": "https://tquant.tejwin.com/資料集/",
+      "announcement_timestamps_still_need_verification": true
+    }
+  },
+  "official_listed_annual_coverage_checks": [
+    {
+      "year": 2020,
+      "buyback_cases": 177,
+      "companies": 149,
+      "source": "https://www.twse.com.tw/staticFiles/news/news/tsecnews/ff8080817698e3d40176cc9b72680059.pdf"
+    },
+    {
+      "year": 2025,
+      "buyback_cases": 167,
+      "companies": 128,
+      "source": "https://wwwc.twse.com.tw/staticFiles/news/news/tsecnews/8a8216d69a3d6cf9019b7e193bdf067e.pdf"
+    }
+  ],
+  "note": "Neither index archive nor cited studies certify any buyback event-alpha. Do not divide annual cases by this year's survivors; MOPS blocking is a transport issue, not zero companies."
+}
