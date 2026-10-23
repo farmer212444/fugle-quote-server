@@ -60,7 +60,6 @@ def assert_case(case, type_name):
     return dict(payload,case=case["case"],weight=weight,revenue_m=r,
                 gross_margin_pct=g,opex_rate_pct=e,
                 operating_profit_m=op,attributable_parent_profit_m=parent,
-                attributable_eps_undiluted_millions=None,
                 reasonable_pe=pe)
 
 
