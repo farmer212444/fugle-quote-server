@@ -14,7 +14,7 @@ if str(ROOT) not in sys.path:sys.path.insert(0,str(ROOT))
 from tw_model_v880 import VERSION
 from tw_model_v880.data import model_source_state,source_ledgers,nested_records
 from tw_model_v880.evidence import timestamp
-from tw_model_v880.freshness import assess_price_freshness
+from tw_model_v880.freshness import assess_price_freshness,load_dated_exchange_closures
 from tw_model_v880.provenance import code_fingerprint,runtime_dependencies
 
 
@@ -24,8 +24,9 @@ def time_reasons(root,meta,asof):
     try:
         vintage=timestamp(meta['estimate_vintage'])
         reference=meta['asof_price_date']
-        old=assess_price_freshness(vintage.isoformat(),reference)
-        current=assess_price_freshness(cutoff.isoformat(),reference)
+        closures=load_dated_exchange_closures(root)
+        old=assess_price_freshness(vintage.isoformat(),reference,closures)
+        current=assess_price_freshness(cutoff.isoformat(),reference,closures)
     except (KeyError,ValueError,TypeError,AttributeError):
         return ['CACHE_TIME_CONTEXT_MISSING_OR_INVALID']
     if vintage>cutoff:return ['CACHE_ESTIMATE_FROM_FUTURE']
