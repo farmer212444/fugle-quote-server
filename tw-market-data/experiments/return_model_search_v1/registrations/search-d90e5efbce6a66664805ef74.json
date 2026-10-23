@@ -1,0 +1,3039 @@
+{
+  "schema": "RETURN_SEARCH_REGISTERED_HYPOTHESES_V1",
+  "experiment_id": "search-d90e5efbce6a66664805ef74",
+  "registered_at": "2026-10-23T23:45:51.840014+00:00",
+  "spec": {
+    "policy": {
+      "schema": "RETURN_MODEL_SEARCH_POLICY_V1",
+      "benchmark": "0050_NET_TOTAL_RETURN",
+      "objective": "MEAN_NET_LOG_EXCESS_RETURN_WITHIN_SAME_HORIZON",
+      "families": {
+        "valuation": {
+          "forward_upside_pct": 1.0
+        },
+        "growth": {
+          "revenue_acceleration_pp": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "momentum": {
+          "momentum_63_21_pct": 1.0
+        },
+        "quality": {
+          "ocf_to_sales": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "balanced": {
+          "forward_upside_pct": 0.2,
+          "revenue_acceleration_pp": 0.2,
+          "gross_margin_delta_pp": 0.2,
+          "ocf_to_sales": 0.2,
+          "momentum_63_21_pct": 0.2
+        }
+      },
+      "grid": {
+        "stock_counts": [
+          10,
+          20,
+          30,
+          50
+        ],
+        "holding_sessions": [
+          21,
+          63,
+          126
+        ],
+        "minimum_adv20_ntd": [
+          12000000,
+          30000000
+        ],
+        "sector_caps": [
+          0.25,
+          0.4
+        ]
+      },
+      "reference_capital_ntd": 10000000,
+      "max_daily_participation": 0.05,
+      "max_training_drawdown": 0.3,
+      "minimum_train_periods": 12,
+      "maximum_train_periods": 36,
+      "embargo_calendar_days": 5,
+      "minimum_oos_periods": 60,
+      "minimum_market_regimes": 2,
+      "bootstrap_draws": 20000,
+      "bootstrap_block_size": 5,
+      "stress_cost_multiplier_excluding_tax": 2,
+      "automatic_deployment": false,
+      "notes": [
+        "Predeclared research hypotheses, not optimized weights or probabilities.",
+        "Each holding horizon is separate; matched cohort results are not continuous buy-and-hold CAGR.",
+        "Missing features never become zero-return observations. Fractional shares and fixed costs are research assumptions.",
+        "Next official session open after actual archive; no retrospective August 1 picks. All13 quality gates remain."
+      ],
+      "costs": {
+        "stock": {
+          "buy_fee_rate": 0.001425,
+          "sell_fee_rate": 0.001425,
+          "sell_tax_rate": 0.003,
+          "buy_slippage_rate": 0.001,
+          "sell_slippage_rate": 0.001,
+          "half_spread_rate": 0.0005,
+          "minimum_fee_ntd": 20
+        },
+        "etf": {
+          "buy_fee_rate": 0.001425,
+          "sell_fee_rate": 0.001425,
+          "sell_tax_rate": 0.001,
+          "buy_slippage_rate": 0.001,
+          "sell_slippage_rate": 0.001,
+          "half_spread_rate": 0.0005,
+          "minimum_fee_ntd": 20
+        }
+      }
+    },
+    "parameters": [
+      {
+        "family": "balanced",
+        "weights": {
+          "forward_upside_pct": 0.2,
+          "revenue_acceleration_pp": 0.2,
+          "gross_margin_delta_pp": 0.2,
+          "ocf_to_sales": 0.2,
+          "momentum_63_21_pct": 0.2
+        },
+        "stock_count": 10,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.25,
+        "parameter_id": "382c2efb439025d25193"
+      },
+      {
+        "family": "balanced",
+        "weights": {
+          "forward_upside_pct": 0.2,
+          "revenue_acceleration_pp": 0.2,
+          "gross_margin_delta_pp": 0.2,
+          "ocf_to_sales": 0.2,
+          "momentum_63_21_pct": 0.2
+        },
+        "stock_count": 10,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.4,
+        "parameter_id": "31b1b4ff0e69bf68b6ed"
+      },
+      {
+        "family": "balanced",
+        "weights": {
+          "forward_upside_pct": 0.2,
+          "revenue_acceleration_pp": 0.2,
+          "gross_margin_delta_pp": 0.2,
+          "ocf_to_sales": 0.2,
+          "momentum_63_21_pct": 0.2
+        },
+        "stock_count": 10,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.25,
+        "parameter_id": "0f5732b8832991cda0ae"
+      },
+      {
+        "family": "balanced",
+        "weights": {
+          "forward_upside_pct": 0.2,
+          "revenue_acceleration_pp": 0.2,
+          "gross_margin_delta_pp": 0.2,
+          "ocf_to_sales": 0.2,
+          "momentum_63_21_pct": 0.2
+        },
+        "stock_count": 10,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.4,
+        "parameter_id": "d6b04b60687d287742af"
+      },
+      {
+        "family": "balanced",
+        "weights": {
+          "forward_upside_pct": 0.2,
+          "revenue_acceleration_pp": 0.2,
+          "gross_margin_delta_pp": 0.2,
+          "ocf_to_sales": 0.2,
+          "momentum_63_21_pct": 0.2
+        },
+        "stock_count": 10,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.25,
+        "parameter_id": "15049a6f0274cb829be7"
+      },
+      {
+        "family": "balanced",
+        "weights": {
+          "forward_upside_pct": 0.2,
+          "revenue_acceleration_pp": 0.2,
+          "gross_margin_delta_pp": 0.2,
+          "ocf_to_sales": 0.2,
+          "momentum_63_21_pct": 0.2
+        },
+        "stock_count": 10,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.4,
+        "parameter_id": "f7e055ec0375674c8c69"
+      },
+      {
+        "family": "balanced",
+        "weights": {
+          "forward_upside_pct": 0.2,
+          "revenue_acceleration_pp": 0.2,
+          "gross_margin_delta_pp": 0.2,
+          "ocf_to_sales": 0.2,
+          "momentum_63_21_pct": 0.2
+        },
+        "stock_count": 10,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.25,
+        "parameter_id": "375e23a435938c7d98a4"
+      },
+      {
+        "family": "balanced",
+        "weights": {
+          "forward_upside_pct": 0.2,
+          "revenue_acceleration_pp": 0.2,
+          "gross_margin_delta_pp": 0.2,
+          "ocf_to_sales": 0.2,
+          "momentum_63_21_pct": 0.2
+        },
+        "stock_count": 10,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.4,
+        "parameter_id": "d24436d06590d12ca776"
+      },
+      {
+        "family": "balanced",
+        "weights": {
+          "forward_upside_pct": 0.2,
+          "revenue_acceleration_pp": 0.2,
+          "gross_margin_delta_pp": 0.2,
+          "ocf_to_sales": 0.2,
+          "momentum_63_21_pct": 0.2
+        },
+        "stock_count": 10,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.25,
+        "parameter_id": "96a9fc747dca40cf2f59"
+      },
+      {
+        "family": "balanced",
+        "weights": {
+          "forward_upside_pct": 0.2,
+          "revenue_acceleration_pp": 0.2,
+          "gross_margin_delta_pp": 0.2,
+          "ocf_to_sales": 0.2,
+          "momentum_63_21_pct": 0.2
+        },
+        "stock_count": 10,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.4,
+        "parameter_id": "1bad928cad77ea904732"
+      },
+      {
+        "family": "balanced",
+        "weights": {
+          "forward_upside_pct": 0.2,
+          "revenue_acceleration_pp": 0.2,
+          "gross_margin_delta_pp": 0.2,
+          "ocf_to_sales": 0.2,
+          "momentum_63_21_pct": 0.2
+        },
+        "stock_count": 10,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.25,
+        "parameter_id": "ba911e8c663a44e08830"
+      },
+      {
+        "family": "balanced",
+        "weights": {
+          "forward_upside_pct": 0.2,
+          "revenue_acceleration_pp": 0.2,
+          "gross_margin_delta_pp": 0.2,
+          "ocf_to_sales": 0.2,
+          "momentum_63_21_pct": 0.2
+        },
+        "stock_count": 10,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.4,
+        "parameter_id": "3035fa16b58b59d9ad23"
+      },
+      {
+        "family": "balanced",
+        "weights": {
+          "forward_upside_pct": 0.2,
+          "revenue_acceleration_pp": 0.2,
+          "gross_margin_delta_pp": 0.2,
+          "ocf_to_sales": 0.2,
+          "momentum_63_21_pct": 0.2
+        },
+        "stock_count": 20,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.25,
+        "parameter_id": "aa76041aa1b3075e5e70"
+      },
+      {
+        "family": "balanced",
+        "weights": {
+          "forward_upside_pct": 0.2,
+          "revenue_acceleration_pp": 0.2,
+          "gross_margin_delta_pp": 0.2,
+          "ocf_to_sales": 0.2,
+          "momentum_63_21_pct": 0.2
+        },
+        "stock_count": 20,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.4,
+        "parameter_id": "3b41c02abfc6f37528dc"
+      },
+      {
+        "family": "balanced",
+        "weights": {
+          "forward_upside_pct": 0.2,
+          "revenue_acceleration_pp": 0.2,
+          "gross_margin_delta_pp": 0.2,
+          "ocf_to_sales": 0.2,
+          "momentum_63_21_pct": 0.2
+        },
+        "stock_count": 20,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.25,
+        "parameter_id": "f4322276d5a9027b3fef"
+      },
+      {
+        "family": "balanced",
+        "weights": {
+          "forward_upside_pct": 0.2,
+          "revenue_acceleration_pp": 0.2,
+          "gross_margin_delta_pp": 0.2,
+          "ocf_to_sales": 0.2,
+          "momentum_63_21_pct": 0.2
+        },
+        "stock_count": 20,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.4,
+        "parameter_id": "452714457c14d40bd8b6"
+      },
+      {
+        "family": "balanced",
+        "weights": {
+          "forward_upside_pct": 0.2,
+          "revenue_acceleration_pp": 0.2,
+          "gross_margin_delta_pp": 0.2,
+          "ocf_to_sales": 0.2,
+          "momentum_63_21_pct": 0.2
+        },
+        "stock_count": 20,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.25,
+        "parameter_id": "9cc916817f943e110210"
+      },
+      {
+        "family": "balanced",
+        "weights": {
+          "forward_upside_pct": 0.2,
+          "revenue_acceleration_pp": 0.2,
+          "gross_margin_delta_pp": 0.2,
+          "ocf_to_sales": 0.2,
+          "momentum_63_21_pct": 0.2
+        },
+        "stock_count": 20,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.4,
+        "parameter_id": "39c3a88798fd402516b6"
+      },
+      {
+        "family": "balanced",
+        "weights": {
+          "forward_upside_pct": 0.2,
+          "revenue_acceleration_pp": 0.2,
+          "gross_margin_delta_pp": 0.2,
+          "ocf_to_sales": 0.2,
+          "momentum_63_21_pct": 0.2
+        },
+        "stock_count": 20,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.25,
+        "parameter_id": "9b3ba2539c463c6f6aba"
+      },
+      {
+        "family": "balanced",
+        "weights": {
+          "forward_upside_pct": 0.2,
+          "revenue_acceleration_pp": 0.2,
+          "gross_margin_delta_pp": 0.2,
+          "ocf_to_sales": 0.2,
+          "momentum_63_21_pct": 0.2
+        },
+        "stock_count": 20,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.4,
+        "parameter_id": "c6e2a6f4768a388d9f2e"
+      },
+      {
+        "family": "balanced",
+        "weights": {
+          "forward_upside_pct": 0.2,
+          "revenue_acceleration_pp": 0.2,
+          "gross_margin_delta_pp": 0.2,
+          "ocf_to_sales": 0.2,
+          "momentum_63_21_pct": 0.2
+        },
+        "stock_count": 20,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.25,
+        "parameter_id": "bc6d91dd42fff7eb57c4"
+      },
+      {
+        "family": "balanced",
+        "weights": {
+          "forward_upside_pct": 0.2,
+          "revenue_acceleration_pp": 0.2,
+          "gross_margin_delta_pp": 0.2,
+          "ocf_to_sales": 0.2,
+          "momentum_63_21_pct": 0.2
+        },
+        "stock_count": 20,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.4,
+        "parameter_id": "baac15d54b055b61155a"
+      },
+      {
+        "family": "balanced",
+        "weights": {
+          "forward_upside_pct": 0.2,
+          "revenue_acceleration_pp": 0.2,
+          "gross_margin_delta_pp": 0.2,
+          "ocf_to_sales": 0.2,
+          "momentum_63_21_pct": 0.2
+        },
+        "stock_count": 20,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.25,
+        "parameter_id": "fb65618423466c52b150"
+      },
+      {
+        "family": "balanced",
+        "weights": {
+          "forward_upside_pct": 0.2,
+          "revenue_acceleration_pp": 0.2,
+          "gross_margin_delta_pp": 0.2,
+          "ocf_to_sales": 0.2,
+          "momentum_63_21_pct": 0.2
+        },
+        "stock_count": 20,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.4,
+        "parameter_id": "ffe4d258e9a3c98def67"
+      },
+      {
+        "family": "balanced",
+        "weights": {
+          "forward_upside_pct": 0.2,
+          "revenue_acceleration_pp": 0.2,
+          "gross_margin_delta_pp": 0.2,
+          "ocf_to_sales": 0.2,
+          "momentum_63_21_pct": 0.2
+        },
+        "stock_count": 30,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.25,
+        "parameter_id": "b47f766e2bbda11d17d4"
+      },
+      {
+        "family": "balanced",
+        "weights": {
+          "forward_upside_pct": 0.2,
+          "revenue_acceleration_pp": 0.2,
+          "gross_margin_delta_pp": 0.2,
+          "ocf_to_sales": 0.2,
+          "momentum_63_21_pct": 0.2
+        },
+        "stock_count": 30,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.4,
+        "parameter_id": "a9f38a4d160fd02da843"
+      },
+      {
+        "family": "balanced",
+        "weights": {
+          "forward_upside_pct": 0.2,
+          "revenue_acceleration_pp": 0.2,
+          "gross_margin_delta_pp": 0.2,
+          "ocf_to_sales": 0.2,
+          "momentum_63_21_pct": 0.2
+        },
+        "stock_count": 30,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.25,
+        "parameter_id": "7ac80b4248bf49e12576"
+      },
+      {
+        "family": "balanced",
+        "weights": {
+          "forward_upside_pct": 0.2,
+          "revenue_acceleration_pp": 0.2,
+          "gross_margin_delta_pp": 0.2,
+          "ocf_to_sales": 0.2,
+          "momentum_63_21_pct": 0.2
+        },
+        "stock_count": 30,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.4,
+        "parameter_id": "d2c174a30e3bc8e6666f"
+      },
+      {
+        "family": "balanced",
+        "weights": {
+          "forward_upside_pct": 0.2,
+          "revenue_acceleration_pp": 0.2,
+          "gross_margin_delta_pp": 0.2,
+          "ocf_to_sales": 0.2,
+          "momentum_63_21_pct": 0.2
+        },
+        "stock_count": 30,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.25,
+        "parameter_id": "23f857c42ce531b8ee65"
+      },
+      {
+        "family": "balanced",
+        "weights": {
+          "forward_upside_pct": 0.2,
+          "revenue_acceleration_pp": 0.2,
+          "gross_margin_delta_pp": 0.2,
+          "ocf_to_sales": 0.2,
+          "momentum_63_21_pct": 0.2
+        },
+        "stock_count": 30,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.4,
+        "parameter_id": "56d8f49021d94822342d"
+      },
+      {
+        "family": "balanced",
+        "weights": {
+          "forward_upside_pct": 0.2,
+          "revenue_acceleration_pp": 0.2,
+          "gross_margin_delta_pp": 0.2,
+          "ocf_to_sales": 0.2,
+          "momentum_63_21_pct": 0.2
+        },
+        "stock_count": 30,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.25,
+        "parameter_id": "489d4bc4242d8e219267"
+      },
+      {
+        "family": "balanced",
+        "weights": {
+          "forward_upside_pct": 0.2,
+          "revenue_acceleration_pp": 0.2,
+          "gross_margin_delta_pp": 0.2,
+          "ocf_to_sales": 0.2,
+          "momentum_63_21_pct": 0.2
+        },
+        "stock_count": 30,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.4,
+        "parameter_id": "949fcc0de2da2c5b2679"
+      },
+      {
+        "family": "balanced",
+        "weights": {
+          "forward_upside_pct": 0.2,
+          "revenue_acceleration_pp": 0.2,
+          "gross_margin_delta_pp": 0.2,
+          "ocf_to_sales": 0.2,
+          "momentum_63_21_pct": 0.2
+        },
+        "stock_count": 30,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.25,
+        "parameter_id": "c398fe68bc4418e64b58"
+      },
+      {
+        "family": "balanced",
+        "weights": {
+          "forward_upside_pct": 0.2,
+          "revenue_acceleration_pp": 0.2,
+          "gross_margin_delta_pp": 0.2,
+          "ocf_to_sales": 0.2,
+          "momentum_63_21_pct": 0.2
+        },
+        "stock_count": 30,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.4,
+        "parameter_id": "2884a8426446c03a336a"
+      },
+      {
+        "family": "balanced",
+        "weights": {
+          "forward_upside_pct": 0.2,
+          "revenue_acceleration_pp": 0.2,
+          "gross_margin_delta_pp": 0.2,
+          "ocf_to_sales": 0.2,
+          "momentum_63_21_pct": 0.2
+        },
+        "stock_count": 30,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.25,
+        "parameter_id": "2194c8a8a81487d3fccf"
+      },
+      {
+        "family": "balanced",
+        "weights": {
+          "forward_upside_pct": 0.2,
+          "revenue_acceleration_pp": 0.2,
+          "gross_margin_delta_pp": 0.2,
+          "ocf_to_sales": 0.2,
+          "momentum_63_21_pct": 0.2
+        },
+        "stock_count": 30,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.4,
+        "parameter_id": "9dbe4eb84d0bd944c9a5"
+      },
+      {
+        "family": "balanced",
+        "weights": {
+          "forward_upside_pct": 0.2,
+          "revenue_acceleration_pp": 0.2,
+          "gross_margin_delta_pp": 0.2,
+          "ocf_to_sales": 0.2,
+          "momentum_63_21_pct": 0.2
+        },
+        "stock_count": 50,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.25,
+        "parameter_id": "d592fa6c4c7e7858f571"
+      },
+      {
+        "family": "balanced",
+        "weights": {
+          "forward_upside_pct": 0.2,
+          "revenue_acceleration_pp": 0.2,
+          "gross_margin_delta_pp": 0.2,
+          "ocf_to_sales": 0.2,
+          "momentum_63_21_pct": 0.2
+        },
+        "stock_count": 50,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.4,
+        "parameter_id": "f41c4670158adc9edce9"
+      },
+      {
+        "family": "balanced",
+        "weights": {
+          "forward_upside_pct": 0.2,
+          "revenue_acceleration_pp": 0.2,
+          "gross_margin_delta_pp": 0.2,
+          "ocf_to_sales": 0.2,
+          "momentum_63_21_pct": 0.2
+        },
+        "stock_count": 50,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.25,
+        "parameter_id": "e2a351fb2f9bb472fc84"
+      },
+      {
+        "family": "balanced",
+        "weights": {
+          "forward_upside_pct": 0.2,
+          "revenue_acceleration_pp": 0.2,
+          "gross_margin_delta_pp": 0.2,
+          "ocf_to_sales": 0.2,
+          "momentum_63_21_pct": 0.2
+        },
+        "stock_count": 50,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.4,
+        "parameter_id": "f25b3749f59edefd1d9a"
+      },
+      {
+        "family": "balanced",
+        "weights": {
+          "forward_upside_pct": 0.2,
+          "revenue_acceleration_pp": 0.2,
+          "gross_margin_delta_pp": 0.2,
+          "ocf_to_sales": 0.2,
+          "momentum_63_21_pct": 0.2
+        },
+        "stock_count": 50,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.25,
+        "parameter_id": "bf065265dfca9fc16bec"
+      },
+      {
+        "family": "balanced",
+        "weights": {
+          "forward_upside_pct": 0.2,
+          "revenue_acceleration_pp": 0.2,
+          "gross_margin_delta_pp": 0.2,
+          "ocf_to_sales": 0.2,
+          "momentum_63_21_pct": 0.2
+        },
+        "stock_count": 50,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.4,
+        "parameter_id": "e67bbcbab03543654ee3"
+      },
+      {
+        "family": "balanced",
+        "weights": {
+          "forward_upside_pct": 0.2,
+          "revenue_acceleration_pp": 0.2,
+          "gross_margin_delta_pp": 0.2,
+          "ocf_to_sales": 0.2,
+          "momentum_63_21_pct": 0.2
+        },
+        "stock_count": 50,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.25,
+        "parameter_id": "35bf6b5ad56481d8838d"
+      },
+      {
+        "family": "balanced",
+        "weights": {
+          "forward_upside_pct": 0.2,
+          "revenue_acceleration_pp": 0.2,
+          "gross_margin_delta_pp": 0.2,
+          "ocf_to_sales": 0.2,
+          "momentum_63_21_pct": 0.2
+        },
+        "stock_count": 50,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.4,
+        "parameter_id": "6e032d0dca9249ff4598"
+      },
+      {
+        "family": "balanced",
+        "weights": {
+          "forward_upside_pct": 0.2,
+          "revenue_acceleration_pp": 0.2,
+          "gross_margin_delta_pp": 0.2,
+          "ocf_to_sales": 0.2,
+          "momentum_63_21_pct": 0.2
+        },
+        "stock_count": 50,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.25,
+        "parameter_id": "b9569241bc751500ea27"
+      },
+      {
+        "family": "balanced",
+        "weights": {
+          "forward_upside_pct": 0.2,
+          "revenue_acceleration_pp": 0.2,
+          "gross_margin_delta_pp": 0.2,
+          "ocf_to_sales": 0.2,
+          "momentum_63_21_pct": 0.2
+        },
+        "stock_count": 50,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.4,
+        "parameter_id": "05451cc97e4445d688df"
+      },
+      {
+        "family": "balanced",
+        "weights": {
+          "forward_upside_pct": 0.2,
+          "revenue_acceleration_pp": 0.2,
+          "gross_margin_delta_pp": 0.2,
+          "ocf_to_sales": 0.2,
+          "momentum_63_21_pct": 0.2
+        },
+        "stock_count": 50,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.25,
+        "parameter_id": "09931e598d6155505f43"
+      },
+      {
+        "family": "balanced",
+        "weights": {
+          "forward_upside_pct": 0.2,
+          "revenue_acceleration_pp": 0.2,
+          "gross_margin_delta_pp": 0.2,
+          "ocf_to_sales": 0.2,
+          "momentum_63_21_pct": 0.2
+        },
+        "stock_count": 50,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.4,
+        "parameter_id": "8d9cf2197af6d49c07c2"
+      },
+      {
+        "family": "growth",
+        "weights": {
+          "revenue_acceleration_pp": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 10,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.25,
+        "parameter_id": "fba4fc7e0f98702ddc21"
+      },
+      {
+        "family": "growth",
+        "weights": {
+          "revenue_acceleration_pp": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 10,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.4,
+        "parameter_id": "7a8b533496041a8533e4"
+      },
+      {
+        "family": "growth",
+        "weights": {
+          "revenue_acceleration_pp": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 10,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.25,
+        "parameter_id": "b15d74a46705b4f60da9"
+      },
+      {
+        "family": "growth",
+        "weights": {
+          "revenue_acceleration_pp": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 10,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.4,
+        "parameter_id": "55b49c8f3f4e37270852"
+      },
+      {
+        "family": "growth",
+        "weights": {
+          "revenue_acceleration_pp": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 10,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.25,
+        "parameter_id": "29e7b264bd6e60751624"
+      },
+      {
+        "family": "growth",
+        "weights": {
+          "revenue_acceleration_pp": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 10,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.4,
+        "parameter_id": "dda89b38e1b25b7180df"
+      },
+      {
+        "family": "growth",
+        "weights": {
+          "revenue_acceleration_pp": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 10,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.25,
+        "parameter_id": "c035e2c14981f80a2ac0"
+      },
+      {
+        "family": "growth",
+        "weights": {
+          "revenue_acceleration_pp": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 10,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.4,
+        "parameter_id": "715453e456bff502f771"
+      },
+      {
+        "family": "growth",
+        "weights": {
+          "revenue_acceleration_pp": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 10,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.25,
+        "parameter_id": "ec66597edc6fa7214347"
+      },
+      {
+        "family": "growth",
+        "weights": {
+          "revenue_acceleration_pp": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 10,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.4,
+        "parameter_id": "d526df68ad552cd536ce"
+      },
+      {
+        "family": "growth",
+        "weights": {
+          "revenue_acceleration_pp": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 10,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.25,
+        "parameter_id": "6b718004bb5598b110d2"
+      },
+      {
+        "family": "growth",
+        "weights": {
+          "revenue_acceleration_pp": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 10,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.4,
+        "parameter_id": "42cdbb44c58dcfbbe3d3"
+      },
+      {
+        "family": "growth",
+        "weights": {
+          "revenue_acceleration_pp": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 20,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.25,
+        "parameter_id": "8a169b9a74dbed5d6a4e"
+      },
+      {
+        "family": "growth",
+        "weights": {
+          "revenue_acceleration_pp": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 20,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.4,
+        "parameter_id": "fe59232439129f89b183"
+      },
+      {
+        "family": "growth",
+        "weights": {
+          "revenue_acceleration_pp": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 20,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.25,
+        "parameter_id": "5ac32e6d16287338083c"
+      },
+      {
+        "family": "growth",
+        "weights": {
+          "revenue_acceleration_pp": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 20,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.4,
+        "parameter_id": "65c7004f3ce4f38d00b5"
+      },
+      {
+        "family": "growth",
+        "weights": {
+          "revenue_acceleration_pp": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 20,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.25,
+        "parameter_id": "09313f3f0d941bb14a22"
+      },
+      {
+        "family": "growth",
+        "weights": {
+          "revenue_acceleration_pp": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 20,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.4,
+        "parameter_id": "b2670f9875df11f77e77"
+      },
+      {
+        "family": "growth",
+        "weights": {
+          "revenue_acceleration_pp": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 20,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.25,
+        "parameter_id": "8e7ea0ca983dc7db5f4e"
+      },
+      {
+        "family": "growth",
+        "weights": {
+          "revenue_acceleration_pp": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 20,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.4,
+        "parameter_id": "9527c67d0d4fe34ef6c3"
+      },
+      {
+        "family": "growth",
+        "weights": {
+          "revenue_acceleration_pp": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 20,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.25,
+        "parameter_id": "3e28fd4f7aa0e91cb2a0"
+      },
+      {
+        "family": "growth",
+        "weights": {
+          "revenue_acceleration_pp": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 20,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.4,
+        "parameter_id": "c1c75517007b5fe25f84"
+      },
+      {
+        "family": "growth",
+        "weights": {
+          "revenue_acceleration_pp": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 20,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.25,
+        "parameter_id": "683f0c2e6235af67c5a6"
+      },
+      {
+        "family": "growth",
+        "weights": {
+          "revenue_acceleration_pp": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 20,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.4,
+        "parameter_id": "b90d8d284b95474482bd"
+      },
+      {
+        "family": "growth",
+        "weights": {
+          "revenue_acceleration_pp": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 30,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.25,
+        "parameter_id": "ae67a38e0c9f7e894f09"
+      },
+      {
+        "family": "growth",
+        "weights": {
+          "revenue_acceleration_pp": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 30,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.4,
+        "parameter_id": "e9fe7d4b5a71f80e03c6"
+      },
+      {
+        "family": "growth",
+        "weights": {
+          "revenue_acceleration_pp": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 30,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.25,
+        "parameter_id": "93946776e899051114d4"
+      },
+      {
+        "family": "growth",
+        "weights": {
+          "revenue_acceleration_pp": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 30,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.4,
+        "parameter_id": "cf680f1b095f570f9802"
+      },
+      {
+        "family": "growth",
+        "weights": {
+          "revenue_acceleration_pp": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 30,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.25,
+        "parameter_id": "c8e33f2e13524bfb464e"
+      },
+      {
+        "family": "growth",
+        "weights": {
+          "revenue_acceleration_pp": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 30,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.4,
+        "parameter_id": "438ff364d43bf880a9da"
+      },
+      {
+        "family": "growth",
+        "weights": {
+          "revenue_acceleration_pp": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 30,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.25,
+        "parameter_id": "dd3223aab89d8b5afab0"
+      },
+      {
+        "family": "growth",
+        "weights": {
+          "revenue_acceleration_pp": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 30,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.4,
+        "parameter_id": "db2568ef1a50be015edb"
+      },
+      {
+        "family": "growth",
+        "weights": {
+          "revenue_acceleration_pp": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 30,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.25,
+        "parameter_id": "71ce047723ef9b6078f3"
+      },
+      {
+        "family": "growth",
+        "weights": {
+          "revenue_acceleration_pp": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 30,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.4,
+        "parameter_id": "f9f57115a79dc1f028ef"
+      },
+      {
+        "family": "growth",
+        "weights": {
+          "revenue_acceleration_pp": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 30,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.25,
+        "parameter_id": "eaa6360596f3b4bc89d9"
+      },
+      {
+        "family": "growth",
+        "weights": {
+          "revenue_acceleration_pp": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 30,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.4,
+        "parameter_id": "afdb2d0fe9a86bac9ec5"
+      },
+      {
+        "family": "growth",
+        "weights": {
+          "revenue_acceleration_pp": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 50,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.25,
+        "parameter_id": "fea52978f9a29189ee0f"
+      },
+      {
+        "family": "growth",
+        "weights": {
+          "revenue_acceleration_pp": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 50,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.4,
+        "parameter_id": "15faaabdc85bfd8a7f2e"
+      },
+      {
+        "family": "growth",
+        "weights": {
+          "revenue_acceleration_pp": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 50,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.25,
+        "parameter_id": "a288d87e29c59666bbe9"
+      },
+      {
+        "family": "growth",
+        "weights": {
+          "revenue_acceleration_pp": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 50,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.4,
+        "parameter_id": "f9817700872e555591d6"
+      },
+      {
+        "family": "growth",
+        "weights": {
+          "revenue_acceleration_pp": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 50,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.25,
+        "parameter_id": "bb4e29557b55eed1f663"
+      },
+      {
+        "family": "growth",
+        "weights": {
+          "revenue_acceleration_pp": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 50,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.4,
+        "parameter_id": "b3e4ccaa2d9e113ee289"
+      },
+      {
+        "family": "growth",
+        "weights": {
+          "revenue_acceleration_pp": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 50,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.25,
+        "parameter_id": "d8afc92adf756e60f83a"
+      },
+      {
+        "family": "growth",
+        "weights": {
+          "revenue_acceleration_pp": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 50,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.4,
+        "parameter_id": "855a102559b07320673d"
+      },
+      {
+        "family": "growth",
+        "weights": {
+          "revenue_acceleration_pp": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 50,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.25,
+        "parameter_id": "635efb6109c7f74a5f68"
+      },
+      {
+        "family": "growth",
+        "weights": {
+          "revenue_acceleration_pp": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 50,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.4,
+        "parameter_id": "afd08a0bf3515c12f0b2"
+      },
+      {
+        "family": "growth",
+        "weights": {
+          "revenue_acceleration_pp": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 50,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.25,
+        "parameter_id": "c933e1caf08f7fea4593"
+      },
+      {
+        "family": "growth",
+        "weights": {
+          "revenue_acceleration_pp": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 50,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.4,
+        "parameter_id": "a3a1d696c40f4b7e82aa"
+      },
+      {
+        "family": "momentum",
+        "weights": {
+          "momentum_63_21_pct": 1.0
+        },
+        "stock_count": 10,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.25,
+        "parameter_id": "096ea9288d25e39e50df"
+      },
+      {
+        "family": "momentum",
+        "weights": {
+          "momentum_63_21_pct": 1.0
+        },
+        "stock_count": 10,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.4,
+        "parameter_id": "8b0305c773ec2a097990"
+      },
+      {
+        "family": "momentum",
+        "weights": {
+          "momentum_63_21_pct": 1.0
+        },
+        "stock_count": 10,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.25,
+        "parameter_id": "2079bae58ab3875b6fad"
+      },
+      {
+        "family": "momentum",
+        "weights": {
+          "momentum_63_21_pct": 1.0
+        },
+        "stock_count": 10,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.4,
+        "parameter_id": "18fac96b8383131fd8ae"
+      },
+      {
+        "family": "momentum",
+        "weights": {
+          "momentum_63_21_pct": 1.0
+        },
+        "stock_count": 10,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.25,
+        "parameter_id": "8a59bdf3e4a7dc1a53c8"
+      },
+      {
+        "family": "momentum",
+        "weights": {
+          "momentum_63_21_pct": 1.0
+        },
+        "stock_count": 10,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.4,
+        "parameter_id": "dcb41f77b709dbb67dc6"
+      },
+      {
+        "family": "momentum",
+        "weights": {
+          "momentum_63_21_pct": 1.0
+        },
+        "stock_count": 10,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.25,
+        "parameter_id": "45dcea3109f2307fa57f"
+      },
+      {
+        "family": "momentum",
+        "weights": {
+          "momentum_63_21_pct": 1.0
+        },
+        "stock_count": 10,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.4,
+        "parameter_id": "8f658c24b7ac118c2441"
+      },
+      {
+        "family": "momentum",
+        "weights": {
+          "momentum_63_21_pct": 1.0
+        },
+        "stock_count": 10,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.25,
+        "parameter_id": "e135c5e6b69499734176"
+      },
+      {
+        "family": "momentum",
+        "weights": {
+          "momentum_63_21_pct": 1.0
+        },
+        "stock_count": 10,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.4,
+        "parameter_id": "7f02a2338fc198290f6a"
+      },
+      {
+        "family": "momentum",
+        "weights": {
+          "momentum_63_21_pct": 1.0
+        },
+        "stock_count": 10,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.25,
+        "parameter_id": "d8d6911253803e1eef71"
+      },
+      {
+        "family": "momentum",
+        "weights": {
+          "momentum_63_21_pct": 1.0
+        },
+        "stock_count": 10,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.4,
+        "parameter_id": "ef4bc557e533f1b0458e"
+      },
+      {
+        "family": "momentum",
+        "weights": {
+          "momentum_63_21_pct": 1.0
+        },
+        "stock_count": 20,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.25,
+        "parameter_id": "335ce9db912d96b655e2"
+      },
+      {
+        "family": "momentum",
+        "weights": {
+          "momentum_63_21_pct": 1.0
+        },
+        "stock_count": 20,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.4,
+        "parameter_id": "9a11b72b367a66c8b75e"
+      },
+      {
+        "family": "momentum",
+        "weights": {
+          "momentum_63_21_pct": 1.0
+        },
+        "stock_count": 20,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.25,
+        "parameter_id": "f393ee668541d7d1a9b0"
+      },
+      {
+        "family": "momentum",
+        "weights": {
+          "momentum_63_21_pct": 1.0
+        },
+        "stock_count": 20,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.4,
+        "parameter_id": "13a3986ae00e09955449"
+      },
+      {
+        "family": "momentum",
+        "weights": {
+          "momentum_63_21_pct": 1.0
+        },
+        "stock_count": 20,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.25,
+        "parameter_id": "84f216b8fa0f35d60c5a"
+      },
+      {
+        "family": "momentum",
+        "weights": {
+          "momentum_63_21_pct": 1.0
+        },
+        "stock_count": 20,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.4,
+        "parameter_id": "f9ec913c14038068442f"
+      },
+      {
+        "family": "momentum",
+        "weights": {
+          "momentum_63_21_pct": 1.0
+        },
+        "stock_count": 20,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.25,
+        "parameter_id": "1a74cd58c08d093811ba"
+      },
+      {
+        "family": "momentum",
+        "weights": {
+          "momentum_63_21_pct": 1.0
+        },
+        "stock_count": 20,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.4,
+        "parameter_id": "8bb3e6a09c2b0f73f128"
+      },
+      {
+        "family": "momentum",
+        "weights": {
+          "momentum_63_21_pct": 1.0
+        },
+        "stock_count": 20,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.25,
+        "parameter_id": "0a3a68521bcccd3d2299"
+      },
+      {
+        "family": "momentum",
+        "weights": {
+          "momentum_63_21_pct": 1.0
+        },
+        "stock_count": 20,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.4,
+        "parameter_id": "9c357fcab5e290e4b919"
+      },
+      {
+        "family": "momentum",
+        "weights": {
+          "momentum_63_21_pct": 1.0
+        },
+        "stock_count": 20,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.25,
+        "parameter_id": "5163f39534e865618724"
+      },
+      {
+        "family": "momentum",
+        "weights": {
+          "momentum_63_21_pct": 1.0
+        },
+        "stock_count": 20,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.4,
+        "parameter_id": "22d46fa8004a735bd3d5"
+      },
+      {
+        "family": "momentum",
+        "weights": {
+          "momentum_63_21_pct": 1.0
+        },
+        "stock_count": 30,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.25,
+        "parameter_id": "b634b1a300a4cadf0588"
+      },
+      {
+        "family": "momentum",
+        "weights": {
+          "momentum_63_21_pct": 1.0
+        },
+        "stock_count": 30,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.4,
+        "parameter_id": "a5f9a08501fa7fb4d9ce"
+      },
+      {
+        "family": "momentum",
+        "weights": {
+          "momentum_63_21_pct": 1.0
+        },
+        "stock_count": 30,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.25,
+        "parameter_id": "54f9e8157b63b2f523c4"
+      },
+      {
+        "family": "momentum",
+        "weights": {
+          "momentum_63_21_pct": 1.0
+        },
+        "stock_count": 30,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.4,
+        "parameter_id": "2ddea6106128683787bb"
+      },
+      {
+        "family": "momentum",
+        "weights": {
+          "momentum_63_21_pct": 1.0
+        },
+        "stock_count": 30,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.25,
+        "parameter_id": "d2a432a11754fd0c5518"
+      },
+      {
+        "family": "momentum",
+        "weights": {
+          "momentum_63_21_pct": 1.0
+        },
+        "stock_count": 30,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.4,
+        "parameter_id": "eae12ecd7d20c2b39ebe"
+      },
+      {
+        "family": "momentum",
+        "weights": {
+          "momentum_63_21_pct": 1.0
+        },
+        "stock_count": 30,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.25,
+        "parameter_id": "b044dd9de3ee872fce4c"
+      },
+      {
+        "family": "momentum",
+        "weights": {
+          "momentum_63_21_pct": 1.0
+        },
+        "stock_count": 30,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.4,
+        "parameter_id": "f5d778f4cc638df98018"
+      },
+      {
+        "family": "momentum",
+        "weights": {
+          "momentum_63_21_pct": 1.0
+        },
+        "stock_count": 30,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.25,
+        "parameter_id": "fd69920368d530807e77"
+      },
+      {
+        "family": "momentum",
+        "weights": {
+          "momentum_63_21_pct": 1.0
+        },
+        "stock_count": 30,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.4,
+        "parameter_id": "812ad1993f6a5339f185"
+      },
+      {
+        "family": "momentum",
+        "weights": {
+          "momentum_63_21_pct": 1.0
+        },
+        "stock_count": 30,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.25,
+        "parameter_id": "ea23dc578ee8387fa0bc"
+      },
+      {
+        "family": "momentum",
+        "weights": {
+          "momentum_63_21_pct": 1.0
+        },
+        "stock_count": 30,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.4,
+        "parameter_id": "b1dea21785df6c63e0e1"
+      },
+      {
+        "family": "momentum",
+        "weights": {
+          "momentum_63_21_pct": 1.0
+        },
+        "stock_count": 50,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.25,
+        "parameter_id": "a86eab0adc84da59b2e0"
+      },
+      {
+        "family": "momentum",
+        "weights": {
+          "momentum_63_21_pct": 1.0
+        },
+        "stock_count": 50,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.4,
+        "parameter_id": "5e411b392c9fddfa0fc9"
+      },
+      {
+        "family": "momentum",
+        "weights": {
+          "momentum_63_21_pct": 1.0
+        },
+        "stock_count": 50,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.25,
+        "parameter_id": "5dbf5df6906d4d799a0d"
+      },
+      {
+        "family": "momentum",
+        "weights": {
+          "momentum_63_21_pct": 1.0
+        },
+        "stock_count": 50,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.4,
+        "parameter_id": "1275f4a93f72ef4c3d05"
+      },
+      {
+        "family": "momentum",
+        "weights": {
+          "momentum_63_21_pct": 1.0
+        },
+        "stock_count": 50,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.25,
+        "parameter_id": "6aaa0d929f617e6f8310"
+      },
+      {
+        "family": "momentum",
+        "weights": {
+          "momentum_63_21_pct": 1.0
+        },
+        "stock_count": 50,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.4,
+        "parameter_id": "580f6bc4dc0600e3d55a"
+      },
+      {
+        "family": "momentum",
+        "weights": {
+          "momentum_63_21_pct": 1.0
+        },
+        "stock_count": 50,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.25,
+        "parameter_id": "44176bc2f8e3c74e8afa"
+      },
+      {
+        "family": "momentum",
+        "weights": {
+          "momentum_63_21_pct": 1.0
+        },
+        "stock_count": 50,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.4,
+        "parameter_id": "7ce354a54b3abe5fc05a"
+      },
+      {
+        "family": "momentum",
+        "weights": {
+          "momentum_63_21_pct": 1.0
+        },
+        "stock_count": 50,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.25,
+        "parameter_id": "9a57ff4e558403b3e3ca"
+      },
+      {
+        "family": "momentum",
+        "weights": {
+          "momentum_63_21_pct": 1.0
+        },
+        "stock_count": 50,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.4,
+        "parameter_id": "f4990cc8010da41cf9a1"
+      },
+      {
+        "family": "momentum",
+        "weights": {
+          "momentum_63_21_pct": 1.0
+        },
+        "stock_count": 50,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.25,
+        "parameter_id": "f493e0964584f4c3f292"
+      },
+      {
+        "family": "momentum",
+        "weights": {
+          "momentum_63_21_pct": 1.0
+        },
+        "stock_count": 50,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.4,
+        "parameter_id": "9937fd02549595d36f0d"
+      },
+      {
+        "family": "quality",
+        "weights": {
+          "ocf_to_sales": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 10,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.25,
+        "parameter_id": "ddf5981eb5c5a8b7694b"
+      },
+      {
+        "family": "quality",
+        "weights": {
+          "ocf_to_sales": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 10,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.4,
+        "parameter_id": "56106094f87c5520684f"
+      },
+      {
+        "family": "quality",
+        "weights": {
+          "ocf_to_sales": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 10,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.25,
+        "parameter_id": "79179ab2e4750f1f8d8d"
+      },
+      {
+        "family": "quality",
+        "weights": {
+          "ocf_to_sales": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 10,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.4,
+        "parameter_id": "12b24dac10a5d06d87c9"
+      },
+      {
+        "family": "quality",
+        "weights": {
+          "ocf_to_sales": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 10,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.25,
+        "parameter_id": "d95662a48bdc7bfd5033"
+      },
+      {
+        "family": "quality",
+        "weights": {
+          "ocf_to_sales": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 10,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.4,
+        "parameter_id": "315363c95803e3e748fb"
+      },
+      {
+        "family": "quality",
+        "weights": {
+          "ocf_to_sales": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 10,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.25,
+        "parameter_id": "8e41c4388239412b11e1"
+      },
+      {
+        "family": "quality",
+        "weights": {
+          "ocf_to_sales": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 10,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.4,
+        "parameter_id": "c092ec28a0999bb563bf"
+      },
+      {
+        "family": "quality",
+        "weights": {
+          "ocf_to_sales": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 10,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.25,
+        "parameter_id": "f318177bc32e88550290"
+      },
+      {
+        "family": "quality",
+        "weights": {
+          "ocf_to_sales": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 10,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.4,
+        "parameter_id": "ffb99d9c4881ddcd36c4"
+      },
+      {
+        "family": "quality",
+        "weights": {
+          "ocf_to_sales": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 10,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.25,
+        "parameter_id": "c97be7a903d039385b33"
+      },
+      {
+        "family": "quality",
+        "weights": {
+          "ocf_to_sales": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 10,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.4,
+        "parameter_id": "f88c2bf55243c60fd32b"
+      },
+      {
+        "family": "quality",
+        "weights": {
+          "ocf_to_sales": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 20,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.25,
+        "parameter_id": "a9c00692a2cd30ead71c"
+      },
+      {
+        "family": "quality",
+        "weights": {
+          "ocf_to_sales": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 20,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.4,
+        "parameter_id": "d170092808eb0dc5b304"
+      },
+      {
+        "family": "quality",
+        "weights": {
+          "ocf_to_sales": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 20,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.25,
+        "parameter_id": "7cc20d0f8c70a029dfda"
+      },
+      {
+        "family": "quality",
+        "weights": {
+          "ocf_to_sales": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 20,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.4,
+        "parameter_id": "db62f4e1c8d6a6f9ef30"
+      },
+      {
+        "family": "quality",
+        "weights": {
+          "ocf_to_sales": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 20,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.25,
+        "parameter_id": "636e4f19b3e140698a2a"
+      },
+      {
+        "family": "quality",
+        "weights": {
+          "ocf_to_sales": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 20,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.4,
+        "parameter_id": "8c6dcdbe4ed8cf0ced3b"
+      },
+      {
+        "family": "quality",
+        "weights": {
+          "ocf_to_sales": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 20,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.25,
+        "parameter_id": "bff0522d12b052763ffe"
+      },
+      {
+        "family": "quality",
+        "weights": {
+          "ocf_to_sales": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 20,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.4,
+        "parameter_id": "a06f05dd02561c98fb30"
+      },
+      {
+        "family": "quality",
+        "weights": {
+          "ocf_to_sales": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 20,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.25,
+        "parameter_id": "aa2dac6ae3d05a848a6d"
+      },
+      {
+        "family": "quality",
+        "weights": {
+          "ocf_to_sales": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 20,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.4,
+        "parameter_id": "69face0c3980cf1dbc4f"
+      },
+      {
+        "family": "quality",
+        "weights": {
+          "ocf_to_sales": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 20,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.25,
+        "parameter_id": "ce31f419c14a944deec1"
+      },
+      {
+        "family": "quality",
+        "weights": {
+          "ocf_to_sales": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 20,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.4,
+        "parameter_id": "57638d134b721ba35a7f"
+      },
+      {
+        "family": "quality",
+        "weights": {
+          "ocf_to_sales": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 30,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.25,
+        "parameter_id": "9171c66942c7316f4bb5"
+      },
+      {
+        "family": "quality",
+        "weights": {
+          "ocf_to_sales": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 30,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.4,
+        "parameter_id": "89eccdf540a5bc00ed30"
+      },
+      {
+        "family": "quality",
+        "weights": {
+          "ocf_to_sales": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 30,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.25,
+        "parameter_id": "f6567cd4040e3ce5033d"
+      },
+      {
+        "family": "quality",
+        "weights": {
+          "ocf_to_sales": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 30,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.4,
+        "parameter_id": "5a77a81241da7b4d9afc"
+      },
+      {
+        "family": "quality",
+        "weights": {
+          "ocf_to_sales": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 30,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.25,
+        "parameter_id": "9d1dd32dce9e2635ae21"
+      },
+      {
+        "family": "quality",
+        "weights": {
+          "ocf_to_sales": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 30,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.4,
+        "parameter_id": "41d556837ce1a90aaa1d"
+      },
+      {
+        "family": "quality",
+        "weights": {
+          "ocf_to_sales": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 30,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.25,
+        "parameter_id": "9730befa0eeb1ac64106"
+      },
+      {
+        "family": "quality",
+        "weights": {
+          "ocf_to_sales": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 30,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.4,
+        "parameter_id": "a894b4e51c08964a1d55"
+      },
+      {
+        "family": "quality",
+        "weights": {
+          "ocf_to_sales": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 30,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.25,
+        "parameter_id": "2aabd5d286b74f368098"
+      },
+      {
+        "family": "quality",
+        "weights": {
+          "ocf_to_sales": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 30,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.4,
+        "parameter_id": "92747b3ce080825ffcb6"
+      },
+      {
+        "family": "quality",
+        "weights": {
+          "ocf_to_sales": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 30,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.25,
+        "parameter_id": "144b89aa6fed2e2589a8"
+      },
+      {
+        "family": "quality",
+        "weights": {
+          "ocf_to_sales": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 30,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.4,
+        "parameter_id": "3dec64688a60d881e9d4"
+      },
+      {
+        "family": "quality",
+        "weights": {
+          "ocf_to_sales": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 50,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.25,
+        "parameter_id": "24540a0c26a766822c8d"
+      },
+      {
+        "family": "quality",
+        "weights": {
+          "ocf_to_sales": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 50,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.4,
+        "parameter_id": "fe6af2667dcb65eae62d"
+      },
+      {
+        "family": "quality",
+        "weights": {
+          "ocf_to_sales": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 50,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.25,
+        "parameter_id": "b02ff6b3cb628e636b49"
+      },
+      {
+        "family": "quality",
+        "weights": {
+          "ocf_to_sales": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 50,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.4,
+        "parameter_id": "d8faa926b262e3f12730"
+      },
+      {
+        "family": "quality",
+        "weights": {
+          "ocf_to_sales": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 50,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.25,
+        "parameter_id": "7cad3c361e771df42f15"
+      },
+      {
+        "family": "quality",
+        "weights": {
+          "ocf_to_sales": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 50,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.4,
+        "parameter_id": "3c023115f6cd98981144"
+      },
+      {
+        "family": "quality",
+        "weights": {
+          "ocf_to_sales": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 50,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.25,
+        "parameter_id": "4b4cde237606ccf94edf"
+      },
+      {
+        "family": "quality",
+        "weights": {
+          "ocf_to_sales": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 50,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.4,
+        "parameter_id": "5b6d07b0dbe01807d550"
+      },
+      {
+        "family": "quality",
+        "weights": {
+          "ocf_to_sales": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 50,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.25,
+        "parameter_id": "7caa27a250cf0b65bf43"
+      },
+      {
+        "family": "quality",
+        "weights": {
+          "ocf_to_sales": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 50,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.4,
+        "parameter_id": "c4d6026c41da1f5cd1c1"
+      },
+      {
+        "family": "quality",
+        "weights": {
+          "ocf_to_sales": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 50,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.25,
+        "parameter_id": "e4834d510a24058b70f1"
+      },
+      {
+        "family": "quality",
+        "weights": {
+          "ocf_to_sales": 0.5,
+          "gross_margin_delta_pp": 0.5
+        },
+        "stock_count": 50,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.4,
+        "parameter_id": "08d655bade3dfad1f98e"
+      },
+      {
+        "family": "valuation",
+        "weights": {
+          "forward_upside_pct": 1.0
+        },
+        "stock_count": 10,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.25,
+        "parameter_id": "2764cce4402ae2e48d2a"
+      },
+      {
+        "family": "valuation",
+        "weights": {
+          "forward_upside_pct": 1.0
+        },
+        "stock_count": 10,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.4,
+        "parameter_id": "f8efa522faaa9265bcbc"
+      },
+      {
+        "family": "valuation",
+        "weights": {
+          "forward_upside_pct": 1.0
+        },
+        "stock_count": 10,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.25,
+        "parameter_id": "6e1b54f54418a6b9b48d"
+      },
+      {
+        "family": "valuation",
+        "weights": {
+          "forward_upside_pct": 1.0
+        },
+        "stock_count": 10,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.4,
+        "parameter_id": "edc865ac12762efcfd9b"
+      },
+      {
+        "family": "valuation",
+        "weights": {
+          "forward_upside_pct": 1.0
+        },
+        "stock_count": 10,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.25,
+        "parameter_id": "d4b853428e82027e129a"
+      },
+      {
+        "family": "valuation",
+        "weights": {
+          "forward_upside_pct": 1.0
+        },
+        "stock_count": 10,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.4,
+        "parameter_id": "b2759f82f4f5ad934524"
+      },
+      {
+        "family": "valuation",
+        "weights": {
+          "forward_upside_pct": 1.0
+        },
+        "stock_count": 10,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.25,
+        "parameter_id": "b92bacba17aa52de0eab"
+      },
+      {
+        "family": "valuation",
+        "weights": {
+          "forward_upside_pct": 1.0
+        },
+        "stock_count": 10,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.4,
+        "parameter_id": "e2e81068522fdb004d99"
+      },
+      {
+        "family": "valuation",
+        "weights": {
+          "forward_upside_pct": 1.0
+        },
+        "stock_count": 10,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.25,
+        "parameter_id": "4e4732eb4ee623b58888"
+      },
+      {
+        "family": "valuation",
+        "weights": {
+          "forward_upside_pct": 1.0
+        },
+        "stock_count": 10,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.4,
+        "parameter_id": "c4ee442b9b09f6100703"
+      },
+      {
+        "family": "valuation",
+        "weights": {
+          "forward_upside_pct": 1.0
+        },
+        "stock_count": 10,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.25,
+        "parameter_id": "62f8ae35f8df44787d92"
+      },
+      {
+        "family": "valuation",
+        "weights": {
+          "forward_upside_pct": 1.0
+        },
+        "stock_count": 10,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.4,
+        "parameter_id": "8ce6e19f633e296dcea0"
+      },
+      {
+        "family": "valuation",
+        "weights": {
+          "forward_upside_pct": 1.0
+        },
+        "stock_count": 20,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.25,
+        "parameter_id": "b2a40fc382b9aaecf61e"
+      },
+      {
+        "family": "valuation",
+        "weights": {
+          "forward_upside_pct": 1.0
+        },
+        "stock_count": 20,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.4,
+        "parameter_id": "e16e964a365d7d0c6f3d"
+      },
+      {
+        "family": "valuation",
+        "weights": {
+          "forward_upside_pct": 1.0
+        },
+        "stock_count": 20,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.25,
+        "parameter_id": "ce90bf4ac36feaa0d39e"
+      },
+      {
+        "family": "valuation",
+        "weights": {
+          "forward_upside_pct": 1.0
+        },
+        "stock_count": 20,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.4,
+        "parameter_id": "3aacf36d49118a2e2a36"
+      },
+      {
+        "family": "valuation",
+        "weights": {
+          "forward_upside_pct": 1.0
+        },
+        "stock_count": 20,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.25,
+        "parameter_id": "4b02aac986ebf66c0837"
+      },
+      {
+        "family": "valuation",
+        "weights": {
+          "forward_upside_pct": 1.0
+        },
+        "stock_count": 20,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.4,
+        "parameter_id": "ff8509c52110121fd9f1"
+      },
+      {
+        "family": "valuation",
+        "weights": {
+          "forward_upside_pct": 1.0
+        },
+        "stock_count": 20,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.25,
+        "parameter_id": "00a79e8fa2be3529489f"
+      },
+      {
+        "family": "valuation",
+        "weights": {
+          "forward_upside_pct": 1.0
+        },
+        "stock_count": 20,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.4,
+        "parameter_id": "c308cf48c07693bf45e0"
+      },
+      {
+        "family": "valuation",
+        "weights": {
+          "forward_upside_pct": 1.0
+        },
+        "stock_count": 20,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.25,
+        "parameter_id": "84394b27af2fb35c1f8b"
+      },
+      {
+        "family": "valuation",
+        "weights": {
+          "forward_upside_pct": 1.0
+        },
+        "stock_count": 20,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.4,
+        "parameter_id": "639192a958102ca481a3"
+      },
+      {
+        "family": "valuation",
+        "weights": {
+          "forward_upside_pct": 1.0
+        },
+        "stock_count": 20,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.25,
+        "parameter_id": "8399fa7325ed83754a2b"
+      },
+      {
+        "family": "valuation",
+        "weights": {
+          "forward_upside_pct": 1.0
+        },
+        "stock_count": 20,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.4,
+        "parameter_id": "af0e8c9e81c71c0756d2"
+      },
+      {
+        "family": "valuation",
+        "weights": {
+          "forward_upside_pct": 1.0
+        },
+        "stock_count": 30,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.25,
+        "parameter_id": "141b501c63b0f706cfa4"
+      },
+      {
+        "family": "valuation",
+        "weights": {
+          "forward_upside_pct": 1.0
+        },
+        "stock_count": 30,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.4,
+        "parameter_id": "bbf7acfebf93635ae882"
+      },
+      {
+        "family": "valuation",
+        "weights": {
+          "forward_upside_pct": 1.0
+        },
+        "stock_count": 30,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.25,
+        "parameter_id": "fab8eb8a97ffdedf8b81"
+      },
+      {
+        "family": "valuation",
+        "weights": {
+          "forward_upside_pct": 1.0
+        },
+        "stock_count": 30,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.4,
+        "parameter_id": "cbf45514f08cb9f4dc52"
+      },
+      {
+        "family": "valuation",
+        "weights": {
+          "forward_upside_pct": 1.0
+        },
+        "stock_count": 30,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.25,
+        "parameter_id": "2847547810f94cc3a297"
+      },
+      {
+        "family": "valuation",
+        "weights": {
+          "forward_upside_pct": 1.0
+        },
+        "stock_count": 30,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.4,
+        "parameter_id": "df3439a8f35a5eac973e"
+      },
+      {
+        "family": "valuation",
+        "weights": {
+          "forward_upside_pct": 1.0
+        },
+        "stock_count": 30,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.25,
+        "parameter_id": "f2787ae8cec483ef55a9"
+      },
+      {
+        "family": "valuation",
+        "weights": {
+          "forward_upside_pct": 1.0
+        },
+        "stock_count": 30,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.4,
+        "parameter_id": "31965ba2a49051a20751"
+      },
+      {
+        "family": "valuation",
+        "weights": {
+          "forward_upside_pct": 1.0
+        },
+        "stock_count": 30,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.25,
+        "parameter_id": "5de4c2c4153d9ba27902"
+      },
+      {
+        "family": "valuation",
+        "weights": {
+          "forward_upside_pct": 1.0
+        },
+        "stock_count": 30,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.4,
+        "parameter_id": "655338793be273297010"
+      },
+      {
+        "family": "valuation",
+        "weights": {
+          "forward_upside_pct": 1.0
+        },
+        "stock_count": 30,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.25,
+        "parameter_id": "03092e09903d65e8b7c4"
+      },
+      {
+        "family": "valuation",
+        "weights": {
+          "forward_upside_pct": 1.0
+        },
+        "stock_count": 30,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.4,
+        "parameter_id": "c846b972f98a3a8ab8b3"
+      },
+      {
+        "family": "valuation",
+        "weights": {
+          "forward_upside_pct": 1.0
+        },
+        "stock_count": 50,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.25,
+        "parameter_id": "3bc4bc5285fa7724a45d"
+      },
+      {
+        "family": "valuation",
+        "weights": {
+          "forward_upside_pct": 1.0
+        },
+        "stock_count": 50,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.4,
+        "parameter_id": "a32ff85b41210fd86474"
+      },
+      {
+        "family": "valuation",
+        "weights": {
+          "forward_upside_pct": 1.0
+        },
+        "stock_count": 50,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.25,
+        "parameter_id": "3f1f84eb8b88d22b264b"
+      },
+      {
+        "family": "valuation",
+        "weights": {
+          "forward_upside_pct": 1.0
+        },
+        "stock_count": 50,
+        "holding_sessions": 21,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.4,
+        "parameter_id": "3ccb3a8e298534beca1a"
+      },
+      {
+        "family": "valuation",
+        "weights": {
+          "forward_upside_pct": 1.0
+        },
+        "stock_count": 50,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.25,
+        "parameter_id": "115119cc87558c2a5935"
+      },
+      {
+        "family": "valuation",
+        "weights": {
+          "forward_upside_pct": 1.0
+        },
+        "stock_count": 50,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.4,
+        "parameter_id": "11f3b693f99a23252bae"
+      },
+      {
+        "family": "valuation",
+        "weights": {
+          "forward_upside_pct": 1.0
+        },
+        "stock_count": 50,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.25,
+        "parameter_id": "44471f770835e1b4afc4"
+      },
+      {
+        "family": "valuation",
+        "weights": {
+          "forward_upside_pct": 1.0
+        },
+        "stock_count": 50,
+        "holding_sessions": 63,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.4,
+        "parameter_id": "28b8a98cce2fd79335d9"
+      },
+      {
+        "family": "valuation",
+        "weights": {
+          "forward_upside_pct": 1.0
+        },
+        "stock_count": 50,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.25,
+        "parameter_id": "505ed2c2cc8064cea9f0"
+      },
+      {
+        "family": "valuation",
+        "weights": {
+          "forward_upside_pct": 1.0
+        },
+        "stock_count": 50,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 12000000,
+        "sector_cap": 0.4,
+        "parameter_id": "edd13d08e9a77c4fd1d3"
+      },
+      {
+        "family": "valuation",
+        "weights": {
+          "forward_upside_pct": 1.0
+        },
+        "stock_count": 50,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.25,
+        "parameter_id": "1e93d8c57eed3e146d11"
+      },
+      {
+        "family": "valuation",
+        "weights": {
+          "forward_upside_pct": 1.0
+        },
+        "stock_count": 50,
+        "holding_sessions": 126,
+        "minimum_adv20_ntd": 30000000,
+        "sector_cap": 0.4,
+        "parameter_id": "02e8d60fdcfcf7c13a91"
+      }
+    ],
+    "search_method_sha256": "e686feb72e1e615081bd717b234e10ffcdd58368790d558697f9ec8b3b2ddb1e",
+    "search_method_source_hashes": {
+      "scripts/return_model_search.py": "baec336e66d0d63b84eaa12ef447254faac0a4144c536a9765758b33f6198896",
+      "tw_model_v880/return_search.py": "63ee3f6d9414ba495d71391194ffd99848824aa1ce8795af2d0e192805dfbb58",
+      "scripts/benchmark_validation.py": "000fb6c218d668095224ad34d600212638e087cd26ddfd72fc70385762c98567",
+      "scripts/benchmark_sources.py": "377f63c722fd40444a5f87218057ce9c48ac3eab8b84bf2f8dd4300168f506d5",
+      "scripts/forward_benchmark_sources.py": "2a39592c0219bcf5e0467bffd07944e1360475b6ee243d0bba2d03e555fd886c",
+      "scripts/institutional_review.py": "dea43f12d9fe11d891955a697f5101f81f0cb773f3353458342244e0a6390054",
+      "scripts/history_archive.py": "704e875ed9e8de7b7cb472557bd11e809a200fcb5299cc0833dd8600e4b93f03",
+      "scripts/tw_history_backfill.py": "65bca8e9f032828229c0768d607fd1c56b8de630d3dc7ddaad3ee402ca1ba3be",
+      "scripts/v893_tpex_daily_backfill.py": "b62e4f31f49cc6aa0d811940739e2a0f466395b7db9fbb206c04f3f938a8c6be",
+      "scripts/execution_quote_archive.py": "e345c4b885f9ac22f7e645da18dc3b99ba6cc470c00b9cf4df3d0a2bd5c19db9"
+    },
+    "source_model_sha256": "bfb5a38843b2018a6dfe2214dd3f498d6d4bc6879ba49307073655ed524004c3"
+  },
+  "spec_sha256": "d90e5efbce6a66664805ef7402d4daa6ddf52417f3a3c2a0651d4cfc74f6e72a"
+}
