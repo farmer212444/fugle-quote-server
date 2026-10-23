@@ -151,6 +151,8 @@ def run(data_dir,asof,target_date,out_dir=None,variant='current-information'):
         review_issues=[]
         if r['latest_month_reversal_warning']:review_issues.append('最新月營收轉弱')
         if r['latest_standalone_quarter_margin_compression_warning']:review_issues.append('單季毛利率季減≥3pp')
+        if '2027_BASE_GM_GE3PP_ABOVE_LATEST_STANDALONE_QUARTER' in r['warning_flags']:
+            review_issues.append('2027 Base毛利高於最新單季≥3pp')
         if r['reported_ytd_material_nonoperating_gap']:review_issues.append('業外比重較高')
         if r['reported_ytd_nonoperating_gap_exceeds_pretax']:review_issues.append('業外差額大於稅前淨利')
         if r['eps_runrate_near_zero_denominator']:review_issues.append('年化EPS分母過小')
@@ -175,6 +177,25 @@ def run(data_dir,asof,target_date,out_dir=None,variant='current-information'):
                           f"{x['latest_standalone_quarter_gm_pct']:.2f}%（季差 "
                           f"{x['latest_quarter_gm_qoq_change_pp']:+.2f}百分點）；"
                           '需補公司各業務毛利、收入認列、成本分攤及存貨等原始附註。')
+    margin_flat=[x for x in evidence_priority['top10_evidence_first']
+                 if x['recent_quarter_gm_flat_2027_sensitivity']['status'] in
+                 ('MECHANICAL_2027_LAST_STANDALONE_GM_FLAT_ONLY','SCENARIO_NONPOSITIVE_EPS_PE_VALUE_UNAVAILABLE')]
+    if margin_flat:
+        report+=['','### 2027 若最新單季毛利率維持不變：機械敏感度（非目標價）','',
+            '以下僅替換2027 Base毛利率為最新單季觀察值，營收、費用率、業外、稅率、歸母比例、股數及PE全部維持原模型假設。'
+            '這是單一變數壓力測試，不能當作最新單季毛利率必然延續或2027實際合理價。','',
+            '|公司|2027 Base毛利率|最新單季毛利率|Base EPS|持平單季毛利EPS|情境價格|',
+            '|---|---:|---:|---:|---:|---:|']
+        for x in margin_flat:
+            sensitivity=x['recent_quarter_gm_flat_2027_sensitivity']
+            report.append(
+                f"|{x['code']} {x['name']}|{sensitivity['base_gross_margin_pct']:.2f}%|"
+                f"{sensitivity['latest_standalone_gross_margin_pct']:.2f}%|"
+                f"{x['base_eps']:.2f}|{fmt(sensitivity['scenario_eps'])}|"
+                f"{fmt(sensitivity['scenario_target_price'])} 元|")
+        report+=['',
+          '若敏感度情境EPS不大於零，不以負數本益比推算價格；全部價格仍沿用可能落後的參考收盤價。'
+          '已公布的Base EPS／PE／價差、A+與排名完全不變。','']
     priority_eps_watch=[x for x in evidence_priority['top10_evidence_first']
                         if x['reported_ytd_material_nonoperating_gap'] or x['requires_2027_eps_stepup_bridge']]
     if priority_eps_watch:
