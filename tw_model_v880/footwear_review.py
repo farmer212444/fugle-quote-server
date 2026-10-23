@@ -73,6 +73,8 @@ def build_review(root,full,config):
         item=dict(code=code,name=company['name'],price_date=row.get('price_date'),reference_close=row.get('reference_close'),
                   formal_Aplus=row.get('formal_Aplus',False),formal_Aplusplus=row.get('formal_Aplusplus',False),
                   production_base_eps=row.get('base',{}).get('eps'),production_base_price=row.get('research_target_price_scenario'),
+                  production_financial_period=row.get('financial_period'),
+                  production_earnings_source_kind=row.get('fresh_earnings_update',{}).get('source_kind'),
                   production_point_available=row.get('point_valuation_available',False),quality_certification=row.get('certification'),
                   research_cases=None,original_fact_check=None,all_quality_gates_granted_by_this_review=False,scenario_probabilities=None)
         try:
@@ -129,6 +131,7 @@ def markdown(report):
         values=[f'{case["eps"]:.2f}',f'{case["target_price"]:.2f}',f'{case["price_upside_pct"]:+.1f}%'] if case else ['待核']*3
         lines.append(f"| {row['code']} {row['name']} | {' | '.join(values)} | {production} | {row['status']} |")
     lines.extend(['','來億研究業外以 H1 指定附註移除匯兌、評價與處分項目，並在全數轉換股數情境加回 CB 利息後年化；不是公司全年財測。',
+                  '主模型若採用較新的公司自結，仍不代表已核閱季報；各公司實際採用的財務期與來源類型見 JSON。研究情境不覆寫主模型。',
                   '寶成按歸屬母公司之裕元、潤成及剩餘帳面權益施加假設折價，並非已驗證市場 NAV。裕元已含寶勝，母公司淨權益不重扣合併負債。',
                   '原件雜湊、核對數字、Bear/Base/Bull 輸入與股數見同名 JSON。只核對指定當期數字，尚未完成八季認證。新財務期或新營收月會使本組假設失效。',''])
     for row in report['companies']:

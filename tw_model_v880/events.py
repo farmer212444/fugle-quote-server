@@ -5,6 +5,7 @@ Unsupported layouts and changed documents remain explicit blockers. No signed
 quality certificate is manufactured by this module.
 """
 import hashlib
+import copy
 import json
 import math
 import re
@@ -81,6 +82,64 @@ def parse_press(pages):
     return dict(current=current, prior=prior, single_quarter=single)
 
 
+def press_text_sha256(pages):
+    return digest([re.sub(r"\s+", " ", page).strip() for page in pages])
+
+
+def _press_receipt(event):
+    return dict(source_sha256=event['source_sha256'],source_url=event['source_url'],
+                archive_path=event['archive_path'],bytes=event['source_bytes'],
+                captured_at=event['source_captured_at'])
+
+
+def reconcile_press_versions(root,previous,candidate,cutoff):
+    """Admit only exact original files covered by a dated full-content review."""
+    path=root/'evidence/v880/earnings_version_reviews/9802_2026-Q3.json'
+    if not path.is_file():raise ValueError('EARNINGS_MULTIPLE_ORIGINAL_VERSIONS_REVIEW_REQUIRED')
+    raw=path.read_bytes();review=json.loads(raw)
+    if (review.get('schema')!='ISSUER_EARNINGS_VERSION_REVIEW_V1' or
+        review.get('issuer')!='9802' or review.get('financial_period')!='2026-Q3' or
+        review.get('extraction_recipe')!=RECIPE or
+        review.get('decision')!='EQUIVALENT_FINANCIAL_CONTENT_REVIEWED_COLOUR_CHANGE_ONLY' or
+        review.get('full_two_page_text_and_table_reviewed') is not True or
+        review.get('formal_quality_pass') is not False or
+        review.get('historical_issuer_publication_PIT_verified') is not False):
+        raise ValueError('EARNINGS_VERSION_REVIEW_IDENTITY_OR_SCOPE_INVALID')
+    reviewed=timestamp(review['reviewed_at'])
+    if reviewed>cutoff:raise ValueError('EARNINGS_VERSION_REVIEW_FROM_FUTURE')
+    versions=review['versions'];allowed={v['sha256']:v for v in versions}
+    if len(allowed)!=2 or len(versions)!=2 or review['canonical_source_sha256'] not in allowed:
+        raise ValueError('EARNINGS_VERSION_REVIEW_VERSION_SET_INVALID')
+    for event in (previous,candidate):
+        if (event['code']!='9802' or event['financial_period']!='2026-Q3' or
+            event['extraction_recipe']!=RECIPE or
+            event.get('normalized_press_text_sha256')!=review['normalized_all_pages_sha256'] or
+            event.get('parsed_facts_sha256')!=review['parsed_facts_sha256']):
+            raise ValueError('EARNINGS_VERSION_REVIEW_CONTENT_MISMATCH')
+    receipts=previous.get('equivalent_originals',[_press_receipt(previous)])+[_press_receipt(candidate)]
+    unique={}
+    for receipt in receipts:
+        version=allowed.get(receipt['source_sha256'])
+        if version is None or any(receipt[k]!=version[v] for k,v in
+            (('source_url','source_url'),('archive_path','archive_path'),('bytes','bytes'))):
+            raise ValueError('EARNINGS_UNREVIEWED_ORIGINAL_VERSION')
+        if timestamp(receipt['captured_at'])>cutoff:raise ValueError('EARNINGS_VERSION_CAPTURE_FROM_FUTURE')
+        old=unique.get(receipt['source_sha256'])
+        if old is None or timestamp(receipt['captured_at'])<timestamp(old['captured_at']):
+            unique[receipt['source_sha256']]=receipt
+    if set(unique)!=set(allowed):raise ValueError('EARNINGS_VERSION_REVIEW_VERSION_SET_MISMATCH')
+    canonical=review['canonical_source_sha256']
+    selected=previous if previous['source_sha256']==canonical else candidate
+    event=copy.deepcopy(selected);event.pop('event_sha256',None)
+    event['equivalent_originals']=[unique[key] for key in sorted(unique)]
+    event['source_version_review']=dict(archive_path=path.relative_to(root).as_posix(),
+        sha256=hashlib.sha256(raw).hexdigest(),reviewed_at=review['reviewed_at'],decision=review['decision'])
+    # Do not backdate the admission to an earlier issuer capture.
+    event['available_at']=max([reviewed]+[timestamp(r['captured_at']) for r in unique.values()]).isoformat()
+    event['event_sha256']=digest(event)
+    return event
+
+
 def condensed_event(root, code, doc, cutoff, financial_period, reader):
     """Issuer-specific adapter; a rounded summary never certifies full notes."""
     from .tsmc_earnings import RECIPE as TSMC_RECIPE, SOURCE_KIND, parse_tsmc
@@ -153,7 +212,8 @@ def load_earnings_events(root, asof, financial_period, reader=pdf_text):
                     continue
                 captured = timestamp(doc["captured_at_utc"])
                 if captured > cutoff:
-                    states[code] = dict(status="FUTURE_CAPTURE_NOT_USED", blocks_current_decision=False)
+                    if code not in events:
+                        states[code] = dict(status="FUTURE_CAPTURE_NOT_USED", blocks_current_decision=False)
                     continue
                 url = doc["source_url"]
                 if urlparse(url).scheme != "https" or urlparse(url).hostname != "www.fulgentsun.com":
@@ -167,20 +227,24 @@ def load_earnings_events(root, asof, financial_period, reader=pdf_text):
                     raise ValueError("EARNINGS_ORIGINAL_BYTES_MISMATCH")
                 if not raw.startswith(b"%PDF-"):
                     raise ValueError("EARNINGS_NOT_A_PDF")
-                facts = parse_press(reader(original))
+                pages=reader(original)
+                facts = parse_press(pages)
                 event = dict(code=code, financial_period=period, prior_period="2025-Q3",
                              source_kind="ISSUER_SELF_REPORTED_UNAUDITED", available_at=doc["captured_at_utc"],
                              source_url=url, archive_path=doc["archive_path"], source_sha256=doc["sha256"],
+                             source_bytes=doc['bytes'],source_captured_at=doc['captured_at_utc'],
                              extraction_recipe=RECIPE, document_page=2, **facts,
+                             normalized_press_text_sha256=press_text_sha256(pages),parsed_facts_sha256=digest(facts),
                              original_numeric_table_reconciled=True,
                              historical_issuer_publication_PIT_verified=False,
                              formal_quality_pass=False)
                 event["event_sha256"] = digest(event)
                 if code in events and events[code]["event_sha256"] != event["event_sha256"]:
-                    raise ValueError("EARNINGS_MULTIPLE_ORIGINAL_VERSIONS_REVIEW_REQUIRED")
+                    event=reconcile_press_versions(root,events[code],event,cutoff)
                 events[code] = event
                 states[code] = dict(status="NEW_ORIGINAL_EARNINGS_RECONCILED", period=period,
-                                    event_sha256=event["event_sha256"], blocks_current_decision=False)
+                                    event_sha256=event["event_sha256"], blocks_current_decision=False,
+                                    reviewed_equivalent_original_count=len(event.get('equivalent_originals',[])))
         except (ValueError, KeyError, OSError, TypeError, ImportError) as exc:
             events.pop(code, None)
             states[code] = dict(status="NEW_EARNINGS_REVIEW_BLOCKED", reason=str(exc),
