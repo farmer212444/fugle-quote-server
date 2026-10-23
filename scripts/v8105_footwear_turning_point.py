@@ -130,6 +130,15 @@ def evaluate(data, joined, *, asof=REPORT_DATE):
             raise ValueError("MISSING_COMPARABLE_QUARTERS")
         before, after=pair
         bridge=quarter_bridge(before,after)
+        comparison_period=str(int(after["period"][:4])-1)+after["period"][4:]
+        comparable=[row for row in company["quarters"] if row["period"]==comparison_period]
+        yoy_bridge=None
+        if len(comparable)==1:
+            historical_comp=comparable[0]
+            comparison_source=data["sources"][historical_comp["source_key"]]
+            if dt.date.fromisoformat(comparison_source["stated_release_date"])<=asof:
+                yoy_bridge=quarter_bridge(historical_comp,after)
+                yoy_bridge["source_basis"]="CURRENT_PUBLIC_RELEASE_PRIOR_YEAR_COMPARATIVE_NOT_PRIOR_YEAR_PIT_CERTIFICATION"
         gm=bridge["gross_margin_qoq_change_pp"]
         op=bridge["incremental_operating_profit_ntd_thousands"]
         confirmed=gm>=RECOVERY_MARGIN_PP and op>0 and after["operating_profit"]>0
@@ -145,7 +154,8 @@ def evaluate(data, joined, *, asof=REPORT_DATE):
             "issuer":company["name"],"latest_release_date_stated":after["source_release_date"],
             "latest_financial_quarter":after["period"],
             "latest_release_original_exact_time_PIT_verified":after["release_exact_first_seen_verified"],
-            "bridge":bridge,"turning_research_status":stage,
+            "bridge":bridge,"yoy_comparable_bridge":yoy_bridge,
+            "turning_research_status":stage,
             "earnings_recovery_1pp_provisional":confirmed,
             "next_strong_confirmation_gm_min_pct":round(bridge["gross_margin_latest_pct"]+RECOVERY_MARGIN_PP,2),
             "next_strong_confirmation_operating_profit_min_ntd_thousands":after["operating_profit"],
