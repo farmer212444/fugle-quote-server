@@ -1,0 +1,179 @@
+{
+  "schema": "V8105_2027_FOOTWEAR_INDEPENDENT_SCENARIO_ASSUMPTIONS_V1",
+  "compiled_asof": "2026-10-23",
+  "policy": {
+    "year": 2027,
+    "currency": "TWD",
+    "revenue_unit": "million_TWD",
+    "earnings_unit": "million_TWD",
+    "share_unit": "million_shares",
+    "reference_price_date": "2026-10-22",
+    "share_dilution_stress_pct": 10,
+    "pe_independence": "MULTIPLES_ARE_INTERNAL_HYPOTHESES_NOT_SELL_SIDE_CONSENSUS",
+    "weights_type": "SUBJECTIVE_SCENARIOS_NOT_BACKTESTED_PROBABILITIES",
+    "fair_value_is_not_tradeable_or_certified": true,
+    "parent_profit_formula_9802": "(revenue * (gross_margin - operating_expense_rate) + pre_tax_nonop) * posttax_parent_ratio",
+    "parent_profit_formula_6965": "revenue * (gross_margin - operating_expense_rate) * op_tax_retention + below_op_aftertax_and_minority",
+    "bear_negative_eps": "PE_valuation_null_not_ZERO_VALUE",
+    "scope": "9802_6965_ONLY_NOT_FULL_UNIVERSE"
+  },
+  "sources": {
+    "9802_2025": {
+      "url": "https://www.fulgentsun.com/img/News_Release/FY2025%204Q%20financial%20results%20CN.pdf",
+      "description": "Issuer FY2025 preliminary results 2026-01-26",
+      "stated_publication_date": "2026-01-26",
+      "raw_original_sha256": null,
+      "historical_first_available_timestamp": null
+    },
+    "9802_2026_q3": {
+      "url": "https://www.fulgentsun.com/investors04_1.asp",
+      "description": "Issuer 2026 Q3 preliminary, first 9 months through Sep",
+      "stated_publication_date": "2026-10-20",
+      "raw_original_sha256": null,
+      "historical_first_available_timestamp": null
+    },
+    "6965_2025": {
+      "url": "https://www.chungjye.com.tw/en/news/2026-03-09-q4-financial-results/",
+      "description": "Issuer FY2025 2026-03-09",
+      "stated_publication_date": "2026-03-09",
+      "raw_original_sha256": null,
+      "historical_first_available_timestamp": null
+    },
+    "6965_2026_q2": {
+      "url": "https://www.chungjye.com.tw/zh-tw/news/2026-08-28-q2-financial-results/",
+      "description": "Issuer Q2/H1 2026 dated 2026-08-28",
+      "stated_publication_date": "2026-08-28",
+      "raw_original_sha256": null,
+      "historical_first_available_timestamp": null
+    },
+    "price_and_shares": {
+      "url": "https://github.com/farmer212444/fugle-quote-server/blob/research/insider-pit-shadow-20261023/tw-market-data/evidence/v880/insider_reviews/20261023_joint_footwear_two_path_readiness.json",
+      "description": "Archived 2026-10-22 TWSE price and then-current shares; NOT 2027 diluted issued shares",
+      "raw_original_sha256": null,
+      "historical_first_available_timestamp": null
+    }
+  },
+  "companies": {
+    "6965": {
+      "name": "中傑-KY",
+      "FY2025": {
+        "annual_revenue_m": 21671,
+        "annual_operating_profit_m": 451,
+        "annual_parent_net_m": 537,
+        "reported_eps": 3.5,
+        "reported_gm_pct": 11.6
+      },
+      "observed_2026": {
+        "latest_quarter": "2026Q2",
+        "latest_q_gm_pct": 12.8,
+        "latest_q_operating_profit_m": 151,
+        "first_half_revenue_m": 10448,
+        "first_half_operating_profit_m": 71,
+        "first_half_parent_net_m": -54,
+        "first_half_eps": -0.35
+      },
+      "shares_asof_current": 156.336,
+      "current_price": 64.3,
+      "earnings_bridge_type": "TAXED_OPERATING_PLUS_AFTERTAX_BELOW_OPERATION",
+      "cases": [
+        {
+          "case": "Bear",
+          "weight": 0.3,
+          "revenue_m": 20500,
+          "gross_margin_pct": 11.5,
+          "opex_rate_pct": 10.6,
+          "op_tax_retention": 0.75,
+          "below_op_aftertax_and_minority_m": -350,
+          "reasonable_pe": null,
+          "comment": "Low utilization, FX/other drag; loss EPS can't be valued using PE"
+        },
+        {
+          "case": "Base",
+          "weight": 0.5,
+          "revenue_m": 24000,
+          "gross_margin_pct": 13.8,
+          "opex_rate_pct": 9.9,
+          "op_tax_retention": 0.75,
+          "below_op_aftertax_and_minority_m": -150,
+          "reasonable_pe": 15,
+          "comment": "GM recovery but below-op drag persists"
+        },
+        {
+          "case": "Bull",
+          "weight": 0.2,
+          "revenue_m": 26500,
+          "gross_margin_pct": 15.5,
+          "opex_rate_pct": 9.4,
+          "op_tax_retention": 0.76,
+          "below_op_aftertax_and_minority_m": 100,
+          "reasonable_pe": 16,
+          "comment": "New capacity economies and better mix"
+        }
+      ]
+    },
+    "9802": {
+      "name": "鈺齊-KY",
+      "FY2025": {
+        "annual_revenue_m": 17294.633,
+        "annual_operating_profit_m": 1591.802,
+        "annual_parent_net_m": 1213.482,
+        "reported_eps": 6.05,
+        "reported_gm_pct": 18.29
+      },
+      "observed_2026": {
+        "latest_quarter": "2026Q3",
+        "latest_q_gm_pct": 13.23,
+        "latest_q_operating_profit_m": 227.451,
+        "nine_month_revenue_m": 14369.046,
+        "nine_month_operating_profit_m": 677.222,
+        "nine_month_parent_net_m": 493.828,
+        "nine_month_eps": 2.46
+      },
+      "shares_asof_current": 200.991673,
+      "current_price": 62.6,
+      "earnings_bridge_type": "PRETAX_NONOP_THEN_AFTERTAX_PARENT",
+      "cases": [
+        {
+          "case": "Bear",
+          "weight": 0.3,
+          "revenue_m": 18500,
+          "gross_margin_pct": 13.5,
+          "opex_rate_pct": 9.9,
+          "pre_tax_nonop_m": -120,
+          "posttax_parent_ratio": 0.76,
+          "reasonable_pe": 11,
+          "comment": "Factory ramp delays; weak incremental gross profit"
+        },
+        {
+          "case": "Base",
+          "weight": 0.5,
+          "revenue_m": 20800,
+          "gross_margin_pct": 15.8,
+          "opex_rate_pct": 9.3,
+          "pre_tax_nonop_m": -50,
+          "posttax_parent_ratio": 0.76,
+          "reasonable_pe": 14,
+          "comment": "Partial utilization recovery; GM below 2025"
+        },
+        {
+          "case": "Bull",
+          "weight": 0.2,
+          "revenue_m": 23000,
+          "gross_margin_pct": 18,
+          "opex_rate_pct": 9,
+          "pre_tax_nonop_m": 0,
+          "posttax_parent_ratio": 0.78,
+          "reasonable_pe": 16,
+          "comment": "Factory ramp succeeds; GM near 2025"
+        }
+      ]
+    }
+  },
+  "quality_state": {
+    "formal_13_gates_all_passed": false,
+    "source_reports_complete_original_archive": false,
+    "forecasts_2027_independently_audited": false,
+    "excess_return_2027_0050_known": false,
+    "reported_eps_scenarios_are_hypotheses": true
+  }
+}
