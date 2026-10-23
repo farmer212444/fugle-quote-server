@@ -1,9 +1,9 @@
 {
   "schema": "RESEARCH_EVIDENCE_WORK_QUEUE_V1",
   "model": "V8.10.5",
-  "estimate_vintage": "2026-10-23T21:20:44.749116+08:00",
+  "estimate_vintage": "2026-10-23T22:42:38.004947+08:00",
   "asof_price_date": "2026-10-22",
-  "source_model_sha256": "8c4f113dee3be8f10f9efef174260873751eacd6bf1682091a98b26e700ada1f",
+  "source_model_sha256": "4ad7d695d924897e5b70217e500e199aa99a6def6937ee156b8ef1676a6dbece",
   "issuer_job_count": 128,
   "unresolved_gate_count": 1664,
   "scope": "ISSUERS_INCLUDED_IN_CURRENT_GATE_DIAGNOSTICS_NOT_ALL_TRACKED_COMPANIES",
@@ -5806,7 +5806,7 @@
           "scope": "ISSUER",
           "required_evidence": "完整核閱意見、保留範圍及重要性判斷",
           "reason": "Issuer numeric origin checked; full auditor scope and important qualifications not reviewed",
-          "model_reason": "QUALIFIED_REVIEW_MATERIALITY_REQUIRED",
+          "model_reason": "ISSUER_ORIGINAL_PDF_QUALIFIED_SCOPE_UNREVIEWED_SUBSIDIARIES_INCOMPLETE_RECONCILIATION",
           "invalidates_on": "新核閱／重大事項"
         },
         {
@@ -21586,7 +21586,7 @@
   ],
   "shared_strategy_collection_task": {
     "gate": "out_of_sample_validation",
-    "strategy_variant_sha256": "55aa9db9449df2e55a84bb849318b4475374e60b41b2372b331e0e7ff3840c8c",
+    "strategy_variant_sha256": "f2b870dbd3225c1e740bc46d9955c0b3674f5bae000d3ae2420f3c93af1efa46",
     "target_date": "2027-12-31",
     "affected_issuers": [
       {
@@ -22236,5 +22236,5 @@
   },
   "formal_gate_decisions_changed": 0,
   "certificates_issued": 0,
-  "source_progress_sha256": "940b160b6822ce9f2fb089d09ae2bfb0b2298d97f8ebb6ab0a7a19e178ea84fd"
+  "source_progress_sha256": "6229274d18e803c545ce8edc149bac3c2a9cb2af07b755f5d9d8e158afd2297d"
 }
