@@ -5,7 +5,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from scripts.forward_benchmark_sources import refresh,verify_month,SCHEMA
+from scripts.forward_benchmark_sources import refresh,verify_month,source_current
 from scripts.history_archive import digest,verify_original,outstanding_benchmark_codes
 from scripts.tw_history_backfill import parse,prioritized_candidates
 from scripts.v893_tpex_daily_backfill import selected_codes,run as collect_tpex
@@ -70,6 +70,9 @@ class FrozenForwardSources(unittest.TestCase):
         self.assertEqual(verify_month(self.root,doc,'2026-10',self.now)[0]['code'],'0050')
         self.assertFalse(doc['total_return_verified'])
         self.assertFalse(doc['rows'][0]['fillability_verified'])
+        doc['last_source_checked_at_utc']='2100-01-01T00:00:00+00:00'
+        with self.assertRaisesRegex(ValueError,'CHECK_CLOCK_INVALID'):
+            verify_month(self.root,doc,'2026-10',self.now)
         again=refresh(self.root,fetcher=lambda url:self.fail('Verified source was refetched'),now=self.now)
         self.assertEqual(again['requests_attempted'],0)
         self.assertEqual((self.root/self.lock).read_bytes(),before)
@@ -106,6 +109,21 @@ class FrozenForwardSources(unittest.TestCase):
         self.write(self.lock,self.selection)
         with self.assertRaisesRegex(ValueError,'TAMPERED'):
             refresh(self.root,0,now=self.now)
+
+    def test_partial_month_must_be_refreshed_after_rollover(self):
+        partial=dict(original_archive=dict(captured_at_utc='2026-10-30T01:00:00+00:00'),
+                     rows=[dict(date='2026-10-29')])
+        self.assertTrue(source_current(partial,'2026-10','2026-10-29'))
+        self.assertFalse(source_current(partial,'2026-10','2026-10-30'))
+        self.assertFalse(source_current(partial,'2026-10','2026-11-02'))
+        # UTC Oct31 18:00 is already November in the exchange's timezone.
+        partial['original_archive']['captured_at_utc']='2026-10-31T18:00:00+00:00'
+        self.assertTrue(source_current(partial,'2026-10','2026-11-02'))
+        # Repeated identical bytes retain their first immutable capture clock;
+        # an actual subsequent HTTP check still finalizes the month.
+        partial['original_archive']['captured_at_utc']='2026-10-30T01:00:00+00:00'
+        partial['last_source_checked_at_utc']='2026-10-31T18:00:00+00:00'
+        self.assertTrue(source_current(partial,'2026-10','2026-11-02'))
 
 
 if __name__=='__main__':unittest.main()

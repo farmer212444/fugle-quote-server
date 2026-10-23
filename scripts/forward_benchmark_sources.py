@@ -35,12 +35,25 @@ def verify_month(root,doc,month,now):
     captured=dt.datetime.fromisoformat(original['captured_at_utc'])
     if captured.tzinfo is None or captured>now:
         raise ValueError('ETF_SOURCE_CAPTURE_AFTER_ASOF_OR_NAIVE')
+    checked=dt.datetime.fromisoformat(doc.get('last_source_checked_at_utc',original['captured_at_utc']))
+    if checked.tzinfo is None or checked<captured or checked>now:
+        raise ValueError('ETF_SOURCE_CHECK_CLOCK_INVALID')
     rows=parse(verify_original(root,original),'0050',month)
     if digest(canonical(rows))!=original['parsed_rows_sha256'] or rows!=doc.get('rows'):
         raise ValueError('ETF_NORMALIZED_ROWS_DIFFER_FROM_ORIGINAL')
     if any(dt.datetime.fromisoformat(row['close_at'])>captured for row in rows):
         raise ValueError('ETF_CLOSE_AFTER_SOURCE_CAPTURE')
     return rows
+
+
+def source_current(doc,month,asof):
+    if month==asof[:7]:
+        return any(row['date']==asof for row in doc['rows'])
+    captured=dt.datetime.fromisoformat(doc.get('last_source_checked_at_utc',
+                                              doc['original_archive']['captured_at_utc']))
+    # Re-fetch a prior partial month once after month end, so a final session
+    # missed by the previous schedule cannot stay silently absent forever.
+    return captured.astimezone(TAIPEI).strftime('%Y-%m')>month
 
 
 def refresh(root,max_requests=2,fetcher=request,*,now=None):
@@ -64,14 +77,17 @@ def refresh(root,max_requests=2,fetcher=request,*,now=None):
         if start<=now:
             months.update(month_range(start.date().isoformat(),asof))
     required=sorted(months,reverse=True)
+    pending_refresh=set(required)
     verified={};errors=[];attempted=0;updated=[];reused=[]
     for month in required:
         path=root/OUT/'months'/(month+'.json')
         if path.exists():
             try:
-                rows=verify_month(root,json.loads(path.read_text()),month,now)
+                cached=json.loads(path.read_text())
+                rows=verify_month(root,cached,month,now)
                 verified[month]=rows
-                if month!=asof[:7] or any(row['date']==asof for row in rows):
+                if source_current(cached,month,asof):
+                    pending_refresh.discard(month)
                     reused.append(month)
                     continue
             except (ValueError,KeyError,TypeError,OSError,EOFError) as exc:
@@ -89,6 +105,7 @@ def refresh(root,max_requests=2,fetcher=request,*,now=None):
                 raise ValueError('ETF_CLOSE_AFTER_SOURCE_CAPTURE')
             original=archive_original(root,'TWSE','0050-'+month,url,original_bytes,rows)
             doc=dict(schema=SCHEMA,benchmark_id='0050',market='TWSE',month=month,
+                     last_source_checked_at_utc=dt.datetime.now(dt.timezone.utc).isoformat(),
                      original_archive=original,rows=rows,unadjusted_quotes=True,
                      total_return_verified=False,corporate_actions_verified=False,
                      opening_auction_fillability_verified=False)
@@ -97,6 +114,7 @@ def refresh(root,max_requests=2,fetcher=request,*,now=None):
             verify_month(root,doc,month,now if fixed_clock else dt.datetime.now(dt.timezone.utc))
             atomic_json(path,doc)
             verified[month]=rows
+            if source_current(doc,month,asof):pending_refresh.discard(month)
             updated.append(month)
         except (ValueError,KeyError,TypeError,OSError,EOFError) as exc:
             errors.append(dict(month=month,stage='SOURCE_UNAVAILABLE',reason=str(exc)))
@@ -106,13 +124,15 @@ def refresh(root,max_requests=2,fetcher=request,*,now=None):
                 frozen_monthly_cohorts=len(selections),required_months=required,
                 verified_months=sorted(verified),missing_months=sorted(set(required)-set(verified)),
                 reference_session_quote_present=reference_covered,
+                months_needing_refresh=sorted(pending_refresh),
                 verified_sessions_through_reference=sum(sum(r['date']<=asof for r in rows)
                                                         for rows in verified.values()),
                 requests_attempted=attempted,updated_months=updated,reused_months=reused,
                 source_errors=errors,
                 status=('NO_FROZEN_COHORT' if not selections else
                         'QUOTE_SOURCES_COLLECTED_TOTAL_RETURN_PENDING' if len(verified)==len(required)
-                        and not errors and reference_covered else 'QUOTE_SOURCE_COLLECTION_INCOMPLETE'),
+                        and not errors and reference_covered and not pending_refresh
+                        else 'QUOTE_SOURCE_COLLECTION_INCOMPLETE'),
                 model_or_benchmark_return_pct=None,verified_trading_results=0,
                 missing_evidence=['DIVIDENDS_SPLITS_DELISTING_FULL_WINDOW_REVIEW',
                                   'NEXT_ELIGIBLE_OPEN_AND_FILLABILITY_REVIEW',
