@@ -223,7 +223,7 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
         if developer and any(cases[n]['valuation_method']!='NAV' for n in cases):raise ValueError('PROPERTY_DEVELOPER_REQUIRES_ASSET_VALUE_BRIDGE')
         specialist=[];stress=(base['target_price']*.81*dilution_stress_factor/close-1)*100 if base['target_price'] is not None and dilution_stress_factor is not None and base.get('valuation_method')=='PE' else None
     elif specialist and gates['forecast_bridge'].get('status')=='PASS':gates['forecast_bridge']=gate('PENDING','SPECIALIST_OPERATING_INPUTS_REQUIRED')
-    equity_offering=equity_offering_overlay(data.root,code,asof,target_date,base,master['issued_shares'])
+    equity_offering=equity_offering_overlay(data.root,code,asof,target_date,base,master['issued_shares']) if getattr(data,'root',None) is not None else None
     if equity_offering:
         warnings.append('DISCLOSED_EQUITY_OFFERING_REQUIRES_UNISSUED_SHARE_RECONCILIATION')
         gates['fully_diluted_shares']=gate('PENDING','ANNOUNCED_EQUITY_OFFERING_SHARE_PROCEEDS_AND_FUTURE_RETURNS_NOT_VERIFIED')
