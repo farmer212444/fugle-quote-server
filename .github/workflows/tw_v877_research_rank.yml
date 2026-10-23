@@ -54,6 +54,8 @@ on:
       - 'tests/test_v8a5_quality_decision_lane.py'
       - 'tests/test_v8a6_etf_rotation_watch.py'
       - 'scripts/v897_freeze_model_vintage.py'
+      - 'scripts/v8a9_8383_original_archive.py'
+      - 'tw-market-data/evidence/v880/auditor_scope_watch/**'
       - 'scripts/v8a8_forward_top30_0050.py'
       - 'tw-market-data/config/forward_top30_0050_v1.json'
       - 'tests/test_v8a8_forward_top30_0050.py'
@@ -123,6 +125,8 @@ on:
       - 'tests/test_v8a5_quality_decision_lane.py'
       - 'tests/test_v8a6_etf_rotation_watch.py'
       - 'scripts/v897_freeze_model_vintage.py'
+      - 'scripts/v8a9_8383_original_archive.py'
+      - 'tw-market-data/evidence/v880/auditor_scope_watch/**'
       - 'scripts/v8a8_forward_top30_0050.py'
       - 'tw-market-data/config/forward_top30_0050_v1.json'
       - 'tests/test_v8a8_forward_top30_0050.py'
@@ -215,6 +219,11 @@ jobs:
       - name: Archive official total-return benchmark and recent regime history
         if: github.event_name != 'pull_request'
         run: python scripts/benchmark_sources.py
+      - name: Archive official 8383 Q1/Q2 original PDFs into immutable SHA receipts
+        if: github.event_name != 'pull_request'
+        run: python scripts/v8a9_8383_original_archive.py
+      - name: Run bounded 8383 original PDF archive regression checks
+        run: python -m unittest discover -s tests -p test_v8a9_8383_original_archive.py
       - name: Admit verified original-source review packs before valuation
         run: python scripts/v891_gate_certification.py --issue-only
       - name: Produce dated scenarios and evidence decisions
@@ -240,6 +249,7 @@ jobs:
               python -m pip install -r requirements-model.txt
               python scripts/refresh_v880_public.py
               python scripts/benchmark_sources.py
+              python scripts/v8a9_8383_original_archive.py
               python scripts/v891_gate_certification.py --issue-only
               python scripts/run_research_pipeline.py --phase core
             fi
