@@ -149,6 +149,7 @@ def run(data_dir,asof,target_date,out_dir=None,variant='current-information'):
       '|---:|---|---|---:|---:|---|']
     for r in evidence_priority['top10_evidence_first']:
         review_issues=[]
+        if r['latest_month_reversal_warning']:review_issues.append('最新月營收轉弱')
         if r['pending_offering']:review_issues.append('現增')
         if r['cb_terms_or_shares_unresolved']:review_issues.append('CB/股數')
         if 'NEGATIVE_OCF_REQUIRES_WORKING_CAPITAL_BRIDGE_NOT_AUTOMATIC_FAIL' in r['warning_flags']:review_issues.append('OCF/營運資金')
