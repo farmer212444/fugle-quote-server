@@ -186,6 +186,12 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
     gates=research_gates(primary,code,valuation_period,flow,coverage.get('eight_quarter_key_income_cash_values_reconciled'))
     for name,value in e.get('certificates',{}).get(code,{}).items():
         if name in GATES:gates[name]=value
+    wc_watch=getattr(data,'working_capital_watch',{}).get(code)
+    if wc_watch and wc_watch.get('period')==valuation_period:
+        warnings.append('ORIGINAL_CONTRACT_ASSETS_AR_AP_AR_ECL_SUBCHECK_NOT_FULL_CASH_GATE')
+        if gates['cash_and_working_capital'].get('status')!='FAIL':
+            gates['cash_and_working_capital']=gate(
+                'PENDING','CONTRACT_ASSETS_RECEIVABLES_ECL_AP_ALGEBRA_CHECKED_COLLECTION_AND_SUBSIDIARIES_NOT_VERIFIED')
     scope_watch=getattr(data,'auditor_scope_watch',{}).get(code)
     if scope_watch and scope_watch.get('period')==valuation_period:
         warnings.append('ISSUER_ORIGINAL_PDF_QUALIFIED_AUDITOR_SCOPE_NOT_FORMAL_PASS')
@@ -296,6 +302,7 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
       gates=gates,certification=certification,formal_Aplus=certification['formal_Aplus'],formal_Aplusplus=certification['formal_Aplusplus'],status=certification['status'],warning_flags=warnings,
       governance_review=governance,recommendation_blocked=governance_blocked,
       auditor_scope_watch=scope_watch if scope_watch and scope_watch.get('period')==valuation_period else None,
+      working_capital_original_subcheck=wc_watch if wc_watch and wc_watch.get('period')==valuation_period else None,
       stress_eps90_pe90_upside_pct=stress,specialist_model_requirements=specialist,base_scenario_is_admissible=point,
       business_profile=dict(property_development_observed=developer,engineering_business_observed=contractor,classification_source='ISSUER_HISTORY_AND_ORGANIZATION_NOTE' if business else 'INDUSTRY_ONLY'),
       base_scenario_role='RESEARCH_FORECAST_UNCERTIFIED' if point else 'DIAGNOSTIC_ONLY_NOT_ADMISSIBLE_BASE',
