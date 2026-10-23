@@ -128,6 +128,16 @@ class GovernanceOriginals(unittest.TestCase):
 
 
 class GovernanceDecisions(unittest.TestCase):
+    def test_registered_issuer_originals_survive_publication_as_exact_bytes(self):
+        root=Path(__file__).resolve().parents[1]/'tw-market-data'
+        ledger=root/'evidence/v880/governance/1714.json'
+        document=json.loads(ledger.read_text())
+        sources=[source for event in document['events'] for update in event['updates'] for source in update['sources']]
+        self.assertGreaterEqual(len(sources),2)
+        for source in sources:
+            with self.subTest(path=source['archive_path']):
+                self.assertEqual(hashlib.sha256((root/source['archive_path']).read_bytes()).hexdigest(),source['sha256'])
+
     def review(self):
         return dict(status=BLOCK, blocks_recommendation=True,
                     material_open_event_ids=['SYNTHETIC_EVENT'], events=[])
