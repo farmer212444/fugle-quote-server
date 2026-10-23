@@ -18,6 +18,7 @@ from tw_model_v880.forward import forward_observations
 from tw_model_v880.portfolio import constrained_portfolio,reverse_execution_capacity,finite
 from tw_model_v880.experiments import compare_models,calibration_summary
 from tw_model_v880.validation_io import collect_trials,source
+from tw_model_v880.return_search import registered_trial_count
 from scripts.benchmark_validation import build as build_benchmark_validation
 
 
@@ -182,7 +183,7 @@ def build(root):
     competitions=[]
     for trial in collected['trials']:
         try:
-            comparison=compare_models(trial.get('pairs',[]),trials=max(1,collected['registered_trial_count']),
+            comparison=compare_models(trial.get('pairs',[]),trials=max(1,collected['registered_trial_count']+registered_trial_count(root)),
                                       block_size=config['experiment_policy']['block_size'],
                                       min_dates=config['experiment_policy']['minimum_nonoverlapping_oos_periods'])
             if trial.get('rejected_outcomes'):

@@ -1,0 +1,87 @@
+{
+  "schema": "RETURN_MODEL_SEARCH_POLICY_V1",
+  "benchmark": "0050_NET_TOTAL_RETURN",
+  "objective": "MEAN_NET_LOG_EXCESS_RETURN_WITHIN_SAME_HORIZON",
+  "families": {
+    "valuation": {
+      "forward_upside_pct": 1.0
+    },
+    "growth": {
+      "revenue_acceleration_pp": 0.5,
+      "gross_margin_delta_pp": 0.5
+    },
+    "momentum": {
+      "momentum_63_21_pct": 1.0
+    },
+    "quality": {
+      "ocf_to_sales": 0.5,
+      "gross_margin_delta_pp": 0.5
+    },
+    "balanced": {
+      "forward_upside_pct": 0.2,
+      "revenue_acceleration_pp": 0.2,
+      "gross_margin_delta_pp": 0.2,
+      "ocf_to_sales": 0.2,
+      "momentum_63_21_pct": 0.2
+    }
+  },
+  "grid": {
+    "stock_counts": [
+      10,
+      20,
+      30,
+      50
+    ],
+    "holding_sessions": [
+      21,
+      63,
+      126
+    ],
+    "minimum_adv20_ntd": [
+      12000000,
+      30000000
+    ],
+    "sector_caps": [
+      0.25,
+      0.4
+    ]
+  },
+  "reference_capital_ntd": 10000000,
+  "max_daily_participation": 0.05,
+  "max_training_drawdown": 0.3,
+  "minimum_train_periods": 12,
+  "maximum_train_periods": 36,
+  "embargo_calendar_days": 5,
+  "minimum_oos_periods": 60,
+  "minimum_market_regimes": 2,
+  "bootstrap_draws": 20000,
+  "bootstrap_block_size": 5,
+  "stress_cost_multiplier_excluding_tax": 2,
+  "automatic_deployment": false,
+  "notes": [
+    "Predeclared research hypotheses, not optimized weights or probabilities.",
+    "Each holding horizon is separate; matched cohort results are not continuous buy-and-hold CAGR.",
+    "Missing features never become zero-return observations. Fractional shares and fixed costs are research assumptions.",
+    "Next official session open after actual archive; no retrospective August 1 picks. All13 quality gates remain."
+  ],
+  "costs": {
+    "stock": {
+      "buy_fee_rate": 0.001425,
+      "sell_fee_rate": 0.001425,
+      "sell_tax_rate": 0.003,
+      "buy_slippage_rate": 0.001,
+      "sell_slippage_rate": 0.001,
+      "half_spread_rate": 0.0005,
+      "minimum_fee_ntd": 20
+    },
+    "etf": {
+      "buy_fee_rate": 0.001425,
+      "sell_fee_rate": 0.001425,
+      "sell_tax_rate": 0.001,
+      "buy_slippage_rate": 0.001,
+      "sell_slippage_rate": 0.001,
+      "half_spread_rate": 0.0005,
+      "minimum_fee_ntd": 20
+    }
+  }
+}
