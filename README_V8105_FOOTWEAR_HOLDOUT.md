@@ -92,3 +92,56 @@ Selected sources:
 No broad historical sample, actual broker orders, schedule or A+ rating change
 is created by this PR. This study is separate from the existing forward
 TOP30-vs-0050 experiment.
+
+
+## 2026-10-23 extension: split early A and confirmed B
+
+**Path A — early:** same verified three monthly insider market-buying months
+and bottom-20% of actual 252-session closes, but **no** gross-margin
+requirement. It is explicitly exposed by
+`evaluate_signal(..., require_margin=False)`; every result remains
+`RESEARCH_...` rather than certified trade permission.
+
+**Path B — confirmed:** the original
+`evaluate_signal(..., require_margin=True)` additionally requires most
+recent two separately published single-quarter margins to improve by >=1pp.
+
+Reproducible repository audit:
+`python scripts/v8105_footwear_two_path_audit.py`
+(secondary-only source; cannot create transactions or real P&L).
+
+As of this study, only **9802** (July/August/September secondary market net
++464/+1101/+231 lots, +1796 combined) and **6965** (+63/+20/+228 lots, +311
+combined) meet the three-positive-month **secondary precheck** among the six
+available footwear companies. The six are NOT a complete shoe/footwear
+materials industry universe; 9938 百和 remains outside this table.
+Official account-level identity, share capital materiality, and full 252
+price-window proof are missing, so **certified A and B signals = zero**.
+
+GM evidence context:
+- 9802 2026Q2 ~13.94%, 2026Q3 company self-report 2026-10-20 ~13.23%;
+  no quarter-over-quarter margin recovery for B.
+- 6965 2026Q1 10.1%, Q2 12.8% (company Aug 28 release) suggests B's
+  margin test may pass, but official insider and close-history PIT gates
+  remain pending.
+
+### Matched one-year outcomes, conditional selection, and bias
+
+`tw_model_v880/footwear_strategy_pair.py` reports **A full cohort**, the
+**A subset of B-confirmed episodes**, and the **B-confirmed subset** separately.
+An A episode that *never* confirms B stays recorded as B-no-signal, not silently
+discarded. B occurs at its own public-knowledge timestamp and can **never**
+be backdated to A's entry. If an outcome is unmatured, nonexecutable, or
+lacks full 0050 net-total-return audit, the affected win-rate remains null.
+
+Even after 30 matured records in each arm, B vs A among later-confirmed
+stocks alone is a *conditional subset comparison*, **not** proof one
+standalone strategy performs better across all opportunities. Measuring
+the investor's deployable full-cohort B strategy requires an additional
+explicit cash/0050 opportunity-cost policy for the stocks that never
+confirm, no hindsight selection, and historically frozen portfolios.
+All calculations must remain prospective/OOS after 2026-10-23 for actual
+predeclared model performance.
+
+This extension does **not** modify main, formal A+, Exit, future cash
+dividend estimates, 2027 EPS or PE.
