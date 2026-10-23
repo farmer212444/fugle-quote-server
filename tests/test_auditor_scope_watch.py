@@ -29,6 +29,8 @@ class AuditorWatchTests(unittest.TestCase):
         self.assertFalse(o['formal_auditor_scope_pass'])
         self.assertFalse(o['issuer_original_pdf_bytes_hashed'])
         self.assertFalse(o['MOPS_PIT_verified'])
+        self.assertEqual(o['preceding_q1_review']['period'],'2026-Q1')
+        self.assertAlmostEqual(o['preceding_q1_review']['subsidiaries_unreviewed_share_of_total_comprehensive_income_pct'],7.87)
 
     def test_filing_period_mismatch_and_future_access_quarantined(self):
         entry=self.source()
@@ -49,6 +51,16 @@ class AuditorWatchTests(unittest.TestCase):
         entry=self.source()
         entry['source_pdf_url']='https://untrusted.example/8383.pdf'
         with self.assertRaisesRegex(ValueError,'SCOPE_WATCH_UNVERIFIED_PUBLISHER_HOST'):
+            check_scope_receipt(entry,INCOME,CASH,'2026-10-23')
+
+    def test_prior_q1_original_source_identity_cannot_be_spoofed(self):
+        entry=self.source()
+        entry['prior_interim_review_observation']['issuer_original_source_url']='https://untrusted.example/2026Q1.pdf'
+        with self.assertRaisesRegex(ValueError,'SCOPE_WATCH_PRIOR_Q1_ORIGINAL_SOURCE_INVALID'):
+            check_scope_receipt(entry,INCOME,CASH,'2026-10-23')
+        entry=self.source()
+        entry['prior_interim_review_observation']['MOPS_PIT_verified']=True
+        with self.assertRaisesRegex(ValueError,'SCOPE_WATCH_PRIOR_Q1_ORIGINAL_SOURCE_INVALID'):
             check_scope_receipt(entry,INCOME,CASH,'2026-10-23')
 
     def test_research_queue_shows_auditor_conclusion_not_buy_or_alpha(self):
