@@ -1,9 +1,9 @@
 {
   "schema": "RESEARCH_EVIDENCE_WORK_QUEUE_V1",
   "model": "V8.10.4",
-  "estimate_vintage": "2026-10-23T14:00:51.615141+08:00",
+  "estimate_vintage": "2026-10-23T16:32:51.428126+08:00",
   "asof_price_date": "2026-10-22",
-  "source_model_sha256": "334c32f0f7de547a2912206f1491e5f47d362da8a881528f712d67a8e32567d3",
+  "source_model_sha256": "d252ab95205343d1eb244159ef4be91b7b0e55f73b3decc936fb13a69e0f1719",
   "issuer_job_count": 128,
   "unresolved_gate_count": 1664,
   "scope": "ISSUERS_INCLUDED_IN_CURRENT_GATE_DIAGNOSTICS_NOT_ALL_TRACKED_COMPANIES",
@@ -1741,7 +1741,7 @@
           "scope": "ISSUER",
           "required_evidence": "現有股數、CB最新條款、員工股份與分母勾稽",
           "reason": "Issued shares present; no listed CB alone does not validate all potential dilution",
-          "model_reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
+          "model_reason": "ANNOUNCED_EQUITY_OFFERING_SHARE_PROCEEDS_AND_FUTURE_RETURNS_NOT_VERIFIED",
           "invalidates_on": "增減資／CB條款更新"
         },
         {
@@ -21586,7 +21586,7 @@
   ],
   "shared_strategy_collection_task": {
     "gate": "out_of_sample_validation",
-    "strategy_variant_sha256": "5e0bdd7f34b8b941c884e31165c6fe1a6904ed3aed76ec2c0bede5dfa8fb8125",
+    "strategy_variant_sha256": "dfe7b77e68500330535332139859436d8ec7cfa2fb9eb1abd0e2cc2df81b8bc3",
     "target_date": "2027-12-31",
     "affected_issuers": [
       {
@@ -22236,5 +22236,5 @@
   },
   "formal_gate_decisions_changed": 0,
   "certificates_issued": 0,
-  "source_progress_sha256": "c3103e99895a658fd82f44833c621d4c44547787c27b8c7c6775f032343a9424"
+  "source_progress_sha256": "ebe1b8e1fa4069681cd03e7fcb581404d9ed4b6237f9413862ba35f498026a1e"
 }
