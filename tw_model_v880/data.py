@@ -9,6 +9,7 @@ SOURCE_JSON_PATTERNS=('evidence/v880/certificates/*.json','evidence/v880/issuer_
     'evidence/v880/governance/*.json','evidence/v880/equity_offerings/*.json',
     'evidence/v880/auditor_scope_watch/*.json',
     'evidence/v880/working_capital_watch/*.json',
+    'evidence/v880/inventory_original_watch/*.json',
     'evidence/v880/earnings_version_reviews/*.json',
     'evidence/v880/originals/*/manifest.json')
 
@@ -174,6 +175,13 @@ class MarketData:
         for code in self.working_capital_watch:
             self.receipt(self.root/'evidence/v880/working_capital_watch'/f'{code}.json',
                          'SHA_REHASHED_ISSUER_Q2_SELECTED_NOTE_ITEMS_NOT_FULL_CASH_QUALITY_GATE')
+        from .inventory_original import load_6206_inventory_watch
+        self.inventory_original_watch,inventory_original_errors=load_6206_inventory_watch(
+            self.root,asof,self.history)
+        self.errors.extend(inventory_original_errors)
+        for code in self.inventory_original_watch:
+            self.receipt(self.root/'evidence/v880/inventory_original_watch'/f'{code}.json',
+                         'SHA_VERIFIED_ISSUER_IR_INVENTORY_AND_MOPS_REVENUE_NOT_CASH_GATE')
         self.model_source_state=model_source_state(self.root)
     def path(self,s):
         p=pathlib.Path(s)
