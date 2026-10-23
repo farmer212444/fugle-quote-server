@@ -1,6 +1,6 @@
 {
   "schema": "RESEARCH_PIPELINE_TIMING_V1",
-  "started_at_utc": "2026-10-23T12:41:14.074691+00:00",
+  "started_at_utc": "2026-10-23T13:21:01.145910+00:00",
   "status": "SUCCESS",
   "phase": "observation",
   "stages": [
@@ -11,7 +11,7 @@
         "scripts/institutional_shadow.py"
       ],
       "status": "SUCCESS",
-      "elapsed_seconds": 4.554513,
+      "elapsed_seconds": 3.188048,
       "returncode": 0
     },
     {
@@ -21,7 +21,7 @@
         "scripts/benchmark_validation.py"
       ],
       "status": "SUCCESS",
-      "elapsed_seconds": 4.344961,
+      "elapsed_seconds": 3.402712,
       "returncode": 0
     },
     {
@@ -31,12 +31,12 @@
         "scripts/institutional_review.py"
       ],
       "status": "SUCCESS",
-      "elapsed_seconds": 50.101497,
+      "elapsed_seconds": 36.506862,
       "returncode": 0
     }
   ],
   "measures": "ORDERED_RESEARCH_STAGES_EXCLUDING_TESTS_SOURCE_REFRESH_AND_PUBLICATION",
   "engineering_timing_is_not_investment_validation": true,
-  "total_elapsed_seconds": 59.00373,
-  "completed_at_utc": "2026-10-23T12:42:13.078426+00:00"
+  "total_elapsed_seconds": 43.100553,
+  "completed_at_utc": "2026-10-23T13:21:44.246471+00:00"
 }

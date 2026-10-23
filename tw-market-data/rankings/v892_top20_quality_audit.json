@@ -1,7 +1,7 @@
 {
   "status": "TOP20_EVIDENCE_TRIAGE_NOT_CERTIFIED",
   "model": "V8.10.5",
-  "estimate_vintage": "2026-10-23T20:40:53.310708+08:00",
+  "estimate_vintage": "2026-10-23T21:20:44.749116+08:00",
   "asof_price_date": "2026-10-22",
   "financial_last_quarter": "2026-Q2",
   "top20_count": 20,
@@ -83,7 +83,26 @@
         "old_cash_less_dividend_and_full_put_k": null,
         "static_cash_sensitivity_is_actual_funding_gap": false,
         "review_working_capital": false,
-        "negative_ocf_automatic_failure": false
+        "negative_ocf_automatic_failure": false,
+        "operating_cashflow_quarter_bridge": {
+          "period": "2026-Q2",
+          "source": "DATED_NORMALIZED_MOPS_YTD_CASHFLOW_NOT_ORIGINAL_NOTES_ATTESTED",
+          "original_cash_notes_reconciled": false,
+          "working_capital_component_bridge_certified": false,
+          "one_quarter_improvement_is_not_sustained_cash_conversion": true,
+          "no_certification_or_forecast_changed": true,
+          "status": "DATED_NORMALIZED_YTD_BRIDGE",
+          "previous_period": "2026-Q1",
+          "previous_ytd_ocf_k": 134358.0,
+          "latest_ytd_ocf_k": 247340.0,
+          "latest_standalone_ocf_k": 112982.0,
+          "earlier_standalone_ocf_k": 134358.0,
+          "latest_standalone_ocf_positive": true,
+          "h1_or_current_ytd_ocf_still_negative": false,
+          "changed_sign_after_q1": false,
+          "observation_label": "LATEST_STANDALONE_POSITIVE",
+          "current_quarter_positive_does_not_override_negative_ytd_review": true
+        }
       },
       "source_flags": [
         "BELOW_12M_SINGLE_DAY_TURNOVER_RESEARCH_ONLY_REQUIRES_EXIT_CAPACITY_REVIEW",
@@ -179,7 +198,26 @@
         "old_cash_less_dividend_and_full_put_k": null,
         "static_cash_sensitivity_is_actual_funding_gap": false,
         "review_working_capital": false,
-        "negative_ocf_automatic_failure": false
+        "negative_ocf_automatic_failure": false,
+        "operating_cashflow_quarter_bridge": {
+          "period": "2026-Q2",
+          "source": "DATED_NORMALIZED_MOPS_YTD_CASHFLOW_NOT_ORIGINAL_NOTES_ATTESTED",
+          "original_cash_notes_reconciled": false,
+          "working_capital_component_bridge_certified": false,
+          "one_quarter_improvement_is_not_sustained_cash_conversion": true,
+          "no_certification_or_forecast_changed": true,
+          "status": "DATED_NORMALIZED_YTD_BRIDGE",
+          "previous_period": "2026-Q1",
+          "previous_ytd_ocf_k": -1440190.0,
+          "latest_ytd_ocf_k": 153167.0,
+          "latest_standalone_ocf_k": 1593357.0,
+          "earlier_standalone_ocf_k": -1440190.0,
+          "latest_standalone_ocf_positive": true,
+          "h1_or_current_ytd_ocf_still_negative": false,
+          "changed_sign_after_q1": true,
+          "observation_label": "PREVIOUS_STANDALONE_NEGATIVE_CURRENT_POSITIVE",
+          "current_quarter_positive_does_not_override_negative_ytd_review": true
+        }
       },
       "source_flags": [
         "CURRENT_DETAIL_IS_OFFICIAL_BATCH_SUMMARY_NOT_ORIGINAL_ISSUER_NOTES"
@@ -276,7 +314,26 @@
         "old_cash_less_dividend_and_full_put_k": null,
         "static_cash_sensitivity_is_actual_funding_gap": false,
         "review_working_capital": false,
-        "negative_ocf_automatic_failure": false
+        "negative_ocf_automatic_failure": false,
+        "operating_cashflow_quarter_bridge": {
+          "period": "2026-Q2",
+          "source": "DATED_NORMALIZED_MOPS_YTD_CASHFLOW_NOT_ORIGINAL_NOTES_ATTESTED",
+          "original_cash_notes_reconciled": false,
+          "working_capital_component_bridge_certified": false,
+          "one_quarter_improvement_is_not_sustained_cash_conversion": true,
+          "no_certification_or_forecast_changed": true,
+          "status": "DATED_NORMALIZED_YTD_BRIDGE",
+          "previous_period": "2026-Q1",
+          "previous_ytd_ocf_k": 759354.0,
+          "latest_ytd_ocf_k": 829383.0,
+          "latest_standalone_ocf_k": 70029.0,
+          "earlier_standalone_ocf_k": 759354.0,
+          "latest_standalone_ocf_positive": true,
+          "h1_or_current_ytd_ocf_still_negative": false,
+          "changed_sign_after_q1": false,
+          "observation_label": "LATEST_STANDALONE_POSITIVE",
+          "current_quarter_positive_does_not_override_negative_ytd_review": true
+        }
       },
       "source_flags": [
         "POST_SNAPSHOT_CB_TERMS_UNVERIFIED",
@@ -374,7 +431,26 @@
         "old_cash_less_dividend_and_full_put_k": null,
         "static_cash_sensitivity_is_actual_funding_gap": false,
         "review_working_capital": true,
-        "negative_ocf_automatic_failure": false
+        "negative_ocf_automatic_failure": false,
+        "operating_cashflow_quarter_bridge": {
+          "period": "2026-Q2",
+          "source": "DATED_NORMALIZED_MOPS_YTD_CASHFLOW_NOT_ORIGINAL_NOTES_ATTESTED",
+          "original_cash_notes_reconciled": false,
+          "working_capital_component_bridge_certified": false,
+          "one_quarter_improvement_is_not_sustained_cash_conversion": true,
+          "no_certification_or_forecast_changed": true,
+          "status": "DATED_NORMALIZED_YTD_BRIDGE",
+          "previous_period": "2026-Q1",
+          "previous_ytd_ocf_k": -988883.0,
+          "latest_ytd_ocf_k": -1204516.0,
+          "latest_standalone_ocf_k": -215633.0,
+          "earlier_standalone_ocf_k": -988883.0,
+          "latest_standalone_ocf_positive": false,
+          "h1_or_current_ytd_ocf_still_negative": true,
+          "changed_sign_after_q1": false,
+          "observation_label": "LATEST_STANDALONE_NONPOSITIVE",
+          "current_quarter_positive_does_not_override_negative_ytd_review": true
+        }
       },
       "source_flags": [
         "CURRENT_DETAIL_IS_OFFICIAL_BATCH_SUMMARY_NOT_ORIGINAL_ISSUER_NOTES",
@@ -471,7 +547,26 @@
         "old_cash_less_dividend_and_full_put_k": null,
         "static_cash_sensitivity_is_actual_funding_gap": false,
         "review_working_capital": false,
-        "negative_ocf_automatic_failure": false
+        "negative_ocf_automatic_failure": false,
+        "operating_cashflow_quarter_bridge": {
+          "period": "2026-Q2",
+          "source": "DATED_NORMALIZED_MOPS_YTD_CASHFLOW_NOT_ORIGINAL_NOTES_ATTESTED",
+          "original_cash_notes_reconciled": false,
+          "working_capital_component_bridge_certified": false,
+          "one_quarter_improvement_is_not_sustained_cash_conversion": true,
+          "no_certification_or_forecast_changed": true,
+          "status": "DATED_NORMALIZED_YTD_BRIDGE",
+          "previous_period": "2026-Q1",
+          "previous_ytd_ocf_k": 91916.0,
+          "latest_ytd_ocf_k": 385962.0,
+          "latest_standalone_ocf_k": 294046.0,
+          "earlier_standalone_ocf_k": 91916.0,
+          "latest_standalone_ocf_positive": true,
+          "h1_or_current_ytd_ocf_still_negative": false,
+          "changed_sign_after_q1": false,
+          "observation_label": "LATEST_STANDALONE_POSITIVE",
+          "current_quarter_positive_does_not_override_negative_ytd_review": true
+        }
       },
       "source_flags": [
         "BELOW_12M_SINGLE_DAY_TURNOVER_RESEARCH_ONLY_REQUIRES_EXIT_CAPACITY_REVIEW",
@@ -571,7 +666,26 @@
         "old_cash_less_dividend_and_full_put_k": null,
         "static_cash_sensitivity_is_actual_funding_gap": false,
         "review_working_capital": true,
-        "negative_ocf_automatic_failure": false
+        "negative_ocf_automatic_failure": false,
+        "operating_cashflow_quarter_bridge": {
+          "period": "2026-Q2",
+          "source": "DATED_NORMALIZED_MOPS_YTD_CASHFLOW_NOT_ORIGINAL_NOTES_ATTESTED",
+          "original_cash_notes_reconciled": false,
+          "working_capital_component_bridge_certified": false,
+          "one_quarter_improvement_is_not_sustained_cash_conversion": true,
+          "no_certification_or_forecast_changed": true,
+          "status": "DATED_NORMALIZED_YTD_BRIDGE",
+          "previous_period": "2026-Q1",
+          "previous_ytd_ocf_k": -512791.0,
+          "latest_ytd_ocf_k": -193283.0,
+          "latest_standalone_ocf_k": 319508.0,
+          "earlier_standalone_ocf_k": -512791.0,
+          "latest_standalone_ocf_positive": true,
+          "h1_or_current_ytd_ocf_still_negative": true,
+          "changed_sign_after_q1": true,
+          "observation_label": "PREVIOUS_STANDALONE_NEGATIVE_CURRENT_POSITIVE",
+          "current_quarter_positive_does_not_override_negative_ytd_review": true
+        }
       },
       "source_flags": [
         "CURRENT_DETAIL_IS_OFFICIAL_BATCH_SUMMARY_NOT_ORIGINAL_ISSUER_NOTES",
@@ -672,7 +786,26 @@
         "old_cash_less_dividend_and_full_put_k": null,
         "static_cash_sensitivity_is_actual_funding_gap": false,
         "review_working_capital": false,
-        "negative_ocf_automatic_failure": false
+        "negative_ocf_automatic_failure": false,
+        "operating_cashflow_quarter_bridge": {
+          "period": "2026-Q2",
+          "source": "DATED_NORMALIZED_MOPS_YTD_CASHFLOW_NOT_ORIGINAL_NOTES_ATTESTED",
+          "original_cash_notes_reconciled": false,
+          "working_capital_component_bridge_certified": false,
+          "one_quarter_improvement_is_not_sustained_cash_conversion": true,
+          "no_certification_or_forecast_changed": true,
+          "status": "DATED_NORMALIZED_YTD_BRIDGE",
+          "previous_period": "2026-Q1",
+          "previous_ytd_ocf_k": 112834.0,
+          "latest_ytd_ocf_k": 95291.0,
+          "latest_standalone_ocf_k": -17543.0,
+          "earlier_standalone_ocf_k": 112834.0,
+          "latest_standalone_ocf_positive": false,
+          "h1_or_current_ytd_ocf_still_negative": false,
+          "changed_sign_after_q1": false,
+          "observation_label": "LATEST_STANDALONE_NONPOSITIVE",
+          "current_quarter_positive_does_not_override_negative_ytd_review": true
+        }
       },
       "source_flags": [
         "BELOW_12M_SINGLE_DAY_TURNOVER_RESEARCH_ONLY_REQUIRES_EXIT_CAPACITY_REVIEW",
@@ -770,7 +903,26 @@
         "old_cash_less_dividend_and_full_put_k": null,
         "static_cash_sensitivity_is_actual_funding_gap": false,
         "review_working_capital": false,
-        "negative_ocf_automatic_failure": false
+        "negative_ocf_automatic_failure": false,
+        "operating_cashflow_quarter_bridge": {
+          "period": "2026-Q2",
+          "source": "DATED_NORMALIZED_MOPS_YTD_CASHFLOW_NOT_ORIGINAL_NOTES_ATTESTED",
+          "original_cash_notes_reconciled": false,
+          "working_capital_component_bridge_certified": false,
+          "one_quarter_improvement_is_not_sustained_cash_conversion": true,
+          "no_certification_or_forecast_changed": true,
+          "status": "DATED_NORMALIZED_YTD_BRIDGE",
+          "previous_period": "2026-Q1",
+          "previous_ytd_ocf_k": 101830.0,
+          "latest_ytd_ocf_k": 172461.0,
+          "latest_standalone_ocf_k": 70631.0,
+          "earlier_standalone_ocf_k": 101830.0,
+          "latest_standalone_ocf_positive": true,
+          "h1_or_current_ytd_ocf_still_negative": false,
+          "changed_sign_after_q1": false,
+          "observation_label": "LATEST_STANDALONE_POSITIVE",
+          "current_quarter_positive_does_not_override_negative_ytd_review": true
+        }
       },
       "source_flags": [
         "BELOW_12M_SINGLE_DAY_TURNOVER_RESEARCH_ONLY_REQUIRES_EXIT_CAPACITY_REVIEW",
@@ -865,7 +1017,26 @@
         "old_cash_less_dividend_and_full_put_k": null,
         "static_cash_sensitivity_is_actual_funding_gap": false,
         "review_working_capital": false,
-        "negative_ocf_automatic_failure": false
+        "negative_ocf_automatic_failure": false,
+        "operating_cashflow_quarter_bridge": {
+          "period": "2026-Q2",
+          "source": "DATED_NORMALIZED_MOPS_YTD_CASHFLOW_NOT_ORIGINAL_NOTES_ATTESTED",
+          "original_cash_notes_reconciled": false,
+          "working_capital_component_bridge_certified": false,
+          "one_quarter_improvement_is_not_sustained_cash_conversion": true,
+          "no_certification_or_forecast_changed": true,
+          "status": "DATED_NORMALIZED_YTD_BRIDGE",
+          "previous_period": "2026-Q1",
+          "previous_ytd_ocf_k": 195136.0,
+          "latest_ytd_ocf_k": 675183.0,
+          "latest_standalone_ocf_k": 480047.0,
+          "earlier_standalone_ocf_k": 195136.0,
+          "latest_standalone_ocf_positive": true,
+          "h1_or_current_ytd_ocf_still_negative": false,
+          "changed_sign_after_q1": false,
+          "observation_label": "LATEST_STANDALONE_POSITIVE",
+          "current_quarter_positive_does_not_override_negative_ytd_review": true
+        }
       },
       "source_flags": [
         "QUALIFIED_REVIEW_MATERIALITY_PENDING",
@@ -962,7 +1133,26 @@
         "old_cash_less_dividend_and_full_put_k": null,
         "static_cash_sensitivity_is_actual_funding_gap": false,
         "review_working_capital": false,
-        "negative_ocf_automatic_failure": false
+        "negative_ocf_automatic_failure": false,
+        "operating_cashflow_quarter_bridge": {
+          "period": "2026-Q2",
+          "source": "DATED_NORMALIZED_MOPS_YTD_CASHFLOW_NOT_ORIGINAL_NOTES_ATTESTED",
+          "original_cash_notes_reconciled": false,
+          "working_capital_component_bridge_certified": false,
+          "one_quarter_improvement_is_not_sustained_cash_conversion": true,
+          "no_certification_or_forecast_changed": true,
+          "status": "DATED_NORMALIZED_YTD_BRIDGE",
+          "previous_period": "2026-Q1",
+          "previous_ytd_ocf_k": 107348.0,
+          "latest_ytd_ocf_k": 294969.0,
+          "latest_standalone_ocf_k": 187621.0,
+          "earlier_standalone_ocf_k": 107348.0,
+          "latest_standalone_ocf_positive": true,
+          "h1_or_current_ytd_ocf_still_negative": false,
+          "changed_sign_after_q1": false,
+          "observation_label": "LATEST_STANDALONE_POSITIVE",
+          "current_quarter_positive_does_not_override_negative_ytd_review": true
+        }
       },
       "source_flags": [
         "BELOW_12M_SINGLE_DAY_TURNOVER_RESEARCH_ONLY_REQUIRES_EXIT_CAPACITY_REVIEW",
@@ -1059,7 +1249,26 @@
         "old_cash_less_dividend_and_full_put_k": null,
         "static_cash_sensitivity_is_actual_funding_gap": false,
         "review_working_capital": false,
-        "negative_ocf_automatic_failure": false
+        "negative_ocf_automatic_failure": false,
+        "operating_cashflow_quarter_bridge": {
+          "period": "2026-Q2",
+          "source": "DATED_NORMALIZED_MOPS_YTD_CASHFLOW_NOT_ORIGINAL_NOTES_ATTESTED",
+          "original_cash_notes_reconciled": false,
+          "working_capital_component_bridge_certified": false,
+          "one_quarter_improvement_is_not_sustained_cash_conversion": true,
+          "no_certification_or_forecast_changed": true,
+          "status": "DATED_NORMALIZED_YTD_BRIDGE",
+          "previous_period": "2026-Q1",
+          "previous_ytd_ocf_k": 3953.0,
+          "latest_ytd_ocf_k": 270868.0,
+          "latest_standalone_ocf_k": 266915.0,
+          "earlier_standalone_ocf_k": 3953.0,
+          "latest_standalone_ocf_positive": true,
+          "h1_or_current_ytd_ocf_still_negative": false,
+          "changed_sign_after_q1": false,
+          "observation_label": "LATEST_STANDALONE_POSITIVE",
+          "current_quarter_positive_does_not_override_negative_ytd_review": true
+        }
       },
       "source_flags": [
         "CURRENT_DETAIL_IS_OFFICIAL_BATCH_SUMMARY_NOT_ORIGINAL_ISSUER_NOTES"
@@ -1156,7 +1365,26 @@
         "old_cash_less_dividend_and_full_put_k": null,
         "static_cash_sensitivity_is_actual_funding_gap": false,
         "review_working_capital": false,
-        "negative_ocf_automatic_failure": false
+        "negative_ocf_automatic_failure": false,
+        "operating_cashflow_quarter_bridge": {
+          "period": "2026-Q2",
+          "source": "DATED_NORMALIZED_MOPS_YTD_CASHFLOW_NOT_ORIGINAL_NOTES_ATTESTED",
+          "original_cash_notes_reconciled": false,
+          "working_capital_component_bridge_certified": false,
+          "one_quarter_improvement_is_not_sustained_cash_conversion": true,
+          "no_certification_or_forecast_changed": true,
+          "status": "DATED_NORMALIZED_YTD_BRIDGE",
+          "previous_period": "2026-Q1",
+          "previous_ytd_ocf_k": 186954.0,
+          "latest_ytd_ocf_k": 311251.0,
+          "latest_standalone_ocf_k": 124297.0,
+          "earlier_standalone_ocf_k": 186954.0,
+          "latest_standalone_ocf_positive": true,
+          "h1_or_current_ytd_ocf_still_negative": false,
+          "changed_sign_after_q1": false,
+          "observation_label": "LATEST_STANDALONE_POSITIVE",
+          "current_quarter_positive_does_not_override_negative_ytd_review": true
+        }
       },
       "source_flags": [
         "CURRENT_DETAIL_IS_OFFICIAL_BATCH_SUMMARY_NOT_ORIGINAL_ISSUER_NOTES"
@@ -1251,7 +1479,26 @@
         "old_cash_less_dividend_and_full_put_k": null,
         "static_cash_sensitivity_is_actual_funding_gap": false,
         "review_working_capital": false,
-        "negative_ocf_automatic_failure": false
+        "negative_ocf_automatic_failure": false,
+        "operating_cashflow_quarter_bridge": {
+          "period": "2026-Q2",
+          "source": "DATED_NORMALIZED_MOPS_YTD_CASHFLOW_NOT_ORIGINAL_NOTES_ATTESTED",
+          "original_cash_notes_reconciled": false,
+          "working_capital_component_bridge_certified": false,
+          "one_quarter_improvement_is_not_sustained_cash_conversion": true,
+          "no_certification_or_forecast_changed": true,
+          "status": "DATED_NORMALIZED_YTD_BRIDGE",
+          "previous_period": "2026-Q1",
+          "previous_ytd_ocf_k": -212185.0,
+          "latest_ytd_ocf_k": 181857.0,
+          "latest_standalone_ocf_k": 394042.0,
+          "earlier_standalone_ocf_k": -212185.0,
+          "latest_standalone_ocf_positive": true,
+          "h1_or_current_ytd_ocf_still_negative": false,
+          "changed_sign_after_q1": true,
+          "observation_label": "PREVIOUS_STANDALONE_NEGATIVE_CURRENT_POSITIVE",
+          "current_quarter_positive_does_not_override_negative_ytd_review": true
+        }
       },
       "source_flags": [
         "BELOW_12M_SINGLE_DAY_TURNOVER_RESEARCH_ONLY_REQUIRES_EXIT_CAPACITY_REVIEW",
@@ -1355,7 +1602,26 @@
         "old_cash_less_dividend_and_full_put_k": null,
         "static_cash_sensitivity_is_actual_funding_gap": false,
         "review_working_capital": true,
-        "negative_ocf_automatic_failure": false
+        "negative_ocf_automatic_failure": false,
+        "operating_cashflow_quarter_bridge": {
+          "period": "2026-Q2",
+          "source": "DATED_NORMALIZED_MOPS_YTD_CASHFLOW_NOT_ORIGINAL_NOTES_ATTESTED",
+          "original_cash_notes_reconciled": false,
+          "working_capital_component_bridge_certified": false,
+          "one_quarter_improvement_is_not_sustained_cash_conversion": true,
+          "no_certification_or_forecast_changed": true,
+          "status": "DATED_NORMALIZED_YTD_BRIDGE",
+          "previous_period": "2026-Q1",
+          "previous_ytd_ocf_k": 78099.0,
+          "latest_ytd_ocf_k": -18493.0,
+          "latest_standalone_ocf_k": -96592.0,
+          "earlier_standalone_ocf_k": 78099.0,
+          "latest_standalone_ocf_positive": false,
+          "h1_or_current_ytd_ocf_still_negative": true,
+          "changed_sign_after_q1": false,
+          "observation_label": "LATEST_STANDALONE_NONPOSITIVE",
+          "current_quarter_positive_does_not_override_negative_ytd_review": true
+        }
       },
       "source_flags": [
         "CURRENT_DETAIL_IS_OFFICIAL_BATCH_SUMMARY_NOT_ORIGINAL_ISSUER_NOTES",
@@ -1458,7 +1724,26 @@
         "old_cash_less_dividend_and_full_put_k": null,
         "static_cash_sensitivity_is_actual_funding_gap": false,
         "review_working_capital": true,
-        "negative_ocf_automatic_failure": false
+        "negative_ocf_automatic_failure": false,
+        "operating_cashflow_quarter_bridge": {
+          "period": "2026-Q2",
+          "source": "DATED_NORMALIZED_MOPS_YTD_CASHFLOW_NOT_ORIGINAL_NOTES_ATTESTED",
+          "original_cash_notes_reconciled": false,
+          "working_capital_component_bridge_certified": false,
+          "one_quarter_improvement_is_not_sustained_cash_conversion": true,
+          "no_certification_or_forecast_changed": true,
+          "status": "DATED_NORMALIZED_YTD_BRIDGE",
+          "previous_period": "2026-Q1",
+          "previous_ytd_ocf_k": -66246.0,
+          "latest_ytd_ocf_k": -148798.0,
+          "latest_standalone_ocf_k": -82552.0,
+          "earlier_standalone_ocf_k": -66246.0,
+          "latest_standalone_ocf_positive": false,
+          "h1_or_current_ytd_ocf_still_negative": true,
+          "changed_sign_after_q1": false,
+          "observation_label": "LATEST_STANDALONE_NONPOSITIVE",
+          "current_quarter_positive_does_not_override_negative_ytd_review": true
+        }
       },
       "source_flags": [
         "CURRENT_DETAIL_IS_OFFICIAL_BATCH_SUMMARY_NOT_ORIGINAL_ISSUER_NOTES",
@@ -1557,7 +1842,26 @@
         "old_cash_less_dividend_and_full_put_k": null,
         "static_cash_sensitivity_is_actual_funding_gap": false,
         "review_working_capital": false,
-        "negative_ocf_automatic_failure": false
+        "negative_ocf_automatic_failure": false,
+        "operating_cashflow_quarter_bridge": {
+          "period": "2026-Q2",
+          "source": "DATED_NORMALIZED_MOPS_YTD_CASHFLOW_NOT_ORIGINAL_NOTES_ATTESTED",
+          "original_cash_notes_reconciled": false,
+          "working_capital_component_bridge_certified": false,
+          "one_quarter_improvement_is_not_sustained_cash_conversion": true,
+          "no_certification_or_forecast_changed": true,
+          "status": "DATED_NORMALIZED_YTD_BRIDGE",
+          "previous_period": "2026-Q1",
+          "previous_ytd_ocf_k": 60748.0,
+          "latest_ytd_ocf_k": 191282.0,
+          "latest_standalone_ocf_k": 130534.0,
+          "earlier_standalone_ocf_k": 60748.0,
+          "latest_standalone_ocf_positive": true,
+          "h1_or_current_ytd_ocf_still_negative": false,
+          "changed_sign_after_q1": false,
+          "observation_label": "LATEST_STANDALONE_POSITIVE",
+          "current_quarter_positive_does_not_override_negative_ytd_review": true
+        }
       },
       "source_flags": [
         "BELOW_12M_SINGLE_DAY_TURNOVER_RESEARCH_ONLY_REQUIRES_EXIT_CAPACITY_REVIEW",
@@ -1658,7 +1962,26 @@
         "old_cash_less_dividend_and_full_put_k": null,
         "static_cash_sensitivity_is_actual_funding_gap": false,
         "review_working_capital": true,
-        "negative_ocf_automatic_failure": false
+        "negative_ocf_automatic_failure": false,
+        "operating_cashflow_quarter_bridge": {
+          "period": "2026-Q2",
+          "source": "DATED_NORMALIZED_MOPS_YTD_CASHFLOW_NOT_ORIGINAL_NOTES_ATTESTED",
+          "original_cash_notes_reconciled": false,
+          "working_capital_component_bridge_certified": false,
+          "one_quarter_improvement_is_not_sustained_cash_conversion": true,
+          "no_certification_or_forecast_changed": true,
+          "status": "DATED_NORMALIZED_YTD_BRIDGE",
+          "previous_period": "2026-Q1",
+          "previous_ytd_ocf_k": 39403.0,
+          "latest_ytd_ocf_k": -405083.0,
+          "latest_standalone_ocf_k": -444486.0,
+          "earlier_standalone_ocf_k": 39403.0,
+          "latest_standalone_ocf_positive": false,
+          "h1_or_current_ytd_ocf_still_negative": true,
+          "changed_sign_after_q1": false,
+          "observation_label": "LATEST_STANDALONE_NONPOSITIVE",
+          "current_quarter_positive_does_not_override_negative_ytd_review": true
+        }
       },
       "source_flags": [
         "CURRENT_DETAIL_IS_OFFICIAL_BATCH_SUMMARY_NOT_ORIGINAL_ISSUER_NOTES",
@@ -1763,7 +2086,26 @@
         "old_cash_less_dividend_and_full_put_k": null,
         "static_cash_sensitivity_is_actual_funding_gap": false,
         "review_working_capital": true,
-        "negative_ocf_automatic_failure": false
+        "negative_ocf_automatic_failure": false,
+        "operating_cashflow_quarter_bridge": {
+          "period": "2026-Q2",
+          "source": "DATED_NORMALIZED_MOPS_YTD_CASHFLOW_NOT_ORIGINAL_NOTES_ATTESTED",
+          "original_cash_notes_reconciled": false,
+          "working_capital_component_bridge_certified": false,
+          "one_quarter_improvement_is_not_sustained_cash_conversion": true,
+          "no_certification_or_forecast_changed": true,
+          "status": "DATED_NORMALIZED_YTD_BRIDGE",
+          "previous_period": "2026-Q1",
+          "previous_ytd_ocf_k": -14686.0,
+          "latest_ytd_ocf_k": -191723.0,
+          "latest_standalone_ocf_k": -177037.0,
+          "earlier_standalone_ocf_k": -14686.0,
+          "latest_standalone_ocf_positive": false,
+          "h1_or_current_ytd_ocf_still_negative": true,
+          "changed_sign_after_q1": false,
+          "observation_label": "LATEST_STANDALONE_NONPOSITIVE",
+          "current_quarter_positive_does_not_override_negative_ytd_review": true
+        }
       },
       "source_flags": [
         "CURRENT_DETAIL_IS_OFFICIAL_BATCH_SUMMARY_NOT_ORIGINAL_ISSUER_NOTES",
@@ -1865,7 +2207,26 @@
         "old_cash_less_dividend_and_full_put_k": null,
         "static_cash_sensitivity_is_actual_funding_gap": false,
         "review_working_capital": true,
-        "negative_ocf_automatic_failure": false
+        "negative_ocf_automatic_failure": false,
+        "operating_cashflow_quarter_bridge": {
+          "period": "2026-Q2",
+          "source": "DATED_NORMALIZED_MOPS_YTD_CASHFLOW_NOT_ORIGINAL_NOTES_ATTESTED",
+          "original_cash_notes_reconciled": false,
+          "working_capital_component_bridge_certified": false,
+          "one_quarter_improvement_is_not_sustained_cash_conversion": true,
+          "no_certification_or_forecast_changed": true,
+          "status": "DATED_NORMALIZED_YTD_BRIDGE",
+          "previous_period": "2026-Q1",
+          "previous_ytd_ocf_k": 3217154.0,
+          "latest_ytd_ocf_k": -69122283.0,
+          "latest_standalone_ocf_k": -72339437.0,
+          "earlier_standalone_ocf_k": 3217154.0,
+          "latest_standalone_ocf_positive": false,
+          "h1_or_current_ytd_ocf_still_negative": true,
+          "changed_sign_after_q1": false,
+          "observation_label": "LATEST_STANDALONE_NONPOSITIVE",
+          "current_quarter_positive_does_not_override_negative_ytd_review": true
+        }
       },
       "source_flags": [
         "CURRENT_DETAIL_IS_OFFICIAL_BATCH_SUMMARY_NOT_ORIGINAL_ISSUER_NOTES",
@@ -1966,7 +2327,26 @@
         "old_cash_less_dividend_and_full_put_k": null,
         "static_cash_sensitivity_is_actual_funding_gap": false,
         "review_working_capital": true,
-        "negative_ocf_automatic_failure": false
+        "negative_ocf_automatic_failure": false,
+        "operating_cashflow_quarter_bridge": {
+          "period": "2026-Q2",
+          "source": "DATED_NORMALIZED_MOPS_YTD_CASHFLOW_NOT_ORIGINAL_NOTES_ATTESTED",
+          "original_cash_notes_reconciled": false,
+          "working_capital_component_bridge_certified": false,
+          "one_quarter_improvement_is_not_sustained_cash_conversion": true,
+          "no_certification_or_forecast_changed": true,
+          "status": "DATED_NORMALIZED_YTD_BRIDGE",
+          "previous_period": "2026-Q1",
+          "previous_ytd_ocf_k": 333359.0,
+          "latest_ytd_ocf_k": -205870.0,
+          "latest_standalone_ocf_k": -539229.0,
+          "earlier_standalone_ocf_k": 333359.0,
+          "latest_standalone_ocf_positive": false,
+          "h1_or_current_ytd_ocf_still_negative": true,
+          "changed_sign_after_q1": false,
+          "observation_label": "LATEST_STANDALONE_NONPOSITIVE",
+          "current_quarter_positive_does_not_override_negative_ytd_review": true
+        }
       },
       "source_flags": [
         "BELOW_12M_SINGLE_DAY_TURNOVER_RESEARCH_ONLY_REQUIRES_EXIT_CAPACITY_REVIEW",
