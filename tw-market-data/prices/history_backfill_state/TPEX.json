@@ -2,35 +2,27 @@
   "schema": "TPEX_HISTORY_RETRY_V1",
   "dates": {
     "2026-10-09": {
-      "attempts": 2,
-      "last_attempt_utc": "2026-10-22T12:55:25.211005+00:00",
-      "retry_after_utc": "2026-10-23T00:55:25.211005+00:00",
+      "attempts": 3,
+      "last_attempt_utc": "2026-10-23T01:22:06.080125+00:00",
+      "retry_after_utc": "2026-10-24T01:22:06.080125+00:00",
       "source_url": "https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes?response=json&date=115%2F10%2F09",
       "last_error": "ValueError:TPEX_OFFICIAL_MARKET_SHARD_UNDERSIZED",
       "status": "RETRY_REQUIRED_NOT_VERIFIED_AS_NONTRADING"
     },
     "2026-09-28": {
-      "attempts": 2,
-      "last_attempt_utc": "2026-10-22T12:55:25.211005+00:00",
-      "retry_after_utc": "2026-10-23T00:55:25.211005+00:00",
+      "attempts": 3,
+      "last_attempt_utc": "2026-10-23T01:22:06.080125+00:00",
+      "retry_after_utc": "2026-10-24T01:22:06.080125+00:00",
       "source_url": "https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes?response=json&date=115%2F09%2F28",
       "last_error": "ValueError:TPEX_OFFICIAL_MARKET_SHARD_UNDERSIZED",
       "status": "RETRY_REQUIRED_NOT_VERIFIED_AS_NONTRADING"
     },
     "2026-09-25": {
-      "attempts": 2,
-      "last_attempt_utc": "2026-10-22T12:55:25.211005+00:00",
-      "retry_after_utc": "2026-10-23T00:55:25.211005+00:00",
+      "attempts": 3,
+      "last_attempt_utc": "2026-10-23T01:22:06.080125+00:00",
+      "retry_after_utc": "2026-10-24T01:22:06.080125+00:00",
       "source_url": "https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes?response=json&date=115%2F09%2F25",
       "last_error": "ValueError:TPEX_OFFICIAL_MARKET_SHARD_UNDERSIZED",
-      "status": "RETRY_REQUIRED_NOT_VERIFIED_AS_NONTRADING"
-    },
-    "2026-09-01": {
-      "attempts": 1,
-      "last_attempt_utc": "2026-10-22T12:55:25.211005+00:00",
-      "retry_after_utc": "2026-10-22T18:55:25.211005+00:00",
-      "source_url": "https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes?response=json&date=115%2F09%2F01",
-      "last_error": "RuntimeError:TPEX_DOWNLOAD_FAILED_AFTER_RETRIES:TimeoutError('The read operation timed out')",
       "status": "RETRY_REQUIRED_NOT_VERIFIED_AS_NONTRADING"
     }
   }
