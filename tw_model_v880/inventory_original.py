@@ -53,7 +53,9 @@ def check_6206_inventory_original(record,root,asof,history):
         v=history.get(period) or {}
         if (v.get('code')!='6206' or v.get('market')!='TWSE' or
             v.get('period')!=period or type(v.get('revenue_ytd_k')) is not int):
-            raise ValueError('6206_IR_OFFICIAL_INCOME_MIRROR_UNAVAILABLE')
+            raise ValueError('6206_IR_OFFICIAL_INCOME_MIRROR_UNAVAILABLE:'+
+                repr(dict(period=period,code=v.get('code'),market=v.get('market'),
+                          row_period=v.get('period'),revenue_type=type(v.get('revenue_ytd_k')).__name__)))
         return v['revenue_ytd_k']
     official=dict(
         q1_2026=income('2026-Q1'),
