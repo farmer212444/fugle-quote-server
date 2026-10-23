@@ -16,6 +16,7 @@ import hashlib
 import json
 import pathlib
 import re
+import time
 import urllib.error
 import urllib.request
 from zoneinfo import ZoneInfo
@@ -168,6 +169,8 @@ def main(argv=None):
     records = []
     for code in codes:
         for month in months:
+            if records:
+                time.sleep(1.5)  # Respect public source; six bounded requests maximum.
             receipt = capture_single(code, month, args.out)
             records.append(receipt)
             print(json.dumps({"issuer": code, "month": month, "status": receipt["http_status"],
