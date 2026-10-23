@@ -1,0 +1,33 @@
+{
+  "schema": "DATED_PARTIAL_TW_EQUITY_EXCHANGE_CLOSURES_V1",
+  "scope": "TWSE_AND_TPEX",
+  "complete_annual_calendar": false,
+  "closing_sessions": [
+    {
+      "date": "2026-10-23",
+      "reason": "TYPHOON_CHAMPI_TAIPEI_SUSPENSION",
+      "observed_public_at": "2026-10-22T20:39:00+08:00",
+      "source_url": "https://www.cna.com.tw/news/afe/202610220388.aspx",
+      "source_type": "CNA_QUOTES_TWSE_AND_TPEX_PUBLIC_STATEMENTS",
+      "publisher_date_is_not_historical_trade_snapshot": true,
+      "markets": [
+        "TWSE",
+        "TPEX"
+      ]
+    },
+    {
+      "date": "2026-10-26",
+      "reason": "TAIWAN_RETROCESSION_DAY_SUBSTITUTE_HOLIDAY",
+      "observed_public_at": "2026-10-22T20:39:00+08:00",
+      "source_url": "https://wwwc.twse.com.tw/zh/trading/holiday.html",
+      "supporting_source_url": "https://www.pocket.tw/main/announcement/20261022",
+      "source_type": "TWSE_MARKET_CLOSURE_SCHEDULE_CROSSCHECKED_REOPEN_OCT27",
+      "publisher_date_is_not_historical_trade_snapshot": true,
+      "markets": [
+        "TWSE",
+        "TPEX"
+      ]
+    }
+  ],
+  "notes": "Bounded known closures only, not certified complete exchange calendar. For 2026-10-23 closure explicitly announced by exchanges on 2026-10-22 evening due typhoon. 2026-10-26 official holiday known before but first-observed clock conservatively pinned to 2026-10-22 20:39; never apply these after-the-fact facts to an earlier historical asof. No synthetic prices. Next planned open 2026-10-27, not a guarantee actual session/close available."
+}

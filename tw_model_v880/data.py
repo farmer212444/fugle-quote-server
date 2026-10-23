@@ -49,6 +49,9 @@ def model_source_state(root):
                     continue  # The issuer loader quarantines this case; never read unsafe bytes.
                 raise ValueError('SOURCE_STATE_UNSAFE_ARCHIVE_PATH')
             paths.add(target)
+    dated_closures=root/'config/daily_price_closures_v1.json'
+    if dated_closures.is_file():
+        paths.add(dated_closures)
     for path in sorted(paths):
         state[path.relative_to(root).as_posix()]=sha(path.read_bytes()) if path.is_file() else None
     return state

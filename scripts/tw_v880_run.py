@@ -11,7 +11,7 @@ from tw_model_v880.model import estimate
 from tw_model_v880.backtest import live_backtest_status
 from tw_model_v880.evidence import POLICY
 from tw_model_v880.provenance import code_fingerprint,runtime_dependencies
-from tw_model_v880.freshness import assess_price_freshness
+from tw_model_v880.freshness import assess_price_freshness,load_dated_exchange_closures
 from tw_model_v880.contracts import canonical_hash
 from tw_model_v880.governance import issuer_review,COVERAGE
 from tw_model_v880.credibility import build_research_priority
@@ -52,7 +52,7 @@ def run(data_dir,asof,target_date,out_dir=None,variant='current-information'):
     target_year=dt.date.fromisoformat(target_date).year
     if variant not in ('current-information','without-earnings-events'):raise ValueError('UNKNOWN_MODEL_VARIANT')
     if variant!='current-information' and (out_dir is None or pathlib.Path(out_dir).resolve()==(pathlib.Path(data_dir)/'rankings').resolve()):raise ValueError('SHADOW_VARIANT_REQUIRES_SEPARATE_OUTPUT_DIRECTORY')
-    data=MarketData(data_dir,asof);price_freshness=assess_price_freshness(asof,data.price_date);cal=fit_accounting(data.history,data.period,{c:r.get('industry','') for c,r in data.revenue.items()});rows=[];failures=[]
+    data=MarketData(data_dir,asof);price_freshness=assess_price_freshness(asof,data.price_date,load_dated_exchange_closures(data_dir));cal=fit_accounting(data.history,data.period,{c:r.get('industry','') for c,r in data.revenue.items()});rows=[];failures=[]
     data.strategy_variant=variant
     if variant=='without-earnings-events':data.earnings_events={};data.earnings_event_states={}
     universe=tracked_universe(data)
@@ -126,6 +126,13 @@ def run(data_dir,asof,target_date,out_dir=None,variant='current-information'):
             " 等可能完成的平日交易日未納入。交易所休市與官方資料延遲尚未獨立確認；"+
             "以下只能當歷史參考價，不可視為最新可成交買入價。",
             f"此警示不會自行編造新股價、改變{target_year} Base/EPS/PE或增加正式A+。",""]
+    elif price_freshness["known_confirmed_closed_weekdays"]:
+        report[3:3]=[
+            "✅ **已查明休市，不是漏抓收盤價**："+
+            "、".join(price_freshness["known_confirmed_closed_weekdays"])+
+            "經先於估值時間公開之市場公告確認為證交所及櫃買中心休市。"+
+            "因此沒有已辨識的平日缺口；10/22收盤價仍非可保證的即時成交價。",
+            "本次只排除有時間證據的休市日；完整交易日曆與所有個股的交易可行性未認證。",""]
     else:
         report[3:3]=["目前的參考日未發現潛在平日缺口，但仍非盤中即時報價。",""]
     for i,r in enumerate(broad[:10],1):
