@@ -11,6 +11,59 @@ def _finite(value):
     return isinstance(value,(int,float)) and not isinstance(value,bool) and math.isfinite(value)
 
 
+def flat_recent_quarter_gm_sensitivity(base,latest_quarter_gm_pct,reference_close):
+    """Hold all 2027 Base inputs *except gross margin* fixed.
+
+    This is a mechanical counterfactual; it neither forecasts 2027 margins
+    nor learns a probability. Never fit 2027 EPS/PE or rank by the result.
+    """
+    absent=dict(status='NOT_COMPARABLE_INCOMPLETE_OR_NON_PE_BASE',
+        difference_from_base_gm_pp=None,
+        scenario_eps=None,scenario_target_price=None,
+        scenario_price_upside_pct=None,
+        eps_change_from_base=None)
+    if not _finite(latest_quarter_gm_pct) or not 0<=latest_quarter_gm_pct<=100:
+        return absent
+    if base.get('valuation_method') not in (None,'PE'):
+        return absent
+    keys=('revenue_k','gross_margin','opex_ratio','nonoperating_k',
+          'tax_rate','parent_fraction','shares','eps','pe','target_price')
+    if any(not _finite(base.get(k)) for k in keys):
+        return absent
+    revenue=base['revenue_k'];shares=base['shares']
+    margin=base['gross_margin'];tax=base['tax_rate']
+    parent=base['parent_fraction'];pe=base['pe'];eps=base['eps']
+    if not (revenue>0 and shares>0 and 0<=margin<=1 and 0<=tax<=1
+            and parent>0 and eps>0 and pe>0
+            and _finite(reference_close) and reference_close>0):
+        return absent
+    if abs(base['target_price']-eps*pe)>max(.01,abs(eps*pe)*1e-7):
+        return absent
+    # EPS linearity in gross margin, conditional on fixed sales, operating
+    # expense ratio, nonoperating items, tax, parent share and denominator.
+    delta_gm=latest_quarter_gm_pct/100-margin
+    delta_eps=delta_gm*revenue*(1-tax)*parent*1000/shares
+    scenario_eps=eps+delta_eps
+    result=dict(status='MECHANICAL_2027_LAST_STANDALONE_GM_FLAT_ONLY',
+        base_gross_margin_pct=100*margin,
+        latest_standalone_gross_margin_pct=latest_quarter_gm_pct,
+        difference_from_base_gm_pp=100*delta_gm,
+        eps_change_from_base=delta_eps,
+        scenario_eps=scenario_eps,
+        original_base_eps_unchanged=eps,
+        other_operating_assumptions_held_fixed=True,
+        not_a_margin_2027_forecast=True,
+        not_a_return_probability=True,
+        no_issuer_original_notes_signoff=True,
+        changes_in_cash_flow_not_modeled=True)
+    if scenario_eps<=0:
+        return dict(result,status='SCENARIO_NONPOSITIVE_EPS_PE_VALUE_UNAVAILABLE',
+                    scenario_target_price=None,scenario_price_upside_pct=None)
+    price=scenario_eps*pe
+    return dict(result,scenario_target_price=price,
+                scenario_price_upside_pct=100*(price/reference_close-1))
+
+
 def research_priority_entry(row,holdout=None):
     """Issuer research triage from audited facts, not a trade recommendation."""
     base=row.get('base') or {}
@@ -41,6 +94,11 @@ def research_priority_entry(row,holdout=None):
         latest_gm_qoq_delta_pp<=-3)
     if strong_recent_margin_compression:
         warning.append('LATEST_STANDALONE_QUARTER_GM_FELL_GE3PP_QOQ')
+    recent_margin_flat=flat_recent_quarter_gm_sensitivity(
+        base,margin_velocity.get('current_standalone_gm_pct'),close)
+    base_vs_recent_gm_pp=recent_margin_flat.get('difference_from_base_gm_pp')
+    if _finite(base_vs_recent_gm_pp) and base_vs_recent_gm_pp<=-3:
+        warning.append('2027_BASE_GM_GE3PP_ABOVE_LATEST_STANDALONE_QUARTER')
 
     if not (row.get('pe_bridge') or {}).get('exact_matched_peer_review_complete'):
         warning.append('PEER_PE_NOT_CERTIFIED')
@@ -134,6 +192,8 @@ def research_priority_entry(row,holdout=None):
         latest_standalone_quarter_margin_compression_warning=strong_recent_margin_compression,
         standalone_quarter_margin_source_not_full_original_notes_verified=True,
         quarterly_margin_warning_changes_base_or_rank=False,
+        recent_quarter_gm_flat_2027_sensitivity=recent_margin_flat,
+        mechanical_margin_sensitivity_changes_base_or_rank=False,
         research_decision='REVIEW_ONLY_NOT_BUY'
     )
     # Explicit, auditable lexicographic research-order policy:
