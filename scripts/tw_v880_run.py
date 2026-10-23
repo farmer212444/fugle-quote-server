@@ -156,6 +156,8 @@ def run(data_dir,asof,target_date,out_dir=None,variant='current-information'):
       '|---:|---|---|---:|---:|---|']
     for r in evidence_priority['top10_evidence_first']:
         review_issues=[]
+        if r['original_ir_inventory_turnover_partial_review']:
+            review_issues.append('原始存貨增長與周轉日數待查')
         if r['original_working_capital_three_line_tieout_completed']:
             review_issues.append('原始工程合約資產／應收應付已部分勾稽，收款未證實')
         if r['qualified_auditor_review_needs_subsidiary_scope_reconciliation']:
@@ -177,6 +179,31 @@ def run(data_dir,asof,target_date,out_dir=None,variant='current-information'):
         tier='原始當期數字' if r['original_current_numeric_reconciled'] else '官方彙總'
         report.append(f"|{r['review_rank']}|{r['code']} {r['name']}|{tier}|{r['base_upside_pct']:+.1f}%|"
                       f"{fmt(r['eps_pe_each_minus20_upside_pct'])}%|{'、'.join(review_issues)}|")
+    inventory_review=[x for x in evidence_priority['top10_evidence_first']
+                      if x['original_ir_inventory_turnover_partial_review']]
+    if inventory_review:
+        report+=['','### 飛捷原始法說存貨與資金占用：已核對的觀察','',
+            '資料取自飛捷2026-08-12官方法說簡報第8頁（百萬元取整）、已SHA封存原件，'
+            '並以證交所標準化2025及2026年單季營收驗算。非完整四表與存貨跌價核閱，不核發現金品質PASS。','',
+            '|公司|存貨年增|Q2營收年增|存貨成長高於營收|銷貨日數年變|銷貨日數季變|',
+            '|---|---:|---:|---:|---:|---:|']
+        for x in inventory_review:
+            v=x['original_ir_inventory_turnover_subcheck']
+            report.append(
+                f"|{x['code']} {x['name']}|{v['inventory_yoy_pct']:+.1f}%|"
+                f"{v['q2_revenue_yoy_pct']:+.1f}%|"
+                f"{v['inventory_yoy_minus_revenue_yoy_pp']:+.1f}個百分點|"
+                f"{v['inventory_days_yoy_delta']:+d}天|{v['inventory_days_qoq_delta']:+d}天|")
+            report.append(
+                f"- {x['code']}：存貨2025Q2 {v['inventory_q2_2025_m']:,}百萬元 → "
+                f"2026Q1 {v['inventory_q1_2026_m']:,}百萬元 → "
+                f"2026Q2 {v['inventory_q2_2026_m']:,}百萬元；"
+                f"平均收現日數年變 {v['receivable_days_yoy_delta']:+d}天。"
+                f"PDF SHA-256：{v['original_presentation_sha256']}。")
+        report+=['',
+           '存貨成長快於營收不等於呆滯存貨；單季銷貨日數比前季改善也不表示全年風險解除。'
+           '原始公司存貨明細、備貨目的、帳齡、產品生命週期及後續出貨仍待驗證。'
+           '本項僅為部分原始IR觀察，不改EPS/PE、排名或正式A+。','']
     qualified_watch=[x for x in evidence_priority['top10_evidence_first']
                      if x['qualified_auditor_review_needs_subsidiary_scope_reconciliation']]
     if qualified_watch:
