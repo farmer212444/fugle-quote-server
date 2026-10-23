@@ -14,6 +14,7 @@ from tw_model_v880.provenance import code_fingerprint,runtime_dependencies
 from tw_model_v880.freshness import assess_price_freshness
 from tw_model_v880.contracts import canonical_hash
 from tw_model_v880.governance import issuer_review,COVERAGE
+from tw_model_v880.credibility import build_research_priority
 def atomic(path,content):
     path.parent.mkdir(parents=True,exist_ok=True);fd,tmp=tempfile.mkstemp(prefix=path.name+'.',dir=path.parent)
     try:
@@ -79,6 +80,7 @@ def run(data_dir,asof,target_date,out_dir=None,variant='current-information'):
                            governance_review=r['governance_review']) for r in rows if r['recommendation_blocked']]
     broad=sorted([r for r in rows if r.get('rankable')],key=lambda r:(r['base']['price_upside_pct'],r['code']),reverse=True)
     primary=[r for r in broad if r.get('original_current_issuer_numeric_checked')]
+    evidence_priority=build_research_priority(broad,cal)
     formal=sorted([r for r in rows if r.get('formal_Aplus')],key=lambda r:r['base']['price_upside_pct'],reverse=True)
     aq=[r for r in formal if r['formal_Aplusplus']];backtest=live_backtest_status(data.evidence)
     pending=[dict(code=r['code'],name=r.get('name'),status=r['status'],pending_gates=r.get('certification',{}).get('gates_pending',[])) for r in rows if not r.get('formal_Aplus')]
@@ -100,7 +102,10 @@ def run(data_dir,asof,target_date,out_dir=None,variant='current-information'):
       universe_accounted_for=len(rows)==len(universe),universe_status_counts=dict(collections.Counter(r['status'] for r in rows)),
       exclusion_reason_counts=dict(collections.Counter(reason for r in rows for reason in r.get('exclusion_reasons',[]))),
       return_definition='Price upside to target date; future dividends unknown remain null, not zero; expected total returns not claimed',
-      top10_market_research=broad[:10],top10_primary_research=primary[:10],top10_formal_Aplus=formal[:10],top30_provisional=broad[:30],top30_quality_priority=primary[:30],top30_audit_required=broad[:30],all_market_research=broad,all_primary_research=primary,all_model_rows=rows,
+      top10_market_research=broad[:10],top10_primary_research=primary[:10],
+      top10_evidence_first=evidence_priority['top10_evidence_first'],
+      evidence_priority_summary={k:v for k,v in evidence_priority.items() if k not in ('all_ranked','original_current_audit_priority','top10_evidence_first','top10_original_numeric_priority','blocked_governance')},
+      top10_formal_Aplus=formal[:10],top30_provisional=broad[:30],top30_quality_priority=primary[:30],top30_audit_required=broad[:30],all_market_research=broad,all_primary_research=primary,all_model_rows=rows,
       conditional_recovery_audit=[dict(code=r['code'],name=r.get('name'),source_tier=r.get('source_tier'),rankable=r.get('rankable'),margin_recovery=r['margin_recovery']) for r in rows if r.get('margin_recovery',{}).get('candidate')],
       specialist_operating_bridge_queue=[dict(code=r['code'],name=r['name'],requirements=r['specialist_model_requirements']) for r in rows if r.get('specialist_model_requirements')],
       early_recovery_watch=ordered_recovery_watch(rows),
@@ -137,7 +142,28 @@ def run(data_dir,asof,target_date,out_dir=None,variant='current-information'):
                 report.append(f"- **{r['code']} {r['name']}**：計畫增發 {o['planned_new_common_shares']:,} 股；現有研究 Base EPS {fmt(r['base']['eps'])}，在淨利固定且股數增加情境下 EPS {fmt(o['issuance_eps_sensitivity'])}、機械式目標價 {fmt(o['issuance_target_price_sensitivity'])}。此非考慮募資現金、募資後投資收益與除權價格後之合理價；正式股數品質門檻仍待查。來源：{o['source_url']}")
             else:
                 report.append(f"- **{r['code']} {r['name']}**：現增事件已登錄，但狀態 {o['status']}，需要重新核對股數及原始公告。")
-    report+=['','## 司法與公司治理事件','',
+    report+=['','## 2027 證據優先研究榜（非投資報酬排名）','',
+      '研究優先順序：當期原始數字核對→無未完成現增→無CB條款未決→EPS、PE各降20%的敏感度→原Base價差。'
+      '僅供決定先查哪家公司，不代表該公司更有機會上漲；所有未簽核品質門檻保持待查。','',
+      '|研究序|公司|當期來源|Base漲幅|EPS/PE各-20%敏感度|優先待查事項|',
+      '|---:|---|---|---:|---:|---|']
+    for r in evidence_priority['top10_evidence_first']:
+        pending=[]
+        if r['pending_offering']:pending.append('現增')
+        if r['cb_terms_or_shares_unresolved']:pending.append('CB/股數')
+        if 'NEGATIVE_OCF_REQUIRES_WORKING_CAPITAL_BRIDGE_NOT_AUTOMATIC_FAIL' in r['warning_flags']:pending.append('OCF/營運資金')
+        if 'MARGIN_RECOVERY_NOT_ISSUER_CERTIFIED' in r['warning_flags']:pending.append('毛利恢復')
+        pending+=['全年EPS/PE、13門檻']
+        tier='原始當期數字' if r['original_current_numeric_reconciled'] else '官方彙總'
+        report.append(f"|{r['review_rank']}|{r['code']} {r['name']}|{tier}|{r['base_upside_pct']:+.1f}%|"
+                      f"{fmt(r['eps_pe_each_minus20_upside_pct'])}%|{'、'.join(pending)}|")
+    error_ref=evidence_priority['accounting_error_reference']
+    report+=['',
+      f"2026 Q2營收樣本外絕對誤差第90百分位 {fmt(error_ref['overall_p90_abs_revenue_error_pct'])}%；"
+      f"高成長子群 {fmt(error_ref['high_growth_subgroup_p90_abs_revenue_error_pct'])}%。"
+      '這些誤差不直接換算成2027 EPS或股價漲跌機率，也不用于調整已公告的Base EPS／PE。',
+      '尚無足夠已驗證實際投資期報酬，故證據優先研究榜不代表能打敗0050／大盤。','',
+      '## 司法與公司治理事件','',
              '事件登錄僅涵蓋已核對案件，沒有登錄不代表治理安全。重大未決事件重開既有管理承諾與會計師範圍審查，暫停推薦及正式A+/A++資格。起訴不等於定罪，所稱損害不直接當作本季損失，也不任意調降EPS或PE。','']
     for item in governance_watch:
         review=item['governance_review']
@@ -192,6 +218,7 @@ def run(data_dir,asof,target_date,out_dir=None,variant='current-information'):
     compact['pending_work_path']='v880_pending_work.json';compact['full_results']=dict(path='v880_full_results.json.gz',sha256=hashlib.sha256(packed).hexdigest(),json_sha256=hashlib.sha256(full).hexdigest())
     compact['research_universe']=len(rows);compact['quality_priority_count']=len(primary)
     atomic(out/'latest_research.json',json.dumps(compact,ensure_ascii=False,indent=2)+'\n');atomic(out/'latest_research.md','\n'.join(report))
+    atomic(out/'latest_evidence_priority.json',json.dumps(evidence_priority,ensure_ascii=False,indent=2)+'\n')
     atomic(out/'v880_pending_work.json',json.dumps(dict(model=VERSION,asof=asof,rows=pending,source_failures=data.errors,issuer_failures=failures),ensure_ascii=False,indent=2)+'\n')
     atomic(out/'v880_validation.json',json.dumps(dict(model=VERSION,calibration=cal,backtest=backtest),ensure_ascii=False,indent=2)+'\n')
     print(json.dumps(dict(model=VERSION,**result['data_scope'],formal_Aplus=len(formal),formal_Aplusplus=len(aq),
