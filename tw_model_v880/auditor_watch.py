@@ -50,6 +50,25 @@ def check_scope_receipt(record, income, cash, asof):
               'half_year_consolidated_comprehensive_income'):
         if type(scope.get(k)) not in (float,int) or not 0<=scope[k]<=100:
             raise ValueError('SCOPE_WATCH_INVALID_SCOPE_PERCENT')
+    previous=record.get('prior_interim_review_observation') or {}
+    if previous:
+        earlier_url=urlsplit(previous.get('issuer_original_source_url',''))
+        if (previous.get('period')!='2026-Q1' or
+            previous.get('review_conclusion')!=record['review_conclusion'] or
+            earlier_url.scheme!='https' or earlier_url.hostname not in ALLOWED_HOSTS[record['issuer']] or
+            not earlier_url.path.lower().endswith('.pdf') or
+            previous.get('original_pdf_bytes_hashed') is not False or
+            previous.get('MOPS_PIT_verified') is not False or
+            previous.get('review_notes_fully_reconciled') is not False):
+            raise ValueError('SCOPE_WATCH_PRIOR_Q1_ORIGINAL_SOURCE_INVALID')
+        if not (dt.date.fromisoformat(previous['document_dated'])<=
+                dt.date.fromisoformat(previous['first_directly_inspected_on'])<=cutoff):
+            raise ValueError('SCOPE_WATCH_PRIOR_Q1_FUTURE_SOURCE')
+        for field in ('subsidiaries_unreviewed_share_of_total_assets_pct',
+                      'subsidiaries_unreviewed_share_of_total_comprehensive_income_pct'):
+            v=previous.get(field)
+            if type(v) not in (int,float) or v<0 or v>100:
+                raise ValueError('SCOPE_WATCH_PRIOR_Q1_MALFORMED_SCOPE')
     if not (record.get('original_url_link_checked') and
             record.get('publication_label_is_not_PIT_timestamp') is True):
         raise ValueError('SCOPE_WATCH_MISSING_URL_OR_PIT_CAVEAT')
@@ -59,6 +78,7 @@ def check_scope_receipt(record, income, cash, asof):
         qualified_scope_pct=scope,
         source_pdf_url=record['source_pdf_url'],
         source_index_url=record['source_index_url'],
+        preceding_q1_review=dict(previous) if previous else None,
         document_dated=record['document_dated'],
         first_directly_inspected_on=record['first_directly_inspected_on'],
         matched_official_normalized_mirror_fields=sorted(expected),
