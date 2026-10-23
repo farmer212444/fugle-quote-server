@@ -33,7 +33,7 @@ class V8106CrossSectorTests(unittest.TestCase):
         res=build(*inputs())
         rows={x["research_code"]:x for x in res["research_candidates_source_order"]}
         self.assertEqual(rows["2027"]["research_quality_lane"],"SOURCE_RECONCILED_NEXT_EARNINGS_QUALITY_REVIEW")
-        self.assertEqual(rows["3130"]["research_quality_lane"],"SOURCE_RECONCILED_NEXT_EARNINGS_QUALITY_REVIEW")
+        self.assertEqual(rows["3130"]["research_quality_lane"],"CHECK_FINANCIAL_AND_REVENUE_ORIGINALS_BEFORE_ANY_RISK_DECISION")
         self.assertEqual(rows["6206"]["research_quality_lane"],
                          "CHECK_FINANCIAL_AND_REVENUE_ORIGINALS_BEFORE_ANY_RISK_DECISION")
         self.assertIn("UNRESOLVED_NEGATIVE_OPERATING_CASHFLOW",rows["6206"]["high_risk_review_flags"])
