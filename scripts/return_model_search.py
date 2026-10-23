@@ -85,14 +85,35 @@ def reviewed_momentum(root,row,asof,cache):
 
 
 def feature_rows(root,full,asof):
-    daily=DailyTurnoverSnapshot(root,asof,full['asof_price_date']);income={};references={};errors=[];rows=[];cache={}
+    daily=DailyTurnoverSnapshot(root,asof,full['asof_price_date']);income={};references={};errors=[];rows=[];cache={};earnings=None
     for row in full['all_model_rows']:
         if not row.get('rankable'):continue
         key=(row['market'],row.get('cashflow_financial_period',full['financial_last_quarter']))
-        if key not in income:
-            doc=read(root/'fundamentals'/key[1]/(key[0]+'_income.json'))
-            require(doc['period']==key[1] and doc['market']==key[0],'RETURN_SEARCH_INCOME_PERIOD_MISMATCH')
-            income[key]={r['code']:r.get('revenue_ytd_k') for r in doc['rows']}
+        source_blocked=False
+        try:
+            if key[1]!=full['financial_last_quarter']:
+                # An issuer can publish its cash flow before the marketwide batch.
+                # Re-read the original adapter; never divide Q3 cash by Q2 sales.
+                from tw_model_v880.events import load_earnings_events
+                if earnings is None:earnings,_=load_earnings_events(root,asof,full['financial_last_quarter'])
+                event=earnings.get(row['code']);bound=row.get('fresh_earnings_update',{}).get('event') or {}
+                require(event is not None and event['event_sha256']==bound.get('event_sha256'),
+                        'RETURN_SEARCH_CASH_INCOME_EVENT_NOT_RECONCILED')
+                require(event.get('cashflow_period')==key[1] and event['financial_period']==row['financial_period'],
+                        'RETURN_SEARCH_CASH_INCOME_EVENT_PERIOD_MISMATCH')
+                require(event.get('cashflow',{}).get('ocf_k')==row.get('liquidity',{}).get('ocf_k'),
+                        'RETURN_SEARCH_CASH_INCOME_EVENT_AMOUNT_MISMATCH')
+                revenue=number(event['current']['revenue_k'])
+                references[event['archive_path']]=event['source_sha256']
+            else:
+                if key not in income:
+                    doc=read(root/'fundamentals'/key[1]/(key[0]+'_income.json'))
+                    require(doc['period']==key[1] and doc['market']==key[0],'RETURN_SEARCH_INCOME_PERIOD_MISMATCH')
+                    income[key]={r['code']:r.get('revenue_ytd_k') for r in doc['rows']}
+                revenue=number(income[key].get(row['code']))
+        except (ValueError,KeyError,OSError,TypeError) as exc:
+            revenue=None;source_blocked=key[1]!=full['financial_last_quarter']
+            errors.append(dict(code=row['code'],feature='ocf_to_sales',reason=str(exc)))
         try:
             liq=liquidity_history(root,row,asof,daily);adv=liq['median20_turnover_ntd'] if liq.get('last_date')==row['price_date'] else None
         except (ValueError,KeyError,OSError,TypeError) as exc:
@@ -100,13 +121,13 @@ def feature_rows(root,full,asof):
         try:momentum=reviewed_momentum(root,row,asof,cache)
         except (ValueError,KeyError,OSError,TypeError) as exc:
             momentum=None;errors.append(dict(code=row['code'],feature='momentum_63_21_pct',reason=str(exc)))
-        trend=row.get('revenue_bridge',{}).get('trend_inputs',{});margin=row.get('margin_bridge',{});ocf=row.get('liquidity',{}).get('ocf_k');revenue=number(income[key].get(row['code']))
+        trend=row.get('revenue_bridge',{}).get('trend_inputs',{});margin=row.get('margin_bridge',{});ocf=row.get('liquidity',{}).get('ocf_k')
         def difference(a,b):return (a-b)*100 if finite(a) and finite(b) else None
         features=dict(forward_upside_pct=row.get('scenario_upside_pct'),revenue_acceleration_pp=difference(trend.get('latest_month_yoy'),trend.get('monthly_ytd_yoy')),
                       gross_margin_delta_pp=difference(margin.get('current_ytd_gm'),margin.get('prior_ytd_gm')),
                       ocf_to_sales=ocf/revenue if finite(ocf) and finite(revenue,positive=True) else None,momentum_63_21_pct=momentum)
         rows.append(dict(code=row['code'],market=row['market'],industry=row.get('industry'),feature_available_at=asof,features=features,adv20_ntd=adv,
-                         recommendation_blocked=row.get('recommendation_blocked',False),ocf_and_sales_period=key[1],features_are_research_not_quality_certification=True))
+                         recommendation_blocked=row.get('recommendation_blocked',False) or source_blocked,ocf_and_sales_period=key[1],features_are_research_not_quality_certification=True))
         path=root/'prices/issuer_history'/row['market']/(row['code']+'.json')
         if path.exists():references[path.relative_to(root).as_posix()]=hashlib.sha256(path.read_bytes()).hexdigest()
     return rows,references,errors

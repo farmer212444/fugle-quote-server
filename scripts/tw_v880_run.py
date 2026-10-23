@@ -129,7 +129,7 @@ def run(data_dir,asof,target_date,out_dir=None,variant='current-information'):
     else:
         report[3:3]=["目前的參考日未發現潛在平日缺口，但仍非盤中即時報價。",""]
     for i,r in enumerate(broad[:10],1):
-        b=r['base'];tier='公司自結暫估' if r.get('fresh_earnings_update',{}).get('applied') else '原始核對' if r['original_current_issuer_numeric_checked'] else '官方彙總'
+        b=r['base'];tier='公司簡明財報' if r.get('source_tier')=='ISSUER_CONDENSED_ORIGINAL_STATEMENTS' else '公司自結暫估' if r.get('fresh_earnings_update',{}).get('applied') else '原始核對' if r['original_current_issuer_numeric_checked'] else '官方彙總'
         governance_label='**重大治理待查**' if r['recommendation_blocked'] else '未全面核查'
         report.append(f"|{i}|{r['code']} {r['name']}|{fmt(r['reference_close'])}|{fmt(b['eps'])}|{fmt(b['pe'])}|{fmt(b['target_price'])}|{b['price_upside_pct']:+.1f}%|{fmt(r['bear']['target_price'])}|{fmt(r['bull']['target_price'])}|{tier}|{governance_label}|")
     offering_rows=[r for r in rows if r.get('equity_offering_overlay')]
@@ -327,7 +327,7 @@ def run(data_dir,asof,target_date,out_dir=None,variant='current-information'):
         report+=['','## 新資訊估值修訂','']
         for r in updates:
             old=r['fresh_earnings_update']['baseline_without_new_event'];b=r['base']
-            report.append(f"- {r['code']} {r['name']}：納入{r['financial_period']}公司自結原始表格；同一價格及模型下，EPS {fmt(old['eps'])}→{fmt(b['eps'])}、Base {fmt(old['target_price'])}→{fmt(b['target_price'])}。現金流仍為{r['cashflow_financial_period']}，{target_year}營運橋接及正式認證仍待完成。")
+            report.append(f"- {r['code']} {r['name']}：納入{r['financial_period']}公司公告原始表格（{r['fresh_earnings_update']['source_kind']}）；同一價格及模型下，EPS {fmt(old['eps'])}→{fmt(b['eps'])}、Base {fmt(old['target_price'])}→{fmt(b['target_price'])}。現金流資料期間為{r['cashflow_financial_period']}，{target_year}營運橋接及正式認證仍待完成。")
     cm=cal.get('deployed_sector_or_global_holdout_metrics') or {};bm=cal.get('holdout_no_change_baseline') or {}
     tail=cal.get('holdout_error_tail') or {}
     if tail.get('status')=='DESCRIPTIVE_CROSS_PERIOD_HOLDOUT_ONLY':

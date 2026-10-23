@@ -227,10 +227,10 @@ def render(report):
         update=row.get('fresh_earnings_update') or {}
         if update.get('applied'):
             baseline=update.get('baseline_without_new_event',{})
-            lines.append(f"- {row['code']}：{row['financial_period']}公司自結原始表格已用於本次研究估值；"
+            lines.append(f"- {row['code']}：{row['financial_period']}公司公告原始表格（{update.get('source_kind')}）已用於本次研究估值；"
                          f"同一價格／模型、不納入新事件的EPS {fmt(baseline.get('eps'))}、Base {fmt(baseline.get('target_price'))}；"
                          f"更新EPS {fmt(row['base'].get('eps'))}、Base {fmt(row['base'].get('target_price'))}。"
-                         f"現金流仍為{row['cashflow_financial_period']}。")
+                         f"現金流資料期間為{row['cashflow_financial_period']}。")
     obs=report['forward_observations']
     lines+=['','## 驗證與部位','',
             f"已封存的獨立訊號日：{obs['distinct_signal_days']}；可認證扣成本總報酬觀測：{obs['verified_net_total_return_observations']}。",
