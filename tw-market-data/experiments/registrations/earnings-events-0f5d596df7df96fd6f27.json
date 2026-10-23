@@ -1,0 +1,28 @@
+{
+  "schema": "V810_PROSPECTIVE_TRIAL_REGISTRATION",
+  "registered_at": "2026-10-23T21:01:45.213818+00:00",
+  "spec_sha256": "67600f6db9cd0c81fccab688f712d0d536330f45cc04b8c810bf9d8a0bf82da0",
+  "spec": {
+    "hypothesis": "Reconciled issuer earnings events improve forecasts and research selections versus the same model without those events",
+    "champion_model_sha256": "2fb8b420e4d6f21cd6890767b5ea8823ec0bf098cafa97d26cff7f55cb901fcc",
+    "challenger_model_sha256": "90a6686abd65f6cdd91b22b59e8337e6b7cab23d111b92f00faee1e4ec4a8e15",
+    "selection_rule": "RESEARCH_TOP10_EQUAL_WEIGHT_NEXT_OPEN",
+    "holding_sessions": 21,
+    "model_target_date": "2027-12-31",
+    "cost_policy": {
+      "buy_fee_rate": 0.001425,
+      "sell_fee_rate": 0.001425,
+      "sell_tax_rate": 0.003,
+      "buy_slippage_rate": 0.001,
+      "sell_slippage_rate": 0.001,
+      "half_spread_rate": 0.0005,
+      "minimum_fee_ntd": 20
+    },
+    "reference_notional_ntd": 10000000,
+    "max_daily_participation": 0.05,
+    "minimum_nonoverlapping_oos_periods": 60,
+    "no_investment_edge_claim_before_matured_outcomes": true,
+    "trial_id": "earnings-events-0f5d596df7df96fd6f27"
+  },
+  "registry_is_prospective_not_a_historical_PIT_certificate": true
+}

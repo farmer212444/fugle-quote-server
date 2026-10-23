@@ -1,0 +1,500 @@
+{
+  "schema": "V8106_FOOTWEAR_REVIEW_V1",
+  "model": "V8.10.6",
+  "estimate_vintage": "2026-10-24T05:05:52.315327+08:00",
+  "asof_price_date": "2026-10-22",
+  "target_date": "2027-12-31",
+  "research_only": true,
+  "replaces_production_forecasts": false,
+  "grants_quality_certification": false,
+  "config_basis_current": true,
+  "companies": [
+    {
+      "code": "9802",
+      "name": "鈺齊-KY",
+      "price_date": "2026-10-22",
+      "reference_close": 62.6,
+      "formal_Aplus": false,
+      "formal_Aplusplus": false,
+      "production_base_eps": 4.592329887248016,
+      "production_base_price": null,
+      "production_point_available": false,
+      "quality_certification": {
+        "status": "CERTIFICATION_PENDING",
+        "formal_Aplus": false,
+        "formal_Aplusplus": false,
+        "gates_passed": [],
+        "gates_pending": [
+          "original_eight_quarter_statements",
+          "cash_and_working_capital",
+          "nonoperating_components",
+          "fully_diluted_shares",
+          "matched_peers_and_cycle",
+          "management_promises",
+          "auditor_scope",
+          "tradability",
+          "forecast_bridge",
+          "insider_claims",
+          "dividend_window",
+          "point_in_time",
+          "out_of_sample_validation"
+        ],
+        "gates_failed": [],
+        "quality_complete": false,
+        "stress_passed": false,
+        "no_trade_instruction": true
+      },
+      "research_cases": {
+        "Bear": {
+          "eps": 2.1652843224324942,
+          "target_price": 19.48755890189245,
+          "price_upside_pct": -68.86971421422932,
+          "method": "PE_RESEARCH_ASSUMPTIONS_NOT_CERTIFIED_FORECAST",
+          "input_assumptions": {
+            "revenue_e8": 190,
+            "gross_margin": 0.13,
+            "opex_ratio": 0.098,
+            "pe": 9
+          },
+          "denominator_shares": 210595899.70509127,
+          "fully_diluted_terms_certified": false
+        },
+        "Base": {
+          "eps": 4.857644433878161,
+          "target_price": 58.29173320653793,
+          "price_upside_pct": -6.882215325019292,
+          "method": "PE_RESEARCH_ASSUMPTIONS_NOT_CERTIFIED_FORECAST",
+          "input_assumptions": {
+            "revenue_e8": 220,
+            "gross_margin": 0.155,
+            "opex_ratio": 0.093,
+            "pe": 12
+          },
+          "denominator_shares": 210595899.70509127,
+          "fully_diluted_terms_certified": false
+        },
+        "Bull": {
+          "eps": 7.692457461273333,
+          "target_price": 115.3868619191,
+          "price_upside_pct": 84.32406057364217,
+          "method": "PE_RESEARCH_ASSUMPTIONS_NOT_CERTIFIED_FORECAST",
+          "input_assumptions": {
+            "revenue_e8": 240,
+            "gross_margin": 0.18,
+            "opex_ratio": 0.09,
+            "pe": 15
+          },
+          "denominator_shares": 210595899.70509127,
+          "fully_diluted_terms_certified": false
+        }
+      },
+      "original_fact_check": null,
+      "all_quality_gates_granted_by_this_review": false,
+      "scenario_probabilities": null,
+      "status": "RESEARCH_ONLY"
+    },
+    {
+      "code": "9910",
+      "name": "豐泰",
+      "price_date": "2026-10-22",
+      "reference_close": 67.7,
+      "formal_Aplus": false,
+      "formal_Aplusplus": false,
+      "production_base_eps": 3.7123507701895706,
+      "production_base_price": 44.51108573457295,
+      "production_point_available": true,
+      "quality_certification": {
+        "status": "CERTIFICATION_PENDING",
+        "formal_Aplus": false,
+        "formal_Aplusplus": false,
+        "gates_passed": [],
+        "gates_pending": [
+          "original_eight_quarter_statements",
+          "cash_and_working_capital",
+          "nonoperating_components",
+          "fully_diluted_shares",
+          "matched_peers_and_cycle",
+          "management_promises",
+          "auditor_scope",
+          "tradability",
+          "forecast_bridge",
+          "insider_claims",
+          "dividend_window",
+          "point_in_time",
+          "out_of_sample_validation"
+        ],
+        "gates_failed": [],
+        "quality_complete": false,
+        "stress_passed": false,
+        "no_trade_instruction": true
+      },
+      "research_cases": {
+        "Bear": {
+          "eps": 2.5467541521235817,
+          "target_price": 22.920787369112237,
+          "price_upside_pct": -66.14359325094205,
+          "method": "PE_RESEARCH_ASSUMPTIONS_NOT_CERTIFIED_FORECAST",
+          "input_assumptions": {
+            "revenue_e8": 780,
+            "gross_margin": 0.185,
+            "opex_ratio": 0.138,
+            "pe": 9
+          },
+          "denominator_shares": 987482831.0,
+          "fully_diluted_terms_certified": false
+        },
+        "Base": {
+          "eps": 3.9875528732104097,
+          "target_price": 47.85063447852492,
+          "price_upside_pct": -29.319594566432915,
+          "method": "PE_RESEARCH_ASSUMPTIONS_NOT_CERTIFIED_FORECAST",
+          "input_assumptions": {
+            "revenue_e8": 820,
+            "gross_margin": 0.203,
+            "opex_ratio": 0.133,
+            "pe": 12
+          },
+          "denominator_shares": 987482831.0,
+          "fully_diluted_terms_certified": false
+        },
+        "Bull": {
+          "eps": 6.113321478092614,
+          "target_price": 91.69982217138921,
+          "price_upside_pct": 35.45025431519824,
+          "method": "PE_RESEARCH_ASSUMPTIONS_NOT_CERTIFIED_FORECAST",
+          "input_assumptions": {
+            "revenue_e8": 880,
+            "gross_margin": 0.23,
+            "opex_ratio": 0.13,
+            "pe": 15
+          },
+          "denominator_shares": 987482831.0,
+          "fully_diluted_terms_certified": false
+        }
+      },
+      "original_fact_check": null,
+      "all_quality_gates_granted_by_this_review": false,
+      "scenario_probabilities": null,
+      "status": "RESEARCH_ONLY"
+    },
+    {
+      "code": "6768",
+      "name": "志強-KY",
+      "price_date": "2026-10-22",
+      "reference_close": 62.8,
+      "formal_Aplus": false,
+      "formal_Aplusplus": false,
+      "production_base_eps": 4.00202156324791,
+      "production_base_price": 47.984238543342435,
+      "production_point_available": true,
+      "quality_certification": {
+        "status": "CERTIFICATION_PENDING",
+        "formal_Aplus": false,
+        "formal_Aplusplus": false,
+        "gates_passed": [],
+        "gates_pending": [
+          "original_eight_quarter_statements",
+          "cash_and_working_capital",
+          "nonoperating_components",
+          "fully_diluted_shares",
+          "matched_peers_and_cycle",
+          "management_promises",
+          "auditor_scope",
+          "tradability",
+          "forecast_bridge",
+          "insider_claims",
+          "dividend_window",
+          "point_in_time",
+          "out_of_sample_validation"
+        ],
+        "gates_failed": [],
+        "quality_complete": false,
+        "stress_passed": false,
+        "no_trade_instruction": true
+      },
+      "research_cases": {
+        "Bear": {
+          "eps": 2.3860560382772102,
+          "target_price": 21.474504344494893,
+          "price_upside_pct": -65.80492938774698,
+          "method": "PE_RESEARCH_ASSUMPTIONS_NOT_CERTIFIED_FORECAST",
+          "input_assumptions": {
+            "revenue_e8": 195,
+            "gross_margin": 0.16,
+            "opex_ratio": 0.125,
+            "pe": 9
+          },
+          "denominator_shares": 205946546.14851487,
+          "fully_diluted_terms_certified": false
+        },
+        "Base": {
+          "eps": 4.885733792662857,
+          "target_price": 58.62880551195428,
+          "price_upside_pct": -6.642029439563235,
+          "method": "PE_RESEARCH_ASSUMPTIONS_NOT_CERTIFIED_FORECAST",
+          "input_assumptions": {
+            "revenue_e8": 215,
+            "gross_margin": 0.18,
+            "opex_ratio": 0.115,
+            "pe": 12
+          },
+          "denominator_shares": 205946546.14851487,
+          "fully_diluted_terms_certified": false
+        },
+        "Bull": {
+          "eps": 7.39415167905685,
+          "target_price": 110.91227518585275,
+          "price_upside_pct": 76.61190316218591,
+          "method": "PE_RESEARCH_ASSUMPTIONS_NOT_CERTIFIED_FORECAST",
+          "input_assumptions": {
+            "revenue_e8": 235,
+            "gross_margin": 0.2,
+            "opex_ratio": 0.11,
+            "pe": 15
+          },
+          "denominator_shares": 205946546.14851487,
+          "fully_diluted_terms_certified": false
+        }
+      },
+      "original_fact_check": null,
+      "all_quality_gates_granted_by_this_review": false,
+      "scenario_probabilities": null,
+      "status": "RESEARCH_ONLY"
+    },
+    {
+      "code": "6890",
+      "name": "來億-KY",
+      "price_date": "2026-10-22",
+      "reference_close": 144.5,
+      "formal_Aplus": false,
+      "formal_Aplusplus": false,
+      "production_base_eps": 9.24460988255392,
+      "production_base_price": 110.84287249182151,
+      "production_point_available": true,
+      "quality_certification": {
+        "status": "CERTIFICATION_PENDING",
+        "formal_Aplus": false,
+        "formal_Aplusplus": false,
+        "gates_passed": [],
+        "gates_pending": [
+          "original_eight_quarter_statements",
+          "cash_and_working_capital",
+          "nonoperating_components",
+          "fully_diluted_shares",
+          "matched_peers_and_cycle",
+          "management_promises",
+          "auditor_scope",
+          "tradability",
+          "forecast_bridge",
+          "insider_claims",
+          "dividend_window",
+          "point_in_time",
+          "out_of_sample_validation"
+        ],
+        "gates_failed": [],
+        "quality_complete": false,
+        "stress_passed": false,
+        "no_trade_instruction": true
+      },
+      "research_cases": {
+        "Bear": {
+          "eps": 6.227814318788064,
+          "target_price": 56.050328869092574,
+          "price_upside_pct": -61.21084507329233,
+          "method": "PE_RESEARCH_ASSUMPTIONS_NOT_CERTIFIED_FORECAST",
+          "input_assumptions": {
+            "revenue_e8": 330,
+            "gross_margin": 0.14,
+            "opex_ratio": 0.075,
+            "pe": 9,
+            "tax": 0.24
+          },
+          "denominator_shares": 270429681.07111835,
+          "fully_diluted_terms_certified": false
+        },
+        "Base": {
+          "eps": 10.343193501989928,
+          "target_price": 124.11832202387913,
+          "price_upside_pct": -14.104967457523088,
+          "method": "PE_RESEARCH_ASSUMPTIONS_NOT_CERTIFIED_FORECAST",
+          "input_assumptions": {
+            "revenue_e8": 370,
+            "gross_margin": 0.165,
+            "opex_ratio": 0.07,
+            "pe": 12,
+            "tax": 0.22
+          },
+          "denominator_shares": 270429681.07111835,
+          "fully_diluted_terms_certified": false
+        },
+        "Bull": {
+          "eps": 14.317277765755966,
+          "target_price": 214.7591664863395,
+          "price_upside_pct": 48.622260544179575,
+          "method": "PE_RESEARCH_ASSUMPTIONS_NOT_CERTIFIED_FORECAST",
+          "input_assumptions": {
+            "revenue_e8": 420,
+            "gross_margin": 0.18,
+            "opex_ratio": 0.065,
+            "pe": 15,
+            "tax": 0.21
+          },
+          "denominator_shares": 270429681.07111835,
+          "fully_diluted_terms_certified": false
+        }
+      },
+      "original_fact_check": {
+        "status": "SPECIFIED_CURRENT_FACTS_RECONCILED_NOT_EIGHT_QUARTER_CERTIFICATION",
+        "source": {
+          "path": "evidence/v880/footwear/6890_2026Q2.pdf",
+          "url": "https://doc.twse.com.tw/server-java/t57sb01?co_id=6890&colorchg=1&filename=202602_6890_AI1.pdf&kind=A&step=9",
+          "sha256": "57b02eb6516836caf07a2f221a626b0d54c3812949ac957bb017492d62e42d9b",
+          "captured_at_utc": "2026-10-23T21:01:30.520215+00:00",
+          "period": "2026-Q2",
+          "specified_pages_visually_checked": [
+            4,
+            5,
+            8,
+            11,
+            13
+          ],
+          "full_eight_quarter_certification": false
+        },
+        "facts": {
+          "revenue_k": 17901059.0,
+          "gross_profit_k": 2708823.0,
+          "operating_profit_k": 1383040.0,
+          "pretax_profit_k": 1430979.0,
+          "net_income_k": 1117321.0,
+          "parent_net_income_k": 1130512.0,
+          "operating_cashflow_k": 211579.0,
+          "ppe_purchase_k": 852982.0,
+          "intangibles_purchase_k": 5435.0,
+          "nonoperating_k": 47939.0,
+          "fx_gain_k": 75594.0,
+          "fv_loss_k": 11900.0,
+          "disposal_gain_k": 29.0,
+          "cb_interest_k": 51301.0,
+          "normalized_annual_nonoperating_full_conversion_k": 71034.0,
+          "ocf_to_parent_profit": 0.1871532544546188
+        }
+      },
+      "all_quality_gates_granted_by_this_review": false,
+      "scenario_probabilities": null,
+      "status": "RESEARCH_ONLY"
+    },
+    {
+      "code": "9904",
+      "name": "寶成",
+      "price_date": "2026-10-22",
+      "reference_close": 26.35,
+      "formal_Aplus": false,
+      "formal_Aplusplus": false,
+      "production_base_eps": 4.485295684333036,
+      "production_base_price": 31.845599358764556,
+      "production_point_available": true,
+      "quality_certification": {
+        "status": "CERTIFICATION_PENDING",
+        "formal_Aplus": false,
+        "formal_Aplusplus": false,
+        "gates_passed": [],
+        "gates_pending": [
+          "original_eight_quarter_statements",
+          "cash_and_working_capital",
+          "nonoperating_components",
+          "fully_diluted_shares",
+          "matched_peers_and_cycle",
+          "management_promises",
+          "auditor_scope",
+          "tradability",
+          "forecast_bridge",
+          "insider_claims",
+          "dividend_window",
+          "point_in_time",
+          "out_of_sample_validation"
+        ],
+        "gates_failed": [],
+        "quality_complete": false,
+        "stress_passed": false,
+        "no_trade_instruction": true
+      },
+      "research_cases": {
+        "Bear": {
+          "eps": 3.2238500147177067,
+          "target_price": 23.344518344087167,
+          "price_upside_pct": -11.406002489232769,
+          "method": "BOOK_COMPONENT_DISCOUNT_SENSITIVITY_NOT_VALIDATED_MARKET_NAV",
+          "input_assumptions": {
+            "yue_yuen_book_multiple": 0.35,
+            "ruen_chen_book_multiple": 0.35,
+            "residual_book_multiple": 0.5,
+            "yue_yuen_parent_profit_e8": 25,
+            "ruen_chen_parent_profit_e8": 65,
+            "other_parent_profit_e8": 5
+          },
+          "denominator_shares": 2946787213.0,
+          "fully_diluted_terms_certified": false
+        },
+        "Base": {
+          "eps": 4.852742653732969,
+          "target_price": 33.24150690890079,
+          "price_upside_pct": 26.153726409490652,
+          "method": "BOOK_COMPONENT_DISCOUNT_SENSITIVITY_NOT_VALIDATED_MARKET_NAV",
+          "input_assumptions": {
+            "yue_yuen_book_multiple": 0.5,
+            "ruen_chen_book_multiple": 0.5,
+            "residual_book_multiple": 0.7,
+            "yue_yuen_parent_profit_e8": 45,
+            "ruen_chen_parent_profit_e8": 90,
+            "other_parent_profit_e8": 8
+          },
+          "denominator_shares": 2946787213.0,
+          "fully_diluted_terms_certified": false
+        },
+        "Bull": {
+          "eps": 6.447700029435413,
+          "target_price": 43.138495473714414,
+          "price_upside_pct": 63.71345530821409,
+          "method": "BOOK_COMPONENT_DISCOUNT_SENSITIVITY_NOT_VALIDATED_MARKET_NAV",
+          "input_assumptions": {
+            "yue_yuen_book_multiple": 0.65,
+            "ruen_chen_book_multiple": 0.65,
+            "residual_book_multiple": 0.9,
+            "yue_yuen_parent_profit_e8": 65,
+            "ruen_chen_parent_profit_e8": 115,
+            "other_parent_profit_e8": 10
+          },
+          "denominator_shares": 2946787213.0,
+          "fully_diluted_terms_certified": false
+        }
+      },
+      "original_fact_check": {
+        "status": "SPECIFIED_CURRENT_FACTS_RECONCILED_NOT_EIGHT_QUARTER_CERTIFICATION",
+        "source": {
+          "path": "evidence/v880/footwear/9904_2026Q2.pdf",
+          "url": "https://www.pouchen.com/download/quarterly-results/2Q%202026%20PCC%20Consolidated-CH.pdf",
+          "sha256": "b24f9794529e0eabaf7d8617a709fa0051ec148637ac7b1f7df415833c65e854",
+          "captured_at_utc": "2026-10-23T21:01:30.520215+00:00",
+          "period": "2026-Q2",
+          "specified_pages_visually_checked": [
+            5,
+            78
+          ],
+          "full_eight_quarter_certification": false
+        },
+        "facts": {
+          "parent_equity_k": 187016299.0,
+          "yue_yuen_attributable_equity_k": 71011177.0,
+          "ruen_chen_direct_carrying_k": 93767632.0,
+          "residual_parent_equity_k": 22237490.0,
+          "manufacturing_segment_profit_k": 8381097.0,
+          "retail_segment_profit_k": 2870168.0,
+          "unallocated_management_cost_k": 8724343.0
+        }
+      },
+      "all_quality_gates_granted_by_this_review": false,
+      "scenario_probabilities": null,
+      "status": "RESEARCH_ONLY"
+    }
+  ]
+}
