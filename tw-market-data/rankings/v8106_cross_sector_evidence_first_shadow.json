@@ -37,6 +37,7 @@
         "LATEST_MONTH_SALES_REVERSAL",
         "UNRESOLVED_NEGATIVE_OPERATING_CASHFLOW"
       ],
+      "additional_cyclical_margin_lookback_review": [],
       "dated_public_material_event_id": null,
       "dated_public_material_event_date": null,
       "material_event_original_company_mops_attested": false,
@@ -73,6 +74,7 @@
         "MATERIAL_UNRESOLVED_NONOPERATING",
         "2027_EPS_STEPUP_NEEDS_BRIDGE"
       ],
+      "additional_cyclical_margin_lookback_review": [],
       "dated_public_material_event_id": null,
       "dated_public_material_event_date": null,
       "material_event_original_company_mops_attested": false,
@@ -106,6 +108,7 @@
         "UNRESOLVED_NEGATIVE_OPERATING_CASHFLOW",
         "2027_EPS_STEPUP_NEEDS_BRIDGE"
       ],
+      "additional_cyclical_margin_lookback_review": [],
       "dated_public_material_event_id": null,
       "dated_public_material_event_date": null,
       "material_event_original_company_mops_attested": false,
@@ -139,6 +142,7 @@
         "MATERIAL_UNRESOLVED_NONOPERATING",
         "2027_EPS_STEPUP_NEEDS_BRIDGE"
       ],
+      "additional_cyclical_margin_lookback_review": [],
       "dated_public_material_event_id": null,
       "dated_public_material_event_date": null,
       "material_event_original_company_mops_attested": false,
@@ -167,8 +171,14 @@
       "all_13_formal_quality_gates_PASSED": false,
       "formal_pending_gates": 13,
       "formal_Aplus": false,
-      "research_quality_lane": "SOURCE_RECONCILED_NEXT_EARNINGS_QUALITY_REVIEW",
-      "high_risk_review_flags": [],
+      "research_quality_lane": "CHECK_FINANCIAL_AND_REVENUE_ORIGINALS_BEFORE_ANY_RISK_DECISION",
+      "high_risk_review_flags": [
+        "STEEL_PRICE_CYCLE_GM_REVERSION_REMOVES_MOST_BASE_UPSIDE"
+      ],
+      "additional_cyclical_margin_lookback_review": [
+        "historical_2025Q2_margin_substitution_upside_pct=11.49",
+        "all_historical_margin_stresses_are_not_2027_forecasts"
+      ],
       "dated_public_material_event_id": null,
       "dated_public_material_event_date": null,
       "material_event_original_company_mops_attested": false,
@@ -199,7 +209,12 @@
       "formal_Aplus": false,
       "research_quality_lane": "CHECK_FINANCIAL_AND_REVENUE_ORIGINALS_BEFORE_ANY_RISK_DECISION",
       "high_risk_review_flags": [
-        "UNRESOLVED_NEGATIVE_OPERATING_CASHFLOW"
+        "UNRESOLVED_NEGATIVE_OPERATING_CASHFLOW",
+        "INVENTORY_YEARLY_GROWTH_GE80PCT_REVIEW_WORKING_CAPITAL"
+      ],
+      "additional_cyclical_margin_lookback_review": [
+        "historical_2025Q2_margin_substitution_upside_pct=34.97",
+        "all_historical_margin_stresses_are_not_2027_forecasts"
       ],
       "dated_public_material_event_id": null,
       "dated_public_material_event_date": null,
@@ -229,8 +244,15 @@
       "all_13_formal_quality_gates_PASSED": false,
       "formal_pending_gates": 13,
       "formal_Aplus": false,
-      "research_quality_lane": "SOURCE_RECONCILED_NEXT_EARNINGS_QUALITY_REVIEW",
-      "high_risk_review_flags": [],
+      "research_quality_lane": "CHECK_FINANCIAL_AND_REVENUE_ORIGINALS_BEFORE_ANY_RISK_DECISION",
+      "high_risk_review_flags": [
+        "RECEIVABLES_GROW_FASTER_THAN_SALES_REVIEW_COLLECTIONS",
+        "CAPEX_FIXED_ASSETS_YEARLY_GROWTH_GE40PCT_REVIEW"
+      ],
+      "additional_cyclical_margin_lookback_review": [
+        "historical_2025Q2_margin_substitution_upside_pct=35.12",
+        "all_historical_margin_stresses_are_not_2027_forecasts"
+      ],
       "dated_public_material_event_id": null,
       "dated_public_material_event_date": null,
       "material_event_original_company_mops_attested": false,
@@ -266,6 +288,7 @@
         "2027_EPS_STEPUP_NEEDS_BRIDGE",
         "LOW_EPS_DENOMINATOR_UNSTABLE"
       ],
+      "additional_cyclical_margin_lookback_review": [],
       "dated_public_material_event_id": null,
       "dated_public_material_event_date": null,
       "material_event_original_company_mops_attested": false,
@@ -299,6 +322,7 @@
         "MATERIAL_UNRESOLVED_NONOPERATING",
         "2027_EPS_STEPUP_NEEDS_BRIDGE"
       ],
+      "additional_cyclical_margin_lookback_review": [],
       "dated_public_material_event_id": null,
       "dated_public_material_event_date": null,
       "material_event_original_company_mops_attested": false,
@@ -331,6 +355,7 @@
       "high_risk_review_flags": [
         "CYBERSECURITY_PERSONAL_DATA_INCIDENT_IMPACT_OPEN"
       ],
+      "additional_cyclical_margin_lookback_review": [],
       "dated_public_material_event_id": "3130_CYBER_RESUME_DISCLOSURE_20261006",
       "dated_public_material_event_date": "2026-10-06",
       "material_event_original_company_mops_attested": false,
@@ -342,68 +367,10 @@
     }
   ],
   "known_public_material_events_included": 1,
+  "newly_joined_margin_cashflow_issuer_count": 3,
+  "new_historical_margin_stress_requires_manual_review": true,
   "known_3130_cyber_event_research_risk_review": true,
   "safer_evidence_review_order_NOT_A_BUY_RANKING": [
-    {
-      "research_code": "2027",
-      "company": "大成鋼",
-      "market": "TWSE",
-      "source_rank": 5,
-      "reference_close": 50.6,
-      "model_2027_base_eps_unverified": 6.8666,
-      "model_2027_base_pe_unverified": 10.88,
-      "model_2027_base_fair_value_unverified": 74.71,
-      "model_base_upside_pct_unverified": 47.65,
-      "model_eps_and_pe_both_minus20_upside_pct": -5.51,
-      "bear_case_upside_pct_unverified": 11.809119682507308,
-      "margin_of_safety_30pct_mathematical_entry_ceiling": 57.47,
-      "passes_base_at_least_30pct_mathematical_hurdle": true,
-      "passes_downside_stress_30pct_hurdle": false,
-      "source_original_current_numeric_reconciled": true,
-      "all_13_formal_quality_gates_PASSED": false,
-      "formal_pending_gates": 13,
-      "formal_Aplus": false,
-      "research_quality_lane": "SOURCE_RECONCILED_NEXT_EARNINGS_QUALITY_REVIEW",
-      "high_risk_review_flags": [],
-      "dated_public_material_event_id": null,
-      "dated_public_material_event_date": null,
-      "material_event_original_company_mops_attested": false,
-      "current_cashflow_ytd_negative": false,
-      "latest_month_revenue_yoy_pct": 41.07,
-      "gross_margin_flat_sensitivity_upside_pct": 60.76258252893909,
-      "eligible_for_one_stock_10m_concentration": false,
-      "trade_action": "NO_BUY_SOURCE_QUALITY_AND_OOS_PENDING"
-    },
-    {
-      "research_code": "4771",
-      "company": "望隼",
-      "market": "TWSE",
-      "source_rank": 7,
-      "reference_close": 206.5,
-      "model_2027_base_eps_unverified": 18.6184,
-      "model_2027_base_pe_unverified": 15.54,
-      "model_2027_base_fair_value_unverified": 289.33,
-      "model_base_upside_pct_unverified": 40.11,
-      "model_eps_and_pe_both_minus20_upside_pct": -10.33,
-      "bear_case_upside_pct_unverified": -9.430826800432158,
-      "margin_of_safety_30pct_mathematical_entry_ceiling": 222.56,
-      "passes_base_at_least_30pct_mathematical_hurdle": true,
-      "passes_downside_stress_30pct_hurdle": false,
-      "source_original_current_numeric_reconciled": true,
-      "all_13_formal_quality_gates_PASSED": false,
-      "formal_pending_gates": 13,
-      "formal_Aplus": false,
-      "research_quality_lane": "SOURCE_RECONCILED_NEXT_EARNINGS_QUALITY_REVIEW",
-      "high_risk_review_flags": [],
-      "dated_public_material_event_id": null,
-      "dated_public_material_event_date": null,
-      "material_event_original_company_mops_attested": false,
-      "current_cashflow_ytd_negative": false,
-      "latest_month_revenue_yoy_pct": 24.89,
-      "gross_margin_flat_sensitivity_upside_pct": 48.005758510377646,
-      "eligible_for_one_stock_10m_concentration": false,
-      "trade_action": "NO_BUY_SOURCE_QUALITY_AND_OOS_PENDING"
-    },
     {
       "research_code": "6143",
       "company": "振曜",
@@ -428,6 +395,7 @@
         "LATEST_MONTH_SALES_REVERSAL",
         "UNRESOLVED_NEGATIVE_OPERATING_CASHFLOW"
       ],
+      "additional_cyclical_margin_lookback_review": [],
       "dated_public_material_event_id": null,
       "dated_public_material_event_date": null,
       "material_event_original_company_mops_attested": false,
@@ -464,6 +432,7 @@
         "MATERIAL_UNRESOLVED_NONOPERATING",
         "2027_EPS_STEPUP_NEEDS_BRIDGE"
       ],
+      "additional_cyclical_margin_lookback_review": [],
       "dated_public_material_event_id": null,
       "dated_public_material_event_date": null,
       "material_event_original_company_mops_attested": false,
@@ -497,6 +466,7 @@
         "UNRESOLVED_NEGATIVE_OPERATING_CASHFLOW",
         "2027_EPS_STEPUP_NEEDS_BRIDGE"
       ],
+      "additional_cyclical_margin_lookback_review": [],
       "dated_public_material_event_id": null,
       "dated_public_material_event_date": null,
       "material_event_original_company_mops_attested": false,
@@ -530,12 +500,49 @@
         "MATERIAL_UNRESOLVED_NONOPERATING",
         "2027_EPS_STEPUP_NEEDS_BRIDGE"
       ],
+      "additional_cyclical_margin_lookback_review": [],
       "dated_public_material_event_id": null,
       "dated_public_material_event_date": null,
       "material_event_original_company_mops_attested": false,
       "current_cashflow_ytd_negative": false,
       "latest_month_revenue_yoy_pct": 1.09,
       "gross_margin_flat_sensitivity_upside_pct": 52.442266527438505,
+      "eligible_for_one_stock_10m_concentration": false,
+      "trade_action": "NO_BUY_SOURCE_QUALITY_AND_OOS_PENDING"
+    },
+    {
+      "research_code": "2027",
+      "company": "大成鋼",
+      "market": "TWSE",
+      "source_rank": 5,
+      "reference_close": 50.6,
+      "model_2027_base_eps_unverified": 6.8666,
+      "model_2027_base_pe_unverified": 10.88,
+      "model_2027_base_fair_value_unverified": 74.71,
+      "model_base_upside_pct_unverified": 47.65,
+      "model_eps_and_pe_both_minus20_upside_pct": -5.51,
+      "bear_case_upside_pct_unverified": 11.809119682507308,
+      "margin_of_safety_30pct_mathematical_entry_ceiling": 57.47,
+      "passes_base_at_least_30pct_mathematical_hurdle": true,
+      "passes_downside_stress_30pct_hurdle": false,
+      "source_original_current_numeric_reconciled": true,
+      "all_13_formal_quality_gates_PASSED": false,
+      "formal_pending_gates": 13,
+      "formal_Aplus": false,
+      "research_quality_lane": "CHECK_FINANCIAL_AND_REVENUE_ORIGINALS_BEFORE_ANY_RISK_DECISION",
+      "high_risk_review_flags": [
+        "STEEL_PRICE_CYCLE_GM_REVERSION_REMOVES_MOST_BASE_UPSIDE"
+      ],
+      "additional_cyclical_margin_lookback_review": [
+        "historical_2025Q2_margin_substitution_upside_pct=11.49",
+        "all_historical_margin_stresses_are_not_2027_forecasts"
+      ],
+      "dated_public_material_event_id": null,
+      "dated_public_material_event_date": null,
+      "material_event_original_company_mops_attested": false,
+      "current_cashflow_ytd_negative": false,
+      "latest_month_revenue_yoy_pct": 41.07,
+      "gross_margin_flat_sensitivity_upside_pct": 60.76258252893909,
       "eligible_for_one_stock_10m_concentration": false,
       "trade_action": "NO_BUY_SOURCE_QUALITY_AND_OOS_PENDING"
     },
@@ -560,7 +567,12 @@
       "formal_Aplus": false,
       "research_quality_lane": "CHECK_FINANCIAL_AND_REVENUE_ORIGINALS_BEFORE_ANY_RISK_DECISION",
       "high_risk_review_flags": [
-        "UNRESOLVED_NEGATIVE_OPERATING_CASHFLOW"
+        "UNRESOLVED_NEGATIVE_OPERATING_CASHFLOW",
+        "INVENTORY_YEARLY_GROWTH_GE80PCT_REVIEW_WORKING_CAPITAL"
+      ],
+      "additional_cyclical_margin_lookback_review": [
+        "historical_2025Q2_margin_substitution_upside_pct=34.97",
+        "all_historical_margin_stresses_are_not_2027_forecasts"
       ],
       "dated_public_material_event_id": null,
       "dated_public_material_event_date": null,
@@ -568,6 +580,43 @@
       "current_cashflow_ytd_negative": true,
       "latest_month_revenue_yoy_pct": 29.96,
       "gross_margin_flat_sensitivity_upside_pct": 42.56652084129553,
+      "eligible_for_one_stock_10m_concentration": false,
+      "trade_action": "NO_BUY_SOURCE_QUALITY_AND_OOS_PENDING"
+    },
+    {
+      "research_code": "4771",
+      "company": "望隼",
+      "market": "TWSE",
+      "source_rank": 7,
+      "reference_close": 206.5,
+      "model_2027_base_eps_unverified": 18.6184,
+      "model_2027_base_pe_unverified": 15.54,
+      "model_2027_base_fair_value_unverified": 289.33,
+      "model_base_upside_pct_unverified": 40.11,
+      "model_eps_and_pe_both_minus20_upside_pct": -10.33,
+      "bear_case_upside_pct_unverified": -9.430826800432158,
+      "margin_of_safety_30pct_mathematical_entry_ceiling": 222.56,
+      "passes_base_at_least_30pct_mathematical_hurdle": true,
+      "passes_downside_stress_30pct_hurdle": false,
+      "source_original_current_numeric_reconciled": true,
+      "all_13_formal_quality_gates_PASSED": false,
+      "formal_pending_gates": 13,
+      "formal_Aplus": false,
+      "research_quality_lane": "CHECK_FINANCIAL_AND_REVENUE_ORIGINALS_BEFORE_ANY_RISK_DECISION",
+      "high_risk_review_flags": [
+        "RECEIVABLES_GROW_FASTER_THAN_SALES_REVIEW_COLLECTIONS",
+        "CAPEX_FIXED_ASSETS_YEARLY_GROWTH_GE40PCT_REVIEW"
+      ],
+      "additional_cyclical_margin_lookback_review": [
+        "historical_2025Q2_margin_substitution_upside_pct=35.12",
+        "all_historical_margin_stresses_are_not_2027_forecasts"
+      ],
+      "dated_public_material_event_id": null,
+      "dated_public_material_event_date": null,
+      "material_event_original_company_mops_attested": false,
+      "current_cashflow_ytd_negative": false,
+      "latest_month_revenue_yoy_pct": 24.89,
+      "gross_margin_flat_sensitivity_upside_pct": 48.005758510377646,
       "eligible_for_one_stock_10m_concentration": false,
       "trade_action": "NO_BUY_SOURCE_QUALITY_AND_OOS_PENDING"
     },
@@ -597,6 +646,7 @@
         "2027_EPS_STEPUP_NEEDS_BRIDGE",
         "LOW_EPS_DENOMINATOR_UNSTABLE"
       ],
+      "additional_cyclical_margin_lookback_review": [],
       "dated_public_material_event_id": null,
       "dated_public_material_event_date": null,
       "material_event_original_company_mops_attested": false,
@@ -630,6 +680,7 @@
         "MATERIAL_UNRESOLVED_NONOPERATING",
         "2027_EPS_STEPUP_NEEDS_BRIDGE"
       ],
+      "additional_cyclical_margin_lookback_review": [],
       "dated_public_material_event_id": null,
       "dated_public_material_event_date": null,
       "material_event_original_company_mops_attested": false,
@@ -662,6 +713,7 @@
       "high_risk_review_flags": [
         "CYBERSECURITY_PERSONAL_DATA_INCIDENT_IMPACT_OPEN"
       ],
+      "additional_cyclical_margin_lookback_review": [],
       "dated_public_material_event_id": "3130_CYBER_RESUME_DISCLOSURE_20261006",
       "dated_public_material_event_date": "2026-10-06",
       "material_event_original_company_mops_attested": false,
