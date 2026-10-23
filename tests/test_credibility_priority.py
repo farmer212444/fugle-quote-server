@@ -91,6 +91,7 @@ class EvidenceFirstTests(unittest.TestCase):
 
     def test_extreme_nonop_and_near_zero_eps_denominator_remain_descriptive(self):
         row=issuer('4746',True,37.2)
+        row['base']['eps']=4.0
         row['nonoperating_bridge']=dict(
             reported_ytd_abs_gap_share_pretax_pct=857.8,
             component_assumptions_certified=False)
