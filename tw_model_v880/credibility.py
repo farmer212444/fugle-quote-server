@@ -48,6 +48,18 @@ def research_priority_entry(row,holdout=None):
         warning.append('REPORTED_YTD_NONOPERATING_GAP_GE20PCT_PRETAX_COMPONENTS_UNCERTIFIED')
     eps_reference=(row.get('eps_bridge_reference') or {})
     eps_above_annualized_pct=eps_reference.get('target_eps_vs_ytd_linear_annualized_pct')
+    base_runrate=eps_reference.get('linear_annualized_ytd_parent_eps_at_model_denominator')
+    gap_per_share=(base.get('eps')-base_runrate if
+        _finite(base.get('eps')) and _finite(base_runrate) else None)
+    # Near-zero profit annualization makes percentage gaps extremely unstable.
+    # Preserve the raw observed value but flag the basis and show NTD/share delta.
+    small_eps_denominator=(_finite(base_runrate) and 0<base_runrate<.5)
+    gap_offset_by_nonop=(_finite(reported_ytd_nonop_share_pct) and
+        reported_ytd_nonop_share_pct>100)
+    if small_eps_denominator:
+        warning.append('EPS_YTD_RUN_RATE_BELOW_0_5_RATIO_DENOMINATOR_FRAGILE')
+    if gap_offset_by_nonop:
+        warning.append('YTD_NONOPERATING_GAP_EXCEEDS_ABSOLUTE_PRETAX_PROFIT')
     requires_eps_bridge=(_finite(eps_above_annualized_pct) and
         eps_above_annualized_pct>=30 and
         eps_reference.get('original_operating_bridge_certified') is not True)
@@ -100,6 +112,9 @@ def research_priority_entry(row,holdout=None):
         reversal_warning_changes_base_eps_or_pe=False,
         reported_ytd_abs_nonoperating_gap_share_pretax_pct=reported_ytd_nonop_share_pct if _finite(reported_ytd_nonop_share_pct) else None,
         reported_ytd_material_nonoperating_gap=material_ytd_nonop,
+        reported_ytd_nonoperating_gap_exceeds_pretax=gap_offset_by_nonop,
+        eps_runrate_near_zero_denominator=small_eps_denominator,
+        target_eps_minus_ytd_annualized_reference_ntd_per_share=gap_per_share,
         reported_ytd_nonoperating_figure_not_recurring_earnings_claim=True,
         ytd_parent_eps_linear_annualized_reference=eps_reference.get('linear_annualized_ytd_parent_eps_at_model_denominator'),
         target_eps_vs_unseasonalized_ytd_run_rate_pct=eps_above_annualized_pct if _finite(eps_above_annualized_pct) else None,
