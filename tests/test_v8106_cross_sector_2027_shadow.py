@@ -42,6 +42,34 @@ class V8106CrossSectorTests(unittest.TestCase):
         self.assertEqual(rows["2027"]["formal_pending_gates"],13)
         self.assertFalse(any(z["eligible_for_one_stock_10m_concentration"] for z in rows.values()))
 
+    def test_3130_company_disclosed_cyber_incident_blocks_clean_risk_tier(self):
+        result=build(*inputs())
+        rows={x["research_code"]:x for x in result["research_candidates_source_order"]}
+        item=rows["3130"]
+        self.assertEqual(item["dated_public_material_event_id"],"3130_CYBER_RESUME_DISCLOSURE_20261006")
+        self.assertEqual(item["dated_public_material_event_date"],"2026-10-06")
+        self.assertIn("CYBERSECURITY_PERSONAL_DATA_INCIDENT_IMPACT_OPEN",item["high_risk_review_flags"])
+        self.assertEqual(item["research_quality_lane"],
+                         "CHECK_FINANCIAL_AND_REVENUE_ORIGINALS_BEFORE_ANY_RISK_DECISION")
+        self.assertFalse(item["material_event_original_company_mops_attested"])
+        self.assertEqual(result["known_public_material_events_included"],1)
+        self.assertFalse(item["formal_Aplus"])
+
+    def test_missing_3130_known_risk_cannot_silently_restore_clean_tier(self):
+        p,g,b=inputs()
+        path=Path("tw-market-data/evidence/v8106_cross_sector_public_events_20261024.json")
+        events=json.loads(path.read_bytes())
+        events["events"]=[]
+        with self.assertRaisesRegex(ValueError,"MISSING_KNOWN_3130_CYBER_RISK_EVENT"):
+            build(p,g,b,events)
+
+    def test_event_source_cannot_be_mislabeled_official_original(self):
+        p,g,b=inputs()
+        events=json.loads(Path("tw-market-data/evidence/v8106_cross_sector_public_events_20261024.json").read_bytes())
+        events["events"][0]["official_company_original_bytes_sha256"]="a"*64
+        with self.assertRaisesRegex(ValueError,"MATERIAL_EVENT_SOURCE_OR_LEGAL_STATUS_MISREPRESENTED"):
+            build(p,g,b,events)
+
     def test_downside_eps_pe_stress_is_not_base(self):
         res=build(*inputs())
         rows={x["research_code"]:x for x in res["research_candidates_source_order"]}
