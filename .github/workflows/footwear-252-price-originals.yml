@@ -1,0 +1,44 @@
+name: Footwear 252 Original Price Audit
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/insider-pit-shadow-20261023
+    paths:
+      - 'scripts/v8105_footwear_price252_originals.py'
+      - 'tests/test_v8105_footwear_price252_originals.py'
+      - '.github/workflows/footwear-252-price-originals.yml'
+permissions:
+  contents: write
+jobs:
+  verify-252-closes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify strict calendar and no-forward-signal contracts
+        run: python -m unittest -v tests.test_v8105_footwear_price252_originals
+      - name: Fetch 0050, 9802 and 6965 exchange month originals (Aug 2025–Oct 2026)
+        run: python scripts/v8105_footwear_price252_originals.py
+      - name: Preserve original monthly source responses and research-only result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: footwear-252-source-research
+          path: |
+            tw-market-data/evidence/v880/insider_reviews/footwear_252_official_price_readiness.json
+          retention-days: 30
+          if-no-files-found: warn
+      - name: Commit actual immutable original evidence to isolated research branch
+        if: success() && github.ref == 'refs/heads/research/insider-pit-shadow-20261023'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add tw-market-data/prices/originals/history/TWSE/ tw-market-data/evidence/v880/insider_reviews/footwear_252_official_price_readiness.json
+          if ! git diff --cached --quiet; then
+            git commit -m "data: archive footwear 252-session source-backed price history research"
+            git push origin HEAD:research/insider-pit-shadow-20261023
+          fi
