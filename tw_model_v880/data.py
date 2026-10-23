@@ -7,6 +7,7 @@ def sha(b):return hashlib.sha256(b).hexdigest()
 SOURCE_JSON_PATTERNS=('evidence/v880/certificates/*.json','evidence/v880/issuer_bridges/*.json',
     'evidence/v880/matched_peers/*.json','evidence/v880/capital_terms/*.json',
     'evidence/v880/governance/*.json','evidence/v880/equity_offerings/*.json',
+    'evidence/v880/auditor_scope_watch/*.json',
     'evidence/v880/originals/*/manifest.json')
 
 def source_ledgers(root):
@@ -150,6 +151,13 @@ class MarketData:
         self.governance_reviews,governance_errors,governance_receipts=load_governance_reviews(self.root,asof)
         self.errors.extend(governance_errors)
         self.input_receipts.extend(governance_receipts)
+        from .auditor_watch import load_scope_watches
+        self.auditor_scope_watch,auditor_scope_errors=load_scope_watches(
+            self.root,asof,self.history,self.cash)
+        self.errors.extend(auditor_scope_errors)
+        for code,entry in self.auditor_scope_watch.items():
+            self.receipt(self.root/'evidence/v880/auditor_scope_watch'/f'{code}.json',
+                         'ISSUER_ORIGINAL_SCOPE_WATCH_MIRROR_RECONCILED_NOT_FORMAL_AUDITOR_SIGNOFF')
         self.model_source_state=model_source_state(self.root)
     def path(self,s):
         p=pathlib.Path(s)
