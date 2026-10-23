@@ -3,7 +3,7 @@ import copy
 import unittest
 
 from tw_model_v880.calibration import holdout_tail_diagnostics, fit_accounting
-from tests.test_v880 import CalibrationTests
+from test_v880 import CalibrationTests
 
 
 class HoldoutTailTests(unittest.TestCase):
