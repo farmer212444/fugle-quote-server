@@ -148,15 +148,15 @@ def run(data_dir,asof,target_date,out_dir=None,variant='current-information'):
       '|研究序|公司|當期來源|Base漲幅|EPS/PE各-20%敏感度|優先待查事項|',
       '|---:|---|---|---:|---:|---|']
     for r in evidence_priority['top10_evidence_first']:
-        pending=[]
-        if r['pending_offering']:pending.append('現增')
-        if r['cb_terms_or_shares_unresolved']:pending.append('CB/股數')
-        if 'NEGATIVE_OCF_REQUIRES_WORKING_CAPITAL_BRIDGE_NOT_AUTOMATIC_FAIL' in r['warning_flags']:pending.append('OCF/營運資金')
-        if 'MARGIN_RECOVERY_NOT_ISSUER_CERTIFIED' in r['warning_flags']:pending.append('毛利恢復')
-        pending+=['全年EPS/PE、13門檻']
+        review_issues=[]
+        if r['pending_offering']:review_issues.append('現增')
+        if r['cb_terms_or_shares_unresolved']:review_issues.append('CB/股數')
+        if 'NEGATIVE_OCF_REQUIRES_WORKING_CAPITAL_BRIDGE_NOT_AUTOMATIC_FAIL' in r['warning_flags']:review_issues.append('OCF/營運資金')
+        if 'MARGIN_RECOVERY_NOT_ISSUER_CERTIFIED' in r['warning_flags']:review_issues.append('毛利恢復')
+        review_issues+=['全年EPS/PE、13門檻']
         tier='原始當期數字' if r['original_current_numeric_reconciled'] else '官方彙總'
         report.append(f"|{r['review_rank']}|{r['code']} {r['name']}|{tier}|{r['base_upside_pct']:+.1f}%|"
-                      f"{fmt(r['eps_pe_each_minus20_upside_pct'])}%|{'、'.join(pending)}|")
+                      f"{fmt(r['eps_pe_each_minus20_upside_pct'])}%|{'、'.join(review_issues)}|")
     error_ref=evidence_priority['accounting_error_reference']
     report+=['',
       f"2026 Q2營收樣本外絕對誤差第90百分位 {fmt(error_ref['overall_p90_abs_revenue_error_pct'])}%；"
