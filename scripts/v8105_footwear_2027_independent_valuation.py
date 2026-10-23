@@ -32,7 +32,7 @@ def assert_case(case, type_name):
     r=numeric(case.get("revenue_m"),"revenue_m")
     g=numeric(case.get("gross_margin_pct"),"gross_margin_pct")
     e=numeric(case.get("opex_rate_pct"),"opex_rate_pct")
-    if r<=0 or not 0 <= e<g<70:
+    if r<=0 or not (0 <= e < 50 and 0 < g < 70):
         raise ValueError("INVALID_REVENUE_OR_MARGIN_BRIDGE")
     weight=numeric(case.get("weight"),"weight")
     if not 0<=weight<=1:
@@ -170,6 +170,8 @@ def evaluate(data, joined):
         if not (4<=required_gm<=35):
             raise ValueError("UNREASONABLE_BASE_CASE_REVERSE_GM_REQUIRED")
         weighted=sum(r["weight"]*r["attributable_eps"] for r in rows)
+        base_fair=rows[1]["scenario_fair_price"]
+        entry_cap_for_30pct=base_fair/1.30 if base_fair is not None else None
         table[code]={
             "issuer":stock["name"],
             "reference_date":"2026-10-22",
@@ -180,6 +182,8 @@ def evaluate(data, joined):
             "2026_latest_quarter_GM_pct":observed["latest_q_gm_pct"],
             "2027_cases":rows,
             "weighted_2027_eps_subjective_non_empirical":round(weighted,4),
+            "subjective_base_is_at_least_30pct_upside":rows[1]["scenario_upside_pct"] >= 30.0,
+            "maximum_theoretical_entry_for_30pct_base_upside_excluding_costs_and_all_gates":round(entry_cap_for_30pct,2) if entry_cap_for_30pct is not None else None,
             "base_breakeven_eps_at_current_price_and_base_PE":round(breakeven_eps,4),
             "base_gm_required_to_justify_current_price_pct":round(required_gm,4),
             "base_gm_margin_recovery_from_latest_q_pp":round(required_gm-observed["latest_q_gm_pct"],4),
