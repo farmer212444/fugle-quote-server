@@ -1,6 +1,6 @@
 {
   "schema": "TOP30_VS_TAIEX_TR_V1",
-  "observed_at": "2026-10-23T21:16:58.364874+00:00",
+  "observed_at": "2026-10-23T23:12:07.211035+00:00",
   "benchmark_id": "TAIEX_TR",
   "trials": [
     {
@@ -814,6 +814,60 @@
       "formal_out_of_sample_pass": false
     },
     {
+      "trial_id": "taiex-tr-dfee4343f87d5816c4462aed",
+      "registered_at": "2026-10-23T23:12:01.528876+00:00",
+      "spec": {
+        "protocol": "TOP30_VS_TAIEX_TR_V1",
+        "strategy_variant_sha256": "6f94c068971718181c75e6b4b5d8a05714015d9ae593fb8865fd14bc0ff57502",
+        "model_code_sha256": "fd85cbd2fceaa46358ed02caf57a2c691770fc39af64f8a5f51fe0a1c2329301",
+        "model_target_date": "2027-12-31",
+        "cost_policy": {
+          "buy_fee_rate": 0.001425,
+          "sell_fee_rate": 0.001425,
+          "sell_tax_rate": 0.003,
+          "buy_slippage_rate": 0.001,
+          "sell_slippage_rate": 0.001,
+          "half_spread_rate": 0.0005,
+          "minimum_fee_ntd": 20
+        },
+        "benchmark_policy": {
+          "benchmark_id": "TAIEX_TR",
+          "selection_rule": "RESEARCH_TOP30_EQUAL_WEIGHT_NEXT_SESSION_CLOSE",
+          "selection_source": "top30_provisional",
+          "holding_intervals": 21,
+          "number_of_stocks": 30,
+          "dividend_policy": "GROSS_DIVIDENDS_RETAINED_AS_CASH_OR_RECEIVABLE_NO_REINVESTMENT",
+          "benchmark_cost_policy": "COSTLESS_OFFICIAL_GROSS_TOTAL_RETURN_INDEX",
+          "fractional_shares_are_research_assumption": true,
+          "minimum_nonoverlapping_oos_periods": 60,
+          "minimum_market_regimes": 2,
+          "bootstrap_draws": 10000,
+          "bootstrap_block_size": 21,
+          "stress_cost_multiplier_excluding_tax": 2,
+          "regime_lookback_sessions": 63,
+          "regime_return_threshold": 0.03,
+          "automatic_deployment": false
+        },
+        "reference_capital_ntd": 10000000,
+        "max_daily_participation": 0.05
+      },
+      "outcomes": [
+        {
+          "status": "AWAITING_FUTURE_HOLDING_SESSIONS",
+          "cohort_id": "be1f7831f2e4396e958dd79d"
+        }
+      ],
+      "rejected_outcomes": [],
+      "matured_unusable_periods": 0,
+      "status": "NO_VERIFIED_OUTCOMES",
+      "verified_nonoverlapping_periods": 0,
+      "model_total_return": null,
+      "benchmark_total_return": null,
+      "excess_return_pp": null,
+      "evidence_supports_benchmark_edge": false,
+      "formal_out_of_sample_pass": false
+    },
+    {
       "trial_id": "taiex-tr-e4b1f01f8ef22cb5a6079aa9",
       "registered_at": "2026-10-23T17:56:24.646191+00:00",
       "spec": {
@@ -922,8 +976,8 @@
       "formal_out_of_sample_pass": false
     }
   ],
-  "registered_benchmark_trials": 17,
-  "all_registered_designs": 3405,
+  "registered_benchmark_trials": 18,
+  "all_registered_designs": 3647,
   "verified_outcomes": 0,
   "benchmark_sessions": 139,
   "benchmark_months": [
@@ -956,6 +1010,7 @@
         "bc18b433e0974c5098aaafae",
         "7d58f358a29fa4abfb649f26",
         "a9fe308e76a9d90661102e2e",
+        "be1f7831f2e4396e958dd79d",
         "b4b50c399a8b2a047e339286",
         "af0a659c04da6a26dde6e5bd"
       ]
@@ -979,6 +1034,7 @@
         "bc18b433e0974c5098aaafae",
         "7d58f358a29fa4abfb649f26",
         "a9fe308e76a9d90661102e2e",
+        "be1f7831f2e4396e958dd79d",
         "b4b50c399a8b2a047e339286",
         "af0a659c04da6a26dde6e5bd"
       ]
@@ -1002,6 +1058,7 @@
         "bc18b433e0974c5098aaafae",
         "7d58f358a29fa4abfb649f26",
         "a9fe308e76a9d90661102e2e",
+        "be1f7831f2e4396e958dd79d",
         "b4b50c399a8b2a047e339286",
         "af0a659c04da6a26dde6e5bd"
       ]
@@ -1025,6 +1082,7 @@
         "bc18b433e0974c5098aaafae",
         "7d58f358a29fa4abfb649f26",
         "a9fe308e76a9d90661102e2e",
+        "be1f7831f2e4396e958dd79d",
         "b4b50c399a8b2a047e339286",
         "af0a659c04da6a26dde6e5bd"
       ]
@@ -1048,6 +1106,7 @@
         "bc18b433e0974c5098aaafae",
         "7d58f358a29fa4abfb649f26",
         "a9fe308e76a9d90661102e2e",
+        "be1f7831f2e4396e958dd79d",
         "b4b50c399a8b2a047e339286",
         "af0a659c04da6a26dde6e5bd"
       ]
@@ -1071,6 +1130,7 @@
         "bc18b433e0974c5098aaafae",
         "7d58f358a29fa4abfb649f26",
         "a9fe308e76a9d90661102e2e",
+        "be1f7831f2e4396e958dd79d",
         "b4b50c399a8b2a047e339286",
         "af0a659c04da6a26dde6e5bd"
       ]
@@ -1094,6 +1154,7 @@
         "bc18b433e0974c5098aaafae",
         "7d58f358a29fa4abfb649f26",
         "a9fe308e76a9d90661102e2e",
+        "be1f7831f2e4396e958dd79d",
         "b4b50c399a8b2a047e339286",
         "af0a659c04da6a26dde6e5bd"
       ]
@@ -1117,6 +1178,7 @@
         "bc18b433e0974c5098aaafae",
         "7d58f358a29fa4abfb649f26",
         "a9fe308e76a9d90661102e2e",
+        "be1f7831f2e4396e958dd79d",
         "b4b50c399a8b2a047e339286",
         "af0a659c04da6a26dde6e5bd"
       ]
@@ -1140,6 +1202,7 @@
         "bc18b433e0974c5098aaafae",
         "7d58f358a29fa4abfb649f26",
         "a9fe308e76a9d90661102e2e",
+        "be1f7831f2e4396e958dd79d",
         "b4b50c399a8b2a047e339286",
         "af0a659c04da6a26dde6e5bd"
       ]
@@ -1163,6 +1226,7 @@
         "bc18b433e0974c5098aaafae",
         "7d58f358a29fa4abfb649f26",
         "a9fe308e76a9d90661102e2e",
+        "be1f7831f2e4396e958dd79d",
         "b4b50c399a8b2a047e339286",
         "af0a659c04da6a26dde6e5bd"
       ]
@@ -1186,6 +1250,7 @@
         "bc18b433e0974c5098aaafae",
         "7d58f358a29fa4abfb649f26",
         "a9fe308e76a9d90661102e2e",
+        "be1f7831f2e4396e958dd79d",
         "b4b50c399a8b2a047e339286",
         "af0a659c04da6a26dde6e5bd"
       ]
@@ -1209,6 +1274,7 @@
         "bc18b433e0974c5098aaafae",
         "7d58f358a29fa4abfb649f26",
         "a9fe308e76a9d90661102e2e",
+        "be1f7831f2e4396e958dd79d",
         "b4b50c399a8b2a047e339286",
         "af0a659c04da6a26dde6e5bd"
       ]
@@ -1232,6 +1298,7 @@
         "bc18b433e0974c5098aaafae",
         "7d58f358a29fa4abfb649f26",
         "a9fe308e76a9d90661102e2e",
+        "be1f7831f2e4396e958dd79d",
         "b4b50c399a8b2a047e339286",
         "af0a659c04da6a26dde6e5bd"
       ]
@@ -1255,6 +1322,7 @@
         "bc18b433e0974c5098aaafae",
         "7d58f358a29fa4abfb649f26",
         "a9fe308e76a9d90661102e2e",
+        "be1f7831f2e4396e958dd79d",
         "b4b50c399a8b2a047e339286",
         "af0a659c04da6a26dde6e5bd"
       ]
@@ -1278,6 +1346,7 @@
         "bc18b433e0974c5098aaafae",
         "7d58f358a29fa4abfb649f26",
         "a9fe308e76a9d90661102e2e",
+        "be1f7831f2e4396e958dd79d",
         "b4b50c399a8b2a047e339286",
         "af0a659c04da6a26dde6e5bd"
       ]
@@ -1301,6 +1370,7 @@
         "bc18b433e0974c5098aaafae",
         "7d58f358a29fa4abfb649f26",
         "a9fe308e76a9d90661102e2e",
+        "be1f7831f2e4396e958dd79d",
         "b4b50c399a8b2a047e339286",
         "af0a659c04da6a26dde6e5bd"
       ]
@@ -1324,6 +1394,7 @@
         "bc18b433e0974c5098aaafae",
         "7d58f358a29fa4abfb649f26",
         "a9fe308e76a9d90661102e2e",
+        "be1f7831f2e4396e958dd79d",
         "b4b50c399a8b2a047e339286",
         "af0a659c04da6a26dde6e5bd"
       ]
@@ -1347,6 +1418,7 @@
         "bc18b433e0974c5098aaafae",
         "7d58f358a29fa4abfb649f26",
         "a9fe308e76a9d90661102e2e",
+        "be1f7831f2e4396e958dd79d",
         "b4b50c399a8b2a047e339286",
         "af0a659c04da6a26dde6e5bd"
       ]
@@ -1370,6 +1442,7 @@
         "bc18b433e0974c5098aaafae",
         "7d58f358a29fa4abfb649f26",
         "a9fe308e76a9d90661102e2e",
+        "be1f7831f2e4396e958dd79d",
         "b4b50c399a8b2a047e339286",
         "af0a659c04da6a26dde6e5bd"
       ]
@@ -1393,6 +1466,7 @@
         "bc18b433e0974c5098aaafae",
         "7d58f358a29fa4abfb649f26",
         "a9fe308e76a9d90661102e2e",
+        "be1f7831f2e4396e958dd79d",
         "b4b50c399a8b2a047e339286",
         "af0a659c04da6a26dde6e5bd"
       ]
@@ -1416,6 +1490,7 @@
         "bc18b433e0974c5098aaafae",
         "7d58f358a29fa4abfb649f26",
         "a9fe308e76a9d90661102e2e",
+        "be1f7831f2e4396e958dd79d",
         "b4b50c399a8b2a047e339286",
         "af0a659c04da6a26dde6e5bd"
       ]
@@ -1438,6 +1513,7 @@
         "bc18b433e0974c5098aaafae",
         "7d58f358a29fa4abfb649f26",
         "a9fe308e76a9d90661102e2e",
+        "be1f7831f2e4396e958dd79d",
         "b4b50c399a8b2a047e339286",
         "af0a659c04da6a26dde6e5bd"
       ]
@@ -1461,6 +1537,7 @@
         "bc18b433e0974c5098aaafae",
         "7d58f358a29fa4abfb649f26",
         "a9fe308e76a9d90661102e2e",
+        "be1f7831f2e4396e958dd79d",
         "b4b50c399a8b2a047e339286",
         "af0a659c04da6a26dde6e5bd"
       ]
@@ -1484,6 +1561,7 @@
         "bc18b433e0974c5098aaafae",
         "7d58f358a29fa4abfb649f26",
         "a9fe308e76a9d90661102e2e",
+        "be1f7831f2e4396e958dd79d",
         "b4b50c399a8b2a047e339286",
         "af0a659c04da6a26dde6e5bd"
       ]
@@ -1507,6 +1585,7 @@
         "bc18b433e0974c5098aaafae",
         "7d58f358a29fa4abfb649f26",
         "a9fe308e76a9d90661102e2e",
+        "be1f7831f2e4396e958dd79d",
         "b4b50c399a8b2a047e339286",
         "af0a659c04da6a26dde6e5bd"
       ]
@@ -1530,6 +1609,7 @@
         "bc18b433e0974c5098aaafae",
         "7d58f358a29fa4abfb649f26",
         "a9fe308e76a9d90661102e2e",
+        "be1f7831f2e4396e958dd79d",
         "b4b50c399a8b2a047e339286",
         "af0a659c04da6a26dde6e5bd"
       ]
@@ -1552,6 +1632,7 @@
         "bc18b433e0974c5098aaafae",
         "7d58f358a29fa4abfb649f26",
         "a9fe308e76a9d90661102e2e",
+        "be1f7831f2e4396e958dd79d",
         "b4b50c399a8b2a047e339286",
         "af0a659c04da6a26dde6e5bd"
       ]
@@ -1575,6 +1656,7 @@
         "bc18b433e0974c5098aaafae",
         "7d58f358a29fa4abfb649f26",
         "a9fe308e76a9d90661102e2e",
+        "be1f7831f2e4396e958dd79d",
         "b4b50c399a8b2a047e339286",
         "af0a659c04da6a26dde6e5bd"
       ]
@@ -1597,6 +1679,7 @@
         "bc18b433e0974c5098aaafae",
         "7d58f358a29fa4abfb649f26",
         "a9fe308e76a9d90661102e2e",
+        "be1f7831f2e4396e958dd79d",
         "b4b50c399a8b2a047e339286",
         "af0a659c04da6a26dde6e5bd"
       ]
@@ -1620,6 +1703,7 @@
         "bc18b433e0974c5098aaafae",
         "7d58f358a29fa4abfb649f26",
         "a9fe308e76a9d90661102e2e",
+        "be1f7831f2e4396e958dd79d",
         "b4b50c399a8b2a047e339286",
         "af0a659c04da6a26dde6e5bd"
       ]
