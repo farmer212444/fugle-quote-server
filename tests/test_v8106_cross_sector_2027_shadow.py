@@ -32,7 +32,16 @@ class V8106CrossSectorTests(unittest.TestCase):
     def test_risk_lanes_honest(self):
         res=build(*inputs())
         rows={x["research_code"]:x for x in res["research_candidates_source_order"]}
-        self.assertEqual(rows["2027"]["research_quality_lane"],"SOURCE_RECONCILED_NEXT_EARNINGS_QUALITY_REVIEW")
+        self.assertEqual(rows["2027"]["research_quality_lane"],"CHECK_FINANCIAL_AND_REVENUE_ORIGINALS_BEFORE_ANY_RISK_DECISION")
+        self.assertEqual(rows["4771"]["research_quality_lane"],"CHECK_FINANCIAL_AND_REVENUE_ORIGINALS_BEFORE_ANY_RISK_DECISION")
+        self.assertIn("STEEL_PRICE_CYCLE_GM_REVERSION_REMOVES_MOST_BASE_UPSIDE",
+                      rows["2027"]["high_risk_review_flags"])
+        self.assertIn("RECEIVABLES_GROW_FASTER_THAN_SALES_REVIEW_COLLECTIONS",
+                      rows["4771"]["high_risk_review_flags"])
+        self.assertIn("CAPEX_FIXED_ASSETS_YEARLY_GROWTH_GE40PCT_REVIEW",
+                      rows["4771"]["high_risk_review_flags"])
+        self.assertIn("INVENTORY_YEARLY_GROWTH_GE80PCT_REVIEW_WORKING_CAPITAL",
+                      rows["6206"]["high_risk_review_flags"])
         self.assertEqual(rows["3130"]["research_quality_lane"],"CHECK_FINANCIAL_AND_REVENUE_ORIGINALS_BEFORE_ANY_RISK_DECISION")
         self.assertEqual(rows["6206"]["research_quality_lane"],
                          "CHECK_FINANCIAL_AND_REVENUE_ORIGINALS_BEFORE_ANY_RISK_DECISION")
@@ -77,6 +86,17 @@ class V8106CrossSectorTests(unittest.TestCase):
         self.assertAlmostEqual(rows["2027"]["model_eps_and_pe_both_minus20_upside_pct"],-5.51,places=1)
         self.assertAlmostEqual(rows["6206"]["model_base_upside_pct_unverified"],40.93,places=1)
         self.assertAlmostEqual(rows["6206"]["model_eps_and_pe_both_minus20_upside_pct"],-9.80,places=1)
+
+    def test_historical_margin_stress_source_cannot_be_missing_or_formal(self):
+        p,g,b=inputs()
+        report=json.loads(Path("tw-market-data/rankings/v8106_three_issuer_margin_reversion_shadow.json").read_bytes())
+        report["formal_Aplus_additions"]=1
+        with self.assertRaisesRegex(ValueError,"MISSING_UNCERTIFIED_THREE_ISSUER_CYCLICAL_MARGIN_SOURCE"):
+            build(p,g,b,industry_stress=report)
+        report=json.loads(Path("tw-market-data/rankings/v8106_three_issuer_margin_reversion_shadow.json").read_bytes())
+        report["issuers"]["2027"]["2027_base_eps_unverified"]*=2
+        with self.assertRaisesRegex(ValueError,"CYCLICAL_STRESS_ISSUER_DATE_OR_EPS_INCONSISTENT"):
+            build(p,g,b,industry_stress=report)
 
     def test_high_computed_returns_are_not_certified(self):
         res=build(*inputs())
