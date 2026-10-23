@@ -172,9 +172,12 @@ class MarketData:
         self.working_capital_watch,working_capital_errors=load_working_capital_watch(
             self.root,asof,self.history,self.cash)
         self.errors.extend(working_capital_errors)
-        for code in self.working_capital_watch:
+        for code,entry in self.working_capital_watch.items():
             self.receipt(self.root/'evidence/v880/working_capital_watch'/f'{code}.json',
                          'SHA_REHASHED_ISSUER_Q2_SELECTED_NOTE_ITEMS_NOT_FULL_CASH_QUALITY_GATE')
+            for source in entry.get('original_sources',[]):
+                self.receipt(self.path(source['archive_path']),
+                             'ORIGINAL_SELECTED_CASHFLOW_AND_WORKING_CAPITAL_FIELDS_REPARSED_NOT_FULL_CASH_GATE')
         from .inventory_original import load_6206_inventory_watch
         self.inventory_original_watch,inventory_original_errors=load_6206_inventory_watch(
             self.root,asof,self.history)

@@ -119,6 +119,8 @@ def research_priority_entry(row,holdout=None):
         'SHA_CHECKED_ISSUER_IR_ROUNDED_BALANCE_AND_MOPS_REVENUE_CROSSCHECKED')
     if inventory_original_checked and inventory_evidence.get('inventory_growth_exceeds_revenue_by_30pp'):
         warning.append('6206_INVENTORY_YOY_GROWTH_EXCEEDS_QUARTERLY_REVENUE_YOY_BY_GE30PP')
+    if wc_scope.get('code')=='9802' and wc_scope.get('cashflow_total_and_cash_balance_arithmetic_reconciled'):
+        warning.append('H1_ORIGINAL_CASH_WC_BRIDGE_CHECKED_CURRENT_FUNDING_AND_INVENTORY_SALEABILITY_UNVERIFIED')
     auditor_scope=row.get('auditor_scope_watch') or {}
     unresolved_auditor_qualification=auditor_scope.get('status')==(
         'ISSUER_ORIGINAL_QUALIFIED_REVIEW_SCOPE_DOC_VISUALLY_CHECKED_NO_FORMAL_PASS')

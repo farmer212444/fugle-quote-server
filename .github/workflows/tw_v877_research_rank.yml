@@ -40,9 +40,11 @@ on:
       - 'scripts/run_research_pipeline.py'
       - 'scripts/return_model_search.py'
       - 'scripts/footwear_review.py'
+      - 'scripts/cash_quality_9802.py'
       - 'tw-market-data/config/footwear_research_v1.json'
       - 'tw-market-data/evidence/v880/footwear/**'
       - 'tw-market-data/evidence/v880/earnings_version_reviews/**'
+      - 'tw-market-data/evidence/v880/working_capital_watch/**'
       - 'tw-market-data/config/return_model_search_v1.json'
       - 'scripts/research_work_queue.py'
       - 'scripts/institutional_shadow.py'
@@ -115,9 +117,11 @@ on:
       - 'scripts/run_research_pipeline.py'
       - 'scripts/return_model_search.py'
       - 'scripts/footwear_review.py'
+      - 'scripts/cash_quality_9802.py'
       - 'tw-market-data/config/footwear_research_v1.json'
       - 'tw-market-data/evidence/v880/footwear/**'
       - 'tw-market-data/evidence/v880/earnings_version_reviews/**'
+      - 'tw-market-data/evidence/v880/working_capital_watch/**'
       - 'tw-market-data/config/return_model_search_v1.json'
       - 'scripts/research_work_queue.py'
       - 'scripts/institutional_shadow.py'
@@ -219,6 +223,7 @@ jobs:
           python scripts/tw_v880_run.py --self-test
           python -m unittest -v tests.test_footwear_review
           python -m unittest -v tests.test_earnings_version_review
+          python -m unittest -v tests.test_9802_cash_review
           python -m unittest -v tests.test_v8a8_forward_top30_0050
           python -m unittest discover -s tests -p test_v891_6206_gate_triage.py
           python -m unittest discover -s tests -p test_v892_top20_quality_audit.py

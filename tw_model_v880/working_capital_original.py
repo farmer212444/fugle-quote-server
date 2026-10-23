@@ -8,6 +8,7 @@ import hashlib
 import json
 import re
 from pathlib import Path
+from .evidence import timestamp
 
 SCHEMA='V8B0_8383_ORIGINAL_WORKING_CAPITAL_SUBCHECK_NOT_FORMAL_GATE'
 PUBLISHER='https://www.chenfull.com.tw/filestore/pdf/115/115Q2%E8%B2%A1%E5%A0%B1%28Final%E7%94%A8%E5%8D%B0%29-0814.pdf'
@@ -115,13 +116,23 @@ def load_working_capital_watch(root,asof,history,cash):
             rec=json.loads(path.read_text(encoding='utf-8'))
             if path.stem!=rec['issuer']:
                 raise ValueError('8383_WC_RECEIPT_WRONG_FILENAME')
-            if rec['independently_read_date']>asof[:10]:
+            checked_asof=asof
+            if rec['issuer']=='9802':
+                # Legacy callers pass a date; use start-of-day Taipei rather
+                # than admitting a later same-day review without a clock.
+                if len(asof)==10:checked_asof=asof+'T00:00:00+08:00'
+                if timestamp(rec['reviewed_at'])>timestamp(checked_asof):continue
+            elif rec['independently_read_date']>asof[:10]:
                 continue  # future observation not available at historical asof
             key=(rec['market'],rec['issuer']);period=rec['period']
-            result=check_working_capital_receipt(
-                rec,root,asof,(history.get(key) or {}).get(period) or {},
+            checker=check_working_capital_receipt
+            if rec['issuer']=='9802':
+                from .cash_review_9802 import check_9802_cash_review
+                checker=check_9802_cash_review
+            result=checker(
+                rec,root,checked_asof,(history.get(key) or {}).get(period) or {},
                 (cash.get(key) or {}).get(period) or {})
             results[rec['issuer']]=result
-        except (OSError,ValueError,KeyError,TypeError) as exc:
+        except (OSError,ValueError,KeyError,TypeError,RuntimeError,ImportError) as exc:
             errors.append(dict(source=str(path.relative_to(root)),error=str(exc)))
     return results,errors

@@ -213,11 +213,17 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
     for name,value in e.get('certificates',{}).get(code,{}).items():
         if name in GATES:gates[name]=value
     wc_watch=getattr(data,'working_capital_watch',{}).get(code)
-    if wc_watch and wc_watch.get('period')==valuation_period:
-        warnings.append('ORIGINAL_CONTRACT_ASSETS_AR_AP_AR_ECL_SUBCHECK_NOT_FULL_CASH_GATE')
-        if gates['cash_and_working_capital'].get('status')!='FAIL':
-            gates['cash_and_working_capital']=gate(
-                'PENDING','CONTRACT_ASSETS_RECEIVABLES_ECL_AP_ALGEBRA_CHECKED_COLLECTION_AND_SUBSIDIARIES_NOT_VERIFIED')
+    if wc_watch and wc_watch.get('period')==cashflow_period:
+        if wc_watch.get('code')=='9802':
+            warnings.append('ORIGINAL_H1_CASH_WC_BRIDGE_RECONCILED_CURRENT_FUNDING_AND_COLLECTIONS_UNVERIFIED')
+            if gates['cash_and_working_capital'].get('status')=='PENDING':
+                gates['cash_and_working_capital']=gate(
+                    'PENDING','H1_ORIGINAL_CASHFLOW_RECONCILED_INVENTORY_COLLECTIONS_AND_CURRENT_BANK_LINE_DRAWABILITY_UNVERIFIED')
+        else:
+            warnings.append('ORIGINAL_CONTRACT_ASSETS_AR_AP_AR_ECL_SUBCHECK_NOT_FULL_CASH_GATE')
+            if gates['cash_and_working_capital'].get('status')!='FAIL':
+                gates['cash_and_working_capital']=gate(
+                    'PENDING','CONTRACT_ASSETS_RECEIVABLES_ECL_AP_ALGEBRA_CHECKED_COLLECTION_AND_SUBSIDIARIES_NOT_VERIFIED')
     inventory_watch=getattr(data,'inventory_original_watch',{}).get(code)
     if inventory_watch and inventory_watch.get('period')==valuation_period:
         warnings.append('ORIGINAL_6206_INVENTORY_EXPANSION_AND_DIO_NEEDS_STOCK_AGING')
@@ -335,7 +341,7 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
       governance_review=governance,recommendation_blocked=governance_blocked,
       auditor_scope_watch=scope_watch if scope_watch and scope_watch.get('period')==valuation_period else None,
       inventory_original_subcheck=inventory_watch if inventory_watch and inventory_watch.get('period')==valuation_period else None,
-      working_capital_original_subcheck=wc_watch if wc_watch and wc_watch.get('period')==valuation_period else None,
+      working_capital_original_subcheck=wc_watch if wc_watch and wc_watch.get('period')==cashflow_period else None,
       stress_eps90_pe90_upside_pct=stress,specialist_model_requirements=specialist,base_scenario_is_admissible=point,
       business_profile=dict(property_development_observed=developer,engineering_business_observed=contractor,classification_source='ISSUER_HISTORY_AND_ORGANIZATION_NOTE' if business else 'INDUSTRY_ONLY'),
       base_scenario_role='RESEARCH_FORECAST_UNCERTIFIED' if point else 'DIAGNOSTIC_ONLY_NOT_ADMISSIBLE_BASE',
