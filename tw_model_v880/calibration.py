@@ -3,6 +3,68 @@ import statistics
 from .math import number,quarter_key
 GRID=(0.,.25,.5,.75,1.)
 def ratio(r,k):return number(r[k])/number(r['revenue_ytd_k'])
+
+def holdout_tail_diagnostics(rows, forecast, simple_baseline, *, min_cell_n=50):
+    """Descriptive Q2 held-out error tails, NOT 2027 EPS odds or stock win rate.
+
+    Forecast parameters must already be trained; this function never refits
+    anything on holdout observations. No per-issuer fitted calibration.
+    """
+    def percentile(sorted_values, fraction):
+        if not sorted_values:return None
+        x=(len(sorted_values)-1)*fraction
+        i=int(x)
+        return sorted_values[i]+(sorted_values[min(i+1,len(sorted_values)-1)]-sorted_values[i])*(x-i)
+
+    def collect(sample):
+        errors=[];diff=[]
+        for row in sample:
+            actual=row['actual_revenue']
+            prediction=forecast(row)
+            unchanged=simple_baseline(row)
+            if actual<=0 or prediction<=0 or unchanged<=0:
+                continue
+            e=100*(prediction/actual-1)
+            errors.append(e)
+            diff.append(abs(prediction-actual)-abs(unchanged-actual))
+        if not errors:return None
+        ab=sorted(abs(v) for v in errors)
+        n=len(errors)
+        return dict(n=n,
+            median_absolute_pct_error=percentile(ab,.5),
+            p90_absolute_pct_error=percentile(ab,.9),
+            p95_absolute_pct_error=percentile(ab,.95),
+            median_signed_pct_error=percentile(sorted(errors),.5),
+            within_10pct_share=sum(abs(v)<=10 for v in errors)/n,
+            overpredicted_by_20pct_share=sum(v>=20 for v in errors)/n,
+            underpredicted_by_20pct_share=sum(v<=-20 for v in errors)/n,
+            beats_prior_year_unchanged_share=sum(v<-1e-8 for v in diff)/n,
+            worse_than_prior_year_unchanged_share=sum(v>1e-8 for v in diff)/n,
+            ties_prior_year_unchanged_share=sum(abs(v)<=1e-8 for v in diff)/n)
+
+    overall=collect(rows)
+    if overall is None:return dict(status='NO_HELDOUT_ROWS',n=0,groups={},
+        calibrates_2027_eps_probability=False,calibrates_stock_return_probability=False)
+    buckets={'HIGH_GROWTH_AT_LEAST_20PCT':lambda r:r['growth']>=.2,
+             'CONTRACTION_BELOW_ZERO':lambda r:r['growth']<0,
+             'OTHER_ZERO_TO_20PCT':lambda r:0<=r['growth']<.2}
+    by_growth={}
+    for name,fn in buckets.items():
+        matched=[r for r in rows if fn(r)]
+        if len(matched)<min_cell_n:
+            by_growth[name]=dict(status='INSUFFICIENT_SUBGROUP',n=len(matched),minimum_n=min_cell_n)
+        else:
+            by_growth[name]=dict(status='DESCRIPTIVE_ONLY',**collect(matched))
+    return dict(status='DESCRIPTIVE_CROSS_PERIOD_HOLDOUT_ONLY',
+        **overall,groups=by_growth,minimum_subgroup_sample=min_cell_n,
+        window='KNOWN_Q1_TO_FUTURE_Q2',
+        coefficients_refitted_on_holdout=False,
+        not_independent_PIT_publication_timestamps=True,
+        forecasts_2027_annual_growth=False,
+        calibrates_2027_eps_probability=False,
+        calibrates_stock_return_probability=False,
+        qualifies_formal_oos_trading_test=False)
+
 def fit_accounting(history,last_period,industry_map=None):
     y,q=quarter_key(last_period);train_year=y-1;train=[];hold=[]
     for issuer,rs in history.items():
@@ -61,6 +123,8 @@ def fit_accounting(history,last_period,industry_map=None):
     old_quarter=lambda r:(r['prior_revenue']-r['prior_prefix'])*max(.05,1+parameter(r,'legacy_revenue_persistence',legacy_alpha)*r['growth'])
     actual_quarter=lambda r:r['actual_revenue']-r['known_prefix']
     high_growth=[r for r in hold if r['growth']>=.2]
+    tail=holdout_tail_diagnostics(hold,lambda r:future_revenue(r,parameter(r,'revenue_persistence',alpha)),
+        lambda r:r['prior_revenue'])
     return dict(status='ACCOUNTING_CROSS_PERIOD_VALIDATION_ONLY',train_target=f'{train_year}-Q4',holdout_target=f'{y}-Q2' if q>=2 else None,
       coefficients_frozen_before_holdout=True,grid=list(GRID),revenue_persistence=alpha,legacy_revenue_persistence=legacy_alpha,margin_persistence=beta,cost_persistence=gamma,
       revenue_fit_target='UNOBSERVED_STANDALONE_QUARTER_NOT_KNOWN_PREFIX_DOMINATED_FULL_YEAR',
@@ -72,5 +136,6 @@ def fit_accounting(history,last_period,industry_map=None):
       holdout_known_prefix_zero_growth_baseline=revenue_metrics(hold,lambda r:future_revenue(r,0),lambda r:r['actual_revenue']),
       train_count=len(train),holdout_count=len(hold),train_metrics=train_metrics,holdout_metrics=hold_metrics,holdout_no_change_baseline=baseline,
       sector_parameters=sectors,minimum_sector_training_sample=50,deployed_sector_or_global_holdout_metrics=deployed,
+      holdout_error_tail=tail,
       survivor_universe_bias_not_resolved=True,company_publication_times_verified=False,pit_return_backtest_passed=False,
       not_a_probability_calibration=True,not_a_trading_performance_claim=True)

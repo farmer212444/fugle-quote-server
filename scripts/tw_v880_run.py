@@ -156,6 +156,16 @@ def run(data_dir,asof,target_date,out_dir=None,variant='current-information'):
             old=r['fresh_earnings_update']['baseline_without_new_event'];b=r['base']
             report.append(f"- {r['code']} {r['name']}：納入{r['financial_period']}公司自結原始表格；同一價格及模型下，EPS {fmt(old['eps'])}→{fmt(b['eps'])}、Base {fmt(old['target_price'])}→{fmt(b['target_price'])}。現金流仍為{r['cashflow_financial_period']}，{target_year}營運橋接及正式認證仍待完成。")
     cm=cal.get('deployed_sector_or_global_holdout_metrics') or {};bm=cal.get('holdout_no_change_baseline') or {}
+    tail=cal.get('holdout_error_tail') or {}
+    if tail.get('status')=='DESCRIPTIVE_CROSS_PERIOD_HOLDOUT_ONLY':
+        report+=['','### 保留期預測誤差尾部檢驗','',
+          f"2026-Q2 已保留樣本 {tail['n']} 家；營收預測絕對誤差第90百分位 {fmt(tail['p90_absolute_pct_error'])}%、第95百分位 {fmt(tail['p95_absolute_pct_error'])}%；"
+          f"其中預測優於前一年同期不變的公司比例 {100*tail['beats_prior_year_unchanged_share']:.1f}%、"
+          f"誤差大於前一年同期不變的比例 {100*tail['worse_than_prior_year_unchanged_share']:.1f}%。",
+          '這些是2026上半年會計營收預測的描述性誤差，不是2027年EPS的信賴區間、上漲機率、股票勝率或樣本外投資報酬。','']
+        high=tail.get('groups',{}).get('HIGH_GROWTH_AT_LEAST_20PCT',{})
+        if high.get('status')=='DESCRIPTIVE_ONLY':
+            report.append(f"高成長子群（已知Q1營收年增至少20%，n={high['n']}）第90百分位絕對誤差 {fmt(high['p90_absolute_pct_error'])}%；僅供風險檢查，不用來擴大正式A+數量。")
     report+=['','## 跨期會計預測驗證','',f"訓練 {cal.get('train_target')}：{cal['train_count']} 家；保留 {cal.get('holdout_target')}：{cal.get('holdout_count',0)} 家。係數只用訓練期選定。",'',
       '|保留期指標|新模型|去年同期不變基準|','|---|---:|---:|',
       f"|營收中位絕對百分比誤差|{fmt(cm.get('revenue_median_absolute_pct_error'))}%|{fmt(bm.get('revenue_median_absolute_pct_error'))}%|",
