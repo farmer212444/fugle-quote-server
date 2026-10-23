@@ -25,6 +25,8 @@ class V8106CrossSectorTests(unittest.TestCase):
         self.assertEqual(res["formally_certified_Aplus_count"],0)
         self.assertEqual(res["base_upside_ge30_in_original_current_reconciled_top10_count"],10)
         self.assertEqual(res["stress_upside_ge30_in_original_current_reconciled_top10_count"],0)
+        self.assertEqual(res["source_reconciled_top10_without_identified_earnings_cycle_cashflow_or_governance_flags_count"],0)
+        self.assertTrue(res["all_top10_formal_13_gates_still_pending"])
         self.assertIsNone(res["observed_real_out_of_sample_win_rate_vs_0050"])
         self.assertEqual(res["orders_placed"],0)
         self.assertFalse(res["model_changed"])
