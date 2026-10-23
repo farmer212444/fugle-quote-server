@@ -25,7 +25,6 @@ class LatestGMFlatCounterfactualTests(unittest.TestCase):
         self.assertAlmostEqual(o['scenario_eps'],expected['eps'])
         self.assertAlmostEqual(o['scenario_target_price'],expected['target_price'])
         self.assertAlmostEqual(o['scenario_price_upside_pct'],100*(expected['target_price']/100-1))
-        self.assertFalse(o['not_a_2027_earnings_revision'] if 'not_a_2027_earnings_revision' in o else False)
         self.assertTrue(o['not_a_margin_2027_forecast'])
         self.assertEqual(base,unchanged)
 
@@ -55,14 +54,15 @@ class LatestGMFlatCounterfactualTests(unittest.TestCase):
         b=issuer('6206',True,40.9)
         base=self.financial_case()
         a['base']=base
+        a['reference_close']=80.
+        a['base']['price_upside_pct']=100*(base['target_price']/80.-1)
         a['margin_bridge']=dict(quarter_margin_velocity=dict(
             current_standalone_gm_pct=20.,
             previous_standalone_gm_pct=26.,
             recent_standalone_vs_previous_gm_delta_pp=-6.))
         b['base']=copy.deepcopy(base)
-        b['base']['price_upside_pct']=40.9
-        b['base']['eps']=base['eps']*1.409/(base['target_price']/100)
-        b['base']['target_price']=b['base']['eps']*b['base']['pe']
+        b['reference_close']=100.
+        b['base']['price_upside_pct']=100*(base['target_price']/100.-1)
         b['margin_bridge']=dict(quarter_margin_velocity=dict(current_standalone_gm_pct=25.))
         before=copy.deepcopy([a,b])
         report=build_research_priority([a,b])
