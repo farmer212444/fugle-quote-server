@@ -36,11 +36,17 @@ def risk_balance(code, e):
         if a<=0 or b<=0:
             raise ValueError("NONPOSITIVE_BALANCE_SHEET_COMPONENT")
         out[key+"_yoy_pct"]=round(100*(a/b-1),2)
-    if code=="2027":
+    if "noncurrent_pp_e" in rows:
         a,b=real(rows["noncurrent_pp_e"],"pp_e"),real(rows["noncurrent_pp_e_2025q2"],"pp_e_prev")
         out["noncurrent_ppe_yoy_pct"]=round(100*(a/b-1),2)
+    if code=="2027":
         inv_q1=real(rows["inventory_2026q1"],"inventory_q1")
         out["inventory_qoq_pct"]=round(100*(rows["inventory"]/inv_q1-1),2)
+    if "reported_Q2_revenue_yoy_pct" in rows:
+        growth=real(rows["reported_Q2_revenue_yoy_pct"],"Q2_revenue_growth")
+        out["reported_current_Q2_revenue_yoy_pct"]=growth
+        out["receivable_growth_exceeds_Q2_revenue_growth"]=out["accounts_receivable_yoy_pct"]>growth
+        out["PPE_yearly_growth_exceeds_40_pct"]=out.get("noncurrent_ppe_yoy_pct",0)>40
     out["accounting_original_filing_notes_verified"]=False
     return out
 
