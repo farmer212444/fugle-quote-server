@@ -13,11 +13,14 @@
     "2025-Q2",
     "2025-Q3"
   ],
-  "observed_at": "2026-10-23T01:22:32.816049+00:00",
-  "verified_batches": 33,
-  "missing_batches": 3,
+  "observed_at": "2026-10-23T09:58:08.590666+00:00",
+  "verified_batches": 36,
+  "missing_batches": 0,
   "loaded_batch_keys": [
     "2023-Q3/TWSE/income",
+    "2023-Q3/TWSE/cashflow",
+    "2023-Q3/TPEX/income",
+    "2023-Q3/TPEX/cashflow",
     "2023-Q4/TWSE/income",
     "2023-Q4/TWSE/cashflow",
     "2023-Q4/TPEX/income",
@@ -51,14 +54,10 @@
     "2025-Q3/TPEX/income",
     "2025-Q3/TPEX/cashflow"
   ],
-  "missing_batch_keys": [
-    "2023-Q3/TWSE/cashflow",
-    "2023-Q3/TPEX/income",
-    "2023-Q3/TPEX/cashflow"
-  ],
+  "missing_batch_keys": [],
   "new_batches_this_run": 0,
   "failures": [],
-  "status": "PARTIAL",
+  "status": "ALL_MIRRORS_PRESENT_PIT_UNVERIFIED",
   "training_history_is_separate_from_eight_quarter_forecast_window": true,
   "current_latest_scan_not_replaced": true,
   "admitted_historical_PIT_batches": 0,
