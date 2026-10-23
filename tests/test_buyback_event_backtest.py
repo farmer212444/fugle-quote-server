@@ -39,8 +39,8 @@ class BuybackStudyTests(unittest.TestCase):
         self.assertEqual(o["entry_date"], "2024-01-09")
         self.assertGreater(o["alpha_0050"], 0)
         self.assertGreater(o["return_0050"], 0)
-        self.assertLess(o["net_return"], prices[date.fromisoformat(o["exit_date"])][0] /
-                        prices[date.fromisoformat(o["entry_date"])][0] - 1)
+        self.assertLess(o["net_return"], prices["1234"][date.fromisoformat(o["exit_date"])][0] /
+                        prices["1234"][date.fromisoformat(o["entry_date"])][0] - 1)
         self.assertEqual(report["grouping"]["announce_OOS_2024_2025_12m"]["beat_0050_pct"], 100)
 
     def test_no_lookahead_completion_execution_rate(self):
