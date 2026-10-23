@@ -8,6 +8,23 @@ COST_FIELDS=("buy_fee_rate","sell_fee_rate","sell_tax_rate",
              "buy_slippage_rate","sell_slippage_rate","half_spread_rate")
 
 
+def validate_cost_policy(costs):
+    if not isinstance(costs,dict):
+        raise ValueError('EXPLICIT_COST_POLICY_REQUIRED')
+    for name in COST_FIELDS:
+        value=costs.get(name)
+        if not finite(value) or not 0<=value<1:
+            raise ValueError('EXPLICIT_COST_MISSING_OR_INVALID_'+name)
+    if costs['sell_fee_rate']+costs['sell_tax_rate']>=1:
+        raise ValueError('INVALID_AGGREGATE_SELL_COST')
+    if costs['sell_slippage_rate']+costs['half_spread_rate']>=1:
+        raise ValueError('INVALID_AGGREGATE_EXIT_FRICTION')
+    minimum_fee=costs.get('minimum_fee_ntd',0.)
+    if not finite(minimum_fee) or minimum_fee<0:
+        raise ValueError('INVALID_MINIMUM_BROKER_FEE')
+    return costs
+
+
 def net_trade(bars, actions, *, signal_at, exit_at, costs,
               corporate_actions_complete, requested_notional_ntd,
               max_participation, entry_execution='NEXT_SESSION_OPEN'):
@@ -24,15 +41,8 @@ def net_trade(bars, actions, *, signal_at, exit_at, costs,
     signal,end=timestamp(signal_at),timestamp(exit_at)
     if end<=signal:
         raise ValueError("EXIT_NOT_AFTER_SIGNAL")
-    for name in COST_FIELDS:
-        value=costs.get(name)
-        if not finite(value) or not 0<=value<1:
-            raise ValueError("EXPLICIT_COST_MISSING_OR_INVALID_"+name)
-    if costs['sell_fee_rate']+costs['sell_tax_rate']>=1:
-        raise ValueError("INVALID_AGGREGATE_SELL_COST")
+    validate_cost_policy(costs)
     minimum_fee=costs.get('minimum_fee_ntd',0.)
-    if not finite(minimum_fee) or minimum_fee<0:
-        raise ValueError('INVALID_MINIMUM_BROKER_FEE')
     if not finite(requested_notional_ntd,positive=True) or not finite(max_participation,positive=True) or max_participation>1:
         raise ValueError("INVALID_EXECUTION_SIZE_OR_PARTICIPATION")
     sessions=sorted(bars,key=lambda b:timestamp(b['open_at']))
