@@ -126,6 +126,13 @@ def run(data_dir,asof,target_date,out_dir=None,variant='current-information'):
             " 等可能完成的平日交易日未納入。交易所休市與官方資料延遲尚未獨立確認；"+
             "以下只能當歷史參考價，不可視為最新可成交買入價。",
             f"此警示不會自行編造新股價、改變{target_year} Base/EPS/PE或增加正式A+。",""]
+    elif price_freshness["known_confirmed_closed_weekdays"]:
+        report[3:3]=[
+            "✅ **已查明休市，不是漏抓收盤價**："+
+            "、".join(price_freshness["known_confirmed_closed_weekdays"])+
+            "經先於估值時間公開之市場公告確認為證交所及櫃買中心休市。"+
+            "因此沒有已辨識的平日缺口；10/22收盤價仍非可保證的即時成交價。",
+            "本次只排除有時間證據的休市日；完整交易日曆與所有個股的交易可行性未認證。",""]
     else:
         report[3:3]=["目前的參考日未發現潛在平日缺口，但仍非盤中即時報價。",""]
     for i,r in enumerate(broad[:10],1):
