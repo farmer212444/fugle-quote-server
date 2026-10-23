@@ -1,0 +1,155 @@
+{
+  "schema": "V8106_FOOTWEAR_RESEARCH_ASSUMPTIONS_V1",
+  "reviewed_at": "2026-10-23T21:01:30.520215+00:00",
+  "financial_period": "2026-Q2",
+  "revenue_month": "2026-09",
+  "target_date": "2027-12-31",
+  "research_only": true,
+  "probabilities_calibrated": false,
+  "companies": [
+    {
+      "code": "9802",
+      "name": "鈺齊-KY",
+      "tax": 0.25,
+      "parent": 1,
+      "nonoperating_e8": 0,
+      "scenarios": {
+        "Bear": {
+          "revenue_e8": 190,
+          "gross_margin": 0.13,
+          "opex_ratio": 0.098,
+          "pe": 9
+        },
+        "Base": {
+          "revenue_e8": 220,
+          "gross_margin": 0.155,
+          "opex_ratio": 0.093,
+          "pe": 12
+        },
+        "Bull": {
+          "revenue_e8": 240,
+          "gross_margin": 0.18,
+          "opex_ratio": 0.09,
+          "pe": 15
+        }
+      }
+    },
+    {
+      "code": "9910",
+      "name": "豐泰",
+      "tax": 0.3,
+      "parent": 0.98,
+      "nonoperating_e8": 0,
+      "scenarios": {
+        "Bear": {
+          "revenue_e8": 780,
+          "gross_margin": 0.185,
+          "opex_ratio": 0.138,
+          "pe": 9
+        },
+        "Base": {
+          "revenue_e8": 820,
+          "gross_margin": 0.203,
+          "opex_ratio": 0.133,
+          "pe": 12
+        },
+        "Bull": {
+          "revenue_e8": 880,
+          "gross_margin": 0.23,
+          "opex_ratio": 0.13,
+          "pe": 15
+        }
+      }
+    },
+    {
+      "code": "6768",
+      "name": "志強-KY",
+      "tax": 0.28,
+      "parent": 1,
+      "nonoperating_e8": 0,
+      "scenarios": {
+        "Bear": {
+          "revenue_e8": 195,
+          "gross_margin": 0.16,
+          "opex_ratio": 0.125,
+          "pe": 9
+        },
+        "Base": {
+          "revenue_e8": 215,
+          "gross_margin": 0.18,
+          "opex_ratio": 0.115,
+          "pe": 12
+        },
+        "Bull": {
+          "revenue_e8": 235,
+          "gross_margin": 0.2,
+          "opex_ratio": 0.11,
+          "pe": 15
+        }
+      }
+    },
+    {
+      "code": "6890",
+      "name": "來億-KY",
+      "tax": null,
+      "parent": 1,
+      "nonoperating_e8": 0.71034,
+      "scenarios": {
+        "Bear": {
+          "revenue_e8": 330,
+          "gross_margin": 0.14,
+          "opex_ratio": 0.075,
+          "pe": 9,
+          "tax": 0.24
+        },
+        "Base": {
+          "revenue_e8": 370,
+          "gross_margin": 0.165,
+          "opex_ratio": 0.07,
+          "pe": 12,
+          "tax": 0.22
+        },
+        "Bull": {
+          "revenue_e8": 420,
+          "gross_margin": 0.18,
+          "opex_ratio": 0.065,
+          "pe": 15,
+          "tax": 0.21
+        }
+      }
+    },
+    {
+      "code": "9904",
+      "name": "寶成",
+      "tax": null,
+      "parent": 1,
+      "nonoperating_e8": null,
+      "scenarios": {
+        "Bear": {
+          "yue_yuen_book_multiple": 0.35,
+          "ruen_chen_book_multiple": 0.35,
+          "residual_book_multiple": 0.5,
+          "yue_yuen_parent_profit_e8": 25,
+          "ruen_chen_parent_profit_e8": 65,
+          "other_parent_profit_e8": 5
+        },
+        "Base": {
+          "yue_yuen_book_multiple": 0.5,
+          "ruen_chen_book_multiple": 0.5,
+          "residual_book_multiple": 0.7,
+          "yue_yuen_parent_profit_e8": 45,
+          "ruen_chen_parent_profit_e8": 90,
+          "other_parent_profit_e8": 8
+        },
+        "Bull": {
+          "yue_yuen_book_multiple": 0.65,
+          "ruen_chen_book_multiple": 0.65,
+          "residual_book_multiple": 0.9,
+          "yue_yuen_parent_profit_e8": 65,
+          "ruen_chen_parent_profit_e8": 115,
+          "other_parent_profit_e8": 10
+        }
+      }
+    }
+  ]
+}

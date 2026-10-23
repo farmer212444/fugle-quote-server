@@ -1,0 +1,52 @@
+{
+  "schema": "V8106_DATED_TWD_RESET_V1",
+  "code": "6890",
+  "checked_at": "2026-10-23T20:59:55.805934+00:00",
+  "sources": [
+    {
+      "id": "68901_reset_20260719",
+      "url": "https://www.moneydj.com/KMDJ/News/NewsViewer.aspx?a=08495c40-43cc-4c73-b174-2063450e9bb6",
+      "path": "evidence/v880/capital_terms/sources/68901_20260626_reset.html.gz",
+      "sha256": "ec98719e37db81ee53737e7ff457a9b90efda4dbd5f35efdab8ac1755014a309",
+      "available_at": "2026-10-23T20:59:55.680700+00:00",
+      "fetched_at": "2026-10-23T20:59:55.680700+00:00",
+      "published_date": "2026-06-26",
+      "source_record_type": "ISSUER_RESET_ANNOUNCEMENT_HTML_REPUBLICATION",
+      "historical_publication_PIT_verified": false
+    },
+    {
+      "id": "68902_reset_20260719",
+      "url": "https://www.moneydj.com/kmdj/news/newsviewer.aspx?a=d142c885-fc35-4048-ad41-4a6610c55ef8",
+      "path": "evidence/v880/capital_terms/sources/68902_20260626_reset.html.gz",
+      "sha256": "96fc541612b8b050b219df1242b282232ac6d2273e38069434b8b3fc82a70509",
+      "available_at": "2026-10-23T20:59:55.802268+00:00",
+      "fetched_at": "2026-10-23T20:59:55.802268+00:00",
+      "published_date": "2026-06-26",
+      "source_record_type": "ISSUER_RESET_ANNOUNCEMENT_HTML_REPUBLICATION",
+      "historical_publication_PIT_verified": false
+    }
+  ],
+  "bonds": [
+    {
+      "code": "68901",
+      "currency": "TWD",
+      "conversion_price": 237.5,
+      "effective_at": "2026-07-19T00:00:00+08:00",
+      "price_basis": "DATED_ISSUER_RESET_ANNOUNCEMENT_LATER_TERMS_NOT_CERTIFIED",
+      "source_ids": [
+        "68901_reset_20260719"
+      ]
+    },
+    {
+      "code": "68902",
+      "currency": "TWD",
+      "conversion_price": 236.3,
+      "effective_at": "2026-07-19T00:00:00+08:00",
+      "price_basis": "DATED_ISSUER_RESET_ANNOUNCEMENT_LATER_TERMS_NOT_CERTIFIED",
+      "source_ids": [
+        "68902_reset_20260719"
+      ]
+    }
+  ],
+  "formal_share_certification": false
+}

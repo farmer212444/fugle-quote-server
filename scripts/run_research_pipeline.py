@@ -32,6 +32,7 @@ def research_stages(phase='full'):
         ('risk_audit', ['v880_audit_exports.py','--kind','risk']),
         ('cash_audit', ['v880_audit_exports.py','--kind','cash']),
         ('shares_audit', ['v880_audit_exports.py','--kind','shares']),
+        ('footwear_review', ['footwear_review.py']),
         ('five_candidate_audit', ['v890_five_candidate_audit.py']),
         ('top20_quality', ['v892_top20_quality_audit.py']),
         ('revenue_discovery', ['v894_revenue_lead_discovery.py']),

@@ -39,6 +39,9 @@ on:
       - 'scripts/history_archive.py'
       - 'scripts/run_research_pipeline.py'
       - 'scripts/return_model_search.py'
+      - 'scripts/footwear_review.py'
+      - 'tw-market-data/config/footwear_research_v1.json'
+      - 'tw-market-data/evidence/v880/footwear/**'
       - 'tw-market-data/config/return_model_search_v1.json'
       - 'scripts/research_work_queue.py'
       - 'scripts/institutional_shadow.py'
@@ -110,6 +113,9 @@ on:
       - 'scripts/history_archive.py'
       - 'scripts/run_research_pipeline.py'
       - 'scripts/return_model_search.py'
+      - 'scripts/footwear_review.py'
+      - 'tw-market-data/config/footwear_research_v1.json'
+      - 'tw-market-data/evidence/v880/footwear/**'
       - 'tw-market-data/config/return_model_search_v1.json'
       - 'scripts/research_work_queue.py'
       - 'scripts/institutional_shadow.py'
@@ -209,6 +215,7 @@ jobs:
       - name: Validate model controls and independent 6206 triage
         run: |
           python scripts/tw_v880_run.py --self-test
+          python -m unittest -v tests.test_footwear_review
           python -m unittest -v tests.test_v8a8_forward_top30_0050
           python -m unittest discover -s tests -p test_v891_6206_gate_triage.py
           python -m unittest discover -s tests -p test_v892_top20_quality_audit.py
