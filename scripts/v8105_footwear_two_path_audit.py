@@ -44,7 +44,7 @@ def build(shadow, etf):
         by_stock.append({
             "code": code, "name": rec.get("name"),
             "jul_aug_sep_secondary_monthly_market_net_lots": three,
-            "jul_sep_secondary_net_lots": sum(three),
+            "jul_aug_sep_three_month_net_lots": sum(three),
             "three_month_positive_secondary_observed": persistence,
             "original_issuer_buying_certified": False,
             "strategy_a_admitted": False,
@@ -53,7 +53,7 @@ def build(shadow, etf):
             "quarterly_margin_PIT_verified": False,
             "risk_label": "SECONDARY_TRIAGE_ONLY_NO_ACTIONABLE_SIGNAL",
         })
-    by_stock.sort(key=lambda r: (-r["jul_sep_secondary_net_lots"], r["code"]))
+    by_stock.sort(key=lambda r: (-r["jul_aug_sep_three_month_net_lots"], r["code"]))
     return {
         "schema": "V8105_FOOTWEAR_TWO_PATH_SOURCE_READINESS_ONLY",
         "research_cutoff_reporting_month": "2026-09",
