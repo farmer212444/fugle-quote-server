@@ -1,8 +1,62 @@
 {
   "schema": "TOP30_VS_TAIEX_TR_V1",
-  "observed_at": "2026-10-23T08:52:42.444090+00:00",
+  "observed_at": "2026-10-23T09:01:30.767244+00:00",
   "benchmark_id": "TAIEX_TR",
   "trials": [
+    {
+      "trial_id": "taiex-tr-08856d21902113e8621f15f4",
+      "registered_at": "2026-10-23T09:01:26.991580+00:00",
+      "spec": {
+        "protocol": "TOP30_VS_TAIEX_TR_V1",
+        "strategy_variant_sha256": "8af2d974fef9c456db5b0a85ca496f0cb4c6716f10bda7bb9abe4e26c7c28f56",
+        "model_code_sha256": "03fe1cf4612f2f85d1a1dc866ecf517450eb73a552b5e165641228f4fabdd99c",
+        "model_target_date": "2027-12-31",
+        "cost_policy": {
+          "buy_fee_rate": 0.001425,
+          "sell_fee_rate": 0.001425,
+          "sell_tax_rate": 0.003,
+          "buy_slippage_rate": 0.001,
+          "sell_slippage_rate": 0.001,
+          "half_spread_rate": 0.0005,
+          "minimum_fee_ntd": 20
+        },
+        "benchmark_policy": {
+          "benchmark_id": "TAIEX_TR",
+          "selection_rule": "RESEARCH_TOP30_EQUAL_WEIGHT_NEXT_SESSION_CLOSE",
+          "selection_source": "top30_provisional",
+          "holding_intervals": 21,
+          "number_of_stocks": 30,
+          "dividend_policy": "GROSS_DIVIDENDS_RETAINED_AS_CASH_OR_RECEIVABLE_NO_REINVESTMENT",
+          "benchmark_cost_policy": "COSTLESS_OFFICIAL_GROSS_TOTAL_RETURN_INDEX",
+          "fractional_shares_are_research_assumption": true,
+          "minimum_nonoverlapping_oos_periods": 60,
+          "minimum_market_regimes": 2,
+          "bootstrap_draws": 10000,
+          "bootstrap_block_size": 21,
+          "stress_cost_multiplier_excluding_tax": 2,
+          "regime_lookback_sessions": 63,
+          "regime_return_threshold": 0.03,
+          "automatic_deployment": false
+        },
+        "reference_capital_ntd": 10000000,
+        "max_daily_participation": 0.05
+      },
+      "outcomes": [
+        {
+          "status": "AWAITING_FUTURE_HOLDING_SESSIONS",
+          "cohort_id": "0ddcb43e859caeff7ff7edf0"
+        }
+      ],
+      "rejected_outcomes": [],
+      "matured_unusable_periods": 0,
+      "status": "NO_VERIFIED_OUTCOMES",
+      "verified_nonoverlapping_periods": 0,
+      "model_total_return": null,
+      "benchmark_total_return": null,
+      "excess_return_pp": null,
+      "evidence_supports_benchmark_edge": false,
+      "formal_out_of_sample_pass": false
+    },
     {
       "trial_id": "taiex-tr-2abfdfceb64ddd2b9261d922",
       "registered_at": "2026-10-23T08:49:39.121792+00:00",
@@ -220,8 +274,8 @@
       "formal_out_of_sample_pass": false
     }
   ],
-  "registered_benchmark_trials": 4,
-  "all_registered_designs": 259,
+  "registered_benchmark_trials": 5,
+  "all_registered_designs": 501,
   "verified_outcomes": 0,
   "benchmark_sessions": 139,
   "benchmark_months": [
@@ -239,6 +293,7 @@
       "market": "TPEX",
       "code": "6494",
       "cohort_ids": [
+        "0ddcb43e859caeff7ff7edf0",
         "494a7043debb43f36d93a07c",
         "f362ae5d0b0a5fdbd80f0aba",
         "5322e6c0535a6eaa6d0ac606",
@@ -249,6 +304,7 @@
       "market": "TPEX",
       "code": "1785",
       "cohort_ids": [
+        "0ddcb43e859caeff7ff7edf0",
         "494a7043debb43f36d93a07c",
         "f362ae5d0b0a5fdbd80f0aba",
         "5322e6c0535a6eaa6d0ac606",
@@ -259,6 +315,7 @@
       "market": "TPEX",
       "code": "5439",
       "cohort_ids": [
+        "0ddcb43e859caeff7ff7edf0",
         "494a7043debb43f36d93a07c",
         "f362ae5d0b0a5fdbd80f0aba",
         "5322e6c0535a6eaa6d0ac606",
@@ -269,6 +326,7 @@
       "market": "TWSE",
       "code": "3305",
       "cohort_ids": [
+        "0ddcb43e859caeff7ff7edf0",
         "494a7043debb43f36d93a07c",
         "f362ae5d0b0a5fdbd80f0aba",
         "5322e6c0535a6eaa6d0ac606",
@@ -279,6 +337,7 @@
       "market": "TPEX",
       "code": "6741",
       "cohort_ids": [
+        "0ddcb43e859caeff7ff7edf0",
         "494a7043debb43f36d93a07c",
         "f362ae5d0b0a5fdbd80f0aba",
         "5322e6c0535a6eaa6d0ac606",
@@ -289,6 +348,7 @@
       "market": "TWSE",
       "code": "4739",
       "cohort_ids": [
+        "0ddcb43e859caeff7ff7edf0",
         "494a7043debb43f36d93a07c",
         "f362ae5d0b0a5fdbd80f0aba",
         "5322e6c0535a6eaa6d0ac606",
@@ -299,6 +359,7 @@
       "market": "TPEX",
       "code": "3285",
       "cohort_ids": [
+        "0ddcb43e859caeff7ff7edf0",
         "494a7043debb43f36d93a07c",
         "f362ae5d0b0a5fdbd80f0aba",
         "5322e6c0535a6eaa6d0ac606",
@@ -309,6 +370,7 @@
       "market": "TPEX",
       "code": "6574",
       "cohort_ids": [
+        "0ddcb43e859caeff7ff7edf0",
         "494a7043debb43f36d93a07c",
         "f362ae5d0b0a5fdbd80f0aba",
         "5322e6c0535a6eaa6d0ac606",
@@ -319,6 +381,7 @@
       "market": "TPEX",
       "code": "8390",
       "cohort_ids": [
+        "0ddcb43e859caeff7ff7edf0",
         "494a7043debb43f36d93a07c",
         "f362ae5d0b0a5fdbd80f0aba",
         "5322e6c0535a6eaa6d0ac606",
@@ -329,6 +392,7 @@
       "market": "TWSE",
       "code": "1256",
       "cohort_ids": [
+        "0ddcb43e859caeff7ff7edf0",
         "494a7043debb43f36d93a07c",
         "f362ae5d0b0a5fdbd80f0aba",
         "5322e6c0535a6eaa6d0ac606",
@@ -339,6 +403,7 @@
       "market": "TWSE",
       "code": "4912",
       "cohort_ids": [
+        "0ddcb43e859caeff7ff7edf0",
         "494a7043debb43f36d93a07c",
         "f362ae5d0b0a5fdbd80f0aba",
         "5322e6c0535a6eaa6d0ac606",
@@ -349,6 +414,7 @@
       "market": "TWSE",
       "code": "8110",
       "cohort_ids": [
+        "0ddcb43e859caeff7ff7edf0",
         "494a7043debb43f36d93a07c",
         "f362ae5d0b0a5fdbd80f0aba",
         "5322e6c0535a6eaa6d0ac606",
@@ -359,6 +425,7 @@
       "market": "TWSE",
       "code": "6625",
       "cohort_ids": [
+        "0ddcb43e859caeff7ff7edf0",
         "494a7043debb43f36d93a07c",
         "f362ae5d0b0a5fdbd80f0aba",
         "5322e6c0535a6eaa6d0ac606",
@@ -369,6 +436,7 @@
       "market": "TWSE",
       "code": "2374",
       "cohort_ids": [
+        "0ddcb43e859caeff7ff7edf0",
         "494a7043debb43f36d93a07c",
         "f362ae5d0b0a5fdbd80f0aba",
         "5322e6c0535a6eaa6d0ac606",
@@ -379,6 +447,7 @@
       "market": "TWSE",
       "code": "8473",
       "cohort_ids": [
+        "0ddcb43e859caeff7ff7edf0",
         "494a7043debb43f36d93a07c",
         "f362ae5d0b0a5fdbd80f0aba",
         "5322e6c0535a6eaa6d0ac606",
@@ -389,6 +458,7 @@
       "market": "TPEX",
       "code": "6763",
       "cohort_ids": [
+        "0ddcb43e859caeff7ff7edf0",
         "494a7043debb43f36d93a07c",
         "f362ae5d0b0a5fdbd80f0aba",
         "5322e6c0535a6eaa6d0ac606",
@@ -399,6 +469,7 @@
       "market": "TWSE",
       "code": "2331",
       "cohort_ids": [
+        "0ddcb43e859caeff7ff7edf0",
         "494a7043debb43f36d93a07c",
         "f362ae5d0b0a5fdbd80f0aba",
         "5322e6c0535a6eaa6d0ac606",
@@ -409,6 +480,7 @@
       "market": "TPEX",
       "code": "4721",
       "cohort_ids": [
+        "0ddcb43e859caeff7ff7edf0",
         "494a7043debb43f36d93a07c",
         "f362ae5d0b0a5fdbd80f0aba",
         "5322e6c0535a6eaa6d0ac606",
@@ -419,6 +491,7 @@
       "market": "TWSE",
       "code": "2317",
       "cohort_ids": [
+        "0ddcb43e859caeff7ff7edf0",
         "494a7043debb43f36d93a07c",
         "f362ae5d0b0a5fdbd80f0aba",
         "5322e6c0535a6eaa6d0ac606",
@@ -429,6 +502,7 @@
       "market": "TWSE",
       "code": "5538",
       "cohort_ids": [
+        "0ddcb43e859caeff7ff7edf0",
         "494a7043debb43f36d93a07c",
         "f362ae5d0b0a5fdbd80f0aba",
         "5322e6c0535a6eaa6d0ac606",
@@ -439,6 +513,7 @@
       "market": "TPEX",
       "code": "3546",
       "cohort_ids": [
+        "0ddcb43e859caeff7ff7edf0",
         "494a7043debb43f36d93a07c",
         "f362ae5d0b0a5fdbd80f0aba",
         "5322e6c0535a6eaa6d0ac606",
@@ -449,6 +524,7 @@
       "market": "TPEX",
       "code": "3147",
       "cohort_ids": [
+        "0ddcb43e859caeff7ff7edf0",
         "494a7043debb43f36d93a07c",
         "5322e6c0535a6eaa6d0ac606",
         "7d58f358a29fa4abfb649f26"
@@ -458,6 +534,7 @@
       "market": "TWSE",
       "code": "4155",
       "cohort_ids": [
+        "0ddcb43e859caeff7ff7edf0",
         "494a7043debb43f36d93a07c",
         "f362ae5d0b0a5fdbd80f0aba",
         "5322e6c0535a6eaa6d0ac606",
@@ -468,6 +545,7 @@
       "market": "TWSE",
       "code": "4560",
       "cohort_ids": [
+        "0ddcb43e859caeff7ff7edf0",
         "494a7043debb43f36d93a07c",
         "f362ae5d0b0a5fdbd80f0aba",
         "5322e6c0535a6eaa6d0ac606",
@@ -478,6 +556,7 @@
       "market": "TWSE",
       "code": "2376",
       "cohort_ids": [
+        "0ddcb43e859caeff7ff7edf0",
         "494a7043debb43f36d93a07c",
         "f362ae5d0b0a5fdbd80f0aba",
         "5322e6c0535a6eaa6d0ac606",
@@ -488,6 +567,7 @@
       "market": "TPEX",
       "code": "6143",
       "cohort_ids": [
+        "0ddcb43e859caeff7ff7edf0",
         "494a7043debb43f36d93a07c",
         "f362ae5d0b0a5fdbd80f0aba",
         "5322e6c0535a6eaa6d0ac606",
@@ -498,6 +578,7 @@
       "market": "TPEX",
       "code": "4303",
       "cohort_ids": [
+        "0ddcb43e859caeff7ff7edf0",
         "494a7043debb43f36d93a07c",
         "5322e6c0535a6eaa6d0ac606",
         "7d58f358a29fa4abfb649f26"
@@ -507,6 +588,7 @@
       "market": "TWSE",
       "code": "2103",
       "cohort_ids": [
+        "0ddcb43e859caeff7ff7edf0",
         "494a7043debb43f36d93a07c",
         "f362ae5d0b0a5fdbd80f0aba",
         "5322e6c0535a6eaa6d0ac606",
@@ -517,6 +599,7 @@
       "market": "TWSE",
       "code": "2483",
       "cohort_ids": [
+        "0ddcb43e859caeff7ff7edf0",
         "494a7043debb43f36d93a07c",
         "5322e6c0535a6eaa6d0ac606",
         "7d58f358a29fa4abfb649f26"
@@ -526,6 +609,7 @@
       "market": "TPEX",
       "code": "6151",
       "cohort_ids": [
+        "0ddcb43e859caeff7ff7edf0",
         "494a7043debb43f36d93a07c",
         "f362ae5d0b0a5fdbd80f0aba",
         "5322e6c0535a6eaa6d0ac606",

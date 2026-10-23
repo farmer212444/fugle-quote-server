@@ -144,6 +144,54 @@
           "gross_margin_median_abs_pp": 2.2326875848014183,
           "opex_ratio_median_abs_pp": 1.475461373594189
         },
+        "holdout_error_tail": {
+          "status": "DESCRIPTIVE_CROSS_PERIOD_HOLDOUT_ONLY",
+          "n": 111,
+          "median_absolute_pct_error": 5.994576106831917,
+          "p90_absolute_pct_error": 18.459746650460374,
+          "p95_absolute_pct_error": 31.166346553645674,
+          "median_signed_pct_error": -1.7176312639655356,
+          "within_10pct_share": 0.6846846846846847,
+          "overpredicted_by_20pct_share": 0.04504504504504504,
+          "underpredicted_by_20pct_share": 0.05405405405405406,
+          "beats_prior_year_unchanged_share": 0.7297297297297297,
+          "worse_than_prior_year_unchanged_share": 0.2702702702702703,
+          "ties_prior_year_unchanged_share": 0.0,
+          "groups": {
+            "HIGH_GROWTH_AT_LEAST_20PCT": {
+              "status": "INSUFFICIENT_SUBGROUP",
+              "n": 24,
+              "minimum_n": 50
+            },
+            "CONTRACTION_BELOW_ZERO": {
+              "status": "DESCRIPTIVE_ONLY",
+              "n": 54,
+              "median_absolute_pct_error": 6.418280172590347,
+              "p90_absolute_pct_error": 21.58531519812344,
+              "p95_absolute_pct_error": 30.296742640468132,
+              "median_signed_pct_error": -3.7317786228133976,
+              "within_10pct_share": 0.6666666666666666,
+              "overpredicted_by_20pct_share": 0.018518518518518517,
+              "underpredicted_by_20pct_share": 0.09259259259259259,
+              "beats_prior_year_unchanged_share": 0.6666666666666666,
+              "worse_than_prior_year_unchanged_share": 0.3333333333333333,
+              "ties_prior_year_unchanged_share": 0.0
+            },
+            "OTHER_ZERO_TO_20PCT": {
+              "status": "INSUFFICIENT_SUBGROUP",
+              "n": 33,
+              "minimum_n": 50
+            }
+          },
+          "minimum_subgroup_sample": 50,
+          "window": "KNOWN_Q1_TO_FUTURE_Q2",
+          "coefficients_refitted_on_holdout": false,
+          "not_independent_PIT_publication_timestamps": true,
+          "forecasts_2027_annual_growth": false,
+          "calibrates_2027_eps_probability": false,
+          "calibrates_stock_return_probability": false,
+          "qualifies_formal_oos_trading_test": false
+        },
         "survivor_universe_bias_not_resolved": true,
         "company_publication_times_verified": false,
         "pit_return_backtest_passed": false,
@@ -225,6 +273,45 @@
           "revenue_wape_pct": 6.441079091525685,
           "gross_margin_median_abs_pp": 1.0673045811461361,
           "opex_ratio_median_abs_pp": 0.8950465536479678
+        },
+        "holdout_error_tail": {
+          "status": "DESCRIPTIVE_CROSS_PERIOD_HOLDOUT_ONLY",
+          "n": 86,
+          "median_absolute_pct_error": 6.544787387394035,
+          "p90_absolute_pct_error": 18.04472229747662,
+          "p95_absolute_pct_error": 28.848982843208127,
+          "median_signed_pct_error": -2.4562442182043176,
+          "within_10pct_share": 0.6511627906976745,
+          "overpredicted_by_20pct_share": 0.046511627906976744,
+          "underpredicted_by_20pct_share": 0.046511627906976744,
+          "beats_prior_year_unchanged_share": 0.7441860465116279,
+          "worse_than_prior_year_unchanged_share": 0.2558139534883721,
+          "ties_prior_year_unchanged_share": 0.0,
+          "groups": {
+            "HIGH_GROWTH_AT_LEAST_20PCT": {
+              "status": "INSUFFICIENT_SUBGROUP",
+              "n": 16,
+              "minimum_n": 50
+            },
+            "CONTRACTION_BELOW_ZERO": {
+              "status": "INSUFFICIENT_SUBGROUP",
+              "n": 35,
+              "minimum_n": 50
+            },
+            "OTHER_ZERO_TO_20PCT": {
+              "status": "INSUFFICIENT_SUBGROUP",
+              "n": 35,
+              "minimum_n": 50
+            }
+          },
+          "minimum_subgroup_sample": 50,
+          "window": "KNOWN_Q1_TO_FUTURE_Q2",
+          "coefficients_refitted_on_holdout": false,
+          "not_independent_PIT_publication_timestamps": true,
+          "forecasts_2027_annual_growth": false,
+          "calibrates_2027_eps_probability": false,
+          "calibrates_stock_return_probability": false,
+          "qualifies_formal_oos_trading_test": false
         },
         "survivor_universe_bias_not_resolved": true,
         "company_publication_times_verified": false,
@@ -308,6 +395,45 @@
           "gross_margin_median_abs_pp": 1.4158637230886408,
           "opex_ratio_median_abs_pp": 1.2443939191913138
         },
+        "holdout_error_tail": {
+          "status": "DESCRIPTIVE_CROSS_PERIOD_HOLDOUT_ONLY",
+          "n": 88,
+          "median_absolute_pct_error": 8.084686080597143,
+          "p90_absolute_pct_error": 24.058989457818953,
+          "p95_absolute_pct_error": 28.284115178730843,
+          "median_signed_pct_error": -5.933023189769182,
+          "within_10pct_share": 0.5795454545454546,
+          "overpredicted_by_20pct_share": 0.045454545454545456,
+          "underpredicted_by_20pct_share": 0.07954545454545454,
+          "beats_prior_year_unchanged_share": 0.7613636363636364,
+          "worse_than_prior_year_unchanged_share": 0.23863636363636365,
+          "ties_prior_year_unchanged_share": 0.0,
+          "groups": {
+            "HIGH_GROWTH_AT_LEAST_20PCT": {
+              "status": "INSUFFICIENT_SUBGROUP",
+              "n": 30,
+              "minimum_n": 50
+            },
+            "CONTRACTION_BELOW_ZERO": {
+              "status": "INSUFFICIENT_SUBGROUP",
+              "n": 29,
+              "minimum_n": 50
+            },
+            "OTHER_ZERO_TO_20PCT": {
+              "status": "INSUFFICIENT_SUBGROUP",
+              "n": 29,
+              "minimum_n": 50
+            }
+          },
+          "minimum_subgroup_sample": 50,
+          "window": "KNOWN_Q1_TO_FUTURE_Q2",
+          "coefficients_refitted_on_holdout": false,
+          "not_independent_PIT_publication_timestamps": true,
+          "forecasts_2027_annual_growth": false,
+          "calibrates_2027_eps_probability": false,
+          "calibrates_stock_return_probability": false,
+          "qualifies_formal_oos_trading_test": false
+        },
         "survivor_universe_bias_not_resolved": true,
         "company_publication_times_verified": false,
         "pit_return_backtest_passed": false,
@@ -389,6 +515,72 @@
           "revenue_wape_pct": 6.5123745896658285,
           "gross_margin_median_abs_pp": 1.951087873810664,
           "opex_ratio_median_abs_pp": 1.3687089232147231
+        },
+        "holdout_error_tail": {
+          "status": "DESCRIPTIVE_CROSS_PERIOD_HOLDOUT_ONLY",
+          "n": 191,
+          "median_absolute_pct_error": 6.32897128714669,
+          "p90_absolute_pct_error": 21.76756289084052,
+          "p95_absolute_pct_error": 27.12639431858343,
+          "median_signed_pct_error": -4.89585443782331,
+          "within_10pct_share": 0.6963350785340314,
+          "overpredicted_by_20pct_share": 0.041884816753926704,
+          "underpredicted_by_20pct_share": 0.08376963350785341,
+          "beats_prior_year_unchanged_share": 0.806282722513089,
+          "worse_than_prior_year_unchanged_share": 0.193717277486911,
+          "ties_prior_year_unchanged_share": 0.0,
+          "groups": {
+            "HIGH_GROWTH_AT_LEAST_20PCT": {
+              "status": "DESCRIPTIVE_ONLY",
+              "n": 71,
+              "median_absolute_pct_error": 8.078693676589822,
+              "p90_absolute_pct_error": 26.024190438409423,
+              "p95_absolute_pct_error": 29.651975814846082,
+              "median_signed_pct_error": -3.956031126545234,
+              "within_10pct_share": 0.6056338028169014,
+              "overpredicted_by_20pct_share": 0.056338028169014086,
+              "underpredicted_by_20pct_share": 0.14084507042253522,
+              "beats_prior_year_unchanged_share": 0.9577464788732394,
+              "worse_than_prior_year_unchanged_share": 0.04225352112676056,
+              "ties_prior_year_unchanged_share": 0.0
+            },
+            "CONTRACTION_BELOW_ZERO": {
+              "status": "DESCRIPTIVE_ONLY",
+              "n": 57,
+              "median_absolute_pct_error": 6.119241602854575,
+              "p90_absolute_pct_error": 21.853416166923253,
+              "p95_absolute_pct_error": 28.714351703894156,
+              "median_signed_pct_error": -4.89585443782331,
+              "within_10pct_share": 0.6491228070175439,
+              "overpredicted_by_20pct_share": 0.07017543859649122,
+              "underpredicted_by_20pct_share": 0.07017543859649122,
+              "beats_prior_year_unchanged_share": 0.47368421052631576,
+              "worse_than_prior_year_unchanged_share": 0.5263157894736842,
+              "ties_prior_year_unchanged_share": 0.0
+            },
+            "OTHER_ZERO_TO_20PCT": {
+              "status": "DESCRIPTIVE_ONLY",
+              "n": 63,
+              "median_absolute_pct_error": 5.3976689184434985,
+              "p90_absolute_pct_error": 11.600108748884928,
+              "p95_absolute_pct_error": 16.313025729244046,
+              "median_signed_pct_error": -5.381062958304295,
+              "within_10pct_share": 0.8412698412698413,
+              "overpredicted_by_20pct_share": 0.0,
+              "underpredicted_by_20pct_share": 0.031746031746031744,
+              "beats_prior_year_unchanged_share": 0.9365079365079365,
+              "worse_than_prior_year_unchanged_share": 0.06349206349206349,
+              "ties_prior_year_unchanged_share": 0.0
+            }
+          },
+          "minimum_subgroup_sample": 50,
+          "window": "KNOWN_Q1_TO_FUTURE_Q2",
+          "coefficients_refitted_on_holdout": false,
+          "not_independent_PIT_publication_timestamps": true,
+          "forecasts_2027_annual_growth": false,
+          "calibrates_2027_eps_probability": false,
+          "calibrates_stock_return_probability": false,
+          "qualifies_formal_oos_trading_test": false
         },
         "survivor_universe_bias_not_resolved": true,
         "company_publication_times_verified": false,
@@ -472,6 +664,45 @@
           "gross_margin_median_abs_pp": 3.4361664593974273,
           "opex_ratio_median_abs_pp": 3.385971158205095
         },
+        "holdout_error_tail": {
+          "status": "DESCRIPTIVE_CROSS_PERIOD_HOLDOUT_ONLY",
+          "n": 75,
+          "median_absolute_pct_error": 18.252937676568614,
+          "p90_absolute_pct_error": 122.16361010260461,
+          "p95_absolute_pct_error": 1471.4214775520675,
+          "median_signed_pct_error": -0.3720804743216344,
+          "within_10pct_share": 0.4266666666666667,
+          "overpredicted_by_20pct_share": 0.25333333333333335,
+          "underpredicted_by_20pct_share": 0.22666666666666666,
+          "beats_prior_year_unchanged_share": 0.7466666666666667,
+          "worse_than_prior_year_unchanged_share": 0.25333333333333335,
+          "ties_prior_year_unchanged_share": 0.0,
+          "groups": {
+            "HIGH_GROWTH_AT_LEAST_20PCT": {
+              "status": "INSUFFICIENT_SUBGROUP",
+              "n": 32,
+              "minimum_n": 50
+            },
+            "CONTRACTION_BELOW_ZERO": {
+              "status": "INSUFFICIENT_SUBGROUP",
+              "n": 32,
+              "minimum_n": 50
+            },
+            "OTHER_ZERO_TO_20PCT": {
+              "status": "INSUFFICIENT_SUBGROUP",
+              "n": 11,
+              "minimum_n": 50
+            }
+          },
+          "minimum_subgroup_sample": 50,
+          "window": "KNOWN_Q1_TO_FUTURE_Q2",
+          "coefficients_refitted_on_holdout": false,
+          "not_independent_PIT_publication_timestamps": true,
+          "forecasts_2027_annual_growth": false,
+          "calibrates_2027_eps_probability": false,
+          "calibrates_stock_return_probability": false,
+          "qualifies_formal_oos_trading_test": false
+        },
         "survivor_universe_bias_not_resolved": true,
         "company_publication_times_verified": false,
         "pit_return_backtest_passed": false,
@@ -553,6 +784,63 @@
           "revenue_wape_pct": 6.617803177144352,
           "gross_margin_median_abs_pp": 1.4374996660006079,
           "opex_ratio_median_abs_pp": 1.1456157829100366
+        },
+        "holdout_error_tail": {
+          "status": "DESCRIPTIVE_CROSS_PERIOD_HOLDOUT_ONLY",
+          "n": 121,
+          "median_absolute_pct_error": 3.832402909435173,
+          "p90_absolute_pct_error": 16.44034897183877,
+          "p95_absolute_pct_error": 21.242792933050026,
+          "median_signed_pct_error": -2.729310028592946,
+          "within_10pct_share": 0.7768595041322314,
+          "overpredicted_by_20pct_share": 0.049586776859504134,
+          "underpredicted_by_20pct_share": 0.01652892561983471,
+          "beats_prior_year_unchanged_share": 0.7355371900826446,
+          "worse_than_prior_year_unchanged_share": 0.2644628099173554,
+          "ties_prior_year_unchanged_share": 0.0,
+          "groups": {
+            "HIGH_GROWTH_AT_LEAST_20PCT": {
+              "status": "INSUFFICIENT_SUBGROUP",
+              "n": 20,
+              "minimum_n": 50
+            },
+            "CONTRACTION_BELOW_ZERO": {
+              "status": "DESCRIPTIVE_ONLY",
+              "n": 50,
+              "median_absolute_pct_error": 3.7838045400789166,
+              "p90_absolute_pct_error": 17.170567319956064,
+              "p95_absolute_pct_error": 25.58867927622303,
+              "median_signed_pct_error": -2.2535680745167874,
+              "within_10pct_share": 0.74,
+              "overpredicted_by_20pct_share": 0.04,
+              "underpredicted_by_20pct_share": 0.04,
+              "beats_prior_year_unchanged_share": 0.56,
+              "worse_than_prior_year_unchanged_share": 0.44,
+              "ties_prior_year_unchanged_share": 0.0
+            },
+            "OTHER_ZERO_TO_20PCT": {
+              "status": "DESCRIPTIVE_ONLY",
+              "n": 51,
+              "median_absolute_pct_error": 3.391291957607656,
+              "p90_absolute_pct_error": 9.353132102637407,
+              "p95_absolute_pct_error": 12.533105106201681,
+              "median_signed_pct_error": -2.5575793568419103,
+              "within_10pct_share": 0.9215686274509803,
+              "overpredicted_by_20pct_share": 0.0196078431372549,
+              "underpredicted_by_20pct_share": 0.0,
+              "beats_prior_year_unchanged_share": 0.8431372549019608,
+              "worse_than_prior_year_unchanged_share": 0.1568627450980392,
+              "ties_prior_year_unchanged_share": 0.0
+            }
+          },
+          "minimum_subgroup_sample": 50,
+          "window": "KNOWN_Q1_TO_FUTURE_Q2",
+          "coefficients_refitted_on_holdout": false,
+          "not_independent_PIT_publication_timestamps": true,
+          "forecasts_2027_annual_growth": false,
+          "calibrates_2027_eps_probability": false,
+          "calibrates_stock_return_probability": false,
+          "qualifies_formal_oos_trading_test": false
         },
         "survivor_universe_bias_not_resolved": true,
         "company_publication_times_verified": false,
@@ -636,6 +924,45 @@
           "gross_margin_median_abs_pp": 2.0222456097629933,
           "opex_ratio_median_abs_pp": 1.3090002667180536
         },
+        "holdout_error_tail": {
+          "status": "DESCRIPTIVE_CROSS_PERIOD_HOLDOUT_ONLY",
+          "n": 87,
+          "median_absolute_pct_error": 8.673723617290175,
+          "p90_absolute_pct_error": 25.161815682891447,
+          "p95_absolute_pct_error": 31.038468843491767,
+          "median_signed_pct_error": -5.815531258500806,
+          "within_10pct_share": 0.5402298850574713,
+          "overpredicted_by_20pct_share": 0.06896551724137931,
+          "underpredicted_by_20pct_share": 0.13793103448275862,
+          "beats_prior_year_unchanged_share": 0.7816091954022989,
+          "worse_than_prior_year_unchanged_share": 0.21839080459770116,
+          "ties_prior_year_unchanged_share": 0.0,
+          "groups": {
+            "HIGH_GROWTH_AT_LEAST_20PCT": {
+              "status": "INSUFFICIENT_SUBGROUP",
+              "n": 28,
+              "minimum_n": 50
+            },
+            "CONTRACTION_BELOW_ZERO": {
+              "status": "INSUFFICIENT_SUBGROUP",
+              "n": 31,
+              "minimum_n": 50
+            },
+            "OTHER_ZERO_TO_20PCT": {
+              "status": "INSUFFICIENT_SUBGROUP",
+              "n": 28,
+              "minimum_n": 50
+            }
+          },
+          "minimum_subgroup_sample": 50,
+          "window": "KNOWN_Q1_TO_FUTURE_Q2",
+          "coefficients_refitted_on_holdout": false,
+          "not_independent_PIT_publication_timestamps": true,
+          "forecasts_2027_annual_growth": false,
+          "calibrates_2027_eps_probability": false,
+          "calibrates_stock_return_probability": false,
+          "qualifies_formal_oos_trading_test": false
+        },
         "survivor_universe_bias_not_resolved": true,
         "company_publication_times_verified": false,
         "pit_return_backtest_passed": false,
@@ -717,6 +1044,72 @@
           "revenue_wape_pct": 9.868479830922096,
           "gross_margin_median_abs_pp": 1.4770490919719825,
           "opex_ratio_median_abs_pp": 0.9564224749663119
+        },
+        "holdout_error_tail": {
+          "status": "DESCRIPTIVE_CROSS_PERIOD_HOLDOUT_ONLY",
+          "n": 201,
+          "median_absolute_pct_error": 7.770778019278146,
+          "p90_absolute_pct_error": 17.552881913394724,
+          "p95_absolute_pct_error": 22.836128076437568,
+          "median_signed_pct_error": -5.9919218611520275,
+          "within_10pct_share": 0.6517412935323383,
+          "overpredicted_by_20pct_share": 0.03980099502487562,
+          "underpredicted_by_20pct_share": 0.029850746268656716,
+          "beats_prior_year_unchanged_share": 0.8407960199004975,
+          "worse_than_prior_year_unchanged_share": 0.15920398009950248,
+          "ties_prior_year_unchanged_share": 0.0,
+          "groups": {
+            "HIGH_GROWTH_AT_LEAST_20PCT": {
+              "status": "DESCRIPTIVE_ONLY",
+              "n": 63,
+              "median_absolute_pct_error": 9.789195635065951,
+              "p90_absolute_pct_error": 20.828808335127107,
+              "p95_absolute_pct_error": 23.406809830230113,
+              "median_signed_pct_error": -8.405289974507857,
+              "within_10pct_share": 0.5396825396825397,
+              "overpredicted_by_20pct_share": 0.047619047619047616,
+              "underpredicted_by_20pct_share": 0.06349206349206349,
+              "beats_prior_year_unchanged_share": 0.9523809523809523,
+              "worse_than_prior_year_unchanged_share": 0.047619047619047616,
+              "ties_prior_year_unchanged_share": 0.0
+            },
+            "CONTRACTION_BELOW_ZERO": {
+              "status": "DESCRIPTIVE_ONLY",
+              "n": 62,
+              "median_absolute_pct_error": 4.105300536073914,
+              "p90_absolute_pct_error": 18.60547395371768,
+              "p95_absolute_pct_error": 31.774634755313837,
+              "median_signed_pct_error": -1.2831231007605137,
+              "within_10pct_share": 0.7419354838709677,
+              "overpredicted_by_20pct_share": 0.08064516129032258,
+              "underpredicted_by_20pct_share": 0.016129032258064516,
+              "beats_prior_year_unchanged_share": 0.6774193548387096,
+              "worse_than_prior_year_unchanged_share": 0.3225806451612903,
+              "ties_prior_year_unchanged_share": 0.0
+            },
+            "OTHER_ZERO_TO_20PCT": {
+              "status": "DESCRIPTIVE_ONLY",
+              "n": 76,
+              "median_absolute_pct_error": 7.867496787779709,
+              "p90_absolute_pct_error": 14.60606981670714,
+              "p95_absolute_pct_error": 16.477653960128478,
+              "median_signed_pct_error": -7.014880838583604,
+              "within_10pct_share": 0.6710526315789473,
+              "overpredicted_by_20pct_share": 0.0,
+              "underpredicted_by_20pct_share": 0.013157894736842105,
+              "beats_prior_year_unchanged_share": 0.881578947368421,
+              "worse_than_prior_year_unchanged_share": 0.11842105263157894,
+              "ties_prior_year_unchanged_share": 0.0
+            }
+          },
+          "minimum_subgroup_sample": 50,
+          "window": "KNOWN_Q1_TO_FUTURE_Q2",
+          "coefficients_refitted_on_holdout": false,
+          "not_independent_PIT_publication_timestamps": true,
+          "forecasts_2027_annual_growth": false,
+          "calibrates_2027_eps_probability": false,
+          "calibrates_stock_return_probability": false,
+          "qualifies_formal_oos_trading_test": false
         },
         "survivor_universe_bias_not_resolved": true,
         "company_publication_times_verified": false,
@@ -800,6 +1193,45 @@
           "gross_margin_median_abs_pp": 1.3894153950407246,
           "opex_ratio_median_abs_pp": 1.1015443226772197
         },
+        "holdout_error_tail": {
+          "status": "DESCRIPTIVE_CROSS_PERIOD_HOLDOUT_ONLY",
+          "n": 98,
+          "median_absolute_pct_error": 7.003070902738312,
+          "p90_absolute_pct_error": 20.053902872773666,
+          "p95_absolute_pct_error": 26.20395966116267,
+          "median_signed_pct_error": -2.309089878721821,
+          "within_10pct_share": 0.7142857142857143,
+          "overpredicted_by_20pct_share": 0.05102040816326531,
+          "underpredicted_by_20pct_share": 0.05102040816326531,
+          "beats_prior_year_unchanged_share": 0.7346938775510204,
+          "worse_than_prior_year_unchanged_share": 0.2653061224489796,
+          "ties_prior_year_unchanged_share": 0.0,
+          "groups": {
+            "HIGH_GROWTH_AT_LEAST_20PCT": {
+              "status": "INSUFFICIENT_SUBGROUP",
+              "n": 25,
+              "minimum_n": 50
+            },
+            "CONTRACTION_BELOW_ZERO": {
+              "status": "INSUFFICIENT_SUBGROUP",
+              "n": 40,
+              "minimum_n": 50
+            },
+            "OTHER_ZERO_TO_20PCT": {
+              "status": "INSUFFICIENT_SUBGROUP",
+              "n": 33,
+              "minimum_n": 50
+            }
+          },
+          "minimum_subgroup_sample": 50,
+          "window": "KNOWN_Q1_TO_FUTURE_Q2",
+          "coefficients_refitted_on_holdout": false,
+          "not_independent_PIT_publication_timestamps": true,
+          "forecasts_2027_annual_growth": false,
+          "calibrates_2027_eps_probability": false,
+          "calibrates_stock_return_probability": false,
+          "qualifies_formal_oos_trading_test": false
+        },
         "survivor_universe_bias_not_resolved": true,
         "company_publication_times_verified": false,
         "pit_return_backtest_passed": false,
@@ -882,6 +1314,45 @@
           "gross_margin_median_abs_pp": 1.3500141453990409,
           "opex_ratio_median_abs_pp": 1.3419781332332181
         },
+        "holdout_error_tail": {
+          "status": "DESCRIPTIVE_CROSS_PERIOD_HOLDOUT_ONLY",
+          "n": 107,
+          "median_absolute_pct_error": 8.887052127990092,
+          "p90_absolute_pct_error": 24.618257569330687,
+          "p95_absolute_pct_error": 36.75350131183554,
+          "median_signed_pct_error": -4.802214515684566,
+          "within_10pct_share": 0.5233644859813084,
+          "overpredicted_by_20pct_share": 0.06542056074766354,
+          "underpredicted_by_20pct_share": 0.08411214953271028,
+          "beats_prior_year_unchanged_share": 0.8037383177570093,
+          "worse_than_prior_year_unchanged_share": 0.19626168224299065,
+          "ties_prior_year_unchanged_share": 0.0,
+          "groups": {
+            "HIGH_GROWTH_AT_LEAST_20PCT": {
+              "status": "INSUFFICIENT_SUBGROUP",
+              "n": 35,
+              "minimum_n": 50
+            },
+            "CONTRACTION_BELOW_ZERO": {
+              "status": "INSUFFICIENT_SUBGROUP",
+              "n": 38,
+              "minimum_n": 50
+            },
+            "OTHER_ZERO_TO_20PCT": {
+              "status": "INSUFFICIENT_SUBGROUP",
+              "n": 34,
+              "minimum_n": 50
+            }
+          },
+          "minimum_subgroup_sample": 50,
+          "window": "KNOWN_Q1_TO_FUTURE_Q2",
+          "coefficients_refitted_on_holdout": false,
+          "not_independent_PIT_publication_timestamps": true,
+          "forecasts_2027_annual_growth": false,
+          "calibrates_2027_eps_probability": false,
+          "calibrates_stock_return_probability": false,
+          "qualifies_formal_oos_trading_test": false
+        },
         "survivor_universe_bias_not_resolved": true,
         "company_publication_times_verified": false,
         "pit_return_backtest_passed": false,
@@ -896,6 +1367,72 @@
       "revenue_wape_pct": 9.94986820425984,
       "gross_margin_median_abs_pp": 1.4814454059755762,
       "opex_ratio_median_abs_pp": 1.0100944246167087
+    },
+    "holdout_error_tail": {
+      "status": "DESCRIPTIVE_CROSS_PERIOD_HOLDOUT_ONLY",
+      "n": 1781,
+      "median_absolute_pct_error": 6.3606500377752955,
+      "p90_absolute_pct_error": 22.09493527110421,
+      "p95_absolute_pct_error": 31.891534813567347,
+      "median_signed_pct_error": -3.4945393908835,
+      "within_10pct_share": 0.6799550814149354,
+      "overpredicted_by_20pct_share": 0.05446378439079169,
+      "underpredicted_by_20pct_share": 0.06457046603032005,
+      "beats_prior_year_unchanged_share": 0.772599663110612,
+      "worse_than_prior_year_unchanged_share": 0.227400336889388,
+      "ties_prior_year_unchanged_share": 0.0,
+      "groups": {
+        "HIGH_GROWTH_AT_LEAST_20PCT": {
+          "status": "DESCRIPTIVE_ONLY",
+          "n": 457,
+          "median_absolute_pct_error": 10.015700727475386,
+          "p90_absolute_pct_error": 29.618962014887344,
+          "p95_absolute_pct_error": 41.98084881364646,
+          "median_signed_pct_error": -5.815531258500806,
+          "within_10pct_share": 0.4989059080962801,
+          "overpredicted_by_20pct_share": 0.08971553610503283,
+          "underpredicted_by_20pct_share": 0.12253829321663019,
+          "beats_prior_year_unchanged_share": 0.8905908096280087,
+          "worse_than_prior_year_unchanged_share": 0.10940919037199125,
+          "ties_prior_year_unchanged_share": 0.0
+        },
+        "CONTRACTION_BELOW_ZERO": {
+          "status": "DESCRIPTIVE_ONLY",
+          "n": 710,
+          "median_absolute_pct_error": 6.015711361703624,
+          "p90_absolute_pct_error": 25.54267422084618,
+          "p95_absolute_pct_error": 36.04965927656015,
+          "median_signed_pct_error": -2.2811696799346635,
+          "within_10pct_share": 0.6816901408450704,
+          "overpredicted_by_20pct_share": 0.06619718309859154,
+          "underpredicted_by_20pct_share": 0.0647887323943662,
+          "beats_prior_year_unchanged_share": 0.6239436619718309,
+          "worse_than_prior_year_unchanged_share": 0.376056338028169,
+          "ties_prior_year_unchanged_share": 0.0
+        },
+        "OTHER_ZERO_TO_20PCT": {
+          "status": "DESCRIPTIVE_ONLY",
+          "n": 614,
+          "median_absolute_pct_error": 4.625538744795982,
+          "p90_absolute_pct_error": 12.935839026109736,
+          "p95_absolute_pct_error": 16.349167286495593,
+          "median_signed_pct_error": -3.425136974194931,
+          "within_10pct_share": 0.8127035830618893,
+          "overpredicted_by_20pct_share": 0.014657980456026058,
+          "underpredicted_by_20pct_share": 0.021172638436482084,
+          "beats_prior_year_unchanged_share": 0.8566775244299675,
+          "worse_than_prior_year_unchanged_share": 0.14332247557003258,
+          "ties_prior_year_unchanged_share": 0.0
+        }
+      },
+      "minimum_subgroup_sample": 50,
+      "window": "KNOWN_Q1_TO_FUTURE_Q2",
+      "coefficients_refitted_on_holdout": false,
+      "not_independent_PIT_publication_timestamps": true,
+      "forecasts_2027_annual_growth": false,
+      "calibrates_2027_eps_probability": false,
+      "calibrates_stock_return_probability": false,
+      "qualifies_formal_oos_trading_test": false
     },
     "survivor_universe_bias_not_resolved": true,
     "company_publication_times_verified": false,
