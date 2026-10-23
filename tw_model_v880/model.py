@@ -9,6 +9,7 @@ from .revenue_leading import revenue_leading_signal
 from .cycle_alpha import is_cyclical
 from .contracts import forecast_binding,matches_forecast
 from .peers import matched_multiples
+from .governance import issuer_review,reopen_quality_reviews
 
 # A low-turnover issuer can be researched without passing the execution gate.
 RESEARCH_MIN_TURNOVER_NTD = 1_000_000
@@ -230,6 +231,10 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
     forecast=gates['forecast_bridge']
     if forecast.get('status')=='PASS' and not matches_forecast(forecast,binding,code_fingerprint(),data.price_date,target_date):
         gates['forecast_bridge']=gate('PENDING','FORECAST_CERTIFICATE_DOES_NOT_MATCH_CURRENT_ECONOMIC_INPUTS_OR_METHOD')
+    governance=issuer_review(getattr(data,'governance_reviews',{}),code,market)
+    gates=reopen_quality_reviews(gates,governance)
+    governance_blocked=governance['blocks_recommendation']
+    if governance_blocked:warnings.append(governance['status'])
     certification=certify(code,base['price_upside_pct'] if point else None,stress if point else None,gates,asof,valuation_period)
     # Evidence completeness controls formal certification. It must not impose
     # membership in a hand-selected legacy cohort on the research ranking.
@@ -260,6 +265,7 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
       pe_bridge=dict(issuer_samples=len(own),peer_samples=len(peers),base=pe,bear=pe_bear,bull=pe_bull,matched_forward_peer_review=matched_peer_review,
         exact_matched_peer_review_complete='matched_peers_and_cycle' in certification['gates_passed']),
       gates=gates,certification=certification,formal_Aplus=certification['formal_Aplus'],formal_Aplusplus=certification['formal_Aplusplus'],status=certification['status'],warning_flags=warnings,
+      governance_review=governance,recommendation_blocked=governance_blocked,
       stress_eps90_pe90_upside_pct=stress,specialist_model_requirements=specialist,base_scenario_is_admissible=point,
       business_profile=dict(property_development_observed=developer,engineering_business_observed=contractor,classification_source='ISSUER_HISTORY_AND_ORGANIZATION_NOTE' if business else 'INDUSTRY_ONLY'),
       base_scenario_role='RESEARCH_FORECAST_UNCERTIFIED' if point else 'DIAGNOSTIC_ONLY_NOT_ADMISSIBLE_BASE',
@@ -270,5 +276,5 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
       research_target_price_scenario=base['target_price'] if point else None,target_year_eps_scenario=base['eps'] if point else None,
       research_2027_price_scenario=base['target_price'] if point and target_year==2027 else None,eps_2027_base_scenario=base['eps'] if point and target_year==2027 else None,
       research_pe_assumption=pe,scenario_upside_pct=base['price_upside_pct'] if point else None,
-      rating='估值待驗' if not certification['quality_complete'] else certification['status'],research_lane=('原始當期研究候選待驗' if primary else '官方彙總研究候選待驗') if rankable else '來源或估值資料待補',
+      rating='重大治理待查' if governance_blocked else '估值待驗' if not certification['quality_complete'] else certification['status'],research_lane='重大治理待查／營運情境參考' if governance_blocked else ('原始當期研究候選待驗' if primary else '官方彙總研究候選待驗') if rankable else '來源或估值資料待補',
       score=None,company_forecast_confirmed=False,probabilities_calibrated=False)

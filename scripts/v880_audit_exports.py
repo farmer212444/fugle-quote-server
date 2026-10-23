@@ -16,6 +16,7 @@ def main():
     for x in r['all_model_rows']:
         if 'base' not in x:continue
         row={k:x[k] for k in ['code','name','industry','financial_period','status','formal_Aplus','formal_Aplusplus','warning_flags','reference_close','scenario_upside_pct','certification','source_tier']}
+        row.update(governance_review=x.get('governance_review'),recommendation_blocked=x.get('recommendation_blocked',False))
         if args.kind=='cash':row.update(cash=x['liquidity'],primary_ttm_cash=x['primary_ttm_cash'])
         elif args.kind=='shares':row.update(share_bridge=x['share_bridge'])
         else:row.update(liquidity=x['liquidity'],business_profile=x['business_profile'],specialist_requirements=x['specialist_model_requirements'])

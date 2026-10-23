@@ -87,6 +87,13 @@ def build_queue(progress,research):
                 issuer_job_count=len(jobs),unresolved_gate_count=sum(r['unresolved_gate_count'] for r in jobs),
                 scope='ISSUERS_INCLUDED_IN_CURRENT_GATE_DIAGNOSTICS_NOT_ALL_TRACKED_COMPANIES',
                 issuer_jobs=jobs,
+                governance_followup_tasks=[dict(code=row['code'],market=row['market'],
+                    name=row.get('name'),status=row['governance_review']['status'],
+                    recommendation_blocked=True,
+                    next_action='CHECK_ORIGINAL_JUDICIAL_DISCLOSURE_ACCOUNTING_CONTROLS_AND_REMEDIES',
+                    events=row['governance_review'].get('events',[]),
+                    source_error=row['governance_review'].get('reason'))
+                    for row in research.get('governance_watch',[])],
                 shared_strategy_collection_task=dict(
                     gate='out_of_sample_validation',
                     strategy_variant_sha256=research.get('strategy_variant_sha256'),
@@ -108,6 +115,13 @@ def render(report):
         action=first['required_evidence'] if first else '已無待辦項目'
         lines.append(f"|{job['code']} {job.get('name') or ''}|{job['passed_gate_count']}/13|"
                      f"{len(job['failed_gates'])}|{job['unresolved_gate_count']}|{action}|")
+    if report.get('governance_followup_tasks'):
+        lines+=['','## 重大治理事件待辦','',
+                '僅涵蓋已登錄事件；維持暫停推薦，不能以營運正常或單純時間經過自動解除。','']
+        for job in report['governance_followup_tasks']:
+            lines.append('- '+job['code']+' '+(job.get('name') or '')+'：'+job['status'])
+            for event in job['events']:
+                for evidence in event.get('next_evidence',[]):lines.append('  - '+evidence)
     return '\n'.join(lines)+'\n'
 
 

@@ -170,6 +170,7 @@ def build(root):
                                liq.get('median20_turnover_ntd'),config['reference_capital_ntd'],
                                config['risk_policy']['max_daily_participation'],config['risk_policy']['max_exit_sessions']),
                            formal_Aplus=row.get('formal_Aplus',False),risk_profile=risk,
+                           governance_review=row.get('governance_review'),recommendation_blocked=row.get('recommendation_blocked',False),
                            common_risk_tags=risk.get('common_risk_tags'),
                            reviewed_stress_loss_fraction=risk.get('reviewed_stress_loss_fraction'),execution_review=liq))
     # This is a constrained, hypothetical portfolio; missing evidence yields

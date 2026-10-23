@@ -38,7 +38,7 @@ def indexed(rows,kind):
 def validate(research,audits):
     # Reviewed V8.10 patches retain this operating scenario/share/price contract;
     # issuer self-reports disclose their separate financial period explicitly.
-    require(research.get("model") in ("V8.8.2","V8.10.0","V8.10.1","V8.10.2","V8.10.3"),"MODEL_REQUIRES_NEW_AUDIT")
+    require(research.get("model") in ("V8.8.2","V8.10.0","V8.10.1","V8.10.2","V8.10.3","V8.10.4"),"MODEL_REQUIRES_NEW_AUDIT")
     instant=dt.datetime.fromisoformat(research["estimate_vintage"])
     require(instant.tzinfo is not None,"UNZONED_VINTAGE")
     require(research.get("asof_price_date") and
@@ -71,6 +71,8 @@ def priority(record):
     v=record["analysis"]
     strength=0
     reasons=[]
+    if (record.get('governance_review') or {}).get('blocks_recommendation') is True:
+        reasons.append('MATERIAL_GOVERNANCE_REVIEW_REQUIRED')
     if record["source_tier"]=="ORIGINAL_CURRENT_ISSUER_NUMERICS":
         strength+=2
     else: reasons.append("ISSUER_ORIGINAL_NUMERICS_NOT_CROSSCHECKED")
@@ -165,6 +167,8 @@ def build(research,audits,mirrors,quarter_revenue=None):
                   cash_quality=audit["cash"]["cash"],
                   source_flags=audit["risk"].get("warning_flags",[]),
                   formal_Aplus=bool(row.get("formal_Aplus")),
+                  governance_review=row.get('governance_review'),
+                  recommendation_blocked=row.get('recommendation_blocked',False),
                   valuation_revised=False)
         score,issues=priority(item)
         item.update(verification_priority_score=score,critical_evidence_gaps=issues,
@@ -172,7 +176,8 @@ def build(research,audits,mirrors,quarter_revenue=None):
         records.append(item)
     require(len(records)==TARGET_COUNT,"TOP20_REVIEW_INCOMPLETE")
     # Sort only a separate evidence-review queue. Published Base ranking stays untouched.
-    review=sorted(records,key=lambda r:(-r["verification_priority_score"],
+    review=sorted(records,key=lambda r:(bool(r.get('recommendation_blocked')),
+                                        -r["verification_priority_score"],
                                         -r["stress_double20_upside_pct"],r["rank"]))
     return dict(status="TOP20_EVIDENCE_TRIAGE_NOT_CERTIFIED",model=research["model"],
                 estimate_vintage=research["estimate_vintage"],
@@ -184,10 +189,12 @@ def build(research,audits,mirrors,quarter_revenue=None):
                 automatically_certified_Aplus=0,
                 next_quarter_revenue_status=(quarter_revenue or {}).get("status","NOT_EVALUATED"),
                 issuer_ranked=records,
+                governance_watch=research.get('governance_watch',[]),
                 verification_priority=[dict(rank=r["rank"],code=r["code"],name=r["name"],
                     verification_priority_score=r["verification_priority_score"],
                     base_upside_pct=r["base_2027_upside_pct"],
                     stress_double20_upside_pct=r["stress_double20_upside_pct"],
+                    recommendation_blocked=r.get('recommendation_blocked',False),
                     critical_evidence_gaps=r["critical_evidence_gaps"])
                     for r in review],
                 limits=[
@@ -196,7 +203,8 @@ def build(research,audits,mirrors,quarter_revenue=None):
                     "PE>20 is a peer-validation flag, not proof that a stock is overvalued.",
                     "The model's reported CB shares are already in its denominator; extra CB reset stress is incremental only.",
                     "No issuer-specific original notes, PE peer cycle, CB terms, PIT trading backtest or formal certificate is established.",
-                    "Verification priority scores order next investigations and are NOT calibrated probabilities, formal ratings or trading signals."
+                    "Verification priority scores order next investigations and are NOT calibrated probabilities, formal ratings or trading signals.",
+                    "Registered major governance events block recommendation and reopen existing gates; no ledger is not full market legal clearance."
                 ])
 
 def render(r):
@@ -206,19 +214,20 @@ def render(r):
          f"更新：{r['estimate_vintage']}；收盤基準 {r['asof_price_date']}；已公告財務期 {r['financial_last_quarter']}。","",
          "**前20為既有Base漲幅排名；研究預檢、不產生正式A+，也不改寫EPS、PE或交易指令。**","",
          "## 20檔完整風險表","",
-         "|原序|股票|Base漲幅|2027 EPS / H1年化EPS|模型PE|H1 OCF(億)|未核CB|EPS、PE各-20%漲幅|優先查核分|",
-         "|---:|---|---:|---:|---:|---:|---:|---:|---:|"]
+         "|原序|股票|Base漲幅|2027 EPS / H1年化EPS|模型PE|H1 OCF(億)|未核CB|EPS、PE各-20%漲幅|優先查核分|治理|",
+         "|---:|---|---:|---:|---:|---:|---:|---:|---:|---|"]
     for s in r["issuer_ranked"]:
         a=s["analysis"]
         ratio=a.get("2027_eps_over_ytd_runrate")
         v=a.get("operating_cashflow_ytd_k")
-        out.append("|%s|%s %s|%s%%|%s倍|%s|%s|%s|%s%%|%s|"%
+        out.append("|%s|%s %s|%s%%|%s倍|%s|%s|%s|%s%%|%s|%s|"%
               (s["rank"],s["code"],s["name"],fmt(s["base_2027_upside_pct"],1,True),
                fmt(ratio,2),fmt(s["base_2027_pe"],2),
                fmt(None if v is None else v/100000,2,True),
                len(s["cb_unverified_issues"]),
                fmt(s["stress_double20_upside_pct"],1,True),
-               s["verification_priority_score"]))
+               s["verification_priority_score"],
+               '**重大治理待查／暫停推薦**' if s.get('recommendation_blocked') else '未全面核查'))
     out+=["","## 證據查核優先順位（不是投資報酬率排名）","",
           "|優先序|股票|Base漲幅|20%雙壓漲幅|最大待解缺口|",
           "|---:|---|---:|---:|---|"]
@@ -227,6 +236,13 @@ def render(r):
         out.append("|%s|%s %s|%+.1f%%|%+.1f%%|%s|"%
                    (i,s["code"],s["name"],s["base_upside_pct"],
                     s["stress_double20_upside_pct"],issue))
+    if r.get('governance_watch'):
+        out+=['','## 已登錄重大治理事件（包含未入榜公司）','']
+        for item in r['governance_watch']:
+            out.append('- **'+item['code']+' '+(item.get('name') or '')+'：重大治理待查／暫停推薦。**')
+            for event in item['governance_review'].get('events',[]):
+                out.append('  '+(event.get('summary') or event['event_id'])+'；起訴不等於定罪，損害金額不直接作本季費用。')
+        out.append('事件帳未涵蓋全市場；沒有登錄不代表治理安全。')
     out+=["","## 注意事項",""]
     for z in r["limits"]:out.append("- "+z)
     out+=["","完整逐檔原始數值及對應風險旗標見同名JSON。",""]

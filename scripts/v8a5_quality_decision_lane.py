@@ -63,6 +63,8 @@ def prepare(top,gate,price_manifest,focus=None,etf_overlay=None,*,main_update=No
         require(not r.get("formal_Aplus") and not evidence.get("formal_Aplus"),
                 "DECISION_LANE_FORMAL_A_PLUS_REQUIRES_SEPARATE_CERTIFICATE")
         critical=list(r.get("critical_evidence_gaps",[]))
+        governance=r.get('governance_review') or {}
+        governance_blocked=r.get('recommendation_blocked') is True or governance.get('blocks_recommendation') is True
         warnings=list(r.get("analysis",{}).get("flags",[]))
         bag=set(critical+warnings)
         operating=sorted(x for x in bag if x in SHOCK_FLAGS)
@@ -80,6 +82,8 @@ def prepare(top,gate,price_manifest,focus=None,etf_overlay=None,*,main_update=No
         etf_convergent=constituent.get("three_way_convergence_observed") is True
         if etf_convergent:
             status="ETF_CHIP_EARNINGS_CONVERGENT_RISK_REVIEW"
+        if governance_blocked:
+            status='MAJOR_GOVERNANCE_REVIEW_BLOCK'
         stress=r.get("stress_double20_upside_pct")
         stress_survives=isinstance(stress,(int,float)) and not isinstance(stress,bool) and stress>=30
         formal_passed=evidence.get("formally_passed_gates",[])
@@ -104,6 +108,7 @@ def prepare(top,gate,price_manifest,focus=None,etf_overlay=None,*,main_update=No
             model_13_gate_pending_count=len(pending),
             model_13_gate_failed_count=len(evidence.get("formally_failed_gates",[])),
             quality_review_status=status,
+            governance_review=governance,recommendation_blocked=governance_blocked,
             etf_constituent_research_context=(
                 {k:constituent.get(k) for k in
                  ("research_review_status","event_history_count",
@@ -113,7 +118,8 @@ def prepare(top,gate,price_manifest,focus=None,etf_overlay=None,*,main_update=No
             ETF_history_is_not_evidence_of_manager_forecast_accuracy=True,
             high_confidence_buy_or_Aplus_certified=False))
     # Review order is an explicit heuristic, NOT an objective return ranking.
-    priority={"ETF_CHIP_EARNINGS_CONVERGENT_RISK_REVIEW":3,
+    priority={"MAJOR_GOVERNANCE_REVIEW_BLOCK":4,
+              "ETF_CHIP_EARNINGS_CONVERGENT_RISK_REVIEW":3,
               "CURRENT_NUMERICS_VERIFIED_OTHER_GATES_PENDING":0,
               "BATCH_ONLY_ORIGINAL_FILING_REVIEW":1,
               "OPERATING_PE_OR_DILUTION_RED_FLAGS_REVIEW":2}
@@ -142,6 +148,7 @@ def prepare(top,gate,price_manifest,focus=None,etf_overlay=None,*,main_update=No
         issuer_count=len(result),
         verification_order=for_review,
         base_upside_order=result,
+        governance_watch=top.get('governance_watch',[]),
         limits=[
             "Top20 research queue only; NOT 791-issuer formal quality rankings.",
             "Official current value mirroring does not mean original detailed notes or published PIT verified.",
@@ -171,11 +178,16 @@ def markdown(report):
     for x in report["verification_order"]:
         flags=(x["operating_evidence_gaps"]+x["capital_evidence_gaps"]+
                x["pe_evidence_gaps"]+x["other_critical_gaps"])
-        brief="、".join(flags[:2]) if flags else "完整附註與PIT待驗"
+        brief="重大司法／治理事件待查，暫停推薦" if x.get('recommendation_blocked') else "、".join(flags[:2]) if flags else "完整附註與PIT待驗"
         lines.append(f"|{x['verification_priority_rank']}|{x['code']} {x['name']}|{x['prior_base_rank']}|"
                      f"{fmt(x['base_upside_pct'])}|{fmt(x['sensitivity_eps20_pe20_upside_pct'])}|"
                      f"{'已核數值' if x['original_current_numerics_checked'] else '待核原件'}|"
                      f"{brief}|{x['quality_review_status']}|")
+    if report.get('governance_watch'):
+        lines+=['','## 已登錄重大治理事件（包含未入榜公司）','']
+        for item in report['governance_watch']:
+            lines.append('- **'+item['code']+' '+(item.get('name') or '')+'：重大治理待查／暫停推薦。**')
+        lines.append('已重開相關品質審查；起訴不等於定罪，沒有事件帳亦不代表全市場司法風險已排除。')
     if report.get("etf_focus_9802"):
         x=report["etf_focus_9802"]
         lines += ["", "## ETF成分股異動研究警示（9802）","",

@@ -38,7 +38,7 @@ def time_reasons(root,meta,asof):
         try:
             for item in nested_records(json.loads(path.read_text(encoding='utf-8'))):
                 for field in ('available_at','checked_at','expires_at','effective_at','fetched_at',
-                              'estimate_created_at','captured_at_utc'):
+                              'estimate_created_at','captured_at_utc','first_recorded_at'):
                     if not item.get(field):continue
                     boundary=timestamp(item[field])
                     crossed=(vintage<=boundary<cutoff if field=='expires_at' else vintage<boundary<=cutoff)

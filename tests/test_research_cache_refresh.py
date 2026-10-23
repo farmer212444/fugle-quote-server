@@ -55,6 +55,21 @@ class CacheRefresh(unittest.TestCase):
         p=self.root/'evidence/v880/issuer_bridges/1111.json';p.parent.mkdir(parents=True);p.write_text('{}')
         self.assertIn('SOURCE_MANIFEST_OR_LEDGER_CHANGED',stale_reasons(self.root,self.meta))
 
+    def test_governance_event_and_archived_source_revision_invalidate_cache(self):
+        p=self.root/'evidence/v880/governance/1111.json';p.parent.mkdir(parents=True)
+        p.write_text(json.dumps(dict(events=[dict(updates=[dict(sources=[dict(archive_path='notice.html')])])])) )
+        self.assertIn('SOURCE_MANIFEST_OR_LEDGER_CHANGED',stale_reasons(self.root,self.meta))
+        prior=dict(self.meta,model_source_state=model_source_state(self.root))
+        (self.root/'notice.html').write_text('new original source')
+        self.assertIn('SOURCE_MANIFEST_OR_LEDGER_CHANGED',stale_reasons(self.root,prior))
+
+    def test_bad_governance_archive_path_is_isolated_without_reading_outside_root(self):
+        p=self.root/'evidence/v880/governance/1111.json';p.parent.mkdir(parents=True)
+        p.write_text(json.dumps(dict(sources=[dict(archive_path='../outside.txt')])))
+        state=model_source_state(self.root)
+        self.assertIn('evidence/v880/governance/1111.json',state)
+        self.assertNotIn('../outside.txt',state)
+
     def test_bad_rebuild_is_not_reported_as_fixed(self):
         self.write(dict(self.meta,model='V8.8.2'))
         with self.assertRaisesRegex(ValueError,'STILL_STALE'):
