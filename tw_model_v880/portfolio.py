@@ -35,6 +35,8 @@ def constrained_portfolio(candidates, capital_ntd, policy):
     for row in candidates:
         code, sector = row.get("code"), row.get("industry")
         failures = []
+        if row.get('recommendation_blocked') is True or (row.get('governance_review') or {}).get('blocks_recommendation') is True:
+            failures.append('MATERIAL_GOVERNANCE_REVIEW_REQUIRED')
         if row.get("formal_Aplus") is not True:
             failures.append("FORMAL_QUALITY_NOT_COMPLETE")
         execution = row.get("execution_review") or {}

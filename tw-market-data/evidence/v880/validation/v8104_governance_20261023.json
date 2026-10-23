@@ -1,0 +1,62 @@
+{
+  "schema": "V8104_GOVERNANCE_VALIDATION",
+  "checked_at": "2026-10-23T01:22:54.624109+00:00",
+  "base_commit_sha": "085b897135f9fafc88795f77a9eeb49bf02a99c5",
+  "model": "V8.10.4",
+  "runtime_code_sha256": "334c32f0f7de547a2912206f1491e5f47d362da8a881528f712d67a8e32567d3",
+  "local_unittest_count": 518,
+  "local_unittest_status": "PASS",
+  "core_pipeline": "SUCCESS",
+  "observation_pipeline": "SUCCESS",
+  "price_date": "2026-10-22",
+  "estimate_vintage": "2026-10-23T09:20:45.417750+08:00",
+  "data_scope": {
+    "normalized_issuers": 1980,
+    "priced_issuers": 1988,
+    "model_rows": 1999,
+    "tracked_issuer_universe": 1999,
+    "original_latest_issuer_numeric_coverage": 66,
+    "official_current_bulk_issuers": 1939,
+    "primary_research_rankable": 51,
+    "market_research_rankable": 795,
+    "not_rankable": 1204,
+    "broad_unverified_historical_detail_rankable": 795,
+    "source_errors": 1,
+    "issuer_failures": 0
+  },
+  "operating_EPS_PE_target_changes_vs_prior_snapshot": [],
+  "arithmetic_top20_unchanged": true,
+  "formal_Aplus_count": 0,
+  "formal_Aplusplus_count": 0,
+  "governance_blocked_count": 1,
+  "issuer_1714": {
+    "status": "MATERIAL_GOVERNANCE_REVIEW_REQUIRED",
+    "recommendation_blocked": true,
+    "rating": "重大治理待查",
+    "first_recorded_at": "2026-10-23T01:14:12.629400+00:00",
+    "original_sources": 2,
+    "rechecked_gate_reasons": {
+      "management_promises": "MATERIAL_GOVERNANCE_REVIEW_REQUIRED",
+      "auditor_scope": "MATERIAL_GOVERNANCE_REVIEW_REQUIRED"
+    },
+    "reference_close": 18.3,
+    "base_eps": 2.5229773677289677,
+    "base_pe": 18.345,
+    "base_price": 46.284019810987914,
+    "already_excluded_from_arithmetic_top20_by_existing_rule": [
+      "EXTREME_VALUATION_OPERATING_BRIDGE_REQUIRED"
+    ]
+  },
+  "retained_unrelated_source_gaps": [
+    {
+      "source": "issuer_earnings_event:9802",
+      "error": "EARNINGS_MULTIPLE_ORIGINAL_VERSIONS_REVIEW_REQUIRED"
+    }
+  ],
+  "limits": [
+    "Registered case guard only; full-market legal screening not completed",
+    "Indictment is not conviction; alleged loss is not automatically a current-period expense",
+    "Engineering controls do not certify excess return, legal merits or current management integrity"
+  ],
+  "source_publication_validation": "Archived HTML must match source SHA256 as exact bytes, including original line endings; production-source regression included"
+}

@@ -6,6 +6,7 @@ def read(p):return json.loads(pathlib.Path(p).read_text())
 def sha(b):return hashlib.sha256(b).hexdigest()
 SOURCE_JSON_PATTERNS=('evidence/v880/certificates/*.json','evidence/v880/issuer_bridges/*.json',
     'evidence/v880/matched_peers/*.json','evidence/v880/capital_terms/*.json',
+    'evidence/v880/governance/*.json',
     'evidence/v880/originals/*/manifest.json')
 
 def source_ledgers(root):
@@ -42,6 +43,8 @@ def model_source_state(root):
             if rel.parts and rel.parts[0]==root.name:rel=pathlib.Path(*rel.parts[1:])
             target=(root/rel).resolve()
             if rel.is_absolute() or '..' in rel.parts or root not in target.parents:
+                if ledger.parent==root/'evidence/v880/governance':
+                    continue  # The issuer loader quarantines this case; never read unsafe bytes.
                 raise ValueError('SOURCE_STATE_UNSAFE_ARCHIVE_PATH')
             paths.add(target)
     for path in sorted(paths):
@@ -143,6 +146,10 @@ class MarketData:
                 self.errors.append(dict(source='issuer_earnings_event:'+code,error=state.get('reason',state['status'])))
         for event in self.earnings_events.values():
             self.receipt(self.path(event['archive_path']),'ISSUER_SELF_REPORTED_EARNINGS_TABLE_RECONCILED_NOT_AUDITED')
+        from .governance import load_governance_reviews
+        self.governance_reviews,governance_errors,governance_receipts=load_governance_reviews(self.root,asof)
+        self.errors.extend(governance_errors)
+        self.input_receipts.extend(governance_receipts)
         self.model_source_state=model_source_state(self.root)
     def path(self,s):
         p=pathlib.Path(s)

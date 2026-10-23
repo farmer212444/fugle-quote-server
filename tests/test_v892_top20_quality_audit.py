@@ -111,5 +111,13 @@ class Top20AuditTests(unittest.TestCase):
         self.assertEqual(s,8)
         self.assertIn("EQUITY_ISSUANCE_NOT_CONFIRMED",issues)
 
+    def test_material_governance_is_explicit_not_a_made_up_eps_or_pe_discount(self):
+        row=example_record()
+        before,_=priority(row)
+        row['governance_review']={'blocks_recommendation':True}
+        after,issues=priority(row)
+        self.assertEqual(before,after)
+        self.assertEqual(issues[0],'MATERIAL_GOVERNANCE_REVIEW_REQUIRED')
+
 
 if __name__=="__main__":unittest.main()

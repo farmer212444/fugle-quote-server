@@ -99,4 +99,24 @@ class QualityLaneTests(unittest.TestCase):
         self.assertTrue(out["verification_order"][0]["high_confidence_buy_or_Aplus_certified"] is False)
         self.assertFalse(out["has_statistical_outperformance_calibration"])
 
+    def test_material_governance_remains_blocked_in_both_quality_and_arithmetic_views(self):
+        a,b,c=fixtures()
+        row=a['issuer_ranked'][2]
+        row['governance_review']=dict(status='MATERIAL_GOVERNANCE_REVIEW_REQUIRED',blocks_recommendation=True)
+        row['recommendation_blocked']=True
+        result=prepare(a,b,c)
+        flagged=next(x for x in result['base_upside_order'] if x['code']==row['code'])
+        self.assertEqual(flagged['quality_review_status'],'MAJOR_GOVERNANCE_REVIEW_BLOCK')
+        self.assertEqual(flagged['base_target_price_scenario'],row['base_2027_target'])
+        self.assertEqual(result['verification_order'][-1]['code'],row['code'])
+        self.assertIn('重大司法／治理事件待查',markdown(result))
+
+    def test_governance_watch_is_visible_even_when_issuer_is_not_in_top20(self):
+        a,b,c=fixtures()
+        a['governance_watch']=[dict(code='1714',name='和桐',market='TWSE',
+                                  governance_review=dict(status='MATERIAL_GOVERNANCE_REVIEW_REQUIRED'))]
+        result=prepare(a,b,c)
+        self.assertEqual(result['governance_watch'],a['governance_watch'])
+        self.assertIn('1714 和桐：重大治理待查',markdown(result))
+
 if __name__=="__main__": unittest.main()
