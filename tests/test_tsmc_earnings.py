@@ -5,6 +5,7 @@ import shutil
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 from tw_model_v880.events import load_earnings_events, pdf_text
 from tw_model_v880.model import estimate
@@ -127,6 +128,49 @@ class CondensedForecastIntegration(unittest.TestCase):
         event['current']['parent_net_income_k'] += 1001
         with self.assertRaisesRegex(ValueError, 'RESTATEMENT_NOT_RECONCILED'):
             estimate(data, ('TEST', 'SYNTHETIC_A'), fixtures.CAL, fixtures.ASOF, '2027-12-31')
+
+
+class SamePeriodReturnFeatures(unittest.TestCase):
+    def setUp(self):
+        temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(temporary.cleanup)
+        self.root = Path(temporary.name)
+        shutil.copytree(ARCHIVE, self.root / 'evidence/v880/originals/2330')
+        events, _ = load_earnings_events(self.root, ASOF, '2026-Q2')
+        self.event = events['2330']
+        self.row = dict(code='2330', market='TWSE', rankable=True,
+                        financial_period='2026-Q3', cashflow_financial_period='2026-Q3',
+                        price_date='2026-10-22', liquidity=dict(ocf_k=2_402_117_000),
+                        fresh_earnings_update=dict(applied=True, event=self.event))
+
+    def calculate(self):
+        from scripts.return_model_search import feature_rows
+        with patch('scripts.return_model_search.DailyTurnoverSnapshot'), \
+             patch('scripts.return_model_search.liquidity_history', return_value=dict(last_date='2026-10-22', median20_turnover_ntd=1e9)), \
+             patch('scripts.return_model_search.reviewed_momentum', return_value=None):
+            return feature_rows(self.root, dict(all_model_rows=[self.row],
+                                asof_price_date='2026-10-22', financial_last_quarter='2026-Q2'), ASOF)
+
+    def test_issuer_q3_cfo_uses_q3_sales_without_marketwide_q3_file(self):
+        rows, references, errors = self.calculate()
+        self.assertFalse(errors)
+        self.assertAlmostEqual(rows[0]['features']['ocf_to_sales'], 2_402_117 / 3_898_727)
+        self.assertEqual(rows[0]['ocf_and_sales_period'], '2026-Q3')
+        self.assertEqual(references[self.event['archive_path']], self.event['source_sha256'])
+
+    def test_changed_original_leaves_cash_feature_missing_without_stale_denominator(self):
+        (self.root / self.event['archive_path']).write_bytes(b'%PDF-tampered')
+        rows, _, errors = self.calculate()
+        self.assertIsNone(rows[0]['features']['ocf_to_sales'])
+        self.assertTrue(rows[0]['recommendation_blocked'])
+        self.assertEqual(errors[0]['feature'], 'ocf_to_sales')
+
+    def test_cash_amount_from_another_source_or_period_is_not_mixed(self):
+        self.row['liquidity']['ocf_k'] = 1_482_341_000
+        rows, _, errors = self.calculate()
+        self.assertIsNone(rows[0]['features']['ocf_to_sales'])
+        self.assertTrue(rows[0]['recommendation_blocked'])
+        self.assertIn('AMOUNT_MISMATCH', errors[0]['reason'])
 
 
 if __name__ == '__main__':
