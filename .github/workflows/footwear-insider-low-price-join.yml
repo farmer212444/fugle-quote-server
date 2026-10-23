@@ -1,0 +1,35 @@
+name: Footwear Insider And Low Price Join
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/insider-pit-shadow-20261023
+    paths:
+      - 'scripts/v8105_footwear_joint_readiness.py'
+      - 'tests/test_v8105_footwear_joint_readiness.py'
+      - '.github/workflows/footwear-insider-low-price-join.yml'
+permissions:
+  contents: write
+jobs:
+  join-source-backed-prechecks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Assert original source joins and no formal investment promotion
+        run: python -m unittest -v tests.test_v8105_footwear_joint_readiness
+      - name: Write deterministic candidate evidence only, not buy signal
+        run: python scripts/v8105_footwear_joint_readiness.py
+      - name: Preserve unmerged research-only status and computed source results
+        if: success() && github.ref == 'refs/heads/research/insider-pit-shadow-20261023'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add tw-market-data/evidence/v880/insider_reviews/20261023_joint_footwear_two_path_readiness.json
+          if ! git diff --cached --quiet; then
+            git commit -m "data: freeze Oct 23 footwear 2-factor official research prechecks"
+            git push origin HEAD:research/insider-pit-shadow-20261023
+          fi
