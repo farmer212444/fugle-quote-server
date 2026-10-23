@@ -161,7 +161,7 @@ def run(data_dir,asof,target_date,out_dir=None,variant='current-information'):
     report+=['',
       f"2026 Q2營收樣本外絕對誤差第90百分位 {fmt(error_ref['overall_p90_abs_revenue_error_pct'])}%；"
       f"高成長子群 {fmt(error_ref['high_growth_subgroup_p90_abs_revenue_error_pct'])}%。"
-      '這些誤差不直接換算成2027 EPS或股價漲跌機率，也不用于調整已公告的Base EPS／PE。',
+      '這些誤差不直接換算成2027 EPS或股價漲跌機率，也不直接用於調整已公告的Base EPS／PE。',
       '尚無足夠已驗證實際投資期報酬，故證據優先研究榜不代表能打敗0050／大盤。','',
       '## 司法與公司治理事件','',
              '事件登錄僅涵蓋已核對案件，沒有登錄不代表治理安全。重大未決事件重開既有管理承諾與會計師範圍審查，暫停推薦及正式A+/A++資格。起訴不等於定罪，所稱損害不直接當作本季損失，也不任意調降EPS或PE。','']
