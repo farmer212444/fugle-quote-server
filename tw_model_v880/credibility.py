@@ -110,6 +110,11 @@ def research_priority_entry(row,holdout=None):
         warning.append('PEER_PE_NOT_CERTIFIED')
     if not row.get('company_forecast_confirmed'):
         warning.append('2027_COMPANY_OPERATING_BRIDGE_UNVERIFIED')
+    auditor_scope=row.get('auditor_scope_watch') or {}
+    unresolved_auditor_qualification=auditor_scope.get('status')==(
+        'ISSUER_ORIGINAL_QUALIFIED_REVIEW_SCOPE_DOC_VISUALLY_CHECKED_NO_FORMAL_PASS')
+    if unresolved_auditor_qualification:
+        warning.append('ISSUER_ORIGINAL_QUALIFIED_AUDITOR_CONCLUSION_SUBSIDIARIES_UNREVIEWED')
     nonop=(row.get('nonoperating_bridge') or {})
     reported_ytd_nonop_share_pct=nonop.get('reported_ytd_abs_gap_share_pretax_pct')
     material_ytd_nonop=(_finite(reported_ytd_nonop_share_pct) and
@@ -203,6 +208,8 @@ def research_priority_entry(row,holdout=None):
         latest_q2_standalone_ocf_recovered_after_q1=cash_quarter_recovery,
         quarterly_ocf_observation_not_certified=True,
         mechanical_margin_sensitivity_changes_base_or_rank=False,
+        auditor_scope_original_observation=auditor_scope if unresolved_auditor_qualification else None,
+        qualified_auditor_review_needs_subsidiary_scope_reconciliation=unresolved_auditor_qualification,
         research_decision='REVIEW_ONLY_NOT_BUY'
     )
     # Explicit, auditable lexicographic research-order policy:

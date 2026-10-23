@@ -149,6 +149,8 @@ def run(data_dir,asof,target_date,out_dir=None,variant='current-information'):
       '|---:|---|---|---:|---:|---|']
     for r in evidence_priority['top10_evidence_first']:
         review_issues=[]
+        if r['qualified_auditor_review_needs_subsidiary_scope_reconciliation']:
+            review_issues.append('會計師保留結論／子公司核閱範圍待查')
         if r['latest_month_reversal_warning']:review_issues.append('最新月營收轉弱')
         if r['latest_standalone_quarter_margin_compression_warning']:review_issues.append('單季毛利率季減≥3pp')
         if '2027_BASE_GM_GE3PP_ABOVE_LATEST_STANDALONE_QUARTER' in r['warning_flags']:
@@ -166,6 +168,34 @@ def run(data_dir,asof,target_date,out_dir=None,variant='current-information'):
         tier='原始當期數字' if r['original_current_numeric_reconciled'] else '官方彙總'
         report.append(f"|{r['review_rank']}|{r['code']} {r['name']}|{tier}|{r['base_upside_pct']:+.1f}%|"
                       f"{fmt(r['eps_pe_each_minus20_upside_pct'])}%|{'、'.join(review_issues)}|")
+    qualified_watch=[x for x in evidence_priority['top10_evidence_first']
+                     if x['qualified_auditor_review_needs_subsidiary_scope_reconciliation']]
+    if qualified_watch:
+        report+=['','### 公司原始財報會計師保留結論（待核閱範圍複核）','',
+          '僅展示直接檢視發行人官網文件與當期官方標準化主表核對的觀察；'
+          '網址存在與主要數字勾稽不等於已核完八季完整附註或原始MOPS公告PIT，更不等於會計師正式門檻通過。','']
+        for x in qualified_watch:
+            watch=x['auditor_scope_original_observation']
+            scope=watch['qualified_scope_pct']
+            prior=watch.get('preceding_q1_review') or {}
+            qualified_text=(
+              f"- **{x['code']} {x['name']}**：2026-Q2會計師保留結論，涉及未經核閱的部分子公司；"
+              f"其所占合併資產 {scope['assets_at_2026_06_30']:.2f}%、Q2綜合損益總額 "
+              f"{scope['quarterly_consolidated_comprehensive_income']:.2f}%、上半年綜合損益總額 "
+              f"{scope['half_year_consolidated_comprehensive_income']:.2f}%。")
+            if prior:
+                qualified_text+=(
+                  f"上季2026-Q1亦為保留結論，未核閱子公司占第一季綜合損益"
+                  f"{prior['subsidiaries_unreviewed_share_of_total_comprehensive_income_pct']:.2f}%。")
+            qualified_text+=(
+              "保留結論不等於已認定舞弊或財報重大錯誤；須覆核子公司範圍與重大性。"
+              f"原始文件：{watch['source_pdf_url']}。"
+              f"文件日期 {watch['document_dated']}，本次直接檢視日 "
+              f"{watch['first_directly_inspected_on']}；非已核實之歷史可得時間。")
+            if prior:
+                qualified_text+=f" 2026-Q1原始文件：{prior['issuer_original_source_url']}。"
+            report.append(qualified_text)
+        report+=['','會計師核閱範圍原有13項品質門檻仍為PENDING，不據此調整Base EPS/PE或宣稱A+。','']
     ocf_recovery=[x for x in evidence_priority['top10_evidence_first']
                   if x['latest_q2_standalone_ocf_recovered_after_q1']]
     if ocf_recovery:

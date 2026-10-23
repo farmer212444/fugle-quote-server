@@ -186,6 +186,12 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
     gates=research_gates(primary,code,valuation_period,flow,coverage.get('eight_quarter_key_income_cash_values_reconciled'))
     for name,value in e.get('certificates',{}).get(code,{}).items():
         if name in GATES:gates[name]=value
+    scope_watch=getattr(data,'auditor_scope_watch',{}).get(code)
+    if scope_watch and scope_watch.get('period')==valuation_period:
+        warnings.append('ISSUER_ORIGINAL_PDF_QUALIFIED_AUDITOR_SCOPE_NOT_FORMAL_PASS')
+        if gates['auditor_scope'].get('status')!='FAIL':
+            gates['auditor_scope']=gate(
+                'PENDING','ISSUER_ORIGINAL_PDF_QUALIFIED_SCOPE_UNREVIEWED_SUBSIDIARIES_INCOMPLETE_RECONCILIATION')
     if event:
         gates['original_eight_quarter_statements']=gate('PENDING','LATEST_SELF_REPORT_IS_NOT_REVIEWED_QUARTERLY_STATEMENTS')
         gates['forecast_bridge']=gate('PENDING','LATEST_EARNINGS_EVENT_REBASED_ISSUER_2027_OPERATING_BRIDGE_REQUIRED')
@@ -289,6 +295,7 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
         exact_matched_peer_review_complete='matched_peers_and_cycle' in certification['gates_passed']),
       gates=gates,certification=certification,formal_Aplus=certification['formal_Aplus'],formal_Aplusplus=certification['formal_Aplusplus'],status=certification['status'],warning_flags=warnings,
       governance_review=governance,recommendation_blocked=governance_blocked,
+      auditor_scope_watch=scope_watch if scope_watch and scope_watch.get('period')==valuation_period else None,
       stress_eps90_pe90_upside_pct=stress,specialist_model_requirements=specialist,base_scenario_is_admissible=point,
       business_profile=dict(property_development_observed=developer,engineering_business_observed=contractor,classification_source='ISSUER_HISTORY_AND_ORGANIZATION_NOTE' if business else 'INDUSTRY_ONLY'),
       base_scenario_role='RESEARCH_FORECAST_UNCERTIFIED' if point else 'DIAGNOSTIC_ONLY_NOT_ADMISSIBLE_BASE',
