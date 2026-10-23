@@ -1,0 +1,131 @@
+{
+  "schema": "FOOTWEAR_CORPORATE_RESULTS_DATED_RESEARCH_V1",
+  "compiled_at_local": "2026-10-23",
+  "purpose": "Quarterly operating profit-bridge and conditional footwear turning-point research. Not official PIT-certified first-seen trading evidence.",
+  "sources": {
+    "9802_q2": {
+      "url": "https://www.fulgentsun.com/img/News_Release/FY2026%202Q%20financial%20results%20CN.pdf",
+      "company": "Fulgent Sun International",
+      "document_title": "鈺齊國際(9802)2026年第二季自結財報新聞稿",
+      "stated_release_date": "2026-07-23",
+      "first_public_at_verified": false,
+      "original_pdf_bytes_archived": false,
+      "reporting_basis": "company preliminary consolidated self-report"
+    },
+    "9802_q3": {
+      "url": "https://www.fulgentsun.com/img/News_Release/FY2026%203Q%20financial%20results%20CN%281%29.pdf",
+      "company": "Fulgent Sun International",
+      "document_title": "鈺齊國際(9802)2026年第三季自結財報新聞稿",
+      "stated_release_date": "2026-10-20",
+      "first_public_at_verified": false,
+      "original_pdf_bytes_archived": false,
+      "reporting_basis": "company preliminary consolidated self-report"
+    },
+    "6965_q2": {
+      "url": "https://www.chungjye.com.tw/zh-tw/news/2026-08-28-q2-financial-results/",
+      "company": "Chung Jye Group",
+      "document_title": "中傑投資控股2026年第二季營運成果新聞稿",
+      "stated_release_date": "2026-08-28",
+      "first_public_at_verified": false,
+      "original_pdf_bytes_archived": false,
+      "reporting_basis": "company Q2 operating results"
+    }
+  },
+  "companies": {
+    "6965": {
+      "name": "中傑-KY",
+      "unit": "NTD_thousands",
+      "issued_shares_current_snapshot": 156336000,
+      "issued_shares_snapshot_date": "2026-10-22",
+      "historical_issued_shares_PIT_certified": false,
+      "quarters": [
+        {
+          "period": "2025Q2",
+          "revenue": 5223000,
+          "gross_profit": 612000,
+          "operating_profit": 145000,
+          "eps": 1.33,
+          "gm_reported_pct": 11.7,
+          "source_key": "6965_q2",
+          "historical_quarter_source_release_is_later_comparative": true
+        },
+        {
+          "period": "2026Q1",
+          "revenue": 4785000,
+          "gross_profit": 481000,
+          "operating_profit": -81000,
+          "eps": -0.64,
+          "gm_reported_pct": 10.1,
+          "source_key": "6965_q2"
+        },
+        {
+          "period": "2026Q2",
+          "revenue": 5663000,
+          "gross_profit": 723000,
+          "operating_profit": 151000,
+          "eps": 0.3,
+          "gm_reported_pct": 12.8,
+          "source_key": "6965_q2"
+        }
+      ]
+    },
+    "9802": {
+      "name": "鈺齊-KY",
+      "unit": "NTD_thousands",
+      "issued_shares_current_snapshot": 200991673,
+      "issued_shares_snapshot_date": "2026-10-22",
+      "historical_issued_shares_PIT_certified": false,
+      "quarters": [
+        {
+          "period": "2025Q3",
+          "revenue": 3819386,
+          "gross_profit": 670486,
+          "operating_expense": 372240,
+          "operating_profit": 298246,
+          "eps": 1.5,
+          "gm_reported_pct": 17.56,
+          "source_key": "9802_q3",
+          "historical_quarter_source_release_is_later_comparative": true
+        },
+        {
+          "period": "2026Q1",
+          "revenue": 3674610,
+          "gross_profit": 582393,
+          "operating_expense": 393708,
+          "operating_profit": 188685,
+          "eps": 0.89,
+          "gm_reported_pct": 15.85,
+          "source_key": "9802_q2"
+        },
+        {
+          "period": "2026Q2",
+          "revenue": 5258501,
+          "gross_profit": 732887,
+          "operating_expense": 471801,
+          "operating_profit": 261086,
+          "eps": 0.89,
+          "gm_reported_pct": 13.94,
+          "source_key": "9802_q2"
+        },
+        {
+          "period": "2026Q3",
+          "revenue": 5435935,
+          "gross_profit": 719347,
+          "operating_expense": 491896,
+          "operating_profit": 227451,
+          "eps": 0.68,
+          "gm_reported_pct": 13.23,
+          "source_key": "9802_q3"
+        }
+      ]
+    }
+  },
+  "notes": [
+    "6965 revenue and profits are rounded to NTD millions in its dated IR press release and are converted to NTD thousands; avoid overinterpreting precise per-share sensitivities.",
+    "9802 gross margin presented as two-decimal official ratio; model independently recomputes from reported gross-profit and revenue.",
+    "2025Q3 or 2025Q2 source attached to a 2026 comparative release does not mean 2025 PIT availability is proven.",
+    "Neither press release archive metadata nor current repo stock price is an actual next-session broker fill."
+  ],
+  "formal_Aplus_changed": false,
+  "verified_future_stock_returns": false
+}
