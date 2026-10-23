@@ -11,7 +11,7 @@ from tw_model_v880.model import estimate
 from tw_model_v880.backtest import live_backtest_status
 from tw_model_v880.evidence import POLICY
 from tw_model_v880.provenance import code_fingerprint,runtime_dependencies
-from tw_model_v880.freshness import assess_price_freshness
+from tw_model_v880.freshness import assess_price_freshness,load_dated_exchange_closures
 from tw_model_v880.contracts import canonical_hash
 from tw_model_v880.governance import issuer_review,COVERAGE
 from tw_model_v880.credibility import build_research_priority
@@ -52,7 +52,7 @@ def run(data_dir,asof,target_date,out_dir=None,variant='current-information'):
     target_year=dt.date.fromisoformat(target_date).year
     if variant not in ('current-information','without-earnings-events'):raise ValueError('UNKNOWN_MODEL_VARIANT')
     if variant!='current-information' and (out_dir is None or pathlib.Path(out_dir).resolve()==(pathlib.Path(data_dir)/'rankings').resolve()):raise ValueError('SHADOW_VARIANT_REQUIRES_SEPARATE_OUTPUT_DIRECTORY')
-    data=MarketData(data_dir,asof);price_freshness=assess_price_freshness(asof,data.price_date);cal=fit_accounting(data.history,data.period,{c:r.get('industry','') for c,r in data.revenue.items()});rows=[];failures=[]
+    data=MarketData(data_dir,asof);price_freshness=assess_price_freshness(asof,data.price_date,load_dated_exchange_closures(data_dir));cal=fit_accounting(data.history,data.period,{c:r.get('industry','') for c,r in data.revenue.items()});rows=[];failures=[]
     data.strategy_variant=variant
     if variant=='without-earnings-events':data.earnings_events={};data.earnings_event_states={}
     universe=tracked_universe(data)
