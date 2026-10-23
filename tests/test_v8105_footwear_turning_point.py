@@ -38,6 +38,21 @@ class FootwearTurningPointTests(unittest.TestCase):
         self.assertTrue(cj["earnings_recovery_1pp_provisional"])
         self.assertEqual(cj["latest_financial_quarter"],"2026Q2")
 
+    def test_yoy_conversion_exposes_earnings_risk_not_only_seasonality(self):
+        r=evaluate(*sources())["companies"]
+        q3=r["9802"]["yoy_comparable_bridge"]
+        self.assertEqual(q3["incremental_revenue_ntd_thousands"],1616549)
+        self.assertEqual(q3["incremental_gross_profit_ntd_thousands"],48861)
+        self.assertEqual(q3["implied_increase_in_operating_expense_ntd_thousands"],119656)
+        self.assertEqual(q3["incremental_operating_profit_ntd_thousands"],-70795)
+        self.assertAlmostEqual(q3["incremental_gross_profit_per_extra_sales_pct"],3.0225,places=2)
+        self.assertIn("NOT_PRIOR_YEAR_PIT",q3["source_basis"])
+        cq2=r["6965"]["yoy_comparable_bridge"]
+        self.assertEqual(cq2["incremental_revenue_ntd_thousands"],440000)
+        self.assertEqual(cq2["incremental_gross_profit_ntd_thousands"],111000)
+        self.assertEqual(cq2["incremental_operating_profit_ntd_thousands"],6000)
+        self.assertEqual(cq2["implied_increase_in_operating_expense_ntd_thousands"],105000)
+
     def test_quarter_eps_margin_sensitivity_is_not_relabelled_as_forward_eps(self):
         r=evaluate(*sources())
         ji=r["companies"]["9802"]
