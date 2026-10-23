@@ -194,6 +194,18 @@ def run(data_dir,asof,target_date,out_dir=None,variant='current-information'):
               f"{watch['first_directly_inspected_on']}；非已核實之歷史可得時間。")
             if prior:
                 qualified_text+=f" 2026-Q1原始文件：{prior['issuer_original_source_url']}。"
+            if watch.get('issuer_original_pdf_bytes_hashed'):
+                receipts=watch.get('source_pdf_sha256_receipts') or {}
+                hashes='；'.join(
+                    f"{period} SHA256 {item['sha256']}"
+                    for period,item in sorted(receipts.items()))
+                qualified_text+=(
+                    f" 現存Q1/Q2原始PDF內容雜湊已重新驗證：{hashes}。"
+                    "這僅確認檔案內容留存一致，不驗證原始MOPS發布時點或完整附註核閱。")
+            else:
+                qualified_text+=(
+                    " 原始Q1/Q2 PDF位元組永久封存與SHA256檢驗仍未完成，"
+                    "因此此部分不算具原件雜湊的證據完成。")
             report.append(qualified_text)
         report+=['','會計師核閱範圍原有13項品質門檻仍為PENDING，不據此調整Base EPS/PE或宣稱A+。','']
     ocf_recovery=[x for x in evidence_priority['top10_evidence_first']
