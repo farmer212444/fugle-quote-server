@@ -109,7 +109,7 @@ def provisional_role_dedup(rows):
         raise ValueError("NO_REPORTED_HOLDER_ROWS")
     groups = {}
     for row in rows:
-        name = re.sub(r"\\s+", "", unicodedata.normalize("NFKC", row["name"])).upper()
+        name = re.sub(r"\s+", "", unicodedata.normalize("NFKC", row["name"])).upper()
         key = (name, row["security_class"]) + tuple(row[k] for k in
                ("opening_own_shares", "closing_own_shares",
                 "market_buy_shares", "market_sell_shares",
