@@ -6,7 +6,7 @@ def read(p):return json.loads(pathlib.Path(p).read_text())
 def sha(b):return hashlib.sha256(b).hexdigest()
 SOURCE_JSON_PATTERNS=('evidence/v880/certificates/*.json','evidence/v880/issuer_bridges/*.json',
     'evidence/v880/matched_peers/*.json','evidence/v880/capital_terms/*.json',
-    'evidence/v880/governance/*.json',
+    'evidence/v880/governance/*.json','evidence/v880/equity_offerings/*.json',
     'evidence/v880/originals/*/manifest.json')
 
 def source_ledgers(root):

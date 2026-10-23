@@ -27,7 +27,7 @@ def public_row(r):
       'target_year_eps_scenario','research_2027_price_scenario','eps_2027_base_scenario','research_pe_assumption','research_lane','rating','score',
       'specialist_model_requirements','base_scenario_role','early_recovery_watch','cycle_research','stress_eps90_pe90_upside_pct','original_current_issuer_numeric_checked','exclusion_reasons','margin_recovery','margin_bridge',
       'reviewed_financial_period','cashflow_financial_period','fresh_earnings_update','forecast_binding',
-      'governance_review','recommendation_blocked']
+      'governance_review','recommendation_blocked','equity_offering_overlay']
     out={k:r[k] for k in keys if k in r}
     for name in ('base','bear','bull'):
         if name in out:out[name]={k:r[name][k] for k in ('eps','pe','target_price','price_upside_pct','total_return_pct') if k in r[name]}
@@ -127,6 +127,16 @@ def run(data_dir,asof,target_date,out_dir=None,variant='current-information'):
         b=r['base'];tier='公司自結暫估' if r.get('fresh_earnings_update',{}).get('applied') else '原始核對' if r['original_current_issuer_numeric_checked'] else '官方彙總'
         governance_label='**重大治理待查**' if r['recommendation_blocked'] else '未全面核查'
         report.append(f"|{i}|{r['code']} {r['name']}|{fmt(r['reference_close'])}|{fmt(b['eps'])}|{fmt(b['pe'])}|{fmt(b['target_price'])}|{b['price_upside_pct']:+.1f}%|{fmt(r['bear']['target_price'])}|{fmt(r['bull']['target_price'])}|{tier}|{governance_label}|")
+    offering_rows=[r for r in rows if r.get('equity_offering_overlay')]
+    if offering_rows:
+        report+=['','## 已公告、尚未發行的股本事件：獨立壓力測試','',
+          '以下不變更原Base EPS或研究排名；尚未收到募資現金及未核定最終發行價時，不能把機械稀釋結果直接當成可比較的除權後股價報酬率。','']
+        for r in offering_rows:
+            o=r['equity_offering_overlay']
+            if o.get('status')=='ANNOUNCED_UNISSUED_DILUTION_SCENARIO_ONLY':
+                report.append(f"- **{r['code']} {r['name']}**：計畫增發 {o['planned_new_common_shares']:,} 股；現有研究 Base EPS {fmt(r['base']['eps'])}，在淨利固定且股數增加情境下 EPS {fmt(o['issuance_eps_sensitivity'])}、機械式目標價 {fmt(o['issuance_target_price_sensitivity'])}。此非考慮募資現金、募資後投資收益與除權價格後之合理價；正式股數品質門檻仍待查。來源：{o['source_url']}")
+            else:
+                report.append(f"- **{r['code']} {r['name']}**：現增事件已登錄，但狀態 {o['status']}，需要重新核對股數及原始公告。")
     report+=['','## 司法與公司治理事件','',
              '事件登錄僅涵蓋已核對案件，沒有登錄不代表治理安全。重大未決事件重開既有管理承諾與會計師範圍審查，暫停推薦及正式A+/A++資格。起訴不等於定罪，所稱損害不直接當作本季損失，也不任意調降EPS或PE。','']
     for item in governance_watch:

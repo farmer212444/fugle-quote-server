@@ -10,6 +10,7 @@ from .cycle_alpha import is_cyclical
 from .contracts import forecast_binding,matches_forecast
 from .peers import matched_multiples
 from .governance import issuer_review,reopen_quality_reviews
+from .offering import equity_offering_overlay
 
 # A low-turnover issuer can be researched without passing the execution gate.
 RESEARCH_MIN_TURNOVER_NTD = 1_000_000
@@ -222,6 +223,10 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
         if developer and any(cases[n]['valuation_method']!='NAV' for n in cases):raise ValueError('PROPERTY_DEVELOPER_REQUIRES_ASSET_VALUE_BRIDGE')
         specialist=[];stress=(base['target_price']*.81*dilution_stress_factor/close-1)*100 if base['target_price'] is not None and dilution_stress_factor is not None and base.get('valuation_method')=='PE' else None
     elif specialist and gates['forecast_bridge'].get('status')=='PASS':gates['forecast_bridge']=gate('PENDING','SPECIALIST_OPERATING_INPUTS_REQUIRED')
+    equity_offering=equity_offering_overlay(data.root,code,asof,target_date,base,master['issued_shares']) if getattr(data,'root',None) is not None else None
+    if equity_offering:
+        warnings.append('DISCLOSED_EQUITY_OFFERING_REQUIRES_UNISSUED_SHARE_RECONCILIATION')
+        gates['fully_diluted_shares']=gate('PENDING','ANNOUNCED_EQUITY_OFFERING_SHARE_PROCEEDS_AND_FUTURE_RETURNS_NOT_VERIFIED')
     new_information_blocked=getattr(data,'earnings_event_states',{}).get(code,{}).get('blocks_current_decision',False)
     point=base['target_price'] is not None and not share['missing_legal_conversion_inputs'] and not specialist and not new_information_blocked
     if not point:warnings.append('POINT_VALUATION_NOT_COMPARABLE_WITH_UNRESOLVED_INPUTS')
@@ -255,7 +260,7 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
       price_date=data.price_date,revenue_month=data.revenue_month,estimate_vintage=asof,target_date=target_date,
       source_tier='ISSUER_SELF_REPORTED_ORIGINAL_TABLE' if event else 'ORIGINAL_CURRENT_ISSUER_NUMERICS' if primary else 'OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL',rankable=rankable,point_valuation_available=point,
       original_current_issuer_numeric_checked=primary is not None or bool(event),exclusion_reasons=exclusions,
-      base=base,bear=bear,bull=bull,share_bridge=share,liquidity=flow,primary_ttm_cash=coverage or None,
+      base=base,bear=bear,bull=bull,share_bridge=share,equity_offering_overlay=equity_offering,liquidity=flow,primary_ttm_cash=coverage or None,
       revenue_bridge=dict(actual_ytd_k=ytd,prior_year_annual_revenue_k=monthly_prior_annual,prior_year_remaining_k=monthly_prior_annual-oldytd,annual_current_year_estimate_k=r_current_year,assumed_annual_growth=g,observed_growth=observed,
         trend_inputs=dict(financial_ytd_yoy=gh,monthly_ytd_yoy=yy/100,latest_month_yoy=my/100),
         annual_forward_growth_is_extrapolation_not_validated=True,issuer_capacity_order_ASP_cost_bridge_complete=bool(e.get('issuer_operating_bridges',{}).get(code))),
