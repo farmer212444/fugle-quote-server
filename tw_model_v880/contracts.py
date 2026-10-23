@@ -8,7 +8,7 @@ from .evidence import GATES
 
 FORECAST_CONTRACT = "V810_ECONOMIC_INPUTS_V1"
 ECONOMIC_MODULES = ("model.py", "data.py", "math.py", "calibration.py", "capital.py",
-                    "specialists.py", "margin_recovery.py", "events.py", "peers.py", "contracts.py")
+                    "specialists.py", "margin_recovery.py", "events.py", "peers.py", "contracts.py", "offering.py")
 OBLIGATIONS = {
     "original_eight_quarter_statements": ("ISSUER", "逐季原始四表、附註、重編及完整性核對", "財報／重編更新"),
     "cash_and_working_capital": ("ISSUER", "應收、存貨、應付、CAPEX與資金來源橋接", "新財報／資金事件"),
