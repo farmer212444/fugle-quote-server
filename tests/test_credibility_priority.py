@@ -61,6 +61,31 @@ class EvidenceFirstTests(unittest.TestCase):
         r=p['top10_evidence_first'][0]
         self.assertAlmostEqual(r['eps_pe_each_minus20_upside_pct'],28.)
 
+    def test_latest_month_revenue_reversal_is_warning_not_rank_or_exit(self):
+        down=issuer('6143',True,74)
+        down['revenue_bridge']['trend_inputs']=dict(
+            latest_month_yoy=-.2688,monthly_ytd_yoy=.0612)
+        growth=issuer('8383',True,67)
+        growth['revenue_bridge']['trend_inputs']=dict(
+            latest_month_yoy=.8365,monthly_ytd_yoy=.6295)
+        old=[copy.deepcopy(down),copy.deepcopy(growth)]
+        results=build_research_priority([down,growth])
+        by_code={r['code']:r for r in results['top10_evidence_first']}
+        self.assertTrue(by_code['6143']['latest_month_reversal_warning'])
+        self.assertFalse(by_code['8383']['latest_month_reversal_warning'])
+        self.assertIn('LATEST_MONTH_REVENUE_FELL_AT_LEAST_10PCT_YOY_WHILE_YTD_POSITIVE',
+                      by_code['6143']['warning_flags'])
+        self.assertFalse(by_code['6143']['reversal_warning_changes_base_eps_or_pe'])
+        self.assertFalse(by_code['6143']['one_month_reversal_is_certified_trend'])
+        self.assertEqual([down,growth],old)
+        self.assertEqual([x['code'] for x in results['top10_evidence_first']],['6143','8383'])
+
+    def test_missing_month_revenue_does_not_imply_positive_or_negative_trend(self):
+        row=issuer('A',True,35)
+        r=build_research_priority([row])['top10_evidence_first'][0]
+        self.assertIsNone(r['latest_month_revenue_yoy_pct'])
+        self.assertFalse(r['latest_month_reversal_warning'])
+
     def test_short_horizon_error_reference_does_not_rank_stock(self):
         rows=[issuer('ONE',True,80),issuer('TWO',True,100)]
         template={'holdout_error_tail':dict(p90_absolute_pct_error=22.094,
