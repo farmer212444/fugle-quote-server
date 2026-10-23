@@ -56,6 +56,19 @@ class FlytechIRInventoryTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'6206_IR_PUBLISHED_REVENUE_AND_MOPS_MIRROR_CONFLICT'):
             check_6206_inventory_original(j,ROOT,'2026-10-24',altered)
 
+    def test_income_mirror_uses_finite_numeric_revenue_not_integer_only(self):
+        # Official normalization accepts NTD-thousands as floats.
+        h=normalized_income_rows()
+        h['2026-Q1']['revenue_ytd_k']=float(h['2026-Q1']['revenue_ytd_k'])
+        r=check_6206_inventory_original(self.source(),ROOT,'2026-10-24',h)
+        self.assertGreater(r['inventory_yoy_pct'],90)
+        h['2026-Q1']['revenue_ytd_k']=float('nan')
+        with self.assertRaisesRegex(ValueError,'6206_IR_OFFICIAL_INCOME_MIRROR_UNAVAILABLE'):
+            check_6206_inventory_original(self.source(),ROOT,'2026-10-24',h)
+        h['2026-Q1']['revenue_ytd_k']=True
+        with self.assertRaisesRegex(ValueError,'6206_IR_OFFICIAL_INCOME_MIRROR_UNAVAILABLE'):
+            check_6206_inventory_original(self.source(),ROOT,'2026-10-24',h)
+
     def test_loader_skips_future_receipts_and_succeeds_now(self):
         h={('TWSE','6206'):normalized_income_rows()}
         early,errors=load_6206_inventory_watch(ROOT,'2026-10-23',h)
