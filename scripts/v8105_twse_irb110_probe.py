@@ -95,7 +95,7 @@ def capture_month(month, out, opener=None):
     year, num = map(int, month.split("-"))
     if year <= 1911:
         raise ValueError("INVALID_ROC_YEAR")
-    url = ENDPOINT.format(roc=year - 1911, month=num)
+    url = ENDPOINT.format(roc=year - 1911, month=month.split("-")[1])
     req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (public historic exchange filing research)",
                                                "Accept": "text/html,*/*"})
     observed = dt.datetime.now(dt.timezone.utc).isoformat()
