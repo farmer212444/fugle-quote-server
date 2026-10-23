@@ -1,9 +1,9 @@
 {
-  "model": "V8.10.6",
-  "estimate_vintage": "2026-10-24T07:11:35.814428+08:00",
+  "model": "V8.10.7",
+  "estimate_vintage": "2026-10-24T07:23:08.965887+08:00",
   "asof_price_date": "2026-10-22",
   "financial_period": "2026-Q2",
-  "research_candidates": 795,
+  "research_candidates": 796,
   "high_upside_research_candidates": 127,
   "tracked_issuer_count": 2001,
   "model_evaluated_issuer_count": 1347,
@@ -20833,8 +20833,8 @@
       "code": "9802",
       "name": "鈺齊-KY",
       "market": "TWSE",
-      "research_upside_pct": null,
-      "financial_period": "2026-Q2",
+      "research_upside_pct": -15.86,
+      "financial_period": "2026-Q3",
       "reviewed_financial_period": "2026-Q2",
       "model_evaluated": true,
       "model_status": "CERTIFICATION_PENDING",
@@ -20860,18 +20860,18 @@
       "formal_Aplusplus": false,
       "gate_stage": {
         "original_eight_quarter_statements": {
-          "stage": "NOT_PROBED",
-          "reason": "No issuer-specific original/reconciliation probe yet",
+          "stage": "SOURCE_CAPTURED",
+          "reason": "8/8 period-specific original PDFs SHA-archived, missing none; issuer PDF internal identity, full notes, auditor scope and MOPS publication PIT unreviewed",
           "decision": "PENDING",
-          "model_reason": "KEY_VALUES_RECONCILED_NOT_FULL_NOTES_AUDIT",
+          "model_reason": "LATEST_SELF_REPORT_IS_NOT_REVIEWED_QUARTERLY_STATEMENTS",
           "scope": "ISSUER",
           "required_evidence": "逐季原始四表、附註、重編及完整性核對",
           "invalidates_on": "財報／重編更新",
           "formal_pass": false
         },
         "cash_and_working_capital": {
-          "stage": "NOT_PROBED",
-          "reason": "No issuer-specific original/reconciliation probe yet",
+          "stage": "MIRROR_CAPTURED",
+          "reason": "Cashflow mirror 8/8; receivable/inventory/capex notes need reconciliation",
           "decision": "PENDING",
           "model_reason": "NEGATIVE_OCF_REQUIRES_CYCLE_AND_FUNDING_REVIEW",
           "scope": "ISSUER",
@@ -20880,8 +20880,8 @@
           "formal_pass": false
         },
         "nonoperating_components": {
-          "stage": "NOT_PROBED",
-          "reason": "No issuer-specific original/reconciliation probe yet",
+          "stage": "REVIEW_PENDING",
+          "reason": "Dated issuer source, analytical bridge and evidence signoff outstanding",
           "decision": "PENDING",
           "model_reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
           "scope": "ISSUER",
@@ -20890,8 +20890,8 @@
           "formal_pass": false
         },
         "fully_diluted_shares": {
-          "stage": "NOT_PROBED",
-          "reason": "No issuer-specific original/reconciliation probe yet",
+          "stage": "REVIEW_PENDING",
+          "reason": "Convertible legal conversion/reset terms remain unverified",
           "decision": "PENDING",
           "model_reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
           "scope": "ISSUER",
@@ -20900,8 +20900,8 @@
           "formal_pass": false
         },
         "matched_peers_and_cycle": {
-          "stage": "NOT_PROBED",
-          "reason": "No issuer-specific original/reconciliation probe yet",
+          "stage": "REVIEW_PENDING",
+          "reason": "Dated issuer source, analytical bridge and evidence signoff outstanding",
           "decision": "PENDING",
           "model_reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
           "scope": "ISSUER",
@@ -20910,8 +20910,8 @@
           "formal_pass": false
         },
         "management_promises": {
-          "stage": "NOT_PROBED",
-          "reason": "No issuer-specific original/reconciliation probe yet",
+          "stage": "REVIEW_PENDING",
+          "reason": "Dated issuer source, analytical bridge and evidence signoff outstanding",
           "decision": "PENDING",
           "model_reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
           "scope": "ISSUER",
@@ -20920,18 +20920,18 @@
           "formal_pass": false
         },
         "auditor_scope": {
-          "stage": "NOT_PROBED",
-          "reason": "No issuer-specific original/reconciliation probe yet",
+          "stage": "REVIEW_PENDING",
+          "reason": "Issuer numeric origin checked; full auditor scope and important qualifications not reviewed",
           "decision": "PENDING",
-          "model_reason": "HISTORICAL_SCOPE_AND_NOTES_SIGNOFF_REQUIRED",
+          "model_reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
           "scope": "ISSUER",
           "required_evidence": "完整核閱意見、保留範圍及重要性判斷",
           "invalidates_on": "新核閱／重大事項",
           "formal_pass": false
         },
         "tradability": {
-          "stage": "NOT_PROBED",
-          "reason": "No issuer-specific original/reconciliation probe yet",
+          "stage": "SOURCE_CAPTURED",
+          "reason": "20 daily turnovers archived; bid/ask spread and actual executable exit not verified",
           "decision": "PENDING",
           "model_reason": "SINGLE_DAY_QUOTE_IS_NOT_CONTINUOUS_TRADABILITY_CERTIFICATION",
           "scope": "EXECUTION",
@@ -20940,18 +20940,18 @@
           "formal_pass": false
         },
         "forecast_bridge": {
-          "stage": "NOT_PROBED",
-          "reason": "No issuer-specific original/reconciliation probe yet",
+          "stage": "REVIEW_PENDING",
+          "reason": "Dated issuer source, analytical bridge and evidence signoff outstanding",
           "decision": "PENDING",
-          "model_reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
+          "model_reason": "LATEST_EARNINGS_EVENT_REBASED_ISSUER_2027_OPERATING_BRIDGE_REQUIRED",
           "scope": "ISSUER",
           "required_evidence": "量價、產能、稼動、成本、折舊及2027EPS推導",
           "invalidates_on": "經濟輸入／預測方法改變",
           "formal_pass": false
         },
         "insider_claims": {
-          "stage": "NOT_PROBED",
-          "reason": "No issuer-specific original/reconciliation probe yet",
+          "stage": "REVIEW_PENDING",
+          "reason": "Dated issuer source, analytical bridge and evidence signoff outstanding",
           "decision": "PENDING",
           "model_reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
           "scope": "ISSUER",
@@ -20960,8 +20960,8 @@
           "formal_pass": false
         },
         "dividend_window": {
-          "stage": "NOT_PROBED",
-          "reason": "No issuer-specific original/reconciliation probe yet",
+          "stage": "REVIEW_PENDING",
+          "reason": "Dated issuer source, analytical bridge and evidence signoff outstanding",
           "decision": "PENDING",
           "model_reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
           "scope": "CORPORATE_ACTION",
@@ -20970,8 +20970,8 @@
           "formal_pass": false
         },
         "point_in_time": {
-          "stage": "NOT_PROBED",
-          "reason": "No issuer-specific original/reconciliation probe yet",
+          "stage": "REVIEW_PENDING",
+          "reason": "Issuer-specific publication and restatement timestamps not verified",
           "decision": "PENDING",
           "model_reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
           "scope": "SOURCE",
@@ -20980,8 +20980,8 @@
           "formal_pass": false
         },
         "out_of_sample_validation": {
-          "stage": "NOT_PROBED",
-          "reason": "No issuer-specific original/reconciliation probe yet",
+          "stage": "REVIEW_PENDING",
+          "reason": "No frozen PIT trading and total-return backtest",
           "decision": "PENDING",
           "model_reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
           "scope": "STRATEGY",

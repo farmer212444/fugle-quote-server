@@ -1,7 +1,7 @@
-# Evidence dispatch – V8.10.6
+# Evidence dispatch – V8.10.7
 
-研究估計：2026-10-24T07:11:35.814428+08:00；參考價格日：2026-10-22。
-可估值：795；逐家列管：2001；正式新增A+：0。
+研究估計：2026-10-24T07:23:08.965887+08:00；參考價格日：2026-10-22。
+可估值：796；逐家列管：2001；正式新增A+：0。
 此檔只列示證據蒐集與人工覆核工作，不構成品質通過或投資報酬回測。
 
 ## 前50名應驗證候選
@@ -63,18 +63,18 @@
 
 |門檻|待驗股票數|蒐集／覆核路線|
 |---|---:|---|
-|original_eight_quarter_statements|795|FINANCIAL_ORIGINALS|
-|cash_and_working_capital|795|FINANCIAL_CASH|
-|nonoperating_components|795|FINANCIAL_NOTES|
-|fully_diluted_shares|795|CAPITAL_LEGAL|
-|matched_peers_and_cycle|795|VALUATION_REVIEW|
-|management_promises|795|HUMAN_REVIEW|
-|auditor_scope|795|HUMAN_REVIEW|
-|tradability|795|MARKET_HISTORY|
-|forecast_bridge|795|OPERATING_BRIDGE|
-|insider_claims|795|DISCLOSURE_REVIEW|
-|dividend_window|795|CORPORATE_ACTIONS|
-|point_in_time|795|HISTORICAL_PIT|
-|out_of_sample_validation|795|HISTORICAL_BACKTEST|
+|original_eight_quarter_statements|796|FINANCIAL_ORIGINALS|
+|cash_and_working_capital|796|FINANCIAL_CASH|
+|nonoperating_components|796|FINANCIAL_NOTES|
+|fully_diluted_shares|796|CAPITAL_LEGAL|
+|matched_peers_and_cycle|796|VALUATION_REVIEW|
+|management_promises|796|HUMAN_REVIEW|
+|auditor_scope|796|HUMAN_REVIEW|
+|tradability|796|MARKET_HISTORY|
+|forecast_bridge|796|OPERATING_BRIDGE|
+|insider_claims|796|DISCLOSURE_REVIEW|
+|dividend_window|796|CORPORATE_ACTIONS|
+|point_in_time|796|HISTORICAL_PIT|
+|out_of_sample_validation|796|HISTORICAL_BACKTEST|
 
 注意：管理層承諾、查核意見重要性、特殊產業營運假設等需要有可稽核來源的覆核；本排程不會自動標PASS。

@@ -1,4 +1,4 @@
-# V8.10.6 risk evidence audit
+# V8.10.7 risk evidence audit
 
 財報 2026-Q2；價格 2026-10-22。
 
