@@ -1,0 +1,108 @@
+{
+  "schema": "V8106_THREE_ISSUER_GM_REVERSION_INPUTS_V1",
+  "research_asof": "2026-10-24",
+  "last_price_reference_date": "2026-10-22",
+  "unit": "gross_margin_percent",
+  "limitations": [
+    "Prior-year and latest Q2 margins are observations, not FY2027 predictions.",
+    "2027 margin EPS slopes come from normalized V8.10.5 model, not separately confirmed source full audited financial notes.",
+    "Some 2025/2026 Q2 numbers are dated reprints of public statements; primary filing original bytes and first publication timestamps not fully independently certified.",
+    "Sensitivity holds 2027 sales, op expenses, nonop, tax, shares, P/E fixed, except separate PE compression; not a full downside valuation.",
+    "OCF data are normalized H1 observations without independent complete original note certification."
+  ],
+  "cases": {
+    "2027": {
+      "issuer": "大成鋼",
+      "group": "steel_aluminum_distribution",
+      "observation_2025q2": {
+        "gm_pct": 24.35,
+        "release_url": "https://m.moneydj.com/f1a.aspx?a=EDEF72D0-3BF6-45C0-84C5-BC25319458C7",
+        "document_kind": "DATED_REPRINT_OF_PUBLIC_FINANCIAL_STATEMENT",
+        "source_original_pdf_verified": false
+      },
+      "observation_2026q2": {
+        "gm_pct": 30.49,
+        "revenue_k": 35998046,
+        "gross_profit_k": 10975644,
+        "op_profit_k": 7597635,
+        "release_url": "https://m.moneydj.com/f1a.aspx?a=EDEF72D0-3BF6-45C0-84C5-BC25319458C7",
+        "document_kind": "DATED_REPRINT_OF_PUBLIC_FINANCIAL_STATEMENT",
+        "source_original_pdf_verified": false
+      },
+      "observation_2025h1": {
+        "gm_pct": 23.52
+      },
+      "cashflow_residual_review": {
+        "normalized_2026h1_ocf_k": 12480568,
+        "status": "POSITIVE_OCF_BUT_FULL_CYCLE_SUSTAINABILITY_UNCERTIFIED"
+      },
+      "balance_sheet_2026q2_m_ntd": {
+        "inventory": 58967.54,
+        "inventory_2026q1": 61164.31,
+        "inventory_2025q2": 52827.53,
+        "accounts_receivable": 12591.85,
+        "accounts_receivable_2025q2": 9468.81,
+        "noncurrent_pp_e": 47915.68,
+        "noncurrent_pp_e_2025q2": 34478.08,
+        "source": "https://pchome.megatime.com.tw/stock/sto2/sid2027.html",
+        "status": "SECONDARY_REPRINT_NOT_PRIMARY_ORIGINAL_ARCHIVED"
+      }
+    },
+    "4771": {
+      "issuer": "望隼",
+      "group": "contact_lenses",
+      "observation_2025q2": {
+        "gm_pct": 40.77,
+        "release_url": "https://m.moneydj.com/f1a.aspx?a=D1706BB6-E2E6-4D97-A025-D34003E5BC66",
+        "document_kind": "DATED_REPRINT_OF_PUBLIC_FINANCIAL_STATEMENT",
+        "source_original_pdf_verified": false
+      },
+      "observation_2026q2": {
+        "gm_pct": 43.46,
+        "revenue_k": 1196065,
+        "gross_profit_k": 519859,
+        "op_profit_k": 370217,
+        "release_url": "https://m.moneydj.com/f1a.aspx?a=D1706BB6-E2E6-4D97-A025-D34003E5BC66",
+        "document_kind": "DATED_REPRINT_OF_PUBLIC_FINANCIAL_STATEMENT",
+        "source_original_pdf_verified": false
+      },
+      "cashflow_residual_review": {
+        "normalized_2026h1_ocf_k": 676113,
+        "status": "POSITIVE_YTD_OCF_NOT_COMPLETE_AUDITED_CASH_CONVERSION"
+      }
+    },
+    "6206": {
+      "issuer": "飛捷",
+      "group": "industrial_computers",
+      "observation_2025q2": {
+        "gm_pct": 43.9,
+        "release_url": "https://www.flytech.com.tw/investor.php?act=news_view&id=191",
+        "document_kind": "ISSUER_PRESS_RELEASE",
+        "source_original_pdf_verified": false
+      },
+      "observation_2026q2": {
+        "gm_pct": 45.4,
+        "revenue_k": 1882000,
+        "gross_profit_k": 854000,
+        "op_profit_k": 581000,
+        "release_url": "https://www.flytech.com.tw/investor.php?act=news_view&id=191",
+        "document_kind": "ISSUER_PRESS_RELEASE_ROUNDED_NTD_MILLIONS",
+        "source_original_pdf_verified": false
+      },
+      "cashflow_residual_review": {
+        "normalized_2026h1_ocf_k": -97618,
+        "normalized_2026q1_ocf_k": -197541,
+        "normalized_2026q2_standalone_ocf_k": 99923,
+        "status": "H1_OCF_NEGATIVE_DESPITE_Q2_RECOVERY"
+      },
+      "balance_sheet_2026q2_m_ntd": {
+        "inventory": 1510,
+        "inventory_2025q2": 767,
+        "accounts_receivable": 1617,
+        "accounts_receivable_2025q2": 1206,
+        "source": "https://www.flytech.com.tw/investor.php?act=news_view&id=191",
+        "status": "ROUND_NUMBERS_FROM_ISSUER_Q2_FINANCIAL_RELEASE"
+      }
+    }
+  }
+}
