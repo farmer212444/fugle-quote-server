@@ -6,6 +6,7 @@ not a positive cash-quality certificate, not a PIT trading signal.
 import datetime as dt
 import hashlib
 import json
+import math
 from pathlib import Path
 
 SCHEMA='V8B2_6206_ORIGINAL_IR_STOCK_BUILD_NOT_FORMAL_CASH_GATE'
@@ -52,7 +53,8 @@ def check_6206_inventory_original(record,root,asof,history):
     def income(period):
         v=history.get(period) or {}
         if (v.get('code')!='6206' or v.get('market')!='TWSE' or
-            v.get('period')!=period or type(v.get('revenue_ytd_k')) is not int):
+            v.get('period')!=period or type(v.get('revenue_ytd_k')) not in (int,float) or
+            not math.isfinite(v['revenue_ytd_k']) or v['revenue_ytd_k']<=0):
             raise ValueError('6206_IR_OFFICIAL_INCOME_MIRROR_UNAVAILABLE:'+
                 repr(dict(period=period,code=v.get('code'),market=v.get('market'),
                           row_period=v.get('period'),revenue_type=type(v.get('revenue_ytd_k')).__name__)))
