@@ -151,6 +151,8 @@ def run(data_dir,asof,target_date,out_dir=None,variant='current-information'):
         review_issues=[]
         if r['latest_month_reversal_warning']:review_issues.append('最新月營收轉弱')
         if r['reported_ytd_material_nonoperating_gap']:review_issues.append('業外比重較高')
+        if r['reported_ytd_nonoperating_gap_exceeds_pretax']:review_issues.append('業外差額大於稅前淨利')
+        if r['eps_runrate_near_zero_denominator']:review_issues.append('年化EPS分母過小')
         if r['requires_2027_eps_stepup_bridge']:review_issues.append('2027 EPS年化比較差距大')
         if r['pending_offering']:review_issues.append('現增')
         if r['cb_terms_or_shares_unresolved']:review_issues.append('CB/股數')
@@ -170,8 +172,15 @@ def run(data_dir,asof,target_date,out_dir=None,variant='current-information'):
             other='待查' if x['reported_ytd_abs_nonoperating_gap_share_pretax_pct'] is None else f"{x['reported_ytd_abs_nonoperating_gap_share_pretax_pct']:.1f}%"
             eps='待查' if x['ytd_parent_eps_linear_annualized_reference'] is None else f"{x['ytd_parent_eps_linear_annualized_reference']:.2f}"
             gap='待查' if x['target_eps_vs_unseasonalized_ytd_run_rate_pct'] is None else f"{x['target_eps_vs_unseasonalized_ytd_run_rate_pct']:+.1f}%"
+            delta=x['target_eps_minus_ytd_annualized_reference_ntd_per_share']
+            difference='待查' if delta is None else f"{delta:+.2f}元"
+            ratio_note=('⚠️ EPS年化參考值低於0.5元，百分比受微小分母放大，不可當風險大小或機率。'
+                        if x['eps_runrate_near_zero_denominator'] else '')
+            nonop_note=('⚠️ 業外差額絕對值大於稅前淨利，表示本期營業與業外損益有顯著抵銷，不能解讀成穩定業外獲利。'
+                        if x['reported_ytd_nonoperating_gap_exceeds_pretax'] else '')
             report.append(f"- {x['code']} {x['name']}：累計業外差額/稅前淨利（絕對值）{other}；直接年化歸母EPS參考 {eps}；"
-                          f"2027模型EPS較此參考值 {gap}。目前仍缺可簽核的經常性業外明細、產能／訂單／認列及稅後歸母橋接。")
+                          f"2027模型EPS相差 {difference}（{gap}）。{ratio_note}{nonop_note}"
+                          "目前仍缺可簽核的經常性業外明細、產能／訂單／認列及稅後歸母橋接。")
     error_ref=evidence_priority['accounting_error_reference']
     report+=['',
       f"2026 Q2營收樣本外絕對誤差第90百分位 {fmt(error_ref['overall_p90_abs_revenue_error_pct'])}%；"

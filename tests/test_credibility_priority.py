@@ -89,6 +89,36 @@ class EvidenceFirstTests(unittest.TestCase):
         self.assertEqual([bridge,stable],originals)
         self.assertEqual([x['code'] for x in out['top10_evidence_first']],['8383','6206'])
 
+    def test_extreme_nonop_and_near_zero_eps_denominator_remain_descriptive(self):
+        row=issuer('4746',True,37.2)
+        row['base']['eps']=4.0
+        row['nonoperating_bridge']=dict(
+            reported_ytd_abs_gap_share_pretax_pct=857.8,
+            component_assumptions_certified=False)
+        row['eps_bridge_reference']=dict(
+            linear_annualized_ytd_parent_eps_at_model_denominator=.07,
+            target_eps_vs_ytd_linear_annualized_pct=100*(4.069/.07-1),
+            original_operating_bridge_certified=False)
+        before=copy.deepcopy(row)
+        q=build_research_priority([row])
+        a=q['top10_evidence_first'][0]
+        self.assertTrue(a['eps_runrate_near_zero_denominator'])
+        self.assertTrue(a['reported_ytd_nonoperating_gap_exceeds_pretax'])
+        self.assertAlmostEqual(a['target_eps_minus_ytd_annualized_reference_ntd_per_share'],3.93)
+        self.assertIn('YTD_NONOPERATING_GAP_EXCEEDS_ABSOLUTE_PRETAX_PROFIT',a['warning_flags'])
+        self.assertIn('EPS_YTD_RUN_RATE_BELOW_0_5_RATIO_DENOMINATOR_FRAGILE',a['warning_flags'])
+        self.assertFalse(a['formal_Aplus'])
+        self.assertEqual(row,before)
+
+    def test_normal_profit_runrate_does_not_gain_fragility_flag(self):
+        row=issuer('8383',True,67)
+        row['nonoperating_bridge']=dict(reported_ytd_abs_gap_share_pretax_pct=21.1)
+        row['eps_bridge_reference']=dict(linear_annualized_ytd_parent_eps_at_model_denominator=5.27)
+        a=build_research_priority([row])['top10_evidence_first'][0]
+        self.assertTrue(a['reported_ytd_material_nonoperating_gap'])
+        self.assertFalse(a['eps_runrate_near_zero_denominator'])
+        self.assertFalse(a['reported_ytd_nonoperating_gap_exceeds_pretax'])
+
     def test_no_pretax_or_profit_runrate_does_not_fabricate_flag(self):
         base=issuer('A',True,90)
         x=build_research_priority([base])['top10_evidence_first'][0]
