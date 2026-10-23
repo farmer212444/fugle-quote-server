@@ -18,6 +18,7 @@ PRIORITY = ROOT / "rankings/latest_evidence_priority.json"
 GATE = ROOT / "rankings/v891_gate_progress.json"
 TOP20 = ROOT / "rankings/v892_top20_quality_audit.json"
 REPORT = ROOT / "rankings/v8106_cross_sector_evidence_first_shadow.json"
+EVENTS = ROOT / "evidence/v8106_cross_sector_public_events_20261024.json"
 REQUIRED_DATE = "2026-10-22"
 
 WARNING_RULES = (
@@ -42,7 +43,33 @@ def _number(value, label):
     return float(value)
 
 
-def build(primary, official_gate, broad):
+def build(primary, official_gate, broad, material_events=None):
+    if material_events is None:
+        material_events=json.loads(EVENTS.read_bytes())
+    if (material_events.get("schema")!="V8106_PUBLIC_COMPANY_MATERIAL_EVENT_RESEARCH_LEDGER_V1"
+            or material_events.get("research_cutoff")!="2026-10-24"):
+        raise ValueError("MISSING_DATED_PUBLIC_MATERIAL_EVENT_REGISTRY")
+    ev_by_code={}
+    for event in material_events.get("events",[]):
+        key=event.get("code")
+        if key in ev_by_code or key is None:
+            raise ValueError("DUPLICATE_OR_UNIDENTIFIED_MATERIAL_EVENT")
+        date=event.get("event_date")
+        if not isinstance(date,str) or date>REQUIRED_DATE:
+            raise ValueError("FUTURE_OR_UNDEFINED_PUBLIC_EVENT")
+        if (not str(event.get("source_url","")).startswith("https://news.cnyes.com/news/")
+                or event.get("source_type")!="DATED_REPUBLICATION_OF_COMPANY_MATERIAL_DISCLOSURE"
+                or event.get("official_company_original_bytes_sha256") is not None
+                or event.get("original_company_first_available_timestamp_verified") is not False
+                or event.get("legal_liability_or_official_penalty_determined") is not False):
+            raise ValueError("MATERIAL_EVENT_SOURCE_OR_LEGAL_STATUS_MISREPRESENTED")
+        if event.get("remove_from_clean_risk_lane") is not True:
+            raise ValueError("MATERIAL_EVENT_MUST_BLOCK_CLEAN_LANE")
+        ev_by_code[key]=event
+    # This frozen 2026-10-24 research snapshot may not silently drop a
+    # known 2026-10-06 material disclosure just because numerics look healthy.
+    if ev_by_code.get("3130",{}).get("event_id")!="3130_CYBER_RESUME_DISCLOSURE_20261006":
+        raise ValueError("MISSING_KNOWN_3130_CYBER_RISK_EVENT")
     if (primary.get("schema") != "EVIDENCE_FIRST_RESEARCH_QUEUE_V1"
             or primary.get("min_base_upside_pct") != 25
             or primary.get("realized_return_accuracy_calibrated") is not False
@@ -108,6 +135,9 @@ def build(primary, official_gate, broad):
             raise ValueError("OPERATING_CASH_FLOW_FLAG_MISSING")
         if negative_ytd and "UNRESOLVED_NEGATIVE_OPERATING_CASHFLOW" not in severe:
             severe.append("NEGATIVE_YTD_OCF_UNRESOLVED")
+        material_event=ev_by_code.get(code)
+        if material_event is not None:
+            severe.append(material_event["research_risk_flag"])
         phase= SOURCE_FIRST_LANE if not severe else CAUTION_LANE
         # Verified current quarter summaries are NOT full historical PIT, and
         # a vendor or source-calculated PE does not qualify as certified.
@@ -131,6 +161,9 @@ def build(primary, official_gate, broad):
             "formal_pending_gates":len(pending),
             "formal_Aplus":False,"research_quality_lane":phase,
             "high_risk_review_flags":severe,
+            "dated_public_material_event_id":material_event["event_id"] if material_event else None,
+            "dated_public_material_event_date":material_event["event_date"] if material_event else None,
+            "material_event_original_company_mops_attested":False,
             "current_cashflow_ytd_negative":negative_ytd,
             "latest_month_revenue_yoy_pct":round(_number(item["latest_month_revenue_yoy_pct"],"monthly_revenue_yoy"),2),
             "gross_margin_flat_sensitivity_upside_pct":item.get("recent_quarter_gm_flat_2027_sensitivity",{}).get("scenario_price_upside_pct"),
@@ -178,6 +211,8 @@ def build(primary, official_gate, broad):
       "stress_upside_ge30_in_original_current_reconciled_top10_count":stress_ge30,
       "base_upside_ge30_in_original_current_reconciled_top10_count":base_ge30,
       "research_candidates_source_order":rows,
+      "known_public_material_events_included":len(ev_by_code),
+      "known_3130_cyber_event_research_risk_review":True,
       "safer_evidence_review_order_NOT_A_BUY_RANKING":watch,
       "high_upside_but_originals_unverified_examples":broad_rows,
       "limitations":[
@@ -199,7 +234,8 @@ def main():
     a=parser.parse_args()
     j=build(json.loads((a.root/"rankings/latest_evidence_priority.json").read_bytes()),
             json.loads((a.root/"rankings/v891_gate_progress.json").read_bytes()),
-            json.loads((a.root/"rankings/v892_top20_quality_audit.json").read_bytes()))
+            json.loads((a.root/"rankings/v892_top20_quality_audit.json").read_bytes()),
+            json.loads((a.root/"evidence/v8106_cross_sector_public_events_20261024.json").read_bytes()))
     a.out.parent.mkdir(parents=True,exist_ok=True)
     a.out.write_text(json.dumps(j,ensure_ascii=False,indent=2,allow_nan=False)+"\n",encoding="utf-8")
     print(json.dumps({
