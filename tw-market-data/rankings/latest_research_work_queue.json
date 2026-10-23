@@ -1,9 +1,9 @@
 {
   "schema": "RESEARCH_EVIDENCE_WORK_QUEUE_V1",
   "model": "V8.10.6",
-  "estimate_vintage": "2026-10-24T05:11:08.469381+08:00",
+  "estimate_vintage": "2026-10-24T05:16:39.105917+08:00",
   "asof_price_date": "2026-10-22",
-  "source_model_sha256": "20aeb5361b61c1f14c3ebb54d2fc6e0f94e6de62c8c814954c9cb5f98e907dba",
+  "source_model_sha256": "e1ad24a55119f473621b04797f900b1d5382f04abe49fb7ae8577ce88f3bb1e8",
   "issuer_job_count": 128,
   "unresolved_gate_count": 1664,
   "scope": "ISSUERS_INCLUDED_IN_CURRENT_GATE_DIAGNOSTICS_NOT_ALL_TRACKED_COMPANIES",
@@ -13450,11 +13450,11 @@
     },
     {
       "market": "TWSE",
-      "code": "2330",
-      "name": "台積電",
+      "code": "2377",
+      "name": "微星",
       "financial_period": "2026-Q2",
       "reviewed_financial_period": "2026-Q2",
-      "research_upside_pct": 42.23,
+      "research_upside_pct": 42.2,
       "watchlist_focus": false,
       "passed_gate_count": 0,
       "failed_gates": [],
@@ -13479,7 +13479,7 @@
           "scope": "ISSUER",
           "required_evidence": "應收、存貨、應付、CAPEX與資金來源橋接",
           "reason": "Cashflow mirror 8/8; receivable/inventory/capex notes need reconciliation",
-          "model_reason": "MULTI_PERIOD_WORKING_CAPITAL_AND_LIQUIDITY_REVIEW_REQUIRED",
+          "model_reason": "NEGATIVE_OCF_REQUIRES_CYCLE_AND_FUNDING_REVIEW",
           "invalidates_on": "新財報／資金事件"
         },
         {
@@ -13618,11 +13618,11 @@
     },
     {
       "market": "TWSE",
-      "code": "2377",
-      "name": "微星",
-      "financial_period": "2026-Q2",
+      "code": "2330",
+      "name": "台積電",
+      "financial_period": "2026-Q3",
       "reviewed_financial_period": "2026-Q2",
-      "research_upside_pct": 42.2,
+      "research_upside_pct": 41.5,
       "watchlist_focus": false,
       "passed_gate_count": 0,
       "failed_gates": [],
@@ -13636,7 +13636,7 @@
           "scope": "ISSUER",
           "required_evidence": "逐季原始四表、附註、重編及完整性核對",
           "reason": "8 income and 8 cashflow summary periods; original full notes and issuer filing PIT missing",
-          "model_reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
+          "model_reason": "LATEST_CONDENSED_STATEMENTS_ARE_NOT_FULL_NOTES_REVIEW",
           "invalidates_on": "財報／重編更新"
         },
         {
@@ -13647,7 +13647,7 @@
           "scope": "ISSUER",
           "required_evidence": "應收、存貨、應付、CAPEX與資金來源橋接",
           "reason": "Cashflow mirror 8/8; receivable/inventory/capex notes need reconciliation",
-          "model_reason": "NEGATIVE_OCF_REQUIRES_CYCLE_AND_FUNDING_REVIEW",
+          "model_reason": "MULTI_PERIOD_WORKING_CAPITAL_AND_LIQUIDITY_REVIEW_REQUIRED",
           "invalidates_on": "新財報／資金事件"
         },
         {
@@ -13724,7 +13724,7 @@
           "scope": "ISSUER",
           "required_evidence": "量價、產能、稼動、成本、折舊及2027EPS推導",
           "reason": "Dated issuer source, analytical bridge and evidence signoff outstanding",
-          "model_reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
+          "model_reason": "LATEST_EARNINGS_EVENT_REBASED_ISSUER_2027_OPERATING_BRIDGE_REQUIRED",
           "invalidates_on": "經濟輸入／預測方法改變"
         },
         {
@@ -21586,7 +21586,7 @@
   ],
   "shared_strategy_collection_task": {
     "gate": "out_of_sample_validation",
-    "strategy_variant_sha256": "64acd6c6b71c808f7f650ec90cf8c889ea358efd93d9a775614b0142da675a63",
+    "strategy_variant_sha256": "7addd21545ab25ca63be932fa23bbec52996814c8ff65a1d057bfbcd78763dfb",
     "target_date": "2027-12-31",
     "affected_issuers": [
       {
@@ -21981,12 +21981,12 @@
       },
       {
         "market": "TWSE",
-        "code": "2330",
+        "code": "2377",
         "decision": "PENDING"
       },
       {
         "market": "TWSE",
-        "code": "2377",
+        "code": "2330",
         "decision": "PENDING"
       },
       {
@@ -22236,5 +22236,5 @@
   },
   "formal_gate_decisions_changed": 0,
   "certificates_issued": 0,
-  "source_progress_sha256": "62748f649d59f06a8bd1b124719bfb85ae951e9284446a251892711e52c8a3e7"
+  "source_progress_sha256": "8e5d0c7aef46bef6b0958c260160c53164cf2fa7905caef22efbf4021f569e5e"
 }

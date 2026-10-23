@@ -1,6 +1,6 @@
 {
   "model": "V8.10.6",
-  "estimate_vintage": "2026-10-24T05:11:08.469381+08:00",
+  "estimate_vintage": "2026-10-24T05:16:39.105917+08:00",
   "asof_price_date": "2026-10-22",
   "tracked_issuers": 2001,
   "valued_candidates": 795,
@@ -8610,127 +8610,6 @@
       "source_tier": "NORMALIZED_ARCHIVE_AND_CAPTURE_RECEIPTS_NOT_INDEPENDENT_ORIGINAL_ATTESTATION"
     },
     {
-      "code": "2330",
-      "name": "台積電",
-      "market": "TWSE",
-      "research_upside_pct": 42.22801041593873,
-      "source_status": "CERTIFICATION_PENDING",
-      "financial": {
-        "normalized_income_8q_count": 8,
-        "normalized_cashflow_8q_count": 8,
-        "missing_income_periods": [],
-        "missing_cashflow_periods": [],
-        "latest_primary_key_numbers_checked": false,
-        "full_eight_quarter_original_notes_audit": false,
-        "filing_specific_disclosure_timestamps_verified": false,
-        "original_eight_quarter_gate": "PENDING_NOT_CERTIFIED"
-      },
-      "capital": {
-        "issued_share_master_present": true,
-        "reported_bond_count": 0,
-        "unverified_bond_terms": [],
-        "dated_capital_terms_receipt_present": false,
-        "dated_capital_terms_fully_certified": false,
-        "no_listed_bond_does_not_prove_no_other_dilution": true,
-        "fully_diluted_shares_gate": "PENDING_NOT_CERTIFIED"
-      },
-      "market_history": {
-        "available_market_archives": 5,
-        "observed_20_session_issuer_count": 5,
-        "five_day": {
-          "sessions": 5,
-          "first": "2026-10-16",
-          "last": "2026-10-22",
-          "median_turnover_ntd": 66518978315,
-          "min_turnover_ntd": 53857463127,
-          "zero_turnover_days": 0,
-          "hypothetical_position_ntd": 5000000,
-          "participation_cap": 0.2,
-          "exit_sessions_at_median": 0.0,
-          "estimates_are_idealized_not_fills": true
-        },
-        "twenty_day": null,
-        "sixty_day": null,
-        "spread_and_order_book_evidence_available": false,
-        "tradability_gate": "PENDING_NOT_CERTIFIED"
-      },
-      "issuer_historical_market_data": {
-        "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 56,
-        "twenty_day": {
-          "sessions": 20,
-          "first": "2026-09-22",
-          "last": "2026-10-22",
-          "median_turnover_ntd": 62557996571.5,
-          "min_turnover_ntd": 36107476243,
-          "zero_turnover_days": 0,
-          "hypothetical_position_ntd": 5000000,
-          "participation_cap": 0.2,
-          "exit_sessions_at_median": 0.0,
-          "estimates_are_idealized_not_fills": true
-        },
-        "five_day": {
-          "sessions": 5,
-          "first": "2026-10-16",
-          "last": "2026-10-22",
-          "median_turnover_ntd": 66518978315,
-          "min_turnover_ntd": 53857463127,
-          "zero_turnover_days": 0,
-          "hypothetical_position_ntd": 5000000,
-          "participation_cap": 0.2,
-          "exit_sessions_at_median": 0.0,
-          "estimates_are_idealized_not_fills": true
-        },
-        "sixty_day": null,
-        "validated_archive_additions": 4,
-        "validated_archive_added_sessions": [
-          {
-            "date": "2026-10-22",
-            "turnover_ntd": 71536783195,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          },
-          {
-            "date": "2026-10-21",
-            "turnover_ntd": 65515856247,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          },
-          {
-            "date": "2026-10-20",
-            "turnover_ntd": 53857463127,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          },
-          {
-            "date": "2026-10-19",
-            "turnover_ntd": 66518978315,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          }
-        ],
-        "overlapping_sessions_checked": 1,
-        "reused_issuer_history_sessions": 52,
-        "original_capture_is_not_authenticated_issuer_PIT": true,
-        "spread_and_limit_price_execution_not_verified": true,
-        "tradability_gate": "PENDING_NOT_CERTIFIED"
-      },
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ],
-      "ready_for_formal_certification": false,
-      "newly_passed_gates": [],
-      "source_tier": "NORMALIZED_ARCHIVE_AND_CAPTURE_RECEIPTS_NOT_INDEPENDENT_ORIGINAL_ATTESTATION"
-    },
-    {
       "code": "2377",
       "name": "微星",
       "market": "TWSE",
@@ -8823,6 +8702,127 @@
           {
             "date": "2026-10-19",
             "turnover_ntd": 866886083,
+            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
+          }
+        ],
+        "overlapping_sessions_checked": 1,
+        "reused_issuer_history_sessions": 52,
+        "original_capture_is_not_authenticated_issuer_PIT": true,
+        "spread_and_limit_price_execution_not_verified": true,
+        "tradability_gate": "PENDING_NOT_CERTIFIED"
+      },
+      "pending_gates": [
+        "original_eight_quarter_statements",
+        "cash_and_working_capital",
+        "nonoperating_components",
+        "fully_diluted_shares",
+        "matched_peers_and_cycle",
+        "management_promises",
+        "auditor_scope",
+        "tradability",
+        "forecast_bridge",
+        "insider_claims",
+        "dividend_window",
+        "point_in_time",
+        "out_of_sample_validation"
+      ],
+      "ready_for_formal_certification": false,
+      "newly_passed_gates": [],
+      "source_tier": "NORMALIZED_ARCHIVE_AND_CAPTURE_RECEIPTS_NOT_INDEPENDENT_ORIGINAL_ATTESTATION"
+    },
+    {
+      "code": "2330",
+      "name": "台積電",
+      "market": "TWSE",
+      "research_upside_pct": 41.49500311901373,
+      "source_status": "CERTIFICATION_PENDING",
+      "financial": {
+        "normalized_income_8q_count": 8,
+        "normalized_cashflow_8q_count": 8,
+        "missing_income_periods": [],
+        "missing_cashflow_periods": [],
+        "latest_primary_key_numbers_checked": false,
+        "full_eight_quarter_original_notes_audit": false,
+        "filing_specific_disclosure_timestamps_verified": false,
+        "original_eight_quarter_gate": "PENDING_NOT_CERTIFIED"
+      },
+      "capital": {
+        "issued_share_master_present": true,
+        "reported_bond_count": 0,
+        "unverified_bond_terms": [],
+        "dated_capital_terms_receipt_present": false,
+        "dated_capital_terms_fully_certified": false,
+        "no_listed_bond_does_not_prove_no_other_dilution": true,
+        "fully_diluted_shares_gate": "PENDING_NOT_CERTIFIED"
+      },
+      "market_history": {
+        "available_market_archives": 5,
+        "observed_20_session_issuer_count": 5,
+        "five_day": {
+          "sessions": 5,
+          "first": "2026-10-16",
+          "last": "2026-10-22",
+          "median_turnover_ntd": 66518978315,
+          "min_turnover_ntd": 53857463127,
+          "zero_turnover_days": 0,
+          "hypothetical_position_ntd": 5000000,
+          "participation_cap": 0.2,
+          "exit_sessions_at_median": 0.0,
+          "estimates_are_idealized_not_fills": true
+        },
+        "twenty_day": null,
+        "sixty_day": null,
+        "spread_and_order_book_evidence_available": false,
+        "tradability_gate": "PENDING_NOT_CERTIFIED"
+      },
+      "issuer_historical_market_data": {
+        "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
+        "available_sessions": 56,
+        "twenty_day": {
+          "sessions": 20,
+          "first": "2026-09-22",
+          "last": "2026-10-22",
+          "median_turnover_ntd": 62557996571.5,
+          "min_turnover_ntd": 36107476243,
+          "zero_turnover_days": 0,
+          "hypothetical_position_ntd": 5000000,
+          "participation_cap": 0.2,
+          "exit_sessions_at_median": 0.0,
+          "estimates_are_idealized_not_fills": true
+        },
+        "five_day": {
+          "sessions": 5,
+          "first": "2026-10-16",
+          "last": "2026-10-22",
+          "median_turnover_ntd": 66518978315,
+          "min_turnover_ntd": 53857463127,
+          "zero_turnover_days": 0,
+          "hypothetical_position_ntd": 5000000,
+          "participation_cap": 0.2,
+          "exit_sessions_at_median": 0.0,
+          "estimates_are_idealized_not_fills": true
+        },
+        "sixty_day": null,
+        "validated_archive_additions": 4,
+        "validated_archive_added_sessions": [
+          {
+            "date": "2026-10-22",
+            "turnover_ntd": 71536783195,
+            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
+          },
+          {
+            "date": "2026-10-21",
+            "turnover_ntd": 65515856247,
+            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
+          },
+          {
+            "date": "2026-10-20",
+            "turnover_ntd": 53857463127,
+            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
+          },
+          {
+            "date": "2026-10-19",
+            "turnover_ntd": 66518978315,
             "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
           }
         ],
@@ -16733,85 +16733,85 @@
       "automatic_pass_prohibited": true
     },
     {
-      "code": "2330",
-      "name": "台積電",
+      "code": "2377",
+      "name": "微星",
       "gate": "management_promises",
       "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
       "automatic_pass_prohibited": true
     },
     {
-      "code": "2330",
-      "name": "台積電",
+      "code": "2377",
+      "name": "微星",
       "gate": "auditor_scope",
       "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
       "automatic_pass_prohibited": true
     },
     {
-      "code": "2330",
-      "name": "台積電",
+      "code": "2377",
+      "name": "微星",
       "gate": "forecast_bridge",
       "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
       "automatic_pass_prohibited": true
     },
     {
-      "code": "2330",
-      "name": "台積電",
+      "code": "2377",
+      "name": "微星",
       "gate": "matched_peers_and_cycle",
       "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
       "automatic_pass_prohibited": true
     },
     {
-      "code": "2330",
-      "name": "台積電",
+      "code": "2377",
+      "name": "微星",
       "gate": "point_in_time",
       "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
       "automatic_pass_prohibited": true
     },
     {
-      "code": "2330",
-      "name": "台積電",
+      "code": "2377",
+      "name": "微星",
       "gate": "out_of_sample_validation",
       "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
       "automatic_pass_prohibited": true
     },
     {
-      "code": "2377",
-      "name": "微星",
+      "code": "2330",
+      "name": "台積電",
       "gate": "management_promises",
       "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
       "automatic_pass_prohibited": true
     },
     {
-      "code": "2377",
-      "name": "微星",
+      "code": "2330",
+      "name": "台積電",
       "gate": "auditor_scope",
       "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
       "automatic_pass_prohibited": true
     },
     {
-      "code": "2377",
-      "name": "微星",
+      "code": "2330",
+      "name": "台積電",
       "gate": "forecast_bridge",
       "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
       "automatic_pass_prohibited": true
     },
     {
-      "code": "2377",
-      "name": "微星",
+      "code": "2330",
+      "name": "台積電",
       "gate": "matched_peers_and_cycle",
       "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
       "automatic_pass_prohibited": true
     },
     {
-      "code": "2377",
-      "name": "微星",
+      "code": "2330",
+      "name": "台積電",
       "gate": "point_in_time",
       "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
       "automatic_pass_prohibited": true
     },
     {
-      "code": "2377",
-      "name": "微星",
+      "code": "2330",
+      "name": "台積電",
       "gate": "out_of_sample_validation",
       "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
       "automatic_pass_prohibited": true
