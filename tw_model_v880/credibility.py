@@ -59,7 +59,7 @@ def research_priority_entry(row,holdout=None):
         base_eps=base.get('eps'),base_target_price=base.get('target_price'),
         eps_pe_each_minus20_upside_pct=stress,bear_upside_pct=bear_return,
         original_current_numeric_reconciled=source_original,
-        all_eight_quarters_and_notes_verified=False,
+        all_eight_quarters_and_notes_verified='original_eight_quarter_statements' in gate_status.get('gates_passed',[]),
         pending_offering=pending_offering,
         cb_terms_or_shares_unresolved=cb_unresolved,
         pending_gates=list(gate_status.get('gates_pending') or []),
