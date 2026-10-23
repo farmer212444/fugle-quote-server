@@ -16,6 +16,7 @@ import hashlib
 import json
 import pathlib
 import re
+import unicodedata
 import time
 import urllib.error
 import urllib.request
@@ -84,7 +85,9 @@ def parse_api(raw, code, month):
             amounts[field] = int(value)
         identity = str(row[0] or "").strip()
         name = str(row[1] or "").strip()
-        if not identity or not name:
+        # MOPS deliberately leaves related spouses/minors' *names* empty.
+        # Preserve their own economic row rather than drop it or invent identity.
+        if not identity or (not name and "配偶及未成年子女" not in identity):
             raise ValueError("MISSING_HOLDER_ROLE_OR_NAME")
         out.append({"role": identity, "name": name,
                     "security_class": str(row[2] or "").strip(),
@@ -92,6 +95,40 @@ def parse_api(raw, code, month):
                     **amounts,
                     "market_net_shares": amounts["market_buy_shares"]-amounts["market_sell_shares"]})
     return out
+
+
+def provisional_role_dedup(rows):
+    """Research-only duplicate-row signature; NOT unique beneficial-owner ID.
+
+    Multiple roles of one shareholder repeat the same market buys. Grouping
+    by normalized name, security type, opening/closing holdings and flows
+    avoids obvious 5x double counts. Separate owners can coincidentally
+    have identical positions; unnamed family accounts cannot be certified.
+    """
+    if not isinstance(rows, list) or not rows:
+        raise ValueError("NO_REPORTED_HOLDER_ROWS")
+    groups = {}
+    for row in rows:
+        name = re.sub(r"\\s+", "", unicodedata.normalize("NFKC", row["name"])).upper()
+        key = (name, row["security_class"]) + tuple(row[k] for k in
+               ("opening_own_shares", "closing_own_shares",
+                "market_buy_shares", "market_sell_shares",
+                "other_buy_shares", "other_sell_shares"))
+        groups.setdefault(key, []).append(row["role"])
+    buy = sum(k[4] for k in groups)
+    sell = sum(k[5] for k in groups)
+    # name/class => 0,1 ; opening/closing => 2,3 ; market buy/sell => 4,5.
+    return {"schema": "UNVERIFIED_MOPS_ECONOMIC_ROW_SIGNATURE_DEDUP_V1",
+            "total_raw_rows": len(rows), "provisionally_distinct_positions": len(groups),
+            "repeated_role_group_count": sum(len(roles) > 1 for roles in groups.values()),
+            "unidentified_related_position_count": sum(not k[0] for k in groups),
+            "market_buy_shares_provisional": buy, "market_sell_shares_provisional": sell,
+            "market_net_shares_provisional": buy - sell,
+            "market_net_lots_provisional": (buy - sell) / 1000,
+            "account_identity_certified": False,
+            "identity_collision_risk": True,
+            "published_at_verified": False,
+            "formal_insider_quality_pass": False}
 
 
 def capture_single(code, month, output_root, *, opener=None, timeout=25):
@@ -140,6 +177,7 @@ def capture_single(code, month, output_root, *, opener=None, timeout=25):
                "original_response_archive": str(original_path.relative_to(output_root)) if original_path else None,
                "raw_octets": len(raw), "raw_error": error, "parse_error": parse_error,
                "raw_report_rows": len(rows) if rows else None,
+               "provisional_net_market_lots": provisional_role_dedup(rows)["market_net_lots_provisional"] if rows else None,
                "role_deduplication_certified": False,
                "holder_stable_account_identity_certified": False,
                "holdings_rollforward_certified": False,
@@ -148,6 +186,8 @@ def capture_single(code, month, output_root, *, opener=None, timeout=25):
                "formal_a_plus_or_valuation_change": False}
     (directory / "receipt.json").write_bytes(json_bytes(receipt))
     if rows is not None:
+        rollup = provisional_role_dedup(rows)
+        (directory / "unverified_position_rollup.json").write_bytes(json_bytes(rollup))
         (directory / "unverified_rows.json").write_bytes(json_bytes({
             "reporting_month": month, "issuer": code,
             "no_role_deduplication_performed": True,
