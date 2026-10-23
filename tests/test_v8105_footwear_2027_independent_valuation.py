@@ -88,6 +88,23 @@ class FootwearIndependent2027ValuationTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,"PRECHECK_NOT_ELIGIBLE_OR_ALREADY_PROMOTED"):
             evaluate(a,b)
 
+    def test_Aplus_30pct_margin_of_safety_price_is_only_theoretical(self):
+        rows=evaluate(*inputs())["models"]
+        for code,expected in (("9802",53.02),("6965",40.74)):
+            self.assertFalse(rows[code]["subjective_base_is_at_least_30pct_upside"])
+            self.assertAlmostEqual(
+                rows[code]["maximum_theoretical_entry_for_30pct_base_upside_excluding_costs_and_all_gates"],expected,delta=.04)
+            self.assertFalse(rows[code]["formal_Aplus_or_exit_changed"])
+
+    def test_bear_op_margin_can_turn_negative_without_forcing_pe_valuation(self):
+        a,b=inputs()
+        a["companies"]["6965"]["cases"][0]["gross_margin_pct"]=10.0
+        a["companies"]["6965"]["cases"][0]["opex_rate_pct"]=11.0
+        r=evaluate(a,b)["models"]["6965"]["2027_cases"][0]
+        self.assertLess(r["operating_profit_m"],0)
+        self.assertLess(r["attributable_eps"],0)
+        self.assertIsNone(r["scenario_fair_price"])
+
     def test_gm_or_revenue_unit_tampering_rejected(self):
         a,b=inputs()
         a["companies"]["6965"]["cases"][1]["gross_margin_pct"]=105
