@@ -82,6 +82,17 @@ class FootwearIndependent2027ValuationTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,"SCENARIO_ORDER_OR_COMPLETENESS"):
             evaluate(a,b)
 
+    def test_PE_compression_can_wipe_out_base_upside(self):
+        companies=evaluate(*inputs())["models"]
+        ji=companies["9802"]
+        cj=companies["6965"]
+        self.assertAlmostEqual(ji["current_price_implied_PE_given_subjective_2027_Base_EPS"],12.72,places=2)
+        self.assertAlmostEqual(cj["current_price_implied_PE_given_subjective_2027_Base_EPS"],18.21,places=2)
+        self.assertLess(ji["Base_PE_stress_minus_3_fair"],ji["reference_close_twd"])
+        self.assertLess(cj["Base_PE_stress_plus_3_fair"],cj["reference_close_twd"])
+        self.assertAlmostEqual(ji["2027_cases"][1]["hypothetical_diluted_fair_price"],62.66,delta=.02)
+        self.assertAlmostEqual(cj["2027_cases"][1]["hypothetical_diluted_fair_price"],48.15,delta=.02)
+
     def test_prechecks_not_a_trade_eligible_issuer(self):
         a,b=inputs()
         b["company_rows"][1]["strategy_A_publicly_executable_signal"]=True
