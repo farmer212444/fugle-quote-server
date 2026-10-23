@@ -88,6 +88,10 @@ def research_priority_entry(row,holdout=None):
     if cb_unresolved:warning.append('CB_TERMS_OR_DENOMINATOR_NOT_SIGNED_OFF')
     if _finite(ocf) and ocf<0:warning.append('NEGATIVE_OCF_REQUIRES_WORKING_CAPITAL_BRIDGE_NOT_AUTOMATIC_FAIL')
     if ocf is None:warning.append('OCF_SOURCE_INCOMPLETE')
+    if cash_quarter_recovery:
+        warning.append('Q2_OCF_POSITIVE_WHILE_PRIOR_Q1_NEGATIVE_NOT_SUSTAINED_PROOF')
+    if cash_quarter.get('status')=='EFFECTIVE_CASHFLOW_SOURCE_MISMATCH_RECONCILIATION_REQUIRED':
+        warning.append('OCF_PRIMARY_AND_NORMALIZED_SOURCES_REQUIRE_RECONCILIATION')
     if special:warning.append('SPECIALIST_BUSINESS_FORECAST_REQUIRED')
     if row.get('margin_recovery',{}).get('applied'):warning.append('MARGIN_RECOVERY_NOT_ISSUER_CERTIFIED')
     margin_velocity=(row.get('margin_bridge') or {}).get('quarter_margin_velocity') or {}
