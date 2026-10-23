@@ -47,6 +47,18 @@ def research_priority_entry(row,holdout=None):
     bear_return=100*(bearprice/close-1) if _finite(bearprice) else None
     # This is the same target horizon's algebraic sensitivity, not a stochastic VaR.
     conservative_positive=_finite(stress) and stress>=0
+    trend=(row.get('revenue_bridge') or {}).get('trend_inputs') or {}
+    latest_yoy=trend.get('latest_month_yoy')
+    ytd_yoy=trend.get('monthly_ytd_yoy')
+    latest_month_yoy_pct=100*latest_yoy if _finite(latest_yoy) else None
+    ytd_revenue_yoy_pct=100*ytd_yoy if _finite(ytd_yoy) else None
+    # A single month is a dated monitoring signal, never a confirmed operating
+    # turn, forecast revision, formal gate failure, or automatic sell order.
+    latest_month_reversal_warning=(latest_month_yoy_pct is not None
+        and ytd_revenue_yoy_pct is not None
+        and latest_month_yoy_pct<=-10 and ytd_revenue_yoy_pct>0)
+    if latest_month_reversal_warning:
+        warning.append('LATEST_MONTH_REVENUE_FELL_AT_LEAST_10PCT_YOY_WHILE_YTD_POSITIVE')
     forecast_growth=(row.get('revenue_bridge') or {}).get('assumed_annual_growth')
     if _finite(forecast_growth) and forecast_growth>=.2:
         warning.append('HIGH_ASSUMED_GROWTH_UNVERIFIED_2027_EXTRAPOLATION')
@@ -67,6 +79,11 @@ def research_priority_entry(row,holdout=None):
         recommendation_blocked=bool(row.get('recommendation_blocked')),
         warning_flags=warning,
         forward_growth_assumption_pct=100*forecast_growth if _finite(forecast_growth) else None,
+        latest_month_revenue_yoy_pct=latest_month_yoy_pct,
+        ytd_revenue_yoy_pct=ytd_revenue_yoy_pct,
+        latest_month_reversal_warning=latest_month_reversal_warning,
+        one_month_reversal_is_certified_trend=False,
+        reversal_warning_changes_base_eps_or_pe=False,
         research_decision='REVIEW_ONLY_NOT_BUY'
     )
     # Explicit, auditable lexicographic research-order policy:
