@@ -55,5 +55,24 @@ class HistoricalFinancialBackfill(unittest.TestCase):
         for k in ('base','bear','bull','formal_Aplus','formal_Aplusplus'):
             self.assertEqual(original[k],changed[k])
 
+    def test_final_offline_refresh_counts_shared_batches_for_both_targets(self):
+        with tempfile.TemporaryDirectory() as t:
+            fin=Path(t)/'fundamentals';fin.mkdir()
+            manifest=fin/'latest_scan.json';manifest.write_text('{"current":true}')
+            rows=[dict(code=str(1000+i)) for i in range(100)]
+            with patch.object(collector,'FIN',fin),patch.object(collector,'download',side_effect=AssertionError('Offline')):
+                first=collector.scan(dt.date(2024,12,31),0,True,archive_only=True,extra_training_quarters=1)
+                shared=fin/'2024-Q3/TWSE_income.json';shared.parent.mkdir(parents=True)
+                shared.write_text(json.dumps(dict(period='2024-Q3',market='TWSE',kind='income',rows=rows)))
+                second=collector.scan(dt.date(2025,12,31),0,True,archive_only=True,extra_training_quarters=1)
+                final=collector.scan(dt.date(2024,12,31),0,True,archive_only=True,extra_training_quarters=1)
+            self.assertEqual(first['verified_batches'],0)
+            self.assertEqual(second['verified_batches'],1)
+            self.assertEqual(final['verified_batches'],1)
+            self.assertEqual(final['loaded_batch_keys'],['2024-Q3/TWSE/income'])
+            self.assertEqual(len(final['missing_batch_keys']),35)
+            self.assertEqual(manifest.read_text(),'{"current":true}')
+            self.assertEqual(final['admitted_historical_PIT_batches'],0)
+
 
 if __name__=='__main__':unittest.main()

@@ -378,6 +378,9 @@ def scan(asof, max_fetches=12, offline=False, *, archive_only=False, extra_train
                      required_periods=[f'{y}-Q{q}' for y,q in want],
                      observed_at=dt.datetime.now(dt.timezone.utc).isoformat(),
                      verified_batches=len(loaded),missing_batches=len(tasks)-len(loaded),
+                     loaded_batch_keys=loaded,
+                     missing_batch_keys=[f'{y}-Q{q}/{market}/{kind}' for y,q,market,kind in tasks
+                                         if f'{y}-Q{q}/{market}/{kind}' not in loaded],
                      new_batches_this_run=saved,failures=errors,
                      status='ALL_MIRRORS_PRESENT_PIT_UNVERIFIED' if len(loaded)==len(tasks) else 'PARTIAL',
                      training_history_is_separate_from_eight_quarter_forecast_window=True,

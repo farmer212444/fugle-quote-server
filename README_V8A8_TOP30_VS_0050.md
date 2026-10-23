@@ -26,15 +26,18 @@ It **does not** declare that TOP30 beats 0050, and it does **not** place orders.
 4. Publishes `latest_status.json` with explicitly **null** model/0050/index returns, alpha, drawdown and hit rate until independently verified execution, complete company actions and benchmark history exist.
 5. Will run in the **existing** V8.8.2 research GitHub Action after the freeze/observation phases. **No new cron**.
 6. Tests prove activation/first monthly signal, idempotence, tamper resistance, policy-change rejection, A+ separation, and no fake performance.
+7. Existing TWSE/TPEx history collectors pin the exact frozen monthly picks as collection obligations. Leaving today's ranking or quote universe does not remove an issuer from collection; an absent quote remains missing evidence, never a zero loss or an assumed fill. Collection priorities also retain the separate broad-Top30/TAIEX diagnostic without combining its performance with this primary experiment.
+8. `python scripts/forward_benchmark_sources.py --max-requests 2` collects original **unadjusted** 0050 monthly OHLC/turnover for frozen cohorts in the existing TWSE history workflow. Durable original bytes, hashes and actual capture clocks are checked against reparsed normalized rows. `benchmarks/0050/latest_source_status.json` reports missing source months, reference-date coverage and failures; it never computes returns. A month with one valid session is accepted, so collection can start on the first trading day of a new month. 0050 stays separate from the stock-ranking universe.
 
 ## Outstanding — do not mark success yet
 
-This commit does **not** implement/verify matched full-history execution returns or the 0050 benchmark collector. To publish genuine alpha, add an independent receipt-backed, timestamped official 0050/index total-return collector and issuer corporate-action registry, next-open/partial-fill evaluator using `tw_model_v880.execution.net_trade`, and out-of-sample inference respecting non-overlapping horizons and trial multiplicity. Include brokerage/tax/ETF cost differences. Until these are complete, report is correctly `MONTHLY_TOP30_FROZEN_AWAITING_VERIFIED_FILLS_AND_BENCHMARK` with **null returns**.
+The original 0050 quote collector is implemented; matched full-history **total returns and execution results remain unverified**. To publish genuine alpha, add a complete source-backed 0050/issuer corporate-action registry (dividends, splits and delistings), next-open/partial-fill evaluator using `tw_model_v880.execution.net_trade`, and out-of-sample inference respecting non-overlapping horizons and trial multiplicity. Official daily total turnover does not prove available volume at the opening auction. Include brokerage/tax/ETF cost differences. Until these are complete, the primary experiment remains `MONTHLY_TOP30_FROZEN_AWAITING_VERIFIED_FILLS_AND_BENCHMARK` with **null returns**.
 
 ### Useful testing commands
 
 ```bash
 python -m unittest -v tests.test_v8a8_forward_top30_0050
+python -m unittest -v tests.test_forward_benchmark_sources
 python scripts/v8a8_forward_top30_0050.py
 ```
 

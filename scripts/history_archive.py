@@ -21,18 +21,57 @@ HOST_PREFIXES = {'TWSE': 'https://www.twse.com.tw/rwd/zh/afterTrading/STOCK_DAY?
 def outstanding_benchmark_codes(root,market):
     """Collection priority only; never substitute it for a PIT selection universe."""
     path=Path(root)/'rankings/latest_benchmark_validation.json'
-    if not path.exists():return []
-    doc=json.loads(path.read_text())
-    if doc.get('schema')!='TOP30_VS_TAIEX_TR_V1':
-        raise ValueError('UNKNOWN_BENCHMARK_COLLECTION_QUEUE_SCHEMA')
     codes=[]
-    for row in doc['collection_queue']:
+    rows=[]
+    if path.exists():
+        doc=json.loads(path.read_text())
+        if doc.get('schema')!='TOP30_VS_TAIEX_TR_V1':
+            raise ValueError('UNKNOWN_BENCHMARK_COLLECTION_QUEUE_SCHEMA')
+        rows.extend(doc['collection_queue'])
+    # The primary monthly/0050 experiment has a different selection rule from
+    # the broad TAIEX diagnostic. Collect both without mixing their outcomes.
+    for selection in frozen_forward_selections(root):
+        rows.extend(selection['research_top30'])
+    for row in rows:
         if row.get('market')!=market:continue
         code=row.get('code')
         if not isinstance(code,str) or not re.fullmatch(r'\d{4}',code):
             raise ValueError('INVALID_BENCHMARK_COLLECTION_ISSUER')
         if code not in codes:codes.append(code)
     return codes
+
+
+def frozen_forward_selections(root):
+    """Read immutable monthly picks, even after an issuer leaves today's quotes.
+
+    These are collection obligations, not evidence of listing, fills or PIT.
+    Keep all cohorts until a separately verified outcome can retire them.
+    """
+    from scripts.v8a8_forward_top30_0050 import CONFIG, OUT, SCHEMA, verify_locked, aware
+    root=Path(root)
+    paths=sorted((root/OUT/'monthly').glob('*.json'))
+    if not paths:return []
+    policy=json.loads((root/CONFIG).read_text())
+    selections=[]
+    for path in paths:
+        doc=verify_locked(json.loads(path.read_text()),policy)
+        if (doc.get('schema')!=SCHEMA or doc.get('month')!=path.stem
+                or not re.fullmatch(r'20\d{2}-(0[1-9]|1[0-2])',path.stem)):
+            raise ValueError('FROZEN_FORWARD_SELECTION_IDENTITY_MISMATCH')
+        signal=aware(doc['archive_eligible_signal_at'])
+        committed=aware(doc['selection_committed_at_utc'])
+        entry=aware(doc['next_eligible_open_only_after'])
+        if signal>committed or entry<committed:
+            raise ValueError('FROZEN_FORWARD_SELECTION_CLOCK_MISMATCH')
+        seen=set()
+        for row in doc['research_top30']:
+            key=(row.get('market'),row.get('code'))
+            if (key[0] not in HOST_PREFIXES or not isinstance(key[1],str)
+                    or not re.fullmatch(r'\d{4}',key[1]) or key in seen):
+                raise ValueError('FROZEN_FORWARD_SELECTION_SECURITY_MISMATCH')
+            seen.add(key)
+        selections.append(doc)
+    return selections
 
 
 def digest(raw):
