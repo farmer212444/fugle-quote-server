@@ -1,0 +1,35 @@
+name: V8.10.6 Cross-Sector 2027 Risk Shadow
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/2027-cross-sector-margin-safety-20261024
+    paths:
+      - 'scripts/v8106_cross_sector_2027_shadow.py'
+      - 'tests/test_v8106_cross_sector_2027_shadow.py'
+      - '.github/workflows/v8106-cross-sector-risk-shadow.yml'
+permissions:
+  contents: write
+jobs:
+  freeze-evidence-first-cross-sector:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify fiscal date, price, source, cash quality and no A+ promotion
+        run: python -m unittest -v tests.test_v8106_cross_sector_2027_shadow
+      - name: Freeze independent preliminary cross-sector quality/risk assessment
+        run: python scripts/v8106_cross_sector_2027_shadow.py
+      - name: Archive scorecard in separate unmerged research branch
+        if: success() && github.ref == 'refs/heads/research/2027-cross-sector-margin-safety-20261024'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add tw-market-data/rankings/v8106_cross_sector_evidence_first_shadow.json
+          if ! git diff --cached --quiet; then
+            git commit -m "data: source-first cross-sector 2027 provisional ranking and stress caution"
+            git push origin HEAD:research/2027-cross-sector-margin-safety-20261024
+          fi
