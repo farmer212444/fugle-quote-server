@@ -247,6 +247,8 @@ def build(primary, official_gate, broad, material_events=None, industry_stress=N
       "stress_rule":"BOTH_FORWARD_EPS_AND_PE_MINUS20_PERCENT_ONE_AT_A_TIME_ADJUSTED_MULTIPLICATIVELY",
       "stress_upside_ge30_in_original_current_reconciled_top10_count":stress_ge30,
       "base_upside_ge30_in_original_current_reconciled_top10_count":base_ge30,
+      "source_reconciled_top10_without_identified_earnings_cycle_cashflow_or_governance_flags_count":sum(not row["high_risk_review_flags"] for row in rows),
+      "all_top10_formal_13_gates_still_pending":all(row["formal_pending_gates"]==13 for row in rows),
       "research_candidates_source_order":rows,
       "known_public_material_events_included":len(ev_by_code),
       "newly_joined_margin_cashflow_issuer_count":len(stress_by_code),
