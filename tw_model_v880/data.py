@@ -147,7 +147,7 @@ class MarketData:
             if state.get('blocks_current_decision'):
                 self.errors.append(dict(source='issuer_earnings_event:'+code,error=state.get('reason',state['status'])))
         for event in self.earnings_events.values():
-            self.receipt(self.path(event['archive_path']),'ISSUER_SELF_REPORTED_EARNINGS_TABLE_RECONCILED_NOT_AUDITED')
+            self.receipt(self.path(event['archive_path']),'ISSUER_ORIGINAL_EARNINGS_TABLE_RECONCILED_NOT_FULL_NOTES_CERTIFICATION')
         from .governance import load_governance_reviews
         self.governance_reviews,governance_errors,governance_receipts=load_governance_reviews(self.root,asof)
         self.errors.extend(governance_errors)

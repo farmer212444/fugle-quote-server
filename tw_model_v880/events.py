@@ -81,6 +81,40 @@ def parse_press(pages):
     return dict(current=current, prior=prior, single_quarter=single)
 
 
+def condensed_event(root, code, doc, cutoff, financial_period, reader):
+    """Issuer-specific adapter; a rounded summary never certifies full notes."""
+    from .tsmc_earnings import RECIPE as TSMC_RECIPE, SOURCE_KIND, parse_tsmc
+    period = doc['financial_period']
+    if quarter_key(period) <= quarter_key(financial_period):
+        return None, None
+    if timestamp(doc['captured_at_utc']) > cutoff:
+        return None, dict(status='FUTURE_CAPTURE_NOT_USED', blocks_current_decision=False)
+    if code != '2330' or period != '2026-Q3' or doc.get('extraction_recipe') != TSMC_RECIPE:
+        raise ValueError('NEW_ISSUER_EARNINGS_EXTRACTION_RECIPE_REQUIRED')
+    url = doc['source_url']
+    if urlparse(url).scheme != 'https' or urlparse(url).hostname != 'investor.tsmc.com':
+        raise ValueError('EARNINGS_PUBLISHER_HOST_MISMATCH')
+    rel = Path(doc['archive_path'])
+    original = (root / rel).resolve()
+    if rel.is_absolute() or '..' in rel.parts or root not in original.parents:
+        raise ValueError('EARNINGS_UNSAFE_ARCHIVE_PATH')
+    raw = original.read_bytes()
+    if hashlib.sha256(raw).hexdigest() != doc.get('sha256') or len(raw) != doc.get('bytes'):
+        raise ValueError('EARNINGS_ORIGINAL_BYTES_MISMATCH')
+    if not raw.startswith(b'%PDF-'):
+        raise ValueError('EARNINGS_NOT_A_PDF')
+    facts = parse_tsmc(reader(original))
+    event = dict(code=code, financial_period=period, prior_period='2025-Q3',
+                 source_kind=SOURCE_KIND, available_at=doc['captured_at_utc'],
+                 source_url=url, archive_path=doc['archive_path'], source_sha256=doc['sha256'],
+                 extraction_recipe=TSMC_RECIPE, document_pages=[1, 2, 3, 4], **facts,
+                 original_numeric_table_reconciled=True,
+                 historical_issuer_publication_PIT_verified=False, formal_quality_pass=False)
+    event['event_sha256'] = digest(event)
+    return event, dict(status='NEW_ORIGINAL_EARNINGS_RECONCILED', period=period,
+                       event_sha256=event['event_sha256'], blocks_current_decision=False)
+
+
 def load_earnings_events(root, asof, financial_period, reader=pdf_text):
     """Return usable original events and per-company failure/isolation records."""
     root = Path(root).resolve()
@@ -92,6 +126,16 @@ def load_earnings_events(root, asof, financial_period, reader=pdf_text):
             bundle = json.loads(path.read_text(encoding="utf-8"))
             if bundle.get("issuer") != code:
                 raise ValueError("EARNINGS_ARCHIVE_ISSUER_MISMATCH")
+            for doc in bundle.get('documents', []):
+                if doc.get('document_kind') != 'quarterly_condensed_financial_statements':
+                    continue
+                event, state = condensed_event(root, code, doc, cutoff, financial_period, reader)
+                if state is not None:
+                    states[code] = state
+                if event is not None:
+                    if code in events and events[code]['event_sha256'] != event['event_sha256']:
+                        raise ValueError('EARNINGS_MULTIPLE_ORIGINAL_VERSIONS_REVIEW_REQUIRED')
+                    events[code] = event
             documents = [d for d in bundle.get("documents", []) if
                          d.get("document_kind") == "news" and "自結財報" in d.get("title", "")]
             for doc in documents:

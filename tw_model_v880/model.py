@@ -36,6 +36,7 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
     latest=rs[data.period]
     rev=data.revenue.get(code);e=data.evidence;master=e.get('master',{}).get(code)
     event=getattr(data,'earnings_events',{}).get(code)
+    condensed=bool(event and event['source_kind']=='ISSUER_CONDENSED_FINANCIAL_STATEMENTS_UNAUDITED')
     valuation_period=event['financial_period'] if event else data.period
     def unavailable(reason):return dict(code=code,name=latest.get('name'),market=market,status=reason,rankable=False,exclusion_reasons=[reason])
     if not p:return unavailable('REFERENCE_PRICE_MISSING')
@@ -66,12 +67,13 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
         if y!=old_year or q!=old_q+1:raise ValueError('EARNINGS_EVENT_REQUIRES_ADJACENT_COMPARABLE_QUARTER')
         old_primary=data.primary(code)
         old_values=old_primary['values'] if old_primary else data.detailed_values(key,data.period)
+        tolerance=1000 if condensed else 1
         for field in ('revenue_k','gross_profit_k','operating_profit_k','pretax_profit_k','net_income_k','parent_net_income_k'):
             old_value=number((old_values or {}).get(field))
-            if old_value is None or abs(event['current'][field]-event['single_quarter'][field]-old_value)>1:
+            if old_value is None or abs(event['current'][field]-event['single_quarter'][field]-old_value)>tolerance:
                 raise ValueError('EARNINGS_EVENT_PRIOR_YTD_OR_RESTATEMENT_NOT_RECONCILED_'+field)
         for a,b in [('revenue_k','revenue_ytd_k'),('gross_profit_k','gross_profit_ytd_k'),('operating_profit_k','operating_profit_ytd_k')]:
-            if abs(event['prior'][a]-number(pr[b]))>1:raise ValueError('EARNINGS_EVENT_PRIOR_YEAR_RESTATEMENT_NOT_RECONCILED_'+a)
+            if abs(event['prior'][a]-number(pr[b]))>tolerance:raise ValueError('EARNINGS_EVENT_PRIOR_YEAR_RESTATEMENT_NOT_RECONCILED_'+a)
             pr[b]=event['prior'][a]
     current={'revenue_k':number(latest['revenue_ytd_k']),'gross_profit_k':number(latest['gross_profit_ytd_k']),'operating_profit_k':number(latest['operating_profit_ytd_k'])}
     if cur:current.update({k:v for k,v in cur.items() if v is not None})
@@ -87,7 +89,7 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
     if primary:
         for a,b in [('revenue_k','revenue_ytd_k'),('gross_profit_k','gross_profit_ytd_k'),('operating_profit_k','operating_profit_ytd_k')]:
             if abs(current[a]-number(latest[b]))>1:raise ValueError('PRIMARY_MIRROR_'+a+'_MISMATCH')
-    elif event:warnings.append('LATEST_EARNINGS_IS_ISSUER_SELF_REPORT_NOT_REVIEWED_FULL_STATEMENTS')
+    elif event:warnings.append('LATEST_CONDENSED_STATEMENTS_NOT_FULL_NOTES_OR_AUDITOR_REVIEW' if condensed else 'LATEST_EARNINGS_IS_ISSUER_SELF_REPORT_NOT_REVIEWED_FULL_STATEMENTS')
     else:warnings.append('CURRENT_DETAIL_IS_OFFICIAL_BATCH_SUMMARY_NOT_ORIGINAL_ISSUER_NOTES')
     if not event:
         for a,b in [('revenue_k','revenue_ytd_k'),('gross_profit_k','gross_profit_ytd_k'),('operating_profit_k','operating_profit_ytd_k')]:
@@ -132,6 +134,12 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
             nonop=nofy['sensitivity_gap_ex_volatile_k']+no['sensitivity_gap_ex_volatile_k']-nopr['sensitivity_gap_ex_volatile_k'];nonop_status='OBSERVED_COMPONENT_ZERO_FX_FV_DISPOSAL_SENSITIVITY_IMPAIRMENT_RETAINED'
         elif no['sensitivity_gap_ex_volatile_k'] is not None:
             nonop=no['sensitivity_gap_ex_volatile_k']*4/q;nonop_status='YTD_COMPONENT_SENSITIVITY_ANNUAL_SEASONALITY_UNVERIFIED'
+    elif condensed and fyvals.get('pretax_profit_k') is not None:
+        # The condensed "other gains" line is not a recurring-profit bridge.
+        # Preserve the prior model's FY baseline instead of adding its YTD jump.
+        nonop=fyvals['pretax_profit_k']-fyvals['operating_profit_k']
+        nonop_status='PRIOR_FULL_YEAR_BASELINE_UNCHANGED_PENDING_COMPONENT_REVIEW'
+        warnings.append('CURRENT_NONOPERATING_GAINS_NOT_EXTRAPOLATED_COMPONENT_REVIEW_REQUIRED')
     elif event and fyvals.get('pretax_profit_k') is not None:
         nonop=(fyvals['pretax_profit_k']-fyvals['operating_profit_k']+event['current']['nonoperating_k']-event['prior']['nonoperating_k'])
         nonop_status='ISSUER_SELF_REPORT_YTD_NONOPERATING_DELTA_WITH_PRIOR_FY_COMPONENTS_UNRESOLVED'
@@ -141,6 +149,7 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
     fraction=current['parent_net_income_k']/current['net_income_k'] if current['net_income_k']>0 else None
     if fraction is None or not 0<fraction<=1.2:fraction=1.;warnings.append('PARENT_PROFIT_FRACTION_ASSUMED_NOT_VERIFIED')
     weighted=e.get('weighted_diluted_disclosed',{}).get(code) if primary else None
+    if condensed:weighted=event['disclosed_weighted_diluted_shares']
     share=share_scenarios(master['issued_shares'],e.get('bonds',{}).get(code,[]),weighted)
     if share['unresolved_terms']:warnings.append('POST_SNAPSHOT_CB_TERMS_UNVERIFIED')
     own=[v['pe'] for v in e.get('pe_history',{}).get(code,[])];peers=[v['pe'] for v in e.get('peers',{}).get(master['industry_code'],[]) if v['code']!=code]
@@ -171,13 +180,30 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
     cash_primary=data.primary(code)
     if cash_primary:
         cash_values=cash_primary['values'];ocf=cash_values.get('ocf_k');ppe=cash_values.get('ppe_cash_flow_signed_k');prepaid=cash_primary.get('equipment_prepaid_signed_k');cash_k=cash_values.get('cash_k')
-    if event:warnings.append('CASHFLOW_AND_NOTES_STILL_REFER_TO_PRIOR_REVIEWED_PERIOD')
+    cashflow_period=data.period
+    if condensed:
+        cash=event['cashflow']
+        if ocf is None or abs(ocf-cash['previous_ytd_ocf_k'])>1000:
+            raise ValueError('EARNINGS_EVENT_PRIOR_YTD_CASHFLOW_NOT_RECONCILED')
+        ocf=cash['ocf_k'];ppe=cash['ppe_cash_flow_signed_k'];cash_k=cash['cash_k']
+        prepaid=cash['equipment_prepaid_signed_k'];cashflow_period=event['cashflow_period']
+        warnings.append('LATEST_CONDENSED_CASHFLOW_AVAILABLE_FULL_NOTES_REVIEW_STILL_PENDING')
+    elif event:warnings.append('CASHFLOW_AND_NOTES_STILL_REFER_TO_PRIOR_REVIEWED_PERIOD')
     capital_event=e.get('issuer_events',{}).get(code);div=put=None
     if capital_event:
         div=capital_event['dividend']['indicative_cash_twd']/1000;put=capital_event['convertible_put']['full_exercise_sensitivity_twd']/1000;warnings.append('OLD_CASH_DIVIDEND_AND_CB_PUT_STATIC_SENSITIVITY_ONLY')
     flow=liquidity(cash_k,ocf,ppe,prepaid,div,put)
     flow['operating_cashflow_quarter_bridge']=operating_cashflow_quarter_bridge(
         data.cash.get(key,{}),data.period,ocf)
+    if condensed:
+        flow['operating_cashflow_quarter_bridge']=dict(
+            status='ISSUER_CONDENSED_YTD_AND_STANDALONE_CASHFLOW_RECONCILED',
+            period=cashflow_period,previous_period=data.period,
+            previous_ytd_ocf_k=cash['previous_ytd_ocf_k'],latest_ytd_ocf_k=ocf,
+            latest_standalone_ocf_k=cash['single_quarter_ocf_k'],
+            original_cash_notes_reconciled=False,working_capital_component_bridge_certified=False,
+            one_quarter_improvement_is_not_sustained_cash_conversion=True,
+            source_sha256=event['source_sha256'])
     if ocf is not None and ocf<0:warnings.append('NEGATIVE_OCF_CYCLE_AND_COLLECTION_REVIEW')
     if gm_now<gm_prior:warnings.append('YTD_GROSS_MARGIN_DECLINED')
     leading_signal=revenue_leading_signal(my,yy,gh,gm_now,gm_prior)
@@ -199,7 +225,7 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
             gates['auditor_scope']=gate(
                 'PENDING','ISSUER_ORIGINAL_PDF_QUALIFIED_SCOPE_UNREVIEWED_SUBSIDIARIES_INCOMPLETE_RECONCILIATION')
     if event:
-        gates['original_eight_quarter_statements']=gate('PENDING','LATEST_SELF_REPORT_IS_NOT_REVIEWED_QUARTERLY_STATEMENTS')
+        gates['original_eight_quarter_statements']=gate('PENDING','LATEST_CONDENSED_STATEMENTS_ARE_NOT_FULL_NOTES_REVIEW' if condensed else 'LATEST_SELF_REPORT_IS_NOT_REVIEWED_QUARTERLY_STATEMENTS')
         gates['forecast_bridge']=gate('PENDING','LATEST_EARNINGS_EVENT_REBASED_ISSUER_2027_OPERATING_BRIDGE_REQUIRED')
     # A provisional normalized Base cannot inherit a generic forecast PASS:
     # the issuer-specific recovery mechanism needs a documented signoff.
@@ -267,7 +293,7 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
     if pe is None:exclusions.append('PE_SAMPLE_INSUFFICIENT')
     if base['eps']<=0:exclusions.append('NONPOSITIVE_EARNINGS_REQUIRES_NON_PE_VALUATION')
     return dict(code=code,name=latest.get('name'),market=market,industry=industry,financial_period=valuation_period,
-      reviewed_financial_period=data.period,cashflow_financial_period=data.period,forecast_binding=binding,
+      reviewed_financial_period=data.period,cashflow_financial_period=cashflow_period,forecast_binding=binding,
       fresh_earnings_update=dict(applied=bool(event),source_kind=event['source_kind'] if event else None,event=event,
         method='EXISTING_CALIBRATED_ACCOUNTING_EQUATIONS_WITH_NEW_RECONCILED_YTD_FACTS' if event else None,
         annual_forecast_still_requires_issuer_operating_bridge=True,
@@ -275,7 +301,7 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
       reference_close=close,single_day_turnover_ntd=turnover,
       liquidity_research_band=('SHADOW_BELOW_1M_OR_PRICE_FLOOR' if thin else 'RESEARCH_1M_TO_12M_PENDING_EXECUTION' if low_turnover_review else 'RESEARCH_AT_LEAST_12M_PENDING_EVIDENCE'),
       price_date=data.price_date,revenue_month=data.revenue_month,estimate_vintage=asof,target_date=target_date,
-      source_tier='ISSUER_SELF_REPORTED_ORIGINAL_TABLE' if event else 'ORIGINAL_CURRENT_ISSUER_NUMERICS' if primary else 'OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL',rankable=rankable,point_valuation_available=point,
+      source_tier='ISSUER_CONDENSED_ORIGINAL_STATEMENTS' if condensed else 'ISSUER_SELF_REPORTED_ORIGINAL_TABLE' if event else 'ORIGINAL_CURRENT_ISSUER_NUMERICS' if primary else 'OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL',rankable=rankable,point_valuation_available=point,
       original_current_issuer_numeric_checked=primary is not None or bool(event),exclusion_reasons=exclusions,
       base=base,bear=bear,bull=bull,share_bridge=share,equity_offering_overlay=equity_offering,liquidity=flow,primary_ttm_cash=coverage or None,
       revenue_bridge=dict(actual_ytd_k=ytd,prior_year_annual_revenue_k=monthly_prior_annual,prior_year_remaining_k=monthly_prior_annual-oldytd,annual_current_year_estimate_k=r_current_year,assumed_annual_growth=g,observed_growth=observed,
