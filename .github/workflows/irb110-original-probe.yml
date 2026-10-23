@@ -1,0 +1,33 @@
+name: IRB110 Holdings Original Probe
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/insider-pit-shadow-20261023
+    paths:
+      - 'scripts/v8105_twse_irb110_probe.py'
+      - 'tests/test_v8105_irb110_probe.py'
+      - '.github/workflows/irb110-original-probe.yml'
+permissions:
+  contents: read
+jobs:
+  original-irb110-probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Strict parser and as-of invariant tests
+        run: python -m unittest -v tests.test_v8105_irb110_probe
+      - name: Three official monthly original requests, bounded and no assumed historical publication
+        run: python scripts/v8105_twse_irb110_probe.py --out irb110_original_probe_artifact
+      - name: Retain source success and failure bytes for review
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: irb110-official-originals
+          path: irb110_original_probe_artifact/
+          retention-days: 30
+          if-no-files-found: warn

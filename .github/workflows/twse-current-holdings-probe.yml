@@ -1,0 +1,47 @@
+name: TWSE Current Ownership Source Probe
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/insider-pit-shadow-20261023
+    paths:
+      - 'scripts/v8105_twse_current_holdings_probe.py'
+      - 'tests/test_v8105_twse_current_holdings_probe.py'
+      - 'scripts/v8105_twse_current_archive.py'
+      - '.github/workflows/twse-current-holdings-probe.yml'
+permissions:
+  contents: write
+jobs:
+  current-sources:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Source schema and historical PIT isolation tests
+        run: python -m unittest -v tests.test_v8105_twse_current_holdings_probe
+      - name: Capture current official TWSE OpenAPI issuer balances and issued-share bases
+        run: python scripts/v8105_twse_current_holdings_probe.py --out twse_holdings_probe_artifact
+      - name: Archive verified original response bytes to unmerged research branch
+        if: success() && github.ref == 'refs/heads/research/insider-pit-shadow-20261023'
+        env:
+          ARCHIVE_TAG: run_${{ github.run_id }}_${{ github.run_attempt }}
+        run: |
+          python scripts/v8105_twse_current_archive.py --source twse_holdings_probe_artifact --destination tw-market-data/evidence/v880/insider_reviews/twse_current_ownership_archive --tag "$ARCHIVE_TAG"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add tw-market-data/evidence/v880/insider_reviews/twse_current_ownership_archive/
+          if ! git diff --cached --quiet; then
+            git commit -m "data: first-observed current TWSE original shareholder sources ($ARCHIVE_TAG)"
+            git push origin HEAD:research/insider-pit-shadow-20261023
+          fi
+      - name: Preserve raw official response and source failure artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: twse-current-ownership-originals
+          path: twse_holdings_probe_artifact/
+          if-no-files-found: warn
+          retention-days: 30

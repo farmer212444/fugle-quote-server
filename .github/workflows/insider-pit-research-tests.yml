@@ -1,0 +1,45 @@
+name: Insider PIT Research Checks
+on:
+  push:
+    branches:
+      - research/insider-pit-shadow-20261023
+    paths:
+      - 'tw_model_v880/insider_accumulation.py'
+      - 'tw_model_v880/footwear_insider_holdout.py'
+      - 'tw_model_v880/footwear_strategy_pair.py'
+      - 'tests/test_footwear_strategy_pair.py'
+      - 'tests/test_v8105_0050_split_accounting.py'
+      - 'tests/test_insider_accumulation_research.py'
+      - 'tests/test_footwear_insider_holdout.py'
+      - 'tests/test_footwear_two_path_research.py'
+      - 'scripts/v8105_footwear_two_path_audit.py'
+      - '.github/workflows/insider-pit-research-tests.yml'
+  pull_request:
+    paths:
+      - 'tw_model_v880/insider_accumulation.py'
+      - 'tw_model_v880/footwear_insider_holdout.py'
+      - 'tw_model_v880/footwear_strategy_pair.py'
+      - 'tests/test_footwear_strategy_pair.py'
+      - 'tests/test_v8105_0050_split_accounting.py'
+      - 'tests/test_insider_accumulation_research.py'
+      - 'tests/test_footwear_insider_holdout.py'
+      - 'tests/test_footwear_two_path_research.py'
+      - 'scripts/v8105_footwear_two_path_audit.py'
+      - '.github/workflows/insider-pit-research-tests.yml'
+permissions:
+  contents: read
+jobs:
+  synthetic-pit-guards:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Static compile
+        run: python -m py_compile tw_model_v880/insider_accumulation.py tw_model_v880/footwear_insider_holdout.py tw_model_v880/footwear_strategy_pair.py scripts/v8105_footwear_two_path_audit.py
+      - name: Synthetic/offline regression only - NOT empirical alpha
+        run: python -m unittest -v tests.test_insider_accumulation_research tests.test_footwear_insider_holdout tests.test_footwear_two_path_research tests.test_footwear_strategy_pair tests.test_v8105_0050_split_accounting
+      - name: Report available descriptive evidence, never synthetic returns
+        run: python scripts/v8105_footwear_two_path_audit.py --output /tmp/footwear_two_path_source_readiness.json

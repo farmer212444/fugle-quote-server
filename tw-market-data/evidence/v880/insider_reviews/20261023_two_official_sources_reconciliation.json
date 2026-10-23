@@ -1,0 +1,116 @@
+{
+  "schema": "V8105_TWO_OFFICIAL_SOURCE_CROSSCHECK_RESEARCH_ONLY",
+  "data_sources": "MOPS_POST_TRADE_ORIGINAL_BYTES_AND_TWSE_T187AP11_L_T187AP03_L",
+  "twse_current_source_captured_at_utc": [
+    "2026-10-23T12:32:04.046120+00:00",
+    "2026-10-23T12:32:07.288343+00:00"
+  ],
+  "claims": {
+    "raw_original_bytes_sha_verified": true,
+    "mops_every_row_rollforward_checked": true,
+    "september_name_and_close_share_balances_crosschecked": true,
+    "market_buys_deduced_from_IRB_balance_change": false,
+    "identity_proof_or_historical_PIT_completed": false,
+    "2027_return_certified": false
+  },
+  "issuer_count": 2,
+  "issued_capital_snapshot_not_all_historical_months": true,
+  "formal_Aplus_or_Exit_changed": false,
+  "crosschecks": {
+    "9802": {
+      "name": "鈺齊-KY",
+      "issuer_current_shares_at_basics_report": 200991673,
+      "current_basic_report_date_roc": "1151022",
+      "holdings_month_roc": "11509",
+      "holdings_report_date_roc": [
+        "1151020"
+      ],
+      "third_party_insider_net_lots_not_used": true,
+      "month_rollforwards": {
+        "2026-07": {
+          "raw_rows": 52,
+          "rollforward_mismatched_rows": 0,
+          "economic_positions_provisional": 27,
+          "market_net_lots_provisional": 464.0,
+          "asof_source_first_observed": "2026-10-23T11:34:36.274089+00:00"
+        },
+        "2026-08": {
+          "raw_rows": 52,
+          "rollforward_mismatched_rows": 0,
+          "economic_positions_provisional": 27,
+          "market_net_lots_provisional": 1101.0,
+          "asof_source_first_observed": "2026-10-23T11:34:40.926713+00:00"
+        },
+        "2026-09": {
+          "raw_rows": 52,
+          "rollforward_mismatched_rows": 0,
+          "economic_positions_provisional": 27,
+          "market_net_lots_provisional": 231.0,
+          "asof_source_first_observed": "2026-10-23T11:34:43.563677+00:00"
+        }
+      },
+      "september_holding_rows_checked": 23,
+      "september_holding_rows_matching_mops_balance": 23,
+      "september_unmatched": [],
+      "all_cross_source_share_balances_match": true,
+      "jul_sep_market_net_lots_provisional": 1796.0,
+      "three_month_net_pct_of_oct22_issued_shares": 0.89357,
+      "research_materiality_0_05pct_current_denominator_observed": true,
+      "historical_monthly_issued_shares_pit_certified": false,
+      "beneficial_owner_unique_accounts_certified": false,
+      "individual_transaction_first_publication_dates_certified": false,
+      "pass_formal_insider_quality_gate": false
+    },
+    "6965": {
+      "name": "中傑-KY",
+      "issuer_current_shares_at_basics_report": 156336000,
+      "current_basic_report_date_roc": "1151022",
+      "holdings_month_roc": "11509",
+      "holdings_report_date_roc": [
+        "1151020"
+      ],
+      "third_party_insider_net_lots_not_used": true,
+      "month_rollforwards": {
+        "2026-07": {
+          "raw_rows": 48,
+          "rollforward_mismatched_rows": 0,
+          "economic_positions_provisional": 30,
+          "market_net_lots_provisional": 63.0,
+          "asof_source_first_observed": "2026-10-23T11:34:46.446042+00:00"
+        },
+        "2026-08": {
+          "raw_rows": 48,
+          "rollforward_mismatched_rows": 0,
+          "economic_positions_provisional": 30,
+          "market_net_lots_provisional": 20.052,
+          "asof_source_first_observed": "2026-10-23T11:34:49.533333+00:00"
+        },
+        "2026-09": {
+          "raw_rows": 48,
+          "rollforward_mismatched_rows": 0,
+          "economic_positions_provisional": 30,
+          "market_net_lots_provisional": 228.0,
+          "asof_source_first_observed": "2026-10-23T11:34:53.761261+00:00"
+        }
+      },
+      "september_holding_rows_checked": 25,
+      "september_holding_rows_matching_mops_balance": 25,
+      "september_unmatched": [],
+      "all_cross_source_share_balances_match": true,
+      "jul_sep_market_net_lots_provisional": 311.052,
+      "three_month_net_pct_of_oct22_issued_shares": 0.19896,
+      "research_materiality_0_05pct_current_denominator_observed": true,
+      "historical_monthly_issued_shares_pit_certified": false,
+      "beneficial_owner_unique_accounts_certified": false,
+      "individual_transaction_first_publication_dates_certified": false,
+      "pass_formal_insider_quality_gate": false
+    }
+  },
+  "research_methods_remaining": [
+    "MOPS_BENEFICIAL_ACCOUNT_STABLE_IDENTITY",
+    "FIRST_PUBLICATION_AND_REVISION_RECEIPTS_BEFORE_HISTORICAL_SIGNAL",
+    "HISTORICAL_JUL_AUG_SEP_ISSUED_SHARES_ASOF",
+    "252_DATED_TRADING_CLOSES_AND_NEXT_OPEN_FILLABILITY",
+    "YEAR_LATER_CORPORATE_ACTION_ADJUSTED_0050_MATCHED_NET_RETURN"
+  ]
+}

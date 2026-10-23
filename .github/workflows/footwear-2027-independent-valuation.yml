@@ -1,0 +1,36 @@
+name: Footwear 2027 Independent Valuation Shadow
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/insider-pit-shadow-20261023
+    paths:
+      - 'scripts/v8105_footwear_2027_independent_valuation.py'
+      - 'tests/test_v8105_footwear_2027_independent_valuation.py'
+      - 'tw-market-data/evidence/v880/insider_reviews/20261023_footwear_2027_independent_assumptions.json'
+      - '.github/workflows/footwear-2027-independent-valuation.yml'
+permissions:
+  contents: write
+jobs:
+  scenario-shadow:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Validate independent cash-bridge, stress, break-even, PIT contract
+        run: python -m unittest -v tests.test_v8105_footwear_2027_independent_valuation
+      - name: Calculate Bear/Base/Bull EPS and fair price without consensus
+        run: python scripts/v8105_footwear_2027_independent_valuation.py
+      - name: Commit frozen unpromoted valuation report to PR research branch
+        if: success() && github.ref == 'refs/heads/research/insider-pit-shadow-20261023'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add tw-market-data/evidence/v880/insider_reviews/20261023_footwear_2027_independent_shadow.json
+          if ! git diff --cached --quiet; then
+            git commit -m "data: freeze 2027 footwear BBB EPS PE and reverse margin research"
+            git push origin HEAD:research/insider-pit-shadow-20261023
+          fi
