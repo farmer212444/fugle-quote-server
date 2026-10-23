@@ -150,6 +150,8 @@ def run(data_dir,asof,target_date,out_dir=None,variant='current-information'):
     for r in evidence_priority['top10_evidence_first']:
         review_issues=[]
         if r['latest_month_reversal_warning']:review_issues.append('最新月營收轉弱')
+        if r['reported_ytd_material_nonoperating_gap']:review_issues.append('業外比重較高')
+        if r['requires_2027_eps_stepup_bridge']:review_issues.append('2027 EPS年化比較差距大')
         if r['pending_offering']:review_issues.append('現增')
         if r['cb_terms_or_shares_unresolved']:review_issues.append('CB/股數')
         if 'NEGATIVE_OCF_REQUIRES_WORKING_CAPITAL_BRIDGE_NOT_AUTOMATIC_FAIL' in r['warning_flags']:review_issues.append('OCF/營運資金')
@@ -158,6 +160,18 @@ def run(data_dir,asof,target_date,out_dir=None,variant='current-information'):
         tier='原始當期數字' if r['original_current_numeric_reconciled'] else '官方彙總'
         report.append(f"|{r['review_rank']}|{r['code']} {r['name']}|{tier}|{r['base_upside_pct']:+.1f}%|"
                       f"{fmt(r['eps_pe_each_minus20_upside_pct'])}%|{'、'.join(review_issues)}|")
+    priority_eps_watch=[x for x in evidence_priority['top10_evidence_first']
+                        if x['reported_ytd_material_nonoperating_gap'] or x['requires_2027_eps_stepup_bridge']]
+    if priority_eps_watch:
+        report+=['','### 當期業外與2027 EPS橋接風險','',
+            '以下使用已公告累計歸母獲利依經過季數直接年化，再以模型稀釋股數計算EPS；'
+            '不是2026全年度獲利預測，不含季節性；業外占比為本期稅前損益比例，不代表未來重複發生。','']
+        for x in priority_eps_watch:
+            other='待查' if x['reported_ytd_abs_nonoperating_gap_share_pretax_pct'] is None else f"{x['reported_ytd_abs_nonoperating_gap_share_pretax_pct']:.1f}%"
+            eps='待查' if x['ytd_parent_eps_linear_annualized_reference'] is None else f"{x['ytd_parent_eps_linear_annualized_reference']:.2f}"
+            gap='待查' if x['target_eps_vs_unseasonalized_ytd_run_rate_pct'] is None else f"{x['target_eps_vs_unseasonalized_ytd_run_rate_pct']:+.1f}%"
+            report.append(f"- {x['code']} {x['name']}：累計業外差額/稅前淨利（絕對值）{other}；直接年化歸母EPS參考 {eps}；"
+                          f"2027模型EPS較此參考值 {gap}。目前仍缺可簽核的經常性業外明細、產能／訂單／認列及稅後歸母橋接。")
     error_ref=evidence_priority['accounting_error_reference']
     report+=['',
       f"2026 Q2營收樣本外絕對誤差第90百分位 {fmt(error_ref['overall_p90_abs_revenue_error_pct'])}%；"
