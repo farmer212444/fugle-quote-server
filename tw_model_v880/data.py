@@ -8,6 +8,7 @@ SOURCE_JSON_PATTERNS=('evidence/v880/certificates/*.json','evidence/v880/issuer_
     'evidence/v880/matched_peers/*.json','evidence/v880/capital_terms/*.json',
     'evidence/v880/governance/*.json','evidence/v880/equity_offerings/*.json',
     'evidence/v880/auditor_scope_watch/*.json',
+    'evidence/v880/working_capital_watch/*.json',
     'evidence/v880/originals/*/manifest.json')
 
 def source_ledgers(root):
@@ -158,6 +159,13 @@ class MarketData:
         for code,entry in self.auditor_scope_watch.items():
             self.receipt(self.root/'evidence/v880/auditor_scope_watch'/f'{code}.json',
                          'ISSUER_ORIGINAL_SCOPE_WATCH_MIRROR_RECONCILED_NOT_FORMAL_AUDITOR_SIGNOFF')
+        from .working_capital_original import load_working_capital_watch
+        self.working_capital_watch,working_capital_errors=load_working_capital_watch(
+            self.root,asof,self.history,self.cash)
+        self.errors.extend(working_capital_errors)
+        for code in self.working_capital_watch:
+            self.receipt(self.root/'evidence/v880/working_capital_watch'/f'{code}.json',
+                         'SHA_REHASHED_ISSUER_Q2_SELECTED_NOTE_ITEMS_NOT_FULL_CASH_QUALITY_GATE')
         self.model_source_state=model_source_state(self.root)
     def path(self,s):
         p=pathlib.Path(s)

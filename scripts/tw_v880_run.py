@@ -149,6 +149,8 @@ def run(data_dir,asof,target_date,out_dir=None,variant='current-information'):
       '|---:|---|---|---:|---:|---|']
     for r in evidence_priority['top10_evidence_first']:
         review_issues=[]
+        if r['original_working_capital_three_line_tieout_completed']:
+            review_issues.append('原始工程合約資產／應收應付已部分勾稽，收款未證實')
         if r['qualified_auditor_review_needs_subsidiary_scope_reconciliation']:
             review_issues.append('會計師保留結論／子公司核閱範圍待查')
         if r['latest_month_reversal_warning']:review_issues.append('最新月營收轉弱')
@@ -208,6 +210,33 @@ def run(data_dir,asof,target_date,out_dir=None,variant='current-information'):
                     "因此此部分不算具原件雜湊的證據完成。")
             report.append(qualified_text)
         report+=['','會計師核閱範圍原有13項品質門檻仍為PENDING，不據此調整Base EPS/PE或宣稱A+。','']
+    wc_source_tieouts=[x for x in evidence_priority['top10_evidence_first']
+                       if x['original_working_capital_three_line_tieout_completed']]
+    if wc_source_tieouts:
+        report+=['','### 發行人原始工程合約資產與營運資金（部分可重現勾稽）','',
+          '依發行人2026Q2封存之原始合併財報第5、8、34頁（報表印刷頁），'
+          '以現金流量表、收入附註及資產負債表逐項對帳。'
+          '原始PDF SHA可驗證不代表核完附註或收款時程，亦非13項品質門檻正式PASS。','',
+          '|公司|工程合約資產變動|淨應收帳款變動|應付帳款變動|工程合約資產+應收-合約負債變動|',
+          '|---|---:|---:|---:|---:|']
+        for x in wc_source_tieouts:
+            v=x['original_working_capital_subcheck']
+            report.append(
+              f"|{x['code']} {x['name']}|+{v['contract_assets_increase_k']/100000:.2f}億|"
+              f"+{v['receivables_net_increase_k']/100000:.2f}億|"
+              f"+{v['accounts_payable_increase_k']/100000:.2f}億|"
+              f"+{v['net_contract_assets_plus_ar_less_contract_liabilities_change_k']/100000:.2f}億|")
+            report.append(
+              f"- {x['code']}原始現金流量表：合約資產營運資金流出 "
+              f"{v['contract_assets_increase_k']/100000:.3f}億元；"
+              f"應收帳款現金流出 { (v['receivables_net_increase_k']+v['ar_ecl_addback_k'])/100000:.3f}億元"
+              f"（淨應收帳款變動與預期信用損失調整 {v['ar_ecl_addback_k']/1000:.2f}百萬元勾稽）；"
+              f"應付帳款變動提供現金來源 {v['accounts_payable_increase_k']/100000:.3f}億元。"
+              f"上半年工程收入 {v['engineering_revenue_h1_k']/100000:.2f}億元、"
+              f"營業現金流 {v['cashflow_operating_h1_k']/100000:.2f}億元。")
+        report+=['','此處不是壞帳、延遲收款或過度認列工程收入的證明。'
+          '仍需取得逐案完工驗收、收款條件、未核閱子公司明細、合約資產減損及後續期別實際收款證據。'
+          '2027 EPS、估值及正式A+不因此自動調整。','']
     ocf_recovery=[x for x in evidence_priority['top10_evidence_first']
                   if x['latest_q2_standalone_ocf_recovered_after_q1']]
     if ocf_recovery:
