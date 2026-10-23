@@ -218,6 +218,12 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
         if gates['cash_and_working_capital'].get('status')!='FAIL':
             gates['cash_and_working_capital']=gate(
                 'PENDING','CONTRACT_ASSETS_RECEIVABLES_ECL_AP_ALGEBRA_CHECKED_COLLECTION_AND_SUBSIDIARIES_NOT_VERIFIED')
+    inventory_watch=getattr(data,'inventory_original_watch',{}).get(code)
+    if inventory_watch and inventory_watch.get('period')==valuation_period:
+        warnings.append('ORIGINAL_6206_INVENTORY_EXPANSION_AND_DIO_NEEDS_STOCK_AGING')
+        if gates['cash_and_working_capital'].get('status')!='FAIL':
+            gates['cash_and_working_capital']=gate(
+                'PENDING','INVENTORY_GROWTH_EXCEEDS_REVENUE_STOCK_AGING_NOT_VERIFIED')
     scope_watch=getattr(data,'auditor_scope_watch',{}).get(code)
     if scope_watch and scope_watch.get('period')==valuation_period:
         warnings.append('ISSUER_ORIGINAL_PDF_QUALIFIED_AUDITOR_SCOPE_NOT_FORMAL_PASS')
@@ -328,6 +334,7 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
       gates=gates,certification=certification,formal_Aplus=certification['formal_Aplus'],formal_Aplusplus=certification['formal_Aplusplus'],status=certification['status'],warning_flags=warnings,
       governance_review=governance,recommendation_blocked=governance_blocked,
       auditor_scope_watch=scope_watch if scope_watch and scope_watch.get('period')==valuation_period else None,
+      inventory_original_subcheck=inventory_watch if inventory_watch and inventory_watch.get('period')==valuation_period else None,
       working_capital_original_subcheck=wc_watch if wc_watch and wc_watch.get('period')==valuation_period else None,
       stress_eps90_pe90_upside_pct=stress,specialist_model_requirements=specialist,base_scenario_is_admissible=point,
       business_profile=dict(property_development_observed=developer,engineering_business_observed=contractor,classification_source='ISSUER_HISTORY_AND_ORGANIZATION_NOTE' if business else 'INDUSTRY_ONLY'),

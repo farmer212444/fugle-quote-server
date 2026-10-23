@@ -114,6 +114,11 @@ def research_priority_entry(row,holdout=None):
     wc_partial=wc_scope.get('status')=='ORIGINAL_Q2_NOTE_SELECTED_LINE_ITEMS_RECONCILED_NOT_FULL_CASH_GATE'
     if wc_partial:
         warning.append('Q2_ORIGINAL_CONTRACT_ASSETS_AR_ECL_AP_MATCHED_COLLECTION_UNCERTIFIED')
+    inventory_evidence=row.get('inventory_original_subcheck') or {}
+    inventory_original_checked=inventory_evidence.get('status')==(
+        'SHA_CHECKED_ISSUER_IR_ROUNDED_BALANCE_AND_MOPS_REVENUE_CROSSCHECKED')
+    if inventory_original_checked and inventory_evidence.get('inventory_growth_exceeds_revenue_by_30pp'):
+        warning.append('6206_INVENTORY_YOY_GROWTH_EXCEEDS_QUARTERLY_REVENUE_YOY_BY_GE30PP')
     auditor_scope=row.get('auditor_scope_watch') or {}
     unresolved_auditor_qualification=auditor_scope.get('status')==(
         'ISSUER_ORIGINAL_QUALIFIED_REVIEW_SCOPE_DOC_VISUALLY_CHECKED_NO_FORMAL_PASS')
@@ -215,6 +220,9 @@ def research_priority_entry(row,holdout=None):
         original_working_capital_subcheck=wc_scope if wc_partial else None,
         original_working_capital_three_line_tieout_completed=wc_partial,
         original_working_capital_subcheck_is_not_formal_gate=True,
+        original_ir_inventory_turnover_subcheck=inventory_evidence if inventory_original_checked else None,
+        original_ir_inventory_turnover_partial_review=inventory_original_checked,
+        inventory_source_does_not_certify_working_capital=True,
         auditor_scope_original_observation=auditor_scope if unresolved_auditor_qualification else None,
         qualified_auditor_review_needs_subsidiary_scope_reconciliation=unresolved_auditor_qualification,
         research_decision='REVIEW_ONLY_NOT_BUY'
