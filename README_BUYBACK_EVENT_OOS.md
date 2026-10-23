@@ -70,3 +70,17 @@ grouping、逐筆observations、blocked、immature及來源CSV SHA256。
 - [台股事件研究：完成](https://8888fortune.com/events/buyback-completion)
 
 其他網站的策略年化報酬或CAR/BHAR不是本程式計算結果，不可混成模型勝率。
+
+
+## 2026-10-24 official-source checkpoint (actual CI observations)
+
+The [TWSE Taiwan50 total-return index archive](https://github.com/farmer212444/fugle-quote-server/actions/runs/40040560674) successfully fetched **72/72 months** for 2020-2025, with **1,459 official trading-day observations** (2020:245; 2021:244; 2022:246; 2023:239; 2024:242; 2025:243). Annual CI artifacts hold monthly response bytes, SHA256 receipts, manifest and CSV. This is the **Taiwan50 index**, **not** the 0050 investable ETF dividend-adjusted total return. CI artifacts have limited retention and must be made durable before certification.
+
+The [MOPS historical POST check](https://github.com/farmer212444/fugle-quote-server/actions/runs/40040712021) returned HTTP 200 **security-blocked pages**, not buyback events, in both listed and OTC markets: "因為安全性考量，您所執行的頁面無法呈現". Hence ACCESS_RESTRICTED ≠ zero events. Do not attempt to bypass website access limits.
+
+[TEJ/TQuant TWN/APITRS](https://tquant.tejwin.com/%E8%B3%87%E6%96%99%E9%9B%86/) is an identified **licensed** alternative for historical listed/OTC/delisted buyback events, still requiring rights and verification of the actual public-disclosure timestamp.
+
+The checkpoint file is:
+tw-market-data/experiments/buyback_event_oos_v1/source_readiness_2026-10-24.json
+
+**Unresolved:** historical event rows + announcements timestamps, fully adjusted issuer TR with delisting actions, original ETF 0050 total-return history, independent data-completeness audit. No 3/6/12-month hit rate or alpha has been demonstrated. Third-party CAR/BHAR studies cannot substitute for the missing per-event evidence.
