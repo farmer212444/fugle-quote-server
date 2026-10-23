@@ -5,6 +5,12 @@ on:
     paths:
       - 'scripts/tw_fundamentals.py'
       - '.github/workflows/tw_fundamentals.yml'
+      - 'tests/test_historical_financial_backfill.py'
+  pull_request:
+    paths:
+      - 'scripts/tw_fundamentals.py'
+      - '.github/workflows/tw_fundamentals.yml'
+      - 'tests/test_historical_financial_backfill.py'
   schedule:
     # 19:55 Taipei daily; during reporting season also probe at 13:10.
     # Updates to official data trigger a separate model run; nightly model also runs at 21:30.
@@ -29,13 +35,21 @@ jobs:
       - name: Install HTML parser
         run: python -m pip install 'pandas>=2.2,<3' 'lxml>=5,<7'
       - name: Test parser and PIT cutoff
-        run: python scripts/tw_fundamentals.py --self-test
+        run: |
+          python scripts/tw_fundamentals.py --self-test
+          python -m unittest -v tests.test_historical_financial_backfill
       - name: Capture incremental official quarterly snapshots
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
         run: python scripts/tw_fundamentals.py --max-fetches 32
       - name: Backfill historical evaluation inputs without replacing current scan
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
         run: |
           python scripts/tw_fundamentals.py --asof 2024-12-31 --archive-only --extra-training-quarters 1 --max-fetches 2
           python scripts/tw_fundamentals.py --asof 2025-12-31 --archive-only --extra-training-quarters 1 --max-fetches 2
+          # Targets overlap: the second collection can also fill the first.
+          # Refresh both reports from the same final cache, without HTTP calls.
+          python scripts/tw_fundamentals.py --asof 2024-12-31 --archive-only --extra-training-quarters 1 --offline --max-fetches 0
+          python scripts/tw_fundamentals.py --asof 2025-12-31 --archive-only --extra-training-quarters 1 --offline --max-fetches 0
       - name: Archive source HTML for audit
         if: always()
         uses: actions/upload-artifact@v4

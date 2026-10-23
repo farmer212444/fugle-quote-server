@@ -62,7 +62,7 @@ def parse(raw,code,month):
     j=json.loads(raw.decode("utf-8-sig"))
     require(isinstance(j,dict) and j.get("stat")=="OK","TWSE_HISTORY_RESPONSE_NOT_OK")
     header=str(j.get("title",""))
-    require(re.search(r"(?<!\\d)"+re.escape(code)+r"(?!\\d)",header) is not None,
+    require(re.search(r"(?<!\d)"+re.escape(code)+r"(?!\d)",header) is not None,
             "TWSE_MONTHLY_ISSUER_CODE_NOT_CONFIRMED_IN_TITLE")
     fields=j.get("fields",[])
     require(isinstance(fields,list) and len(fields)>=7,"TWSE_HISTORY_FIELDS_MISSING")
@@ -78,7 +78,7 @@ def parse(raw,code,month):
           "成交金額":locate("成交金額"),"收盤價":locate("收盤價"),
           "開盤價":locate("開盤價"),"最高價":locate("最高價"),"最低價":locate("最低價")}
     values=j.get("data")
-    require(isinstance(values,list) and 5<=len(values)<=32,"MONTH_HISTORY_ROW_COUNT_INVALID")
+    require(isinstance(values,list) and 1<=len(values)<=32,"MONTH_HISTORY_ROW_COUNT_INVALID")
     data={}
     for r in values:
         require(isinstance(r,list) and len(r)>=len(fields),"HISTORY_ROW_SHAPE_INVALID")
@@ -125,8 +125,9 @@ def prioritized_candidates(raw_price,asof,cap=16,root=ROOT,*,execution_archive=F
         pending=[str(x.get("code")) for x in ranked
                  if x.get("market")=="TWSE" and x.get("research_upside_pct") is not None
                  and x.get("research_upside_pct")>=30]
-    order=list(dict.fromkeys(outstanding_benchmark_codes(root,'TWSE')+pending+list(PREFERRED)))
-    order=[c for c in order if c in twse]
+    pinned=outstanding_benchmark_codes(root,'TWSE')
+    order=list(dict.fromkeys(pinned+pending+list(PREFERRED)))
+    order=[c for c in order if c in twse or c in pinned]
     # Existing fully covered archives do not monopolize the same daily fetch budget.
     backlog=[]
     for code in order:
@@ -243,7 +244,7 @@ def run(max_issuers=6,months=4,fetch=request,sleep=0.4,max_new_months=3):
     rr=[];window=recent_months(dt.date.fromisoformat(asof),months)
     for code in ids:
         rr.append(process(code,asof,window,fetch=fetch,sleep=sleep,
-                          reference_close=close_by_code[code],root=ROOT,max_new_months=max_new_months))
+                          reference_close=close_by_code.get(code),root=ROOT,max_new_months=max_new_months))
     result=dict(reference_date=asof,issuer_probes=rr,
         issuer_priority="HIGH_UPSIDE_GE30_MISSING_DURABLE_OHLC_OR_REQUESTED_HISTORY",selected_codes=ids,
         requested_months_per_issuer=months,max_requests_per_issuer=max_new_months,

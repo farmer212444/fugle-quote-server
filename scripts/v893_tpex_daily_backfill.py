@@ -98,7 +98,7 @@ def selected_codes(root,asof,raw_market):
               and CODE_RE.fullmatch(str(x.get("code","")))}
     progress=json.loads((Path(root)/"rankings/v891_gate_progress.json").read_text(encoding="utf-8"))
     require(progress.get("asof_price_date")==asof,"TPEX_RESEARCH_PRICE_DATE_MISMATCH")
-    chosen=[c for c in outstanding_benchmark_codes(root,'TPEX') if c in official]
+    chosen=outstanding_benchmark_codes(root,'TPEX')
     for x in progress.get("issuer_diagnostics",[]):
         code=str(x.get("code"))
         if x.get("market")=="TPEX" and x.get("research_upside_pct") is not None and x["research_upside_pct"]>=30 and code in official:
@@ -178,7 +178,7 @@ def run(max_dates=20,lookback=65,source=download,root=ROOT,rawdir=RAW,target_ses
         require(sha(canonical(market))==original['parsed_rows_sha256'],'TPEX_ORIGINAL_PARSED_HASH_MISMATCH')
         if day==asof:
             for code in codes:
-                if code in market and latest[code].get('close') is not None and market[code]['close'] is not None:
+                if code in market and latest.get(code,{}).get('close') is not None and market[code]['close'] is not None:
                     require(abs(float(latest[code]['close'])-market[code]['close'])<=.011,
                             'TPEX_REFERENCE_CLOSE_DIFFERENCE_'+code)
         for code in codes:

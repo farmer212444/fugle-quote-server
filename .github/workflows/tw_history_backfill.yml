@@ -5,18 +5,26 @@ on:
     paths:
       - '.github/workflows/tw_history_backfill.yml'
       - 'scripts/tw_history_backfill.py'
+      - 'scripts/forward_benchmark_sources.py'
+      - 'scripts/v8a8_forward_top30_0050.py'
+      - 'tw-market-data/config/forward_top30_0050_v1.json'
       - 'scripts/history_archive.py'
       - 'scripts/execution_quote_archive.py'
       - 'tests/test_history_archive.py'
       - 'tests/test_tw_history_backfill.py'
+      - 'tests/test_forward_benchmark_sources.py'
   pull_request:
     paths:
       - '.github/workflows/tw_history_backfill.yml'
       - 'scripts/tw_history_backfill.py'
+      - 'scripts/forward_benchmark_sources.py'
+      - 'scripts/v8a8_forward_top30_0050.py'
+      - 'tw-market-data/config/forward_top30_0050_v1.json'
       - 'scripts/history_archive.py'
       - 'scripts/execution_quote_archive.py'
       - 'tests/test_history_archive.py'
       - 'tests/test_tw_history_backfill.py'
+      - 'tests/test_forward_benchmark_sources.py'
   schedule:
     # Priority TWSE source batches at 09:05, 12:05, 15:05, 18:05 and 20:05 TPE.
     # Earlier runs work on the latest verified price snapshot, not a live unverified close.
@@ -36,10 +44,13 @@ jobs:
         with:
           python-version: '3.12'
       - name: Validate official monthly parser and PIT guards
-        run: python -m unittest -v tests.test_tw_history_backfill tests.test_history_archive
+        run: python -m unittest -v tests.test_tw_history_backfill tests.test_history_archive tests.test_forward_benchmark_sources
       - name: Backfill official TWSE monthly sessions for focus issuers
         if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
         run: python scripts/tw_history_backfill.py --max-issuers 8 --months 24 --max-new-months 3
+      - name: Collect original 0050 quotes for frozen monthly experiment
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        run: python scripts/forward_benchmark_sources.py --max-requests 2
       - name: Archive unmodified monthly exchange JSON
         if: always() && github.event_name != 'pull_request'
         uses: actions/upload-artifact@v4
@@ -61,8 +72,12 @@ jobs:
             if [ "$rebuild" != 1 ] || [ "$(git rev-parse HEAD)" != "$(git rev-parse origin/main)" ]; then
               git reset --hard origin/main
               python scripts/tw_history_backfill.py --max-issuers 8 --months 24 --max-new-months 3
+              python scripts/forward_benchmark_sources.py --max-requests 2
             fi
             git add tw-market-data/prices/issuer_history/TWSE/
+            if [ -d tw-market-data/benchmarks/0050 ]; then
+              git add tw-market-data/benchmarks/0050/
+            fi
             if [ -d tw-market-data/prices/originals/history/TWSE ]; then
               git add tw-market-data/prices/originals/history/TWSE/
             fi
