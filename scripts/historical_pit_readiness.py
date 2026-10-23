@@ -16,14 +16,14 @@ if str(PACKAGE_ROOT) not in sys.path:sys.path.insert(0,str(PACKAGE_ROOT))
 from scripts.history_archive import verify_original,canonical,digest
 from scripts.tw_history_backfill import parse as parse_twse
 from scripts.v893_tpex_daily_backfill import parse_daily as parse_tpex
-from tw_model_v880.execution import COST_FIELDS
-from tw_model_v880.portfolio import finite
+from tw_model_v880.execution import validate_cost_policy
+from scripts.mops_filing_archive import audit_archive
+from tw_model_v880.filing_vintages import coverage_at
 
 
 def explicit_cost_policy(policy):
-    return (isinstance(policy,dict) and
-            all(finite(policy.get(name)) and 0<=policy[name]<1 for name in COST_FIELDS) and
-            policy['sell_fee_rate']+policy['sell_tax_rate']<1)
+    try:validate_cost_policy(policy);return True
+    except ValueError:return False
 
 
 def build(root,start_date='2025-01-01'):
@@ -104,6 +104,8 @@ def build(root,start_date='2025-01-01'):
     config=json.loads((root/'config/institutional_research.json').read_text())
     policy=config.get('cost_policy')
     blockers=['ISSUER_ORIGINAL_PUBLICATION_AND_REVISION_VERSIONS_REQUIRED',
+              'ORIGINAL_FINANCIAL_NUMBERS_UNITS_AND_NOTES_RECONCILIATION_REQUIRED',
+              'HISTORICAL_REVENUE_SHARES_PEERS_AND_MODEL_INPUT_VINTAGES_REQUIRED',
               'CONTEMPORANEOUS_LISTING_DELISTING_UNIVERSE_REQUIRED',
               'DATED_MONTHLY_REVENUE_RELEASE_VERSIONS_REQUIRED',
               'HISTORICAL_SHARES_CB_TERMS_AND_VALUATION_INPUTS_REQUIRED',
@@ -112,11 +114,29 @@ def build(root,start_date='2025-01-01'):
               'TRAINING_ONLY_MODEL_FIT_AND_HELD_OUT_REPLAY_NOT_COMPLETED']
     policy_ready=explicit_cost_policy(policy)
     if not policy_ready:blockers.append('PROSPECTIVE_COST_POLICY_NOT_FIXED')
+    filings=audit_archive(root)
+    errors.extend(filings['source_rejections'])
+    filing_rows=[dict(code=v['index_row']['code'],financial_period=v['index_row']['financial_period'],
+        official_upload_at=v['index_row']['official_upload_at'],captured_at_utc=v['captured_at_utc'],
+        latest_reported_correction=v['index_row']['latest_reported_correction'],
+        receipt=v['reference'],pdf_original=v['pdf_original'],
+        financial_numbers_and_revision_chain_reviewed=False,formal_gate_pass=False)
+        for v in filings['versions']]
+    codes=sorted({v['code'] for v in filing_rows})
+    end_clock=end+'T23:59:59+08:00'
+    reconstructed=coverage_at(filings['versions'],end_clock,codes)
+    observed=coverage_at(filings['versions'],end_clock,codes,mode='observed_archive')
+    checkpoints=[day for day in ('2025-03-31','2025-06-30','2025-09-30','2025-12-31',
+                                  '2026-03-31','2026-06-30',end) if start_date<=day<=end]
+    views=[coverage_at(filings['versions'],day+'T23:59:59+08:00',codes) for day in sorted(set(checkpoints))]
     return dict(schema='HISTORICAL_PIT_SOURCE_READINESS_V1',
         observed_at=dt.datetime.now(dt.timezone.utc).isoformat(),
         historical_start=start_date,historical_end=end,
         verified_durable_original_receipts=len(sources),issuer_price_coverage=list(issuer_rows.values()),
         source_backed_price_sessions_by_market=dict(sessions),financial_mirrors=financial,
+        verified_mops_filing_versions=len(filing_rows),mops_filing_originals=filing_rows,
+        official_upload_reconstruction_view=reconstructed,actually_archived_before_reference_view=observed,
+        historical_filing_clock_checkpoints=views,
         admitted_historical_financial_pit_batches=0,source_rejections=errors,
         retrospective_replay_status='BLOCKED_MISSING_ORIGINAL_PIT_INPUTS',blockers=blockers,
         prospective_cost_policy_fixed=policy_ready,
@@ -135,6 +155,13 @@ def render(report):
         '|股票|原件支持交易日|有開盤價|起日|迄日|', '|---|---:|---:|---|---|']
     for row in report['issuer_price_coverage']:
         lines.append(f"|{row['market']} {row['code']}|{row['source_sessions']}|{row['sessions_with_observed_open']}|{row['first']}|{row['last']}|")
+    lines+=['','## MOPS財報原件與官方上傳時鐘','',
+        f"已重新核對官方財報原件 {report['verified_mops_filing_versions']} 份，包含原始索引、下載回應、PDF位元組、檔案大小與官方上傳秒數。",'',
+        '下載網址尾端的日期是臨時檔案產生時間，不能當成原始申報日。以下僅為文件來源及時鐘覆蓋，未完成財務數值、全部修訂版本、附註與模型全體輸入驗收。','',
+        '|公司|季度|MOPS上傳時間|最近更正欄|','|---|---|---|---|']
+    for row in report['mops_filing_originals']:
+        lines.append(f"|{row['code']}|{row['financial_period']}|{row['official_upload_at']}|{row['latest_reported_correction']}|")
+    lines+=['','以官方上傳時鐘重建時一律再延後24小時；較早的歷史日期只標記重建候選。實際事前封存模式仍以官方上傳與真實擷取較晚者計時，不能把今天下載的檔案倒填為當時已封存。']
     lines+=['','## 待補的驗證依據','',
         '- 個股原始公告時間、重編時間與對應的當時文件版本。',
         '- 當時上市、下市及停牌母體，避免僅採今天仍存在的公司。',
@@ -160,6 +187,7 @@ def main():
     (destination/'historical_pit_readiness.json').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n')
     (destination/'historical_pit_readiness.md').write_text(render(result))
     print(json.dumps(dict(originals=result['verified_durable_original_receipts'],
+        verified_mops_filing_versions=result['verified_mops_filing_versions'],
         issuers_with_source_backed_prices=len(result['issuer_price_coverage']),
         rejected_sources=len(result['source_rejections']),
         historical_financial_pit_admitted=0,formal_Aplus_added=0)))

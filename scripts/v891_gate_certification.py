@@ -26,6 +26,7 @@ if str(ROOT) not in sys.path:
 from tw_model_v880.evidence import GATES, certify, timestamp, verify_certificate_archives
 from tw_model_v880.contracts import OBLIGATIONS
 from scripts.v896_original_archive import validate_bundle, original_quarter_coverage
+from scripts.mops_filing_archive import audit_archive as audit_mops_filings,quarters as filing_quarters
 from scripts.ensure_research_current import full_result_reasons
 
 MANUAL_REVIEW_GATES = frozenset((
@@ -302,6 +303,24 @@ def build_progress(root):
                 statuses=["ORIGINAL_SOURCE_REJECTED"],reason=str(exc),
                 original_archive_hashes_verified=False,formal_pass_count=0)
             source_rejections.append(dict(code=code,source="original_bundle",reason=str(exc)))
+        mops=audit_mops_filings(root,codes=(code,))
+        mops['versions']=[v for v in mops['versions'] if timestamp(v['captured_at_utc'])<=timestamp(asof)]
+        for error in mops['source_rejections']:
+            source_rejections.append(dict(code=code,source='mops_filing_original',**error))
+        if mops['versions']:
+            bundle=original_bundles[code]
+            bundle['mops_official_document_versions']=len(mops['versions'])
+            bundle['records']+=len(mops['versions'])
+            kinds=bundle.setdefault('document_kinds',{})
+            kinds['quarterly']=kinds.get('quarterly',0)+len(mops['versions'])
+            required=filing_quarters(period)
+            coverage=original_quarter_windows.setdefault(code,dict(required_quarters=required,found_quarters=[]))
+            periods={v['index_row']['financial_period'] for v in mops['versions']}
+            coverage['found_quarters']=sorted(set(coverage['found_quarters'])|set(required)&periods)
+            coverage['missing_quarters']=[p for p in required if p not in coverage['found_quarters']]
+            coverage['mops_upload_clock_periods']=sorted(set(required)&periods)
+            coverage['source_title_coverage_complete']=not coverage['missing_quarters']
+            coverage['formal_gate_pass']=False
     jobs=dispatch.get("all_issuer_jobs",[])
     if len(jobs)!=dispatch.get("tracked_issuer_count") or len(jobs)!=research["data_scope"]["model_rows"]:
         raise ValueError("GATE_CERTIFICATION_LEDGER_INCOMPLETE")
@@ -373,7 +392,8 @@ def build_progress(root):
                         reason=(str(len(coverage["found_quarters"]))+"/"+str(len(coverage["required_quarters"]))
                                 +" period-specific original PDFs SHA-archived, missing "+
                                 (",".join(coverage["missing_quarters"]) or "none")+"; issuer PDF internal identity, "
-                                "full notes, auditor scope and MOPS publication PIT unreviewed")
+                                "full notes, auditor scope and complete historical revision chains unreviewed; "
+                                "verified MOPS upload clocks "+str(len(coverage.get('mops_upload_clock_periods',[]))))
                 if (gate=="management_promises" and kinds.get("presentation",0)>0
                         and state=="REVIEW_PENDING"):
                     state="SOURCE_CAPTURED"

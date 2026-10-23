@@ -8,6 +8,7 @@ on:
       - Taiwan Official Daily Stock Prices
       - Taiwan Official TWSE Issuer History Backfill
       - Taiwan Official TPEx Issuer History Backfill
+      - Taiwan MOPS Historical Quarterly Backfill
     types:
       - completed
   pull_request:
@@ -36,6 +37,8 @@ on:
       - 'scripts/benchmark_validation.py'
       - 'tw-market-data/benchmarks/**'
       - 'scripts/historical_pit_readiness.py'
+      - 'scripts/mops_filing_archive.py'
+      - 'tw-market-data/filings/mops/**'
       - 'scripts/history_archive.py'
       - 'scripts/run_research_pipeline.py'
       - 'scripts/research_work_queue.py'
@@ -102,6 +105,8 @@ on:
       - 'scripts/benchmark_validation.py'
       - 'tw-market-data/benchmarks/**'
       - 'scripts/historical_pit_readiness.py'
+      - 'scripts/mops_filing_archive.py'
+      - 'tw-market-data/filings/mops/**'
       - 'scripts/history_archive.py'
       - 'scripts/run_research_pipeline.py'
       - 'scripts/research_work_queue.py'
@@ -171,6 +176,7 @@ jobs:
           price_commit=$(git log -1 --format=%H -- tw-market-data/prices/latest_manifest.json)
           ranking_commit=$(git log -1 --format=%H -- tw-market-data/rankings/latest_research.json)
           issuer_history_commit=$(git log -1 --format=%H -- tw-market-data/prices/issuer_history/ || true)
+          filing_commit=$(git log -1 --format=%H -- tw-market-data/filings/mops/ || true)
           if [ -z "$price_commit" ] || [ -z "$ranking_commit" ]; then
             echo 'refresh=true' >> "$GITHUB_OUTPUT"
             echo '::notice::Missing source or ranked snapshot; research refresh required.'
@@ -180,6 +186,9 @@ jobs:
           elif [ -n "$issuer_history_commit" ] && ! git merge-base --is-ancestor "$issuer_history_commit" "$ranking_commit"; then
             echo 'refresh=true' >> "$GITHUB_OUTPUT"
             echo "New official issuer-history backfill requires evidence refresh: $issuer_history_commit"
+          elif [ -n "$filing_commit" ] && ! git merge-base --is-ancestor "$filing_commit" "$ranking_commit"; then
+            echo 'refresh=true' >> "$GITHUB_OUTPUT"
+            echo "New official filing original requires source-readiness refresh: $filing_commit"
           else
             echo 'refresh=false' >> "$GITHUB_OUTPUT"
             echo 'Research already incorporates current price and source-history archive.'

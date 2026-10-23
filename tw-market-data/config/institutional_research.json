@@ -51,5 +51,16 @@
     "Preserve A+ 30%, A++ 35%, and every existing formal evidence gate.",
     "No subjective scenario weights are treated as calibrated probabilities.",
     "No actual stock purchase, sale or broker order is authorized by this file."
+  ],
+  "cost_policy_scope": "TAIWAN_COMMON_STOCK_NON_INTRADAY_EXECUTION_RESEARCH_ONLY",
+  "cost_policy_notes": [
+    "Fee and tax rates are declared research inputs; brokerage discounts and the user's actual account costs are not assumed verified.",
+    "Slippage is 10 basis points on each side and half-spread is 5 basis points on each side. These are fixed assumptions, not measured historical fills or optimized estimates.",
+    "The policy enters a newly hashed prospective registration at its actual registration time; previous null-cost registrations remain immutable and are not backdated.",
+    "For retrospective studies the same inputs are labelled post-hoc research assumptions. The minimum fee is a fixed NTD 20 per side research assumption; actual account terms, personal dividend/income tax and trading constraints remain unverified."
+  ],
+  "cost_policy_reference_urls": [
+    "https://twse-regulation.twse.com.tw/TW/law/DOC01_print.aspx?FLCODE=fl007304&FLNO=94",
+    "https://www.etax.nat.gov.tw/etwmain/tax-info/understanding/tax-knowledge/rwG2M1N"
   ]
 }
