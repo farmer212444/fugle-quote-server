@@ -100,6 +100,15 @@ def load_scope_watches(root,asof,history,cash):
             key=(obj['market'],code);period=obj['period']
             result=check_scope_receipt(obj,(history.get(key) or {}).get(period) or {},
                                         (cash.get(key) or {}).get(period) or {},asof)
+            # A full immutable PDF archive has a distinct provenance layer:
+            # source-bytes SHA verification is never auditor/PIT signoff.
+            if code=='8383':
+                from scripts.v8a9_8383_original_archive import verify_archive
+                archived=verify_archive(root,obj)
+                result['issuer_original_pdf_bytes_hashed']=archived['original_pdf_bytes_hashed']
+                result['original_pdf_archival_status']=archived['status']
+                result['verified_original_periods']=archived['verified_periods']
+                result['source_pdf_sha256_receipts']=archived.get('snapshots',{})
             out[code]=result
         except (ValueError,KeyError,TypeError,OSError) as exc:
             errors.append(dict(source=str(path.relative_to(root)),error=str(exc)))
