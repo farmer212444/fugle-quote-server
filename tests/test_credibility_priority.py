@@ -61,6 +61,42 @@ class EvidenceFirstTests(unittest.TestCase):
         r=p['top10_evidence_first'][0]
         self.assertAlmostEqual(r['eps_pe_each_minus20_upside_pct'],28.)
 
+    def test_material_ytd_nonoperating_and_eps_stepup_flags_no_rank_mutation(self):
+        bridge=issuer('8383',True,66.7)
+        bridge['nonoperating_bridge']=dict(
+            reported_ytd_abs_gap_share_pretax_pct=100*96889/458204,
+            component_assumptions_certified=False)
+        bridge['eps_bridge_reference']=dict(
+            linear_annualized_ytd_parent_eps_at_model_denominator=5.32,
+            target_eps_vs_ytd_linear_annualized_pct=100*(7.58/5.32-1),
+            original_operating_bridge_certified=False)
+        stable=issuer('6206',True,40.9)
+        stable['nonoperating_bridge']=dict(
+            reported_ytd_abs_gap_share_pretax_pct=100*31000/1037000,
+            component_assumptions_certified=False)
+        stable['eps_bridge_reference']=dict(
+            linear_annualized_ytd_parent_eps_at_model_denominator=11.86,
+            target_eps_vs_ytd_linear_annualized_pct=100*(11.57/11.86-1),
+            original_operating_bridge_certified=False)
+        originals=copy.deepcopy([bridge,stable])
+        out=build_research_priority([bridge,stable])
+        vals={x['code']:x for x in out['top10_evidence_first']}
+        self.assertTrue(vals['8383']['reported_ytd_material_nonoperating_gap'])
+        self.assertTrue(vals['8383']['requires_2027_eps_stepup_bridge'])
+        self.assertFalse(vals['6206']['reported_ytd_material_nonoperating_gap'])
+        self.assertFalse(vals['6206']['requires_2027_eps_stepup_bridge'])
+        self.assertTrue(vals['8383']['earnings_quality_flags_do_not_change_base_or_priority'])
+        self.assertEqual([bridge,stable],originals)
+        self.assertEqual([x['code'] for x in out['top10_evidence_first']],['8383','6206'])
+
+    def test_no_pretax_or_profit_runrate_does_not_fabricate_flag(self):
+        base=issuer('A',True,90)
+        x=build_research_priority([base])['top10_evidence_first'][0]
+        self.assertIsNone(x['reported_ytd_abs_nonoperating_gap_share_pretax_pct'])
+        self.assertIsNone(x['target_eps_vs_unseasonalized_ytd_run_rate_pct'])
+        self.assertFalse(x['reported_ytd_material_nonoperating_gap'])
+        self.assertFalse(x['requires_2027_eps_stepup_bridge'])
+
     def test_latest_month_revenue_reversal_is_warning_not_rank_or_exit(self):
         down=issuer('6143',True,74)
         down['revenue_bridge']['trend_inputs']=dict(

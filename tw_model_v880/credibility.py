@@ -39,6 +39,20 @@ def research_priority_entry(row,holdout=None):
         warning.append('PEER_PE_NOT_CERTIFIED')
     if not row.get('company_forecast_confirmed'):
         warning.append('2027_COMPANY_OPERATING_BRIDGE_UNVERIFIED')
+    nonop=(row.get('nonoperating_bridge') or {})
+    reported_ytd_nonop_share_pct=nonop.get('reported_ytd_abs_gap_share_pretax_pct')
+    material_ytd_nonop=(_finite(reported_ytd_nonop_share_pct) and
+        reported_ytd_nonop_share_pct>=20 and
+        nonop.get('component_assumptions_certified') is not True)
+    if material_ytd_nonop:
+        warning.append('REPORTED_YTD_NONOPERATING_GAP_GE20PCT_PRETAX_COMPONENTS_UNCERTIFIED')
+    eps_reference=(row.get('eps_bridge_reference') or {})
+    eps_above_annualized_pct=eps_reference.get('target_eps_vs_ytd_linear_annualized_pct')
+    requires_eps_bridge=(_finite(eps_above_annualized_pct) and
+        eps_above_annualized_pct>=30 and
+        eps_reference.get('original_operating_bridge_certified') is not True)
+    if requires_eps_bridge:
+        warning.append('2027_EPS_GE30PCT_ABOVE_UNSEASONALIZED_CURRENT_YTD_RUN_RATE')
     if row.get('recommendation_blocked'):
         warning.append('MATERIAL_GOVERNANCE_BLOCK')
     current=base.get('target_price')
@@ -84,6 +98,14 @@ def research_priority_entry(row,holdout=None):
         latest_month_reversal_warning=latest_month_reversal_warning,
         one_month_reversal_is_certified_trend=False,
         reversal_warning_changes_base_eps_or_pe=False,
+        reported_ytd_abs_nonoperating_gap_share_pretax_pct=reported_ytd_nonop_share_pct if _finite(reported_ytd_nonop_share_pct) else None,
+        reported_ytd_material_nonoperating_gap=material_ytd_nonop,
+        reported_ytd_nonoperating_figure_not_recurring_earnings_claim=True,
+        ytd_parent_eps_linear_annualized_reference=eps_reference.get('linear_annualized_ytd_parent_eps_at_model_denominator'),
+        target_eps_vs_unseasonalized_ytd_run_rate_pct=eps_above_annualized_pct if _finite(eps_above_annualized_pct) else None,
+        requires_2027_eps_stepup_bridge=requires_eps_bridge,
+        ytd_annualized_reference_not_profit_forecast=True,
+        earnings_quality_flags_do_not_change_base_or_priority=True,
         research_decision='REVIEW_ONLY_NOT_BUY'
     )
     # Explicit, auditable lexicographic research-order policy:
