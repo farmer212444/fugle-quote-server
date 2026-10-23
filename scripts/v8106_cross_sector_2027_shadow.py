@@ -19,6 +19,7 @@ GATE = ROOT / "rankings/v891_gate_progress.json"
 TOP20 = ROOT / "rankings/v892_top20_quality_audit.json"
 REPORT = ROOT / "rankings/v8106_cross_sector_evidence_first_shadow.json"
 EVENTS = ROOT / "evidence/v8106_cross_sector_public_events_20261024.json"
+MARGIN_STRESS = ROOT / "rankings/v8106_three_issuer_margin_reversion_shadow.json"
 REQUIRED_DATE = "2026-10-22"
 
 WARNING_RULES = (
@@ -43,7 +44,16 @@ def _number(value, label):
     return float(value)
 
 
-def build(primary, official_gate, broad, material_events=None):
+def build(primary, official_gate, broad, material_events=None, industry_stress=None):
+    if industry_stress is None:
+        industry_stress=json.loads(MARGIN_STRESS.read_bytes())
+    if (industry_stress.get("schema")!="V8106_THREE_ISSUER_2027_GM_REVERSION_STRESS_SHADOW_V1"
+            or industry_stress.get("reference_price_date")!=REQUIRED_DATE
+            or industry_stress.get("formal_Aplus_additions")!=0
+            or industry_stress.get("official_original_filing_bytes_fully_audited") is not False
+            or set(industry_stress.get("issuers",{}))!={"2027","4771","6206"}):
+        raise ValueError("MISSING_UNCERTIFIED_THREE_ISSUER_CYCLICAL_MARGIN_SOURCE")
+    stress_by_code=industry_stress["issuers"]
     if material_events is None:
         material_events=json.loads(EVENTS.read_bytes())
     if (material_events.get("schema")!="V8106_PUBLIC_COMPANY_MATERIAL_EVENT_RESEARCH_LEDGER_V1"
@@ -138,6 +148,32 @@ def build(primary, official_gate, broad, material_events=None):
         material_event=ev_by_code.get(code)
         if material_event is not None:
             severe.append(material_event["research_risk_flag"])
+        issuer_stress=stress_by_code.get(code)
+        stress_observations=[]
+        if issuer_stress is not None:
+            if (issuer_stress.get("company")!=item["name"]
+                or abs(issuer_stress["reference_close"]-price)>.01
+                or abs(issuer_stress["2027_base_eps_unverified"]-eps)>.01
+                or issuer_stress.get("formal_Aplus_or_buy_signal") is not False):
+                raise ValueError("CYCLICAL_STRESS_ISSUER_DATE_OR_EPS_INCONSISTENT")
+            older=next((z for z in issuer_stress["tested_margin_scenarios"]
+                        if z["scenario"]=="HISTORIC_2025_Q2_MARGIN_NOT_2027_FORECAST"),None)
+            if older is None or older["hypothetical_upside_at_original_PE_pct"] is None:
+                raise ValueError("MISSING_PRIOR_Q2_CYCLICAL_MARGIN_STRESS")
+            old_upside=older["hypothetical_upside_at_original_PE_pct"]
+            if (code=="2027" and upside-old_upside>=25):
+                severe.append("STEEL_PRICE_CYCLE_GM_REVERSION_REMOVES_MOST_BASE_UPSIDE")
+            balance=issuer_stress.get("balance_sheet_risk_metrics") or {}
+            if balance.get("receivable_growth_exceeds_Q2_revenue_growth") is True:
+                severe.append("RECEIVABLES_GROW_FASTER_THAN_SALES_REVIEW_COLLECTIONS")
+            if balance.get("inventory_yoy_pct",0)>=80:
+                severe.append("INVENTORY_YEARLY_GROWTH_GE80PCT_REVIEW_WORKING_CAPITAL")
+            if balance.get("noncurrent_ppe_yoy_pct",0)>=40:
+                severe.append("CAPEX_FIXED_ASSETS_YEARLY_GROWTH_GE40PCT_REVIEW")
+            stress_observations=[
+                "historical_2025Q2_margin_substitution_upside_pct="+str(old_upside),
+                "all_historical_margin_stresses_are_not_2027_forecasts"
+            ]
         phase= SOURCE_FIRST_LANE if not severe else CAUTION_LANE
         # Verified current quarter summaries are NOT full historical PIT, and
         # a vendor or source-calculated PE does not qualify as certified.
@@ -161,6 +197,7 @@ def build(primary, official_gate, broad, material_events=None):
             "formal_pending_gates":len(pending),
             "formal_Aplus":False,"research_quality_lane":phase,
             "high_risk_review_flags":severe,
+            "additional_cyclical_margin_lookback_review":stress_observations,
             "dated_public_material_event_id":material_event["event_id"] if material_event else None,
             "dated_public_material_event_date":material_event["event_date"] if material_event else None,
             "material_event_original_company_mops_attested":False,
@@ -212,6 +249,8 @@ def build(primary, official_gate, broad, material_events=None):
       "base_upside_ge30_in_original_current_reconciled_top10_count":base_ge30,
       "research_candidates_source_order":rows,
       "known_public_material_events_included":len(ev_by_code),
+      "newly_joined_margin_cashflow_issuer_count":len(stress_by_code),
+      "new_historical_margin_stress_requires_manual_review":True,
       "known_3130_cyber_event_research_risk_review":True,
       "safer_evidence_review_order_NOT_A_BUY_RANKING":watch,
       "high_upside_but_originals_unverified_examples":broad_rows,
@@ -235,7 +274,8 @@ def main():
     j=build(json.loads((a.root/"rankings/latest_evidence_priority.json").read_bytes()),
             json.loads((a.root/"rankings/v891_gate_progress.json").read_bytes()),
             json.loads((a.root/"rankings/v892_top20_quality_audit.json").read_bytes()),
-            json.loads((a.root/"evidence/v8106_cross_sector_public_events_20261024.json").read_bytes()))
+            json.loads((a.root/"evidence/v8106_cross_sector_public_events_20261024.json").read_bytes()),
+            json.loads((a.root/"rankings/v8106_three_issuer_margin_reversion_shadow.json").read_bytes()))
     a.out.parent.mkdir(parents=True,exist_ok=True)
     a.out.write_text(json.dumps(j,ensure_ascii=False,indent=2,allow_nan=False)+"\n",encoding="utf-8")
     print(json.dumps({
