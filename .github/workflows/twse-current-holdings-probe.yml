@@ -1,0 +1,33 @@
+name: TWSE Current Ownership Source Probe
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/insider-pit-shadow-20261023
+    paths:
+      - 'scripts/v8105_twse_current_holdings_probe.py'
+      - 'tests/test_v8105_twse_current_holdings_probe.py'
+      - '.github/workflows/twse-current-holdings-probe.yml'
+permissions:
+  contents: read
+jobs:
+  current-sources:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Source schema and historical PIT isolation tests
+        run: python -m unittest -v tests.test_v8105_twse_current_holdings_probe
+      - name: Capture current official TWSE OpenAPI issuer balances and issued-share bases
+        run: python scripts/v8105_twse_current_holdings_probe.py --out twse_holdings_probe_artifact
+      - name: Preserve raw official response and source failure artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: twse-current-ownership-originals
+          path: twse_holdings_probe_artifact/
+          if-no-files-found: warn
+          retention-days: 30
