@@ -170,7 +170,8 @@ def study(events, prices, benchmark, as_of):
             label = dict(event_id=event["event_id"], stock_id=sid,
                          event_type=event["event_type"],
                          segment=segment, horizon_months=months)
-            if entry is None or entry not in benchmark:
+            if (entry is None or entry not in benchmark or
+                    (entry - event["disclosed_at"].date()).days > 7):
                 blocked.append(dict(**label, reason="MISSING_NEXT_SESSION_MATCHED_ENTRY"))
                 continue
             mature_date = plus_months(entry, months)
