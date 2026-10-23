@@ -62,7 +62,7 @@ def _quarter_index(period):
     return int(period[:4]) * 4 + int(period[-1])
 
 
-def evaluate_signal(snapshot, *, decision_at):
+def evaluate_signal(snapshot, *, decision_at, require_margin=True):
     """A shadow screen, not a substitute for original evidence inspection."""
     from tw_model_v880.insider_accumulation import evaluate_insider_accumulation
 
@@ -101,6 +101,19 @@ def evaluate_signal(snapshot, *, decision_at):
     position = (values[-1] - min(values)) / (max(values) - min(values))
     if position > POLICY["max_trailing_range_position"]:
         return blocked("PRICE_NOT_IN_BOTTOM_20_PERCENT", trailing_price_position=round(position, 6))
+    if require_margin is False:
+        # Strategy A: enter on market-buying persistence + low price alone.
+        # Do not access future financial quarters or require a GM rebound.
+        return {"status": "EARLY_RESEARCH_SIGNAL_REQUIRES_INDEPENDENT_ORIGINAL_AUDIT",
+                "eligible_research_signal": True, "signal_variant": "A_EARLY",
+                "gross_margin_gate": "NOT_REQUIRED",
+                "trailing_price_position": round(position, 6),
+                "three_month_insider_net_lots": i["three_month_net_lots"],
+                "formal_aplus_or_exit_changed": False,
+                "forward_returns_certified": False,
+                "earliest_fill": "NEXT_VERIFIED_TRADE_AFTER_SIGNAL_NOT_SAME_CLOSE"}
+    if require_margin is not True:
+        raise ValueError("REQUIRE_MARGIN_MUST_BE_BOOLEAN")
     quarters = snapshot.get("gross_margin_quarters")
     if not isinstance(quarters, list) or len(quarters) != 2:
         return blocked("PENDING_TWO_PUBLISHED_QUARTER_MARGINS")
@@ -117,6 +130,7 @@ def evaluate_signal(snapshot, *, decision_at):
     if gm_delta_pp < POLICY["min_gm_delta_percentage_points"]:
         return blocked("GROSS_MARGIN_NOT_RECOVERING_BY_1PP", gm_delta_pp=round(gm_delta_pp, 5))
     return {"status": "RESEARCH_SIGNAL_REQUIRES_INDEPENDENT_ORIGINAL_AUDIT",
+            "signal_variant": "B_GM_CONFIRMED",
             "eligible_research_signal": True, "formal_aplus_or_exit_changed": False,
             "forward_returns_certified": False,
             "trailing_price_position": round(position, 6), "gm_delta_pp": round(gm_delta_pp, 5),
