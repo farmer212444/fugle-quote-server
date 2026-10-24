@@ -99,7 +99,7 @@ def audit_0056(root):
         not_complete_0056_comparable_ranking=True,
         source_membership_is_public_secondary_snapshot_not_confirmed_official_daily_PCF=True,
         all_h1_eps_reference_not_a_2026_full_year_forecast=True,
-        2027_earnings_bridge_and_pe_revalidation_still_required=True,
+        forward_2027_earnings_bridge_and_pe_revalidation_still_required=True,
         dividends_and_fees_unmodeled=True,
         strategy_outperformance_vs_0056_not_tested=True)
 
