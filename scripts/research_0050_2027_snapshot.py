@@ -14,6 +14,42 @@ from datetime import datetime, timezone
 ROOT = Path(__file__).resolve().parents[1]
 PRICE_DATE = "2026-10-22"
 MODEL_VERSION = "V8.10.8"
+# Periods and sources are separate from the model's own FY2027 estimates.
+# These independently published earnings are OBSERVATIONS, not a new projection.
+PUBLIC_EPS_OBSERVATIONS = {
+    "2317": {
+        "period": "2026-H1", "months": 6, "eps": 7.84, "audited": False,
+        "source_url": "https://www.foxconn.com.tw/zh-tw/press-center/press-releases/latest-news/2094",
+        "published_on": "2026-08-12", "source_type": "ISSUER_H1_RELEASE",
+        "warning": "H1_X2_IGNORES_STRONG_CONSUMER_ELECTRONICS_H2_SEASONALITY"
+    },
+    "2382": {
+        "period": "2026-H1", "months": 6, "eps": 12.93, "audited": False,
+        "source_url": "https://goodinfo.tw/tw/StockAnnounceDetail.asp?STOCK_ID=2382",
+        "published_on": "2026-08-13", "source_type": "ISSUER_DISCLOSURE_MIRROR_H1",
+        "warning": "H1_X2_IGNORES_AI_RAMP_SEASONALITY_AND_DECLINING_GROSS_MARGIN"
+    },
+    "6505": {
+        "period": "2026-9M", "months": 9, "eps": 7.08, "audited": False,
+        "source_url": "https://wwwc.twse.com.tw/IIH2/zh/company/information.html?code=6505",
+        "published_on": "2026-10-12", "source_type": "COMPANY_Q3_SELF_REPORTED_UNAUDITED",
+        "warning": "REFINING_SPREAD_UTILIZATION_AND_INVENTORY_GAINS_CANNOT_BE_EXTRAPOLATED"
+    },
+}
+
+def mechanical_sensitivity(close, target, eps, pe):
+    """Counterfactual simultaneous EPS/PE haircuts, NOT calibrated probabilities."""
+    if not all(proper_positive(x) for x in (close, target, eps, pe)):
+        raise ValueError("INVALID_PRICE_OR_EARNINGS_FOR_STRESS")
+    if abs(eps * pe - target) > 0.01:
+        raise ValueError("BASE_TARGET_NOT_EQUAL_EPS_TIMES_PE")
+    return {
+        "upside_eps_pe_both_minus_10_pct": round(100 * (.9*.9*target/close-1), 2),
+        "upside_eps_pe_both_minus_20_pct": round(100 * (.8*.8*target/close-1), 2),
+        "minimum_2027_eps_for_30_pct_upside_at_base_pe": round(1.3*close/pe, 2),
+        "minimum_2027_eps_for_break_even_at_base_pe": round(close/pe, 2),
+        "can_keep_30_pct_upside_under_20_20_stress": .64*target/close >= 1.3,
+    }
 CODES = (
     "2330 2454 2308 2317 3711 1303 2383 2303 3037 2891 "
     "2881 2882 3017 2887 2345 2382 2885 2884 2327 2360 "
@@ -75,6 +111,23 @@ def snapshot(base=ROOT/"tw-market-data", out=Path("/tmp/0050-2027")):
                 "key_model_warnings":(rec.get("warning_flags") or [])[:5],
                 "estimated_total_return_pct":None,
             }
+            row.update(mechanical_sensitivity(close,target,scenario["eps"],scenario["pe"]))
+            row["model_financial_period"] = rec.get("financial_period")
+            row["model_eps_pe_stress_is_not_forecast"] = True
+            # Observations NEVER modify the existing base EPS/PE/target/rank.
+            if code in PUBLIC_EPS_OBSERVATIONS:
+                obs = PUBLIC_EPS_OBSERVATIONS[code]
+                annualized = obs["eps"] * 12 / obs["months"]
+                row["published_earnings_observation"] = {
+                    **obs,
+                    "simple_annualized_eps_not_forecast": round(annualized,2),
+                    "base_2027_eps_vs_linear_runrate_pct":
+                        round(100*(scenario["eps"]/annualized-1),2),
+                    "newer_than_model_financial_period":
+                        code=="6505" and rec.get("financial_period")=="2026-Q2",
+                    "changes_existing_base_rank": False,
+                    "source_document_original_bytes_independently_audited":False
+                }
             base_rows.append(row)
         else:
             excluded.append({"code":code,"name":rec.get("name"),"model_status":rec.get("status"),
@@ -102,6 +155,11 @@ def snapshot(base=ROOT/"tw-market-data", out=Path("/tmp/0050-2027")):
         "strategy":"MODEL_2027_BASE_TARGET_DIVIDED_BY_2026_10_22_CLOSE",
         "formal_Aplus_count":sum(r["formal_Aplus"] for r in top),
         "research_only_not_forward_return":True,
+        "mechanical_stress_rule":"EPS_AND_PE_EACH_DOWN_10_OR_20_PERCENT_NOT_NEW_BASE",
+        "real_earnings_obs_are_context_only":True,
+        "source_documents_original_bytes_independently_audited":False,
+        "ranking_passes_30pct_after_20_20_stress":sum(
+            1 for row in top if row["can_keep_30_pct_upside_under_20_20_stress"]),
         "dividends_and_transaction_costs_included":False,
         "excluded_issuers":excluded,
         "top10":top,
@@ -111,7 +169,9 @@ def snapshot(base=ROOT/"tw-market-data", out=Path("/tmp/0050-2027")):
     with (out/"top10_2027.csv").open("w",encoding="utf-8-sig",newline="") as file:
         cols=["rank_0050_by_model","code","name","reference_close","eps_2027_base",
               "pe_2027_base","target_2027_base","upside_2027_base_pct",
-              "bear_price","bull_price","source_tier"]
+              "bear_price","bull_price","source_tier",
+              "upside_eps_pe_both_minus_10_pct","upside_eps_pe_both_minus_20_pct",
+              "minimum_2027_eps_for_30_pct_upside_at_base_pe"]
         writer=csv.DictWriter(file,fieldnames=cols,extrasaction="ignore")
         writer.writeheader();writer.writerows(top)
     print(json.dumps({
