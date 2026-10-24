@@ -40,6 +40,8 @@
         "UNRESOLVED_NEGATIVE_OPERATING_CASHFLOW"
       ],
       "additional_cyclical_margin_lookback_review": [],
+      "operating_cycle_source_phase": null,
+      "operating_cycle_mitigants_not_Aplus_pass": [],
       "dated_public_material_event_id": null,
       "dated_public_material_event_date": null,
       "material_event_original_company_mops_attested": false,
@@ -77,6 +79,8 @@
         "2027_EPS_STEPUP_NEEDS_BRIDGE"
       ],
       "additional_cyclical_margin_lookback_review": [],
+      "operating_cycle_source_phase": null,
+      "operating_cycle_mitigants_not_Aplus_pass": [],
       "dated_public_material_event_id": null,
       "dated_public_material_event_date": null,
       "material_event_original_company_mops_attested": false,
@@ -111,6 +115,8 @@
         "2027_EPS_STEPUP_NEEDS_BRIDGE"
       ],
       "additional_cyclical_margin_lookback_review": [],
+      "operating_cycle_source_phase": null,
+      "operating_cycle_mitigants_not_Aplus_pass": [],
       "dated_public_material_event_id": null,
       "dated_public_material_event_date": null,
       "material_event_original_company_mops_attested": false,
@@ -145,6 +151,8 @@
         "2027_EPS_STEPUP_NEEDS_BRIDGE"
       ],
       "additional_cyclical_margin_lookback_review": [],
+      "operating_cycle_source_phase": null,
+      "operating_cycle_mitigants_not_Aplus_pass": [],
       "dated_public_material_event_id": null,
       "dated_public_material_event_date": null,
       "material_event_original_company_mops_attested": false,
@@ -181,6 +189,8 @@
         "historical_2025Q2_margin_substitution_upside_pct=11.49",
         "all_historical_margin_stresses_are_not_2027_forecasts"
       ],
+      "operating_cycle_source_phase": null,
+      "operating_cycle_mitigants_not_Aplus_pass": [],
       "dated_public_material_event_id": null,
       "dated_public_material_event_date": null,
       "material_event_original_company_mops_attested": false,
@@ -212,11 +222,18 @@
       "research_quality_lane": "CHECK_FINANCIAL_AND_REVENUE_ORIGINALS_BEFORE_ANY_RISK_DECISION",
       "high_risk_review_flags": [
         "UNRESOLVED_NEGATIVE_OPERATING_CASHFLOW",
-        "INVENTORY_YEARLY_GROWTH_GE80PCT_REVIEW_WORKING_CAPITAL"
+        "INVENTORY_YEARLY_GROWTH_GE80PCT_REVIEW_WORKING_CAPITAL",
+        "INVENTORY_SALE_DAYS_34_LONGER_YOY"
       ],
       "additional_cyclical_margin_lookback_review": [
         "historical_2025Q2_margin_substitution_upside_pct=34.97",
         "all_historical_margin_stresses_are_not_2027_forecasts"
+      ],
+      "operating_cycle_source_phase": "DSO_YOY_FASTER_COLLECTION_BUT_DIO_YOY_SHARPLY_LONGER",
+      "operating_cycle_mitigants_not_Aplus_pass": [
+        "DSO_11_DAYS_SHORTER_YOY_NO_COLLECTION_SLOWDOWN_INFERENCE",
+        "DIO_IMPROVED_THREE_DAYS_QOQ",
+        "NOT_EVIDENCE_OF_STOCK_IMPAIRMENT_BY_ITSELF"
       ],
       "dated_public_material_event_id": null,
       "dated_public_material_event_date": null,
@@ -249,11 +266,18 @@
       "research_quality_lane": "CHECK_FINANCIAL_AND_REVENUE_ORIGINALS_BEFORE_ANY_RISK_DECISION",
       "high_risk_review_flags": [
         "RECEIVABLES_GROW_FASTER_THAN_SALES_REVIEW_COLLECTIONS",
-        "CAPEX_FIXED_ASSETS_YEARLY_GROWTH_GE40PCT_REVIEW"
+        "CAPEX_FIXED_ASSETS_YEARLY_GROWTH_GE40PCT_REVIEW",
+        "COLLECTION_DAYS_LONGER_YOY_ACROSS_TWO_METHODS"
       ],
       "additional_cyclical_margin_lookback_review": [
         "historical_2025Q2_margin_substitution_upside_pct=35.12",
         "all_historical_margin_stresses_are_not_2027_forecasts"
+      ],
+      "operating_cycle_source_phase": "AR_COLLECTION_LONGER_YOY_BUT_IMPROVING_QOQ_TWO_METHODS",
+      "operating_cycle_mitigants_not_Aplus_pass": [
+        "DSO_QOQ_IMPROVED_ACROSS_TWO_DIFFERENT_METHODS",
+        "DIO_YOY_APPROXIMATELY_FLAT",
+        "NOT_EVIDENCE_OF_BAD_DEBT_BY_ITSELF"
       ],
       "dated_public_material_event_id": null,
       "dated_public_material_event_date": null,
@@ -291,6 +315,8 @@
         "LOW_EPS_DENOMINATOR_UNSTABLE"
       ],
       "additional_cyclical_margin_lookback_review": [],
+      "operating_cycle_source_phase": null,
+      "operating_cycle_mitigants_not_Aplus_pass": [],
       "dated_public_material_event_id": null,
       "dated_public_material_event_date": null,
       "material_event_original_company_mops_attested": false,
@@ -325,6 +351,8 @@
         "2027_EPS_STEPUP_NEEDS_BRIDGE"
       ],
       "additional_cyclical_margin_lookback_review": [],
+      "operating_cycle_source_phase": null,
+      "operating_cycle_mitigants_not_Aplus_pass": [],
       "dated_public_material_event_id": null,
       "dated_public_material_event_date": null,
       "material_event_original_company_mops_attested": false,
@@ -358,6 +386,8 @@
         "CYBERSECURITY_PERSONAL_DATA_INCIDENT_IMPACT_OPEN"
       ],
       "additional_cyclical_margin_lookback_review": [],
+      "operating_cycle_source_phase": null,
+      "operating_cycle_mitigants_not_Aplus_pass": [],
       "dated_public_material_event_id": "3130_CYBER_RESUME_DISCLOSURE_20261006",
       "dated_public_material_event_date": "2026-10-06",
       "material_event_original_company_mops_attested": false,
@@ -370,6 +400,7 @@
   ],
   "known_public_material_events_included": 1,
   "newly_joined_margin_cashflow_issuer_count": 3,
+  "newly_joined_operating_cycle_issuer_count": 2,
   "new_historical_margin_stress_requires_manual_review": true,
   "known_3130_cyber_event_research_risk_review": true,
   "safer_evidence_review_order_NOT_A_BUY_RANKING": [
@@ -398,6 +429,8 @@
         "UNRESOLVED_NEGATIVE_OPERATING_CASHFLOW"
       ],
       "additional_cyclical_margin_lookback_review": [],
+      "operating_cycle_source_phase": null,
+      "operating_cycle_mitigants_not_Aplus_pass": [],
       "dated_public_material_event_id": null,
       "dated_public_material_event_date": null,
       "material_event_original_company_mops_attested": false,
@@ -435,6 +468,8 @@
         "2027_EPS_STEPUP_NEEDS_BRIDGE"
       ],
       "additional_cyclical_margin_lookback_review": [],
+      "operating_cycle_source_phase": null,
+      "operating_cycle_mitigants_not_Aplus_pass": [],
       "dated_public_material_event_id": null,
       "dated_public_material_event_date": null,
       "material_event_original_company_mops_attested": false,
@@ -469,6 +504,8 @@
         "2027_EPS_STEPUP_NEEDS_BRIDGE"
       ],
       "additional_cyclical_margin_lookback_review": [],
+      "operating_cycle_source_phase": null,
+      "operating_cycle_mitigants_not_Aplus_pass": [],
       "dated_public_material_event_id": null,
       "dated_public_material_event_date": null,
       "material_event_original_company_mops_attested": false,
@@ -503,6 +540,8 @@
         "2027_EPS_STEPUP_NEEDS_BRIDGE"
       ],
       "additional_cyclical_margin_lookback_review": [],
+      "operating_cycle_source_phase": null,
+      "operating_cycle_mitigants_not_Aplus_pass": [],
       "dated_public_material_event_id": null,
       "dated_public_material_event_date": null,
       "material_event_original_company_mops_attested": false,
@@ -539,6 +578,8 @@
         "historical_2025Q2_margin_substitution_upside_pct=11.49",
         "all_historical_margin_stresses_are_not_2027_forecasts"
       ],
+      "operating_cycle_source_phase": null,
+      "operating_cycle_mitigants_not_Aplus_pass": [],
       "dated_public_material_event_id": null,
       "dated_public_material_event_date": null,
       "material_event_original_company_mops_attested": false,
@@ -570,11 +611,18 @@
       "research_quality_lane": "CHECK_FINANCIAL_AND_REVENUE_ORIGINALS_BEFORE_ANY_RISK_DECISION",
       "high_risk_review_flags": [
         "UNRESOLVED_NEGATIVE_OPERATING_CASHFLOW",
-        "INVENTORY_YEARLY_GROWTH_GE80PCT_REVIEW_WORKING_CAPITAL"
+        "INVENTORY_YEARLY_GROWTH_GE80PCT_REVIEW_WORKING_CAPITAL",
+        "INVENTORY_SALE_DAYS_34_LONGER_YOY"
       ],
       "additional_cyclical_margin_lookback_review": [
         "historical_2025Q2_margin_substitution_upside_pct=34.97",
         "all_historical_margin_stresses_are_not_2027_forecasts"
+      ],
+      "operating_cycle_source_phase": "DSO_YOY_FASTER_COLLECTION_BUT_DIO_YOY_SHARPLY_LONGER",
+      "operating_cycle_mitigants_not_Aplus_pass": [
+        "DSO_11_DAYS_SHORTER_YOY_NO_COLLECTION_SLOWDOWN_INFERENCE",
+        "DIO_IMPROVED_THREE_DAYS_QOQ",
+        "NOT_EVIDENCE_OF_STOCK_IMPAIRMENT_BY_ITSELF"
       ],
       "dated_public_material_event_id": null,
       "dated_public_material_event_date": null,
@@ -607,11 +655,18 @@
       "research_quality_lane": "CHECK_FINANCIAL_AND_REVENUE_ORIGINALS_BEFORE_ANY_RISK_DECISION",
       "high_risk_review_flags": [
         "RECEIVABLES_GROW_FASTER_THAN_SALES_REVIEW_COLLECTIONS",
-        "CAPEX_FIXED_ASSETS_YEARLY_GROWTH_GE40PCT_REVIEW"
+        "CAPEX_FIXED_ASSETS_YEARLY_GROWTH_GE40PCT_REVIEW",
+        "COLLECTION_DAYS_LONGER_YOY_ACROSS_TWO_METHODS"
       ],
       "additional_cyclical_margin_lookback_review": [
         "historical_2025Q2_margin_substitution_upside_pct=35.12",
         "all_historical_margin_stresses_are_not_2027_forecasts"
+      ],
+      "operating_cycle_source_phase": "AR_COLLECTION_LONGER_YOY_BUT_IMPROVING_QOQ_TWO_METHODS",
+      "operating_cycle_mitigants_not_Aplus_pass": [
+        "DSO_QOQ_IMPROVED_ACROSS_TWO_DIFFERENT_METHODS",
+        "DIO_YOY_APPROXIMATELY_FLAT",
+        "NOT_EVIDENCE_OF_BAD_DEBT_BY_ITSELF"
       ],
       "dated_public_material_event_id": null,
       "dated_public_material_event_date": null,
@@ -649,6 +704,8 @@
         "LOW_EPS_DENOMINATOR_UNSTABLE"
       ],
       "additional_cyclical_margin_lookback_review": [],
+      "operating_cycle_source_phase": null,
+      "operating_cycle_mitigants_not_Aplus_pass": [],
       "dated_public_material_event_id": null,
       "dated_public_material_event_date": null,
       "material_event_original_company_mops_attested": false,
@@ -683,6 +740,8 @@
         "2027_EPS_STEPUP_NEEDS_BRIDGE"
       ],
       "additional_cyclical_margin_lookback_review": [],
+      "operating_cycle_source_phase": null,
+      "operating_cycle_mitigants_not_Aplus_pass": [],
       "dated_public_material_event_id": null,
       "dated_public_material_event_date": null,
       "material_event_original_company_mops_attested": false,
@@ -716,6 +775,8 @@
         "CYBERSECURITY_PERSONAL_DATA_INCIDENT_IMPACT_OPEN"
       ],
       "additional_cyclical_margin_lookback_review": [],
+      "operating_cycle_source_phase": null,
+      "operating_cycle_mitigants_not_Aplus_pass": [],
       "dated_public_material_event_id": "3130_CYBER_RESUME_DISCLOSURE_20261006",
       "dated_public_material_event_date": "2026-10-06",
       "material_event_original_company_mops_attested": false,
