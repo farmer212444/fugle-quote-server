@@ -45,6 +45,18 @@
       "event_date": "2026-10-20",
       "published_at_local": "2026-10-20T14:30:20+08:00",
       "original_MOPS_pdf_sha256": null
+    },
+    "9904_2026h1_equity_method_investment_analysis": {
+      "url": "https://ec.ltn.com.tw/amp/article/breakingnews/5539146",
+      "event_date": "2026-08-13",
+      "published_at_local": "2026-08-13T21:20:00+08:00",
+      "original_MOPS_pdf_sha256": null
+    },
+    "9904_H1_parent_OCI_equity_movement": {
+      "url": "https://toalpha.tw/stock/9904/filings",
+      "event_date": "2026-08-13",
+      "published_at_local": "2026-08-13T17:40:49+08:00",
+      "original_MOPS_pdf_sha256": null
     }
   },
   "stocks": {
@@ -135,7 +147,20 @@
           "terminal_ROE_from_2031": 0.085,
           "narrative": "Footwear plus investments 8.5% ROE"
         }
-      ]
+      ],
+      "h1_2026_restatement_risk_overlay": {
+        "equity_method_income_k_rounded": 6243000,
+        "nanshan_related_equity_method_income_k_rounded": 5443000,
+        "parent_OCI_gain_k_rounded": 48737000,
+        "parent_OCI_source_is_secondary_statement_table": true,
+        "insurance_relationship_share_pct_reported": 18.09,
+        "ifrs17_applied_by_investee_from": "2026-01-01",
+        "insurance_restatement_of_2025_prior_period_reported": true,
+        "fully_normalized_equity_method_earnings_2027_verified": false,
+        "all_2026_book_value_persistently_recoverable_verified": false,
+        "pbr_estimate_excludes_insurance_equity_valuation": false,
+        "notes": "OCI is genuine parent comprehensive gain included in 2026Q2 book; subtracting it is a hypothetical accounting sensitivity, not an actual adjusted NAV."
+      }
     }
   },
   "outstanding_quality_checks": [
@@ -145,6 +170,7 @@
     "2027 scenario probability empirical calibration",
     "dividend payout sustainability and future parent equity",
     "0050 total return walkforward",
-    "issuance, FX OCI, equity impairment and deferred tax"
+    "issuance, FX OCI, equity impairment and deferred tax",
+    "2026 H1 Nanshan reported equity-method earnings and IFRS17 2025 restatement; 2026 Q2 parent OCI movement amount and asset valuation persistence"
   ]
 }
