@@ -1,0 +1,81 @@
+{
+  "schema": "V8107_FOOTWEAR_2027_ROE_JUSTIFIED_PB_HYPOTHESIS_V1",
+  "compiled_asof": "2026-10-24",
+  "price_asof": "2026-10-22",
+  "bvps_asof_quarter": "2026Q2",
+  "book_value_not_2027_estimate": true,
+  "valuation_method": "STEADY_STATE_GORDON_JUSTIFIED_PB_ROE_MINUS_G_OVER_COST_EQUITY_MINUS_G",
+  "scope": "SENSITIVITY_CONCEPT_NOT_SINGLE_YEAR_2027_PRICE_TARGET",
+  "important_limitation": "Treating one year 2027 EPS/BVPS as permanent normalized ROE is unproven. Output is an illustration of valuation requirements, not a validated independent 2027 future trading price or buy recommendation.",
+  "g_forever_annual": 0.02,
+  "stock_input": [
+    {
+      "code": "9904",
+      "name": "寶成",
+      "price": 26.35,
+      "bvps": 63.46,
+      "official_2026_10_22_pb": 0.42,
+      "base_2027_eps_hypothesis": 4.6,
+      "base_eps_origin": "HYPOTHESIS_ANCHOR_2025_REPORTED_EPS_4_1_TTM_2026_OCT_NEAR_4_72",
+      "base_eps_PIT_verified": false,
+      "cost_of_equity": 0.095,
+      "report_url": "https://statementdog.com/analysis/9904/nav",
+      "remarks": "Group includes Hong Kong retail and invested subsidiaries; book equity partly represents non-core assets; ROE must be calculated for parent-shareholders."
+    },
+    {
+      "code": "6768",
+      "name": "志強-KY",
+      "price": 62.8,
+      "bvps": 73.51,
+      "official_2026_10_22_pb": 0.85,
+      "base_2027_eps_hypothesis": 5,
+      "base_eps_origin": "HYPOTHESIS_COMPARED_2026_FIRST_9M_ISSUER_PRELIM_EPS_3_4",
+      "base_eps_PIT_verified": false,
+      "cost_of_equity": 0.115,
+      "report_url": "https://statementdog.com/analysis/6768/nav",
+      "remarks": "Listed only 2021-04-22, not ten-year public P/B; ROE may vary with capacity and forex."
+    },
+    {
+      "code": "6965",
+      "name": "中傑-KY",
+      "price": 64.3,
+      "bvps": 72.92,
+      "official_2026_10_22_pb": 0.88,
+      "base_2027_eps_hypothesis": 3.53,
+      "base_eps_origin": "PR86_2027_INDEPENDENT_EPS_SHADOW_NOT_FORMALLY_AUDITED",
+      "base_eps_PIT_verified": false,
+      "cost_of_equity": 0.12,
+      "report_url": "https://statementdog.com/analysis/6965/nav",
+      "remarks": "Listed 2025-03-07; 2027 first recovery earnings not necessarily perpetual steady state."
+    },
+    {
+      "code": "9802",
+      "name": "鈺齊-KY",
+      "price": 62.6,
+      "bvps": 67.72,
+      "official_2026_10_22_pb": 0.92,
+      "base_2027_eps_hypothesis": 4.92,
+      "base_eps_origin": "PR86_2027_INDEPENDENT_EPS_SHADOW_NOT_FORMALLY_AUDITED",
+      "base_eps_PIT_verified": false,
+      "cost_of_equity": 0.115,
+      "report_url": "https://statementdog.com/analysis/9802/nav",
+      "remarks": "2026 Q3 preliminary GM 13.23%; 2027 quarterly forecast subject to new-factory utilization and margins."
+    },
+    {
+      "code": "9910",
+      "name": "豐泰",
+      "price": 67.7,
+      "bvps": 23.95,
+      "official_2026_10_22_pb": 2.83,
+      "base_2027_eps_hypothesis": 5.4,
+      "base_eps_origin": "HYPOTHESIS_FROM_LTM_EPS_APPROX_PRICE_OVER_CURRENT_PE_13_76_NOT_CONSENSUS",
+      "base_eps_PIT_verified": false,
+      "cost_of_equity": 0.105,
+      "report_url": "https://statementdog.com/analysis/9910/nav",
+      "remarks": "Historically premium P/B reflects customer and high franchise ROE; large brand concentration/FX."
+    }
+  ],
+  "formal_Aplus_or_stock_order_changed": false,
+  "historical_pit_roe_payout_retention_independently_certified": false,
+  "payout_and_book_value_in_2027_verified": false
+}
