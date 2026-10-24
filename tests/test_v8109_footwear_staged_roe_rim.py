@@ -70,7 +70,7 @@ class Footwear2027PersistentROETests(unittest.TestCase):
 
     def test_issuer_equity_per_share_must_reconcile(self):
         a,b=fixtures()
-        a["stocks"]["9904"]["h1_2026_reported"]["parent_equity_k"] *=2
+        a["stocks"]["9904"]["h1_2026_reported"]["parent_equity_k"] *=1.2
         with self.assertRaisesRegex(ValueError,"SHARE_UNITS_PARENT_EPS_VS_EQUITY_MISMATCH"):
             compute(a,b)
 
