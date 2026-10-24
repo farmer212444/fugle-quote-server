@@ -10,6 +10,10 @@ import hashlib
 import json
 import math
 from pathlib import Path
+import sys
+ROOT=Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0,str(ROOT))
 
 from scripts.v8b4_0056_forward_top10 import load_inputs,filter_top10
 
