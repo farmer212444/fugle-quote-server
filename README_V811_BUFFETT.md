@@ -27,7 +27,7 @@ Source: latest_9802_cash_review.json. The script re-hashes the two archived PDF 
 
 Outputs: tw-market-data/rankings/latest_buffett_review.json and latest_buffett_review.md.
 
-This is separate from the official ranking and observes only the institutional-focus issuers, **not the full market**. It does not create A+ certificates. Invalid provenance fails closed.
+This is separate from the official ranking and observes only the institutional-focus issuers, **not the full market**. It does not create A+ certificates. Invalid original issuer cash evidence is **quarantined for that issuer** with a visible error status and no numeric conclusion, while independent company research continues. Invalid institutional model/version sources still block publication.
 
 ## Remaining evidence
 
