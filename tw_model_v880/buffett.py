@@ -217,6 +217,12 @@ def render(report):
             moat="待多年競爭證據",
             long="待已驗現金流及折現假設",
             allocation="H1部分現金用途" if r["capital_allocation"]["status"].startswith("PARTIAL") else "待原始資本用途"))
+    if report.get("source_rejections"):
+        lines+=["", "## 原始檔案被隔離（其他公司照常評估）", "",
+                "以下公司未採用不完整或驗證失敗的現金流資料；不將缺值填零或推定安全。"]
+        for error in report["source_rejections"]:
+            lines.append("- "+tidy(error["code"])+": "+tidy(error["status"])+
+                         "；原因："+tidy(error["reason"]))
     for row in report["issuer_reviews"]:
         proxy=row["owner_earnings"].get("historical_fcf_proxy")
         if proxy:
