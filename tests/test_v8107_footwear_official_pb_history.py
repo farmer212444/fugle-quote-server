@@ -32,11 +32,11 @@ class TestFootwearPBOriginalHistory(unittest.TestCase):
             parsed_month("9802","2026-09",fixture())
 
     def test_non_ok_no_data_is_not_a_real_price(self):
-        rows,stat=parsed_month("6965","2017-03",b'{"stat":"查無資料","data":[]}')
+        rows,stat=parsed_month("6965","2017-03",'{"stat":"查無資料","data":[]}'.encode("utf-8"))
         self.assertEqual(rows,[])
         self.assertEqual(stat,"查無資料")
         with self.assertRaisesRegex(ValueError,"UNEXPECTED_TWSE_STAT"):
-            parsed_month("6965","2026-10",b'{"stat":"服務維護中","data":[]}')
+            parsed_month("6965","2026-10",'{"stat":"服務維護中","data":[]}'.encode("utf-8"))
 
     def test_unlisted_stocks_do_not_claim_ten_year_history(self):
         self.assertEqual(max(BEGIN,datetime.date.fromisoformat(STOCKS["6965"][1])),
