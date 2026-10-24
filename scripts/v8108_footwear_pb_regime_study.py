@@ -91,7 +91,10 @@ def rolling_low_10pct_events(rows,history=THREE_YEAR_SESSIONS,
     for i in range(history,len(rows)):
         previous=[r["pb"] for r in rows[i-history:i]]
         limit=percentile(previous,.1)
-        if i-prior_signal<lag or rows[i]["pb"]>limit:
+        # A flat P/B at the historical 10th-percentile boundary is not
+        # automatically a new discount. Require STRICTLY below the old P10
+        # to reject fabricated signals on a constant or tied history.
+        if i-prior_signal<lag or rows[i]["pb"]>=limit:
             continue
         # Re-entry after flat-under-threshold can occur on cooldown expiry;
         # signal is "low PB" not necessarily a strict crossing.
