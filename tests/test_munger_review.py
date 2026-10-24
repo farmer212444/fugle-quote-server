@@ -53,7 +53,8 @@ class MungerInversionTests(unittest.TestCase):
         a,b=fixture();old_a=copy.deepcopy(a);old_b=copy.deepcopy(b)
         result=build(a,b)
         self.assertEqual((a,b),(old_a,old_b))
-        self.assertEqual(result["evaluated_issuers"],2)
+        self.assertEqual(result["model_evaluated_issuers"],2)
+        self.assertEqual(result["diagnostic_issuers_reviewed"],2)
         self.assertEqual(result["not_evaluated_issuers"],1)
         self.assertEqual(result["new_certificates_issued"],0)
         self.assertTrue(result["official_13_gates_unchanged"])
@@ -90,8 +91,13 @@ class MungerInversionTests(unittest.TestCase):
 
     def test_focus_issuer_and_coverage_must_match(self):
         a,b=fixture()
-        a["model_evaluated_issuer_count"]=3
+        a["model_evaluated_issuer_count"]=1
         with self.assertRaisesRegex(ValueError,"COUNT_MISMATCH"):build(a,b)
+        a,b=fixture()
+        a["model_evaluated_issuer_count"]=3
+        result=build(a,b)
+        self.assertEqual(result["diagnostic_issuers_reviewed"],2)
+        self.assertEqual(result["evaluated_but_not_in_diagnostic_report"],1)
         a,b=fixture()
         b["issuer_reviews"].append(dict(code="8888",market="TWSE"))
         with self.assertRaisesRegex(ValueError,"FOCUS_ISSUER"):build(a,b)
