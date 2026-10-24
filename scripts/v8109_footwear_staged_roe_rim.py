@@ -147,6 +147,39 @@ def validate_filing(code,s,dates):
         if nonop_share<.60 or nonop_share>.85:
             raise ValueError("BAOCHENG_H1_NONOPERATING_DEPENDENCE_NOT_EXPOSED")
         out["material_h1_nonoperating_quality_risk_flag"]=True
+        overlay=s.get("h1_2026_restatement_risk_overlay")
+        if not isinstance(overlay,dict):
+            raise ValueError("MISSING_IFRS17_NANSHAN_AND_OCI_RISK_OVERLAY")
+        em=numeric(overlay.get("equity_method_income_k_rounded"),"equity_method_income")
+        nanshan=numeric(overlay.get("nanshan_related_equity_method_income_k_rounded"),"nanshan_equity_income")
+        parent_oci=numeric(overlay.get("parent_OCI_gain_k_rounded"),"parent_oci")
+        if (not 0<nanshan<em<=nonop*1.2 or
+            not .5*h["parent_equity_k"]>parent_oci>0 or
+            overlay.get("parent_OCI_source_is_secondary_statement_table") is not True or
+            overlay.get("insurance_restatement_of_2025_prior_period_reported") is not True or
+            overlay.get("fully_normalized_equity_method_earnings_2027_verified") is not False or
+            overlay.get("all_2026_book_value_persistently_recoverable_verified") is not False):
+            raise ValueError("NONOPERATING_IFRS17_OR_OCI_SOURCE_UNCERTIFIED")
+        parent_shares_thousand=shares_from_equity
+        book_without_H1_OCI=bv-parent_oci/parent_shares_thousand
+        if book_without_H1_OCI<=0:
+            raise ValueError("OCI_COUNTERFACTUAL_BOOK_NONPOSITIVE")
+        out["2026_H1_insurance_equity_method_and_book_OCI_risk"]={
+            "source_equity_method_income_billion_TWD_rounded":round(em/1e6,3),
+            "source_nanshan_related_income_billion_TWD_rounded":round(nanshan/1e6,3),
+            "nanshan_share_of_total_pretax_profit_pct_gross_unadjusted":round(100*nanshan/h["pretax_profit_k"],3),
+            "parent_OCI_H1_gain_billion_TWD_rounded":round(parent_oci/1e6,3),
+            "parent_OCI_share_of_end_H1_parent_equity_pct":round(100*parent_oci/h["parent_equity_k"],3),
+            "reported_parent_BVPS":bv,
+            "counterfactual_BVPS_if_H1_parent_OCI_earnings_removed_NOT_actual_NAV":round(book_without_H1_OCI,3),
+            "counterfactual_PB_if_H1_parent_OCI_removed_NOT_actual_NAV":round(price/book_without_H1_OCI,3),
+            "insurance_IFRS17_investee_accounting_applied_since":"2026-01-01",
+            "2025_comparative_reporting_restated_in_2026":True,
+            "PB_histogram_pre_vs_post_IFRS17_comparability_recertified":False,
+            "earnings_quality_not_all_recurring_or_nonrecurring_yet_verified":True,
+            "parent_OCI_amount_secondary_reprint_not_original_pdf_sha_attested":True,
+            "do_not_subtract_equity_method_income_directly_from_parent_EPS_without_tax_minorities":True,
+        }
     return out
 
 
