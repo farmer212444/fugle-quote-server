@@ -15,7 +15,7 @@ ARCHIVE_PATH='evidence/v880/originals/6206/2026-08-12_0d20ed91a43b95a79f07_523a4
 EXPECTED_SHA='523a4595b772a0b98e14a832086848e393ff432658a2ae9d48d36a9a92a5a056'
 
 
-def check_6206_inventory_original(record,root,asof,history):
+def check_6206_inventory_original(record,root,asof,history,cash_history=None):
     if (record.get('schema')!=SCHEMA or record.get('issuer')!='6206' or
         record.get('market')!='TWSE' or record.get('financial_period')!='2026-Q2' or
         record.get('issuer_original_source_url')!=SOURCE_URL or
@@ -70,7 +70,35 @@ def check_6206_inventory_original(record,root,asof,history):
     inventory_yoy_pct=100*(q2['inventory_m']/prior['inventory_m']-1)
     sales_yoy_pct=100*(official['q2_2026']/official['q2_2025']-1)
     receivables_yoy_pct=100*(q2['accounts_receivable_m']/prior['accounts_receivable_m']-1)
-    return dict(code='6206',period='2026-Q2',
+    # Quarter-end IR balances are rounded NTD millions. Their differences
+    # are a proxy for stock/receivable/payable capital employed, *not* the
+    # operating cash-flow statement's cash movements (which also involve
+    # currency, consolidation, timing and other assets/liabilities).
+    proxy_change_m=(q2['inventory_m']-q1['inventory_m']+
+                    q2['accounts_receivable_m']-q1['accounts_receivable_m']-
+                    (q2['accounts_payable_m']-q1['accounts_payable_m']))
+    cash_quarter=dict(status='OFFICIAL_CASHFLOW_NOT_PROVIDED_NO_CONCLUSION',
+                      q1_ytd_ocf_k=None,h1_ytd_ocf_k=None,
+                      q2_standalone_ocf_k=None,quarterly_ocf_reconciled=False)
+    if cash_history is not None:
+        def cash_row(period):
+            v=cash_history.get(period) or {}
+            cash_num=v.get('operating_cashflow_ytd_k')
+            if (v.get('code')!='6206' or v.get('market')!='TWSE'
+                or v.get('period')!=period or type(cash_num) not in (float,int)
+                or not math.isfinite(cash_num)):
+                raise ValueError('6206_Q2_OCF_MOPS_MIRROR_UNAVAILABLE_'+period)
+            return cash_num
+        q1_ocf=cash_row('2026-Q1')
+        h1_ocf=cash_row('2026-Q2')
+        q2_ocf=h1_ocf-q1_ocf
+        cash_quarter=dict(status='2026_Q2_MOPS_YTD_DIFFERENCED_CASHFLOW',
+            q1_ytd_ocf_k=q1_ocf,h1_ytd_ocf_k=h1_ocf,
+            q2_standalone_ocf_k=q2_ocf,
+            quarterly_ocf_reconciled=True,
+            q2_ocf_positive=q2_ocf>0,
+            half_year_ocf_still_negative=h1_ocf<0)
+    result=dict(code='6206',period='2026-Q2',
         status='SHA_CHECKED_ISSUER_IR_ROUNDED_BALANCE_AND_MOPS_REVENUE_CROSSCHECKED',
         original_presentation_sha256=EXPECTED_SHA,
         original_presentation_archive_path=ARCHIVE_PATH,
@@ -94,10 +122,22 @@ def check_6206_inventory_original(record,root,asof,history):
         original_inventory_valuation_notes_fully_checked=False,
         inventory_days_method_independently_recomputed=False,
         inventory_impairment_or_obsolescence_inferred=False,
-        cash_quality_gate_pass=False,formal_Aplus_addition=0)
+        cash_quality_gate_pass=False,formal_Aplus_addition=0,
+        ir_q1_inventory_receivables_minus_payables_m=(
+            q1['inventory_m']+q1['accounts_receivable_m']-q1['accounts_payable_m']),
+        ir_q2_inventory_receivables_minus_payables_m=(
+            q2['inventory_m']+q2['accounts_receivable_m']-q2['accounts_payable_m']),
+        ir_q2_quarter_balance_proxy_capital_increase_m=proxy_change_m,
+        ir_q2_quarter_balance_proxy_as_pct_of_quarter_sales=(
+            100*proxy_change_m/(official['q2_2026']/1000)),
+        not_cash_flow_statement_reconciliation=True,
+        not_proven_inventory_cash_loss_or_impairment=True,
+        source_ir_balances_rounded_ntd_millions=True,
+        cashflow_quarter_mops_evidence=cash_quarter)
+    return result
 
 
-def load_6206_inventory_watch(root,asof,history):
+def load_6206_inventory_watch(root,asof,history,cash=None):
     root=Path(root)
     results={};errors=[]
     for path in sorted((root/'evidence/v880/inventory_original_watch').glob('*.json')):
@@ -108,7 +148,8 @@ def load_6206_inventory_watch(root,asof,history):
             if document['first_issuer_slide_reviewed_date']>asof[:10]:
                 continue
             rows=history.get(('TWSE','6206')) or {}
-            results['6206']=check_6206_inventory_original(document,root,asof,rows)
+            cash_rows=(cash.get(('TWSE','6206')) or {}) if cash is not None else None
+            results['6206']=check_6206_inventory_original(document,root,asof,rows,cash_rows)
         except (ValueError,KeyError,TypeError,OSError) as exc:
             errors.append(dict(source=str(path.relative_to(root)),error=str(exc)))
     return results,errors
