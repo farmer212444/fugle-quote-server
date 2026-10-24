@@ -1,0 +1,49 @@
+name: V8.10.7 TWSE PB Originals Integrity Audit
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/footwear-pb-2016-2026-20261024
+    paths:
+      - 'scripts/v8107_footwear_official_pb_archive_audit.py'
+      - 'tests/test_v8107_footwear_official_pb_archive_audit.py'
+      - '.github/workflows/v8107-footwear-pb-integrity.yml'
+permissions:
+  contents: write
+concurrency:
+  group: v8107-footwear-pb-integrity-20261024
+  cancel-in-progress: true
+jobs:
+  offline-independent-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Check every archived TWSE HTTP SHA, date, file and P/B metric
+        run: python -m unittest -v tests.test_v8107_footwear_official_pb_archive_audit
+      - name: Produce independent offline full-history source audit
+        run: python scripts/v8107_footwear_official_pb_archive_audit.py
+      - name: Preserve audit attestation in draft PR only
+        if: success()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add tw-market-data/research/footwear_pb_2016_2026/original_bytes_offline_audit.json
+          if ! git diff --cached --quiet; then
+            git commit -m "data: verify all 450 TWSE PB official source bodies and 9050 trading days"
+            for attempt in 1 2 3; do
+              git fetch origin research/footwear-pb-2016-2026-20261024
+              git rebase origin/research/footwear-pb-2016-2026-20261024 || {
+                git rebase --abort || true
+                exit 1
+              }
+              if git push origin HEAD:research/footwear-pb-2016-2026-20261024; then
+                exit 0
+              fi
+              sleep 2
+            done
+            exit 1
+          fi
