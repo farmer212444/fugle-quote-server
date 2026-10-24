@@ -1,0 +1,137 @@
+{
+  "schema": "BUYBACK_SOURCE_READINESS_V1",
+  "as_of_taipei_date": "2026-10-24",
+  "research_only": true,
+  "formal_a_plus_unchanged": true,
+  "orders_created": false,
+  "historical_index_control": {
+    "id": "TWSE_TAIWAN50_TOTAL_RETURN_INDEX_NOT_ETF_0050",
+    "capture_run": "https://github.com/farmer212444/fugle-quote-server/actions/runs/40040560674",
+    "status": "MONTHLY_ORIGINALS_COLLECTED_AUDIT_PENDING",
+    "months_expected": 72,
+    "months_collected": 72,
+    "trading_date_rows": 1459,
+    "years": [
+      {
+        "year": 2020,
+        "months": 12,
+        "rows": 245
+      },
+      {
+        "year": 2021,
+        "months": 12,
+        "rows": 244
+      },
+      {
+        "year": 2022,
+        "months": 12,
+        "rows": 246
+      },
+      {
+        "year": 2023,
+        "months": 12,
+        "rows": 239
+      },
+      {
+        "year": 2024,
+        "months": 12,
+        "rows": 242
+      },
+      {
+        "year": 2025,
+        "months": 12,
+        "rows": 243
+      }
+    ],
+    "note": "Raw data and hashes live in short-retention CI artifacts, not committed as durable dataset. Index is not 0050 ETF total return."
+  },
+  "buyback_events": {
+    "source": "https://mops.twse.com.tw/mops/#/web/t35sc09",
+    "old_form_probe": "https://github.com/farmer212444/fugle-quote-server/actions/runs/40040712021",
+    "status": "ACCESS_RESTRICTED_SECURITY_PAGE_NOT_ZERO_EVENTS",
+    "historical_events_imported": 0,
+    "exact_publication_timestamps_verified": 0,
+    "observed_stock_returns": null,
+    "win_rate_3m": null,
+    "win_rate_6m": null,
+    "win_rate_12m": null,
+    "beat_0050_3m": null,
+    "beat_0050_6m": null,
+    "beat_0050_12m": null,
+    "alternative_data_source": {
+      "product": "TEJ TQuant Lab",
+      "dataset": "TWN/APITRS",
+      "license": "LICENSED_REQUIRE_USER_PERMISSION",
+      "page": "https://tquant.tejwin.com/資料集/",
+      "announcement_timestamps_still_need_verification": true
+    }
+  },
+  "official_listed_annual_coverage_checks": [
+    {
+      "year": 2020,
+      "buyback_cases": 177,
+      "companies": 149,
+      "source": "https://www.twse.com.tw/staticFiles/news/news/tsecnews/ff8080817698e3d40176cc9b72680059.pdf"
+    },
+    {
+      "year": 2025,
+      "buyback_cases": 167,
+      "companies": 128,
+      "source": "https://wwwc.twse.com.tw/staticFiles/news/news/tsecnews/8a8216d69a3d6cf9019b7e193bdf067e.pdf"
+    }
+  ],
+  "note": "Neither index archive nor cited studies certify any buyback event-alpha. Do not divide annual cases by this year's survivors; MOPS blocking is a transport issue, not zero companies.",
+  "etf_0050_quote_research": {
+    "status": "OFFICIAL_UNADJUSTED_CLOSES_COLLECTED_PRELIMINARY_TOTAL_RETURN_NOT_CERTIFIED",
+    "source_run": "https://github.com/farmer212444/fugle-quote-server/actions/runs/40056185365",
+    "months_collected": 72,
+    "official_monthly_raw_sha256_verified": 72,
+    "trading_days": 1454,
+    "year_sessions": [
+      {
+        "year": 2020,
+        "sessions": 245
+      },
+      {
+        "year": 2021,
+        "sessions": 244
+      },
+      {
+        "year": 2022,
+        "sessions": 246
+      },
+      {
+        "year": 2023,
+        "sessions": 239
+      },
+      {
+        "year": 2024,
+        "sessions": 242
+      },
+      {
+        "year": 2025,
+        "sessions": 238
+      }
+    ],
+    "split_effective_first_post_split_trade": "2025-06-18",
+    "split_new_units_per_old": 4,
+    "split_official_source": "https://www.twse.com.tw/zh/ETFortune/announcement?company=A00005&date=20250617&fund=0050&seq=1&type=other",
+    "2020_january_dividend_exdate_official": "2020-01-31",
+    "2020_january_dividend_amount_ntd": 2.9,
+    "modeled_cash_dividend_events": 12,
+    "gross_reinvested_dividend_preliminary_year_returns_pct": {
+      "2020": 30.1447,
+      "2021": 21.9709,
+      "2022": -21.3416,
+      "2023": 27.3978,
+      "2024": 48.6715,
+      "2025": 36.8534
+    },
+    "2020_year_baseline": "2020-01-02 CLOSE, not 2019-12-31",
+    "dividend_and_split_actions_complete_independently_certified": false,
+    "raw_quote_archive_is_durable_in_repo": false,
+    "derived_preview_is_submitted_for_official_certification": false,
+    "qualified_for_individual_buyback_alpha": false,
+    "notes": "Gross dividend reinvestment preview. Monthly quote source originals are in 14-day GitHub CI artifacts, user-retrievable evidence bundle saved in conversation. Actual individual buyback return still blocked by events and issuer TR."
+  }
+}

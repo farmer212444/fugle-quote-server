@@ -1,0 +1,33 @@
+name: Buyback and TW50 official source probe
+on:
+  pull_request:
+    paths:
+      - 'scripts/buyback_source_probe.py'
+      - 'tests/test_buyback_source_probe.py'
+      - '.github/workflows/buyback-source-probe.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check-sources:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Check fail-closed parser behavior
+        run: python -m unittest discover -s tests -p 'test_buyback_source_probe.py' -v
+      - name: Probe 2020 January TWSE and 2020 MOPS legacy POST
+        run: python scripts/buyback_source_probe.py --year 2020 --month 1 --out /tmp/buyback-probe
+      - name: Archive source bytes and provenance receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: buyback-source-probe-2020
+          path: /tmp/buyback-probe/
+          retention-days: 14
+          if-no-files-found: warn
