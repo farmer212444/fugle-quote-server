@@ -40,6 +40,7 @@ class DailyTurnoverSnapshot:
         self.daily_files_read=0
         self.error=None
         self.day_errors={}
+        self.tpex_history_sources={}
         try:
             manifest=read(self.root/'prices/latest_manifest.json')
         except (OSError,ValueError,KeyError,TypeError) as exc:
@@ -75,8 +76,29 @@ class DailyTurnoverSnapshot:
         return [(day,bar) for day,bar in self.rows.get((row['market'],row['code']),[])
                 if day<=row['price_date']]
 
+    def tpex_history_row(self,record,day,code):
+        """Reparse a durable market original once for all issuers in this report."""
+        from scripts.history_archive import verify_original
+        from scripts.v893_tpex_daily_backfill import parse_daily
+        reference=record.get('original_archive') or {}
+        if (reference.get('market')!='TPEX' or reference.get('identity')!=day
+                or any(record.get(key)!=reference.get(key) for key in
+                       ('source_url','original_response_sha256','captured_at_utc'))):
+            raise ValueError('TPEX_LIQUIDITY_ORIGINAL_IDENTITY_MISMATCH')
+        key=canonical_hash(reference)
+        if key not in self.tpex_history_sources:
+            parsed=parse_daily(verify_original(self.root,reference),day)
+            if canonical_hash(parsed)!=reference.get('parsed_rows_sha256'):
+                raise ValueError('TPEX_LIQUIDITY_PARSED_SOURCE_HASH_MISMATCH')
+            self.tpex_history_sources[key]=parsed
+        expected=self.tpex_history_sources[key].get(code)
+        if expected is None or record.get('date')!=day or record.get('row')!=expected:
+            raise ValueError('TPEX_LIQUIDITY_ROW_DIFFERS_FROM_ORIGINAL')
+        return expected
+
 
 def liquidity_history(root,row,asof,daily_snapshot=None):
+    root=Path(root)
     path=root/'prices/issuer_history'/row['market']/(row['code']+'.json')
     if not path.exists():
         return dict(status='MULTI_SESSION_TURNOVER_SOURCE_MISSING',median20_turnover_ntd=None)
@@ -84,6 +106,9 @@ def liquidity_history(root,row,asof,daily_snapshot=None):
     if obj.get('issuer')!=row['code'] or obj.get('market')!=row['market']:
         raise ValueError('LIQUIDITY_HISTORY_IDENTITY_MISMATCH')
     observations={}
+    snapshot=daily_snapshot or DailyTurnoverSnapshot(root,asof,row['price_date'])
+    # Check the snapshot context even when an issuer only has archived history.
+    market_rows=snapshot.issuer_rows(root,row,asof)
     for month in obj.get('by_month',{}).values():
         captured=month.get('captured_at_utc')
         if not captured or timestamp(captured)>timestamp(asof):
@@ -98,10 +123,32 @@ def liquidity_history(root,row,asof,daily_snapshot=None):
             if day in observations and observations[day]!=turnover:
                 raise ValueError('CONFLICTING_TURNOVER_REVISIONS')
             observations[day]=turnover
+    if row['market']=='TPEX':
+        if obj.get('schema')!='V893_OFFICIAL_TPEX_DAILY' or not isinstance(obj.get('by_day'),dict):
+            raise ValueError('TPEX_LIQUIDITY_HISTORY_SCHEMA_MISMATCH')
+        accepted=0
+        for day,record in sorted(obj['by_day'].items(),reverse=True):
+            if day>asof[:10] or day>row['price_date']:
+                continue
+            if not isinstance(record,dict):
+                raise ValueError('TPEX_LIQUIDITY_HISTORY_RECORD_INVALID')
+            captured=record.get('captured_at_utc')
+            if not captured or timestamp(captured)>timestamp(asof):
+                continue
+            bar=snapshot.tpex_history_row(record,day,row['code'])
+            turnover=bar.get('turnover_ntd')
+            if not finite(turnover) or turnover<0:
+                continue
+            if day in observations and observations[day]!=turnover:
+                raise ValueError('CONFLICTING_TURNOVER_REVISIONS')
+            observations[day]=turnover
+            accepted+=1
+            # Older records cannot change the trailing twenty-session median.
+            if accepted==20:
+                break
     # Merge subsequently archived whole-market sessions instead of silently
     # calling a 10/16 window the current 20-day window on 10/20.
-    snapshot=daily_snapshot or DailyTurnoverSnapshot(root,asof,row['price_date'])
-    for day,bar in snapshot.issuer_rows(root,row,asof):
+    for day,bar in market_rows:
         if bar.get('date')!=day:raise ValueError('DAILY_LIQUIDITY_DATE_MISMATCH')
         turnover=bar.get('turnover_ntd')
         if not finite(turnover) or turnover<0:continue
