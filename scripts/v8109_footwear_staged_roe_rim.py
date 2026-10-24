@@ -188,7 +188,7 @@ def compute(data,hist):
         for c in cases:
             eps=numeric(c["2027_EPS"],"eps")
             term=numeric(c["terminal_ROE_from_2031"],"terminalroe")
-            result=value_path(B,eps,term,k,g,payout)
+            result=value_path(B,eps,term,k,growth,payout)
             val=result["value_per_share"]
             if val<=0:
                 raise ValueError("NEGATIVE_RIM_EQUITY_VALUE_REQUIRES_ALTERNATE_FLOOR")
@@ -208,15 +208,15 @@ def compute(data,hist):
             })
         base=cases[1]
         first_eps=base["2027_EPS"]
-        current_requirement=inverse_roe(stock,first_eps,price,g,payout)
-        hurdle30=inverse_roe(stock,first_eps,price*1.30,g,payout)
+        current_requirement=inverse_roe(stock,first_eps,price,growth,payout)
+        hurdle30=inverse_roe(stock,first_eps,price*1.30,growth,payout)
         if current_requirement is None or hurdle30 is None:
             raise ValueError("TERMINAL_ROE_PRICE_HURDLE_NOT_SOLVABLE")
         equity_cost_up= k+.02
         equity_cost_down=k-.02
         sensitivity={}
         for tag,discount in (("Ke_plus_2pp",equity_cost_up),("Ke_minus_2pp",equity_cost_down)):
-            v=value_path(B,first_eps,base["terminal_ROE_from_2031"],discount,g,payout)["value_per_share"]
+            v=value_path(B,first_eps,base["terminal_ROE_from_2031"],discount,growth,payout)["value_per_share"]
             sensitivity[tag]={"cost_of_equity_pct":round(discount*100,2),"RIM_price":round(v,2)}
         output[code]={
          "name":stock["name"],"price_2026_10_22":price,
