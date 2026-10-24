@@ -45,11 +45,12 @@ def research_stages(phase='full'):
         ('shadow_comparison', ['institutional_shadow.py']),
         ('benchmark_validation', ['benchmark_validation.py']),
         ('institutional_review', ['institutional_review.py']),
+        ('buffett_owner_review', ['buffett_owner_review.py']),
     ]
     if phase=='core':
-        return stages[:-3]
+        return stages[:-4]
     if phase=='observation':
-        return stages[-3:]
+        return stages[-4:]
     if phase!='full':
         raise ValueError('UNKNOWN_RESEARCH_PHASE')
     return stages
