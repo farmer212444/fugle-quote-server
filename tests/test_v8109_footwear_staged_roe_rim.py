@@ -22,6 +22,28 @@ class Footwear2027PersistentROETests(unittest.TestCase):
         self.assertAlmostEqual(ful["reported_h1_EPS"],1.78,places=2)
         self.assertAlmostEqual(bao["reported_h1_EPS"],2.37,places=2)
 
+    def test_baocheng_nanshan_and_parent_OCI_are_not_ignored(self):
+        bao=compute(*fixtures())["companies"]["9904"]["source_reconciled_reported_financials"]
+        risk=bao["2026_H1_insurance_equity_method_and_book_OCI_risk"]
+        self.assertAlmostEqual(risk["source_equity_method_income_billion_TWD_rounded"],6.243,places=3)
+        self.assertAlmostEqual(risk["source_nanshan_related_income_billion_TWD_rounded"],5.443,places=3)
+        self.assertAlmostEqual(risk["parent_OCI_H1_gain_billion_TWD_rounded"],48.737,places=3)
+        self.assertGreater(risk["parent_OCI_share_of_end_H1_parent_equity_pct"],26)
+        self.assertAlmostEqual(risk["counterfactual_BVPS_if_H1_parent_OCI_earnings_removed_NOT_actual_NAV"],46.92,delta=.03)
+        self.assertAlmostEqual(risk["counterfactual_PB_if_H1_parent_OCI_removed_NOT_actual_NAV"],.562,delta=.003)
+        self.assertFalse(risk["PB_histogram_pre_vs_post_IFRS17_comparability_recertified"])
+        self.assertTrue(risk["do_not_subtract_equity_method_income_directly_from_parent_EPS_without_tax_minorities"])
+
+    def test_no_unverified_parent_OCI_source_promoted(self):
+        a,b=fixtures()
+        a["stocks"]["9904"]["h1_2026_restatement_risk_overlay"]["fully_normalized_equity_method_earnings_2027_verified"]=True
+        with self.assertRaisesRegex(ValueError,"NONOPERATING_IFRS17_OR_OCI_SOURCE_UNCERTIFIED"):
+            compute(a,b)
+        a,b=fixtures()
+        a["stocks"]["9904"]["h1_2026_restatement_risk_overlay"]["parent_OCI_gain_k_rounded"]=300000000
+        with self.assertRaisesRegex(ValueError,"NONOPERATING_IFRS17_OR_OCI_SOURCE_UNCERTIFIED"):
+            compute(a,b)
+
     def test_9802_third_quarter_gross_profit_is_depressed(self):
         j=compute(*fixtures())["companies"]
         q=j["9802"]["source_reconciled_reported_financials"]["q3_preliminary_not_full_statement"]
