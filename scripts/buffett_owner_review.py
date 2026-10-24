@@ -32,6 +32,8 @@ def _utc(value):
 def _original_9802_bytes(root,cash,estimate_vintage):
     original=cash.get("original_cash_review") or {}
     cutoff=_utc(estimate_vintage)
+    if original.get("code")!="9802" or original.get("period")!="2026-Q2":
+        raise ValueError("BUFFETT_CASH_ORIGINAL_IDENTITY_MISMATCH")
     if _utc(original.get("reviewed_at"))>cutoff:
         raise ValueError("BUFFETT_SOURCE_REVIEW_FROM_FUTURE")
     sources=original.get("original_sources")
@@ -72,17 +74,27 @@ def publish(root):
     source=data/"rankings/latest_institutional.json"
     cashfile=data/"rankings/latest_9802_cash_review.json"
     institutional,institutional_sha=read_with_hash(source)
-    cash,cash_sha=read_with_hash(cashfile)
     if (root/"VERSION").read_text(encoding="utf-8").strip()!=institutional.get("model"):
         raise ValueError("BUFFETT_SOURCE_VERSION_NOT_ACTIVE_RUNTIME")
-    # Only the same-current-issuer, same-vintage original is eligible.
-    if cash.get("estimate_vintage")!=institutional.get("estimate_vintage"):
-        raise ValueError("BUFFETT_INCONSISTENT_CASH_REVIEW_VINTAGE")
-    archives=_original_9802_bytes(data,cash,institutional["estimate_vintage"])
-    report=build(institutional,cash)
+    # One issuer's corrupt, stale or absent original cannot become a fake
+    # owner earnings estimate or stop the independent research for other names.
+    cash=None; cash_sha=None; archives=[]; rejections=[]
+    try:
+        cash,cash_sha=read_with_hash(cashfile)
+        if cash.get("estimate_vintage")!=institutional.get("estimate_vintage"):
+            raise ValueError("BUFFETT_INCONSISTENT_CASH_REVIEW_VINTAGE")
+        archives=_original_9802_bytes(data,cash,institutional["estimate_vintage"])
+        report=build(institutional,cash)
+    except (OSError,ValueError,TypeError,KeyError) as exc:
+        rejections.append(dict(code="9802",source="latest_9802_cash_review.json",
+                               status="SOURCE_QUARANTINED_NOT_OWNER_EARNINGS",reason=str(exc)))
+        report=build(institutional,None)
+        cash_sha=None
+        archives=[]
     report["input_sha256"]={"latest_institutional.json":institutional_sha,
                             "latest_9802_cash_review.json":cash_sha}
     report["checked_original_pdfs"]=archives
+    report["source_rejections"]=rejections
     report["observed_at_utc"]=dt.datetime.now(dt.timezone.utc).isoformat()
     md=render(report)
     content=json.dumps(report,ensure_ascii=False,indent=2,allow_nan=False)+"\n"
