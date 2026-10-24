@@ -25,7 +25,7 @@ jobs:
       - name: Check every archived TWSE HTTP SHA, date, file and P/B metric
         run: python -m unittest -v tests.test_v8107_footwear_official_pb_archive_audit
       - name: Produce independent offline full-history source audit
-        run: python scripts/v8107_footwear_official_pb_archive_audit.py
+        run: python -m scripts.v8107_footwear_official_pb_archive_audit
       - name: Preserve audit attestation in draft PR only
         if: success()
         run: |
