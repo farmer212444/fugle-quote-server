@@ -75,7 +75,7 @@ def audit_0056(root):
             issuer_2026_h1_statement_source=earning.get('source'),
             issuer_2026_h1_statement_PIT_verified=bool(earning.get('company_PIT_verified')),
             yearly_seasonality_normalized=False,
-            2027_earnings_bridge_independently_certified=False,
+            forward_2027_earnings_bridge_independently_certified=False,
             EPS_PE_stress_is_not_a_probability=True,
             no_formal_Aplus_promotion=True))
     assert len(examined)==selected['rankable_count']
