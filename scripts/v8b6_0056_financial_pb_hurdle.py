@@ -72,7 +72,10 @@ def screen(root,read_at):
     source=json.loads((root/SOURCE).read_text(encoding="utf-8"))
     positions=validate_bvps(source,holdings,read_at)
     manifest=json.loads((root/PRICE_MANIFEST).read_text(encoding="utf-8"))
-    close_path=root/manifest["path"]
+    if (manifest.get("date")!=full["asof_price_date"] or
+        manifest.get("path")!=f"tw-market-data/prices/{manifest['date']}.json"):
+        raise ValueError("0056_FINANCIAL_PRICE_MANIFEST_UNSAFE_PATH_OR_DATE")
+    close_path=root/"prices"/f"{manifest['date']}.json"
     price_bytes=close_path.read_bytes()
     if (hashlib.sha256(price_bytes).hexdigest()!=manifest["normalized_sha256"] or
         manifest["date"]!=full["asof_price_date"]):
