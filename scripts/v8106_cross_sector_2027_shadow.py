@@ -20,6 +20,7 @@ TOP20 = ROOT / "rankings/v892_top20_quality_audit.json"
 REPORT = ROOT / "rankings/v8106_cross_sector_evidence_first_shadow.json"
 EVENTS = ROOT / "evidence/v8106_cross_sector_public_events_20261024.json"
 MARGIN_STRESS = ROOT / "rankings/v8106_three_issuer_margin_reversion_shadow.json"
+OPERATING_CYCLE = ROOT / "rankings/v8106_4771_6206_turnover_cycle_shadow.json"
 REQUIRED_DATE = "2026-10-22"
 
 WARNING_RULES = (
@@ -44,7 +45,17 @@ def _number(value, label):
     return float(value)
 
 
-def build(primary, official_gate, broad, material_events=None, industry_stress=None):
+def build(primary, official_gate, broad, material_events=None, industry_stress=None, operating_cycle=None):
+    if operating_cycle is None:
+        operating_cycle=json.loads(OPERATING_CYCLE.read_bytes())
+    if (operating_cycle.get("schema")!="V8106_OPERATING_CYCLE_TWO_ISSUER_SHADOW_V1"
+            or operating_cycle.get("vintage_date")!="2026-10-24"
+            or operating_cycle.get("price_reference_date")!=REQUIRED_DATE
+            or operating_cycle.get("primary_official_reports_full_original_sha_archived") is not False
+            or operating_cycle.get("formal_Aplus_count_changed")!=0
+            or set(operating_cycle.get("issuers",{}))!={"4771","6206"}):
+        raise ValueError("MISSING_TURNOVER_DAYS_OR_FALSE_SOURCE_CERTIFICATION")
+    turnover_by_code=operating_cycle["issuers"]
     if industry_stress is None:
         industry_stress=json.loads(MARGIN_STRESS.read_bytes())
     if (industry_stress.get("schema")!="V8106_THREE_ISSUER_2027_GM_REVERSION_STRESS_SHADOW_V1"
@@ -174,6 +185,28 @@ def build(primary, official_gate, broad, material_events=None, industry_stress=N
                 "historical_2025Q2_margin_substitution_upside_pct="+str(old_upside),
                 "all_historical_margin_stresses_are_not_2027_forecasts"
             ]
+        turnover=turnover_by_code.get(code)
+        turnover_mitigants=[]
+        if turnover is not None:
+            if (turnover.get("issuer")!=item["name"]
+                    or turnover.get("observation_cutoff")!="2026-06-30"
+                    or turnover.get("issuer_original_annual_report_PIT_verified") is not False
+                    or turnover.get("no_formal_Aplus_or_exit") is not True):
+                raise ValueError("TURNOVER_DAYS_SOURCE_OR_ISSUER_MISMATCH")
+            if code=="4771":
+                if turnover.get("risk_phase")!="AR_COLLECTION_LONGER_YOY_BUT_IMPROVING_QOQ_TWO_METHODS":
+                    raise ValueError("COLLECTION_TREND_LOST")
+                severe.append("COLLECTION_DAYS_LONGER_YOY_ACROSS_TWO_METHODS")
+                turnover_mitigants=["DSO_QOQ_IMPROVED_ACROSS_TWO_DIFFERENT_METHODS",
+                                   "DIO_YOY_APPROXIMATELY_FLAT",
+                                   "NOT_EVIDENCE_OF_BAD_DEBT_BY_ITSELF"]
+            elif code=="6206":
+                if turnover.get("risk_phase")!="DSO_YOY_FASTER_COLLECTION_BUT_DIO_YOY_SHARPLY_LONGER":
+                    raise ValueError("INVENTORY_TURNOVER_TREND_LOST")
+                severe.append("INVENTORY_SALE_DAYS_34_LONGER_YOY")
+                turnover_mitigants=["DSO_11_DAYS_SHORTER_YOY_NO_COLLECTION_SLOWDOWN_INFERENCE",
+                                   "DIO_IMPROVED_THREE_DAYS_QOQ",
+                                   "NOT_EVIDENCE_OF_STOCK_IMPAIRMENT_BY_ITSELF"]
         phase= SOURCE_FIRST_LANE if not severe else CAUTION_LANE
         # Verified current quarter summaries are NOT full historical PIT, and
         # a vendor or source-calculated PE does not qualify as certified.
@@ -198,6 +231,8 @@ def build(primary, official_gate, broad, material_events=None, industry_stress=N
             "formal_Aplus":False,"research_quality_lane":phase,
             "high_risk_review_flags":severe,
             "additional_cyclical_margin_lookback_review":stress_observations,
+            "operating_cycle_source_phase":turnover["risk_phase"] if turnover else None,
+            "operating_cycle_mitigants_not_Aplus_pass":turnover_mitigants,
             "dated_public_material_event_id":material_event["event_id"] if material_event else None,
             "dated_public_material_event_date":material_event["event_date"] if material_event else None,
             "material_event_original_company_mops_attested":False,
@@ -252,6 +287,7 @@ def build(primary, official_gate, broad, material_events=None, industry_stress=N
       "research_candidates_source_order":rows,
       "known_public_material_events_included":len(ev_by_code),
       "newly_joined_margin_cashflow_issuer_count":len(stress_by_code),
+      "newly_joined_operating_cycle_issuer_count":len(turnover_by_code),
       "new_historical_margin_stress_requires_manual_review":True,
       "known_3130_cyber_event_research_risk_review":True,
       "safer_evidence_review_order_NOT_A_BUY_RANKING":watch,
@@ -277,7 +313,8 @@ def main():
             json.loads((a.root/"rankings/v891_gate_progress.json").read_bytes()),
             json.loads((a.root/"rankings/v892_top20_quality_audit.json").read_bytes()),
             json.loads((a.root/"evidence/v8106_cross_sector_public_events_20261024.json").read_bytes()),
-            json.loads((a.root/"rankings/v8106_three_issuer_margin_reversion_shadow.json").read_bytes()))
+            json.loads((a.root/"rankings/v8106_three_issuer_margin_reversion_shadow.json").read_bytes()),
+            json.loads((a.root/"rankings/v8106_4771_6206_turnover_cycle_shadow.json").read_bytes()))
     a.out.parent.mkdir(parents=True,exist_ok=True)
     a.out.write_text(json.dumps(j,ensure_ascii=False,indent=2,allow_nan=False)+"\n",encoding="utf-8")
     print(json.dumps({
