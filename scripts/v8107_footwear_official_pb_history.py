@@ -32,11 +32,15 @@ def parsed_month(code,month,data):
         if "查無" in stat or "無資料" in stat: return [],stat
         raise ValueError("UNEXPECTED_TWSE_STAT:"+stat[:80])
     fields=d.get("fields")
-    if not isinstance(fields,list) or not all(k in fields for k in ("日期","股價淨值比","財報年/季")):
+    if not isinstance(fields,list) or not all(k in fields for k in ("日期","股價淨值比")):
         raise ValueError("OFFICIAL_PB_COLUMN_SCHEMA_CHANGED")
     idate=fields.index("日期")
     ipb=fields.index("股價淨值比")
-    ifq=fields.index("財報年/季")
+    ifq=fields.index("財報年/季") if "財報年/季" in fields else None
+    if ifq is None and month>="2017-05":
+        # TWSE only began publishing reference reporting quarter on
+        # 2017-04-12; missing it later must be audited separately.
+        raise ValueError("POST_2017_MISSING_FINANCIAL_PERIOD_COLUMN")
     observed=set()
     out=[]
     for row in d.get("data",[]):
@@ -53,7 +57,8 @@ def parsed_month(code,month,data):
         pb=float(pbstr)
         if not math.isfinite(pb) or not .01<=pb<=100:
             raise ValueError("INVALID_PB_NUMBER")
-        out.append({"date":daydate,"pb":pb,"financial_quarter":str(row[ifq])})
+        out.append({"date":daydate,"pb":pb,
+                    "financial_quarter":str(row[ifq]) if ifq is not None else None})
     return out,"OK"
 
 def fetch(code,month):
