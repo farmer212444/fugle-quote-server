@@ -1,0 +1,1485 @@
+{
+  "schema": "V8108_FOOTWEAR_PB_REGIME_DURATION_FORWARD_PB_MULTIPLE_ONLY_V1",
+  "asof_official_trading_date": "2026-10-22",
+  "lookback_start": "2016-10-24",
+  "official_primary_source_http_sha_verified": true,
+  "total_official_daily_observations": 9050,
+  "never_claim_PB_rise_as_stock_total_return": true,
+  "historical_source_fetch_after_the_fact_not_original_PIT_archive": true,
+  "six_month_and_year_ROE_fundamentals_still_not_verified_for_all": true,
+  "formal_Aplus_2027": 0,
+  "2027_performance_vs_0050_known": false,
+  "no_stock_trades": true,
+  "issuers": {
+    "9904": {
+      "issuer": "9904",
+      "name": "寶成",
+      "observations": 2438,
+      "first_date": "2016-10-24",
+      "last_date": "2026-10-22",
+      "current_PB": 0.42,
+      "full_period_median_PB": 0.82,
+      "rolling_PB_stats": {
+        "252": {
+          "sessions": 252,
+          "median_PB": 0.565,
+          "P10_PB": 0.39,
+          "P25_PB": 0.47,
+          "minimum_PB": 0.38,
+          "maximum_PB": 0.75
+        },
+        "756": {
+          "sessions": 756,
+          "median_PB": 0.72,
+          "P10_PB": 0.48,
+          "P25_PB": 0.63,
+          "minimum_PB": 0.38,
+          "maximum_PB": 0.92
+        }
+      },
+      "calendar_year_risk_regimes": {
+        "2016": {
+          "sessions": 50,
+          "PB_median": 1.62,
+          "PB_below_one_pct": 0.0,
+          "PB_low": 1.57,
+          "PB_high": 1.77
+        },
+        "2017": {
+          "sessions": 246,
+          "PB_median": 1.61,
+          "PB_below_one_pct": 0.0,
+          "PB_low": 1.3,
+          "PB_high": 1.72
+        },
+        "2018": {
+          "sessions": 247,
+          "PB_median": 1.15,
+          "PB_below_one_pct": 1.21,
+          "PB_low": 0.99,
+          "PB_high": 1.44
+        },
+        "2019": {
+          "sessions": 242,
+          "PB_median": 1.12,
+          "PB_below_one_pct": 8.68,
+          "PB_low": 0.96,
+          "PB_high": 1.43
+        },
+        "2020": {
+          "sessions": 245,
+          "PB_median": 0.76,
+          "PB_below_one_pct": 100.0,
+          "PB_low": 0.57,
+          "PB_high": 0.99
+        },
+        "2021": {
+          "sessions": 244,
+          "PB_median": 0.76,
+          "PB_below_one_pct": 100.0,
+          "PB_low": 0.67,
+          "PB_high": 0.95
+        },
+        "2022": {
+          "sessions": 246,
+          "PB_median": 0.76,
+          "PB_below_one_pct": 60.16,
+          "PB_low": 0.61,
+          "PB_high": 1.38
+        },
+        "2023": {
+          "sessions": 239,
+          "PB_median": 0.81,
+          "PB_below_one_pct": 82.01,
+          "PB_low": 0.71,
+          "PB_high": 1.4
+        },
+        "2024": {
+          "sessions": 242,
+          "PB_median": 0.79,
+          "PB_below_one_pct": 100.0,
+          "PB_low": 0.71,
+          "PB_high": 0.92
+        },
+        "2025": {
+          "sessions": 243,
+          "PB_median": 0.69,
+          "PB_below_one_pct": 100.0,
+          "PB_low": 0.56,
+          "PB_high": 0.81
+        },
+        "2026": {
+          "sessions": 194,
+          "PB_median": 0.51,
+          "PB_below_one_pct": 100.0,
+          "PB_low": 0.38,
+          "PB_high": 0.7
+        }
+      },
+      "absolute_PB_thresholds_and_historic_spells": {
+        "1": {
+          "time_below_threshold_sessions": 1536,
+          "share_of_observed_days_below_threshold_pct": 63.0,
+          "spell_count": 6,
+          "longest_consecutive_spell": {
+            "first": "2023-03-17",
+            "last": "2026-10-22",
+            "trading_days": 875,
+            "left_censored": false
+          },
+          "ongoing_spell": {
+            "first": "2023-03-17",
+            "last": "2026-10-22",
+            "trading_days": 875,
+            "left_censored": false
+          },
+          "first_5_spells": [
+            {
+              "first": "2018-10-11",
+              "last": "2018-10-11",
+              "trading_days": 1,
+              "left_censored": false
+            },
+            {
+              "first": "2018-10-15",
+              "last": "2018-10-15",
+              "trading_days": 1,
+              "left_censored": false
+            },
+            {
+              "first": "2018-10-17",
+              "last": "2018-10-17",
+              "trading_days": 1,
+              "left_censored": false
+            },
+            {
+              "first": "2019-11-29",
+              "last": "2019-12-19",
+              "trading_days": 15,
+              "left_censored": false
+            },
+            {
+              "first": "2019-12-24",
+              "last": "2022-08-12",
+              "trading_days": 643,
+              "left_censored": false
+            }
+          ],
+          "horizon_252_session_PB_reversion_only": {
+            "matured_independent_events": 3,
+            "unmatured_latest_events_not_counted": 0,
+            "historical_PB_change_median_pct": -1.176,
+            "PB_multiples_rise_frequency_not_stock_win_rate_pct": 33.33,
+            "records": [
+              {
+                "signal_date": "2018-10-11",
+                "PB_start": 0.99,
+                "trigger": "FIRST_CROSS_UNDER_1_P_B",
+                "horizon_sessions": 252,
+                "PB_end": 1.09,
+                "end_date": "2019-10-25",
+                "PB_multiple_change_pct": 10.101,
+                "PB_above_entry_after_252trading_days": true
+              },
+              {
+                "signal_date": "2019-11-29",
+                "PB_start": 0.99,
+                "trigger": "FIRST_CROSS_UNDER_1_P_B",
+                "horizon_sessions": 252,
+                "PB_end": 0.78,
+                "end_date": "2020-12-10",
+                "PB_multiple_change_pct": -21.212,
+                "PB_above_entry_after_252trading_days": false
+              },
+              {
+                "signal_date": "2023-03-17",
+                "PB_start": 0.85,
+                "trigger": "FIRST_CROSS_UNDER_1_P_B",
+                "horizon_sessions": 252,
+                "PB_end": 0.84,
+                "end_date": "2024-04-01",
+                "PB_multiple_change_pct": -1.176,
+                "PB_above_entry_after_252trading_days": false
+              }
+            ],
+            "pending": [],
+            "realized_total_stock_returns_including_dividends": null,
+            "realized_excess_return_vs_0050": null,
+            "transaction_fee_slippage_costs_included": false,
+            "safe_to_infer_stock_win_rate_from_PB_only": false
+          }
+        },
+        "0.9": {
+          "time_below_threshold_sessions": 1453,
+          "share_of_observed_days_below_threshold_pct": 59.6,
+          "spell_count": 7,
+          "longest_consecutive_spell": {
+            "first": "2024-12-16",
+            "last": "2026-10-22",
+            "trading_days": 449,
+            "left_censored": false
+          },
+          "ongoing_spell": {
+            "first": "2024-12-16",
+            "last": "2026-10-22",
+            "trading_days": 449,
+            "left_censored": false
+          },
+          "first_5_spells": [
+            {
+              "first": "2020-01-30",
+              "last": "2021-05-25",
+              "trading_days": 323,
+              "left_censored": false
+            },
+            {
+              "first": "2021-06-11",
+              "last": "2021-06-24",
+              "trading_days": 9,
+              "left_censored": false
+            },
+            {
+              "first": "2021-07-20",
+              "last": "2022-08-12",
+              "trading_days": 263,
+              "left_censored": false
+            },
+            {
+              "first": "2023-03-17",
+              "last": "2024-11-13",
+              "trading_days": 404,
+              "left_censored": false
+            },
+            {
+              "first": "2024-11-26",
+              "last": "2024-11-29",
+              "trading_days": 4,
+              "left_censored": false
+            }
+          ],
+          "horizon_252_session_PB_reversion_only": {
+            "matured_independent_events": 4,
+            "unmatured_latest_events_not_counted": 0,
+            "historical_PB_change_median_pct": -15.845,
+            "PB_multiples_rise_frequency_not_stock_win_rate_pct": 0.0,
+            "records": [
+              {
+                "signal_date": "2020-01-30",
+                "PB_start": 0.88,
+                "trigger": "FIRST_CROSS_UNDER_0.9_P_B",
+                "horizon_sessions": 252,
+                "PB_end": 0.7,
+                "end_date": "2021-02-01",
+                "PB_multiple_change_pct": -20.455,
+                "PB_above_entry_after_252trading_days": false
+              },
+              {
+                "signal_date": "2021-06-11",
+                "PB_start": 0.89,
+                "trigger": "FIRST_CROSS_UNDER_0.9_P_B",
+                "horizon_sessions": 252,
+                "PB_end": 0.79,
+                "end_date": "2022-06-23",
+                "PB_multiple_change_pct": -11.236,
+                "PB_above_entry_after_252trading_days": false
+              },
+              {
+                "signal_date": "2023-03-17",
+                "PB_start": 0.85,
+                "trigger": "FIRST_CROSS_UNDER_0.9_P_B",
+                "horizon_sessions": 252,
+                "PB_end": 0.84,
+                "end_date": "2024-04-01",
+                "PB_multiple_change_pct": -1.176,
+                "PB_above_entry_after_252trading_days": false
+              },
+              {
+                "signal_date": "2024-11-26",
+                "PB_start": 0.87,
+                "trigger": "FIRST_CROSS_UNDER_0.9_P_B",
+                "horizon_sessions": 252,
+                "PB_end": 0.68,
+                "end_date": "2025-12-08",
+                "PB_multiple_change_pct": -21.839,
+                "PB_above_entry_after_252trading_days": false
+              }
+            ],
+            "pending": [],
+            "realized_total_stock_returns_including_dividends": null,
+            "realized_excess_return_vs_0050": null,
+            "transaction_fee_slippage_costs_included": false,
+            "safe_to_infer_stock_win_rate_from_PB_only": false
+          }
+        },
+        "0.75": {
+          "time_below_threshold_sessions": 798,
+          "share_of_observed_days_below_threshold_pct": 32.73,
+          "spell_count": 34,
+          "longest_consecutive_spell": {
+            "first": "2025-10-27",
+            "last": "2026-10-22",
+            "trading_days": 241,
+            "left_censored": false
+          },
+          "ongoing_spell": {
+            "first": "2025-10-27",
+            "last": "2026-10-22",
+            "trading_days": 241,
+            "left_censored": false
+          },
+          "first_5_spells": [
+            {
+              "first": "2020-03-13",
+              "last": "2020-05-15",
+              "trading_days": 43,
+              "left_censored": false
+            },
+            {
+              "first": "2020-08-17",
+              "last": "2020-11-17",
+              "trading_days": 64,
+              "left_censored": false
+            },
+            {
+              "first": "2021-01-11",
+              "last": "2021-02-24",
+              "trading_days": 26,
+              "left_censored": false
+            },
+            {
+              "first": "2021-02-26",
+              "last": "2021-03-03",
+              "trading_days": 3,
+              "left_censored": false
+            },
+            {
+              "first": "2021-03-25",
+              "last": "2021-04-08",
+              "trading_days": 9,
+              "left_censored": false
+            }
+          ],
+          "horizon_252_session_PB_reversion_only": {
+            "matured_independent_events": 5,
+            "unmatured_latest_events_not_counted": 0,
+            "historical_PB_change_median_pct": 0.0,
+            "PB_multiples_rise_frequency_not_stock_win_rate_pct": 40.0,
+            "records": [
+              {
+                "signal_date": "2020-03-13",
+                "PB_start": 0.7,
+                "trigger": "FIRST_CROSS_UNDER_0.75_P_B",
+                "horizon_sessions": 252,
+                "PB_end": 0.71,
+                "end_date": "2021-03-25",
+                "PB_multiple_change_pct": 1.429,
+                "PB_above_entry_after_252trading_days": true
+              },
+              {
+                "signal_date": "2021-03-25",
+                "PB_start": 0.71,
+                "trigger": "FIRST_CROSS_UNDER_0.75_P_B",
+                "horizon_sessions": 252,
+                "PB_end": 0.66,
+                "end_date": "2022-04-07",
+                "PB_multiple_change_pct": -7.042,
+                "PB_above_entry_after_252trading_days": false
+              },
+              {
+                "signal_date": "2022-07-01",
+                "PB_start": 0.74,
+                "trigger": "FIRST_CROSS_UNDER_0.75_P_B",
+                "horizon_sessions": 252,
+                "PB_end": 0.78,
+                "end_date": "2023-07-17",
+                "PB_multiple_change_pct": 5.405,
+                "PB_above_entry_after_252trading_days": true
+              },
+              {
+                "signal_date": "2023-08-17",
+                "PB_start": 0.74,
+                "trigger": "FIRST_CROSS_UNDER_0.75_P_B",
+                "horizon_sessions": 252,
+                "PB_end": 0.74,
+                "end_date": "2024-08-29",
+                "PB_multiple_change_pct": 0.0,
+                "PB_above_entry_after_252trading_days": false
+              },
+              {
+                "signal_date": "2025-01-13",
+                "PB_start": 0.74,
+                "trigger": "FIRST_CROSS_UNDER_0.75_P_B",
+                "horizon_sessions": 252,
+                "PB_end": 0.68,
+                "end_date": "2026-01-26",
+                "PB_multiple_change_pct": -8.108,
+                "PB_above_entry_after_252trading_days": false
+              }
+            ],
+            "pending": [],
+            "realized_total_stock_returns_including_dividends": null,
+            "realized_excess_return_vs_0050": null,
+            "transaction_fee_slippage_costs_included": false,
+            "safe_to_infer_stock_win_rate_from_PB_only": false
+          }
+        }
+      },
+      "rolling_P10_of_PB_using_only_prior_756_sessions": {
+        "matured_independent_events": 4,
+        "unmatured_latest_events_not_counted": 1,
+        "historical_PB_change_median_pct": 4.348,
+        "PB_multiples_rise_frequency_not_stock_win_rate_pct": 50.0,
+        "records": [
+          {
+            "signal_date": "2019-11-21",
+            "PB_start": 1.01,
+            "prior_756_session_P10": 1.07,
+            "signal_window_excludes_current_and_future": true,
+            "horizon_sessions": 252,
+            "PB_end": 0.76,
+            "end_date": "2020-12-02",
+            "PB_multiple_change_pct": -24.752,
+            "PB_above_entry_after_252trading_days": false
+          },
+          {
+            "signal_date": "2021-01-20",
+            "PB_start": 0.69,
+            "prior_756_session_P10": 0.7,
+            "signal_window_excludes_current_and_future": true,
+            "horizon_sessions": 252,
+            "PB_end": 0.75,
+            "end_date": "2022-02-09",
+            "PB_multiple_change_pct": 8.696,
+            "PB_above_entry_after_252trading_days": true
+          },
+          {
+            "signal_date": "2022-03-08",
+            "PB_start": 0.68,
+            "prior_756_session_P10": 0.69,
+            "signal_window_excludes_current_and_future": true,
+            "horizon_sessions": 252,
+            "PB_end": 0.86,
+            "end_date": "2023-03-20",
+            "PB_multiple_change_pct": 26.471,
+            "PB_above_entry_after_252trading_days": true
+          },
+          {
+            "signal_date": "2024-09-04",
+            "PB_start": 0.71,
+            "prior_756_session_P10": 0.715,
+            "signal_window_excludes_current_and_future": true,
+            "horizon_sessions": 252,
+            "PB_end": 0.71,
+            "end_date": "2025-09-17",
+            "PB_multiple_change_pct": 0.0,
+            "PB_above_entry_after_252trading_days": false
+          }
+        ],
+        "pending": [
+          {
+            "signal_date": "2025-11-13",
+            "PB_start": 0.65,
+            "prior_756_session_P10": 0.66,
+            "signal_window_excludes_current_and_future": true,
+            "horizon_sessions": 252
+          }
+        ],
+        "realized_total_stock_returns_including_dividends": null,
+        "realized_excess_return_vs_0050": null,
+        "transaction_fee_slippage_costs_included": false,
+        "safe_to_infer_stock_win_rate_from_PB_only": false
+      },
+      "recent_ROE_book_value_risk_from_issuer_reports_independently_checked": false,
+      "historical_PB_to_stock_total_return_conversion_done": false,
+      "formal_Aplus": false,
+      "expected_2027_total_stock_return_pct": null
+    },
+    "6768": {
+      "issuer": "6768",
+      "name": "志強-KY",
+      "observations": 1340,
+      "first_date": "2021-04-22",
+      "last_date": "2026-10-22",
+      "current_PB": 0.85,
+      "full_period_median_PB": 1.14,
+      "rolling_PB_stats": {
+        "252": {
+          "sessions": 252,
+          "median_PB": 1.155,
+          "P10_PB": 0.86,
+          "P25_PB": 0.9,
+          "minimum_PB": 0.82,
+          "maximum_PB": 1.8
+        },
+        "756": {
+          "sessions": 756,
+          "median_PB": 1.27,
+          "P10_PB": 0.91,
+          "P25_PB": 0.99,
+          "minimum_PB": 0.82,
+          "maximum_PB": 2.27
+        }
+      },
+      "calendar_year_risk_regimes": {
+        "2021": {
+          "sessions": 176,
+          "PB_median": 1.12,
+          "PB_below_one_pct": 1.7,
+          "PB_low": 0.99,
+          "PB_high": 1.29
+        },
+        "2022": {
+          "sessions": 246,
+          "PB_median": 1.13,
+          "PB_below_one_pct": 1.22,
+          "PB_low": 0.99,
+          "PB_high": 1.45
+        },
+        "2023": {
+          "sessions": 239,
+          "PB_median": 0.95,
+          "PB_below_one_pct": 79.08,
+          "PB_low": 0.85,
+          "PB_high": 1.03
+        },
+        "2024": {
+          "sessions": 242,
+          "PB_median": 1.25,
+          "PB_below_one_pct": 13.22,
+          "PB_low": 0.9,
+          "PB_high": 2.11
+        },
+        "2025": {
+          "sessions": 243,
+          "PB_median": 1.52,
+          "PB_below_one_pct": 0.0,
+          "PB_low": 1.18,
+          "PB_high": 2.27
+        },
+        "2026": {
+          "sessions": 194,
+          "PB_median": 1.08,
+          "PB_below_one_pct": 41.75,
+          "PB_low": 0.82,
+          "PB_high": 1.52
+        }
+      },
+      "absolute_PB_thresholds_and_historic_spells": {
+        "1": {
+          "time_below_threshold_sessions": 308,
+          "share_of_observed_days_below_threshold_pct": 22.99,
+          "spell_count": 12,
+          "longest_consecutive_spell": {
+            "first": "2023-06-28",
+            "last": "2024-02-23",
+            "trading_days": 161,
+            "left_censored": false
+          },
+          "ongoing_spell": {
+            "first": "2026-06-29",
+            "last": "2026-10-22",
+            "trading_days": 80,
+            "left_censored": false
+          },
+          "first_5_spells": [
+            {
+              "first": "2021-05-17",
+              "last": "2021-05-17",
+              "trading_days": 1,
+              "left_censored": false
+            },
+            {
+              "first": "2021-08-19",
+              "last": "2021-08-20",
+              "trading_days": 2,
+              "left_censored": false
+            },
+            {
+              "first": "2022-12-20",
+              "last": "2022-12-20",
+              "trading_days": 1,
+              "left_censored": false
+            },
+            {
+              "first": "2022-12-29",
+              "last": "2023-01-04",
+              "trading_days": 4,
+              "left_censored": false
+            },
+            {
+              "first": "2023-01-30",
+              "last": "2023-01-30",
+              "trading_days": 1,
+              "left_censored": false
+            }
+          ],
+          "horizon_252_session_PB_reversion_only": {
+            "matured_independent_events": 2,
+            "unmatured_latest_events_not_counted": 1,
+            "historical_PB_change_median_pct": 2.525,
+            "PB_multiples_rise_frequency_not_stock_win_rate_pct": 50.0,
+            "records": [
+              {
+                "signal_date": "2021-05-17",
+                "PB_start": 0.99,
+                "trigger": "FIRST_CROSS_UNDER_1_P_B",
+                "horizon_sessions": 252,
+                "PB_end": 1.1,
+                "end_date": "2022-05-26",
+                "PB_multiple_change_pct": 11.111,
+                "PB_above_entry_after_252trading_days": true
+              },
+              {
+                "signal_date": "2022-12-20",
+                "PB_start": 0.99,
+                "trigger": "FIRST_CROSS_UNDER_1_P_B",
+                "horizon_sessions": 252,
+                "PB_end": 0.93,
+                "end_date": "2024-01-08",
+                "PB_multiple_change_pct": -6.061,
+                "PB_above_entry_after_252trading_days": false
+              }
+            ],
+            "pending": [
+              {
+                "signal_date": "2026-04-27",
+                "PB_start": 0.99,
+                "trigger": "FIRST_CROSS_UNDER_1_P_B",
+                "horizon_sessions": 252
+              }
+            ],
+            "realized_total_stock_returns_including_dividends": null,
+            "realized_excess_return_vs_0050": null,
+            "transaction_fee_slippage_costs_included": false,
+            "safe_to_infer_stock_win_rate_from_PB_only": false
+          }
+        },
+        "0.9": {
+          "time_below_threshold_sessions": 83,
+          "share_of_observed_days_below_threshold_pct": 6.19,
+          "spell_count": 5,
+          "longest_consecutive_spell": {
+            "first": "2026-08-25",
+            "last": "2026-10-22",
+            "trading_days": 40,
+            "left_censored": false
+          },
+          "ongoing_spell": {
+            "first": "2026-08-25",
+            "last": "2026-10-22",
+            "trading_days": 40,
+            "left_censored": false
+          },
+          "first_5_spells": [
+            {
+              "first": "2023-07-13",
+              "last": "2023-07-14",
+              "trading_days": 2,
+              "left_censored": false
+            },
+            {
+              "first": "2023-07-18",
+              "last": "2023-08-18",
+              "trading_days": 23,
+              "left_censored": false
+            },
+            {
+              "first": "2026-07-24",
+              "last": "2026-07-24",
+              "trading_days": 1,
+              "left_censored": false
+            },
+            {
+              "first": "2026-07-30",
+              "last": "2026-08-21",
+              "trading_days": 17,
+              "left_censored": false
+            },
+            {
+              "first": "2026-08-25",
+              "last": "2026-10-22",
+              "trading_days": 40,
+              "left_censored": false
+            }
+          ],
+          "horizon_252_session_PB_reversion_only": {
+            "matured_independent_events": 1,
+            "unmatured_latest_events_not_counted": 1,
+            "historical_PB_change_median_pct": 49.438,
+            "PB_multiples_rise_frequency_not_stock_win_rate_pct": 100.0,
+            "records": [
+              {
+                "signal_date": "2023-07-13",
+                "PB_start": 0.89,
+                "trigger": "FIRST_CROSS_UNDER_0.9_P_B",
+                "horizon_sessions": 252,
+                "PB_end": 1.33,
+                "end_date": "2024-07-26",
+                "PB_multiple_change_pct": 49.438,
+                "PB_above_entry_after_252trading_days": true
+              }
+            ],
+            "pending": [
+              {
+                "signal_date": "2026-07-24",
+                "PB_start": 0.89,
+                "trigger": "FIRST_CROSS_UNDER_0.9_P_B",
+                "horizon_sessions": 252
+              }
+            ],
+            "realized_total_stock_returns_including_dividends": null,
+            "realized_excess_return_vs_0050": null,
+            "transaction_fee_slippage_costs_included": false,
+            "safe_to_infer_stock_win_rate_from_PB_only": false
+          }
+        },
+        "0.75": {
+          "time_below_threshold_sessions": 0,
+          "share_of_observed_days_below_threshold_pct": 0.0,
+          "spell_count": 0,
+          "longest_consecutive_spell": null,
+          "ongoing_spell": null,
+          "first_5_spells": [],
+          "horizon_252_session_PB_reversion_only": {
+            "matured_independent_events": 0,
+            "unmatured_latest_events_not_counted": 0,
+            "historical_PB_change_median_pct": null,
+            "PB_multiples_rise_frequency_not_stock_win_rate_pct": null,
+            "records": [],
+            "pending": [],
+            "realized_total_stock_returns_including_dividends": null,
+            "realized_excess_return_vs_0050": null,
+            "transaction_fee_slippage_costs_included": false,
+            "safe_to_infer_stock_win_rate_from_PB_only": false
+          }
+        }
+      },
+      "rolling_P10_of_PB_using_only_prior_756_sessions": {
+        "matured_independent_events": 0,
+        "unmatured_latest_events_not_counted": 1,
+        "historical_PB_change_median_pct": null,
+        "PB_multiples_rise_frequency_not_stock_win_rate_pct": null,
+        "records": [],
+        "pending": [
+          {
+            "signal_date": "2026-07-08",
+            "PB_start": 0.91,
+            "prior_756_session_P10": 0.93,
+            "signal_window_excludes_current_and_future": true,
+            "horizon_sessions": 252
+          }
+        ],
+        "realized_total_stock_returns_including_dividends": null,
+        "realized_excess_return_vs_0050": null,
+        "transaction_fee_slippage_costs_included": false,
+        "safe_to_infer_stock_win_rate_from_PB_only": false
+      },
+      "recent_ROE_book_value_risk_from_issuer_reports_independently_checked": false,
+      "historical_PB_to_stock_total_return_conversion_done": false,
+      "formal_Aplus": false,
+      "expected_2027_total_stock_return_pct": null
+    },
+    "6965": {
+      "issuer": "6965",
+      "name": "中傑-KY",
+      "observations": 396,
+      "first_date": "2025-03-12",
+      "last_date": "2026-10-22",
+      "current_PB": 0.88,
+      "full_period_median_PB": 1.13,
+      "rolling_PB_stats": {
+        "252": {
+          "sessions": 252,
+          "median_PB": 1.07,
+          "P10_PB": 0.951,
+          "P25_PB": 1.0,
+          "minimum_PB": 0.82,
+          "maximum_PB": 1.41
+        },
+        "756": null
+      },
+      "calendar_year_risk_regimes": {
+        "2025": {
+          "sessions": 202,
+          "PB_median": 1.24,
+          "PB_below_one_pct": 0.5,
+          "PB_low": 0.97,
+          "PB_high": 2.76
+        },
+        "2026": {
+          "sessions": 194,
+          "PB_median": 1.03,
+          "PB_below_one_pct": 31.44,
+          "PB_low": 0.82,
+          "PB_high": 1.25
+        }
+      },
+      "absolute_PB_thresholds_and_historic_spells": {
+        "1": {
+          "time_below_threshold_sessions": 62,
+          "share_of_observed_days_below_threshold_pct": 15.66,
+          "spell_count": 7,
+          "longest_consecutive_spell": {
+            "first": "2026-09-10",
+            "last": "2026-10-22",
+            "trading_days": 28,
+            "left_censored": false
+          },
+          "ongoing_spell": {
+            "first": "2026-09-10",
+            "last": "2026-10-22",
+            "trading_days": 28,
+            "left_censored": false
+          },
+          "first_5_spells": [
+            {
+              "first": "2025-11-18",
+              "last": "2025-11-18",
+              "trading_days": 1,
+              "left_censored": false
+            },
+            {
+              "first": "2026-05-15",
+              "last": "2026-05-27",
+              "trading_days": 9,
+              "left_censored": false
+            },
+            {
+              "first": "2026-06-30",
+              "last": "2026-07-01",
+              "trading_days": 2,
+              "left_censored": false
+            },
+            {
+              "first": "2026-07-24",
+              "last": "2026-07-24",
+              "trading_days": 1,
+              "left_censored": false
+            },
+            {
+              "first": "2026-07-30",
+              "last": "2026-07-30",
+              "trading_days": 1,
+              "left_censored": false
+            }
+          ],
+          "horizon_252_session_PB_reversion_only": {
+            "matured_independent_events": 0,
+            "unmatured_latest_events_not_counted": 1,
+            "historical_PB_change_median_pct": null,
+            "PB_multiples_rise_frequency_not_stock_win_rate_pct": null,
+            "records": [],
+            "pending": [
+              {
+                "signal_date": "2025-11-18",
+                "PB_start": 0.97,
+                "trigger": "FIRST_CROSS_UNDER_1_P_B",
+                "horizon_sessions": 252
+              }
+            ],
+            "realized_total_stock_returns_including_dividends": null,
+            "realized_excess_return_vs_0050": null,
+            "transaction_fee_slippage_costs_included": false,
+            "safe_to_infer_stock_win_rate_from_PB_only": false
+          }
+        },
+        "0.9": {
+          "time_below_threshold_sessions": 9,
+          "share_of_observed_days_below_threshold_pct": 2.27,
+          "spell_count": 3,
+          "longest_consecutive_spell": {
+            "first": "2026-09-29",
+            "last": "2026-10-07",
+            "trading_days": 7,
+            "left_censored": false
+          },
+          "ongoing_spell": {
+            "first": "2026-10-22",
+            "last": "2026-10-22",
+            "trading_days": 1,
+            "left_censored": false
+          },
+          "first_5_spells": [
+            {
+              "first": "2026-09-29",
+              "last": "2026-10-07",
+              "trading_days": 7,
+              "left_censored": false
+            },
+            {
+              "first": "2026-10-20",
+              "last": "2026-10-20",
+              "trading_days": 1,
+              "left_censored": false
+            },
+            {
+              "first": "2026-10-22",
+              "last": "2026-10-22",
+              "trading_days": 1,
+              "left_censored": false
+            }
+          ],
+          "horizon_252_session_PB_reversion_only": {
+            "matured_independent_events": 0,
+            "unmatured_latest_events_not_counted": 1,
+            "historical_PB_change_median_pct": null,
+            "PB_multiples_rise_frequency_not_stock_win_rate_pct": null,
+            "records": [],
+            "pending": [
+              {
+                "signal_date": "2026-09-29",
+                "PB_start": 0.89,
+                "trigger": "FIRST_CROSS_UNDER_0.9_P_B",
+                "horizon_sessions": 252
+              }
+            ],
+            "realized_total_stock_returns_including_dividends": null,
+            "realized_excess_return_vs_0050": null,
+            "transaction_fee_slippage_costs_included": false,
+            "safe_to_infer_stock_win_rate_from_PB_only": false
+          }
+        },
+        "0.75": {
+          "time_below_threshold_sessions": 0,
+          "share_of_observed_days_below_threshold_pct": 0.0,
+          "spell_count": 0,
+          "longest_consecutive_spell": null,
+          "ongoing_spell": null,
+          "first_5_spells": [],
+          "horizon_252_session_PB_reversion_only": {
+            "matured_independent_events": 0,
+            "unmatured_latest_events_not_counted": 0,
+            "historical_PB_change_median_pct": null,
+            "PB_multiples_rise_frequency_not_stock_win_rate_pct": null,
+            "records": [],
+            "pending": [],
+            "realized_total_stock_returns_including_dividends": null,
+            "realized_excess_return_vs_0050": null,
+            "transaction_fee_slippage_costs_included": false,
+            "safe_to_infer_stock_win_rate_from_PB_only": false
+          }
+        }
+      },
+      "rolling_P10_of_PB_using_only_prior_756_sessions": {
+        "matured_independent_events": 0,
+        "unmatured_latest_events_not_counted": 0,
+        "historical_PB_change_median_pct": null,
+        "PB_multiples_rise_frequency_not_stock_win_rate_pct": null,
+        "records": [],
+        "pending": [],
+        "realized_total_stock_returns_including_dividends": null,
+        "realized_excess_return_vs_0050": null,
+        "transaction_fee_slippage_costs_included": false,
+        "safe_to_infer_stock_win_rate_from_PB_only": false
+      },
+      "recent_ROE_book_value_risk_from_issuer_reports_independently_checked": false,
+      "historical_PB_to_stock_total_return_conversion_done": false,
+      "formal_Aplus": false,
+      "expected_2027_total_stock_return_pct": null
+    },
+    "9802": {
+      "issuer": "9802",
+      "name": "鈺齊-KY",
+      "observations": 2438,
+      "first_date": "2016-10-24",
+      "last_date": "2026-10-22",
+      "current_PB": 0.92,
+      "full_period_median_PB": 1.88,
+      "rolling_PB_stats": {
+        "252": {
+          "sessions": 252,
+          "median_PB": 1.17,
+          "P10_PB": 0.98,
+          "P25_PB": 1.08,
+          "minimum_PB": 0.92,
+          "maximum_PB": 1.74
+        },
+        "756": {
+          "sessions": 756,
+          "median_PB": 1.67,
+          "P10_PB": 1.1,
+          "P25_PB": 1.41,
+          "minimum_PB": 0.92,
+          "maximum_PB": 2.23
+        }
+      },
+      "calendar_year_risk_regimes": {
+        "2016": {
+          "sessions": 50,
+          "PB_median": 1.53,
+          "PB_below_one_pct": 0.0,
+          "PB_low": 1.49,
+          "PB_high": 1.62
+        },
+        "2017": {
+          "sessions": 246,
+          "PB_median": 1.87,
+          "PB_below_one_pct": 0.0,
+          "PB_low": 1.5,
+          "PB_high": 2.24
+        },
+        "2018": {
+          "sessions": 247,
+          "PB_median": 1.28,
+          "PB_below_one_pct": 0.0,
+          "PB_low": 1.05,
+          "PB_high": 1.78
+        },
+        "2019": {
+          "sessions": 242,
+          "PB_median": 1.6,
+          "PB_below_one_pct": 0.0,
+          "PB_low": 1.12,
+          "PB_high": 3.02
+        },
+        "2020": {
+          "sessions": 245,
+          "PB_median": 2.46,
+          "PB_below_one_pct": 0.0,
+          "PB_low": 1.41,
+          "PB_high": 3.26
+        },
+        "2021": {
+          "sessions": 244,
+          "PB_median": 2.265,
+          "PB_below_one_pct": 0.0,
+          "PB_low": 1.79,
+          "PB_high": 2.97
+        },
+        "2022": {
+          "sessions": 246,
+          "PB_median": 2.775,
+          "PB_below_one_pct": 0.0,
+          "PB_low": 2.03,
+          "PB_high": 3.62
+        },
+        "2023": {
+          "sessions": 239,
+          "PB_median": 1.98,
+          "PB_below_one_pct": 0.0,
+          "PB_low": 1.8,
+          "PB_high": 2.23
+        },
+        "2024": {
+          "sessions": 242,
+          "PB_median": 1.8,
+          "PB_below_one_pct": 0.0,
+          "PB_low": 1.49,
+          "PB_high": 2.03
+        },
+        "2025": {
+          "sessions": 243,
+          "PB_median": 1.62,
+          "PB_below_one_pct": 0.0,
+          "PB_low": 1.28,
+          "PB_high": 2.23
+        },
+        "2026": {
+          "sessions": 194,
+          "PB_median": 1.12,
+          "PB_below_one_pct": 13.92,
+          "PB_low": 0.92,
+          "PB_high": 1.56
+        }
+      },
+      "absolute_PB_thresholds_and_historic_spells": {
+        "1": {
+          "time_below_threshold_sessions": 27,
+          "share_of_observed_days_below_threshold_pct": 1.11,
+          "spell_count": 2,
+          "longest_consecutive_spell": {
+            "first": "2026-09-10",
+            "last": "2026-10-15",
+            "trading_days": 23,
+            "left_censored": false
+          },
+          "ongoing_spell": {
+            "first": "2026-10-19",
+            "last": "2026-10-22",
+            "trading_days": 4,
+            "left_censored": false
+          },
+          "first_5_spells": [
+            {
+              "first": "2026-09-10",
+              "last": "2026-10-15",
+              "trading_days": 23,
+              "left_censored": false
+            },
+            {
+              "first": "2026-10-19",
+              "last": "2026-10-22",
+              "trading_days": 4,
+              "left_censored": false
+            }
+          ],
+          "horizon_252_session_PB_reversion_only": {
+            "matured_independent_events": 0,
+            "unmatured_latest_events_not_counted": 1,
+            "historical_PB_change_median_pct": null,
+            "PB_multiples_rise_frequency_not_stock_win_rate_pct": null,
+            "records": [],
+            "pending": [
+              {
+                "signal_date": "2026-09-10",
+                "PB_start": 0.97,
+                "trigger": "FIRST_CROSS_UNDER_1_P_B",
+                "horizon_sessions": 252
+              }
+            ],
+            "realized_total_stock_returns_including_dividends": null,
+            "realized_excess_return_vs_0050": null,
+            "transaction_fee_slippage_costs_included": false,
+            "safe_to_infer_stock_win_rate_from_PB_only": false
+          }
+        },
+        "0.9": {
+          "time_below_threshold_sessions": 0,
+          "share_of_observed_days_below_threshold_pct": 0.0,
+          "spell_count": 0,
+          "longest_consecutive_spell": null,
+          "ongoing_spell": null,
+          "first_5_spells": [],
+          "horizon_252_session_PB_reversion_only": {
+            "matured_independent_events": 0,
+            "unmatured_latest_events_not_counted": 0,
+            "historical_PB_change_median_pct": null,
+            "PB_multiples_rise_frequency_not_stock_win_rate_pct": null,
+            "records": [],
+            "pending": [],
+            "realized_total_stock_returns_including_dividends": null,
+            "realized_excess_return_vs_0050": null,
+            "transaction_fee_slippage_costs_included": false,
+            "safe_to_infer_stock_win_rate_from_PB_only": false
+          }
+        },
+        "0.75": {
+          "time_below_threshold_sessions": 0,
+          "share_of_observed_days_below_threshold_pct": 0.0,
+          "spell_count": 0,
+          "longest_consecutive_spell": null,
+          "ongoing_spell": null,
+          "first_5_spells": [],
+          "horizon_252_session_PB_reversion_only": {
+            "matured_independent_events": 0,
+            "unmatured_latest_events_not_counted": 0,
+            "historical_PB_change_median_pct": null,
+            "PB_multiples_rise_frequency_not_stock_win_rate_pct": null,
+            "records": [],
+            "pending": [],
+            "realized_total_stock_returns_including_dividends": null,
+            "realized_excess_return_vs_0050": null,
+            "transaction_fee_slippage_costs_included": false,
+            "safe_to_infer_stock_win_rate_from_PB_only": false
+          }
+        }
+      },
+      "rolling_P10_of_PB_using_only_prior_756_sessions": {
+        "matured_independent_events": 3,
+        "unmatured_latest_events_not_counted": 1,
+        "historical_PB_change_median_pct": -4.061,
+        "PB_multiples_rise_frequency_not_stock_win_rate_pct": 33.33,
+        "records": [
+          {
+            "signal_date": "2023-02-10",
+            "PB_start": 1.97,
+            "prior_756_session_P10": 1.99,
+            "signal_window_excludes_current_and_future": true,
+            "horizon_sessions": 252,
+            "PB_end": 1.89,
+            "end_date": "2024-02-27",
+            "PB_multiple_change_pct": -4.061,
+            "PB_above_entry_after_252trading_days": false
+          },
+          {
+            "signal_date": "2024-02-27",
+            "PB_start": 1.89,
+            "prior_756_session_P10": 1.895,
+            "signal_window_excludes_current_and_future": true,
+            "horizon_sessions": 252,
+            "PB_end": 1.91,
+            "end_date": "2025-03-14",
+            "PB_multiple_change_pct": 1.058,
+            "PB_above_entry_after_252trading_days": true
+          },
+          {
+            "signal_date": "2025-03-31",
+            "PB_start": 1.69,
+            "prior_756_session_P10": 1.74,
+            "signal_window_excludes_current_and_future": true,
+            "horizon_sessions": 252,
+            "PB_end": 1.14,
+            "end_date": "2026-04-15",
+            "PB_multiple_change_pct": -32.544,
+            "PB_above_entry_after_252trading_days": false
+          }
+        ],
+        "pending": [
+          {
+            "signal_date": "2026-04-15",
+            "PB_start": 1.14,
+            "prior_756_session_P10": 1.445,
+            "signal_window_excludes_current_and_future": true,
+            "horizon_sessions": 252
+          }
+        ],
+        "realized_total_stock_returns_including_dividends": null,
+        "realized_excess_return_vs_0050": null,
+        "transaction_fee_slippage_costs_included": false,
+        "safe_to_infer_stock_win_rate_from_PB_only": false
+      },
+      "recent_ROE_book_value_risk_from_issuer_reports_independently_checked": false,
+      "historical_PB_to_stock_total_return_conversion_done": false,
+      "formal_Aplus": false,
+      "expected_2027_total_stock_return_pct": null
+    },
+    "9910": {
+      "issuer": "9910",
+      "name": "豐泰",
+      "observations": 2438,
+      "first_date": "2016-10-24",
+      "last_date": "2026-10-22",
+      "current_PB": 2.83,
+      "full_period_median_PB": 7.175,
+      "rolling_PB_stats": {
+        "252": {
+          "sessions": 252,
+          "median_PB": 2.99,
+          "P10_PB": 2.55,
+          "P25_PB": 2.77,
+          "minimum_PB": 2.45,
+          "maximum_PB": 6.38
+        },
+        "756": {
+          "sessions": 756,
+          "median_PB": 5.41,
+          "P10_PB": 2.83,
+          "P25_PB": 3.985,
+          "minimum_PB": 2.45,
+          "maximum_PB": 8.78
+        }
+      },
+      "calendar_year_risk_regimes": {
+        "2016": {
+          "sessions": 50,
+          "PB_median": 6.23,
+          "PB_below_one_pct": 0.0,
+          "PB_low": 5.78,
+          "PB_high": 6.51
+        },
+        "2017": {
+          "sessions": 246,
+          "PB_median": 6.8,
+          "PB_below_one_pct": 0.0,
+          "PB_low": 5.43,
+          "PB_high": 8.65
+        },
+        "2018": {
+          "sessions": 247,
+          "PB_median": 7.5,
+          "PB_below_one_pct": 0.0,
+          "PB_low": 6.16,
+          "PB_high": 10.91
+        },
+        "2019": {
+          "sessions": 242,
+          "PB_median": 9.13,
+          "PB_below_one_pct": 0.0,
+          "PB_low": 7.57,
+          "PB_high": 10.84
+        },
+        "2020": {
+          "sessions": 245,
+          "PB_median": 7.97,
+          "PB_below_one_pct": 0.0,
+          "PB_low": 5.14,
+          "PB_high": 10.72
+        },
+        "2021": {
+          "sessions": 244,
+          "PB_median": 10.27,
+          "PB_below_one_pct": 0.0,
+          "PB_low": 8.72,
+          "PB_high": 12.4
+        },
+        "2022": {
+          "sessions": 246,
+          "PB_median": 7.61,
+          "PB_below_one_pct": 0.0,
+          "PB_low": 6.28,
+          "PB_high": 12.64
+        },
+        "2023": {
+          "sessions": 239,
+          "PB_median": 7.23,
+          "PB_below_one_pct": 0.0,
+          "PB_low": 6.17,
+          "PB_high": 8.78
+        },
+        "2024": {
+          "sessions": 242,
+          "PB_median": 6.14,
+          "PB_below_one_pct": 0.0,
+          "PB_low": 5.11,
+          "PB_high": 7.53
+        },
+        "2025": {
+          "sessions": 243,
+          "PB_median": 5.09,
+          "PB_below_one_pct": 0.0,
+          "PB_low": 3.24,
+          "PB_high": 6.38
+        },
+        "2026": {
+          "sessions": 194,
+          "PB_median": 2.875,
+          "PB_below_one_pct": 0.0,
+          "PB_low": 2.45,
+          "PB_high": 4.75
+        }
+      },
+      "absolute_PB_thresholds_and_historic_spells": {
+        "1": {
+          "time_below_threshold_sessions": 0,
+          "share_of_observed_days_below_threshold_pct": 0.0,
+          "spell_count": 0,
+          "longest_consecutive_spell": null,
+          "ongoing_spell": null,
+          "first_5_spells": [],
+          "horizon_252_session_PB_reversion_only": {
+            "matured_independent_events": 0,
+            "unmatured_latest_events_not_counted": 0,
+            "historical_PB_change_median_pct": null,
+            "PB_multiples_rise_frequency_not_stock_win_rate_pct": null,
+            "records": [],
+            "pending": [],
+            "realized_total_stock_returns_including_dividends": null,
+            "realized_excess_return_vs_0050": null,
+            "transaction_fee_slippage_costs_included": false,
+            "safe_to_infer_stock_win_rate_from_PB_only": false
+          }
+        },
+        "0.9": {
+          "time_below_threshold_sessions": 0,
+          "share_of_observed_days_below_threshold_pct": 0.0,
+          "spell_count": 0,
+          "longest_consecutive_spell": null,
+          "ongoing_spell": null,
+          "first_5_spells": [],
+          "horizon_252_session_PB_reversion_only": {
+            "matured_independent_events": 0,
+            "unmatured_latest_events_not_counted": 0,
+            "historical_PB_change_median_pct": null,
+            "PB_multiples_rise_frequency_not_stock_win_rate_pct": null,
+            "records": [],
+            "pending": [],
+            "realized_total_stock_returns_including_dividends": null,
+            "realized_excess_return_vs_0050": null,
+            "transaction_fee_slippage_costs_included": false,
+            "safe_to_infer_stock_win_rate_from_PB_only": false
+          }
+        },
+        "0.75": {
+          "time_below_threshold_sessions": 0,
+          "share_of_observed_days_below_threshold_pct": 0.0,
+          "spell_count": 0,
+          "longest_consecutive_spell": null,
+          "ongoing_spell": null,
+          "first_5_spells": [],
+          "horizon_252_session_PB_reversion_only": {
+            "matured_independent_events": 0,
+            "unmatured_latest_events_not_counted": 0,
+            "historical_PB_change_median_pct": null,
+            "PB_multiples_rise_frequency_not_stock_win_rate_pct": null,
+            "records": [],
+            "pending": [],
+            "realized_total_stock_returns_including_dividends": null,
+            "realized_excess_return_vs_0050": null,
+            "transaction_fee_slippage_costs_included": false,
+            "safe_to_infer_stock_win_rate_from_PB_only": false
+          }
+        }
+      },
+      "rolling_P10_of_PB_using_only_prior_756_sessions": {
+        "matured_independent_events": 5,
+        "unmatured_latest_events_not_counted": 1,
+        "historical_PB_change_median_pct": -10.893,
+        "PB_multiples_rise_frequency_not_stock_win_rate_pct": 20.0,
+        "records": [
+          {
+            "signal_date": "2020-03-13",
+            "PB_start": 6.23,
+            "prior_756_session_P10": 6.3,
+            "signal_window_excludes_current_and_future": true,
+            "horizon_sessions": 252,
+            "PB_end": 9.35,
+            "end_date": "2021-03-25",
+            "PB_multiple_change_pct": 50.08,
+            "PB_above_entry_after_252trading_days": true
+          },
+          {
+            "signal_date": "2022-05-10",
+            "PB_start": 7.29,
+            "prior_756_session_P10": 7.42,
+            "signal_window_excludes_current_and_future": true,
+            "horizon_sessions": 252,
+            "PB_end": 6.61,
+            "end_date": "2023-05-23",
+            "PB_multiple_change_pct": -9.328,
+            "PB_above_entry_after_252trading_days": false
+          },
+          {
+            "signal_date": "2023-05-23",
+            "PB_start": 6.61,
+            "prior_756_session_P10": 6.77,
+            "signal_window_excludes_current_and_future": true,
+            "horizon_sessions": 252,
+            "PB_end": 5.89,
+            "end_date": "2024-06-04",
+            "PB_multiple_change_pct": -10.893,
+            "PB_above_entry_after_252trading_days": false
+          },
+          {
+            "signal_date": "2024-06-04",
+            "PB_start": 5.89,
+            "prior_756_session_P10": 6.7,
+            "signal_window_excludes_current_and_future": true,
+            "horizon_sessions": 252,
+            "PB_end": 3.97,
+            "end_date": "2025-06-20",
+            "PB_multiple_change_pct": -32.598,
+            "PB_above_entry_after_252trading_days": false
+          },
+          {
+            "signal_date": "2025-06-20",
+            "PB_start": 3.97,
+            "prior_756_session_P10": 5.115,
+            "signal_window_excludes_current_and_future": true,
+            "horizon_sessions": 252,
+            "PB_end": 2.53,
+            "end_date": "2026-07-03",
+            "PB_multiple_change_pct": -36.272,
+            "PB_above_entry_after_252trading_days": false
+          }
+        ],
+        "pending": [
+          {
+            "signal_date": "2026-07-03",
+            "PB_start": 2.53,
+            "prior_756_session_P10": 3.39,
+            "signal_window_excludes_current_and_future": true,
+            "horizon_sessions": 252
+          }
+        ],
+        "realized_total_stock_returns_including_dividends": null,
+        "realized_excess_return_vs_0050": null,
+        "transaction_fee_slippage_costs_included": false,
+        "safe_to_infer_stock_win_rate_from_PB_only": false
+      },
+      "recent_ROE_book_value_risk_from_issuer_reports_independently_checked": false,
+      "historical_PB_to_stock_total_return_conversion_done": false,
+      "formal_Aplus": false,
+      "expected_2027_total_stock_return_pct": null
+    }
+  }
+}
