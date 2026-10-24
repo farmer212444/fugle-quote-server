@@ -80,7 +80,9 @@ class FootwearPBRegimeTests(unittest.TestCase):
         self.assertEqual(len(event),1)
         self.assertEqual(event[0]["signal_date"],rows[260]["date"])
         self.assertTrue(event[0]["signal_window_excludes_current_and_future"])
-        self.assertEqual(len(pending),1)
+        # The later 0.8 plateau is not a fresh new historical discount:
+        # its historical 10th percentile has also descended to 0.8.
+        self.assertEqual(len(pending),0)
 
     def test_invalid_history_horizon_rejected(self):
         rows=[{"date":"2026-01-01","pb":1.1}]
