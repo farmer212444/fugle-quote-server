@@ -4,6 +4,8 @@ on:
     paths:
       - 'scripts/research_0050_2027_snapshot.py'
       - 'scripts/research_0050_top3_quality_audit.py'
+      - 'scripts/research_2027_top3_bridge.py'
+      - 'tests/test_2027_top3_bridge.py'
       - 'tests/test_0050_2027_snapshot_stress.py'
       - '.github/workflows/0050-2027-snapshot.yml'
   workflow_dispatch:
@@ -26,6 +28,10 @@ jobs:
         run: python scripts/research_0050_2027_snapshot.py
       - name: Review Foxconn Quanta and FPCC risk evidence
         run: python -m scripts.research_0050_top3_quality_audit --output /tmp/0050-2027/top3_quality_audit.json
+      - name: Test operating profit bridge and GDR/ECL guards
+        run: python -m unittest -v tests.test_2027_top3_bridge
+      - name: Reconcile three-issuer 2027 revenue margin profit bridge
+        run: python scripts/research_2027_top3_bridge.py
       - name: Archive complete 0050 research snapshot
         if: always()
         uses: actions/upload-artifact@v4
