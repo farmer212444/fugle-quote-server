@@ -63,6 +63,9 @@ on:
       - 'scripts/v8a9_8383_original_archive.py'
       - 'tw-market-data/evidence/v880/auditor_scope_watch/**'
       - 'scripts/v8a8_forward_top30_0050.py'
+      - 'scripts/v8b4_0056_forward_top10.py'
+      - 'scripts/v8b5_0056_stress_audit.py'
+      - 'tw-market-data/config/0056_holdings_2026-10-22.json'
       - 'tw-market-data/config/forward_top30_0050_v1.json'
       - 'tests/test_v8a8_forward_top30_0050.py'
       - 'README_V894.md'
@@ -140,6 +143,9 @@ on:
       - 'scripts/v8a9_8383_original_archive.py'
       - 'tw-market-data/evidence/v880/auditor_scope_watch/**'
       - 'scripts/v8a8_forward_top30_0050.py'
+      - 'scripts/v8b4_0056_forward_top10.py'
+      - 'scripts/v8b5_0056_stress_audit.py'
+      - 'tw-market-data/config/0056_holdings_2026-10-22.json'
       - 'tw-market-data/config/forward_top30_0050_v1.json'
       - 'tests/test_v8a8_forward_top30_0050.py'
       - 'README_V894.md'
@@ -243,6 +249,10 @@ jobs:
         run: python scripts/v891_gate_certification.py --issue-only
       - name: Produce dated scenarios and evidence decisions
         run: python scripts/run_research_pipeline.py --phase core
+      - name: Verify 0056 constituent 2027 EPS/PE stresses from exact archived model
+        run: |
+          python -m unittest discover -s tests -p test_v8b5_0056_stress.py
+          python scripts/v8b5_0056_stress_audit.py --root tw-market-data --out tw-market-data/rankings/0056_2027_stress_latest.json --print-json
       - name: Validate observation reports without publishing a PR vintage
         if: github.event_name == 'pull_request'
         run: python scripts/run_research_pipeline.py --phase observation
@@ -271,6 +281,7 @@ jobs:
             python scripts/v897_freeze_model_vintage.py --git-source-sha "$(git rev-parse HEAD)" --register-benchmark
             python scripts/run_research_pipeline.py --phase observation
             python scripts/v8a8_forward_top30_0050.py
+            python scripts/v8b5_0056_stress_audit.py --root tw-market-data --out tw-market-data/rankings/0056_2027_stress_latest.json
             git add tw-market-data/evidence/v880 tw-market-data/rankings tw-market-data/pit_vintages tw-market-data/experiments tw-market-data/benchmarks
             if git diff --cached --quiet; then exit 0; fi
             git commit -m 'data: refresh institutional research, earnings revisions and evidence status'
