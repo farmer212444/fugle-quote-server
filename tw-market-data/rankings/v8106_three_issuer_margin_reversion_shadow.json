@@ -1,0 +1,288 @@
+{
+  "schema": "V8106_THREE_ISSUER_2027_GM_REVERSION_STRESS_SHADOW_V1",
+  "reference_price_date": "2026-10-22",
+  "evaluated_issuers": [
+    "2027",
+    "4771",
+    "6206"
+  ],
+  "company_data_sources_include_secondhand_reprints": true,
+  "official_original_filing_bytes_fully_audited": false,
+  "historical_PIT_2026Q2_receipts_fully_audited": false,
+  "all_13_formal_quality_gates_completed": false,
+  "model_2027_base_eps_or_PE_overwritten": false,
+  "full_independent_reestimation_of_operating_bridge": false,
+  "return_probabilities_calibrated": false,
+  "realized_2027_return_vs_0050": null,
+  "formal_Aplus_additions": 0,
+  "orders_placed": 0,
+  "source_references": {
+    "2027": {
+      "2025q2_dated_release": "https://m.moneydj.com/f1a.aspx?a=EDEF72D0-3BF6-45C0-84C5-BC25319458C7",
+      "2026q2_dated_release": "https://m.moneydj.com/f1a.aspx?a=EDEF72D0-3BF6-45C0-84C5-BC25319458C7",
+      "original_full_issuer_filings_and_PIT_attested": false
+    },
+    "4771": {
+      "2025q2_dated_release": "https://m.moneydj.com/f1a.aspx?a=D1706BB6-E2E6-4D97-A025-D34003E5BC66",
+      "2026q2_dated_release": "https://m.moneydj.com/f1a.aspx?a=D1706BB6-E2E6-4D97-A025-D34003E5BC66",
+      "original_full_issuer_filings_and_PIT_attested": false
+    },
+    "6206": {
+      "2025q2_dated_release": "https://www.flytech.com.tw/investor.php?act=news_view&id=191",
+      "2026q2_dated_release": "https://www.flytech.com.tw/investor.php?act=news_view&id=191",
+      "original_full_issuer_filings_and_PIT_attested": false
+    }
+  },
+  "issuers": {
+    "2027": {
+      "company": "大成鋼",
+      "sector": "steel_aluminum_distribution",
+      "price_reference_date": "2026-10-22",
+      "reference_close": 50.6,
+      "2027_base_eps_unverified": 6.8666,
+      "2027_base_pe_unverified": 10.88,
+      "2027_base_gross_margin_pct_unverified": 28.855,
+      "actual_2025q2_margin_pct_from_dated_public_reprint": 24.35,
+      "actual_2026q2_margin_pct_from_dated_public_release": 30.49,
+      "margin_change_q2_yoy_pp": 6.14,
+      "sensitivity_2027_EPS_per_1pp_gm_fixed_other_inputs": 0.3732,
+      "gm_2027_required_for_30pct_upside_with_existing_PE_pct": 26.6561,
+      "tested_margin_scenarios": [
+        {
+          "scenario": "MODELED_2027_BASE_MARGIN",
+          "substituted_full_2027_GM_pct_not_forecast": 28.855,
+          "hypothetical_2027_eps": 6.8666,
+          "hypothetical_fair_price_at_original_PE": 74.71,
+          "hypothetical_upside_at_original_PE_pct": 47.65,
+          "hypothetical_fair_price_at_PE_20pct_discount": 59.77,
+          "hypothetical_upside_at_PE_20pct_discount_pct": 18.12,
+          "issuer_2027_margin_forecast_certified": false
+        },
+        {
+          "scenario": "HISTORIC_2025_Q2_MARGIN_NOT_2027_FORECAST",
+          "substituted_full_2027_GM_pct_not_forecast": 24.35,
+          "hypothetical_2027_eps": 5.1853,
+          "hypothetical_fair_price_at_original_PE": 56.42,
+          "hypothetical_upside_at_original_PE_pct": 11.49,
+          "hypothetical_fair_price_at_PE_20pct_discount": 45.13,
+          "hypothetical_upside_at_PE_20pct_discount_pct": -10.8,
+          "issuer_2027_margin_forecast_certified": false
+        },
+        {
+          "scenario": "ACTUAL_2026_Q2_MARGIN_NOT_2027_FORECAST",
+          "substituted_full_2027_GM_pct_not_forecast": 30.49,
+          "hypothetical_2027_eps": 7.4768,
+          "hypothetical_fair_price_at_original_PE": 81.35,
+          "hypothetical_upside_at_original_PE_pct": 60.77,
+          "hypothetical_fair_price_at_PE_20pct_discount": 65.08,
+          "hypothetical_upside_at_PE_20pct_discount_pct": 28.61,
+          "issuer_2027_margin_forecast_certified": false
+        },
+        {
+          "scenario": "MODELED_BASE_LESS_3_PERCENTAGE_POINTS",
+          "substituted_full_2027_GM_pct_not_forecast": 25.855,
+          "hypothetical_2027_eps": 5.747,
+          "hypothetical_fair_price_at_original_PE": 62.53,
+          "hypothetical_upside_at_original_PE_pct": 23.57,
+          "hypothetical_fair_price_at_PE_20pct_discount": 50.02,
+          "hypothetical_upside_at_PE_20pct_discount_pct": -1.14,
+          "issuer_2027_margin_forecast_certified": false
+        },
+        {
+          "scenario": "MODELED_BASE_LESS_5_PERCENTAGE_POINTS",
+          "substituted_full_2027_GM_pct_not_forecast": 23.855,
+          "hypothetical_2027_eps": 5.0006,
+          "hypothetical_fair_price_at_original_PE": 54.41,
+          "hypothetical_upside_at_original_PE_pct": 7.52,
+          "hypothetical_fair_price_at_PE_20pct_discount": 43.53,
+          "hypothetical_upside_at_PE_20pct_discount_pct": -13.98,
+          "issuer_2027_margin_forecast_certified": false
+        },
+        {
+          "scenario": "HISTORIC_2025_H1_MARGIN_NOT_2027_FORECAST",
+          "substituted_full_2027_GM_pct_not_forecast": 23.52,
+          "hypothetical_2027_eps": 4.8756,
+          "hypothetical_fair_price_at_original_PE": 53.05,
+          "hypothetical_upside_at_original_PE_pct": 4.83,
+          "hypothetical_fair_price_at_PE_20pct_discount": 42.44,
+          "hypothetical_upside_at_PE_20pct_discount_pct": -16.13,
+          "issuer_2027_margin_forecast_certified": false
+        }
+      ],
+      "latest_halfyear_ocf_k_normalized_not_filing_original": 12480568.0,
+      "working_capital_component_original_notes_certified": false,
+      "ocf_sustainability_verified": false,
+      "balance_sheet_risk_metrics": {
+        "inventory_yoy_pct": 11.62,
+        "accounts_receivable_yoy_pct": 32.98,
+        "noncurrent_ppe_yoy_pct": 38.97,
+        "inventory_qoq_pct": -3.59,
+        "accounting_original_filing_notes_verified": false
+      },
+      "missing_original_issuer_quarter_filing_source_sha": true,
+      "negative_operating_cashflow_is_not_automatic_Aplus_failure": true,
+      "formal_Aplus_or_buy_signal": false,
+      "actual_2027_outcome_vs_0050": null
+    },
+    "4771": {
+      "company": "望隼",
+      "sector": "contact_lenses",
+      "price_reference_date": "2026-10-22",
+      "reference_close": 206.5,
+      "2027_base_eps_unverified": 18.6184,
+      "2027_base_pe_unverified": 15.54,
+      "2027_base_gross_margin_pct_unverified": 41.8137,
+      "actual_2025q2_margin_pct_from_dated_public_reprint": 40.77,
+      "actual_2026q2_margin_pct_from_dated_public_release": 43.46,
+      "margin_change_q2_yoy_pp": 2.69,
+      "sensitivity_2027_EPS_per_1pp_gm_fixed_other_inputs": 0.6356,
+      "gm_2027_required_for_30pct_upside_with_existing_PE_pct": 39.6999,
+      "tested_margin_scenarios": [
+        {
+          "scenario": "MODELED_2027_BASE_MARGIN",
+          "substituted_full_2027_GM_pct_not_forecast": 41.8137,
+          "hypothetical_2027_eps": 18.6184,
+          "hypothetical_fair_price_at_original_PE": 289.33,
+          "hypothetical_upside_at_original_PE_pct": 40.11,
+          "hypothetical_fair_price_at_PE_20pct_discount": 231.46,
+          "hypothetical_upside_at_PE_20pct_discount_pct": 12.09,
+          "issuer_2027_margin_forecast_certified": false
+        },
+        {
+          "scenario": "HISTORIC_2025_Q2_MARGIN_NOT_2027_FORECAST",
+          "substituted_full_2027_GM_pct_not_forecast": 40.77,
+          "hypothetical_2027_eps": 17.955,
+          "hypothetical_fair_price_at_original_PE": 279.02,
+          "hypothetical_upside_at_original_PE_pct": 35.12,
+          "hypothetical_fair_price_at_PE_20pct_discount": 223.22,
+          "hypothetical_upside_at_PE_20pct_discount_pct": 8.1,
+          "issuer_2027_margin_forecast_certified": false
+        },
+        {
+          "scenario": "ACTUAL_2026_Q2_MARGIN_NOT_2027_FORECAST",
+          "substituted_full_2027_GM_pct_not_forecast": 43.46,
+          "hypothetical_2027_eps": 19.6648,
+          "hypothetical_fair_price_at_original_PE": 305.59,
+          "hypothetical_upside_at_original_PE_pct": 47.99,
+          "hypothetical_fair_price_at_PE_20pct_discount": 244.47,
+          "hypothetical_upside_at_PE_20pct_discount_pct": 18.39,
+          "issuer_2027_margin_forecast_certified": false
+        },
+        {
+          "scenario": "MODELED_BASE_LESS_3_PERCENTAGE_POINTS",
+          "substituted_full_2027_GM_pct_not_forecast": 38.8137,
+          "hypothetical_2027_eps": 16.7115,
+          "hypothetical_fair_price_at_original_PE": 259.7,
+          "hypothetical_upside_at_original_PE_pct": 25.76,
+          "hypothetical_fair_price_at_PE_20pct_discount": 207.76,
+          "hypothetical_upside_at_PE_20pct_discount_pct": 0.61,
+          "issuer_2027_margin_forecast_certified": false
+        },
+        {
+          "scenario": "MODELED_BASE_LESS_5_PERCENTAGE_POINTS",
+          "substituted_full_2027_GM_pct_not_forecast": 36.8137,
+          "hypothetical_2027_eps": 15.4403,
+          "hypothetical_fair_price_at_original_PE": 239.94,
+          "hypothetical_upside_at_original_PE_pct": 16.19,
+          "hypothetical_fair_price_at_PE_20pct_discount": 191.95,
+          "hypothetical_upside_at_PE_20pct_discount_pct": -7.04,
+          "issuer_2027_margin_forecast_certified": false
+        }
+      ],
+      "latest_halfyear_ocf_k_normalized_not_filing_original": 676113.0,
+      "working_capital_component_original_notes_certified": false,
+      "ocf_sustainability_verified": false,
+      "balance_sheet_risk_metrics": {
+        "inventory_yoy_pct": 32.52,
+        "accounts_receivable_yoy_pct": 58.6,
+        "noncurrent_ppe_yoy_pct": 49.78,
+        "reported_current_Q2_revenue_yoy_pct": 37.1,
+        "receivable_growth_exceeds_Q2_revenue_growth": true,
+        "PPE_yearly_growth_exceeds_40_pct": true,
+        "accounting_original_filing_notes_verified": false
+      },
+      "missing_original_issuer_quarter_filing_source_sha": true,
+      "negative_operating_cashflow_is_not_automatic_Aplus_failure": true,
+      "formal_Aplus_or_buy_signal": false,
+      "actual_2027_outcome_vs_0050": null
+    },
+    "6206": {
+      "company": "飛捷",
+      "sector": "industrial_computers",
+      "price_reference_date": "2026-10-22",
+      "reference_close": 127.5,
+      "2027_base_eps_unverified": 11.5669,
+      "2027_base_pe_unverified": 15.535,
+      "2027_base_gross_margin_pct_unverified": 45.0666,
+      "actual_2025q2_margin_pct_from_dated_public_reprint": 43.9,
+      "actual_2026q2_margin_pct_from_dated_public_release": 45.4,
+      "margin_change_q2_yoy_pp": 1.5,
+      "sensitivity_2027_EPS_per_1pp_gm_fixed_other_inputs": 0.4194,
+      "gm_2027_required_for_30pct_upside_with_existing_PE_pct": 42.9269,
+      "tested_margin_scenarios": [
+        {
+          "scenario": "MODELED_2027_BASE_MARGIN",
+          "substituted_full_2027_GM_pct_not_forecast": 45.0666,
+          "hypothetical_2027_eps": 11.5669,
+          "hypothetical_fair_price_at_original_PE": 179.69,
+          "hypothetical_upside_at_original_PE_pct": 40.93,
+          "hypothetical_fair_price_at_PE_20pct_discount": 143.75,
+          "hypothetical_upside_at_PE_20pct_discount_pct": 12.75,
+          "issuer_2027_margin_forecast_certified": false
+        },
+        {
+          "scenario": "HISTORIC_2025_Q2_MARGIN_NOT_2027_FORECAST",
+          "substituted_full_2027_GM_pct_not_forecast": 43.9,
+          "hypothetical_2027_eps": 11.0776,
+          "hypothetical_fair_price_at_original_PE": 172.09,
+          "hypothetical_upside_at_original_PE_pct": 34.97,
+          "hypothetical_fair_price_at_PE_20pct_discount": 137.67,
+          "hypothetical_upside_at_PE_20pct_discount_pct": 7.98,
+          "issuer_2027_margin_forecast_certified": false
+        },
+        {
+          "scenario": "ACTUAL_2026_Q2_MARGIN_NOT_2027_FORECAST",
+          "substituted_full_2027_GM_pct_not_forecast": 45.4,
+          "hypothetical_2027_eps": 11.7068,
+          "hypothetical_fair_price_at_original_PE": 181.86,
+          "hypothetical_upside_at_original_PE_pct": 42.64,
+          "hypothetical_fair_price_at_PE_20pct_discount": 145.49,
+          "hypothetical_upside_at_PE_20pct_discount_pct": 14.11,
+          "issuer_2027_margin_forecast_certified": false
+        },
+        {
+          "scenario": "MODELED_BASE_LESS_3_PERCENTAGE_POINTS",
+          "substituted_full_2027_GM_pct_not_forecast": 42.0666,
+          "hypothetical_2027_eps": 10.3086,
+          "hypothetical_fair_price_at_original_PE": 160.14,
+          "hypothetical_upside_at_original_PE_pct": 25.6,
+          "hypothetical_fair_price_at_PE_20pct_discount": 128.12,
+          "hypothetical_upside_at_PE_20pct_discount_pct": 0.48,
+          "issuer_2027_margin_forecast_certified": false
+        },
+        {
+          "scenario": "MODELED_BASE_LESS_5_PERCENTAGE_POINTS",
+          "substituted_full_2027_GM_pct_not_forecast": 40.0666,
+          "hypothetical_2027_eps": 9.4697,
+          "hypothetical_fair_price_at_original_PE": 147.11,
+          "hypothetical_upside_at_original_PE_pct": 15.38,
+          "hypothetical_fair_price_at_PE_20pct_discount": 117.69,
+          "hypothetical_upside_at_PE_20pct_discount_pct": -7.69,
+          "issuer_2027_margin_forecast_certified": false
+        }
+      ],
+      "latest_halfyear_ocf_k_normalized_not_filing_original": -97618.0,
+      "working_capital_component_original_notes_certified": false,
+      "ocf_sustainability_verified": false,
+      "balance_sheet_risk_metrics": {
+        "inventory_yoy_pct": 96.87,
+        "accounts_receivable_yoy_pct": 34.08,
+        "accounting_original_filing_notes_verified": false
+      },
+      "missing_original_issuer_quarter_filing_source_sha": true,
+      "negative_operating_cashflow_is_not_automatic_Aplus_failure": true,
+      "formal_Aplus_or_buy_signal": false,
+      "actual_2027_outcome_vs_0050": null
+    }
+  }
+}

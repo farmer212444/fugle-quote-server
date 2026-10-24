@@ -1,0 +1,50 @@
+name: V8.10.6 Receivable Inventory Days Audit
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/2027-cross-sector-margin-safety-20261024
+    paths:
+      - 'scripts/v8106_operating_cycle_validator.py'
+      - 'tests/test_v8106_operating_cycle_validator.py'
+      - 'tw-market-data/evidence/v8106_4771_6206_operating_cycle_20261024.json'
+      - '.github/workflows/v8106-operating-cycle-days-audit.yml'
+concurrency:
+  group: v8106-operating-cycle-20261024
+  cancel-in-progress: true
+permissions:
+  contents: write
+jobs:
+  verify-published-turnover-day-trends:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Check 4771 separate ratio methods and 6206 34 days inventory stretch
+        run: python -m unittest -v tests.test_v8106_operating_cycle_validator
+      - name: Generate source-linked conservative operating cycle research report
+        run: python scripts/v8106_operating_cycle_validator.py
+      - name: Archive results to unmerged research branch
+        if: success() && github.ref == 'refs/heads/research/2027-cross-sector-margin-safety-20261024'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add tw-market-data/rankings/v8106_4771_6206_turnover_cycle_shadow.json
+          if ! git diff --cached --quiet; then
+            git commit -m "data: 4771 and 6206 2026Q2 DSO DIO two-source working capital shadow"
+            for attempt in 1 2 3; do
+              git fetch origin research/2027-cross-sector-margin-safety-20261024
+              git rebase origin/research/2027-cross-sector-margin-safety-20261024 || {
+                git rebase --abort || true
+                exit 1
+              }
+              if git push origin HEAD:research/2027-cross-sector-margin-safety-20261024; then
+                exit 0
+              fi
+              sleep 2
+            done
+            exit 1
+          fi
