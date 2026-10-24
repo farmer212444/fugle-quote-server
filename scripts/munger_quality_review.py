@@ -62,7 +62,8 @@ def main():
     result=publish(args.root)
     print(json.dumps(dict(
         model=result['model'],schema=result['schema'],
-        evaluated_issuers=result['evaluated_issuers'],
+        model_evaluated_issuers=result['model_evaluated_issuers'],
+        diagnostic_issuers_reviewed=result['diagnostic_issuers_reviewed'],
         institutional_detail_coverage=result['institutional_detail_coverage'],
         new_certificates_issued=0,trade_orders_created=0),ensure_ascii=False))
     return 0
