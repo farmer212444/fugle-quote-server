@@ -145,13 +145,15 @@ def build(progress, institutional):
     if not set(focus).issubset(seen):
         raise ValueError("MUNGER_FOCUS_ISSUER_NOT_IN_GATE_REPORT")
     expected = progress.get("model_evaluated_issuer_count")
-    if expected != len(results):
+    if isinstance(expected, bool) or not isinstance(expected, int) or expected < len(results):
         raise ValueError("MUNGER_EVALUATED_ISSUER_COUNT_MISMATCH")
     return dict(schema="V811_MUNGER_INVERSION_RESEARCH_ONLY_V1",
                 model=progress["model"], estimate_vintage=progress["estimate_vintage"],
                 asof_price_date=progress["asof_price_date"],
                 total_tracked=progress.get("tracked_issuer_count"),
-                evaluated_issuers=len(results),
+                model_evaluated_issuers=expected,
+                diagnostic_issuers_reviewed=len(results),
+                evaluated_but_not_in_diagnostic_report=expected-len(results),
                 not_evaluated_issuers=progress.get("not_evaluated_issuer_count"),
                 reported_formal_Aplus=progress["formally_certified_Aplus_in_report"],
                 high_upside_uncertified=sum(x["status"] == "HIGH_UPSIDE_RESEARCH_ONLY_UNCERTIFIED" for x in results),
@@ -180,7 +182,7 @@ def render(report):
     lines = [
         "# 蒙格式反向驗證｜研究待辦（非買進名單）", "",
         f"模型 {safe(report['model'])}；估計 {safe(report['estimate_vintage'])}；價格日 {safe(report['asof_price_date'])}。", "",
-        f"追蹤 {report['total_tracked']}、已評估 {report['evaluated_issuers']}、未進入判定 {report['not_evaluated_issuers']}；原有正式A+ {report['reported_formal_Aplus']}。", "",
+        f"追蹤 {report['total_tracked']}、主模型已判定 {report['model_evaluated_issuers']}、本次具逐項診斷明細 {report['diagnostic_issuers_reviewed']}、已判定但無逐檔診斷明細 {report['evaluated_but_not_in_diagnostic_report']}、未進入判定 {report['not_evaluated_issuers']}；原有正式A+ {report['reported_formal_Aplus']}。", "",
         "**這不是新選股評分、勝率或重押推薦。沒有任何新認證；原EPS、PE、Base價差、A+門檻與部位均未改動。**", "",
         "## 深度覆核優先：先處理已識別的反證與下檔脆弱性", "",
         "|股票|Base價差|EPS/PE各-20%價差|既有正式PASS|狀態|已識別查核風險|",
