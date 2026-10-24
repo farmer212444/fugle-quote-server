@@ -1,6 +1,6 @@
 {
   "schema": "HISTORICAL_PIT_SOURCE_READINESS_V1",
-  "observed_at": "2026-10-24T05:46:54.289135+00:00",
+  "observed_at": "2026-10-24T09:28:35.009723+00:00",
   "historical_start": "2025-01-01",
   "historical_end": "2026-10-22",
   "verified_durable_original_receipts": 303,
@@ -668,6 +668,24 @@
     "TPEX": 4684
   },
   "financial_mirrors": [
+    {
+      "path": "fundamentals/2023-Q2/TPEX_cashflow.json",
+      "period": "2023-Q2",
+      "market": "TPEX",
+      "kind": "cashflow",
+      "captured_at": "2026-10-24T09:26:45.159308+00:00",
+      "historical_publication_and_revision_proof_admitted": false,
+      "reason": "NORMALIZED_MIRROR_IS_NOT_ORIGINAL_FILING_VERSION_OR_PUBLICATION_PROOF"
+    },
+    {
+      "path": "fundamentals/2023-Q2/TPEX_income.json",
+      "period": "2023-Q2",
+      "market": "TPEX",
+      "kind": "income",
+      "captured_at": "2026-10-24T09:26:41.288493+00:00",
+      "historical_publication_and_revision_proof_admitted": false,
+      "reason": "NORMALIZED_MIRROR_IS_NOT_ORIGINAL_FILING_VERSION_OR_PUBLICATION_PROOF"
+    },
     {
       "path": "fundamentals/2023-Q2/TWSE_cashflow.json",
       "period": "2023-Q2",
