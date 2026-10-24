@@ -1,11 +1,11 @@
 {
   "schema": "RETURN_MODEL_SEARCH_STATUS_V1",
-  "observed_at": "2026-10-24T11:29:04.064004+00:00",
+  "observed_at": "2026-10-24T13:43:21.425124+00:00",
   "model": "V8.10.8",
-  "estimate_vintage": "2026-10-24T19:28:44.116280+08:00",
+  "estimate_vintage": "2026-10-24T21:42:59.749810+08:00",
   "asof_price_date": "2026-10-22",
-  "experiment_id": "search-1336ddf9f7bd8f441669c664",
-  "registered_at": "2026-10-24T03:00:31.463818+00:00",
+  "experiment_id": "search-4e5f78bf2eb53e7000987296",
+  "registered_at": "2026-10-24T13:43:17.886986+00:00",
   "policy_sha256": "a8caafb110e3214eedafcb0dc02e63e9b98e5699d6dece7eb82e92d587e3d43b",
   "parameter_count": 240,
   "parameters": [
@@ -2947,7 +2947,17 @@
     "ocf_to_sales": 796,
     "momentum_63_21_pct": 0
   },
-  "adv20_coverage": 60,
+  "adv20_coverage": 115,
+  "input_coverage_by_market": {
+    "TPEX": {
+      "source_universe_count": 297,
+      "adv20_coverage": 55
+    },
+    "TWSE": {
+      "source_universe_count": 499,
+      "adv20_coverage": 60
+    }
+  },
   "horizon_reports": [
     {
       "latest_training_pick": {
@@ -2966,12 +2976,12 @@
       "trade_orders_created": 0,
       "holding_sessions": 21,
       "parameter_count": 80,
-      "current_cohort": "a41388419b5a781414e6890c",
-      "current_ready_parameter_count": 30,
+      "current_cohort": "9106967b4845c3196aa4de03",
+      "current_ready_parameter_count": 42,
       "verified_return_periods": 0,
       "pending_cohorts": [
         {
-          "cohort_id": "a41388419b5a781414e6890c",
+          "cohort_id": "9106967b4845c3196aa4de03",
           "status": "AWAITING_FUTURE_HOLDING_SESSIONS_OR_CALENDAR"
         }
       ],
@@ -3144,7 +3154,7 @@
           "stock_count": 10,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 37,
+          "eligible_issuer_count": 66,
           "selected_issuer_count": 10,
           "inputs_ready": true
         },
@@ -3154,7 +3164,7 @@
           "stock_count": 10,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 37,
+          "eligible_issuer_count": 66,
           "selected_issuer_count": 10,
           "inputs_ready": true
         },
@@ -3164,7 +3174,7 @@
           "stock_count": 10,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 28,
+          "eligible_issuer_count": 48,
           "selected_issuer_count": 10,
           "inputs_ready": true
         },
@@ -3174,7 +3184,7 @@
           "stock_count": 10,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 28,
+          "eligible_issuer_count": 48,
           "selected_issuer_count": 10,
           "inputs_ready": true
         },
@@ -3184,7 +3194,7 @@
           "stock_count": 20,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 37,
+          "eligible_issuer_count": 66,
           "selected_issuer_count": 20,
           "inputs_ready": true
         },
@@ -3194,7 +3204,7 @@
           "stock_count": 20,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 37,
+          "eligible_issuer_count": 66,
           "selected_issuer_count": 20,
           "inputs_ready": true
         },
@@ -3204,7 +3214,7 @@
           "stock_count": 20,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 28,
+          "eligible_issuer_count": 48,
           "selected_issuer_count": 20,
           "inputs_ready": true
         },
@@ -3214,7 +3224,7 @@
           "stock_count": 20,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 28,
+          "eligible_issuer_count": 48,
           "selected_issuer_count": 20,
           "inputs_ready": true
         },
@@ -3224,7 +3234,7 @@
           "stock_count": 30,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 37,
+          "eligible_issuer_count": 66,
           "selected_issuer_count": 30,
           "inputs_ready": true
         },
@@ -3234,7 +3244,7 @@
           "stock_count": 30,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 37,
+          "eligible_issuer_count": 66,
           "selected_issuer_count": 30,
           "inputs_ready": true
         },
@@ -3244,9 +3254,9 @@
           "stock_count": 30,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 28,
-          "selected_issuer_count": 28,
-          "inputs_ready": false
+          "eligible_issuer_count": 48,
+          "selected_issuer_count": 30,
+          "inputs_ready": true
         },
         {
           "parameter_id": "cf680f1b095f570f9802",
@@ -3254,9 +3264,9 @@
           "stock_count": 30,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 28,
-          "selected_issuer_count": 28,
-          "inputs_ready": false
+          "eligible_issuer_count": 48,
+          "selected_issuer_count": 30,
+          "inputs_ready": true
         },
         {
           "parameter_id": "fea52978f9a29189ee0f",
@@ -3264,9 +3274,9 @@
           "stock_count": 50,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 37,
-          "selected_issuer_count": 37,
-          "inputs_ready": false
+          "eligible_issuer_count": 66,
+          "selected_issuer_count": 50,
+          "inputs_ready": true
         },
         {
           "parameter_id": "15faaabdc85bfd8a7f2e",
@@ -3274,9 +3284,9 @@
           "stock_count": 50,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 37,
-          "selected_issuer_count": 37,
-          "inputs_ready": false
+          "eligible_issuer_count": 66,
+          "selected_issuer_count": 50,
+          "inputs_ready": true
         },
         {
           "parameter_id": "a288d87e29c59666bbe9",
@@ -3284,8 +3294,8 @@
           "stock_count": 50,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 28,
-          "selected_issuer_count": 28,
+          "eligible_issuer_count": 48,
+          "selected_issuer_count": 48,
           "inputs_ready": false
         },
         {
@@ -3294,8 +3304,8 @@
           "stock_count": 50,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 28,
-          "selected_issuer_count": 28,
+          "eligible_issuer_count": 48,
+          "selected_issuer_count": 48,
           "inputs_ready": false
         },
         {
@@ -3464,7 +3474,7 @@
           "stock_count": 10,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 37,
+          "eligible_issuer_count": 66,
           "selected_issuer_count": 10,
           "inputs_ready": true
         },
@@ -3474,7 +3484,7 @@
           "stock_count": 10,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 37,
+          "eligible_issuer_count": 66,
           "selected_issuer_count": 10,
           "inputs_ready": true
         },
@@ -3484,7 +3494,7 @@
           "stock_count": 10,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 28,
+          "eligible_issuer_count": 48,
           "selected_issuer_count": 10,
           "inputs_ready": true
         },
@@ -3494,7 +3504,7 @@
           "stock_count": 10,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 28,
+          "eligible_issuer_count": 48,
           "selected_issuer_count": 10,
           "inputs_ready": true
         },
@@ -3504,7 +3514,7 @@
           "stock_count": 20,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 37,
+          "eligible_issuer_count": 66,
           "selected_issuer_count": 20,
           "inputs_ready": true
         },
@@ -3514,7 +3524,7 @@
           "stock_count": 20,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 37,
+          "eligible_issuer_count": 66,
           "selected_issuer_count": 20,
           "inputs_ready": true
         },
@@ -3524,7 +3534,7 @@
           "stock_count": 20,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 28,
+          "eligible_issuer_count": 48,
           "selected_issuer_count": 20,
           "inputs_ready": true
         },
@@ -3534,7 +3544,7 @@
           "stock_count": 20,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 28,
+          "eligible_issuer_count": 48,
           "selected_issuer_count": 20,
           "inputs_ready": true
         },
@@ -3544,7 +3554,7 @@
           "stock_count": 30,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 37,
+          "eligible_issuer_count": 66,
           "selected_issuer_count": 30,
           "inputs_ready": true
         },
@@ -3554,7 +3564,7 @@
           "stock_count": 30,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 37,
+          "eligible_issuer_count": 66,
           "selected_issuer_count": 30,
           "inputs_ready": true
         },
@@ -3564,9 +3574,9 @@
           "stock_count": 30,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 28,
-          "selected_issuer_count": 28,
-          "inputs_ready": false
+          "eligible_issuer_count": 48,
+          "selected_issuer_count": 30,
+          "inputs_ready": true
         },
         {
           "parameter_id": "5a77a81241da7b4d9afc",
@@ -3574,9 +3584,9 @@
           "stock_count": 30,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 28,
-          "selected_issuer_count": 28,
-          "inputs_ready": false
+          "eligible_issuer_count": 48,
+          "selected_issuer_count": 30,
+          "inputs_ready": true
         },
         {
           "parameter_id": "24540a0c26a766822c8d",
@@ -3584,9 +3594,9 @@
           "stock_count": 50,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 37,
-          "selected_issuer_count": 37,
-          "inputs_ready": false
+          "eligible_issuer_count": 66,
+          "selected_issuer_count": 50,
+          "inputs_ready": true
         },
         {
           "parameter_id": "fe6af2667dcb65eae62d",
@@ -3594,9 +3604,9 @@
           "stock_count": 50,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 37,
-          "selected_issuer_count": 37,
-          "inputs_ready": false
+          "eligible_issuer_count": 66,
+          "selected_issuer_count": 50,
+          "inputs_ready": true
         },
         {
           "parameter_id": "b02ff6b3cb628e636b49",
@@ -3604,8 +3614,8 @@
           "stock_count": 50,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 28,
-          "selected_issuer_count": 28,
+          "eligible_issuer_count": 48,
+          "selected_issuer_count": 48,
           "inputs_ready": false
         },
         {
@@ -3614,8 +3624,8 @@
           "stock_count": 50,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 28,
-          "selected_issuer_count": 28,
+          "eligible_issuer_count": 48,
+          "selected_issuer_count": 48,
           "inputs_ready": false
         },
         {
@@ -3624,7 +3634,7 @@
           "stock_count": 10,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 37,
+          "eligible_issuer_count": 66,
           "selected_issuer_count": 10,
           "inputs_ready": true
         },
@@ -3634,7 +3644,7 @@
           "stock_count": 10,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 37,
+          "eligible_issuer_count": 66,
           "selected_issuer_count": 10,
           "inputs_ready": true
         },
@@ -3644,7 +3654,7 @@
           "stock_count": 10,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 28,
+          "eligible_issuer_count": 48,
           "selected_issuer_count": 10,
           "inputs_ready": true
         },
@@ -3654,7 +3664,7 @@
           "stock_count": 10,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 28,
+          "eligible_issuer_count": 48,
           "selected_issuer_count": 10,
           "inputs_ready": true
         },
@@ -3664,7 +3674,7 @@
           "stock_count": 20,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 37,
+          "eligible_issuer_count": 66,
           "selected_issuer_count": 20,
           "inputs_ready": true
         },
@@ -3674,7 +3684,7 @@
           "stock_count": 20,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 37,
+          "eligible_issuer_count": 66,
           "selected_issuer_count": 20,
           "inputs_ready": true
         },
@@ -3684,7 +3694,7 @@
           "stock_count": 20,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 28,
+          "eligible_issuer_count": 48,
           "selected_issuer_count": 20,
           "inputs_ready": true
         },
@@ -3694,7 +3704,7 @@
           "stock_count": 20,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 28,
+          "eligible_issuer_count": 48,
           "selected_issuer_count": 20,
           "inputs_ready": true
         },
@@ -3704,7 +3714,7 @@
           "stock_count": 30,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 37,
+          "eligible_issuer_count": 66,
           "selected_issuer_count": 30,
           "inputs_ready": true
         },
@@ -3714,7 +3724,7 @@
           "stock_count": 30,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 37,
+          "eligible_issuer_count": 66,
           "selected_issuer_count": 30,
           "inputs_ready": true
         },
@@ -3724,9 +3734,9 @@
           "stock_count": 30,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 28,
-          "selected_issuer_count": 28,
-          "inputs_ready": false
+          "eligible_issuer_count": 48,
+          "selected_issuer_count": 30,
+          "inputs_ready": true
         },
         {
           "parameter_id": "cbf45514f08cb9f4dc52",
@@ -3734,9 +3744,9 @@
           "stock_count": 30,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 28,
-          "selected_issuer_count": 28,
-          "inputs_ready": false
+          "eligible_issuer_count": 48,
+          "selected_issuer_count": 30,
+          "inputs_ready": true
         },
         {
           "parameter_id": "3bc4bc5285fa7724a45d",
@@ -3744,9 +3754,9 @@
           "stock_count": 50,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 37,
-          "selected_issuer_count": 37,
-          "inputs_ready": false
+          "eligible_issuer_count": 66,
+          "selected_issuer_count": 50,
+          "inputs_ready": true
         },
         {
           "parameter_id": "a32ff85b41210fd86474",
@@ -3754,9 +3764,9 @@
           "stock_count": 50,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 37,
-          "selected_issuer_count": 37,
-          "inputs_ready": false
+          "eligible_issuer_count": 66,
+          "selected_issuer_count": 50,
+          "inputs_ready": true
         },
         {
           "parameter_id": "3f1f84eb8b88d22b264b",
@@ -3764,8 +3774,8 @@
           "stock_count": 50,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 28,
-          "selected_issuer_count": 28,
+          "eligible_issuer_count": 48,
+          "selected_issuer_count": 48,
           "inputs_ready": false
         },
         {
@@ -3774,12 +3784,12 @@
           "stock_count": 50,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 28,
-          "selected_issuer_count": 28,
+          "eligible_issuer_count": 48,
+          "selected_issuer_count": 48,
           "inputs_ready": false
         }
       ],
-      "newly_frozen": false
+      "newly_frozen": true
     },
     {
       "latest_training_pick": {
@@ -3798,12 +3808,12 @@
       "trade_orders_created": 0,
       "holding_sessions": 63,
       "parameter_count": 80,
-      "current_cohort": "3c4435cdf8b62caf59ee875e",
-      "current_ready_parameter_count": 30,
+      "current_cohort": "82d83811f286b3424655a2b4",
+      "current_ready_parameter_count": 42,
       "verified_return_periods": 0,
       "pending_cohorts": [
         {
-          "cohort_id": "3c4435cdf8b62caf59ee875e",
+          "cohort_id": "82d83811f286b3424655a2b4",
           "status": "AWAITING_FUTURE_HOLDING_SESSIONS_OR_CALENDAR"
         }
       ],
@@ -3976,7 +3986,7 @@
           "stock_count": 10,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 37,
+          "eligible_issuer_count": 66,
           "selected_issuer_count": 10,
           "inputs_ready": true
         },
@@ -3986,7 +3996,7 @@
           "stock_count": 10,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 37,
+          "eligible_issuer_count": 66,
           "selected_issuer_count": 10,
           "inputs_ready": true
         },
@@ -3996,7 +4006,7 @@
           "stock_count": 10,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 28,
+          "eligible_issuer_count": 48,
           "selected_issuer_count": 10,
           "inputs_ready": true
         },
@@ -4006,7 +4016,7 @@
           "stock_count": 10,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 28,
+          "eligible_issuer_count": 48,
           "selected_issuer_count": 10,
           "inputs_ready": true
         },
@@ -4016,7 +4026,7 @@
           "stock_count": 20,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 37,
+          "eligible_issuer_count": 66,
           "selected_issuer_count": 20,
           "inputs_ready": true
         },
@@ -4026,7 +4036,7 @@
           "stock_count": 20,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 37,
+          "eligible_issuer_count": 66,
           "selected_issuer_count": 20,
           "inputs_ready": true
         },
@@ -4036,7 +4046,7 @@
           "stock_count": 20,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 28,
+          "eligible_issuer_count": 48,
           "selected_issuer_count": 20,
           "inputs_ready": true
         },
@@ -4046,7 +4056,7 @@
           "stock_count": 20,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 28,
+          "eligible_issuer_count": 48,
           "selected_issuer_count": 20,
           "inputs_ready": true
         },
@@ -4056,7 +4066,7 @@
           "stock_count": 30,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 37,
+          "eligible_issuer_count": 66,
           "selected_issuer_count": 30,
           "inputs_ready": true
         },
@@ -4066,7 +4076,7 @@
           "stock_count": 30,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 37,
+          "eligible_issuer_count": 66,
           "selected_issuer_count": 30,
           "inputs_ready": true
         },
@@ -4076,9 +4086,9 @@
           "stock_count": 30,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 28,
-          "selected_issuer_count": 28,
-          "inputs_ready": false
+          "eligible_issuer_count": 48,
+          "selected_issuer_count": 30,
+          "inputs_ready": true
         },
         {
           "parameter_id": "db2568ef1a50be015edb",
@@ -4086,9 +4096,9 @@
           "stock_count": 30,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 28,
-          "selected_issuer_count": 28,
-          "inputs_ready": false
+          "eligible_issuer_count": 48,
+          "selected_issuer_count": 30,
+          "inputs_ready": true
         },
         {
           "parameter_id": "bb4e29557b55eed1f663",
@@ -4096,9 +4106,9 @@
           "stock_count": 50,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 37,
-          "selected_issuer_count": 37,
-          "inputs_ready": false
+          "eligible_issuer_count": 66,
+          "selected_issuer_count": 50,
+          "inputs_ready": true
         },
         {
           "parameter_id": "b3e4ccaa2d9e113ee289",
@@ -4106,9 +4116,9 @@
           "stock_count": 50,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 37,
-          "selected_issuer_count": 37,
-          "inputs_ready": false
+          "eligible_issuer_count": 66,
+          "selected_issuer_count": 50,
+          "inputs_ready": true
         },
         {
           "parameter_id": "d8afc92adf756e60f83a",
@@ -4116,8 +4126,8 @@
           "stock_count": 50,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 28,
-          "selected_issuer_count": 28,
+          "eligible_issuer_count": 48,
+          "selected_issuer_count": 48,
           "inputs_ready": false
         },
         {
@@ -4126,8 +4136,8 @@
           "stock_count": 50,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 28,
-          "selected_issuer_count": 28,
+          "eligible_issuer_count": 48,
+          "selected_issuer_count": 48,
           "inputs_ready": false
         },
         {
@@ -4296,7 +4306,7 @@
           "stock_count": 10,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 37,
+          "eligible_issuer_count": 66,
           "selected_issuer_count": 10,
           "inputs_ready": true
         },
@@ -4306,7 +4316,7 @@
           "stock_count": 10,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 37,
+          "eligible_issuer_count": 66,
           "selected_issuer_count": 10,
           "inputs_ready": true
         },
@@ -4316,7 +4326,7 @@
           "stock_count": 10,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 28,
+          "eligible_issuer_count": 48,
           "selected_issuer_count": 10,
           "inputs_ready": true
         },
@@ -4326,7 +4336,7 @@
           "stock_count": 10,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 28,
+          "eligible_issuer_count": 48,
           "selected_issuer_count": 10,
           "inputs_ready": true
         },
@@ -4336,7 +4346,7 @@
           "stock_count": 20,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 37,
+          "eligible_issuer_count": 66,
           "selected_issuer_count": 20,
           "inputs_ready": true
         },
@@ -4346,7 +4356,7 @@
           "stock_count": 20,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 37,
+          "eligible_issuer_count": 66,
           "selected_issuer_count": 20,
           "inputs_ready": true
         },
@@ -4356,7 +4366,7 @@
           "stock_count": 20,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 28,
+          "eligible_issuer_count": 48,
           "selected_issuer_count": 20,
           "inputs_ready": true
         },
@@ -4366,7 +4376,7 @@
           "stock_count": 20,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 28,
+          "eligible_issuer_count": 48,
           "selected_issuer_count": 20,
           "inputs_ready": true
         },
@@ -4376,7 +4386,7 @@
           "stock_count": 30,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 37,
+          "eligible_issuer_count": 66,
           "selected_issuer_count": 30,
           "inputs_ready": true
         },
@@ -4386,7 +4396,7 @@
           "stock_count": 30,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 37,
+          "eligible_issuer_count": 66,
           "selected_issuer_count": 30,
           "inputs_ready": true
         },
@@ -4396,9 +4406,9 @@
           "stock_count": 30,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 28,
-          "selected_issuer_count": 28,
-          "inputs_ready": false
+          "eligible_issuer_count": 48,
+          "selected_issuer_count": 30,
+          "inputs_ready": true
         },
         {
           "parameter_id": "a894b4e51c08964a1d55",
@@ -4406,9 +4416,9 @@
           "stock_count": 30,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 28,
-          "selected_issuer_count": 28,
-          "inputs_ready": false
+          "eligible_issuer_count": 48,
+          "selected_issuer_count": 30,
+          "inputs_ready": true
         },
         {
           "parameter_id": "7cad3c361e771df42f15",
@@ -4416,9 +4426,9 @@
           "stock_count": 50,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 37,
-          "selected_issuer_count": 37,
-          "inputs_ready": false
+          "eligible_issuer_count": 66,
+          "selected_issuer_count": 50,
+          "inputs_ready": true
         },
         {
           "parameter_id": "3c023115f6cd98981144",
@@ -4426,9 +4436,9 @@
           "stock_count": 50,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 37,
-          "selected_issuer_count": 37,
-          "inputs_ready": false
+          "eligible_issuer_count": 66,
+          "selected_issuer_count": 50,
+          "inputs_ready": true
         },
         {
           "parameter_id": "4b4cde237606ccf94edf",
@@ -4436,8 +4446,8 @@
           "stock_count": 50,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 28,
-          "selected_issuer_count": 28,
+          "eligible_issuer_count": 48,
+          "selected_issuer_count": 48,
           "inputs_ready": false
         },
         {
@@ -4446,8 +4456,8 @@
           "stock_count": 50,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 28,
-          "selected_issuer_count": 28,
+          "eligible_issuer_count": 48,
+          "selected_issuer_count": 48,
           "inputs_ready": false
         },
         {
@@ -4456,7 +4466,7 @@
           "stock_count": 10,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 37,
+          "eligible_issuer_count": 66,
           "selected_issuer_count": 10,
           "inputs_ready": true
         },
@@ -4466,7 +4476,7 @@
           "stock_count": 10,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 37,
+          "eligible_issuer_count": 66,
           "selected_issuer_count": 10,
           "inputs_ready": true
         },
@@ -4476,7 +4486,7 @@
           "stock_count": 10,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 28,
+          "eligible_issuer_count": 48,
           "selected_issuer_count": 10,
           "inputs_ready": true
         },
@@ -4486,7 +4496,7 @@
           "stock_count": 10,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 28,
+          "eligible_issuer_count": 48,
           "selected_issuer_count": 10,
           "inputs_ready": true
         },
@@ -4496,7 +4506,7 @@
           "stock_count": 20,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 37,
+          "eligible_issuer_count": 66,
           "selected_issuer_count": 20,
           "inputs_ready": true
         },
@@ -4506,7 +4516,7 @@
           "stock_count": 20,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 37,
+          "eligible_issuer_count": 66,
           "selected_issuer_count": 20,
           "inputs_ready": true
         },
@@ -4516,7 +4526,7 @@
           "stock_count": 20,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 28,
+          "eligible_issuer_count": 48,
           "selected_issuer_count": 20,
           "inputs_ready": true
         },
@@ -4526,7 +4536,7 @@
           "stock_count": 20,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 28,
+          "eligible_issuer_count": 48,
           "selected_issuer_count": 20,
           "inputs_ready": true
         },
@@ -4536,7 +4546,7 @@
           "stock_count": 30,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 37,
+          "eligible_issuer_count": 66,
           "selected_issuer_count": 30,
           "inputs_ready": true
         },
@@ -4546,7 +4556,7 @@
           "stock_count": 30,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 37,
+          "eligible_issuer_count": 66,
           "selected_issuer_count": 30,
           "inputs_ready": true
         },
@@ -4556,9 +4566,9 @@
           "stock_count": 30,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 28,
-          "selected_issuer_count": 28,
-          "inputs_ready": false
+          "eligible_issuer_count": 48,
+          "selected_issuer_count": 30,
+          "inputs_ready": true
         },
         {
           "parameter_id": "31965ba2a49051a20751",
@@ -4566,9 +4576,9 @@
           "stock_count": 30,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 28,
-          "selected_issuer_count": 28,
-          "inputs_ready": false
+          "eligible_issuer_count": 48,
+          "selected_issuer_count": 30,
+          "inputs_ready": true
         },
         {
           "parameter_id": "115119cc87558c2a5935",
@@ -4576,9 +4586,9 @@
           "stock_count": 50,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 37,
-          "selected_issuer_count": 37,
-          "inputs_ready": false
+          "eligible_issuer_count": 66,
+          "selected_issuer_count": 50,
+          "inputs_ready": true
         },
         {
           "parameter_id": "11f3b693f99a23252bae",
@@ -4586,9 +4596,9 @@
           "stock_count": 50,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 37,
-          "selected_issuer_count": 37,
-          "inputs_ready": false
+          "eligible_issuer_count": 66,
+          "selected_issuer_count": 50,
+          "inputs_ready": true
         },
         {
           "parameter_id": "44471f770835e1b4afc4",
@@ -4596,8 +4606,8 @@
           "stock_count": 50,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 28,
-          "selected_issuer_count": 28,
+          "eligible_issuer_count": 48,
+          "selected_issuer_count": 48,
           "inputs_ready": false
         },
         {
@@ -4606,12 +4616,12 @@
           "stock_count": 50,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 28,
-          "selected_issuer_count": 28,
+          "eligible_issuer_count": 48,
+          "selected_issuer_count": 48,
           "inputs_ready": false
         }
       ],
-      "newly_frozen": false
+      "newly_frozen": true
     },
     {
       "latest_training_pick": {
@@ -4630,12 +4640,12 @@
       "trade_orders_created": 0,
       "holding_sessions": 126,
       "parameter_count": 80,
-      "current_cohort": "c90ce24cacb43b1abb71c275",
-      "current_ready_parameter_count": 30,
+      "current_cohort": "66b08d6e8f8d28ee7327ed0f",
+      "current_ready_parameter_count": 42,
       "verified_return_periods": 0,
       "pending_cohorts": [
         {
-          "cohort_id": "c90ce24cacb43b1abb71c275",
+          "cohort_id": "66b08d6e8f8d28ee7327ed0f",
           "status": "AWAITING_FUTURE_HOLDING_SESSIONS_OR_CALENDAR"
         }
       ],
@@ -4808,7 +4818,7 @@
           "stock_count": 10,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 37,
+          "eligible_issuer_count": 66,
           "selected_issuer_count": 10,
           "inputs_ready": true
         },
@@ -4818,7 +4828,7 @@
           "stock_count": 10,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 37,
+          "eligible_issuer_count": 66,
           "selected_issuer_count": 10,
           "inputs_ready": true
         },
@@ -4828,7 +4838,7 @@
           "stock_count": 10,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 28,
+          "eligible_issuer_count": 48,
           "selected_issuer_count": 10,
           "inputs_ready": true
         },
@@ -4838,7 +4848,7 @@
           "stock_count": 10,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 28,
+          "eligible_issuer_count": 48,
           "selected_issuer_count": 10,
           "inputs_ready": true
         },
@@ -4848,7 +4858,7 @@
           "stock_count": 20,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 37,
+          "eligible_issuer_count": 66,
           "selected_issuer_count": 20,
           "inputs_ready": true
         },
@@ -4858,7 +4868,7 @@
           "stock_count": 20,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 37,
+          "eligible_issuer_count": 66,
           "selected_issuer_count": 20,
           "inputs_ready": true
         },
@@ -4868,7 +4878,7 @@
           "stock_count": 20,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 28,
+          "eligible_issuer_count": 48,
           "selected_issuer_count": 20,
           "inputs_ready": true
         },
@@ -4878,7 +4888,7 @@
           "stock_count": 20,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 28,
+          "eligible_issuer_count": 48,
           "selected_issuer_count": 20,
           "inputs_ready": true
         },
@@ -4888,7 +4898,7 @@
           "stock_count": 30,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 37,
+          "eligible_issuer_count": 66,
           "selected_issuer_count": 30,
           "inputs_ready": true
         },
@@ -4898,7 +4908,7 @@
           "stock_count": 30,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 37,
+          "eligible_issuer_count": 66,
           "selected_issuer_count": 30,
           "inputs_ready": true
         },
@@ -4908,9 +4918,9 @@
           "stock_count": 30,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 28,
-          "selected_issuer_count": 28,
-          "inputs_ready": false
+          "eligible_issuer_count": 48,
+          "selected_issuer_count": 30,
+          "inputs_ready": true
         },
         {
           "parameter_id": "afdb2d0fe9a86bac9ec5",
@@ -4918,9 +4928,9 @@
           "stock_count": 30,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 28,
-          "selected_issuer_count": 28,
-          "inputs_ready": false
+          "eligible_issuer_count": 48,
+          "selected_issuer_count": 30,
+          "inputs_ready": true
         },
         {
           "parameter_id": "635efb6109c7f74a5f68",
@@ -4928,9 +4938,9 @@
           "stock_count": 50,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 37,
-          "selected_issuer_count": 37,
-          "inputs_ready": false
+          "eligible_issuer_count": 66,
+          "selected_issuer_count": 50,
+          "inputs_ready": true
         },
         {
           "parameter_id": "afd08a0bf3515c12f0b2",
@@ -4938,9 +4948,9 @@
           "stock_count": 50,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 37,
-          "selected_issuer_count": 37,
-          "inputs_ready": false
+          "eligible_issuer_count": 66,
+          "selected_issuer_count": 50,
+          "inputs_ready": true
         },
         {
           "parameter_id": "c933e1caf08f7fea4593",
@@ -4948,8 +4958,8 @@
           "stock_count": 50,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 28,
-          "selected_issuer_count": 28,
+          "eligible_issuer_count": 48,
+          "selected_issuer_count": 48,
           "inputs_ready": false
         },
         {
@@ -4958,8 +4968,8 @@
           "stock_count": 50,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 28,
-          "selected_issuer_count": 28,
+          "eligible_issuer_count": 48,
+          "selected_issuer_count": 48,
           "inputs_ready": false
         },
         {
@@ -5128,7 +5138,7 @@
           "stock_count": 10,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 37,
+          "eligible_issuer_count": 66,
           "selected_issuer_count": 10,
           "inputs_ready": true
         },
@@ -5138,7 +5148,7 @@
           "stock_count": 10,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 37,
+          "eligible_issuer_count": 66,
           "selected_issuer_count": 10,
           "inputs_ready": true
         },
@@ -5148,7 +5158,7 @@
           "stock_count": 10,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 28,
+          "eligible_issuer_count": 48,
           "selected_issuer_count": 10,
           "inputs_ready": true
         },
@@ -5158,7 +5168,7 @@
           "stock_count": 10,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 28,
+          "eligible_issuer_count": 48,
           "selected_issuer_count": 10,
           "inputs_ready": true
         },
@@ -5168,7 +5178,7 @@
           "stock_count": 20,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 37,
+          "eligible_issuer_count": 66,
           "selected_issuer_count": 20,
           "inputs_ready": true
         },
@@ -5178,7 +5188,7 @@
           "stock_count": 20,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 37,
+          "eligible_issuer_count": 66,
           "selected_issuer_count": 20,
           "inputs_ready": true
         },
@@ -5188,7 +5198,7 @@
           "stock_count": 20,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 28,
+          "eligible_issuer_count": 48,
           "selected_issuer_count": 20,
           "inputs_ready": true
         },
@@ -5198,7 +5208,7 @@
           "stock_count": 20,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 28,
+          "eligible_issuer_count": 48,
           "selected_issuer_count": 20,
           "inputs_ready": true
         },
@@ -5208,7 +5218,7 @@
           "stock_count": 30,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 37,
+          "eligible_issuer_count": 66,
           "selected_issuer_count": 30,
           "inputs_ready": true
         },
@@ -5218,7 +5228,7 @@
           "stock_count": 30,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 37,
+          "eligible_issuer_count": 66,
           "selected_issuer_count": 30,
           "inputs_ready": true
         },
@@ -5228,9 +5238,9 @@
           "stock_count": 30,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 28,
-          "selected_issuer_count": 28,
-          "inputs_ready": false
+          "eligible_issuer_count": 48,
+          "selected_issuer_count": 30,
+          "inputs_ready": true
         },
         {
           "parameter_id": "3dec64688a60d881e9d4",
@@ -5238,9 +5248,9 @@
           "stock_count": 30,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 28,
-          "selected_issuer_count": 28,
-          "inputs_ready": false
+          "eligible_issuer_count": 48,
+          "selected_issuer_count": 30,
+          "inputs_ready": true
         },
         {
           "parameter_id": "7caa27a250cf0b65bf43",
@@ -5248,9 +5258,9 @@
           "stock_count": 50,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 37,
-          "selected_issuer_count": 37,
-          "inputs_ready": false
+          "eligible_issuer_count": 66,
+          "selected_issuer_count": 50,
+          "inputs_ready": true
         },
         {
           "parameter_id": "c4d6026c41da1f5cd1c1",
@@ -5258,9 +5268,9 @@
           "stock_count": 50,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 37,
-          "selected_issuer_count": 37,
-          "inputs_ready": false
+          "eligible_issuer_count": 66,
+          "selected_issuer_count": 50,
+          "inputs_ready": true
         },
         {
           "parameter_id": "e4834d510a24058b70f1",
@@ -5268,8 +5278,8 @@
           "stock_count": 50,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 28,
-          "selected_issuer_count": 28,
+          "eligible_issuer_count": 48,
+          "selected_issuer_count": 48,
           "inputs_ready": false
         },
         {
@@ -5278,8 +5288,8 @@
           "stock_count": 50,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 28,
-          "selected_issuer_count": 28,
+          "eligible_issuer_count": 48,
+          "selected_issuer_count": 48,
           "inputs_ready": false
         },
         {
@@ -5288,7 +5298,7 @@
           "stock_count": 10,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 37,
+          "eligible_issuer_count": 66,
           "selected_issuer_count": 10,
           "inputs_ready": true
         },
@@ -5298,7 +5308,7 @@
           "stock_count": 10,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 37,
+          "eligible_issuer_count": 66,
           "selected_issuer_count": 10,
           "inputs_ready": true
         },
@@ -5308,7 +5318,7 @@
           "stock_count": 10,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 28,
+          "eligible_issuer_count": 48,
           "selected_issuer_count": 10,
           "inputs_ready": true
         },
@@ -5318,7 +5328,7 @@
           "stock_count": 10,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 28,
+          "eligible_issuer_count": 48,
           "selected_issuer_count": 10,
           "inputs_ready": true
         },
@@ -5328,7 +5338,7 @@
           "stock_count": 20,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 37,
+          "eligible_issuer_count": 66,
           "selected_issuer_count": 20,
           "inputs_ready": true
         },
@@ -5338,7 +5348,7 @@
           "stock_count": 20,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 37,
+          "eligible_issuer_count": 66,
           "selected_issuer_count": 20,
           "inputs_ready": true
         },
@@ -5348,7 +5358,7 @@
           "stock_count": 20,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 28,
+          "eligible_issuer_count": 48,
           "selected_issuer_count": 20,
           "inputs_ready": true
         },
@@ -5358,7 +5368,7 @@
           "stock_count": 20,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 28,
+          "eligible_issuer_count": 48,
           "selected_issuer_count": 20,
           "inputs_ready": true
         },
@@ -5368,7 +5378,7 @@
           "stock_count": 30,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 37,
+          "eligible_issuer_count": 66,
           "selected_issuer_count": 30,
           "inputs_ready": true
         },
@@ -5378,7 +5388,7 @@
           "stock_count": 30,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 37,
+          "eligible_issuer_count": 66,
           "selected_issuer_count": 30,
           "inputs_ready": true
         },
@@ -5388,9 +5398,9 @@
           "stock_count": 30,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 28,
-          "selected_issuer_count": 28,
-          "inputs_ready": false
+          "eligible_issuer_count": 48,
+          "selected_issuer_count": 30,
+          "inputs_ready": true
         },
         {
           "parameter_id": "c846b972f98a3a8ab8b3",
@@ -5398,9 +5408,9 @@
           "stock_count": 30,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 28,
-          "selected_issuer_count": 28,
-          "inputs_ready": false
+          "eligible_issuer_count": 48,
+          "selected_issuer_count": 30,
+          "inputs_ready": true
         },
         {
           "parameter_id": "505ed2c2cc8064cea9f0",
@@ -5408,9 +5418,9 @@
           "stock_count": 50,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 37,
-          "selected_issuer_count": 37,
-          "inputs_ready": false
+          "eligible_issuer_count": 66,
+          "selected_issuer_count": 50,
+          "inputs_ready": true
         },
         {
           "parameter_id": "edd13d08e9a77c4fd1d3",
@@ -5418,9 +5428,9 @@
           "stock_count": 50,
           "minimum_adv20_ntd": 12000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 37,
-          "selected_issuer_count": 37,
-          "inputs_ready": false
+          "eligible_issuer_count": 66,
+          "selected_issuer_count": 50,
+          "inputs_ready": true
         },
         {
           "parameter_id": "1e93d8c57eed3e146d11",
@@ -5428,8 +5438,8 @@
           "stock_count": 50,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.25,
-          "eligible_issuer_count": 28,
-          "selected_issuer_count": 28,
+          "eligible_issuer_count": 48,
+          "selected_issuer_count": 48,
           "inputs_ready": false
         },
         {
@@ -5438,12 +5448,12 @@
           "stock_count": 50,
           "minimum_adv20_ntd": 30000000,
           "sector_cap": 0.4,
-          "eligible_issuer_count": 28,
-          "selected_issuer_count": 28,
+          "eligible_issuer_count": 48,
+          "selected_issuer_count": 48,
           "inputs_ready": false
         }
       ],
-      "newly_frozen": false
+      "newly_frozen": true
     }
   ],
   "feature_source_errors": [],
@@ -5593,9 +5603,1640 @@
     {
       "market": "TWSE",
       "code": "2331"
+    },
+    {
+      "market": "TPEX",
+      "code": "4721"
+    },
+    {
+      "market": "TPEX",
+      "code": "4303"
+    },
+    {
+      "market": "TPEX",
+      "code": "3357"
+    },
+    {
+      "market": "TPEX",
+      "code": "3147"
+    },
+    {
+      "market": "TPEX",
+      "code": "6642"
+    },
+    {
+      "market": "TPEX",
+      "code": "8155"
+    },
+    {
+      "market": "TPEX",
+      "code": "5536"
+    },
+    {
+      "market": "TPEX",
+      "code": "8390"
+    },
+    {
+      "market": "TPEX",
+      "code": "8069"
+    },
+    {
+      "market": "TPEX",
+      "code": "6811"
+    },
+    {
+      "market": "TPEX",
+      "code": "6739"
+    },
+    {
+      "market": "TPEX",
+      "code": "3537"
+    },
+    {
+      "market": "TPEX",
+      "code": "3556"
+    },
+    {
+      "market": "TPEX",
+      "code": "6613"
+    },
+    {
+      "market": "TPEX",
+      "code": "3689"
+    },
+    {
+      "market": "TPEX",
+      "code": "8436"
+    },
+    {
+      "market": "TPEX",
+      "code": "8383"
+    },
+    {
+      "market": "TPEX",
+      "code": "3388"
+    },
+    {
+      "market": "TPEX",
+      "code": "6121"
+    },
+    {
+      "market": "TPEX",
+      "code": "8091"
+    },
+    {
+      "market": "TPEX",
+      "code": "3218"
+    },
+    {
+      "market": "TPEX",
+      "code": "1785"
+    },
+    {
+      "market": "TPEX",
+      "code": "6913"
+    },
+    {
+      "market": "TPEX",
+      "code": "5439"
+    },
+    {
+      "market": "TPEX",
+      "code": "3217"
+    },
+    {
+      "market": "TPEX",
+      "code": "6690"
+    },
+    {
+      "market": "TPEX",
+      "code": "6143"
+    },
+    {
+      "market": "TPEX",
+      "code": "4953"
     }
   ],
-  "all_registered_search_trials": 4560,
+  "all_registered_search_trials": 4800,
+  "current_research_screens": {
+    "schema": "CURRENT_REGISTERED_RESEARCH_SCREENS_V1",
+    "model": "V8.10.8",
+    "estimate_vintage": "2026-10-24T21:42:59.749810+08:00",
+    "asof_price_date": "2026-10-22",
+    "features_checked_at": "2026-10-24T13:43:20.389946+00:00",
+    "experiment_id": "search-4e5f78bf2eb53e7000987296",
+    "screens": [
+      {
+        "family": "balanced",
+        "parameter": {
+          "family": "balanced",
+          "weights": {
+            "forward_upside_pct": 0.2,
+            "revenue_acceleration_pp": 0.2,
+            "gross_margin_delta_pp": 0.2,
+            "ocf_to_sales": 0.2,
+            "momentum_63_21_pct": 0.2
+          },
+          "stock_count": 10,
+          "holding_sessions": 21,
+          "minimum_adv20_ntd": 12000000,
+          "sector_cap": 0.25,
+          "parameter_id": "382c2efb439025d25193"
+        },
+        "eligible_issuer_count": 0,
+        "inputs_ready": false,
+        "positions": [],
+        "cash_weight": null,
+        "exclusions": {
+          "ADV20_MISSING_OR_BELOW_THRESHOLD": 730,
+          "REQUIRED_FEATURE_MISSING": 66
+        },
+        "status": "INPUT_COVERAGE_INCOMPLETE_NOT_A_PERFORMANCE_CANDIDATE"
+      },
+      {
+        "family": "growth",
+        "parameter": {
+          "family": "growth",
+          "weights": {
+            "revenue_acceleration_pp": 0.5,
+            "gross_margin_delta_pp": 0.5
+          },
+          "stock_count": 10,
+          "holding_sessions": 21,
+          "minimum_adv20_ntd": 12000000,
+          "sector_cap": 0.25,
+          "parameter_id": "fba4fc7e0f98702ddc21"
+        },
+        "eligible_issuer_count": 66,
+        "inputs_ready": true,
+        "positions": [
+          {
+            "code": "6505",
+            "market": "TWSE",
+            "industry": "油電燃氣業",
+            "weight": 0.1,
+            "score": 0.9384615384615385,
+            "name": "台塑化",
+            "reference_close": 106.5,
+            "price_date": "2026-10-22",
+            "financial_period": "2026-Q2",
+            "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
+            "base_price_upside_pct": 54.36080810766959,
+            "bear_price_upside_pct": -8.084800053316387,
+            "eps_pe_each_minus20_price_upside_pct": -1.2090828110914553,
+            "adv20_ntd": 3880497387.0,
+            "features": {
+              "forward_upside_pct": 54.36080810766959,
+              "revenue_acceleration_pp": 43.55768911429677,
+              "gross_margin_delta_pp": 14.639647558593152,
+              "ocf_to_sales": 0.01575603304990522,
+              "momentum_63_21_pct": null
+            },
+            "warning_flags": [
+              "CURRENT_DETAIL_IS_OFFICIAL_BATCH_SUMMARY_NOT_ORIGINAL_ISSUER_NOTES"
+            ],
+            "pending_gates": [
+              "original_eight_quarter_statements",
+              "cash_and_working_capital",
+              "nonoperating_components",
+              "fully_diluted_shares",
+              "matched_peers_and_cycle",
+              "management_promises",
+              "auditor_scope",
+              "tradability",
+              "forecast_bridge",
+              "insider_claims",
+              "dividend_window",
+              "point_in_time",
+              "out_of_sample_validation"
+            ],
+            "failed_gates": [],
+            "formal_Aplus": false,
+            "expected_net_return": null,
+            "calibrated_win_probability": null
+          },
+          {
+            "code": "4721",
+            "market": "TPEX",
+            "industry": "化學工業",
+            "weight": 0.1,
+            "score": 0.8769230769230769,
+            "name": "美琪瑪",
+            "reference_close": 74.1,
+            "price_date": "2026-10-22",
+            "financial_period": "2026-Q2",
+            "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
+            "base_price_upside_pct": 81.5933686449043,
+            "bear_price_upside_pct": -13.617760021876514,
+            "eps_pe_each_minus20_price_upside_pct": 16.219755932738767,
+            "adv20_ntd": 35660961.0,
+            "features": {
+              "forward_upside_pct": 81.5933686449043,
+              "revenue_acceleration_pp": 16.803837573196294,
+              "gross_margin_delta_pp": 10.812277655400134,
+              "ocf_to_sales": -0.12174705432239095,
+              "momentum_63_21_pct": null
+            },
+            "warning_flags": [
+              "CURRENT_DETAIL_IS_OFFICIAL_BATCH_SUMMARY_NOT_ORIGINAL_ISSUER_NOTES",
+              "CYCLICAL_SECTOR_RESEARCH_ONLY_PE_UNCHANGED_PENDING_BACKTEST",
+              "NEGATIVE_OCF_CYCLE_AND_COLLECTION_REVIEW"
+            ],
+            "pending_gates": [
+              "original_eight_quarter_statements",
+              "cash_and_working_capital",
+              "nonoperating_components",
+              "fully_diluted_shares",
+              "matched_peers_and_cycle",
+              "management_promises",
+              "auditor_scope",
+              "tradability",
+              "forecast_bridge",
+              "insider_claims",
+              "dividend_window",
+              "point_in_time",
+              "out_of_sample_validation"
+            ],
+            "failed_gates": [],
+            "formal_Aplus": false,
+            "expected_net_return": null,
+            "calibrated_win_probability": null
+          },
+          {
+            "code": "2059",
+            "market": "TWSE",
+            "industry": "電子零組件業",
+            "weight": 0.1,
+            "score": 0.8692307692307693,
+            "name": "川湖",
+            "reference_close": 9755.0,
+            "price_date": "2026-10-22",
+            "financial_period": "2026-Q2",
+            "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
+            "base_price_upside_pct": 39.54754465111354,
+            "bear_price_upside_pct": -22.109182079617728,
+            "eps_pe_each_minus20_price_upside_pct": -10.689571423287337,
+            "adv20_ntd": 5643445200.0,
+            "features": {
+              "forward_upside_pct": 39.54754465111354,
+              "revenue_acceleration_pp": 28.389336059039216,
+              "gross_margin_delta_pp": 7.381839742754304,
+              "ocf_to_sales": 0.35464723510153645,
+              "momentum_63_21_pct": null
+            },
+            "warning_flags": [
+              "CURRENT_DETAIL_IS_OFFICIAL_BATCH_SUMMARY_NOT_ORIGINAL_ISSUER_NOTES"
+            ],
+            "pending_gates": [
+              "original_eight_quarter_statements",
+              "cash_and_working_capital",
+              "nonoperating_components",
+              "fully_diluted_shares",
+              "matched_peers_and_cycle",
+              "management_promises",
+              "auditor_scope",
+              "tradability",
+              "forecast_bridge",
+              "insider_claims",
+              "dividend_window",
+              "point_in_time",
+              "out_of_sample_validation"
+            ],
+            "failed_gates": [],
+            "formal_Aplus": false,
+            "expected_net_return": null,
+            "calibrated_win_probability": null
+          },
+          {
+            "code": "2330",
+            "market": "TWSE",
+            "industry": "半導體業",
+            "weight": 0.1,
+            "score": 0.8153846153846154,
+            "name": "台積電",
+            "reference_close": 2385.0,
+            "price_date": "2026-10-22",
+            "financial_period": "2026-Q3",
+            "source_tier": "ISSUER_CONDENSED_ORIGINAL_STATEMENTS",
+            "base_price_upside_pct": 41.49500311901373,
+            "bear_price_upside_pct": -13.529450439916902,
+            "eps_pe_each_minus20_price_upside_pct": -9.44319800383121,
+            "adv20_ntd": 62557996571.5,
+            "features": {
+              "forward_upside_pct": 41.49500311901373,
+              "revenue_acceleration_pp": 13.541917077958832,
+              "gross_margin_delta_pp": 7.821113139228297,
+              "ocf_to_sales": 0.6161285465743049,
+              "momentum_63_21_pct": null
+            },
+            "warning_flags": [
+              "LATEST_CONDENSED_STATEMENTS_NOT_FULL_NOTES_OR_AUDITOR_REVIEW",
+              "CURRENT_NONOPERATING_GAINS_NOT_EXTRAPOLATED_COMPONENT_REVIEW_REQUIRED",
+              "LATEST_CONDENSED_CASHFLOW_AVAILABLE_FULL_NOTES_REVIEW_STILL_PENDING"
+            ],
+            "pending_gates": [
+              "original_eight_quarter_statements",
+              "cash_and_working_capital",
+              "nonoperating_components",
+              "fully_diluted_shares",
+              "matched_peers_and_cycle",
+              "management_promises",
+              "auditor_scope",
+              "tradability",
+              "forecast_bridge",
+              "insider_claims",
+              "dividend_window",
+              "point_in_time",
+              "out_of_sample_validation"
+            ],
+            "failed_gates": [],
+            "formal_Aplus": false,
+            "expected_net_return": null,
+            "calibrated_win_probability": null
+          },
+          {
+            "code": "4303",
+            "market": "TPEX",
+            "industry": "塑膠工業",
+            "weight": 0.1,
+            "score": 0.7769230769230769,
+            "name": "信立",
+            "reference_close": 30.0,
+            "price_date": "2026-10-22",
+            "financial_period": "2026-Q2",
+            "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
+            "base_price_upside_pct": 72.17221592530909,
+            "bear_price_upside_pct": 27.580437962827496,
+            "eps_pe_each_minus20_price_upside_pct": 10.19021819219783,
+            "adv20_ntd": 21102474.5,
+            "features": {
+              "forward_upside_pct": 72.17221592530909,
+              "revenue_acceleration_pp": 48.48605117556123,
+              "gross_margin_delta_pp": 3.3173079832320096,
+              "ocf_to_sales": -0.4890533199234237,
+              "momentum_63_21_pct": null
+            },
+            "warning_flags": [
+              "CURRENT_DETAIL_IS_OFFICIAL_BATCH_SUMMARY_NOT_ORIGINAL_ISSUER_NOTES",
+              "TAX_RATE_20PCT_SENSITIVITY_NOT_VERIFIED",
+              "PARENT_PROFIT_FRACTION_ASSUMED_NOT_VERIFIED",
+              "CYCLICAL_SECTOR_RESEARCH_ONLY_PE_UNCHANGED_PENDING_BACKTEST",
+              "NEGATIVE_OCF_CYCLE_AND_COLLECTION_REVIEW"
+            ],
+            "pending_gates": [
+              "original_eight_quarter_statements",
+              "cash_and_working_capital",
+              "nonoperating_components",
+              "fully_diluted_shares",
+              "matched_peers_and_cycle",
+              "management_promises",
+              "auditor_scope",
+              "tradability",
+              "forecast_bridge",
+              "insider_claims",
+              "dividend_window",
+              "point_in_time",
+              "out_of_sample_validation"
+            ],
+            "failed_gates": [],
+            "formal_Aplus": false,
+            "expected_net_return": null,
+            "calibrated_win_probability": null
+          },
+          {
+            "code": "3357",
+            "market": "TPEX",
+            "industry": "電子零組件業",
+            "weight": 0.1,
+            "score": 0.7538461538461538,
+            "name": "臺慶科",
+            "reference_close": 193.0,
+            "price_date": "2026-10-22",
+            "financial_period": "2026-Q2",
+            "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
+            "base_price_upside_pct": 57.536614084920565,
+            "bear_price_upside_pct": 3.8987041567202008,
+            "eps_pe_each_minus20_price_upside_pct": 0.823433014349173,
+            "adv20_ntd": 254367881.0,
+            "features": {
+              "forward_upside_pct": 57.536614084920565,
+              "revenue_acceleration_pp": 13.703960451902308,
+              "gross_margin_delta_pp": 4.83654121264046,
+              "ocf_to_sales": 0.08783846283967658,
+              "momentum_63_21_pct": null
+            },
+            "warning_flags": [
+              "CURRENT_DETAIL_IS_OFFICIAL_BATCH_SUMMARY_NOT_ORIGINAL_ISSUER_NOTES",
+              "POST_SNAPSHOT_CB_TERMS_UNVERIFIED"
+            ],
+            "pending_gates": [
+              "original_eight_quarter_statements",
+              "cash_and_working_capital",
+              "nonoperating_components",
+              "fully_diluted_shares",
+              "matched_peers_and_cycle",
+              "management_promises",
+              "auditor_scope",
+              "tradability",
+              "forecast_bridge",
+              "insider_claims",
+              "dividend_window",
+              "point_in_time",
+              "out_of_sample_validation"
+            ],
+            "failed_gates": [],
+            "formal_Aplus": false,
+            "expected_net_return": null,
+            "calibrated_win_probability": null
+          },
+          {
+            "code": "8110",
+            "market": "TWSE",
+            "industry": "半導體業",
+            "weight": 0.1,
+            "score": 0.7538461538461538,
+            "name": "華東",
+            "reference_close": 44.5,
+            "price_date": "2026-10-22",
+            "financial_period": "2026-Q2",
+            "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
+            "base_price_upside_pct": 96.98933550625442,
+            "bear_price_upside_pct": 0.3342450252744378,
+            "eps_pe_each_minus20_price_upside_pct": 26.073174724002833,
+            "adv20_ntd": 212089595.5,
+            "features": {
+              "forward_upside_pct": 96.98933550625442,
+              "revenue_acceleration_pp": 3.1346557166868765,
+              "gross_margin_delta_pp": 9.879593188594555,
+              "ocf_to_sales": 0.07954048872585874,
+              "momentum_63_21_pct": null
+            },
+            "warning_flags": [
+              "CURRENT_DETAIL_IS_OFFICIAL_BATCH_SUMMARY_NOT_ORIGINAL_ISSUER_NOTES"
+            ],
+            "pending_gates": [
+              "original_eight_quarter_statements",
+              "cash_and_working_capital",
+              "nonoperating_components",
+              "fully_diluted_shares",
+              "matched_peers_and_cycle",
+              "management_promises",
+              "auditor_scope",
+              "tradability",
+              "forecast_bridge",
+              "insider_claims",
+              "dividend_window",
+              "point_in_time",
+              "out_of_sample_validation"
+            ],
+            "failed_gates": [],
+            "formal_Aplus": false,
+            "expected_net_return": null,
+            "calibrated_win_probability": null
+          },
+          {
+            "code": "2103",
+            "market": "TWSE",
+            "industry": "橡膠工業",
+            "weight": 0.1,
+            "score": 0.7461538461538462,
+            "name": "台橡",
+            "reference_close": 28.1,
+            "price_date": "2026-10-22",
+            "financial_period": "2026-Q2",
+            "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
+            "base_price_upside_pct": 72.10656007553776,
+            "bear_price_upside_pct": -8.176823692655121,
+            "eps_pe_each_minus20_price_upside_pct": 10.148198448344182,
+            "adv20_ntd": 72392095.5,
+            "features": {
+              "forward_upside_pct": 72.10656007553776,
+              "revenue_acceleration_pp": 5.60895261986602,
+              "gross_margin_delta_pp": 7.008642880609639,
+              "ocf_to_sales": 0.01355655075038945,
+              "momentum_63_21_pct": null
+            },
+            "warning_flags": [
+              "CURRENT_DETAIL_IS_OFFICIAL_BATCH_SUMMARY_NOT_ORIGINAL_ISSUER_NOTES"
+            ],
+            "pending_gates": [
+              "original_eight_quarter_statements",
+              "cash_and_working_capital",
+              "nonoperating_components",
+              "fully_diluted_shares",
+              "matched_peers_and_cycle",
+              "management_promises",
+              "auditor_scope",
+              "tradability",
+              "forecast_bridge",
+              "insider_claims",
+              "dividend_window",
+              "point_in_time",
+              "out_of_sample_validation"
+            ],
+            "failed_gates": [],
+            "formal_Aplus": false,
+            "expected_net_return": null,
+            "calibrated_win_probability": null
+          },
+          {
+            "code": "2027",
+            "market": "TWSE",
+            "industry": "鋼鐵工業",
+            "weight": 0.1,
+            "score": 0.7230769230769232,
+            "name": "大成鋼",
+            "reference_close": 50.6,
+            "price_date": "2026-10-22",
+            "financial_period": "2026-Q2",
+            "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
+            "base_price_upside_pct": 47.645900513858706,
+            "bear_price_upside_pct": 11.809119682507308,
+            "eps_pe_each_minus20_price_upside_pct": -5.506623671130429,
+            "adv20_ntd": 488035818.5,
+            "features": {
+              "forward_upside_pct": 47.645900513858706,
+              "revenue_acceleration_pp": 6.068892578051377,
+              "gross_margin_delta_pp": 5.504703194964697,
+              "ocf_to_sales": 0.18579912586680727,
+              "momentum_63_21_pct": null
+            },
+            "warning_flags": [
+              "CYCLICAL_OR_PROJECT_DELIVERY_REQUIRES_COMPANY_BRIDGE",
+              "QUALIFIED_REVIEW_MATERIALITY_PENDING"
+            ],
+            "pending_gates": [
+              "original_eight_quarter_statements",
+              "cash_and_working_capital",
+              "nonoperating_components",
+              "fully_diluted_shares",
+              "matched_peers_and_cycle",
+              "management_promises",
+              "auditor_scope",
+              "tradability",
+              "forecast_bridge",
+              "insider_claims",
+              "dividend_window",
+              "point_in_time",
+              "out_of_sample_validation"
+            ],
+            "failed_gates": [],
+            "formal_Aplus": false,
+            "expected_net_return": null,
+            "calibrated_win_probability": null
+          },
+          {
+            "code": "3147",
+            "market": "TPEX",
+            "industry": "資訊服務業",
+            "weight": 0.1,
+            "score": 0.7153846153846154,
+            "name": "大綜",
+            "reference_close": 293.0,
+            "price_date": "2026-10-22",
+            "financial_period": "2026-Q2",
+            "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
+            "base_price_upside_pct": 75.41908165163507,
+            "bear_price_upside_pct": -22.326022095722877,
+            "eps_pe_each_minus20_price_upside_pct": 12.26821225704644,
+            "adv20_ntd": 408832369.5,
+            "features": {
+              "forward_upside_pct": 75.41908165163507,
+              "revenue_acceleration_pp": 162.77789074346802,
+              "gross_margin_delta_pp": 0.44520382220522847,
+              "ocf_to_sales": 0.2297918790444954,
+              "momentum_63_21_pct": null
+            },
+            "warning_flags": [
+              "CURRENT_DETAIL_IS_OFFICIAL_BATCH_SUMMARY_NOT_ORIGINAL_ISSUER_NOTES"
+            ],
+            "pending_gates": [
+              "original_eight_quarter_statements",
+              "cash_and_working_capital",
+              "nonoperating_components",
+              "fully_diluted_shares",
+              "matched_peers_and_cycle",
+              "management_promises",
+              "auditor_scope",
+              "tradability",
+              "forecast_bridge",
+              "insider_claims",
+              "dividend_window",
+              "point_in_time",
+              "out_of_sample_validation"
+            ],
+            "failed_gates": [],
+            "formal_Aplus": false,
+            "expected_net_return": null,
+            "calibrated_win_probability": null
+          }
+        ],
+        "cash_weight": 0,
+        "exclusions": {
+          "ADV20_MISSING_OR_BELOW_THRESHOLD": 730
+        },
+        "status": "RESEARCH_PORTFOLIO_FROZEN_NOT_A_BUY_SIGNAL"
+      },
+      {
+        "family": "momentum",
+        "parameter": {
+          "family": "momentum",
+          "weights": {
+            "momentum_63_21_pct": 1.0
+          },
+          "stock_count": 10,
+          "holding_sessions": 21,
+          "minimum_adv20_ntd": 12000000,
+          "sector_cap": 0.25,
+          "parameter_id": "096ea9288d25e39e50df"
+        },
+        "eligible_issuer_count": 0,
+        "inputs_ready": false,
+        "positions": [],
+        "cash_weight": null,
+        "exclusions": {
+          "ADV20_MISSING_OR_BELOW_THRESHOLD": 730,
+          "REQUIRED_FEATURE_MISSING": 66
+        },
+        "status": "INPUT_COVERAGE_INCOMPLETE_NOT_A_PERFORMANCE_CANDIDATE"
+      },
+      {
+        "family": "quality",
+        "parameter": {
+          "family": "quality",
+          "weights": {
+            "ocf_to_sales": 0.5,
+            "gross_margin_delta_pp": 0.5
+          },
+          "stock_count": 10,
+          "holding_sessions": 21,
+          "minimum_adv20_ntd": 12000000,
+          "sector_cap": 0.25,
+          "parameter_id": "ddf5981eb5c5a8b7694b"
+        },
+        "eligible_issuer_count": 66,
+        "inputs_ready": true,
+        "positions": [
+          {
+            "code": "2330",
+            "market": "TWSE",
+            "industry": "半導體業",
+            "weight": 0.1,
+            "score": 0.9615384615384616,
+            "name": "台積電",
+            "reference_close": 2385.0,
+            "price_date": "2026-10-22",
+            "financial_period": "2026-Q3",
+            "source_tier": "ISSUER_CONDENSED_ORIGINAL_STATEMENTS",
+            "base_price_upside_pct": 41.49500311901373,
+            "bear_price_upside_pct": -13.529450439916902,
+            "eps_pe_each_minus20_price_upside_pct": -9.44319800383121,
+            "adv20_ntd": 62557996571.5,
+            "features": {
+              "forward_upside_pct": 41.49500311901373,
+              "revenue_acceleration_pp": 13.541917077958832,
+              "gross_margin_delta_pp": 7.821113139228297,
+              "ocf_to_sales": 0.6161285465743049,
+              "momentum_63_21_pct": null
+            },
+            "warning_flags": [
+              "LATEST_CONDENSED_STATEMENTS_NOT_FULL_NOTES_OR_AUDITOR_REVIEW",
+              "CURRENT_NONOPERATING_GAINS_NOT_EXTRAPOLATED_COMPONENT_REVIEW_REQUIRED",
+              "LATEST_CONDENSED_CASHFLOW_AVAILABLE_FULL_NOTES_REVIEW_STILL_PENDING"
+            ],
+            "pending_gates": [
+              "original_eight_quarter_statements",
+              "cash_and_working_capital",
+              "nonoperating_components",
+              "fully_diluted_shares",
+              "matched_peers_and_cycle",
+              "management_promises",
+              "auditor_scope",
+              "tradability",
+              "forecast_bridge",
+              "insider_claims",
+              "dividend_window",
+              "point_in_time",
+              "out_of_sample_validation"
+            ],
+            "failed_gates": [],
+            "formal_Aplus": false,
+            "expected_net_return": null,
+            "calibrated_win_probability": null
+          },
+          {
+            "code": "2059",
+            "market": "TWSE",
+            "industry": "電子零組件業",
+            "weight": 0.1,
+            "score": 0.9153846153846155,
+            "name": "川湖",
+            "reference_close": 9755.0,
+            "price_date": "2026-10-22",
+            "financial_period": "2026-Q2",
+            "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
+            "base_price_upside_pct": 39.54754465111354,
+            "bear_price_upside_pct": -22.109182079617728,
+            "eps_pe_each_minus20_price_upside_pct": -10.689571423287337,
+            "adv20_ntd": 5643445200.0,
+            "features": {
+              "forward_upside_pct": 39.54754465111354,
+              "revenue_acceleration_pp": 28.389336059039216,
+              "gross_margin_delta_pp": 7.381839742754304,
+              "ocf_to_sales": 0.35464723510153645,
+              "momentum_63_21_pct": null
+            },
+            "warning_flags": [
+              "CURRENT_DETAIL_IS_OFFICIAL_BATCH_SUMMARY_NOT_ORIGINAL_ISSUER_NOTES"
+            ],
+            "pending_gates": [
+              "original_eight_quarter_statements",
+              "cash_and_working_capital",
+              "nonoperating_components",
+              "fully_diluted_shares",
+              "matched_peers_and_cycle",
+              "management_promises",
+              "auditor_scope",
+              "tradability",
+              "forecast_bridge",
+              "insider_claims",
+              "dividend_window",
+              "point_in_time",
+              "out_of_sample_validation"
+            ],
+            "failed_gates": [],
+            "formal_Aplus": false,
+            "expected_net_return": null,
+            "calibrated_win_probability": null
+          },
+          {
+            "code": "8390",
+            "market": "TPEX",
+            "industry": "綠能環保",
+            "weight": 0.1,
+            "score": 0.8692307692307693,
+            "name": "金益鼎",
+            "reference_close": 87.5,
+            "price_date": "2026-10-22",
+            "financial_period": "2026-Q2",
+            "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
+            "base_price_upside_pct": 109.00609057772081,
+            "bear_price_upside_pct": -14.0278223812637,
+            "eps_pe_each_minus20_price_upside_pct": 33.76389796974133,
+            "adv20_ntd": 26444225.5,
+            "features": {
+              "forward_upside_pct": 109.00609057772081,
+              "revenue_acceleration_pp": -5.262629123311807,
+              "gross_margin_delta_pp": 8.477912915565053,
+              "ocf_to_sales": 0.20156581653824682,
+              "momentum_63_21_pct": null
+            },
+            "warning_flags": [
+              "QUALIFIED_REVIEW_MATERIALITY_PENDING",
+              "DISCLOSED_EQUITY_OFFERING_REQUIRES_UNISSUED_SHARE_RECONCILIATION"
+            ],
+            "pending_gates": [
+              "original_eight_quarter_statements",
+              "cash_and_working_capital",
+              "nonoperating_components",
+              "fully_diluted_shares",
+              "matched_peers_and_cycle",
+              "management_promises",
+              "auditor_scope",
+              "tradability",
+              "forecast_bridge",
+              "insider_claims",
+              "dividend_window",
+              "point_in_time",
+              "out_of_sample_validation"
+            ],
+            "failed_gates": [],
+            "formal_Aplus": false,
+            "expected_net_return": null,
+            "calibrated_win_probability": null
+          },
+          {
+            "code": "8155",
+            "market": "TPEX",
+            "industry": "電子零組件業",
+            "weight": 0.1,
+            "score": 0.8615384615384616,
+            "name": "博智",
+            "reference_close": 291.5,
+            "price_date": "2026-10-22",
+            "financial_period": "2026-Q2",
+            "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
+            "base_price_upside_pct": 55.633795367124605,
+            "bear_price_upside_pct": -15.275026872114283,
+            "eps_pe_each_minus20_price_upside_pct": -0.39437096504024716,
+            "adv20_ntd": 225987295.5,
+            "features": {
+              "forward_upside_pct": 55.633795367124605,
+              "revenue_acceleration_pp": -4.387659740752525,
+              "gross_margin_delta_pp": 12.725048251526939,
+              "ocf_to_sales": 0.1465631709436663,
+              "momentum_63_21_pct": null
+            },
+            "warning_flags": [
+              "CURRENT_DETAIL_IS_OFFICIAL_BATCH_SUMMARY_NOT_ORIGINAL_ISSUER_NOTES",
+              "POST_SNAPSHOT_CB_TERMS_UNVERIFIED"
+            ],
+            "pending_gates": [
+              "original_eight_quarter_statements",
+              "cash_and_working_capital",
+              "nonoperating_components",
+              "fully_diluted_shares",
+              "matched_peers_and_cycle",
+              "management_promises",
+              "auditor_scope",
+              "tradability",
+              "forecast_bridge",
+              "insider_claims",
+              "dividend_window",
+              "point_in_time",
+              "out_of_sample_validation"
+            ],
+            "failed_gates": [],
+            "formal_Aplus": false,
+            "expected_net_return": null,
+            "calibrated_win_probability": null
+          },
+          {
+            "code": "6739",
+            "market": "TPEX",
+            "industry": "其他電子業",
+            "weight": 0.1,
+            "score": 0.8538461538461539,
+            "name": "竹陞科技",
+            "reference_close": 859.0,
+            "price_date": "2026-10-22",
+            "financial_period": "2026-Q2",
+            "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
+            "base_price_upside_pct": 44.296161956348,
+            "bear_price_upside_pct": -7.923913174680064,
+            "eps_pe_each_minus20_price_upside_pct": -7.650456347937274,
+            "adv20_ntd": 186113305.0,
+            "features": {
+              "forward_upside_pct": 44.296161956348,
+              "revenue_acceleration_pp": 2.4957896518479683,
+              "gross_margin_delta_pp": 3.8685791414572734,
+              "ocf_to_sales": 0.5279844343717148,
+              "momentum_63_21_pct": null
+            },
+            "warning_flags": [
+              "CURRENT_DETAIL_IS_OFFICIAL_BATCH_SUMMARY_NOT_ORIGINAL_ISSUER_NOTES"
+            ],
+            "pending_gates": [
+              "original_eight_quarter_statements",
+              "cash_and_working_capital",
+              "nonoperating_components",
+              "fully_diluted_shares",
+              "matched_peers_and_cycle",
+              "management_promises",
+              "auditor_scope",
+              "tradability",
+              "forecast_bridge",
+              "insider_claims",
+              "dividend_window",
+              "point_in_time",
+              "out_of_sample_validation"
+            ],
+            "failed_gates": [],
+            "formal_Aplus": false,
+            "expected_net_return": null,
+            "calibrated_win_probability": null
+          },
+          {
+            "code": "2027",
+            "market": "TWSE",
+            "industry": "鋼鐵工業",
+            "weight": 0.1,
+            "score": 0.8,
+            "name": "大成鋼",
+            "reference_close": 50.6,
+            "price_date": "2026-10-22",
+            "financial_period": "2026-Q2",
+            "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
+            "base_price_upside_pct": 47.645900513858706,
+            "bear_price_upside_pct": 11.809119682507308,
+            "eps_pe_each_minus20_price_upside_pct": -5.506623671130429,
+            "adv20_ntd": 488035818.5,
+            "features": {
+              "forward_upside_pct": 47.645900513858706,
+              "revenue_acceleration_pp": 6.068892578051377,
+              "gross_margin_delta_pp": 5.504703194964697,
+              "ocf_to_sales": 0.18579912586680727,
+              "momentum_63_21_pct": null
+            },
+            "warning_flags": [
+              "CYCLICAL_OR_PROJECT_DELIVERY_REQUIRES_COMPANY_BRIDGE",
+              "QUALIFIED_REVIEW_MATERIALITY_PENDING"
+            ],
+            "pending_gates": [
+              "original_eight_quarter_statements",
+              "cash_and_working_capital",
+              "nonoperating_components",
+              "fully_diluted_shares",
+              "matched_peers_and_cycle",
+              "management_promises",
+              "auditor_scope",
+              "tradability",
+              "forecast_bridge",
+              "insider_claims",
+              "dividend_window",
+              "point_in_time",
+              "out_of_sample_validation"
+            ],
+            "failed_gates": [],
+            "formal_Aplus": false,
+            "expected_net_return": null,
+            "calibrated_win_probability": null
+          },
+          {
+            "code": "8110",
+            "market": "TWSE",
+            "industry": "半導體業",
+            "weight": 0.1,
+            "score": 0.7846153846153847,
+            "name": "華東",
+            "reference_close": 44.5,
+            "price_date": "2026-10-22",
+            "financial_period": "2026-Q2",
+            "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
+            "base_price_upside_pct": 96.98933550625442,
+            "bear_price_upside_pct": 0.3342450252744378,
+            "eps_pe_each_minus20_price_upside_pct": 26.073174724002833,
+            "adv20_ntd": 212089595.5,
+            "features": {
+              "forward_upside_pct": 96.98933550625442,
+              "revenue_acceleration_pp": 3.1346557166868765,
+              "gross_margin_delta_pp": 9.879593188594555,
+              "ocf_to_sales": 0.07954048872585874,
+              "momentum_63_21_pct": null
+            },
+            "warning_flags": [
+              "CURRENT_DETAIL_IS_OFFICIAL_BATCH_SUMMARY_NOT_ORIGINAL_ISSUER_NOTES"
+            ],
+            "pending_gates": [
+              "original_eight_quarter_statements",
+              "cash_and_working_capital",
+              "nonoperating_components",
+              "fully_diluted_shares",
+              "matched_peers_and_cycle",
+              "management_promises",
+              "auditor_scope",
+              "tradability",
+              "forecast_bridge",
+              "insider_claims",
+              "dividend_window",
+              "point_in_time",
+              "out_of_sample_validation"
+            ],
+            "failed_gates": [],
+            "formal_Aplus": false,
+            "expected_net_return": null,
+            "calibrated_win_probability": null
+          },
+          {
+            "code": "1736",
+            "market": "TWSE",
+            "industry": "運動休閒",
+            "weight": 0.1,
+            "score": 0.7692307692307693,
+            "name": "喬山",
+            "reference_close": 124.0,
+            "price_date": "2026-10-22",
+            "financial_period": "2026-Q2",
+            "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
+            "base_price_upside_pct": 36.24061958848481,
+            "bear_price_upside_pct": -20.355986603197675,
+            "eps_pe_each_minus20_price_upside_pct": -12.80600346336972,
+            "adv20_ntd": 49025925.5,
+            "features": {
+              "forward_upside_pct": 36.24061958848481,
+              "revenue_acceleration_pp": 2.588095691697559,
+              "gross_margin_delta_pp": 5.74788352931217,
+              "ocf_to_sales": 0.1292314861904046,
+              "momentum_63_21_pct": null
+            },
+            "warning_flags": [
+              "CYCLICAL_SECTOR_RESEARCH_ONLY_PE_UNCHANGED_PENDING_BACKTEST",
+              "QUALIFIED_REVIEW_MATERIALITY_PENDING"
+            ],
+            "pending_gates": [
+              "original_eight_quarter_statements",
+              "cash_and_working_capital",
+              "nonoperating_components",
+              "fully_diluted_shares",
+              "matched_peers_and_cycle",
+              "management_promises",
+              "auditor_scope",
+              "tradability",
+              "forecast_bridge",
+              "insider_claims",
+              "dividend_window",
+              "point_in_time",
+              "out_of_sample_validation"
+            ],
+            "failed_gates": [],
+            "formal_Aplus": false,
+            "expected_net_return": null,
+            "calibrated_win_probability": null
+          },
+          {
+            "code": "8436",
+            "market": "TPEX",
+            "industry": "生技醫療業",
+            "weight": 0.1,
+            "score": 0.7615384615384615,
+            "name": "大江",
+            "reference_close": 99.3,
+            "price_date": "2026-10-22",
+            "financial_period": "2026-Q2",
+            "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
+            "base_price_upside_pct": 31.99506423492784,
+            "bear_price_upside_pct": -8.445698786837196,
+            "eps_pe_each_minus20_price_upside_pct": -15.523158889646183,
+            "adv20_ntd": 38929212.0,
+            "features": {
+              "forward_upside_pct": 31.99506423492784,
+              "revenue_acceleration_pp": -12.433525705489275,
+              "gross_margin_delta_pp": 3.856420157854573,
+              "ocf_to_sales": 0.2047835509386699,
+              "momentum_63_21_pct": null
+            },
+            "warning_flags": [
+              "MONTHLY_OR_YTD_REVENUE_GROWTH_NONPOSITIVE"
+            ],
+            "pending_gates": [
+              "original_eight_quarter_statements",
+              "cash_and_working_capital",
+              "nonoperating_components",
+              "fully_diluted_shares",
+              "matched_peers_and_cycle",
+              "management_promises",
+              "auditor_scope",
+              "tradability",
+              "forecast_bridge",
+              "insider_claims",
+              "dividend_window",
+              "point_in_time",
+              "out_of_sample_validation"
+            ],
+            "failed_gates": [],
+            "formal_Aplus": false,
+            "expected_net_return": null,
+            "calibrated_win_probability": null
+          },
+          {
+            "code": "5536",
+            "market": "TPEX",
+            "industry": "其他電子業",
+            "weight": 0.1,
+            "score": 0.7307692307692308,
+            "name": "聖暉*",
+            "reference_close": 790.0,
+            "price_date": "2026-10-22",
+            "financial_period": "2026-Q2",
+            "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
+            "base_price_upside_pct": 40.6930572129359,
+            "bear_price_upside_pct": -14.496002644892869,
+            "eps_pe_each_minus20_price_upside_pct": -9.956443383721025,
+            "adv20_ntd": 1292568816.0,
+            "features": {
+              "forward_upside_pct": 40.6930572129359,
+              "revenue_acceleration_pp": 12.345952932967574,
+              "gross_margin_delta_pp": 4.152956790487022,
+              "ocf_to_sales": 0.14380518018464242,
+              "momentum_63_21_pct": null
+            },
+            "warning_flags": [
+              "CURRENT_DETAIL_IS_OFFICIAL_BATCH_SUMMARY_NOT_ORIGINAL_ISSUER_NOTES",
+              "POST_SNAPSHOT_CB_TERMS_UNVERIFIED"
+            ],
+            "pending_gates": [
+              "original_eight_quarter_statements",
+              "cash_and_working_capital",
+              "nonoperating_components",
+              "fully_diluted_shares",
+              "matched_peers_and_cycle",
+              "management_promises",
+              "auditor_scope",
+              "tradability",
+              "forecast_bridge",
+              "insider_claims",
+              "dividend_window",
+              "point_in_time",
+              "out_of_sample_validation"
+            ],
+            "failed_gates": [],
+            "formal_Aplus": false,
+            "expected_net_return": null,
+            "calibrated_win_probability": null
+          }
+        ],
+        "cash_weight": 0,
+        "exclusions": {
+          "ADV20_MISSING_OR_BELOW_THRESHOLD": 730
+        },
+        "status": "RESEARCH_PORTFOLIO_FROZEN_NOT_A_BUY_SIGNAL"
+      },
+      {
+        "family": "valuation",
+        "parameter": {
+          "family": "valuation",
+          "weights": {
+            "forward_upside_pct": 1.0
+          },
+          "stock_count": 10,
+          "holding_sessions": 21,
+          "minimum_adv20_ntd": 12000000,
+          "sector_cap": 0.25,
+          "parameter_id": "2764cce4402ae2e48d2a"
+        },
+        "eligible_issuer_count": 66,
+        "inputs_ready": true,
+        "positions": [
+          {
+            "code": "1785",
+            "market": "TPEX",
+            "industry": "其他電子業",
+            "weight": 0.1,
+            "score": 1.0,
+            "name": "光洋科",
+            "reference_close": 91.2,
+            "price_date": "2026-10-22",
+            "financial_period": "2026-Q2",
+            "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
+            "base_price_upside_pct": 131.48727122637584,
+            "bear_price_upside_pct": -16.425648758335576,
+            "eps_pe_each_minus20_price_upside_pct": 48.15185358488054,
+            "adv20_ntd": 578618261.5,
+            "features": {
+              "forward_upside_pct": 131.48727122637584,
+              "revenue_acceleration_pp": -11.868348160344489,
+              "gross_margin_delta_pp": 0.41834045668015796,
+              "ocf_to_sales": 0.005064622904540256,
+              "momentum_63_21_pct": null
+            },
+            "warning_flags": [
+              "CURRENT_DETAIL_IS_OFFICIAL_BATCH_SUMMARY_NOT_ORIGINAL_ISSUER_NOTES"
+            ],
+            "pending_gates": [
+              "original_eight_quarter_statements",
+              "cash_and_working_capital",
+              "nonoperating_components",
+              "fully_diluted_shares",
+              "matched_peers_and_cycle",
+              "management_promises",
+              "auditor_scope",
+              "tradability",
+              "forecast_bridge",
+              "insider_claims",
+              "dividend_window",
+              "point_in_time",
+              "out_of_sample_validation"
+            ],
+            "failed_gates": [],
+            "formal_Aplus": false,
+            "expected_net_return": null,
+            "calibrated_win_probability": null
+          },
+          {
+            "code": "5439",
+            "market": "TPEX",
+            "industry": "電子零組件業",
+            "weight": 0.1,
+            "score": 0.9846153846153847,
+            "name": "高技",
+            "reference_close": 219.5,
+            "price_date": "2026-10-22",
+            "financial_period": "2026-Q2",
+            "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
+            "base_price_upside_pct": 126.2294815618862,
+            "bear_price_upside_pct": -32.24547925207249,
+            "eps_pe_each_minus20_price_upside_pct": 44.78686819960718,
+            "adv20_ntd": 333394512.0,
+            "features": {
+              "forward_upside_pct": 126.2294815618862,
+              "revenue_acceleration_pp": -32.619179025541385,
+              "gross_margin_delta_pp": 1.916307823772273,
+              "ocf_to_sales": 0.14834023300661087,
+              "momentum_63_21_pct": null
+            },
+            "warning_flags": [
+              "POST_SNAPSHOT_CB_TERMS_UNVERIFIED",
+              "MONTHLY_OR_YTD_REVENUE_GROWTH_NONPOSITIVE"
+            ],
+            "pending_gates": [
+              "original_eight_quarter_statements",
+              "cash_and_working_capital",
+              "nonoperating_components",
+              "fully_diluted_shares",
+              "matched_peers_and_cycle",
+              "management_promises",
+              "auditor_scope",
+              "tradability",
+              "forecast_bridge",
+              "insider_claims",
+              "dividend_window",
+              "point_in_time",
+              "out_of_sample_validation"
+            ],
+            "failed_gates": [],
+            "formal_Aplus": false,
+            "expected_net_return": null,
+            "calibrated_win_probability": null
+          },
+          {
+            "code": "3305",
+            "market": "TWSE",
+            "industry": "其他電子業",
+            "weight": 0.1,
+            "score": 0.9692307692307692,
+            "name": "昇貿",
+            "reference_close": 105.0,
+            "price_date": "2026-10-22",
+            "financial_period": "2026-Q2",
+            "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
+            "base_price_upside_pct": 125.74593602879042,
+            "bear_price_upside_pct": -2.770241560749487,
+            "eps_pe_each_minus20_price_upside_pct": 44.477399058425874,
+            "adv20_ntd": 88152837.0,
+            "features": {
+              "forward_upside_pct": 125.74593602879042,
+              "revenue_acceleration_pp": -13.18845873703216,
+              "gross_margin_delta_pp": 6.100992845947769,
+              "ocf_to_sales": -0.15130781857221332,
+              "momentum_63_21_pct": null
+            },
+            "warning_flags": [
+              "CURRENT_DETAIL_IS_OFFICIAL_BATCH_SUMMARY_NOT_ORIGINAL_ISSUER_NOTES",
+              "NEGATIVE_OCF_CYCLE_AND_COLLECTION_REVIEW"
+            ],
+            "pending_gates": [
+              "original_eight_quarter_statements",
+              "cash_and_working_capital",
+              "nonoperating_components",
+              "fully_diluted_shares",
+              "matched_peers_and_cycle",
+              "management_promises",
+              "auditor_scope",
+              "tradability",
+              "forecast_bridge",
+              "insider_claims",
+              "dividend_window",
+              "point_in_time",
+              "out_of_sample_validation"
+            ],
+            "failed_gates": [],
+            "formal_Aplus": false,
+            "expected_net_return": null,
+            "calibrated_win_probability": null
+          },
+          {
+            "code": "4739",
+            "market": "TWSE",
+            "industry": "化學工業",
+            "weight": 0.1,
+            "score": 0.9538461538461539,
+            "name": "康普",
+            "reference_close": 80.2,
+            "price_date": "2026-10-22",
+            "financial_period": "2026-Q2",
+            "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
+            "base_price_upside_pct": 117.24979183520774,
+            "bear_price_upside_pct": -52.04242195487875,
+            "eps_pe_each_minus20_price_upside_pct": 39.03986677453295,
+            "adv20_ntd": 97394160.5,
+            "features": {
+              "forward_upside_pct": 117.24979183520774,
+              "revenue_acceleration_pp": -38.29992013616742,
+              "gross_margin_delta_pp": 2.9300380363174865,
+              "ocf_to_sales": -0.03507261377282778,
+              "momentum_63_21_pct": null
+            },
+            "warning_flags": [
+              "CURRENT_DETAIL_IS_OFFICIAL_BATCH_SUMMARY_NOT_ORIGINAL_ISSUER_NOTES",
+              "POST_SNAPSHOT_CB_TERMS_UNVERIFIED",
+              "CYCLICAL_SECTOR_RESEARCH_ONLY_PE_UNCHANGED_PENDING_BACKTEST",
+              "NEGATIVE_OCF_CYCLE_AND_COLLECTION_REVIEW"
+            ],
+            "pending_gates": [
+              "original_eight_quarter_statements",
+              "cash_and_working_capital",
+              "nonoperating_components",
+              "fully_diluted_shares",
+              "matched_peers_and_cycle",
+              "management_promises",
+              "auditor_scope",
+              "tradability",
+              "forecast_bridge",
+              "insider_claims",
+              "dividend_window",
+              "point_in_time",
+              "out_of_sample_validation"
+            ],
+            "failed_gates": [],
+            "formal_Aplus": false,
+            "expected_net_return": null,
+            "calibrated_win_probability": null
+          },
+          {
+            "code": "8390",
+            "market": "TPEX",
+            "industry": "綠能環保",
+            "weight": 0.1,
+            "score": 0.9384615384615385,
+            "name": "金益鼎",
+            "reference_close": 87.5,
+            "price_date": "2026-10-22",
+            "financial_period": "2026-Q2",
+            "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
+            "base_price_upside_pct": 109.00609057772081,
+            "bear_price_upside_pct": -14.0278223812637,
+            "eps_pe_each_minus20_price_upside_pct": 33.76389796974133,
+            "adv20_ntd": 26444225.5,
+            "features": {
+              "forward_upside_pct": 109.00609057772081,
+              "revenue_acceleration_pp": -5.262629123311807,
+              "gross_margin_delta_pp": 8.477912915565053,
+              "ocf_to_sales": 0.20156581653824682,
+              "momentum_63_21_pct": null
+            },
+            "warning_flags": [
+              "QUALIFIED_REVIEW_MATERIALITY_PENDING",
+              "DISCLOSED_EQUITY_OFFERING_REQUIRES_UNISSUED_SHARE_RECONCILIATION"
+            ],
+            "pending_gates": [
+              "original_eight_quarter_statements",
+              "cash_and_working_capital",
+              "nonoperating_components",
+              "fully_diluted_shares",
+              "matched_peers_and_cycle",
+              "management_promises",
+              "auditor_scope",
+              "tradability",
+              "forecast_bridge",
+              "insider_claims",
+              "dividend_window",
+              "point_in_time",
+              "out_of_sample_validation"
+            ],
+            "failed_gates": [],
+            "formal_Aplus": false,
+            "expected_net_return": null,
+            "calibrated_win_probability": null
+          },
+          {
+            "code": "4912",
+            "market": "TWSE",
+            "industry": "電子零組件業",
+            "weight": 0.1,
+            "score": 0.9230769230769231,
+            "name": "聯德控股-KY",
+            "reference_close": 95.4,
+            "price_date": "2026-10-22",
+            "financial_period": "2026-Q2",
+            "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
+            "base_price_upside_pct": 99.47371114201356,
+            "bear_price_upside_pct": -9.660357963929977,
+            "eps_pe_each_minus20_price_upside_pct": 27.663175130888675,
+            "adv20_ntd": 36141047.5,
+            "features": {
+              "forward_upside_pct": 99.47371114201356,
+              "revenue_acceleration_pp": 15.61418669859751,
+              "gross_margin_delta_pp": 0.39473120662105454,
+              "ocf_to_sales": 0.07495770850819305,
+              "momentum_63_21_pct": null
+            },
+            "warning_flags": [
+              "CURRENT_DETAIL_IS_OFFICIAL_BATCH_SUMMARY_NOT_ORIGINAL_ISSUER_NOTES"
+            ],
+            "pending_gates": [
+              "original_eight_quarter_statements",
+              "cash_and_working_capital",
+              "nonoperating_components",
+              "fully_diluted_shares",
+              "matched_peers_and_cycle",
+              "management_promises",
+              "auditor_scope",
+              "tradability",
+              "forecast_bridge",
+              "insider_claims",
+              "dividend_window",
+              "point_in_time",
+              "out_of_sample_validation"
+            ],
+            "failed_gates": [],
+            "formal_Aplus": false,
+            "expected_net_return": null,
+            "calibrated_win_probability": null
+          },
+          {
+            "code": "8110",
+            "market": "TWSE",
+            "industry": "半導體業",
+            "weight": 0.1,
+            "score": 0.9076923076923077,
+            "name": "華東",
+            "reference_close": 44.5,
+            "price_date": "2026-10-22",
+            "financial_period": "2026-Q2",
+            "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
+            "base_price_upside_pct": 96.98933550625442,
+            "bear_price_upside_pct": 0.3342450252744378,
+            "eps_pe_each_minus20_price_upside_pct": 26.073174724002833,
+            "adv20_ntd": 212089595.5,
+            "features": {
+              "forward_upside_pct": 96.98933550625442,
+              "revenue_acceleration_pp": 3.1346557166868765,
+              "gross_margin_delta_pp": 9.879593188594555,
+              "ocf_to_sales": 0.07954048872585874,
+              "momentum_63_21_pct": null
+            },
+            "warning_flags": [
+              "CURRENT_DETAIL_IS_OFFICIAL_BATCH_SUMMARY_NOT_ORIGINAL_ISSUER_NOTES"
+            ],
+            "pending_gates": [
+              "original_eight_quarter_statements",
+              "cash_and_working_capital",
+              "nonoperating_components",
+              "fully_diluted_shares",
+              "matched_peers_and_cycle",
+              "management_promises",
+              "auditor_scope",
+              "tradability",
+              "forecast_bridge",
+              "insider_claims",
+              "dividend_window",
+              "point_in_time",
+              "out_of_sample_validation"
+            ],
+            "failed_gates": [],
+            "formal_Aplus": false,
+            "expected_net_return": null,
+            "calibrated_win_probability": null
+          },
+          {
+            "code": "2374",
+            "market": "TWSE",
+            "industry": "光電業",
+            "weight": 0.1,
+            "score": 0.8923076923076924,
+            "name": "佳能",
+            "reference_close": 63.8,
+            "price_date": "2026-10-22",
+            "financial_period": "2026-Q2",
+            "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
+            "base_price_upside_pct": 95.85487581222934,
+            "bear_price_upside_pct": -37.69723162067686,
+            "eps_pe_each_minus20_price_upside_pct": 25.34712051982677,
+            "adv20_ntd": 91227146.5,
+            "features": {
+              "forward_upside_pct": 95.85487581222934,
+              "revenue_acceleration_pp": -29.79486431543966,
+              "gross_margin_delta_pp": -4.40526453757267,
+              "ocf_to_sales": -0.003192966874501018,
+              "momentum_63_21_pct": null
+            },
+            "warning_flags": [
+              "CURRENT_DETAIL_IS_OFFICIAL_BATCH_SUMMARY_NOT_ORIGINAL_ISSUER_NOTES",
+              "POST_SNAPSHOT_CB_TERMS_UNVERIFIED",
+              "NEGATIVE_OCF_CYCLE_AND_COLLECTION_REVIEW",
+              "YTD_GROSS_MARGIN_DECLINED"
+            ],
+            "pending_gates": [
+              "original_eight_quarter_statements",
+              "cash_and_working_capital",
+              "nonoperating_components",
+              "fully_diluted_shares",
+              "matched_peers_and_cycle",
+              "management_promises",
+              "auditor_scope",
+              "tradability",
+              "forecast_bridge",
+              "insider_claims",
+              "dividend_window",
+              "point_in_time",
+              "out_of_sample_validation"
+            ],
+            "failed_gates": [],
+            "formal_Aplus": false,
+            "expected_net_return": null,
+            "calibrated_win_probability": null
+          },
+          {
+            "code": "8473",
+            "market": "TWSE",
+            "industry": "綠能環保",
+            "weight": 0.1,
+            "score": 0.8769230769230769,
+            "name": "山林水",
+            "reference_close": 37.6,
+            "price_date": "2026-10-22",
+            "financial_period": "2026-Q2",
+            "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
+            "base_price_upside_pct": 91.61344355367864,
+            "bear_price_upside_pct": -54.450571848997974,
+            "eps_pe_each_minus20_price_upside_pct": 22.63260387435433,
+            "adv20_ntd": 15437190.0,
+            "features": {
+              "forward_upside_pct": 91.61344355367864,
+              "revenue_acceleration_pp": -39.05834461880563,
+              "gross_margin_delta_pp": 3.623078653567857,
+              "ocf_to_sales": -0.06276868458607335,
+              "momentum_63_21_pct": null
+            },
+            "warning_flags": [
+              "CURRENT_DETAIL_IS_OFFICIAL_BATCH_SUMMARY_NOT_ORIGINAL_ISSUER_NOTES",
+              "NEGATIVE_OCF_CYCLE_AND_COLLECTION_REVIEW",
+              "MONTHLY_OR_YTD_REVENUE_GROWTH_NONPOSITIVE"
+            ],
+            "pending_gates": [
+              "original_eight_quarter_statements",
+              "cash_and_working_capital",
+              "nonoperating_components",
+              "fully_diluted_shares",
+              "matched_peers_and_cycle",
+              "management_promises",
+              "auditor_scope",
+              "tradability",
+              "forecast_bridge",
+              "insider_claims",
+              "dividend_window",
+              "point_in_time",
+              "out_of_sample_validation"
+            ],
+            "failed_gates": [],
+            "formal_Aplus": false,
+            "expected_net_return": null,
+            "calibrated_win_probability": null
+          },
+          {
+            "code": "2331",
+            "market": "TWSE",
+            "industry": "電腦及週邊設備業",
+            "weight": 0.1,
+            "score": 0.8615384615384616,
+            "name": "精英",
+            "reference_close": 17.95,
+            "price_date": "2026-10-22",
+            "financial_period": "2026-Q2",
+            "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
+            "base_price_upside_pct": 84.5495276408645,
+            "bear_price_upside_pct": -2.7750924856624337,
+            "eps_pe_each_minus20_price_upside_pct": 18.111697690153285,
+            "adv20_ntd": 13017173.5,
+            "features": {
+              "forward_upside_pct": 84.5495276408645,
+              "revenue_acceleration_pp": -35.932407276248185,
+              "gross_margin_delta_pp": -3.811158142227039,
+              "ocf_to_sales": -0.0376742542258597,
+              "momentum_63_21_pct": null
+            },
+            "warning_flags": [
+              "CURRENT_DETAIL_IS_OFFICIAL_BATCH_SUMMARY_NOT_ORIGINAL_ISSUER_NOTES",
+              "MARGIN_NORMALIZATION_NEEDS_ISSUER_DRIVER_REVIEW",
+              "NEGATIVE_OCF_CYCLE_AND_COLLECTION_REVIEW",
+              "YTD_GROSS_MARGIN_DECLINED",
+              "MONTHLY_OR_YTD_REVENUE_GROWTH_NONPOSITIVE"
+            ],
+            "pending_gates": [
+              "original_eight_quarter_statements",
+              "cash_and_working_capital",
+              "nonoperating_components",
+              "fully_diluted_shares",
+              "matched_peers_and_cycle",
+              "management_promises",
+              "auditor_scope",
+              "tradability",
+              "forecast_bridge",
+              "insider_claims",
+              "dividend_window",
+              "point_in_time",
+              "out_of_sample_validation"
+            ],
+            "failed_gates": [],
+            "formal_Aplus": false,
+            "expected_net_return": null,
+            "calibrated_win_probability": null
+          }
+        ],
+        "cash_weight": 0,
+        "exclusions": {
+          "ADV20_MISSING_OR_BELOW_THRESHOLD": 730
+        },
+        "status": "RESEARCH_PORTFOLIO_FROZEN_NOT_A_BUY_SIGNAL"
+      }
+    ],
+    "display_rule": "MINIMUM_REGISTERED_STOCK_COUNT_ADV_SECTOR_CAP_AND_HORIZON_PER_FAMILY",
+    "selection_uses_realized_returns": false,
+    "performance_winner_selected": false,
+    "current_screen_is_not_a_frozen_cohort": true,
+    "formal_Aplus_created": 0,
+    "trade_orders_created": 0
+  },
   "selected_live_model": null,
   "status": "PARAMETER_HYPOTHESES_REGISTERED_AWAITING_VERIFIED_RETURNS",
   "formal_Aplus_created": 0,
