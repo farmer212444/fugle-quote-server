@@ -1,0 +1,50 @@
+name: V8.10.7 Footwear 2027 Justified PB Shadow
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/footwear-pb-2016-2026-20261024
+    paths:
+      - 'scripts/v8107_footwear_2027_roe_justified_pb.py'
+      - 'tests/test_v8107_footwear_2027_roe_justified_pb.py'
+      - 'tw-market-data/research/footwear_pb_2016_2026/2027_roe_pb_hypotheses.json'
+      - '.github/workflows/v8107-footwear-justified-pb.yml'
+permissions:
+  contents: write
+concurrency:
+  group: v8107-justified-pb-20261024
+  cancel-in-progress: true
+jobs:
+  verify-perpetual-franchise-assumption:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify issuer BVPS, normalized forward ROE, no false forecasts
+        run: python -m unittest -v tests.test_v8107_footwear_2027_roe_justified_pb
+      - name: Build 2027 implied ROE and Gordon P/B sensitivity, not price targets
+        run: python scripts/v8107_footwear_2027_roe_justified_pb.py
+      - name: Preserve hypothetical ROE sensitivity in unmerged research branch
+        if: success()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add tw-market-data/research/footwear_pb_2016_2026/2027_justified_pb_shadow.json
+          if ! git diff --cached --quiet; then
+            git commit -m "data: freeze hypothetical 2027 ROE justified PB and reverse market hurdle"
+            for attempt in 1 2 3; do
+              git fetch origin research/footwear-pb-2016-2026-20261024
+              git rebase origin/research/footwear-pb-2016-2026-20261024 || {
+                git rebase --abort || true
+                exit 1
+              }
+              if git push origin HEAD:research/footwear-pb-2016-2026-20261024; then
+                exit 0
+              fi
+              sleep 2
+            done
+            exit 1
+          fi
