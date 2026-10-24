@@ -84,3 +84,35 @@ The checkpoint file is:
 tw-market-data/experiments/buyback_event_oos_v1/source_readiness_2026-10-24.json
 
 **Unresolved:** historical event rows + announcements timestamps, fully adjusted issuer TR with delisting actions, original ETF 0050 total-return history, independent data-completeness audit. No 3/6/12-month hit rate or alpha has been demonstrated. Third-party CAR/BHAR studies cannot substitute for the missing per-event evidence.
+
+
+## 2026-10-24 licensed third-party vendor adapter (research-only)
+
+An additional source is the [Apify Taiwan treasury-stock buyback API](https://apify.com/chamarix/taiwan-treasury-stock-buybacks).
+The vendor advertises 5,857 board resolutions, but that number is
+**not independent validation**, and authorized access may be paid.
+[FinHa](https://finha.rockmanagent.com/datasets) also lists a historic
+buyback dataset, but no permitted unauthenticated data export was confirmed.
+
+An operator with legitimate access can normalize an authorized JSON export:
+
+    python scripts/buyback_vendor_adapter.py --vendor-json LICENSED_FILE.json --out /tmp/buyback-vendor-quarantine
+
+Output contains vendor_buyback_candidates_QUARANTINED.csv and a
+manifest, **never the events_2020_2025.csv trading-backtest input**.
+Guards: TWSE/TPEX, 2020-2025 board-resolution scope, positive planned
+shares, valid plan windows, duplicate checks, completed-program arithmetic,
+and no post-outcome values on an open-programme record.
+
+**PIT protection:** A board resolution DATE is not an independently verified
+public ANNOUNCEMENT TIMESTAMP; a vendor bulk export's completion boolean,
+amount and execution rate may represent information that was only reported
+later, not on the resolution day. The importer sets both announcement and
+completion eligibility FALSE and all publication timestamps blank.
+Original event announcement/completion publication evidence, exact historic
+exchange universe, issuer total returns with actions and delisting, and
+ETF 0050 adjusted total-return benchmarks remain necessary.
+
+All importer unit tests are synthetic and do not certify returns,
+the claimed vendor count or executable trading decisions. The PR
+does not change A+, current rankings or brokerage orders.
