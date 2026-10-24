@@ -89,6 +89,34 @@ class V8106CrossSectorTests(unittest.TestCase):
         self.assertAlmostEqual(rows["6206"]["model_base_upside_pct_unverified"],40.93,places=1)
         self.assertAlmostEqual(rows["6206"]["model_eps_and_pe_both_minus20_upside_pct"],-9.80,places=1)
 
+    def test_operating_days_change_asset_risk_attribution_not_Aplus(self):
+        report=build(*inputs())
+        self.assertEqual(report["newly_joined_operating_cycle_issuer_count"],2)
+        q={x["research_code"]:x for x in report["research_candidates_source_order"]}
+        self.assertIn("COLLECTION_DAYS_LONGER_YOY_ACROSS_TWO_METHODS",
+                      q["4771"]["high_risk_review_flags"])
+        self.assertIn("DSO_QOQ_IMPROVED_ACROSS_TWO_DIFFERENT_METHODS",
+                      q["4771"]["operating_cycle_mitigants_not_Aplus_pass"])
+        self.assertIn("INVENTORY_SALE_DAYS_34_LONGER_YOY",
+                      q["6206"]["high_risk_review_flags"])
+        self.assertIn("DSO_11_DAYS_SHORTER_YOY_NO_COLLECTION_SLOWDOWN_INFERENCE",
+                      q["6206"]["operating_cycle_mitigants_not_Aplus_pass"])
+        self.assertEqual(q["6206"]["operating_cycle_source_phase"],
+                        "DSO_YOY_FASTER_COLLECTION_BUT_DIO_YOY_SHARPLY_LONGER")
+        self.assertFalse(q["6206"]["formal_Aplus"])
+        self.assertEqual(report["formally_certified_Aplus_count"],0)
+
+    def test_operating_days_cannot_be_omitted_or_misrepresented(self):
+        p,g,b=inputs()
+        report=json.loads(Path("tw-market-data/rankings/v8106_4771_6206_turnover_cycle_shadow.json").read_bytes())
+        report["primary_official_reports_full_original_sha_archived"]=True
+        with self.assertRaisesRegex(ValueError,"MISSING_TURNOVER_DAYS_OR_FALSE_SOURCE_CERTIFICATION"):
+            build(p,g,b,operating_cycle=report)
+        report=json.loads(Path("tw-market-data/rankings/v8106_4771_6206_turnover_cycle_shadow.json").read_bytes())
+        report["issuers"]["6206"]["risk_phase"]="EVERYTHING_FINE_6206"
+        with self.assertRaisesRegex(ValueError,"INVENTORY_TURNOVER_TREND_LOST"):
+            build(p,g,b,operating_cycle=report)
+
     def test_historical_margin_stress_source_cannot_be_missing_or_formal(self):
         p,g,b=inputs()
         report=json.loads(Path("tw-market-data/rankings/v8106_three_issuer_margin_reversion_shadow.json").read_bytes())
