@@ -58,7 +58,7 @@ def snapshot(base=ROOT/"tw-market-data", out=Path("/tmp/0050-2027")):
             upside=100*(target/close-1)
             if abs(upside-scenario["price_upside_pct"])>0.001:
                 raise ValueError("UPSIDE_NOT_REPRODUCED_"+code)
-            def target(label):
+            def target_for_scenario(label):
                 s=rec.get(label) or {}
                 return s.get("target_price") if proper_positive(s.get("target_price")) else None
             row={
@@ -68,8 +68,8 @@ def snapshot(base=ROOT/"tw-market-data", out=Path("/tmp/0050-2027")):
                 "pe_2027_base":round(scenario["pe"],2),
                 "target_2027_base":round(target,2),
                 "upside_2027_base_pct":round(upside,2),
-                "bear_price":round(target("bear"),2) if target("bear") is not None else None,
-                "bull_price":round(target("bull"),2) if target("bull") is not None else None,
+                "bear_price":round(target_for_scenario("bear"),2) if target("bear") is not None else None,
+                "bull_price":round(target_for_scenario("bull"),2) if target("bull") is not None else None,
                 "source_tier":rec.get("source_tier"),
                 "formal_Aplus":bool(rec.get("formal_Aplus",False)),
                 "key_model_warnings":(rec.get("warning_flags") or [])[:5],
