@@ -200,6 +200,26 @@ def run(data_dir,asof,target_date,out_dir=None,variant='current-information'):
                 f"2026Q2 {v['inventory_q2_2026_m']:,}百萬元；"
                 f"平均收現日數年變 {v['receivable_days_yoy_delta']:+d}天。"
                 f"PDF SHA-256：{v['original_presentation_sha256']}。")
+            z=v['cashflow_quarter_mops_evidence']
+            report.append(
+                f"- **2026 Q2營運資金變化觀察**：根據公司法說的約整百萬元餘額，"
+                f"存貨+應收帳款−應付帳款從2026Q1 "
+                f"{v['ir_q1_inventory_receivables_minus_payables_m']:,}百萬元"
+                f"增至2026Q2 {v['ir_q2_inventory_receivables_minus_payables_m']:,}百萬元，"
+                f"增加 {v['ir_q2_quarter_balance_proxy_capital_increase_m']:+,}百萬元，"
+                f"相當於當季營收的 {v['ir_q2_quarter_balance_proxy_as_pct_of_quarter_sales']:.1f}%。"
+                "這是期末三項餘額構成的簡化資金占用指標，不是營業現金流量表中的資金流出金額。")
+            if z['quarterly_ocf_reconciled']:
+                report.append(
+                    f"- **官方現金流同期對照**：2026Q1營業現金流 "
+                    f"{z['q1_ytd_ocf_k']/100000:+.3f}億元；"
+                    f"2026Q2單季 {z['q2_standalone_ocf_k']/100000:+.3f}億元；"
+                    f"上半年累計 {z['h1_ytd_ocf_k']/100000:+.3f}億元。"
+                    "即使單季現金流為正，不能由三項期末餘額反推當季現金流來源；"
+                    "仍需原始逐項現金流、存貨評價和合併匯率變動等核對。")
+            else:
+                report.append(
+                    "- **官方單季OCF鏡像缺件**，未提供任何金額或據此核發品質認證。")
         report+=['',
            '存貨成長快於營收不等於呆滯存貨；單季銷貨日數比前季改善也不表示全年風險解除。'
            '原始公司存貨明細、備貨目的、帳齡、產品生命週期及後續出貨仍待驗證。'

@@ -180,7 +180,7 @@ class MarketData:
                              'ORIGINAL_SELECTED_CASHFLOW_AND_WORKING_CAPITAL_FIELDS_REPARSED_NOT_FULL_CASH_GATE')
         from .inventory_original import load_6206_inventory_watch
         self.inventory_original_watch,inventory_original_errors=load_6206_inventory_watch(
-            self.root,asof,self.history)
+            self.root,asof,self.history,self.cash)
         self.errors.extend(inventory_original_errors)
         for code in self.inventory_original_watch:
             self.receipt(self.root/'evidence/v880/inventory_original_watch'/f'{code}.json',
