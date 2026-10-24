@@ -145,7 +145,14 @@ class BuffettResearch(unittest.TestCase):
             self.assertTrue((ranks/"latest_buffett_review.md").exists())
             self.assertIn("price_scenario_upside_pct",json.loads((ranks/"latest_buffett_review.json").read_text())["issuer_reviews"][0])
             file.write_bytes(b"%PDF-tampered")
-            with self.assertRaisesRegex(ValueError,"PDF_HASH_MISMATCH"):publish(root)
+            quarantined=publish(root)
+            self.assertEqual(len(quarantined["source_rejections"]),1)
+            self.assertIn("PDF_HASH_MISMATCH",quarantined["source_rejections"][0]["reason"])
+            self.assertEqual(quarantined["issuer_cash_original_case_count"],0)
+            self.assertEqual(quarantined["checked_original_pdfs"],[])
+            self.assertIsNone(next(x for x in quarantined["issuer_reviews"] if x["code"]=="9802")["owner_earnings"]["amount_k"])
+            self.assertEqual(quarantined["institutional_issuer_count"],2)
+            self.assertEqual(quarantined["new_certifications_issued"],0)
 
 
 if __name__=="__main__":
