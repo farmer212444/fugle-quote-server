@@ -61,6 +61,11 @@ def analyze(root="tw-market-data"):
         def from_margins(gm,opex):
             net_k=(b["revenue_k"]*(gm-opex)+b["nonoperating_k"])*(1-b["tax_rate"])*b["parent_fraction"]
             return price_scenario(net_k*1000/shares,b["pe"],close) if net_k>0 else None
+        def at_revenue(revenue_k):
+            # Counterfactual: freeze model unit profitability/tax/shares,
+            # but do not presume extra 2027 revenue beyond simple 2026 9M x 4/3.
+            p=(revenue_k*(b["gross_margin"]-b["opex_ratio"])+b["nonoperating_k"])*(1-b["tax_rate"])*b["parent_fraction"]
+            return price_scenario(p*1000/shares,b["pe"],close) if p>0 else None
         if abs(from_margins(b["gross_margin"],b["opex_ratio"])["eps"]-b["eps"])>0.03:
             raise ValueError("FULL_OPERATING_BRIDGE_NOT_REPRODUCED_"+code)
         row=dict(code=code,name=h["name"],reference_close=close,source=h["financial_source"],
@@ -84,6 +89,8 @@ def analyze(root="tw-market-data"):
                     parent_profit_vs_double_H1_pct=pct(
                         b["parent_profit_k"]/(2*h["parent"])-1,1)),
                  eps_pe_each_minus20pct=price_scenario(b["eps"]*.8,b["pe"]*.8,close),
+                 counterfactual_2027_revenue_equal_2026_9m_simple_annualized=at_revenue(h["rev9m"]*4/3),
+                 counterfactual_is_not_a_revenue_forecast=True,
                  model_revenue_using_2026_H1_gm_and_model_opex=from_margins(actual_gm,b["opex_ratio"]),
                  model_revenue_using_2026_H1_gm_and_H1_opex=from_margins(actual_gm,actual_opex),
                  formal_Aplus=False,original_full_issuer_notes_verified=False,
