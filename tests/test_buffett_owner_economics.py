@@ -153,6 +153,7 @@ class BuffettResearch(unittest.TestCase):
             self.assertIsNone(next(x for x in quarantined["issuer_reviews"] if x["code"]=="9802")["owner_earnings"]["amount_k"])
             self.assertEqual(quarantined["institutional_issuer_count"],2)
             self.assertEqual(quarantined["new_certifications_issued"],0)
+            self.assertIn("原始檔案被隔離",render(quarantined))
 
 
 if __name__=="__main__":
