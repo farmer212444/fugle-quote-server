@@ -24,8 +24,16 @@ class TestFootwearPBOriginalHistory(unittest.TestCase):
     def test_missing_filing_period_is_not_silently_accepted(self):
         raw=json.loads(fixture())
         raw["fields"][-1]="不明欄位"
-        with self.assertRaisesRegex(ValueError,"OFFICIAL_PB_COLUMN_SCHEMA_CHANGED"):
+        with self.assertRaisesRegex(ValueError,"POST_2017_MISSING_FINANCIAL_PERIOD_COLUMN"):
             parsed_month("9802","2026-10",json.dumps(raw).encode())
+
+    def test_2016_before_financial_period_column_started_can_be_parsed(self):
+        raw=json.loads(fixture())
+        raw["fields"].remove("財報年/季")
+        raw["data"]=[["105年10月24日","1.4","105","12.35","0.78"]]
+        rows,stat=parsed_month("9904","2016-10",json.dumps(raw).encode("utf-8"))
+        self.assertEqual(stat,"OK")
+        self.assertEqual(rows,[{"date":"2016-10-24","pb":.78,"financial_quarter":None}])
 
     def test_pit_month_year_check(self):
         with self.assertRaisesRegex(ValueError,"INCORRECT_MONTH_OR_DUPLICATE"):
