@@ -11,6 +11,10 @@ import hashlib
 import json
 import math
 from pathlib import Path
+import sys
+ROOT=Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0,str(ROOT))
 
 from scripts.v8b4_0056_forward_top10 import filter_top10,load_inputs
 
@@ -33,13 +37,16 @@ def validate_bvps(source,holdings,read_at):
         source.get("issuer_original_financial_statements_PIT_verified") is not False or
         source.get("formal_financial_PE_ROE_PB_valuation_certified") is not False or
         source.get("observed_time_conservative_not_issuer_release_time") is not True or
+        source.get("intraday_source_availability_unknown_no_historical_same_day_pit") is not True or
         source.get("corporate_actions_adjusted_since_quarter_end") is not False or
         source.get("preferred_common_equity_and_noncontrolling_reconciled") is not False):
         raise ValueError("0056_FINANCIAL_SECONDARY_PROVENANCE_OR_SCOPE_INVALID")
-    observed=dt.datetime.fromisoformat(source["observed_first_at"])
+    observed=dt.date.fromisoformat(source["first_secondary_source_review_date"])
     checked=dt.datetime.fromisoformat(read_at.replace("Z","+00:00"))
-    if observed.tzinfo is None or checked.tzinfo is None or checked<observed:
-        raise ValueError("0056_FINANCIAL_BVPS_NOT_OBSERVED_AS_OF_TIME")
+    if checked.tzinfo is None or checked.astimezone(dt.timezone(dt.timedelta(hours=8))).date()<observed:
+        raise ValueError("0056_FINANCIAL_BVPS_NOT_OBSERVED_AS_OF_DAY")
+    # Historical trading backtests must NOT treat same-day source availability
+    # as proven: the original web publication/retrieval clock is unknown.
     etf_codes={p["code"] for p in holdings["positions"]}
     positions=source.get("positions")
     if not isinstance(positions,list) or len(positions)!=9:
@@ -123,7 +130,8 @@ def screen(root,read_at):
         membership_date=holdings["asof_date"],
         official_close_date=full["asof_price_date"],
         model_estimate_vintage=full["estimate_vintage"],
-        secondary_financial_BVPS_observed_first_at=source["observed_first_at"],
+        secondary_financial_BVPS_first_reviewed_on=source["first_secondary_source_review_date"],
+        same_day_intraday_PIT_proven=False,
         assessment_not_an_original_market_PIT_vintage=True,
         cost_of_equity_assumption_pct=KE*100,long_term_growth_assumption_pct=G*100,
         total_constituents=50,other_sector_base_price_comparable_count=previous["rankable_count"],
@@ -150,7 +158,7 @@ def write_report(data,path):
         x=data
         lines=["# 0056 金融股：每股淨值與市場隱含ROE門檻（不屬2027合理價）","",
             f"0056成分股基準 {x['membership_date']}；官方收盤 {x['official_close_date']}；"
-            f"本次第三方財報BVPS第一次查閱 {x['secondary_financial_BVPS_observed_first_at']}。","",
+            f"本次第三方財報BVPS查閱日期 {x['secondary_financial_BVPS_first_reviewed_on']}（未核實當日可得時刻）。","",
             f"可比2027 EPS×PE情境 {x['other_sector_base_price_comparable_count']}檔；"
             f"金融ROE/PB**研究門檻** {x['nine_financial_ROE_PB_hurdle_only_count']}檔；"
             f"尚不可比 {x['remaining_missing_comparable_count']}檔。"
@@ -181,7 +189,7 @@ def main():
     parser=argparse.ArgumentParser()
     parser.add_argument("--root",type=Path,default=Path("tw-market-data"))
     parser.add_argument("--out",type=Path)
-    parser.add_argument("--observed-at",default="2026-10-24T19:00:00+08:00")
+    parser.add_argument("--observed-at",default=dt.datetime.now(dt.timezone.utc).isoformat())
     args=parser.parse_args()
     result=screen(args.root,args.observed_at)
     if args.out:
