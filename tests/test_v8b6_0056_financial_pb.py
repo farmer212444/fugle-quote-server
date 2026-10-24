@@ -79,7 +79,7 @@ class FinancialNine0056Tests(unittest.TestCase):
             write_report(self.data,p)
             self.assertEqual(before,p.read_bytes())
             t=p.with_suffix('.md').read_text(encoding='utf-8')
-            self.assertIn('仍',t)
+            self.assertIn('尚不可比 7檔',t)
             self.assertIn('不屬2027合理價',t)
             self.assertIn('正式2027 EPS',t)
             self.assertIn('凱基金',t)
