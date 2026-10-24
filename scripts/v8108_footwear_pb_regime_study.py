@@ -9,12 +9,13 @@ credit-risk certification. Descriptive statistics do not certify 2027 A+.
 from __future__ import annotations
 
 import gzip
+import datetime
 import json
 import math
 import statistics
 from pathlib import Path
 
-from scripts.v8107_footwear_official_pb_history import ROOT, STOCKS, BEGIN, END, audit_one
+from scripts.v8107_footwear_official_pb_history import ROOT, STOCKS, BEGIN, END
 from scripts.v8107_footwear_official_pb_archive_audit import validate
 
 OUT=ROOT/"footwear_pb_regime_and_reversion_shadow.json"
@@ -170,11 +171,6 @@ def issuer_regime(code,rows):
                 "minimum_PB":min(segment),"maximum_PB":max(segment)}
         else:
             trailing[str(window)]=None
-    summary=audit_one(code,[{"month":x["date"][:7],"stat":"OK"}
-         for x in rows],"probe")
-    # audit_one creates a missing-month list because the synthetic
-    # per-trading-day list isn't a monthly source inventory. Only reuse
-    # stock identification fields, never source-certification flags.
     return {
         "issuer":code,"name":STOCKS[code][0],
         "observations":len(rows),
@@ -202,7 +198,7 @@ def build(root=ROOT):
     for code in STOCKS:
         with gzip.open(root/f"{code}_full_originals.json.gz","rb") as f:
             source=json.load(f)
-        first=max(BEGIN, __import__("datetime").date.fromisoformat(STOCKS[code][1]))
+        first=max(BEGIN, datetime.date.fromisoformat(STOCKS[code][1]))
         observations=sorted([
             dict(r,issuer=code)
             for month in source["months"]
