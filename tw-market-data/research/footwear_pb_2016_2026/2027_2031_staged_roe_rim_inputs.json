@@ -1,0 +1,150 @@
+{
+  "schema": "V8109_FOOTWEAR_STAGED_ROE_RESIDUAL_INCOME_ASSUMPTIONS_V1",
+  "compiled_at_local_date": "2026-10-24",
+  "price_reference_date": "2026-10-22",
+  "last_certified_book_quarter": "2026Q2",
+  "data_note": "H1/YTD corporate public disclosures reproduced by dated news. First-publication original MOPS PDF hashes and full notes NOT archived/certified.",
+  "method": {
+    "valuation": "CLEAN_SURPLUS_RESIDUAL_INCOME_FINITE_2027_TO_2031_PLUS_PERPETUITY",
+    "first_earnings_year": 2027,
+    "last_explicit_year": 2031,
+    "annual_payout_rate_subjective": true,
+    "longterm_terminal_growth_rate": 0.02,
+    "first_year_ROE": "2027 hypothetical EPS divided by 2026 Q2 parent BVPS",
+    "fade": "ROE linearly changes from first year to 2031 terminal ROE; book evolves earnings minus cash payout",
+    "terminal": "2032 RI=(terminal_ROE - cost_of_equity)* end_2031_book discounted / (cost_of_equity - growth)",
+    "shares": "No future issuance, splits, repurchases, FX revaluation or accounting changes",
+    "finite_horizon_not_perpetual_2027_ROE": true,
+    "fair_price_hypotheses_not_tradable": true,
+    "forecast_eps_and_roe_not_PIT_verified": true,
+    "realized_stock_total_return_vs_0050": null,
+    "formal_Aplus_added": 0,
+    "trade_orders_placed": 0
+  },
+  "sources": {
+    "9904_h1_mops_reprint": {
+      "url": "https://news.cnyes.com/news/print/6575792",
+      "event_date": "2026-08-13",
+      "published_at_local": "2026-08-13T17:40:49+08:00",
+      "original_MOPS_pdf_sha256": null
+    },
+    "9904_income_statement": {
+      "url": "https://www.moneydj.com/kmdj/news/newsviewer.aspx?a=c1997657-601c-4545-880f-369b2a67dc56",
+      "event_date": "2026-08-13",
+      "published_at_local": "2026-08-13T16:54:00+08:00",
+      "original_MOPS_pdf_sha256": null
+    },
+    "9802_h1_mops_reprint": {
+      "url": "https://pchome.megatime.com.tw/news/cat1/20260818/9700009802202608181.html",
+      "event_date": "2026-08-18",
+      "published_at_local": "2026-08-18T14:52:37+08:00",
+      "original_MOPS_pdf_sha256": null
+    },
+    "9802_q3_selfearnings_reprint": {
+      "url": "https://pchome.megatime.com.tw/news/cat2/20261020/9700009802202610201.html",
+      "event_date": "2026-10-20",
+      "published_at_local": "2026-10-20T14:30:20+08:00",
+      "original_MOPS_pdf_sha256": null
+    }
+  },
+  "stocks": {
+    "9802": {
+      "name": "鈺齊-KY",
+      "price_2026_10_22": 62.6,
+      "twse_PB_2026_10_22": 0.92,
+      "parent_BVPS_2026q2": 67.72,
+      "h1_2026_reported": {
+        "revenue_k": 8933111,
+        "gross_profit_k": 1315280,
+        "operating_profit_k": 449771,
+        "pretax_profit_k": 459194,
+        "parent_profit_k": 357397,
+        "parent_equity_k": 13611161,
+        "reported_parent_eps": 1.78,
+        "total_assets_k": 22536781,
+        "total_liabilities_k": 8908670
+      },
+      "q3_2026_preliminary": {
+        "quarter_revenue_k": 5435935,
+        "quarter_gross_profit_k": 719347,
+        "quarter_operating_profit_k": 227451,
+        "quarter_pretax_profit_k": 180041,
+        "quarter_parent_profit_k": 136431,
+        "quarter_eps": 0.68,
+        "preliminary_not_full_audited_report": true
+      },
+      "longrun_cost_of_equity": 0.115,
+      "shareholder_payout_rate_2027_to_2031_hypothesis": 0.35,
+      "cases": [
+        {
+          "name": "Bear",
+          "2027_EPS": 2.06,
+          "terminal_ROE_from_2031": 0.04,
+          "narrative": "Low capacity utilization, 2027 EPS depressed; perpetual ROE 4%"
+        },
+        {
+          "name": "Base",
+          "2027_EPS": 4.92,
+          "terminal_ROE_from_2031": 0.075,
+          "narrative": "GM and scale improve but franchise ROE stabilizes 7.5%"
+        },
+        {
+          "name": "Bull",
+          "2027_EPS": 8.03,
+          "terminal_ROE_from_2031": 0.12,
+          "narrative": "Recovery persists; normalized franchise ROE eventually 12%"
+        }
+      ]
+    },
+    "9904": {
+      "name": "寶成",
+      "price_2026_10_22": 26.35,
+      "twse_PB_2026_10_22": 0.42,
+      "parent_BVPS_2026q2": 63.46,
+      "h1_2026_reported": {
+        "revenue_k": 126089569,
+        "gross_profit_k": 26596318,
+        "operating_profit_k": 2842011,
+        "pretax_profit_k": 9406312,
+        "parent_profit_k": 6982848,
+        "parent_equity_k": 187016299,
+        "reported_parent_eps": 2.37,
+        "total_assets_k": 411034073,
+        "total_liabilities_k": 140288861,
+        "group_net_profit_k": 8450619,
+        "other_comprehensive_income_k": 50685022
+      },
+      "longrun_cost_of_equity": 0.095,
+      "shareholder_payout_rate_2027_to_2031_hypothesis": 0.55,
+      "cases": [
+        {
+          "name": "Bear",
+          "2027_EPS": 3.2,
+          "terminal_ROE_from_2031": 0.035,
+          "narrative": "Retail/investment income slows, normalized ROE 3.5%"
+        },
+        {
+          "name": "Base",
+          "2027_EPS": 4.6,
+          "terminal_ROE_from_2031": 0.06,
+          "narrative": "Group investments contribute, long-run sustainable ROE 6%"
+        },
+        {
+          "name": "Bull",
+          "2027_EPS": 6.1,
+          "terminal_ROE_from_2031": 0.085,
+          "narrative": "Footwear plus investments 8.5% ROE"
+        }
+      ]
+    }
+  },
+  "outstanding_quality_checks": [
+    "Original full 2026Q2 report PDF and notes PIT timestamps",
+    "9904 minority interests Yue Yuen and Pou Sheng, nonoperating recurring income",
+    "9802 factory capitalization and 2026Q3 full cash flow",
+    "2027 scenario probability empirical calibration",
+    "dividend payout sustainability and future parent equity",
+    "0050 total return walkforward",
+    "issuance, FX OCI, equity impairment and deferred tax"
+  ]
+}
