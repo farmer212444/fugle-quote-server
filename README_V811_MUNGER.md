@@ -4,7 +4,7 @@
 
 ## What changed
 
-- Added a read-only inversion audit over **all issuers already evaluated** by the existing 13-gate report; retain the separate not-evaluated count.
+- Added a read-only inversion audit over **all issuer diagnostic rows actually published** in the existing 13-gate report. The model-evaluated count, published diagnostic count, evaluated-but-not-expanded count and not-evaluated count are always shown separately.
 - Cross-check the official 13 gate names, individual decisions, evaluated count, model version, price date, estimate vintage and existing A+ count. Mismatched or forged decisions fail closed.
 - Focused institutional detail identifies double 20% EPS/PE downside, missing forward bridge, missing peer PE evidence, exit capacity, common-risk profile and recorded governance blocks.
 - For each company list the next three **questions that could falsify** its Base thesis. Questions are **not** findings that a company failed.
