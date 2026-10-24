@@ -62,6 +62,7 @@ class V8106TurnoverDays(unittest.TestCase):
     def test_4771_dso_yoy_cannot_fake_improvement(self):
         p,m=inputs()
         p["issuers"]["4771"]["sources"][1]["dso_2025q2"]=80
+        p["issuers"]["4771"]["sources"][1]["ccc_2025q2"]=96.33
         with self.assertRaisesRegex(ValueError,"CROSS_METHOD_COLLECTION_CYCLE_DIRECTION_INCONSISTENT"):
             evaluate(p,m)
 
