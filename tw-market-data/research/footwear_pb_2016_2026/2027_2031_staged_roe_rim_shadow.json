@@ -1,0 +1,502 @@
+{
+  "schema": "V8109_FOOTWEAR_5YEAR_FADE_RESIDUAL_INCOME_STRESS_V1",
+  "compiled_date": "2026-10-24",
+  "prices_through": "2026-10-22",
+  "price_and_BVPS_asof_not_latest_2027_book": true,
+  "forward_terminal_ROE_subjective_unverified": true,
+  "full_original_MOPS_files_and_first_tradable_timestamp_verified": false,
+  "ROE_discount_rates_are_internal_assumptions": true,
+  "realized_one_year_stock_total_return_vs_0050": null,
+  "probability_of_2027_excess_return_backtested": null,
+  "formal_Aplus_added": 0,
+  "orders_placed": 0,
+  "five_issuers_historical_TWSE_PB_unchanged": true,
+  "companies": {
+    "9802": {
+      "name": "鈺齊-KY",
+      "price_2026_10_22": 62.6,
+      "source_reconciled_reported_financials": {
+        "first_source_h1_asof": "2026-06-30",
+        "reported_h1_revenue_billion_TWD": 8.933,
+        "reported_h1_gross_margin_pct": 14.724,
+        "reported_h1_operating_profit_billion_TWD": 0.45,
+        "reported_h1_parent_profit_billion_TWD": 0.357,
+        "reported_h1_EPS": 1.78,
+        "reported_parent_equity_billion_TWD": 13.611,
+        "reported_h1_nonoperating_net_billion_TWD": 0.009,
+        "fraction_of_h1_pretax_profit_from_nonoperating_net_pct": 2.052,
+        "parent_BVPS_2026q2": 67.72,
+        "implied_shares_from_equity_million": 200.992,
+        "group_noncontrolling_equity_k": 16950,
+        "parent_book_2027_future_verified": false,
+        "operating_nonoperating_disaggregated_original_notes_verified": false,
+        "q3_preliminary_not_full_statement": {
+          "gross_margin_pct": 13.233,
+          "reported_q3_eps": 0.68,
+          "q3_reported_revenue_billion": 5.436,
+          "q3_nonoperating_net_million": -47.41,
+          "source_audit": "DATED_COMPANY_MOPS_SELFRESULT_REPRINT_UNVERIFIED_COMPLETE_Q3_REPORT"
+        }
+      },
+      "previous_single_year_base_eps_not_permanent_roe": 4.92,
+      "2027_single_year_ROE_pct": 7.265,
+      "2027_2031_staged_scenarios": [
+        {
+          "case": "Bear",
+          "2027_EPS_hypothesis": 2.06,
+          "2027_ROE_from_prior_2026q2_book_pct": 3.042,
+          "terminal_2032_sustainable_ROE_hypothesis_pct": 4.0,
+          "hypothetical_shareholder_payout_ratio_pct": 35.0,
+          "RIM_price_if_assumptions_hold": 12.39,
+          "RIM_PB_on_2026Q2_book": 0.183,
+          "model_upside_vs_2026_10_22_close_pct": -80.21,
+          "pv_negative_or_positive_future_residual_income": -20.59,
+          "pv_terminal_residual_income": -34.74,
+          "2027_to_2031_accounting_projection": [
+            {
+              "fiscal_year": 2027,
+              "starting_book_per_share": 67.72,
+              "roe_pct": 3.0419,
+              "eps_hypothesis": 2.06,
+              "earnings_paid_cash_dividends_per_share": 0.721,
+              "ending_book_per_share": 69.059,
+              "residual_income_per_share": -5.7278,
+              "present_value_of_residual_income": -5.137
+            },
+            {
+              "fiscal_year": 2028,
+              "starting_book_per_share": 69.059,
+              "roe_pct": 3.2815,
+              "eps_hypothesis": 2.2661,
+              "earnings_paid_cash_dividends_per_share": 0.7931,
+              "ending_book_per_share": 70.532,
+              "residual_income_per_share": -5.6756,
+              "present_value_of_residual_income": -4.5653
+            },
+            {
+              "fiscal_year": 2029,
+              "starting_book_per_share": 70.532,
+              "roe_pct": 3.521,
+              "eps_hypothesis": 2.4834,
+              "earnings_paid_cash_dividends_per_share": 0.8692,
+              "ending_book_per_share": 72.1462,
+              "residual_income_per_share": -5.6278,
+              "present_value_of_residual_income": -4.0599
+            },
+            {
+              "fiscal_year": 2030,
+              "starting_book_per_share": 72.1462,
+              "roe_pct": 3.7605,
+              "eps_hypothesis": 2.713,
+              "earnings_paid_cash_dividends_per_share": 0.9496,
+              "ending_book_per_share": 73.9097,
+              "residual_income_per_share": -5.5838,
+              "present_value_of_residual_income": -3.6127
+            },
+            {
+              "fiscal_year": 2031,
+              "starting_book_per_share": 73.9097,
+              "roe_pct": 4.0,
+              "eps_hypothesis": 2.9564,
+              "earnings_paid_cash_dividends_per_share": 1.0347,
+              "ending_book_per_share": 75.8313,
+              "residual_income_per_share": -5.5432,
+              "present_value_of_residual_income": -3.2165
+            }
+          ],
+          "original_PIT_and_forward_ROE_verified": false,
+          "formally_certified_Aplus": false
+        },
+        {
+          "case": "Base",
+          "2027_EPS_hypothesis": 4.92,
+          "2027_ROE_from_prior_2026q2_book_pct": 7.265,
+          "terminal_2032_sustainable_ROE_hypothesis_pct": 7.5,
+          "hypothetical_shareholder_payout_ratio_pct": 35.0,
+          "RIM_price_if_assumptions_hold": 35.7,
+          "RIM_PB_on_2026Q2_book": 0.527,
+          "model_upside_vs_2026_10_22_close_pct": -42.96,
+          "pv_negative_or_positive_future_residual_income": -11.1,
+          "pv_terminal_residual_income": -20.92,
+          "2027_to_2031_accounting_projection": [
+            {
+              "fiscal_year": 2027,
+              "starting_book_per_share": 67.72,
+              "roe_pct": 7.2652,
+              "eps_hypothesis": 4.92,
+              "earnings_paid_cash_dividends_per_share": 1.722,
+              "ending_book_per_share": 70.918,
+              "residual_income_per_share": -2.8678,
+              "present_value_of_residual_income": -2.572
+            },
+            {
+              "fiscal_year": 2028,
+              "starting_book_per_share": 70.918,
+              "roe_pct": 7.3239,
+              "eps_hypothesis": 5.194,
+              "earnings_paid_cash_dividends_per_share": 1.8179,
+              "ending_book_per_share": 74.2941,
+              "residual_income_per_share": -2.9616,
+              "present_value_of_residual_income": -2.3822
+            },
+            {
+              "fiscal_year": 2029,
+              "starting_book_per_share": 74.2941,
+              "roe_pct": 7.3826,
+              "eps_hypothesis": 5.4848,
+              "earnings_paid_cash_dividends_per_share": 1.9197,
+              "ending_book_per_share": 77.8592,
+              "residual_income_per_share": -3.059,
+              "present_value_of_residual_income": -2.2067
+            },
+            {
+              "fiscal_year": 2030,
+              "starting_book_per_share": 77.8592,
+              "roe_pct": 7.4413,
+              "eps_hypothesis": 5.7937,
+              "earnings_paid_cash_dividends_per_share": 2.0278,
+              "ending_book_per_share": 81.6252,
+              "residual_income_per_share": -3.1601,
+              "present_value_of_residual_income": -2.0445
+            },
+            {
+              "fiscal_year": 2031,
+              "starting_book_per_share": 81.6252,
+              "roe_pct": 7.5,
+              "eps_hypothesis": 6.1219,
+              "earnings_paid_cash_dividends_per_share": 2.1427,
+              "ending_book_per_share": 85.6044,
+              "residual_income_per_share": -3.265,
+              "present_value_of_residual_income": -1.8946
+            }
+          ],
+          "original_PIT_and_forward_ROE_verified": false,
+          "formally_certified_Aplus": false
+        },
+        {
+          "case": "Bull",
+          "2027_EPS_hypothesis": 8.03,
+          "2027_ROE_from_prior_2026q2_book_pct": 11.858,
+          "terminal_2032_sustainable_ROE_hypothesis_pct": 12.0,
+          "hypothetical_shareholder_payout_ratio_pct": 35.0,
+          "RIM_price_if_assumptions_hold": 71.93,
+          "RIM_PB_on_2026Q2_book": 1.062,
+          "model_upside_vs_2026_10_22_close_pct": 14.91,
+          "pv_negative_or_positive_future_residual_income": 1.21,
+          "pv_terminal_residual_income": 3.0,
+          "2027_to_2031_accounting_projection": [
+            {
+              "fiscal_year": 2027,
+              "starting_book_per_share": 67.72,
+              "roe_pct": 11.8576,
+              "eps_hypothesis": 8.03,
+              "earnings_paid_cash_dividends_per_share": 2.8105,
+              "ending_book_per_share": 72.9395,
+              "residual_income_per_share": 0.2422,
+              "present_value_of_residual_income": 0.2172
+            },
+            {
+              "fiscal_year": 2028,
+              "starting_book_per_share": 72.9395,
+              "roe_pct": 11.8932,
+              "eps_hypothesis": 8.6749,
+              "earnings_paid_cash_dividends_per_share": 3.0362,
+              "ending_book_per_share": 78.5782,
+              "residual_income_per_share": 0.2868,
+              "present_value_of_residual_income": 0.2307
+            },
+            {
+              "fiscal_year": 2029,
+              "starting_book_per_share": 78.5782,
+              "roe_pct": 11.9288,
+              "eps_hypothesis": 9.3735,
+              "earnings_paid_cash_dividends_per_share": 3.2807,
+              "ending_book_per_share": 84.6709,
+              "residual_income_per_share": 0.337,
+              "present_value_of_residual_income": 0.2431
+            },
+            {
+              "fiscal_year": 2030,
+              "starting_book_per_share": 84.6709,
+              "roe_pct": 11.9644,
+              "eps_hypothesis": 10.1304,
+              "earnings_paid_cash_dividends_per_share": 3.5456,
+              "ending_book_per_share": 91.2557,
+              "residual_income_per_share": 0.3932,
+              "present_value_of_residual_income": 0.2544
+            },
+            {
+              "fiscal_year": 2031,
+              "starting_book_per_share": 91.2557,
+              "roe_pct": 12.0,
+              "eps_hypothesis": 10.9507,
+              "earnings_paid_cash_dividends_per_share": 3.8327,
+              "ending_book_per_share": 98.3736,
+              "residual_income_per_share": 0.4563,
+              "present_value_of_residual_income": 0.2648
+            }
+          ],
+          "original_PIT_and_forward_ROE_verified": false,
+          "formally_certified_Aplus": false
+        }
+      ],
+      "required_terminal_ROE_to_justify_current_price_pct": 11.638,
+      "required_terminal_ROE_for_30pct_hypothetical_upside_pct": 14.278,
+      "base_long_run_ROE_pct": 7.5,
+      "base_cost_of_equity_sensitivity": {
+        "Ke_plus_2pp": {
+          "cost_of_equity_pct": 13.5,
+          "RIM_price": 28.34
+        },
+        "Ke_minus_2pp": {
+          "cost_of_equity_pct": 9.5,
+          "RIM_price": 47.2
+        }
+      },
+      "revenue_to_operating_cash_flow_profit_bridge_certified": false,
+      "historical_0050_total_return_beat_probability_verified": false,
+      "all_13_quality_gates_passed": false,
+      "research_only_not_buy": true
+    },
+    "9904": {
+      "name": "寶成",
+      "price_2026_10_22": 26.35,
+      "source_reconciled_reported_financials": {
+        "first_source_h1_asof": "2026-06-30",
+        "reported_h1_revenue_billion_TWD": 126.09,
+        "reported_h1_gross_margin_pct": 21.093,
+        "reported_h1_operating_profit_billion_TWD": 2.842,
+        "reported_h1_parent_profit_billion_TWD": 6.983,
+        "reported_h1_EPS": 2.37,
+        "reported_parent_equity_billion_TWD": 187.016,
+        "reported_h1_nonoperating_net_billion_TWD": 6.564,
+        "fraction_of_h1_pretax_profit_from_nonoperating_net_pct": 69.786,
+        "parent_BVPS_2026q2": 63.46,
+        "implied_shares_from_equity_million": 2946.995,
+        "group_noncontrolling_equity_k": 83728913,
+        "parent_book_2027_future_verified": false,
+        "operating_nonoperating_disaggregated_original_notes_verified": false,
+        "material_h1_nonoperating_quality_risk_flag": true
+      },
+      "previous_single_year_base_eps_not_permanent_roe": 4.6,
+      "2027_single_year_ROE_pct": 7.249,
+      "2027_2031_staged_scenarios": [
+        {
+          "case": "Bear",
+          "2027_EPS_hypothesis": 3.2,
+          "2027_ROE_from_prior_2026q2_book_pct": 5.043,
+          "terminal_2032_sustainable_ROE_hypothesis_pct": 3.5,
+          "hypothetical_shareholder_payout_ratio_pct": 55.0,
+          "RIM_price_if_assumptions_hold": 14.89,
+          "RIM_PB_on_2026Q2_book": 0.235,
+          "model_upside_vs_2026_10_22_close_pct": -43.49,
+          "pv_negative_or_positive_future_residual_income": -13.1,
+          "pv_terminal_residual_income": -35.47,
+          "2027_to_2031_accounting_projection": [
+            {
+              "fiscal_year": 2027,
+              "starting_book_per_share": 63.46,
+              "roe_pct": 5.0425,
+              "eps_hypothesis": 3.2,
+              "earnings_paid_cash_dividends_per_share": 1.76,
+              "ending_book_per_share": 64.9,
+              "residual_income_per_share": -2.8287,
+              "present_value_of_residual_income": -2.5833
+            },
+            {
+              "fiscal_year": 2028,
+              "starting_book_per_share": 64.9,
+              "roe_pct": 4.6569,
+              "eps_hypothesis": 3.0223,
+              "earnings_paid_cash_dividends_per_share": 1.6623,
+              "ending_book_per_share": 66.2601,
+              "residual_income_per_share": -3.1432,
+              "present_value_of_residual_income": -2.6214
+            },
+            {
+              "fiscal_year": 2029,
+              "starting_book_per_share": 66.2601,
+              "roe_pct": 4.2713,
+              "eps_hypothesis": 2.8301,
+              "earnings_paid_cash_dividends_per_share": 1.5566,
+              "ending_book_per_share": 67.5336,
+              "residual_income_per_share": -3.4646,
+              "present_value_of_residual_income": -2.6388
+            },
+            {
+              "fiscal_year": 2030,
+              "starting_book_per_share": 67.5336,
+              "roe_pct": 3.8856,
+              "eps_hypothesis": 2.6241,
+              "earnings_paid_cash_dividends_per_share": 1.4433,
+              "ending_book_per_share": 68.7145,
+              "residual_income_per_share": -3.7916,
+              "present_value_of_residual_income": -2.6373
+            },
+            {
+              "fiscal_year": 2031,
+              "starting_book_per_share": 68.7145,
+              "roe_pct": 3.5,
+              "eps_hypothesis": 2.405,
+              "earnings_paid_cash_dividends_per_share": 1.3228,
+              "ending_book_per_share": 69.7967,
+              "residual_income_per_share": -4.1229,
+              "present_value_of_residual_income": -2.619
+            }
+          ],
+          "original_PIT_and_forward_ROE_verified": false,
+          "formally_certified_Aplus": false
+        },
+        {
+          "case": "Base",
+          "2027_EPS_hypothesis": 4.6,
+          "2027_ROE_from_prior_2026q2_book_pct": 7.249,
+          "terminal_2032_sustainable_ROE_hypothesis_pct": 6.0,
+          "hypothetical_shareholder_payout_ratio_pct": 55.0,
+          "RIM_price_if_assumptions_hold": 34.35,
+          "RIM_PB_on_2026Q2_book": 0.541,
+          "model_upside_vs_2026_10_22_close_pct": 30.37,
+          "pv_negative_or_positive_future_residual_income": -7.32,
+          "pv_terminal_residual_income": -21.79,
+          "2027_to_2031_accounting_projection": [
+            {
+              "fiscal_year": 2027,
+              "starting_book_per_share": 63.46,
+              "roe_pct": 7.2487,
+              "eps_hypothesis": 4.6,
+              "earnings_paid_cash_dividends_per_share": 2.53,
+              "ending_book_per_share": 65.53,
+              "residual_income_per_share": -1.4287,
+              "present_value_of_residual_income": -1.3047
+            },
+            {
+              "fiscal_year": 2028,
+              "starting_book_per_share": 65.53,
+              "roe_pct": 6.9365,
+              "eps_hypothesis": 4.5455,
+              "earnings_paid_cash_dividends_per_share": 2.5,
+              "ending_book_per_share": 67.5755,
+              "residual_income_per_share": -1.6799,
+              "present_value_of_residual_income": -1.401
+            },
+            {
+              "fiscal_year": 2029,
+              "starting_book_per_share": 67.5755,
+              "roe_pct": 6.6243,
+              "eps_hypothesis": 4.4764,
+              "earnings_paid_cash_dividends_per_share": 2.462,
+              "ending_book_per_share": 69.5899,
+              "residual_income_per_share": -1.9432,
+              "present_value_of_residual_income": -1.4801
+            },
+            {
+              "fiscal_year": 2030,
+              "starting_book_per_share": 69.5899,
+              "roe_pct": 6.3122,
+              "eps_hypothesis": 4.3926,
+              "earnings_paid_cash_dividends_per_share": 2.4159,
+              "ending_book_per_share": 71.5665,
+              "residual_income_per_share": -2.2184,
+              "present_value_of_residual_income": -1.5431
+            },
+            {
+              "fiscal_year": 2031,
+              "starting_book_per_share": 71.5665,
+              "roe_pct": 6.0,
+              "eps_hypothesis": 4.294,
+              "earnings_paid_cash_dividends_per_share": 2.3617,
+              "ending_book_per_share": 73.4988,
+              "residual_income_per_share": -2.5048,
+              "present_value_of_residual_income": -1.5911
+            }
+          ],
+          "original_PIT_and_forward_ROE_verified": false,
+          "formally_certified_Aplus": false
+        },
+        {
+          "case": "Bull",
+          "2027_EPS_hypothesis": 6.1,
+          "2027_ROE_from_prior_2026q2_book_pct": 9.612,
+          "terminal_2032_sustainable_ROE_hypothesis_pct": 8.5,
+          "hypothetical_shareholder_payout_ratio_pct": 55.0,
+          "RIM_price_if_assumptions_hold": 55.8,
+          "RIM_PB_on_2026Q2_book": 0.879,
+          "model_upside_vs_2026_10_22_close_pct": 111.78,
+          "pv_negative_or_positive_future_residual_income": -1.09,
+          "pv_terminal_residual_income": -6.56,
+          "2027_to_2031_accounting_projection": [
+            {
+              "fiscal_year": 2027,
+              "starting_book_per_share": 63.46,
+              "roe_pct": 9.6124,
+              "eps_hypothesis": 6.1,
+              "earnings_paid_cash_dividends_per_share": 3.355,
+              "ending_book_per_share": 66.205,
+              "residual_income_per_share": 0.0713,
+              "present_value_of_residual_income": 0.0651
+            },
+            {
+              "fiscal_year": 2028,
+              "starting_book_per_share": 66.205,
+              "roe_pct": 9.3343,
+              "eps_hypothesis": 6.1798,
+              "earnings_paid_cash_dividends_per_share": 3.3989,
+              "ending_book_per_share": 68.9859,
+              "residual_income_per_share": -0.1097,
+              "present_value_of_residual_income": -0.0915
+            },
+            {
+              "fiscal_year": 2029,
+              "starting_book_per_share": 68.9859,
+              "roe_pct": 9.0562,
+              "eps_hypothesis": 6.2475,
+              "earnings_paid_cash_dividends_per_share": 3.4361,
+              "ending_book_per_share": 71.7973,
+              "residual_income_per_share": -0.3062,
+              "present_value_of_residual_income": -0.2332
+            },
+            {
+              "fiscal_year": 2030,
+              "starting_book_per_share": 71.7973,
+              "roe_pct": 8.7781,
+              "eps_hypothesis": 6.3024,
+              "earnings_paid_cash_dividends_per_share": 3.4663,
+              "ending_book_per_share": 74.6333,
+              "residual_income_per_share": -0.5183,
+              "present_value_of_residual_income": -0.3605
+            },
+            {
+              "fiscal_year": 2031,
+              "starting_book_per_share": 74.6333,
+              "roe_pct": 8.5,
+              "eps_hypothesis": 6.3438,
+              "earnings_paid_cash_dividends_per_share": 3.4891,
+              "ending_book_per_share": 77.4881,
+              "residual_income_per_share": -0.7463,
+              "present_value_of_residual_income": -0.4741
+            }
+          ],
+          "original_PIT_and_forward_ROE_verified": false,
+          "formally_certified_Aplus": false
+        }
+      ],
+      "required_terminal_ROE_to_justify_current_price_pct": 4.873,
+      "required_terminal_ROE_for_30pct_hypothetical_upside_pct": 5.986,
+      "base_long_run_ROE_pct": 6.0,
+      "base_cost_of_equity_sensitivity": {
+        "Ke_plus_2pp": {
+          "cost_of_equity_pct": 11.5,
+          "RIM_price": 26.95
+        },
+        "Ke_minus_2pp": {
+          "cost_of_equity_pct": 7.5,
+          "RIM_price": 47.19
+        }
+      },
+      "revenue_to_operating_cash_flow_profit_bridge_certified": false,
+      "historical_0050_total_return_beat_probability_verified": false,
+      "all_13_quality_gates_passed": false,
+      "research_only_not_buy": true
+    }
+  }
+}
