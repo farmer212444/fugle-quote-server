@@ -9,6 +9,7 @@ on:
       - 'tests/test_v8106_cross_sector_2027_shadow.py'
       - 'tw-market-data/evidence/v8106_cross_sector_public_events_20261024.json'
       - 'tw-market-data/rankings/v8106_three_issuer_margin_reversion_shadow.json'
+      - 'tw-market-data/rankings/v8106_4771_6206_turnover_cycle_shadow.json'
       - '.github/workflows/v8106-cross-sector-risk-shadow.yml'
 concurrency:
   group: v8106-cross-sector-shadow-20261024
