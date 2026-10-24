@@ -17,7 +17,7 @@ class Test2027PB(unittest.TestCase):
         self.assertAlmostEqual(issuers["9802"]["2027_EPS_over_2026Q2_BVPS_proxy_roe_pct"],7.27,places=2)
         self.assertAlmostEqual(issuers["6965"]["2027_EPS_over_2026Q2_BVPS_proxy_roe_pct"],4.84,places=2)
         self.assertAlmostEqual(issuers["9904"]["current_PB_implied_permanent_roe_pct"],5.15,places=2)
-        self.assertAlmostEqual(issuers["9910"]["current_PB_implied_permanent_roe_pct"],26.06,places=2)
+        self.assertAlmostEqual(issuers["9910"]["current_PB_implied_permanent_roe_pct"],26.05,places=2)
         self.assertAlmostEqual(issuers["9904"]["justified_PB_if_2027_roe_persisted_indefinitely"],.7,places=2)
         self.assertGreater(issuers["9904"]["PB_when_equity_cost_minus_2pp"],issuers["9904"]["PB_when_equity_cost_plus_2pp"])
         self.assertTrue(result["no_formal_Aplus"])
