@@ -133,6 +133,58 @@ def feature_rows(root,full,asof):
     return rows,references,errors
 
 
+def current_research_screens(full,features,registered,asof):
+    """Expose current predeclared selections without picking an untested winner.
+
+    Fixed display settings come from the existing parameter grid, not returns.
+    These current screens never replace an immutable cohort or its outcomes.
+    """
+    require(timestamp(full['estimate_vintage'])<=timestamp(asof),'RETURN_SCREEN_FUTURE_MODEL')
+    rows={(r['market'],r['code']):r for r in full['all_model_rows']}
+    require(len(rows)==len(full['all_model_rows']),'RETURN_SCREEN_DUPLICATE_MODEL_ISSUER')
+    feature_index={(r['market'],r['code']):r for r in features}
+    require(len(feature_index)==len(features),'RETURN_SCREEN_DUPLICATE_FEATURE_ISSUER')
+    result=[]
+    params=registered['spec']['parameters']
+    for family in sorted({p['family'] for p in params}):
+        p=min((p for p in params if p['family']==family),key=lambda p:(
+            p['stock_count'],p['minimum_adv20_ntd'],p['sector_cap'],p['holding_sessions']))
+        selected=select_portfolio(features,p,asof)
+        positions=[]
+        # Partial selections from insufficient coverage are not advertised as
+        # complete model candidates, nor used as zero-return observations.
+        for position in selected['positions'] if selected['parameter_inputs_ready'] else []:
+            key=(position['market'],position['code'])
+            require(key in rows,'RETURN_SCREEN_MODEL_ISSUER_MISSING')
+            row,feature=rows[key],feature_index[key]
+            require(row.get('rankable') and row.get('recommendation_blocked') is not True,
+                    'RETURN_SCREEN_MODEL_ISSUER_BLOCKED')
+            require(feature['features']['forward_upside_pct']==row.get('scenario_upside_pct'),
+                    'RETURN_SCREEN_VALUATION_CONTEXT_MISMATCH')
+            upside=row.get('scenario_upside_pct')
+            positions.append(dict(position,name=row.get('name'),reference_close=row.get('reference_close'),
+                price_date=row.get('price_date'),financial_period=row.get('financial_period'),
+                source_tier=row.get('source_tier'),base_price_upside_pct=upside,
+                bear_price_upside_pct=(row.get('bear') or {}).get('price_upside_pct'),
+                eps_pe_each_minus20_price_upside_pct=((1+upside/100)*.64-1)*100 if finite(upside) else None,
+                adv20_ntd=feature['adv20_ntd'],features=feature['features'],
+                warning_flags=row.get('warning_flags',[]),
+                pending_gates=(row.get('certification') or {}).get('gates_pending',[]),
+                failed_gates=(row.get('certification') or {}).get('gates_failed',[]),
+                formal_Aplus=row.get('formal_Aplus',False),
+                expected_net_return=None,calibrated_win_probability=None))
+        result.append(dict(family=family,parameter=p,eligible_issuer_count=selected['eligible_issuer_count'],
+            inputs_ready=selected['parameter_inputs_ready'],positions=positions,
+            cash_weight=selected['cash_weight'] if selected['parameter_inputs_ready'] else None,
+            exclusions=selected['exclusions'],status=selected['status']))
+    return dict(schema='CURRENT_REGISTERED_RESEARCH_SCREENS_V1',model=full['model'],
+        estimate_vintage=full['estimate_vintage'],asof_price_date=full['asof_price_date'],
+        features_checked_at=asof,experiment_id=registered['experiment_id'],screens=result,
+        display_rule='MINIMUM_REGISTERED_STOCK_COUNT_ADV_SECTOR_CAP_AND_HORIZON_PER_FAMILY',
+        selection_uses_realized_returns=False,performance_winner_selected=False,
+        current_screen_is_not_a_frozen_cohort=True,formal_Aplus_created=0,trade_orders_created=0)
+
+
 def freeze(root,registered,full,features,references,horizon,now,cal,months):
     require(max(timestamp(now),timestamp(registered['registered_at']),timestamp(full['estimate_vintage']))<=dt.datetime.now(dt.timezone.utc),'RETURN_SEARCH_FREEZE_INPUT_FROM_FUTURE')
     folder=root/FOLDER/registered['experiment_id']/'cohorts'/str(horizon);prior=sorted(folder.glob('*.json'))
@@ -256,7 +308,11 @@ def run(root,now=None):
         asof_price_date=research['asof_price_date'],experiment_id=reg['experiment_id'],registered_at=reg['registered_at'],policy_sha256=canonical_hash(policy),
         parameter_count=len(reg['spec']['parameters']),parameters=reg['spec']['parameters'],family_count=len(policy['families']),source_universe_count=len(features),
         feature_coverage={f:sum(finite(r['features'][f]) for r in features) for f in FEATURES},adv20_coverage=sum(finite(r['adv20_ntd'],positive=True) for r in features),
+        input_coverage_by_market={market:dict(source_universe_count=sum(r['market']==market for r in features),
+            adv20_coverage=sum(r['market']==market and finite(r['adv20_ntd'],positive=True) for r in features))
+            for market in sorted({r['market'] for r in features})},
         horizon_reports=reports,feature_source_errors=errors,calendar_errors=cal_errors,regime_source_errors=index['errors'],collection_queue=list(queue.values()),all_registered_search_trials=registered_trial_count(root),
+        current_research_screens=current_research_screens(full,features,reg,prepared),
         selected_live_model=None,status='PARAMETER_HYPOTHESES_REGISTERED_AWAITING_VERIFIED_RETURNS' if not any(h['walk_forward_test_periods'] for h in reports) else 'RETURN_MODELS_EVALUATED_REVIEW_REQUIRED',
         formal_Aplus_created=0,trade_orders_created=0,automatic_deployment=False,
         limitations=['Starting weights are hypotheses, not optimal estimates or probabilities.','Current research universe is not certified historical PIT.',
@@ -273,10 +329,34 @@ def render(r):
         '持股10／20／30／50檔；持有21／63／126交易日（含進場日）；20日成交額中位數門檻1,200萬／3,000萬元；產業上限25%／40%。','',
         '|組別|起始特徵權重（待驗）|','|---|---|']
     for family,weights in {p['family']:p['weights'] for p in r['parameters']}.items():lines.append('|'+names[family]+'|'+'、'.join(f'{labels[k]} {v:.0%}' for k,v in weights.items())+'|')
+    if r.get('input_coverage_by_market'):
+        lines+=['','|市場|研究母體|有效20日成交額|','|---|---:|---:|']
+        for market,coverage in sorted(r['input_coverage_by_market'].items()):
+            lines.append(f"|{market}|{coverage['source_universe_count']}|{coverage['adv20_coverage']}|")
     lines+=['','|持有交易日|參數數|當期可生成候選|已驗證報酬期數|滾動測試期數|','|---:|---:|---:|---:|---:|']
     for h in r['horizon_reports']:lines.append(f"|{h['holding_sessions']}|{h['parameter_count']}|{h['current_ready_parameter_count']}|{h['verified_return_periods']}|{h['walk_forward_test_periods']}|")
     lines+=['','|持股檔數|每一持有期可生成參數組數|','|---:|---:|']
     for count in sorted({p['stock_count'] for p in r['parameters']}):lines.append(f"|{count}|{sum(p['inputs_ready'] for p in r['horizon_reports'][0]['current_parameter_readiness'] if p['stock_count']==count)}|")
+    current=r.get('current_research_screens')
+    if current:
+        lines+=['','## 當期研究選股名單','',
+            '以下依各組既有權重篩選；展示條件固定取原參數表最小持股數、成交額門檻、產業上限及持有期，沒有按事後報酬挑選贏家。',
+            'Base、Bear及EPS／PE各減20%均為目標年度情境價差，未扣成本、未含未知股息，不是所列持有天數的預期報酬或上漲機率。',
+            '目前名單不覆寫較早封存的實驗名單；各檔原始警示、待驗及FAIL門檻完整保留於JSON。','']
+        def value(v,scale=1):return '待補' if not finite(v) else f'{v*scale:.2f}'
+        for screen in current['screens']:
+            p=screen['parameter']
+            lines += [f"### {names.get(screen['family'],screen['family'])}組",'',
+                f"可用公司 {screen['eligible_issuer_count']}；成交額門檻 {p['minimum_adv20_ntd']/10000:,.0f}萬元；產業上限 {p['sector_cap']:.0%}。"]
+            if not screen['inputs_ready']:
+                lines += ['必要資料或公司數不足，暫不列完整組合。',''];continue
+            lines += ['', '|股票|Base價差%|Bear價差%|EPS/PE各-20%價差|20日成交額中位數（萬元）|正式A+|',
+                '|---|---:|---:|---:|---:|---|']
+            for row in screen['positions']:
+                lines.append(f"|{row['code']} {row.get('name') or ''}|{value(row['base_price_upside_pct'])}|"
+                    f"{value(row['bear_price_upside_pct'])}|{value(row['eps_pe_each_minus20_price_upside_pct'])}|"
+                    f"{value(row['adv20_ntd'],.0001)}|{'是' if row['formal_Aplus'] else '未認證'}|")
+            lines+=['',f"產業上限後保留現金 {screen['cash_weight']:.0%}；完整風險警示請見同名JSON。",'']
     lines+=['','先以12–36個較早、已驗證且不重疊期間選參，隔離5日後再測後續期間。首次驗證時間也必須早於選參訊號。',
         '正式證據須60個不重疊測試期間、至少2種市況、全部試驗數校正及非稅成本加倍壓測；30%訓練回撤上限是明示假設。',
         '買賣手續費各0.1425%、最低20元；股票／ETF賣出稅假設0.3%／0.1%；單邊滑價0.1%加半邊價差0.05%。',
@@ -288,4 +368,8 @@ def render(r):
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser();parser.add_argument('--data-root',default=str(ROOT/'tw-market-data'));args=parser.parse_args();r=run(args.data_root)
-    print(json.dumps(dict(parameters=r['parameter_count'],horizons=[dict(sessions=h['holding_sessions'],ready=h['current_ready_parameter_count'],verified=h['verified_return_periods']) for h in r['horizon_reports']],formal_Aplus_created=0)))
+    print(json.dumps(dict(parameters=r['parameter_count'],adv20_coverage=r['adv20_coverage'],
+        input_coverage_by_market=r['input_coverage_by_market'],
+        research_screens={s['family']:dict(inputs_ready=s['inputs_ready'],selected=len(s['positions']),
+            codes=[p['code'] for p in s['positions']]) for s in r['current_research_screens']['screens']},
+        horizons=[dict(sessions=h['holding_sessions'],ready=h['current_ready_parameter_count'],verified=h['verified_return_periods']) for h in r['horizon_reports']],formal_Aplus_created=0)))
