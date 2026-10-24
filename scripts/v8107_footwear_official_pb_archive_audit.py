@@ -7,12 +7,13 @@ Run entirely OFFLINE from archived originals; no current API access needed.
 from __future__ import annotations
 
 import base64
+import datetime
 import gzip
 import hashlib
 import json
 import pathlib
 
-from scripts.v8107_footwear_official_pb_history import ROOT,STOCKS,audit_one,parsed_month
+from scripts.v8107_footwear_official_pb_history import ROOT,STOCKS,BEGIN,END,audit_one,parsed_month
 
 REPORT=ROOT/"full_pb_summary.json"
 OUT=ROOT/"original_bytes_offline_audit.json"
@@ -63,8 +64,14 @@ def validate(root=ROOT):
         if len(rows)!=EXPECTED_MONTHS[code] or len({v["month"] for v in rows})!=len(rows):
             raise ValueError("MISSING_OR_DUPLICATE_OFFICIAL_HISTORICAL_MONTH")
         total=0
+        first=max(BEGIN,datetime.date.fromisoformat(STOCKS[code][1]))
         for month in rows:
-            total+=verify_month(code,month)
+            verify_month(code,month)
+            # The exchange returns an entire calendar month; October 2016
+            # includes pre-window rows before Oct-24. Verify all raw bytes
+            # but count only observations inside the declared lookback.
+            total+=sum(first<=datetime.date.fromisoformat(day["date"])<=END
+                       for day in month["rows"])
         if total!=EXPECTED_DAILY[code]:
             # Every source return row is used; no silent dropping whole days.
             raise ValueError("WRONG_TOTAL_VALID_PB_SOURCE_ROWS")
