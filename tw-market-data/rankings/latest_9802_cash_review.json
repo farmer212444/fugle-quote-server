@@ -1,0 +1,458 @@
+{
+  "schema": "V8108_9802_CASH_REPORT_V1",
+  "model": "V8.10.8",
+  "estimate_vintage": "2026-10-24T08:02:02.389043+08:00",
+  "price_date": "2026-10-22",
+  "code": "9802",
+  "income_period": "2026-Q3",
+  "cashflow_period": "2026-Q2",
+  "research_only": true,
+  "changes_eps_or_target_price": false,
+  "grants_quality_certification": false,
+  "formal_Aplus": false,
+  "original_cash_review": {
+    "code": "9802",
+    "period": "2026-Q2",
+    "status": "ORIGINAL_9802_H1_CASH_AND_WC_ARITHMETIC_RECONCILED_NOT_FULL_CASH_GATE",
+    "balance_sheet_date": "2026-06-30",
+    "reviewed_at": "2026-10-23T23:46:20.990705+00:00",
+    "original_sources": [
+      {
+        "period": "2026-Q2",
+        "source_url": "https://www.fulgentsun.com/img/Finance/115Q2.pdf",
+        "archive_path": "evidence/v880/originals/9802/2026-08-18_46e3e319aa77a77f0118_b22eba7fa6356c6c.pdf",
+        "sha256": "b22eba7fa6356c6c9c4cb6cf5aa96049e3260393d1cda1ba10fdcf5bf05e080b",
+        "captured_at_utc": "2026-10-20T23:27:43.391629+00:00",
+        "selected_pages_1indexed": [
+          4,
+          8,
+          9,
+          10,
+          12,
+          13,
+          19,
+          20,
+          21,
+          26,
+          27,
+          47
+        ]
+      },
+      {
+        "period": "2025-Q2",
+        "source_url": "https://www.fulgentsun.com/img/Finance/202502_9802_AI1_20250828_155225Q2.pdf",
+        "archive_path": "evidence/v880/originals/9802/2025-08-26_6a28e2a98de9f4955658_f6fe5420c6736acf.pdf",
+        "sha256": "f6fe5420c6736acf4c89cfd6d8e44a56570a6781dddbe87cc4a7e0eacef50fad",
+        "captured_at_utc": "2026-10-20T23:27:43.391629+00:00",
+        "selected_pages_1indexed": [
+          8,
+          9,
+          10,
+          12
+        ]
+      }
+    ],
+    "current_h1": {
+      "year": 2026,
+      "days_in_h1": 181,
+      "balances_k": {
+        "cash": [
+          1151463.0,
+          2364689.0,
+          2037132.0
+        ],
+        "receivables_net": [
+          4350324.0,
+          3751109.0,
+          4448571.0
+        ],
+        "inventory": [
+          3387099.0,
+          2451651.0,
+          2302016.0
+        ],
+        "current_assets": [
+          9446663.0,
+          9037112.0,
+          9288428.0
+        ],
+        "payables": [
+          2666140.0,
+          2051288.0,
+          1981570.0
+        ],
+        "current_liabilities": [
+          7492072.0,
+          6538595.0,
+          5877780.0
+        ]
+      },
+      "revenue_k": 8933111.0,
+      "cogs_k": 7617831.0,
+      "parent_profit_k": 357397.0
+    },
+    "prior_h1": {
+      "year": 2025,
+      "days_in_h1": 181,
+      "balances_k": {
+        "cash": [
+          2037132.0,
+          3378425.0,
+          2489928.0
+        ],
+        "receivables_net": [
+          4448571.0,
+          3673067.0,
+          3360811.0
+        ],
+        "inventory": [
+          2302016.0,
+          2466239.0,
+          2220924.0
+        ],
+        "current_assets": [
+          9288428.0,
+          10139237.0,
+          8890815.0
+        ],
+        "payables": [
+          1981570.0,
+          2039801.0,
+          1688670.0
+        ],
+        "current_liabilities": [
+          5877780.0,
+          5535503.0,
+          5540247.0
+        ]
+      },
+      "revenue_k": 8899961.0,
+      "cogs_k": 7233337.0,
+      "parent_profit_k": 552351.0
+    },
+    "cashflow_signed_k": {
+      "pretax_profit": [
+        459194.0,
+        744003.0
+      ],
+      "depreciation": [
+        444114.0,
+        459655.0
+      ],
+      "amortization": [
+        13017.0,
+        9218.0
+      ],
+      "ecl": [
+        210.0,
+        -338.0
+      ],
+      "fv_loss": [
+        1000.0,
+        -2000.0
+      ],
+      "interest_expense": [
+        30498.0,
+        26305.0
+      ],
+      "interest_income": [
+        -19506.0,
+        -36197.0
+      ],
+      "share_compensation": [
+        0,
+        50167.0
+      ],
+      "disposal_gain": [
+        -1714.0,
+        -1030.0
+      ],
+      "lease_modification_gain": [
+        -788.0,
+        -10.0
+      ],
+      "receivables": [
+        -550855.0,
+        -1283323.0
+      ],
+      "other_receivables": [
+        -109467.0,
+        -90304.0
+      ],
+      "inventory": [
+        -901854.0,
+        -120390.0
+      ],
+      "prepayments": [
+        23688.0,
+        -132.0
+      ],
+      "other_current_assets": [
+        -14654.0,
+        -11874.0
+      ],
+      "contract_liabilities": [
+        32087.0,
+        18379.0
+      ],
+      "payables": [
+        563644.0,
+        162797.0
+      ],
+      "other_payables": [
+        -6883.0,
+        -30456.0
+      ],
+      "other_current_liabilities": [
+        -73231.0,
+        2772.0
+      ],
+      "other_noncurrent_liabilities": [
+        -1635.0,
+        -1557.0
+      ],
+      "cash_generated": [
+        -113135.0,
+        -104315.0
+      ],
+      "interest_received": [
+        20058.0,
+        36694.0
+      ],
+      "interest_paid": [
+        -15709.0,
+        -11399.0
+      ],
+      "tax_paid": [
+        -165224.0,
+        -208555.0
+      ],
+      "ocf": [
+        -274010.0,
+        -287575.0
+      ],
+      "ppe": [
+        -608517.0,
+        -1154071.0
+      ],
+      "investing": [
+        -613580.0,
+        -1016784.0
+      ],
+      "dividends_paid": [
+        -401983.0,
+        -380660.0
+      ],
+      "financing": [
+        -407630.0,
+        144332.0
+      ],
+      "fx": [
+        81994.0,
+        -181266.0
+      ],
+      "cash_change": [
+        -1213226.0,
+        -1341293.0
+      ],
+      "opening_cash": [
+        2364689.0,
+        3378425.0
+      ]
+    },
+    "cash_before_working_capital_k": [
+      926025.0,
+      1249773.0
+    ],
+    "working_capital_cash_change_k": [
+      -1039160.0,
+      -1354088.0
+    ],
+    "balance_changes_since_prior_fy_k": {
+      "receivables_net": 599215.0,
+      "inventory": 935448.0,
+      "payables": 614852.0
+    },
+    "balance_change_vs_cashflow_residual_k": {
+      "receivables_net": 48360.0,
+      "inventory": 33594.0,
+      "payables": 51208.0
+    },
+    "residuals_are_unallocated_not_assumed_all_fx": true,
+    "receivables_aging_k": {
+      "not_overdue": [
+        4285938.0,
+        3651530.0,
+        4403102.0
+      ],
+      "overdue_0_90": [
+        46660.0,
+        99176.0,
+        45543.0
+      ],
+      "overdue_91_180": [
+        8083.0,
+        581.0,
+        0
+      ],
+      "overdue_181_365": [
+        10260.0,
+        0,
+        0
+      ],
+      "overdue_over_365": [
+        5938.0,
+        6080.0,
+        6687.0
+      ]
+    },
+    "receivables_gross_k": [
+      4356879.0,
+      3757367.0,
+      4455332.0
+    ],
+    "receivables_allowance_signed_k": [
+      -6555.0,
+      -6258.0,
+      -6761.0
+    ],
+    "ar_over_90_days_pct": 0.5573026012427703,
+    "inventory_cost_allowance_and_components": [
+      {
+        "components_cost_allowance_net_k": {
+          "raw_material": [
+            831757.0,
+            33527.0,
+            798230.0
+          ],
+          "work_in_process": [
+            1235978.0,
+            27267.0,
+            1208711.0
+          ],
+          "finished_goods": [
+            941286.0,
+            37686.0,
+            903600.0
+          ],
+          "in_transit": [
+            476558.0,
+            0,
+            476558.0
+          ]
+        },
+        "total_cost_allowance_net_k": [
+          3485579.0,
+          98480.0,
+          3387099.0
+        ]
+      },
+      {
+        "components_cost_allowance_net_k": {
+          "raw_material": [
+            519078.0,
+            32992.0,
+            486086.0
+          ],
+          "work_in_process": [
+            852489.0,
+            10911.0,
+            841578.0
+          ],
+          "finished_goods": [
+            774088.0,
+            23718.0,
+            750370.0
+          ],
+          "in_transit": [
+            373617.0,
+            0,
+            373617.0
+          ]
+        },
+        "total_cost_allowance_net_k": [
+          2519272.0,
+          67621.0,
+          2451651.0
+        ]
+      },
+      {
+        "components_cost_allowance_net_k": {
+          "raw_material": [
+            528776.0,
+            36203.0,
+            492573.0
+          ],
+          "work_in_process": [
+            803640.0,
+            5448.0,
+            798192.0
+          ],
+          "finished_goods": [
+            797993.0,
+            15613.0,
+            782380.0
+          ],
+          "in_transit": [
+            228871.0,
+            0,
+            228871.0
+          ]
+        },
+        "total_cost_allowance_net_k": [
+          2359280.0,
+          57264.0,
+          2302016.0
+        ]
+      }
+    ],
+    "current_h1_cycle_proxy": {
+      "dso_proxy_days": 82.07439563887654,
+      "inventory_proxy_days": 69.36447855039053,
+      "payables_proxy_days": 56.04314850250682,
+      "cash_conversion_cycle_proxy_days": 95.39572568676024,
+      "method": "AVERAGE_BEGIN_END_NET_BALANCES_DIVIDED_BY_H1_SALES_OR_COGS_TIMES_ACTUAL_H1_DAYS",
+      "credit_sales_and_purchases_not_separately_verified": true
+    },
+    "prior_h1_cycle_proxy": {
+      "dso_proxy_days": 82.5855572850263,
+      "inventory_proxy_days": 59.6580910719354,
+      "payables_proxy_days": 50.313441154476834,
+      "cash_conversion_cycle_proxy_days": 91.93020720248487,
+      "method": "AVERAGE_BEGIN_END_NET_BALANCES_DIVIDED_BY_H1_SALES_OR_COGS_TIMES_ACTUAL_H1_DAYS",
+      "credit_sales_and_purchases_not_separately_verified": true
+    },
+    "reported_unused_bank_lines_k": [
+      12280717.0,
+      10155177.0,
+      7775500.0
+    ],
+    "bank_lines_asof": "2026-06-30",
+    "unused_lines_are_cash": false,
+    "current_facility_drawability_verified": false,
+    "cb_put_redemption_factor": 1.010025,
+    "cb_put_anniversary": "2026-11-15",
+    "actual_cb_put_exercise_verified": false,
+    "current_h1_audit_text_observation": "UNMODIFIED_AUDIT_OPINION_TEXT_OBSERVED_NOT_FULL_AUDITOR_GATE",
+    "cashflow_total_and_cash_balance_arithmetic_reconciled": true,
+    "collections_inventory_saleability_and_current_funding_unverified": true,
+    "formal_cash_and_working_capital_gate_pass": false,
+    "formal_Aplus_addition": 0,
+    "issuer_historical_filings_PIT_verified": false
+  },
+  "full_put_sensitivity": {
+    "outstanding_face_k": 999800.0,
+    "outstanding_snapshot_date": "20261023",
+    "put_anniversary": "2026-11-15",
+    "redemption_factor": 1.010025,
+    "assumed_full_put_cash_k": 1009822.995,
+    "old_reported_cash_less_full_put_k": 141640.005,
+    "assumes_full_put_not_a_prediction": true,
+    "actual_exercise_or_settlement_verified": false,
+    "cash_balance_date": "2026-06-30",
+    "post_balance_date_cashflows_not_included": true,
+    "historical_unused_bank_lines_not_added_to_cash": true,
+    "not_an_actual_current_funding_gap": true
+  },
+  "status": "ORIGINAL_CASH_REVIEW_AVAILABLE_CURRENT_FUNDING_UNVERIFIED"
+}

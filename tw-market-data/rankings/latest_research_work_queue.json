@@ -1,9 +1,9 @@
 {
   "schema": "RESEARCH_EVIDENCE_WORK_QUEUE_V1",
-  "model": "V8.10.7",
-  "estimate_vintage": "2026-10-24T07:45:38.696605+08:00",
+  "model": "V8.10.8",
+  "estimate_vintage": "2026-10-24T08:02:02.389043+08:00",
   "asof_price_date": "2026-10-22",
-  "source_model_sha256": "bfb5a38843b2018a6dfe2214dd3f498d6d4bc6879ba49307073655ed524004c3",
+  "source_model_sha256": "6c230448d632638960cc732380cdde4c6db2035af5e3b22eff33de16550b0fa8",
   "issuer_job_count": 128,
   "unresolved_gate_count": 1664,
   "scope": "ISSUERS_INCLUDED_IN_CURRENT_GATE_DIAGNOSTICS_NOT_ALL_TRACKED_COMPANIES",
@@ -207,7 +207,7 @@
           "scope": "ISSUER",
           "required_evidence": "應收、存貨、應付、CAPEX與資金來源橋接",
           "reason": "Cashflow mirror 8/8; receivable/inventory/capex notes need reconciliation",
-          "model_reason": "NEGATIVE_OCF_REQUIRES_CYCLE_AND_FUNDING_REVIEW",
+          "model_reason": "H1_ORIGINAL_CASHFLOW_RECONCILED_INVENTORY_COLLECTIONS_AND_CURRENT_BANK_LINE_DRAWABILITY_UNVERIFIED",
           "invalidates_on": "新財報／資金事件"
         },
         {
@@ -21586,7 +21586,7 @@
   ],
   "shared_strategy_collection_task": {
     "gate": "out_of_sample_validation",
-    "strategy_variant_sha256": "c4e377216a34a987885ca99853986403effab6407df146d4b5c0b766cf4785a4",
+    "strategy_variant_sha256": "a57b87ae332edbce4e95ccad32c449e2ae12c7422b3db0fe77f83fbfd43e2356",
     "target_date": "2027-12-31",
     "affected_issuers": [
       {
@@ -22236,5 +22236,5 @@
   },
   "formal_gate_decisions_changed": 0,
   "certificates_issued": 0,
-  "source_progress_sha256": "5aed6b935c5f4025dba7a25ede64b15ecbb3e8daa2dc66a26643d4cd44988798"
+  "source_progress_sha256": "78f2d6ef49f346e8bc0f04909d643ad690d3952ec658f2602b1369f8434eae86"
 }
