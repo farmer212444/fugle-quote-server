@@ -66,6 +66,7 @@ on:
       - 'scripts/v8b4_0056_forward_top10.py'
       - 'scripts/v8b5_0056_stress_audit.py'
       - 'scripts/v8b6_0056_financial_pb_hurdle.py'
+      - 'scripts/v8b7_0056_financial_hurdle_sensitivity.py'
       - 'tw-market-data/config/0056_financial_bvps_2026-Q2_watch.json'
       - 'tw-market-data/config/0056_holdings_2026-10-22.json'
       - 'tw-market-data/config/forward_top30_0050_v1.json'
@@ -148,6 +149,7 @@ on:
       - 'scripts/v8b4_0056_forward_top10.py'
       - 'scripts/v8b5_0056_stress_audit.py'
       - 'scripts/v8b6_0056_financial_pb_hurdle.py'
+      - 'scripts/v8b7_0056_financial_hurdle_sensitivity.py'
       - 'tw-market-data/config/0056_financial_bvps_2026-Q2_watch.json'
       - 'tw-market-data/config/0056_holdings_2026-10-22.json'
       - 'tw-market-data/config/forward_top30_0050_v1.json'
@@ -261,6 +263,10 @@ jobs:
         run: |
           python -m unittest discover -s tests -p test_v8b6_0056_financial_pb.py
           python scripts/v8b6_0056_financial_pb_hurdle.py --root tw-market-data --out tw-market-data/rankings/0056_financial_pb_hurdle_latest.json
+      - name: Verify nine-bank financial Ke/g sensitivity without target-price certification
+        run: |
+          python -m unittest discover -s tests -p test_v8b7_0056_financial_sensitivity.py
+          python scripts/v8b7_0056_financial_hurdle_sensitivity.py --root tw-market-data --out tw-market-data/rankings/0056_financial_pb_sensitivity_latest.json
       - name: Validate observation reports without publishing a PR vintage
         if: github.event_name == 'pull_request'
         run: python scripts/run_research_pipeline.py --phase observation
@@ -291,6 +297,7 @@ jobs:
             python scripts/v8a8_forward_top30_0050.py
             python scripts/v8b5_0056_stress_audit.py --root tw-market-data --out tw-market-data/rankings/0056_2027_stress_latest.json
             python scripts/v8b6_0056_financial_pb_hurdle.py --root tw-market-data --out tw-market-data/rankings/0056_financial_pb_hurdle_latest.json
+            python scripts/v8b7_0056_financial_hurdle_sensitivity.py --root tw-market-data --out tw-market-data/rankings/0056_financial_pb_sensitivity_latest.json
             git add tw-market-data/evidence/v880 tw-market-data/rankings tw-market-data/pit_vintages tw-market-data/experiments tw-market-data/benchmarks
             if git diff --cached --quiet; then exit 0; fi
             git commit -m 'data: refresh institutional research, earnings revisions and evidence status'
