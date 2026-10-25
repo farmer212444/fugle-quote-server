@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 """Refresh official issued shares and bond faces; legal FX/reset prices stay dated."""
-import concurrent.futures,datetime as dt,gzip,hashlib,json,math,urllib.request
+import concurrent.futures,datetime as dt,gzip,hashlib,json,math,pathlib,sys,urllib.request
+
+sys.path.insert(0,str(pathlib.Path(__file__).resolve().parents[1]))
+from tw_model_v880.capital import parse_twd_reset
 
 SOURCES={
  'TWSE_master':'https://openapi.twse.com.tw/v1/opendata/t187ap03_L',
@@ -9,6 +12,57 @@ SOURCES={
  'bond_6':'https://www.tpex.org.tw/openapi/v1/bond_ISSBD6_data',
  'bond_7':'https://www.tpex.org.tw/openapi/v1/bond_ISSBD7_data',
  'bond_8':'https://www.tpex.org.tw/openapi/v1/bond_ISSBD8_data'}
+
+# An identified issue-price gap, not an assertion that all later legal terms
+# have been reviewed. Capture source bytes once; never backdate first capture.
+KNOWN_TWD_RESETS=(dict(issuer='5439',bond='54391',
+ url='https://news.cnyes.com/news/print/6525876',
+ published_at='2026-07-07T18:15:00+08:00',effective_at='2026-07-28T00:00:00+08:00',
+ previous_conversion_price=300.0,conversion_price=293.6),)
+
+def capture_known_resets(e,out):
+    captured=[];existing=[];failed=[]
+    for spec in KNOWN_TWD_RESETS:
+        code=spec['issuer'];bid=spec['bond']
+        if not any(b.get('code')==bid for b in e.get('bonds',{}).get(code,[])):continue
+        folder=out/'capital_terms';ledger=folder/(code+'.json')
+        # Preserve any existing issuer review and its actual first-capture clock.
+        # Invalid existing receipts are quarantined by the model's normal loader.
+        if ledger.exists():existing.append(code);continue
+        try:
+            request=urllib.request.Request(spec['url'],headers={'User-Agent':'Mozilla/5.0'})
+            with urllib.request.urlopen(request,timeout=25) as response:
+                if response.status!=200 or response.geturl()!=spec['url']:
+                    raise ValueError('CAPITAL_RESET_HTTP_OR_REDIRECT_INVALID')
+                raw=response.read(1_000_001)
+            if not 100<=len(raw)<=1_000_000:raise ValueError('CAPITAL_RESET_BYTES_EMPTY_OR_OVERSIZED')
+            parsed=parse_twd_reset(raw,code,bid)
+            if any(parsed[k]!=spec[k] for k in ('effective_at','conversion_price','previous_conversion_price')):
+                raise ValueError('CAPITAL_RESET_CAPTURE_EXPECTED_FACTS_MISMATCH')
+            now=dt.datetime.now(dt.timezone.utc).isoformat()
+            if dt.datetime.fromisoformat(spec['published_at'])>dt.datetime.fromisoformat(now):
+                raise ValueError('CAPITAL_RESET_PUBLICATION_FROM_FUTURE')
+            digest=hashlib.sha256(raw).hexdigest();name=f"{bid}_{spec['effective_at'][:10]}_{digest}.html.gz"
+            archive=folder/'sources'/name;archive.parent.mkdir(parents=True,exist_ok=True)
+            if archive.exists():
+                if gzip.decompress(archive.read_bytes())!=raw:raise ValueError('CAPITAL_RESET_EXISTING_BYTES_CONFLICT')
+            else:
+                with archive.open('xb') as handle:handle.write(gzip.compress(raw,mtime=0))
+            source=dict(id=bid+'_reset_'+spec['effective_at'][:10],url=spec['url'],
+                path='evidence/v880/capital_terms/sources/'+name,sha256=digest,
+                published_at=spec['published_at'],available_at=now,fetched_at=now,
+                source_record_type='ISSUER_RESET_ANNOUNCEMENT_HTML_REPUBLICATION',
+                original_MOPS_filing_PIT_verified=False)
+            book=dict(code=code,checked_at=now,sources=[source],formal_share_certification=False,
+                bonds=[dict(code=bid,currency='TWD',conversion_price=parsed['conversion_price'],
+                    effective_at=parsed['effective_at'],price_basis='DATED_RESET_REPUBLICATION_RESEARCH_ONLY',
+                    source_ids=[source['id']])])
+            with ledger.open('x') as handle:json.dump(book,handle,ensure_ascii=False,indent=2);handle.write('\n')
+            captured.append(code)
+        except (OSError,ValueError,KeyError,TypeError) as ex:
+            failed.append(dict(issuer=code,bond=bid,error=str(ex),existing_terms_not_replaced=True))
+    return dict(captured_issuers=captured,existing_issuer_books_preserved=existing,failed_sources=failed,
+                original_filing_PIT_or_full_share_certification_granted=False)
 def num(v):
     try:
         value=float(str(v).replace(',',''))
@@ -90,5 +144,7 @@ def refresh_capital(e,out):
             e['bonds']=retained
         file=out/'raw'/('capital_'+name+'.gz');file.parent.mkdir(parents=True,exist_ok=True);file.write_bytes(gzip.compress(raw,mtime=0))
         receipt['path']='evidence/v880/raw/'+file.name;e.setdefault('capital_sources',{})[name]=receipt;success.append(name)
-    return dict(successful_sources=success,failed_sources=failed,contract_FX_not_replaced_by_spot=True,issue_conversion_price_is_not_current_reset=True)
+    resets=capture_known_resets(e,out)
+    return dict(successful_sources=success,failed_sources=failed,contract_FX_not_replaced_by_spot=True,
+                issue_conversion_price_is_not_current_reset=True,dated_reset_capture=resets)
 

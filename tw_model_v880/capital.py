@@ -18,9 +18,30 @@ def parse_twd_reset(raw,issuer,bond):
     """Read one issuer/bond reset paragraph; ignore scripts and related news."""
     parser=_AnnouncementText();parser.feed(raw.decode('utf-8-sig'))
     body=re.sub(r'\s+','',''.join(parser.parts)).split('推薦新聞')[0]
-    if not re.search(r'\('+re.escape(issuer)+r'\)',body):raise ValueError('CAPITAL_RESET_ISSUER_NOT_IN_ANNOUNCEMENT')
     ordinal={'1':'一','2':'二'}.get(bond[len(issuer):]) if bond.startswith(issuer) else None
     if not ordinal:raise ValueError('CAPITAL_RESET_BOND_RECIPE_UNSUPPORTED')
+    # Bond price anti-dilution notices use a different, structured layout from
+    # issuer material-information paragraphs. Bind title, body and instrument
+    # field, rather than using an unrelated issuer ticker elsewhere on a page.
+    title=(r'公告[^()（）:：]{1,80}國內第'+ordinal+r'次無擔保轉換公司債[（(]'
+           r'簡稱[：:][^()（）]{1,40}[，,]代碼[：:]'+re.escape(bond)+r'[）)]'
+           r'自(\d{3})年(\d{1,2})月(\d{1,2})日起[，,]轉換價格自([\d.]+)元調整為([\d.]+)元')
+    titles={m.groups() for m in re.finditer(title,body)}
+    if titles:
+        measures=(r'因應措施[：:][^:：]{0,500}?故自(\d{3})年(\d{1,2})月(\d{1,2})日起[，,]'
+                  r'轉換價格由([\d.]+)元調整為([\d.]+)元')
+        paragraphs={m.groups() for m in re.finditer(measures,body)}
+        identities=re.findall(r'債券代碼[：:]([0-9A-Z]+)',body)
+        dates=re.findall(r'事實發生日起始日[：:](\d{8})',body)
+        if len(titles)!=1 or paragraphs!=titles or identities!=[bond] or len(dates)!=1:
+            raise ValueError('CAPITAL_RESET_STRUCTURED_FIELDS_CONFLICT')
+        year,month,day,old,new=next(iter(titles))
+        effective=f'{int(year)+1911:04d}-{int(month):02d}-{int(day):02d}T00:00:00+08:00'
+        timestamp(effective)
+        if dates[0]!=effective[:10].replace('-','') or float(old)<=0 or float(new)<=0:
+            raise ValueError('CAPITAL_RESET_STRUCTURED_DATE_OR_PRICE_INVALID')
+        return dict(conversion_price=float(new),previous_conversion_price=float(old),effective_at=effective)
+    if not re.search(r'\('+re.escape(issuer)+r'\)',body):raise ValueError('CAPITAL_RESET_ISSUER_NOT_IN_ANNOUNCEMENT')
     pattern=(r'本公司自(\d{3})年(\d{1,2})月(\d{1,2})日.*?本公司國內第'+ordinal+
              r'次無擔保轉換公司債之轉換價格由每股新台幣([\d.]+)元調整為新台幣([\d.]+)元')
     matches=list(re.finditer(pattern,body))
