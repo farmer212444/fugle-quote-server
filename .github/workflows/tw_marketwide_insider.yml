@@ -1,0 +1,67 @@
+name: Taiwan Marketwide Insider Post-trade Capture
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - '.github/workflows/tw_marketwide_insider.yml'
+      - 'scripts/insider_marketwide.py'
+      - 'tests/test_insider_marketwide.py'
+      - 'README_INSIDER_MARKETWIDE.md'
+  push:
+    paths:
+      - '.github/workflows/tw_marketwide_insider.yml'
+      - 'scripts/insider_marketwide.py'
+      - 'tests/test_insider_marketwide.py'
+  schedule:
+    # 09:30 and 21:30 Taipei time. The reported-month cutoff is the 15th.
+    - cron: '30 1,13 * * *'
+permissions:
+  contents: write
+concurrency:
+  group: marketwide-insider-archive
+  cancel-in-progress: false
+jobs:
+  offline-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate source parser, market-only transactions and coverage guards
+        run: python -m unittest discover -s tests -p 'test_insider_marketwide.py' -v
+  capture:
+    needs: offline-tests
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 22
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Incremental MOPS official post-trade reports and marketwide coverage
+        run: python scripts/insider_marketwide.py --months 12 --max-details 160 --gap 2
+      - name: Publish no-trade-claim coverage diagnostics even when feeds are down
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: marketwide-insider-attempt
+          path: |
+            tw-market-data/rankings/insider_marketwide_latest.json
+            tw-market-data/rankings/insider_marketwide_latest.md
+          if-no-files-found: ignore
+          retention-days: 90
+      - name: Commit immutable source receipts, progressive archives and research-only ranking
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add tw-market-data/insider/ tw-market-data/rankings/insider_marketwide_latest.json tw-market-data/rankings/insider_marketwide_latest.md
+          if git diff --cached --quiet; then
+            echo 'No new certified raw snapshots.'
+            exit 0
+          fi
+          git commit -m 'data: progressive official insider filings and fail-closed marketwide coverage'
+          git pull --rebase origin main
+          git push origin HEAD:main
