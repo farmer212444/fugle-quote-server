@@ -1,0 +1,795 @@
+{
+  "schema": "V8B7_0056_FINANCIAL_ROE_PB_CONDITIONAL_HURDLE_SENSITIVITY_NOT_PRICE_VALUATION",
+  "source_hurdle_file": "rankings/0056_financial_pb_hurdle_latest.json",
+  "source_hurdle_sha256": "d2617ffd1ebfa948c576a4519bb18272f9d3475a4d66213ec9f2430aa33a5b48",
+  "source_model_vintage": "2026-10-25T10:03:20.583008+08:00",
+  "holdings_date": "2026-10-22",
+  "official_close_date": "2026-10-22",
+  "assumed_cost_of_equity_pct": [
+    8,
+    10,
+    12
+  ],
+  "assumed_perpetual_growth_pct": [
+    0,
+    3,
+    5
+  ],
+  "grid_scenario_count": 9,
+  "no_probability_or_scenario_calibration": true,
+  "no_2027_BVPS_or_ROE_forecast": true,
+  "no_2027_fair_price_estimated": true,
+  "no_full_50_stock_return_ranking": true,
+  "baseline_hurdle_is_not_investment_buy_signal": true,
+  "double_counting_dividends_or_original_book_adjustments_not_done": true,
+  "formal_Aplus_count_added": 0,
+  "original_0056_nonfinancial_top10_unchanged": true,
+  "member_count": 9,
+  "all_financials": [
+    {
+      "code": "2883",
+      "name": "凱基金",
+      "BVPS_2026q2_ntd": 25.28,
+      "official_close_ntd": 37.75,
+      "P_B": 1.4932753164556962,
+      "H1_EPS_2026": 1.64,
+      "annualized_H1_EPS_over_ending_BVPS_pct": 12.974683544303797,
+      "base_assumption_gap_pp": 0.47824367088607767,
+      "min_conditional_hurdle_gap_pp": -3.4948575949367076,
+      "max_conditional_hurdle_gap_pp": 4.944620253164558,
+      "positive_gap_scenario_count": 5,
+      "negative_gap_scenario_count": 4,
+      "zero_gap_scenario_count": 0,
+      "sign_invariant_positive_across_grid": false,
+      "stress_cases": [
+        {
+          "Ke_pct": 8,
+          "g_pct": 0,
+          "required_roe_pct": 11.94620253164557,
+          "gap_vs_h1_proxy_pp": -1.0284810126582276,
+          "h1_proxy_above_required": true
+        },
+        {
+          "Ke_pct": 8,
+          "g_pct": 3,
+          "required_roe_pct": 10.466376582278482,
+          "gap_vs_h1_proxy_pp": -2.5083069620253156,
+          "h1_proxy_above_required": true
+        },
+        {
+          "Ke_pct": 8,
+          "g_pct": 5,
+          "required_roe_pct": 9.47982594936709,
+          "gap_vs_h1_proxy_pp": -3.4948575949367076,
+          "h1_proxy_above_required": true
+        },
+        {
+          "Ke_pct": 10,
+          "g_pct": 0,
+          "required_roe_pct": 14.932753164556962,
+          "gap_vs_h1_proxy_pp": 1.9580696202531644,
+          "h1_proxy_above_required": false
+        },
+        {
+          "Ke_pct": 10,
+          "g_pct": 3,
+          "required_roe_pct": 13.452927215189874,
+          "gap_vs_h1_proxy_pp": 0.47824367088607644,
+          "h1_proxy_above_required": false
+        },
+        {
+          "Ke_pct": 10,
+          "g_pct": 5,
+          "required_roe_pct": 12.466376582278482,
+          "gap_vs_h1_proxy_pp": -0.5083069620253156,
+          "h1_proxy_above_required": true
+        },
+        {
+          "Ke_pct": 12,
+          "g_pct": 0,
+          "required_roe_pct": 17.919303797468356,
+          "gap_vs_h1_proxy_pp": 4.944620253164558,
+          "h1_proxy_above_required": false
+        },
+        {
+          "Ke_pct": 12,
+          "g_pct": 3,
+          "required_roe_pct": 16.439477848101266,
+          "gap_vs_h1_proxy_pp": 3.4647943037974684,
+          "h1_proxy_above_required": false
+        },
+        {
+          "Ke_pct": 12,
+          "g_pct": 5,
+          "required_roe_pct": 15.452927215189874,
+          "gap_vs_h1_proxy_pp": 2.4782436708860764,
+          "h1_proxy_above_required": false
+        }
+      ],
+      "issuer_original_BVPS_not_yet_verified": true,
+      "hypothetical_ke_g_cells_not_calibrated_probabilities": true,
+      "original_2027_price_target_available": false,
+      "formal_Aplus": false
+    },
+    {
+      "code": "2887",
+      "name": "台新新光金",
+      "BVPS_2026q2_ntd": 27.16,
+      "official_close_ntd": 42.1,
+      "P_B": 1.5500736377025037,
+      "H1_EPS_2026": 1.69,
+      "annualized_H1_EPS_over_ending_BVPS_pct": 12.444771723122239,
+      "base_assumption_gap_pp": 1.40574374079529,
+      "min_conditional_hurdle_gap_pp": -2.7945508100147283,
+      "max_conditional_hurdle_gap_pp": 6.156111929307807,
+      "positive_gap_scenario_count": 6,
+      "negative_gap_scenario_count": 3,
+      "zero_gap_scenario_count": 0,
+      "sign_invariant_positive_across_grid": false,
+      "stress_cases": [
+        {
+          "Ke_pct": 8,
+          "g_pct": 0,
+          "required_roe_pct": 12.40058910162003,
+          "gap_vs_h1_proxy_pp": -0.044182621502208974,
+          "h1_proxy_above_required": true
+        },
+        {
+          "Ke_pct": 8,
+          "g_pct": 3,
+          "required_roe_pct": 10.750368188512518,
+          "gap_vs_h1_proxy_pp": -1.6944035346097213,
+          "h1_proxy_above_required": true
+        },
+        {
+          "Ke_pct": 8,
+          "g_pct": 5,
+          "required_roe_pct": 9.65022091310751,
+          "gap_vs_h1_proxy_pp": -2.7945508100147283,
+          "h1_proxy_above_required": true
+        },
+        {
+          "Ke_pct": 10,
+          "g_pct": 0,
+          "required_roe_pct": 15.500736377025037,
+          "gap_vs_h1_proxy_pp": 3.055964653902798,
+          "h1_proxy_above_required": false
+        },
+        {
+          "Ke_pct": 10,
+          "g_pct": 3,
+          "required_roe_pct": 13.850515463917526,
+          "gap_vs_h1_proxy_pp": 1.4057437407952875,
+          "h1_proxy_above_required": false
+        },
+        {
+          "Ke_pct": 10,
+          "g_pct": 5,
+          "required_roe_pct": 12.750368188512518,
+          "gap_vs_h1_proxy_pp": 0.30559646539027874,
+          "h1_proxy_above_required": false
+        },
+        {
+          "Ke_pct": 12,
+          "g_pct": 0,
+          "required_roe_pct": 18.600883652430046,
+          "gap_vs_h1_proxy_pp": 6.156111929307807,
+          "h1_proxy_above_required": false
+        },
+        {
+          "Ke_pct": 12,
+          "g_pct": 3,
+          "required_roe_pct": 16.95066273932253,
+          "gap_vs_h1_proxy_pp": 4.505891016200293,
+          "h1_proxy_above_required": false
+        },
+        {
+          "Ke_pct": 12,
+          "g_pct": 5,
+          "required_roe_pct": 15.850515463917526,
+          "gap_vs_h1_proxy_pp": 3.4057437407952875,
+          "h1_proxy_above_required": false
+        }
+      ],
+      "issuer_original_BVPS_not_yet_verified": true,
+      "hypothetical_ke_g_cells_not_calibrated_probabilities": true,
+      "original_2027_price_target_available": false,
+      "formal_Aplus": false
+    },
+    {
+      "code": "5876",
+      "name": "上海商銀",
+      "BVPS_2026q2_ntd": 44.14,
+      "official_close_ntd": 54.6,
+      "P_B": 1.236973266878115,
+      "H1_EPS_2026": 2.08,
+      "annualized_H1_EPS_over_ending_BVPS_pct": 9.424558223833259,
+      "base_assumption_gap_pp": 2.234254644313548,
+      "min_conditional_hurdle_gap_pp": -0.7136384231989137,
+      "max_conditional_hurdle_gap_pp": 5.419120978704122,
+      "positive_gap_scenario_count": 7,
+      "negative_gap_scenario_count": 2,
+      "zero_gap_scenario_count": 0,
+      "sign_invariant_positive_across_grid": false,
+      "stress_cases": [
+        {
+          "Ke_pct": 8,
+          "g_pct": 0,
+          "required_roe_pct": 9.89578613502492,
+          "gap_vs_h1_proxy_pp": 0.4712279111916615,
+          "h1_proxy_above_required": false
+        },
+        {
+          "Ke_pct": 8,
+          "g_pct": 3,
+          "required_roe_pct": 9.184866334390575,
+          "gap_vs_h1_proxy_pp": -0.2396918894426836,
+          "h1_proxy_above_required": true
+        },
+        {
+          "Ke_pct": 8,
+          "g_pct": 5,
+          "required_roe_pct": 8.710919800634345,
+          "gap_vs_h1_proxy_pp": -0.7136384231989137,
+          "h1_proxy_above_required": true
+        },
+        {
+          "Ke_pct": 10,
+          "g_pct": 0,
+          "required_roe_pct": 12.36973266878115,
+          "gap_vs_h1_proxy_pp": 2.9451744449478916,
+          "h1_proxy_above_required": false
+        },
+        {
+          "Ke_pct": 10,
+          "g_pct": 3,
+          "required_roe_pct": 11.658812868146805,
+          "gap_vs_h1_proxy_pp": 2.2342546443135465,
+          "h1_proxy_above_required": false
+        },
+        {
+          "Ke_pct": 10,
+          "g_pct": 5,
+          "required_roe_pct": 11.184866334390575,
+          "gap_vs_h1_proxy_pp": 1.7603081105573164,
+          "h1_proxy_above_required": false
+        },
+        {
+          "Ke_pct": 12,
+          "g_pct": 0,
+          "required_roe_pct": 14.84367920253738,
+          "gap_vs_h1_proxy_pp": 5.419120978704122,
+          "h1_proxy_above_required": false
+        },
+        {
+          "Ke_pct": 12,
+          "g_pct": 3,
+          "required_roe_pct": 14.132759401903035,
+          "gap_vs_h1_proxy_pp": 4.708201178069777,
+          "h1_proxy_above_required": false
+        },
+        {
+          "Ke_pct": 12,
+          "g_pct": 5,
+          "required_roe_pct": 13.658812868146805,
+          "gap_vs_h1_proxy_pp": 4.2342546443135465,
+          "h1_proxy_above_required": false
+        }
+      ],
+      "issuer_original_BVPS_not_yet_verified": true,
+      "hypothetical_ke_g_cells_not_calibrated_probabilities": true,
+      "original_2027_price_target_available": false,
+      "formal_Aplus": false
+    },
+    {
+      "code": "2885",
+      "name": "元大金",
+      "BVPS_2026q2_ntd": 28.73,
+      "official_close_ntd": 72.4,
+      "P_B": 2.520013922728855,
+      "H1_EPS_2026": 2.64,
+      "annualized_H1_EPS_over_ending_BVPS_pct": 18.37800208840933,
+      "base_assumption_gap_pp": 2.26209537069266,
+      "min_conditional_hurdle_gap_pp": -5.817960320222763,
+      "max_conditional_hurdle_gap_pp": 11.862164984336932,
+      "positive_gap_scenario_count": 6,
+      "negative_gap_scenario_count": 3,
+      "zero_gap_scenario_count": 0,
+      "sign_invariant_positive_across_grid": false,
+      "stress_cases": [
+        {
+          "Ke_pct": 8,
+          "g_pct": 0,
+          "required_roe_pct": 20.16011138183084,
+          "gap_vs_h1_proxy_pp": 1.782109293421513,
+          "h1_proxy_above_required": false
+        },
+        {
+          "Ke_pct": 8,
+          "g_pct": 3,
+          "required_roe_pct": 15.600069613644276,
+          "gap_vs_h1_proxy_pp": -2.777932474765052,
+          "h1_proxy_above_required": true
+        },
+        {
+          "Ke_pct": 8,
+          "g_pct": 5,
+          "required_roe_pct": 12.560041768186565,
+          "gap_vs_h1_proxy_pp": -5.817960320222763,
+          "h1_proxy_above_required": true
+        },
+        {
+          "Ke_pct": 10,
+          "g_pct": 0,
+          "required_roe_pct": 25.200139227288552,
+          "gap_vs_h1_proxy_pp": 6.822137138879224,
+          "h1_proxy_above_required": false
+        },
+        {
+          "Ke_pct": 10,
+          "g_pct": 3,
+          "required_roe_pct": 20.640097459101987,
+          "gap_vs_h1_proxy_pp": 2.262095370692659,
+          "h1_proxy_above_required": false
+        },
+        {
+          "Ke_pct": 10,
+          "g_pct": 5,
+          "required_roe_pct": 17.600069613644276,
+          "gap_vs_h1_proxy_pp": -0.777932474765052,
+          "h1_proxy_above_required": true
+        },
+        {
+          "Ke_pct": 12,
+          "g_pct": 0,
+          "required_roe_pct": 30.24016707274626,
+          "gap_vs_h1_proxy_pp": 11.862164984336932,
+          "h1_proxy_above_required": false
+        },
+        {
+          "Ke_pct": 12,
+          "g_pct": 3,
+          "required_roe_pct": 25.680125304559695,
+          "gap_vs_h1_proxy_pp": 7.302123216150367,
+          "h1_proxy_above_required": false
+        },
+        {
+          "Ke_pct": 12,
+          "g_pct": 5,
+          "required_roe_pct": 22.640097459101987,
+          "gap_vs_h1_proxy_pp": 4.262095370692659,
+          "h1_proxy_above_required": false
+        }
+      ],
+      "issuer_original_BVPS_not_yet_verified": true,
+      "hypothetical_ke_g_cells_not_calibrated_probabilities": true,
+      "original_2027_price_target_available": false,
+      "formal_Aplus": false
+    },
+    {
+      "code": "2890",
+      "name": "永豐金",
+      "BVPS_2026q2_ntd": 18.29,
+      "official_close_ntd": 46.35,
+      "P_B": 2.5341716785128487,
+      "H1_EPS_2026": 1.66,
+      "annualized_H1_EPS_over_ending_BVPS_pct": 18.15199562602515,
+      "base_assumption_gap_pp": 2.587206123564792,
+      "min_conditional_hurdle_gap_pp": -5.5494805904866045,
+      "max_conditional_hurdle_gap_pp": 12.258064516129036,
+      "positive_gap_scenario_count": 6,
+      "negative_gap_scenario_count": 3,
+      "zero_gap_scenario_count": 0,
+      "sign_invariant_positive_across_grid": false,
+      "stress_cases": [
+        {
+          "Ke_pct": 8,
+          "g_pct": 0,
+          "required_roe_pct": 20.27337342810279,
+          "gap_vs_h1_proxy_pp": 2.121377802077639,
+          "h1_proxy_above_required": false
+        },
+        {
+          "Ke_pct": 8,
+          "g_pct": 3,
+          "required_roe_pct": 15.670858392564243,
+          "gap_vs_h1_proxy_pp": -2.481137233460908,
+          "h1_proxy_above_required": true
+        },
+        {
+          "Ke_pct": 8,
+          "g_pct": 5,
+          "required_roe_pct": 12.602515035538547,
+          "gap_vs_h1_proxy_pp": -5.5494805904866045,
+          "h1_proxy_above_required": true
+        },
+        {
+          "Ke_pct": 10,
+          "g_pct": 0,
+          "required_roe_pct": 25.341716785128487,
+          "gap_vs_h1_proxy_pp": 7.189721159103335,
+          "h1_proxy_above_required": false
+        },
+        {
+          "Ke_pct": 10,
+          "g_pct": 3,
+          "required_roe_pct": 20.73920174958994,
+          "gap_vs_h1_proxy_pp": 2.5872061235647905,
+          "h1_proxy_above_required": false
+        },
+        {
+          "Ke_pct": 10,
+          "g_pct": 5,
+          "required_roe_pct": 17.67085839256424,
+          "gap_vs_h1_proxy_pp": -0.48113723346090964,
+          "h1_proxy_above_required": true
+        },
+        {
+          "Ke_pct": 12,
+          "g_pct": 0,
+          "required_roe_pct": 30.410060142154187,
+          "gap_vs_h1_proxy_pp": 12.258064516129036,
+          "h1_proxy_above_required": false
+        },
+        {
+          "Ke_pct": 12,
+          "g_pct": 3,
+          "required_roe_pct": 25.80754510661564,
+          "gap_vs_h1_proxy_pp": 7.655549480590487,
+          "h1_proxy_above_required": false
+        },
+        {
+          "Ke_pct": 12,
+          "g_pct": 5,
+          "required_roe_pct": 22.73920174958994,
+          "gap_vs_h1_proxy_pp": 4.5872061235647905,
+          "h1_proxy_above_required": false
+        }
+      ],
+      "issuer_original_BVPS_not_yet_verified": true,
+      "hypothetical_ke_g_cells_not_calibrated_probabilities": true,
+      "original_2027_price_target_available": false,
+      "formal_Aplus": false
+    },
+    {
+      "code": "2886",
+      "name": "兆豐金",
+      "BVPS_2026q2_ntd": 27.13,
+      "official_close_ntd": 55.2,
+      "P_B": 2.0346479911537045,
+      "H1_EPS_2026": 1.44,
+      "annualized_H1_EPS_over_ending_BVPS_pct": 10.61555473645411,
+      "base_assumption_gap_pp": 6.626981201621825,
+      "min_conditional_hurdle_gap_pp": 0.488389237007004,
+      "max_conditional_hurdle_gap_pp": 13.800221157390345,
+      "positive_gap_scenario_count": 9,
+      "negative_gap_scenario_count": 0,
+      "zero_gap_scenario_count": 0,
+      "sign_invariant_positive_across_grid": true,
+      "stress_cases": [
+        {
+          "Ke_pct": 8,
+          "g_pct": 0,
+          "required_roe_pct": 16.277183929229636,
+          "gap_vs_h1_proxy_pp": 5.661629192775527,
+          "h1_proxy_above_required": false
+        },
+        {
+          "Ke_pct": 8,
+          "g_pct": 3,
+          "required_roe_pct": 13.173239955768523,
+          "gap_vs_h1_proxy_pp": 2.557685219314413,
+          "h1_proxy_above_required": false
+        },
+        {
+          "Ke_pct": 8,
+          "g_pct": 5,
+          "required_roe_pct": 11.103943973461114,
+          "gap_vs_h1_proxy_pp": 0.488389237007004,
+          "h1_proxy_above_required": false
+        },
+        {
+          "Ke_pct": 10,
+          "g_pct": 0,
+          "required_roe_pct": 20.346479911537045,
+          "gap_vs_h1_proxy_pp": 9.730925175082936,
+          "h1_proxy_above_required": false
+        },
+        {
+          "Ke_pct": 10,
+          "g_pct": 3,
+          "required_roe_pct": 17.24253593807593,
+          "gap_vs_h1_proxy_pp": 6.626981201621822,
+          "h1_proxy_above_required": false
+        },
+        {
+          "Ke_pct": 10,
+          "g_pct": 5,
+          "required_roe_pct": 15.173239955768523,
+          "gap_vs_h1_proxy_pp": 4.557685219314413,
+          "h1_proxy_above_required": false
+        },
+        {
+          "Ke_pct": 12,
+          "g_pct": 0,
+          "required_roe_pct": 24.415775893844454,
+          "gap_vs_h1_proxy_pp": 13.800221157390345,
+          "h1_proxy_above_required": false
+        },
+        {
+          "Ke_pct": 12,
+          "g_pct": 3,
+          "required_roe_pct": 21.31183192038334,
+          "gap_vs_h1_proxy_pp": 10.696277183929231,
+          "h1_proxy_above_required": false
+        },
+        {
+          "Ke_pct": 12,
+          "g_pct": 5,
+          "required_roe_pct": 19.24253593807593,
+          "gap_vs_h1_proxy_pp": 8.626981201621822,
+          "h1_proxy_above_required": false
+        }
+      ],
+      "issuer_original_BVPS_not_yet_verified": true,
+      "hypothetical_ke_g_cells_not_calibrated_probabilities": true,
+      "original_2027_price_target_available": false,
+      "formal_Aplus": false
+    },
+    {
+      "code": "2891",
+      "name": "中信金",
+      "BVPS_2026q2_ntd": 34.99,
+      "official_close_ntd": 74.9,
+      "P_B": 2.140611603315233,
+      "H1_EPS_2026": 1.96,
+      "annualized_H1_EPS_over_ending_BVPS_pct": 11.203200914547013,
+      "base_assumption_gap_pp": 6.781080308659621,
+      "min_conditional_hurdle_gap_pp": 0.21863389539868727,
+      "max_conditional_hurdle_gap_pp": 14.484138325235785,
+      "positive_gap_scenario_count": 9,
+      "negative_gap_scenario_count": 0,
+      "zero_gap_scenario_count": 0,
+      "sign_invariant_positive_across_grid": true,
+      "stress_cases": [
+        {
+          "Ke_pct": 8,
+          "g_pct": 0,
+          "required_roe_pct": 17.124892826521865,
+          "gap_vs_h1_proxy_pp": 5.921691911974852,
+          "h1_proxy_above_required": false
+        },
+        {
+          "Ke_pct": 8,
+          "g_pct": 3,
+          "required_roe_pct": 13.703058016576165,
+          "gap_vs_h1_proxy_pp": 2.499857102029152,
+          "h1_proxy_above_required": false
+        },
+        {
+          "Ke_pct": 8,
+          "g_pct": 5,
+          "required_roe_pct": 11.4218348099457,
+          "gap_vs_h1_proxy_pp": 0.21863389539868727,
+          "h1_proxy_above_required": false
+        },
+        {
+          "Ke_pct": 10,
+          "g_pct": 0,
+          "required_roe_pct": 21.40611603315233,
+          "gap_vs_h1_proxy_pp": 10.202915118605317,
+          "h1_proxy_above_required": false
+        },
+        {
+          "Ke_pct": 10,
+          "g_pct": 3,
+          "required_roe_pct": 17.984281223206633,
+          "gap_vs_h1_proxy_pp": 6.78108030865962,
+          "h1_proxy_above_required": false
+        },
+        {
+          "Ke_pct": 10,
+          "g_pct": 5,
+          "required_roe_pct": 15.703058016576165,
+          "gap_vs_h1_proxy_pp": 4.499857102029152,
+          "h1_proxy_above_required": false
+        },
+        {
+          "Ke_pct": 12,
+          "g_pct": 0,
+          "required_roe_pct": 25.687339239782798,
+          "gap_vs_h1_proxy_pp": 14.484138325235785,
+          "h1_proxy_above_required": false
+        },
+        {
+          "Ke_pct": 12,
+          "g_pct": 3,
+          "required_roe_pct": 22.265504429837097,
+          "gap_vs_h1_proxy_pp": 11.062303515290084,
+          "h1_proxy_above_required": false
+        },
+        {
+          "Ke_pct": 12,
+          "g_pct": 5,
+          "required_roe_pct": 19.984281223206633,
+          "gap_vs_h1_proxy_pp": 8.78108030865962,
+          "h1_proxy_above_required": false
+        }
+      ],
+      "issuer_original_BVPS_not_yet_verified": true,
+      "hypothetical_ke_g_cells_not_calibrated_probabilities": true,
+      "original_2027_price_target_available": false,
+      "formal_Aplus": false
+    },
+    {
+      "code": "2884",
+      "name": "玉山金",
+      "BVPS_2026q2_ntd": 17.4,
+      "official_close_ntd": 49.75,
+      "P_B": 2.859195402298851,
+      "H1_EPS_2026": 1.32,
+      "annualized_H1_EPS_over_ending_BVPS_pct": 15.17241379310345,
+      "base_assumption_gap_pp": 7.8419540229885065,
+      "min_conditional_hurdle_gap_pp": -1.5948275862068986,
+      "max_conditional_hurdle_gap_pp": 19.137931034482754,
+      "positive_gap_scenario_count": 8,
+      "negative_gap_scenario_count": 1,
+      "zero_gap_scenario_count": 0,
+      "sign_invariant_positive_across_grid": false,
+      "stress_cases": [
+        {
+          "Ke_pct": 8,
+          "g_pct": 0,
+          "required_roe_pct": 22.873563218390807,
+          "gap_vs_h1_proxy_pp": 7.7011494252873565,
+          "h1_proxy_above_required": false
+        },
+        {
+          "Ke_pct": 8,
+          "g_pct": 3,
+          "required_roe_pct": 17.295977011494255,
+          "gap_vs_h1_proxy_pp": 2.123563218390805,
+          "h1_proxy_above_required": false
+        },
+        {
+          "Ke_pct": 8,
+          "g_pct": 5,
+          "required_roe_pct": 13.577586206896552,
+          "gap_vs_h1_proxy_pp": -1.5948275862068986,
+          "h1_proxy_above_required": true
+        },
+        {
+          "Ke_pct": 10,
+          "g_pct": 0,
+          "required_roe_pct": 28.59195402298851,
+          "gap_vs_h1_proxy_pp": 13.41954022988506,
+          "h1_proxy_above_required": false
+        },
+        {
+          "Ke_pct": 10,
+          "g_pct": 3,
+          "required_roe_pct": 23.014367816091955,
+          "gap_vs_h1_proxy_pp": 7.841954022988505,
+          "h1_proxy_above_required": false
+        },
+        {
+          "Ke_pct": 10,
+          "g_pct": 5,
+          "required_roe_pct": 19.295977011494255,
+          "gap_vs_h1_proxy_pp": 4.123563218390805,
+          "h1_proxy_above_required": false
+        },
+        {
+          "Ke_pct": 12,
+          "g_pct": 0,
+          "required_roe_pct": 34.310344827586206,
+          "gap_vs_h1_proxy_pp": 19.137931034482754,
+          "h1_proxy_above_required": false
+        },
+        {
+          "Ke_pct": 12,
+          "g_pct": 3,
+          "required_roe_pct": 28.73275862068966,
+          "gap_vs_h1_proxy_pp": 13.560344827586208,
+          "h1_proxy_above_required": false
+        },
+        {
+          "Ke_pct": 12,
+          "g_pct": 5,
+          "required_roe_pct": 25.014367816091955,
+          "gap_vs_h1_proxy_pp": 9.841954022988505,
+          "h1_proxy_above_required": false
+        }
+      ],
+      "issuer_original_BVPS_not_yet_verified": true,
+      "hypothetical_ke_g_cells_not_calibrated_probabilities": true,
+      "original_2027_price_target_available": false,
+      "formal_Aplus": false
+    },
+    {
+      "code": "2880",
+      "name": "華南金",
+      "BVPS_2026q2_ntd": 17.37,
+      "official_close_ntd": 50.3,
+      "P_B": 2.895797351755901,
+      "H1_EPS_2026": 1.24,
+      "annualized_H1_EPS_over_ending_BVPS_pct": 14.277489925158319,
+      "base_assumption_gap_pp": 8.993091537132988,
+      "min_conditional_hurdle_gap_pp": -0.5900978698906165,
+      "max_conditional_hurdle_gap_pp": 20.47207829591249,
+      "positive_gap_scenario_count": 8,
+      "negative_gap_scenario_count": 1,
+      "zero_gap_scenario_count": 0,
+      "sign_invariant_positive_across_grid": false,
+      "stress_cases": [
+        {
+          "Ke_pct": 8,
+          "g_pct": 0,
+          "required_roe_pct": 23.166378814047206,
+          "gap_vs_h1_proxy_pp": 8.888888888888888,
+          "h1_proxy_above_required": false
+        },
+        {
+          "Ke_pct": 8,
+          "g_pct": 3,
+          "required_roe_pct": 17.478986758779506,
+          "gap_vs_h1_proxy_pp": 3.201496833621187,
+          "h1_proxy_above_required": false
+        },
+        {
+          "Ke_pct": 8,
+          "g_pct": 5,
+          "required_roe_pct": 13.687392055267702,
+          "gap_vs_h1_proxy_pp": -0.5900978698906165,
+          "h1_proxy_above_required": true
+        },
+        {
+          "Ke_pct": 10,
+          "g_pct": 0,
+          "required_roe_pct": 28.957973517559008,
+          "gap_vs_h1_proxy_pp": 14.68048359240069,
+          "h1_proxy_above_required": false
+        },
+        {
+          "Ke_pct": 10,
+          "g_pct": 3,
+          "required_roe_pct": 23.270581462291304,
+          "gap_vs_h1_proxy_pp": 8.993091537132985,
+          "h1_proxy_above_required": false
+        },
+        {
+          "Ke_pct": 10,
+          "g_pct": 5,
+          "required_roe_pct": 19.478986758779506,
+          "gap_vs_h1_proxy_pp": 5.201496833621187,
+          "h1_proxy_above_required": false
+        },
+        {
+          "Ke_pct": 12,
+          "g_pct": 0,
+          "required_roe_pct": 34.74956822107081,
+          "gap_vs_h1_proxy_pp": 20.47207829591249,
+          "h1_proxy_above_required": false
+        },
+        {
+          "Ke_pct": 12,
+          "g_pct": 3,
+          "required_roe_pct": 29.06217616580311,
+          "gap_vs_h1_proxy_pp": 14.78468624064479,
+          "h1_proxy_above_required": false
+        },
+        {
+          "Ke_pct": 12,
+          "g_pct": 5,
+          "required_roe_pct": 25.270581462291304,
+          "gap_vs_h1_proxy_pp": 10.993091537132985,
+          "h1_proxy_above_required": false
+        }
+      ],
+      "issuer_original_BVPS_not_yet_verified": true,
+      "hypothetical_ke_g_cells_not_calibrated_probabilities": true,
+      "original_2027_price_target_available": false,
+      "formal_Aplus": false
+    }
+  ]
+}
