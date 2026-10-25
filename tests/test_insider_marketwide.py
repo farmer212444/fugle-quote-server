@@ -7,7 +7,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from scripts.insider_marketwide import (build_ranking, capture_details, months_ending, parse_detail,
+from scripts.insider_marketwide import (build_ranking, capture_details, months_ending, months_year_to_date, parse_detail,
                                         parse_irb110, put_json, save_original)
 
 def row(identity="董事本人", name="甲", prev=10000, buy=3000, sell=1000,
@@ -30,6 +30,14 @@ class MarketwideInsiderTests(unittest.TestCase):
         self.assertEqual((a[0], a[-1]), ("2025-10", "2026-09"))
         self.assertEqual(months_ending(dt.date(2026,11,10), 1), ["2026-09"])
         self.assertEqual(months_ending(dt.date(2026,11,16), 1), ["2026-10"])
+
+    def test_year_to_date_uses_only_this_year_reported_months(self):
+        self.assertEqual(
+            months_year_to_date(dt.date(2026, 10, 25)),
+            [f"2026-{m:02d}" for m in range(1, 10)])
+        self.assertEqual(months_year_to_date(dt.date(2026, 11, 10))[-1], "2026-09")
+        self.assertEqual(months_year_to_date(dt.date(2026, 11, 16))[-1], "2026-10")
+        self.assertEqual(months_year_to_date(dt.date(2026, 1, 10)), [])
 
     def test_no_market_buy_from_gift_pledge_or_role_duplicate(self):
         a = row()
@@ -65,9 +73,11 @@ class MarketwideInsiderTests(unittest.TestCase):
                 return body([row()])
             out = capture_details(b,["2026-08","2026-09"],masters,3,gap=0,getter=read)
             self.assertEqual(out["succeeded"],3)
-            self.assertEqual(seen, [("1234","09"),("1234","08"),("5678","09")])
+            self.assertEqual(seen, [("1234","09"),("5678","09"),("1234","08")])
             ranking = build_ranking(b,["2026-08","2026-09"],masters)
             self.assertEqual(ranking["complete_issuer_count"],1)
+            self.assertEqual(ranking["observed_positive_issuer_count"],2)
+            self.assertEqual(ranking["partial_positive_issuer_count"],1)
 
     def test_fails_closed_on_malformed_and_ambiguous(self):
         with self.assertRaises(ValueError):
@@ -77,7 +87,7 @@ class MarketwideInsiderTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             parse_detail(body([row(name="同名"),row(name="同名", buy=4000)]))
 
-    def test_no_partial_twelve_month_rank_and_hash_guard(self):
+    def test_partially_observed_ytd_buyers_are_visible_with_coverage_and_hash_guard(self):
         with tempfile.TemporaryDirectory() as p:
             b = Path(p)
             months = months_ending(dt.date(2026,10,25), 12)
@@ -90,6 +100,9 @@ class MarketwideInsiderTests(unittest.TestCase):
             first = build_ranking(b, months, master)
             self.assertEqual(first["complete_issuer_count"], 0)
             self.assertFalse(first["positive_buy_complete_sample_top100"])
+            self.assertEqual(first["observed_positive_issuer_count"], 1)
+            self.assertEqual(first["positive_buy_observed_sample_top100"][0]["observed_month_count"], 11)
+            self.assertTrue(first["positive_buy_observed_sample_top100"][0]["buy_amount_is_observed_months_only"])
             month = months[-1]
             dest = b/"detail"/month/"1234.json"
             saved = save_original(dest,data,"https://mops.twse.com.tw/mops/api/query6_1",month)
@@ -102,6 +115,20 @@ class MarketwideInsiderTests(unittest.TestCase):
             archive.write_bytes(gzip.compress(body([row(buy=5000)])))
             broken=build_ranking(b,months,master)
             self.assertEqual(broken["complete_issuer_count"],0)
+            self.assertEqual(broken["positive_buy_observed_sample_top100"][0]["observed_month_count"],11)
+
+    def test_no_purchase_only_sellers_are_not_ranked(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            b = Path(tmp)
+            code = "1234"
+            month = "2026-09"
+            dest = b / "detail" / month / (code + ".json")
+            original = body([row(name="只賣", buy=0, sell=100)])
+            receipt = save_original(dest, original, "https://mops.twse.com.tw/mops/api/query6_1", month)
+            put_json(dest, dict(receipt, code=code, month=month, buy_shares=0, sell_shares=100))
+            rank = build_ranking(b, [month], {code: {"market": "TWSE", "issued_shares": 1000000}})
+            self.assertEqual(rank["complete_issuer_count"], 1)
+            self.assertEqual(rank["observed_positive_issuer_count"], 0)
 
     def test_failed_capture_rotates_pending_queue(self):
         with tempfile.TemporaryDirectory() as tmp:
