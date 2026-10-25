@@ -84,7 +84,7 @@ class Financial0056KegTests(unittest.TestCase):
             write(a,path)
             self.assertEqual(raw,path.read_bytes())
             md=path.with_suffix(".md").read_text(encoding="utf-8")
-            self.assertIn("九種",md)
+            self.assertIn("九組情境",md)
             self.assertIn("中信金",md)
             self.assertIn("不是確定高估",md)
 
