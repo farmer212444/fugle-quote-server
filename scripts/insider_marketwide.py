@@ -212,6 +212,15 @@ def capture_details(base, months, master, limit, gap=2.0, getter=fetch):
             prior = get_json(record)
             if prior:
                 continue
+            retry = base / "retry" / month / (code + ".json")
+            last_error = get_json(retry)
+            if last_error and last_error.get("last_attempted_at"):
+                try:
+                    elapsed = dt.datetime.now(dt.timezone.utc) - dt.datetime.fromisoformat(last_error["last_attempted_at"])
+                    if elapsed.total_seconds() < 24 * 3600:
+                        continue
+                except (ValueError, TypeError):
+                    pass
             if requested >= limit:
                 return {"requested": requested, "succeeded": succeeded, "errors": errors}
             requested += 1
@@ -227,7 +236,9 @@ def capture_details(base, months, master, limit, gap=2.0, getter=fetch):
                                       status="OFFICIAL_MOPS_CAPTURED_HOLDER_DEDUP_UNVERIFIED"))
                 succeeded += 1
             except (OSError, ValueError, TypeError, KeyError, json.JSONDecodeError) as ex:
-                errors.append({"code": code, "month": month, "reason": str(ex)[:250]})
+                err = {"code": code, "month": month, "reason": str(ex)[:250]}
+                errors.append(err)
+                put_json(retry, dict(err, last_attempted_at=dt.datetime.now(dt.timezone.utc).isoformat()))
                 if len(errors) >= 20 and succeeded == 0:
                     return {"requested": requested, "succeeded": succeeded,
                             "errors": errors, "stopped": "SOURCE_OUTAGE_NO_ZERO_FILL"}
