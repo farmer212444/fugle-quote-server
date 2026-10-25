@@ -41,6 +41,34 @@ class MarketwideInsiderTests(unittest.TestCase):
         self.assertEqual(res["other_in_shares"], 800)
         self.assertFalse(res["original_holder_account_identity_certified"])
 
+    def test_empty_holder_api_row_skipped_without_inventing_trades(self):
+        empty = [""] * 24
+        good = row(name="真正持有人", buy=500, sell=300)
+        result = parse_detail(body([empty, good]))
+        self.assertEqual(result["buy_shares"], 500)
+        self.assertEqual(result["sell_shares"], 300)
+        with self.assertRaisesRegex(ValueError, "UNIDENTIFIED_ROW_WITH_SHARES"):
+            trades_without_name = list(empty)
+            trades_without_name[8] = "100"
+            parse_detail(body([trades_without_name, good]))
+        with self.assertRaisesRegex(ValueError, "NO_VALID_HOLDER_ROWS"):
+            parse_detail(body([empty]))
+
+    def test_issuer_first_queue_creates_complete_sample_first(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            b = Path(tmp)
+            masters = {"1234":{"market":"TWSE","issued_shares":1000000},
+                       "5678":{"market":"TWSE","issued_shares":1000000}}
+            seen = []
+            def read(url, payload):
+                seen.append((payload["companyId"],payload["month"]))
+                return body([row()])
+            out = capture_details(b,["2026-08","2026-09"],masters,3,gap=0,getter=read)
+            self.assertEqual(out["succeeded"],3)
+            self.assertEqual(seen, [("1234","09"),("1234","08"),("5678","09")])
+            ranking = build_ranking(b,["2026-08","2026-09"],masters)
+            self.assertEqual(ranking["complete_issuer_count"],1)
+
     def test_fails_closed_on_malformed_and_ambiguous(self):
         with self.assertRaises(ValueError):
             parse_detail(body([row()], code=500))
