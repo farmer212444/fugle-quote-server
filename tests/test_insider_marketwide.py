@@ -7,7 +7,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from scripts.insider_marketwide import (build_ranking, months_ending, parse_detail,
+from scripts.insider_marketwide import (build_ranking, capture_details, months_ending, parse_detail,
                                         parse_irb110, put_json, save_original)
 
 def row(identity="董事本人", name="甲", prev=10000, buy=3000, sell=1000,
@@ -74,6 +74,19 @@ class MarketwideInsiderTests(unittest.TestCase):
             archive.write_bytes(gzip.compress(body([row(buy=5000)])))
             broken=build_ranking(b,months,master)
             self.assertEqual(broken["complete_issuer_count"],0)
+
+    def test_failed_capture_rotates_pending_queue(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            base = Path(tmp)
+            master = {"1234": {"market":"TWSE","issued_shares":1000000}}
+            def unavailable(url, payload):
+                raise OSError("offline")
+            first = capture_details(base, ["2026-09"], master, 10, gap=0, getter=unavailable)
+            self.assertEqual(first["requested"], 1)
+            self.assertEqual(first["succeeded"], 0)
+            second = capture_details(base, ["2026-09"], master, 10, gap=0, getter=unavailable)
+            self.assertEqual(second["requested"], 0)
+            self.assertFalse((base/"detail"/"2026-09"/"1234.json").exists())
 
     def test_irb_rejects_tiny_response(self):
         with self.assertRaises(ValueError):
