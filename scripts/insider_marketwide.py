@@ -68,7 +68,7 @@ def months_ending(day, count):
     # Data from the preceding month is due by the 15th; no premature month.
     year, month = day.year, day.month
     index = year * 12 + month - (3 if day.day <= 15 else 2)
-    return [f"{(index - n - 1)//12:04d}-{(index - n - 1)%12+1:02d}"
+    return [f"{(index - n)//12:04d}-{(index - n)%12+1:02d}"
             for n in range(count - 1, -1, -1)]
 
 def parse_irb110(raw):
