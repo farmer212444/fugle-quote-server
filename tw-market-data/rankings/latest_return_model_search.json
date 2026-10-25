@@ -1,11 +1,11 @@
 {
   "schema": "RETURN_MODEL_SEARCH_STATUS_V1",
-  "observed_at": "2026-10-25T02:03:36.421950+00:00",
+  "observed_at": "2026-10-25T03:17:21.991869+00:00",
   "model": "V8.10.8",
-  "estimate_vintage": "2026-10-25T10:03:20.583008+08:00",
+  "estimate_vintage": "2026-10-25T11:17:04.764205+08:00",
   "asof_price_date": "2026-10-22",
-  "experiment_id": "search-4e5f78bf2eb53e7000987296",
-  "registered_at": "2026-10-24T13:43:17.886986+00:00",
+  "experiment_id": "search-98840bc4e146bd2741f2a5b4",
+  "registered_at": "2026-10-25T03:17:19.170768+00:00",
   "policy_sha256": "a8caafb110e3214eedafcb0dc02e63e9b98e5699d6dece7eb82e92d587e3d43b",
   "parameter_count": 240,
   "parameters": [
@@ -2976,12 +2976,12 @@
       "trade_orders_created": 0,
       "holding_sessions": 21,
       "parameter_count": 80,
-      "current_cohort": "9106967b4845c3196aa4de03",
+      "current_cohort": "bb1a018d5f37a33894a9006a",
       "current_ready_parameter_count": 42,
       "verified_return_periods": 0,
       "pending_cohorts": [
         {
-          "cohort_id": "9106967b4845c3196aa4de03",
+          "cohort_id": "bb1a018d5f37a33894a9006a",
           "status": "AWAITING_FUTURE_HOLDING_SESSIONS_OR_CALENDAR"
         }
       ],
@@ -3789,7 +3789,7 @@
           "inputs_ready": false
         }
       ],
-      "newly_frozen": false
+      "newly_frozen": true
     },
     {
       "latest_training_pick": {
@@ -3808,12 +3808,12 @@
       "trade_orders_created": 0,
       "holding_sessions": 63,
       "parameter_count": 80,
-      "current_cohort": "82d83811f286b3424655a2b4",
+      "current_cohort": "26bee86b1cf9e5cb85a492c8",
       "current_ready_parameter_count": 42,
       "verified_return_periods": 0,
       "pending_cohorts": [
         {
-          "cohort_id": "82d83811f286b3424655a2b4",
+          "cohort_id": "26bee86b1cf9e5cb85a492c8",
           "status": "AWAITING_FUTURE_HOLDING_SESSIONS_OR_CALENDAR"
         }
       ],
@@ -4621,7 +4621,7 @@
           "inputs_ready": false
         }
       ],
-      "newly_frozen": false
+      "newly_frozen": true
     },
     {
       "latest_training_pick": {
@@ -4640,12 +4640,12 @@
       "trade_orders_created": 0,
       "holding_sessions": 126,
       "parameter_count": 80,
-      "current_cohort": "66b08d6e8f8d28ee7327ed0f",
+      "current_cohort": "d90bd1c0dd52ddcd24083a72",
       "current_ready_parameter_count": 42,
       "verified_return_periods": 0,
       "pending_cohorts": [
         {
-          "cohort_id": "66b08d6e8f8d28ee7327ed0f",
+          "cohort_id": "d90bd1c0dd52ddcd24083a72",
           "status": "AWAITING_FUTURE_HOLDING_SESSIONS_OR_CALENDAR"
         }
       ],
@@ -5453,7 +5453,7 @@
           "inputs_ready": false
         }
       ],
-      "newly_frozen": false
+      "newly_frozen": true
     }
   ],
   "feature_source_errors": [],
@@ -5717,14 +5717,14 @@
       "code": "4953"
     }
   ],
-  "all_registered_search_trials": 4800,
+  "all_registered_search_trials": 5040,
   "current_research_screens": {
     "schema": "CURRENT_REGISTERED_RESEARCH_SCREENS_V1",
     "model": "V8.10.8",
-    "estimate_vintage": "2026-10-25T10:03:20.583008+08:00",
+    "estimate_vintage": "2026-10-25T11:17:04.764205+08:00",
     "asof_price_date": "2026-10-22",
-    "features_checked_at": "2026-10-25T02:03:35.818168+00:00",
-    "experiment_id": "search-4e5f78bf2eb53e7000987296",
+    "features_checked_at": "2026-10-25T03:17:21.182118+00:00",
+    "experiment_id": "search-98840bc4e146bd2741f2a5b4",
     "screens": [
       {
         "family": "balanced",
@@ -6813,12 +6813,12 @@
             "price_date": "2026-10-22",
             "financial_period": "2026-Q2",
             "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
-            "base_price_upside_pct": 126.2294815618862,
-            "bear_price_upside_pct": -32.24547925207249,
-            "eps_pe_each_minus20_price_upside_pct": 44.78686819960718,
+            "base_price_upside_pct": 125.90006610726276,
+            "bear_price_upside_pct": -32.344137420322184,
+            "eps_pe_each_minus20_price_upside_pct": 44.57604230864818,
             "adv20_ntd": 333394512.0,
             "features": {
-              "forward_upside_pct": 126.2294815618862,
+              "forward_upside_pct": 125.90006610726276,
               "revenue_acceleration_pp": -32.619179025541385,
               "gross_margin_delta_pp": 1.916307823772273,
               "ocf_to_sales": 0.14834023300661087,
