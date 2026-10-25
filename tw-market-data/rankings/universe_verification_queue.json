@@ -1,7 +1,7 @@
 {
   "model": "V8.10.8",
   "asof_price_date": "2026-10-22",
-  "source_estimate_vintage": "2026-10-25T11:17:04.764205+08:00",
+  "source_estimate_vintage": "2026-10-25T22:44:37.153399+08:00",
   "universe_priced": 1988,
   "normalized_financial_issuers": 1982,
   "model_issuer_rows": 2001,
@@ -10,6 +10,11 @@
   "not_yet_in_model_count": 0,
   "not_yet_in_model_note": "Identifiers are derived from hashed normalized financial mirrors and remain NOT_CERTIFIED. They must be reconciled against a dated official PIT issuer master before full coverage can be declared.",
   "normalized_universe_identity_receipts": [
+    {
+      "path": "tw-market-data/fundamentals/2023-Q1/TPEX_income.json",
+      "sha256": "a45c7624879fd1fa7291df6a67ccdec9498f9ad0dfad68356b5b813b591b52f3",
+      "meaning": "NORMALIZED_MIRROR_IDENTITY_ONLY_NOT_INDEPENDENT_OFFICIAL_PIT_PROOF"
+    },
     {
       "path": "tw-market-data/fundamentals/2023-Q1/TWSE_income.json",
       "sha256": "bbb94a0853c8d724c91de3454cd5c64f29c8894f73b41f9e4e3f8e68854bd258",
