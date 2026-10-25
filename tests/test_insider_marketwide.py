@@ -77,7 +77,7 @@ class MarketwideInsiderTests(unittest.TestCase):
 
     def test_irb_rejects_tiny_response(self):
         with self.assertRaises(ValueError):
-            parse_irb110("<table><tr><td>1234 公司</td><td>1,000,000</td>"+'<td>0</td>'*6+"</tr></table>".encode("big5"))
+            parse_irb110(("<table><tr><td>1234 公司</td><td>1,000,000</td>"+'<td>0</td>'*6+"</tr></table>").encode("big5"))
 
 if __name__ == "__main__":
     unittest.main()
