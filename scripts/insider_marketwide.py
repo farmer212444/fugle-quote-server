@@ -71,6 +71,13 @@ def months_ending(day, count):
     return [f"{(index - n)//12:04d}-{(index - n)%12+1:02d}"
             for n in range(count - 1, -1, -1)]
 
+def months_year_to_date(day):
+    """This calendar year's months with completed post-trade reporting."""
+    latest = months_ending(day, 1)[0]
+    year, month = (int(v) for v in latest.split("-"))
+    return ([f"{year:04d}-{m:02d}" for m in range(1, month + 1)]
+            if year == day.year else [])
+
 def parse_irb110(raw):
     doc = raw.decode("big5", errors="replace")
     rows = {}
@@ -217,11 +224,10 @@ def irb_master(base, month):
 
 def capture_details(base, months, master, limit, gap=2.0, getter=fetch):
     requested, succeeded, errors = 0, 0, []
-    # Newest reports first, but every successful archived issuer-month is never re-fetched.
-    # Finish twelve months per issuer before moving to the next issuer:
-    # incremental output can then contain real full-window samples.
-    for code in sorted(master):
-        for month in reversed(months):
+    # Discover recent-year buyers across the *whole* market first, not nine
+    # months of one stock before checking the next. Earlier months backfill later.
+    for month in reversed(months):
+        for code in sorted(master):
             record = base / "detail" / month / (code + ".json")
             prior = get_json(record)
             if prior:
@@ -270,12 +276,13 @@ def capture_details(base, months, master, limit, gap=2.0, getter=fetch):
     return {"requested": requested, "succeeded": succeeded, "errors": errors}
 
 def build_ranking(base, months, master):
-    eligible, pending = [], []
+    complete, pending, positive_observed = [], [], []
     detail_ok = 0
     for code, item in sorted(master.items()):
         buy = sell = 0
         positive_months = 0
         missing = []
+        observed = []
         for month in months:
             row = get_json(base / "detail" / month / (code + ".json"))
             if not row or row.get("code") != code or row.get("month") != month:
@@ -293,80 +300,109 @@ def build_ranking(base, months, master):
                 missing.append(month)
                 continue
             detail_ok += 1
+            observed.append(month)
             buy += parsed["buy_shares"]
             sell += parsed["sell_shares"]
             if parsed["buy_shares"] > parsed["sell_shares"]:
                 positive_months += 1
-        if missing:
+        if not item.get("issued_shares") or item["issued_shares"] <= 0:
+            pending.append({"code": code, "missing_months": missing,
+                            "reason": "INVALID_DENOMINATOR"})
+            continue
+        complete_months = len(observed) == len(months) and len(months) > 0
+        if not complete_months:
             pending.append({"code": code, "missing_months": missing})
+        if not observed:
             continue
         shares = item["issued_shares"]
-        if shares <= 0:
-            pending.append({"code": code, "missing_months": [], "reason": "INVALID_DENOMINATOR"})
-            continue
-        eligible.append({"code": code, "market": item["market"], "issued_shares": shares,
-                         "buy_lots": round(buy/1000, 3), "sell_lots": round(sell/1000, 3),
-                         "net_lots": round((buy-sell)/1000, 3),
-                         "buy_pct_of_issued": round(buy/shares*100, 5),
-                         "net_pct_of_issued": round((buy-sell)/shares*100, 5),
-                         "positive_net_months": positive_months,
-                         "fully_observed_months": len(months)})
-    eligible.sort(key=lambda x: (-x["buy_pct_of_issued"], -x["net_pct_of_issued"], x["code"]))
-    status = ("COMPLETE_RESEARCH_SCOPE_NOT_FORMALLY_CERTIFIED" if master and not pending
-              else "PARTIAL_NOT_MARKETWIDE_RANKING")
-    return {"schema": "INSIDER_MARKETWIDE_V1", "status": status,
+        entry = {"code": code, "market": item["market"], "issued_shares": shares,
+                 "buy_lots": round(buy / 1000, 3), "sell_lots": round(sell / 1000, 3),
+                 "net_lots": round((buy - sell) / 1000, 3),
+                 "buy_pct_of_issued": round(buy / shares * 100, 5),
+                 "net_pct_of_issued": round((buy - sell) / shares * 100, 5),
+                 "positive_net_months": positive_months,
+                 "observed_month_count": len(observed),
+                 "expected_ytd_month_count": len(months),
+                 "observed_months": observed,
+                 "missing_months": missing,
+                 "year_to_date_complete": complete_months,
+                 "buy_amount_is_observed_months_only": not complete_months}
+        if complete_months:
+            complete.append(entry)
+        # The user wants ONLY stocks with recorded actual market purchases.
+        # An incomplete issuer can appear provisionally with coverage disclosed.
+        if buy > 0:
+            positive_observed.append(entry)
+    sort_by_purchase = lambda x: (-x["buy_pct_of_issued"], -x["net_pct_of_issued"], x["code"])
+    complete.sort(key=sort_by_purchase)
+    positive_observed.sort(key=sort_by_purchase)
+    status = ("COMPLETE_YTD_RESEARCH_SCOPE_NOT_FORMALLY_CERTIFIED"
+              if master and not pending and months
+              else "PARTIAL_YTD_BUYER_DISCOVERY_NOT_MARKETWIDE")
+    return {"schema": "INSIDER_MARKETWIDE_YTD_V2", "status": status,
             "months": months, "listed_otc_issuer_count": len(master),
-            "complete_issuer_count": len(eligible), "pending_issuer_count": len(pending),
+            "complete_issuer_count": len(complete), "pending_issuer_count": len(pending),
+            "observed_positive_issuer_count": len(positive_observed),
+            "partial_positive_issuer_count": sum(not r["year_to_date_complete"] for r in positive_observed),
             "verified_detail_month_count": detail_ok,
-            "expected_detail_month_count": len(master)*len(months),
+            "expected_detail_month_count": len(master) * len(months),
             "marketwide_rank_claim_permitted": False,
+            "observed_ranking_is_not_full_year_total": bool(pending),
             "holder_identity_formal_certification": False,
             "forward_EPS_PE_Aplus_or_Exit_changed": False,
-            "positive_buy_complete_sample_top100": [r for r in eligible if r["buy_lots"] > 0][:100],
+            "positive_buy_observed_sample_top100": positive_observed[:100],
+            "positive_buy_complete_sample_top100": [r for r in complete if r["buy_lots"] > 0][:100],
             "pending_examples": pending[:60],
-            "all_complete_sample": eligible}
+            "all_observed_positive": positive_observed,
+            "all_complete_sample": complete}
 
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("--base", default=str(BASE))
-    p.add_argument("--months", type=int, default=12)
+    p.add_argument("--months", type=int, default=None,
+                   help="Optional rolling period override; default is current-year reported months")
     p.add_argument("--max-details", type=int, default=160)
     p.add_argument("--gap", type=float, default=2.0)
     p.add_argument("--asof", default=None, help="Taiwan-local date YYYY-MM-DD")
     args = p.parse_args()
-    if not 1 <= args.months <= 36 or not 0 <= args.max_details <= 2000:
+    if (args.months is not None and not 1 <= args.months <= 36) or not 0 <= args.max_details <= 2000:
         p.error("unsafe window or request cap")
     today = dt.date.fromisoformat(args.asof) if args.asof else dt.datetime.now(TW).date()
-    months = months_ending(today, args.months)
+    months = months_ending(today, args.months) if args.months is not None else months_year_to_date(today)
     base = Path(args.base)
     failures = capture_irb(base, months)
-    master = irb_master(base, months[-1])
+    master = irb_master(base, months[-1]) if months else {}
     if master:
         state = capture_details(base, months, master, args.max_details, args.gap)
         result = build_ranking(base, months, master)
     else:
         state = {"requested": 0, "succeeded": 0, "errors": [],
                  "blocked": "OFFICIAL_LATEST_MONTH_TWO_MARKET_MASTER_MISSING"}
-        result = {"schema": "INSIDER_MARKETWIDE_V1", "status": "PENDING_TWO_MARKET_OFFICIAL_MASTER",
+        result = {"schema": "INSIDER_MARKETWIDE_YTD_V2", "status": "PENDING_TWO_MARKET_OFFICIAL_MASTER_OR_CURRENT_YEAR_NOT_YET_REPORTABLE",
                   "months": months, "listed_otc_issuer_count": 0, "complete_issuer_count": 0,
-                  "marketwide_rank_claim_permitted": False, "positive_buy_complete_sample_top100": []}
+                  "marketwide_rank_claim_permitted": False, "observed_positive_issuer_count": 0,
+                  "positive_buy_observed_sample_top100": [], "positive_buy_complete_sample_top100": []}
     result["attempted_at_utc"] = dt.datetime.now(dt.timezone.utc).isoformat()
     result["collection"] = state
     result["monthly_master_failures"] = failures
     output = ROOT / "tw-market-data" / "rankings" / "insider_marketwide_latest.json"
     put_json(output, result)
-    md = ["# 上市櫃內部人近12個月市場買進／股本比率",
-          "", "申報月份：" + "～".join((months[0], months[-1])),
-          f"狀態：{result['status']}；完整公司 {result['complete_issuer_count']} / {result['listed_otc_issuer_count']}",
-          "", "**未完整涵蓋全部公司者，以下僅為完整樣本，不是全市場Top榜。**",
-          "不把申報轉讓、增資、贈與、設質、董監人事異動當成市場買進。",
-          "內部人帳戶身分去重仍未正式認證；不更改模型估值、A+、Exit。",
-          "", "|樣本序|股票|買進張數|賣出張數|買進/股本|淨買/股本|淨買月份|",
-          "|---:|---|---:|---:|---:|---:|---:|"]
-    for i, r in enumerate(result["positive_buy_complete_sample_top100"], 1):
-        md.append(f"|{i}|{r['code']}|{r['buy_lots']:,.1f}|{r['sell_lots']:,.1f}|"
+    md = ["# 上市櫃內部人今年有買進公司／股本比率",
+          "", "已完成申報月份：" + ("～".join((months[0], months[-1])) if months else "尚無"),
+          f"狀態：{result['status']}；已觀察到買進 {result.get('observed_positive_issuer_count', 0)} 家，"
+          f"完整核對本年度 {result['complete_issuer_count']} / {result['listed_otc_issuer_count']} 家",
+          "",
+          "**只要有已核實的集中市場買進就列入暫時追蹤，不要求先收齊全年月份。**",
+          "**部分月份資料只能稱為『已觀察到的買進量』；不是全年買進總額，更不是全市場正式名次。**",
+          "不把贈與、質押、增資、員工股、人事異動當成市場買進。",
+          "內部人帳戶身分去重仍未正式認證；不更改模型EPS、PE、A+、Exit。",
+          "", "|樣本序|股票|已核月份|買進張數|賣出張數|買進/股本|淨買/股本|淨買月數|",
+          "|---:|---|---:|---:|---:|---:|---:|---:|"]
+    for i, r in enumerate(result["positive_buy_observed_sample_top100"], 1):
+        md.append(f"|{i}|{r['code']}|{r['observed_month_count']}/{r['expected_ytd_month_count']}|"
+                  f"{r['buy_lots']:,.1f}|{r['sell_lots']:,.1f}|"
                   f"{r['buy_pct_of_issued']:.3f}%|{r['net_pct_of_issued']:.3f}%|"
-                  f"{r['positive_net_months']}/{len(months)}|")
+                  f"{r['positive_net_months']}|")
     atomic(ROOT / "tw-market-data" / "rankings" / "insider_marketwide_latest.md",
            ("\n".join(md) + "\n").encode("utf-8"))
     print(json.dumps({"status": result["status"], "issuers": len(master),
