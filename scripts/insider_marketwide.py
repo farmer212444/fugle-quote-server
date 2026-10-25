@@ -105,7 +105,17 @@ def parse_detail(raw):
             raise ValueError("MOPS_UNKNOWN_SCHEMA")
         role, name, kind = [str(x[k] or "").strip() for k in (0, 1, 2)]
         if not role or not name:
-            raise ValueError("MOPS_HOLDER_IDENTITY_MISSING")
+            # MOPS may include blank/header rows in the API data array.
+            # Only discard a row if it is demonstrably non-transactional.
+            # A missing holder with nonzero or uninterpretable movement fails closed.
+            try:
+                movements = [number(x[k]) for k in (8, 9, 13, 14)]
+                balance = [number(x[k]) for k in (4, 18)]
+            except (ValueError, TypeError):
+                raise ValueError("MOPS_UNIDENTIFIED_ROW_SCHEMA_REQUIRES_REVIEW")
+            if any(movements) or any(balance):
+                raise ValueError("MOPS_UNIDENTIFIED_ROW_WITH_SHARES_REQUIRES_REVIEW")
+            continue
         # Different account classes MUST NOT be added twice as the same identity.
         # Do not count header, representative or summary records as trade rows.
         account_class = ("SPOUSE_MINOR" if ("配偶" in role or "未成年" in role)
@@ -127,6 +137,8 @@ def parse_detail(raw):
         holdings[key] = values
     if ambiguous:
         raise ValueError("MOPS_SAME_NAME_ACCOUNT_COLLISION_NEEDS_REVIEW")
+    if rawrows and not holdings:
+        raise ValueError("MOPS_NO_VALID_HOLDER_ROWS")
     return {"buy_shares": sum(x[1] for x in holdings.values()),
             "sell_shares": sum(x[3] for x in holdings.values()),
             "other_in_shares": sum(x[2] for x in holdings.values()),
@@ -206,8 +218,10 @@ def irb_master(base, month):
 def capture_details(base, months, master, limit, gap=2.0, getter=fetch):
     requested, succeeded, errors = 0, 0, []
     # Newest reports first, but every successful archived issuer-month is never re-fetched.
-    for month in reversed(months):
-        for code in sorted(master):
+    # Finish twelve months per issuer before moving to the next issuer:
+    # incremental output can then contain real full-window samples.
+    for code in sorted(master):
+        for month in reversed(months):
             record = base / "detail" / month / (code + ".json")
             prior = get_json(record)
             if prior:
@@ -227,6 +241,7 @@ def capture_details(base, months, master, limit, gap=2.0, getter=fetch):
             y, m = month.split("-")
             payload = {"companyId": code, "dataType": "2", "subsidiaryCompanyId": "",
                        "year": str(int(y) - 1911), "month": m}
+            raw = None
             try:
                 raw = getter(MOPS_URL, payload)
                 parsed = parse_detail(raw)
@@ -238,6 +253,14 @@ def capture_details(base, months, master, limit, gap=2.0, getter=fetch):
             except (OSError, ValueError, TypeError, KeyError, json.JSONDecodeError) as ex:
                 err = {"code": code, "month": month, "reason": str(ex)[:250]}
                 errors.append(err)
+                # Preserve parse-failure response bytes for a reproducible schema audit.
+                # Never mark the company/month as a successful filing when parsing fails.
+                if isinstance(raw, bytes) and raw:
+                    try:
+                        failed = base / "failed" / month / (code + ".json")
+                        save_original(failed, raw, MOPS_URL, month, get_json(failed))
+                    except (OSError, ValueError):
+                        err["failed_payload_archive"] = "UNAVAILABLE"
                 put_json(retry, dict(err, last_attempted_at=dt.datetime.now(dt.timezone.utc).isoformat()))
                 if len(errors) >= 20 and succeeded == 0:
                     return {"requested": requested, "succeeded": succeeded,
