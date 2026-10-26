@@ -214,6 +214,51 @@ class MarketwideInsiderTests(unittest.TestCase):
             self.assertEqual(ranking["complete_issuer_count"], 1)
             self.assertEqual(ranking["observed_positive_issuer_count"], 2)
 
+
+    def test_stale_receipt_normalization_is_rechecked_and_refetched(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            base = Path(tmp)
+            code, month = "1234", "2026-09"
+            original = body([row(buy=3000, sell=0)])
+            receipt_path = base / "detail" / month / (code + ".json")
+            receipt = save_original(receipt_path, original, "https://mops.twse.com.tw/mops/api/query6_1", month)
+            put_json(receipt_path, dict(receipt, code=code, month=month,
+                                        buy_shares=999999, sell_shares=0))
+            requests = []
+            def getter(url, payload):
+                requests.append(payload["companyId"])
+                return original
+            master = {code: {"market": "TWSE", "issued_shares": 1000000}}
+            state = capture_details(base, [month], master, 1, gap=0, getter=getter)
+            self.assertEqual(requests, [code])
+            self.assertEqual(state["succeeded"], 1)
+            ranking = build_ranking(base, [month], master)
+            self.assertEqual(ranking["complete_issuer_count"], 1)
+            self.assertEqual(ranking["positive_buy_observed_sample_top100"][0]["buy_lots"], 3)
+
+    def test_corrupted_cached_gzip_is_preserved_then_repaired(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            base = Path(tmp)
+            code, month = "1234", "2026-09"
+            original = body([row(buy=1000, sell=0)])
+            receipt_path = base / "detail" / month / (code + ".json")
+            receipt = save_original(receipt_path, original, "https://mops.twse.com.tw/mops/api/query6_1", month)
+            put_json(receipt_path, dict(receipt, code=code, month=month,
+                                        buy_shares=1000, sell_shares=0))
+            archive = receipt_path.parent / receipt["raw_archive"]
+            archive.write_bytes(b"corrupted gzip source bytes")
+            seen = []
+            def getter(url, payload):
+                seen.append(1)
+                return original
+            master = {code: {"market": "TWSE", "issued_shares": 1000000}}
+            state = capture_details(base, [month], master, 1, gap=0, getter=getter)
+            self.assertEqual(state["succeeded"], 1)
+            self.assertEqual(len(seen), 1)
+            self.assertTrue(list(archive.parent.glob(archive.name + ".*.corrupt")))
+            self.assertEqual(gzip.decompress(archive.read_bytes()), original)
+            self.assertEqual(build_ranking(base, [month], master)["complete_issuer_count"], 1)
+
     def test_irb_rejects_tiny_response(self):
         with self.assertRaises(ValueError):
             parse_irb110(("<table><tr><td>1234 公司</td><td>1,000,000</td>"+'<td>0</td>'*6+"</tr></table>").encode("big5"))
