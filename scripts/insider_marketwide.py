@@ -198,7 +198,21 @@ def save_original(path, raw, url, asof, previous=None):
         raise ValueError("ORIGINAL_BYTES_EMPTY_OR_OVERSIZED")
     digest = hashlib.sha256(raw).hexdigest()
     archive = path.parent / (path.stem + "_" + digest + ".gz")
-    if not archive.exists():
+    if archive.exists():
+        # A valid digest-named archive is immutable. Preserve a damaged copy
+        # before repairing from freshly verified official response bytes.
+        saved_bytes = archive.read_bytes()
+        try:
+            recovered = gzip.decompress(saved_bytes)
+        except (OSError, EOFError):
+            recovered = b""
+        if hashlib.sha256(recovered).hexdigest() != digest:
+            bad_suffix = hashlib.sha256(saved_bytes).hexdigest()[:16]
+            evidence_path = archive.with_name(archive.name + "." + bad_suffix + ".corrupt")
+            if not evidence_path.exists():
+                atomic(evidence_path, saved_bytes)
+            atomic(archive, gzip.compress(raw, mtime=0))
+    else:
         atomic(archive, gzip.compress(raw, mtime=0))
     now = dt.datetime.now(dt.timezone.utc).isoformat()
     rec = {"url": url, "source_date": asof, "sha256": digest,
@@ -247,6 +261,22 @@ def irb_master(base, month):
             out[code] = dict(data, market=market)
     return out
 
+def verified_detail_receipt(base, month, code, row):
+    """Only a source-hashed, schema-valid and numerically consistent filing is cached."""
+    if not row or row.get("code") != code or row.get("month") != month:
+        return False
+    try:
+        archive = base / "detail" / month / row["raw_archive"]
+        raw = gzip.decompress(archive.read_bytes())
+        if hashlib.sha256(raw).hexdigest() != row["sha256"]:
+            return False
+        parsed = parse_detail(raw)
+        return all(row.get(key) == parsed[key] for key in
+                   ("buy_shares", "sell_shares"))
+    except (OSError, EOFError, ValueError, KeyError, TypeError, json.JSONDecodeError):
+        return False
+
+
 def recover_failed_original(base, month, code, market):
     """Reparse a previously archived failed response without any HTTP request.
 
@@ -292,14 +322,15 @@ def capture_details(base, months, master, limit, gap=2.0, getter=fetch):
     for month, code in pairs():
             record = base / "detail" / month / (code + ".json")
             prior = get_json(record)
-            if prior:
+            if verified_detail_receipt(base, month, code, prior):
                 continue
             if recover_failed_original(base, month, code, master[code]["market"]):
+
                 succeeded += 1
                 continue
             retry = base / "retry" / month / (code + ".json")
             last_error = get_json(retry)
-            if last_error and last_error.get("last_attempted_at"):
+            if not prior and last_error and last_error.get("last_attempted_at"):
                 try:
                     elapsed = dt.datetime.now(dt.timezone.utc) - dt.datetime.fromisoformat(last_error["last_attempted_at"])
                     if elapsed.total_seconds() < 24 * 3600:
@@ -427,7 +458,7 @@ def main():
     p.add_argument("--base", default=str(BASE))
     p.add_argument("--months", type=int, default=None,
                    help="Optional rolling period override; default is current-year reported months")
-    p.add_argument("--max-details", type=int, default=160)
+    p.add_argument("--max-details", type=int, default=240)
     p.add_argument("--gap", type=float, default=2.0)
     p.add_argument("--asof", default=None, help="Taiwan-local date YYYY-MM-DD")
     args = p.parse_args()

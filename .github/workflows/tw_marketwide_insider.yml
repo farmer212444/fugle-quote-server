@@ -35,14 +35,14 @@ jobs:
     needs: offline-tests
     if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    timeout-minutes: 22
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
       - name: Discover actual current-year market buyers; archive partial coverage
-        run: python scripts/insider_marketwide.py --max-details 160 --gap 2
+        run: python scripts/insider_marketwide.py --max-details 240 --gap 2
       - name: Publish no-trade-claim coverage diagnostics even when feeds are down
         if: always()
         uses: actions/upload-artifact@v4
