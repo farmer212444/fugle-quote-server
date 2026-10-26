@@ -72,11 +72,18 @@ def months_ending(day, count):
             for n in range(count - 1, -1, -1)]
 
 def months_year_to_date(day):
-    """This calendar year's months with completed post-trade reporting."""
+    """All reportable months since 2026-01, including future years.
+
+    Retain the legacy function name for compatibility with existing jobs.
+    Never reset to January of the next year.
+    """
     latest = months_ending(day, 1)[0]
     year, month = (int(v) for v in latest.split("-"))
-    return ([f"{year:04d}-{m:02d}" for m in range(1, month + 1)]
-            if year == day.year else [])
+    start_index = 2026 * 12
+    last_index = year * 12 + month - 1
+    return [f"{i//12:04d}-{i%12+1:02d}"
+            for i in range(start_index, last_index + 1)]
+
 
 def parse_irb110(raw):
     doc = raw.decode("big5", errors="replace")
@@ -99,6 +106,12 @@ def parse_irb110(raw):
     return rows
 
 def parse_detail(raw):
+    """Parse MOPS query6_1 holdings rollforward and actual exchange trades.
+
+    API position 8/13 is centralized-market purchase/sale. Position 10/15
+    covers private-placement increases/decreases, which affect the holdings
+    bridge but are NOT market trades. Pledges never count as purchases.
+    """
     doc = json.loads(raw.decode("utf-8-sig"))
     if doc.get("code") != 200 or not isinstance(doc.get("result"), dict):
         raise ValueError("MOPS_UNSUCCESSFUL_RESPONSE_NOT_ZERO")
@@ -106,52 +119,57 @@ def parse_detail(raw):
     if not isinstance(rawrows, list):
         raise ValueError("MOPS_DATA_MISSING_NOT_ZERO")
     holdings = {}
-    ambiguous = False
+    parent_name = None
     for x in rawrows:
         if not isinstance(x, list) or len(x) < 19:
             raise ValueError("MOPS_UNKNOWN_SCHEMA")
         role, name, kind = [str(x[k] or "").strip() for k in (0, 1, 2)]
-        if not role or not name:
-            # MOPS may include blank/header rows in the API data array.
-            # Only discard a row if it is demonstrably non-transactional.
-            # A missing holder with nonzero or uninterpretable movement fails closed.
-            try:
-                movements = [number(x[k]) for k in (8, 9, 13, 14)]
-                balance = [number(x[k]) for k in (4, 18)]
-            except (ValueError, TypeError):
-                raise ValueError("MOPS_UNIDENTIFIED_ROW_SCHEMA_REQUIRES_REVIEW")
-            if any(movements) or any(balance):
-                raise ValueError("MOPS_UNIDENTIFIED_ROW_WITH_SHARES_REQUIRES_REVIEW")
-            continue
-        # Different account classes MUST NOT be added twice as the same identity.
-        # Do not count header, representative or summary records as trade rows.
-        account_class = ("SPOUSE_MINOR" if ("配偶" in role or "未成年" in role)
-                         else "NOMINEE" if "利用他人名義" in role
-                         else "REPRESENTATIVE" if "法人代表人" in role
-                         else "SELF")
-        if account_class == "REPRESENTATIVE":
-            continue
-        before, buy, other_in, sell, other_out, after = (number(x[k]) for k in (4, 8, 9, 13, 14, 18))
-        if abs(before + buy + other_in - sell - other_out - after) > 1:
+        # Verify all share-changing categories, including private placements.
+        before, buy, other_in, private_in, sell, other_out, private_out, after = (
+            number(x[k]) for k in (4, 8, 9, 10, 13, 14, 15, 18))
+        if abs(before + buy + other_in + private_in
+               - sell - other_out - private_out - after) > 1:
             raise ValueError("MOPS_HOLDINGS_ROLLFORWARD_MISMATCH")
-        key = (account_class, name, kind)
-        values = (before, buy, other_in, sell, other_out, after)
-        if key in holdings and holdings[key] != values:
-            ambiguous = True
-        elif key in holdings:
-            # Same filing may repeat holder for director/manager dual roles.
+
+        family = ("配偶" in role or "未成年" in role)
+        if family:
+            # MOPS deliberately leaves family-holder name blank; associate
+            # it with the nearest preceding named insider, not a new trade.
+            if name:
+                identity = name + "::SPOUSE_MINOR"
+            elif parent_name:
+                identity = parent_name + "::SPOUSE_MINOR"
+            elif any((before, buy, other_in, private_in, sell,
+                      other_out, private_out, after)):
+                raise ValueError("MOPS_ORPHAN_FAMILY_HOLDER_NEEDS_REVIEW")
+            else:
+                continue
+        elif role and name:
+            parent_name = name
+            identity = name
+        elif any((before, buy, other_in, private_in, sell,
+                  other_out, private_out, after)):
+            raise ValueError("MOPS_UNIDENTIFIED_ROW_WITH_SHARES_REQUIRES_REVIEW")
+        else:
             continue
+
+        # One account can appear under multiple director, executive, legal
+        # representative and major-shareholder roles. Never sum duplicates.
+        # Conflicting names/amounts remain review-required, not guessed.
+        key = (identity, kind)
+        values = (before, buy, other_in, private_in,
+                  sell, other_out, private_out, after)
+        if key in holdings and holdings[key] != values:
+            raise ValueError("MOPS_SAME_NAME_ACCOUNT_COLLISION_NEEDS_REVIEW")
         holdings[key] = values
-    if ambiguous:
-        raise ValueError("MOPS_SAME_NAME_ACCOUNT_COLLISION_NEEDS_REVIEW")
     if rawrows and not holdings:
         raise ValueError("MOPS_NO_VALID_HOLDER_ROWS")
     return {"buy_shares": sum(x[1] for x in holdings.values()),
-            "sell_shares": sum(x[3] for x in holdings.values()),
-            "other_in_shares": sum(x[2] for x in holdings.values()),
-            "other_out_shares": sum(x[4] for x in holdings.values()),
+            "sell_shares": sum(x[4] for x in holdings.values()),
+            "other_in_shares": sum(x[2] + x[3] for x in holdings.values()),
+            "other_out_shares": sum(x[5] + x[6] for x in holdings.values()),
             "unique_display_keys": len(holdings),
-            "dedup_method": "DISPLAY_NAME_AND_ACCOUNT_CLASS_CONSERVATIVE_NOT_FORMAL",
+            "dedup_method": "NAME_AND_ACCOUNT_TYPE_EXACT_HOLDINGS_CONSERVATIVE_NOT_FORMAL",
             "original_holder_account_identity_certified": False}
 
 def fetch(url, payload=None, timeout=25):
@@ -222,6 +240,31 @@ def irb_master(base, month):
             out[code] = dict(data, market=market)
     return out
 
+def recover_failed_original(base, month, code, market):
+    """Reparse a previously archived failed response without any HTTP request.
+
+    A failed payload becomes an accepted filing only if its SHA256, response
+    schema and every holder's holdings bridge pass the current parser.
+    """
+    failed = base / "failed" / month / (code + ".json")
+    saved = get_json(failed)
+    if not saved:
+        return False
+    try:
+        archive = failed.parent / saved["raw_archive"]
+        raw = gzip.decompress(archive.read_bytes())
+        if hashlib.sha256(raw).hexdigest() != saved["sha256"]:
+            return False
+        parsed = parse_detail(raw)
+        record = base / "detail" / month / (code + ".json")
+        receipt = save_original(record, raw, MOPS_URL, month)
+        put_json(record, dict(receipt, **parsed, code=code, month=month,
+                              market=market,
+                              status="OFFICIAL_ARCHIVED_RESPONSE_REPARSED_DEDUP_UNVERIFIED"))
+        return True
+    except (OSError, ValueError, KeyError, TypeError, json.JSONDecodeError):
+        return False
+
 def capture_details(base, months, master, limit, gap=2.0, getter=fetch):
     requested, succeeded, errors = 0, 0, []
     # Discover recent-year buyers across the *whole* market first, not nine
@@ -231,6 +274,9 @@ def capture_details(base, months, master, limit, gap=2.0, getter=fetch):
             record = base / "detail" / month / (code + ".json")
             prior = get_json(record)
             if prior:
+                continue
+            if recover_failed_original(base, month, code, master[code]["market"]):
+                succeeded += 1
                 continue
             retry = base / "retry" / month / (code + ".json")
             last_error = get_json(retry)
@@ -340,6 +386,7 @@ def build_ranking(base, months, master):
               if master and not pending and months
               else "PARTIAL_YTD_BUYER_DISCOVERY_NOT_MARKETWIDE")
     return {"schema": "INSIDER_MARKETWIDE_YTD_V2", "status": status,
+            "scope_start_month": "2026-01", "scope_rule": "SINCE_2026",
             "months": months, "listed_otc_issuer_count": len(master),
             "complete_issuer_count": len(complete), "pending_issuer_count": len(pending),
             "observed_positive_issuer_count": len(positive_observed),
@@ -378,7 +425,8 @@ def main():
     else:
         state = {"requested": 0, "succeeded": 0, "errors": [],
                  "blocked": "OFFICIAL_LATEST_MONTH_TWO_MARKET_MASTER_MISSING"}
-        result = {"schema": "INSIDER_MARKETWIDE_YTD_V2", "status": "PENDING_TWO_MARKET_OFFICIAL_MASTER_OR_CURRENT_YEAR_NOT_YET_REPORTABLE",
+        result = {"schema": "INSIDER_MARKETWIDE_YTD_V2", "status": "PENDING_TWO_MARKET_OFFICIAL_MASTER_OR_START_MONTH_NOT_YET_REPORTABLE",
+                  "scope_start_month": "2026-01", "scope_rule": "SINCE_2026",
                   "months": months, "listed_otc_issuer_count": 0, "complete_issuer_count": 0,
                   "marketwide_rank_claim_permitted": False, "observed_positive_issuer_count": 0,
                   "positive_buy_observed_sample_top100": [], "positive_buy_complete_sample_top100": []}
@@ -387,13 +435,13 @@ def main():
     result["monthly_master_failures"] = failures
     output = ROOT / "tw-market-data" / "rankings" / "insider_marketwide_latest.json"
     put_json(output, result)
-    md = ["# 上市櫃內部人今年有買進公司／股本比率",
+    md = ["# 上市櫃內部人2026年起有買進公司／股本比率",
           "", "已完成申報月份：" + ("～".join((months[0], months[-1])) if months else "尚無"),
           f"狀態：{result['status']}；已觀察到買進 {result.get('observed_positive_issuer_count', 0)} 家，"
           f"完整核對本年度 {result['complete_issuer_count']} / {result['listed_otc_issuer_count']} 家",
           "",
           "**只要有已核實的集中市場買進就列入暫時追蹤，不要求先收齊全年月份。**",
-          "**部分月份資料只能稱為『已觀察到的買進量』；不是全年買進總額，更不是全市場正式名次。**",
+          "**部分月份資料只能稱為『已觀察到的買進量』；不是自2026年起算的完整累計，更不是全市場正式名次。**",
           "不把贈與、質押、增資、員工股、人事異動當成市場買進。",
           "內部人帳戶身分去重仍未正式認證；不更改模型EPS、PE、A+、Exit。",
           "", "|樣本序|股票|已核月份|買進張數|賣出張數|買進/股本|淨買/股本|淨買月數|",

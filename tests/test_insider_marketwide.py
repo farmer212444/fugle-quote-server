@@ -7,7 +7,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from scripts.insider_marketwide import (build_ranking, capture_details, months_ending, months_year_to_date, parse_detail,
+from scripts.insider_marketwide import (build_ranking, capture_details, recover_failed_original, months_ending, months_year_to_date, parse_detail,
                                         parse_irb110, put_json, save_original)
 
 def row(identity="董事本人", name="甲", prev=10000, buy=3000, sell=1000,
@@ -39,6 +39,56 @@ class MarketwideInsiderTests(unittest.TestCase):
         self.assertEqual(months_year_to_date(dt.date(2026, 11, 16))[-1], "2026-10")
         self.assertEqual(months_year_to_date(dt.date(2026, 1, 10)), [])
 
+    def test_2026_start_does_not_reset_in_2027(self):
+        months = months_year_to_date(dt.date(2027, 2, 17))
+        self.assertEqual(months[0], "2026-01")
+        self.assertEqual(months[-1], "2027-01")
+        self.assertEqual(len(months), 13)
+
+    def test_private_placement_changes_are_not_market_trades(self):
+        item = row(prev=10000, buy=0, sell=0, after=8400)
+        item[15] = "1,600"  # private-placement share decrease, not market sale
+        self.assertEqual(parse_detail(body([item]))["sell_shares"], 0)
+
+    def test_blank_named_spouse_row_is_tied_to_named_parent(self):
+        item = row(name="董事", buy=0, sell=0)
+        family = row(identity="董事本人之配偶及未成年子女",
+                     name="", prev=1000, buy=500, sell=0)
+        got = parse_detail(body([item, family]))
+        self.assertEqual(got["buy_shares"], 500)
+        self.assertEqual(got["unique_display_keys"], 2)
+
+    def test_replay_real_202609_official_failure_archives(self):
+        base = Path(__file__).resolve().parents[1] / "tw-market-data" / "insider" / "failed" / "2026-09"
+        cases = (
+            ("1231_c87abe3f5a7270e1944a03eaf1618834be3c22551b49ce81000fb7cfc16e5e5d.gz", 0, 80000),
+            ("1441_755f1b5d682e2e3b3eac34cb4ed5126254bf3e9605d3a53d488c75aa78f26333.gz", 0, 0),
+        )
+        for filename, buy, sell in cases:
+            with self.subTest(filename=filename):
+                parsed = parse_detail(gzip.decompress((base / filename).read_bytes()))
+                self.assertEqual(parsed["buy_shares"], buy)
+                self.assertEqual(parsed["sell_shares"], sell)
+
+    def test_recover_archive_before_new_network_request(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            base = Path(tmp)
+            raw = body([row(name="甲", buy=1000, sell=0),
+                        row(identity="董事本人之配偶及未成年子女",
+                            name="", prev=100, buy=500, sell=0)])
+            target = base / "failed" / "2026-09" / "1234.json"
+            save_original(target, raw, "https://mops.twse.com.tw/mops/api/query6_1", "2026-09")
+            self.assertTrue(recover_failed_original(base, "2026-09", "1234", "TWSE"))
+            def no_network(url, payload):
+                raise AssertionError("Expected cached archive rather than live network")
+            out = capture_details(base, ["2026-09"],
+                                  {"1234": {"market": "TWSE", "issued_shares": 1000000}},
+                                  10, gap=0, getter=no_network)
+            self.assertEqual(out["requested"], 0)
+            ranking = build_ranking(base, ["2026-09"],
+                                    {"1234": {"market": "TWSE", "issued_shares": 1000000}})
+            self.assertEqual(ranking["positive_buy_observed_sample_top100"][0]["buy_lots"], 1.5)
+
     def test_no_market_buy_from_gift_pledge_or_role_duplicate(self):
         a = row()
         b = row(identity="總經理本人")
@@ -55,7 +105,7 @@ class MarketwideInsiderTests(unittest.TestCase):
         result = parse_detail(body([empty, good]))
         self.assertEqual(result["buy_shares"], 500)
         self.assertEqual(result["sell_shares"], 300)
-        with self.assertRaisesRegex(ValueError, "UNIDENTIFIED_ROW_WITH_SHARES"):
+        with self.assertRaisesRegex(ValueError, "MOPS_(UNIDENTIFIED_ROW_WITH_SHARES|HOLDINGS_ROLLFORWARD_MISMATCH)"):
             trades_without_name = list(empty)
             trades_without_name[8] = "100"
             parse_detail(body([trades_without_name, good]))
