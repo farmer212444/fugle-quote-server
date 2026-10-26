@@ -193,6 +193,27 @@ class MarketwideInsiderTests(unittest.TestCase):
             self.assertEqual(second["requested"], 0)
             self.assertFalse((base/"detail"/"2026-09"/"1234.json").exists())
 
+    def test_2026_buyer_leads_get_full_year_verified_before_broad_sweep(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            base = Path(tmp)
+            master = {code: {"market": "TWSE", "issued_shares": 1000000}
+                      for code in ("1101", "2520", "9802")}
+            seen = []
+            def read(url, payload):
+                seen.append((payload["companyId"], payload["month"]))
+                return body([row(buy=1000, sell=0)])
+            result = capture_details(base, ["2026-07", "2026-08", "2026-09"],
+                                     master, 4, gap=0, getter=read)
+            self.assertEqual(result["succeeded"], 4)
+            self.assertEqual(seen, [("9802", "09"), ("9802", "08"),
+                                    ("9802", "07"), ("2520", "09")])
+            # Outside leads remain in the queue; a lead does not automatically
+            # gain complete-year or full-market certification.
+            ranking = build_ranking(base, ["2026-07", "2026-08", "2026-09"], master)
+            self.assertFalse(ranking["marketwide_rank_claim_permitted"])
+            self.assertEqual(ranking["complete_issuer_count"], 1)
+            self.assertEqual(ranking["observed_positive_issuer_count"], 2)
+
     def test_irb_rejects_tiny_response(self):
         with self.assertRaises(ValueError):
             parse_irb110(("<table><tr><td>1234 公司</td><td>1,000,000</td>"+'<td>0</td>'*6+"</tr></table>").encode("big5"))

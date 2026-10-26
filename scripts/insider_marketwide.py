@@ -27,6 +27,13 @@ TW = dt.timezone(dt.timedelta(hours=8))
 IRB_HOST = "https://siis.twse.com.tw"
 MOPS_URL = "https://mops.twse.com.tw/mops/api/query6_1"
 MARKETS = {"TWSE": "sii", "TPEX": "otc"}
+# Publicly identified 2026 buyer leads are first in the verification queue,
+# NOT accepted as official purchases until each MOPS original is hash-verified.
+# The remaining listed/OTC universe is always scanned after these leads.
+PRIORITY_REVIEW_CODES = (
+    "9802", "2520", "6116", "4919", "3705",
+    "6176", "2106", "6869", "9938", "3040",
+)
 HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; research-audit/1.0)",
            "Accept": "application/json,text/html;q=0.9"}
 TR = re.compile(r"<tr\b[^>]*>(.*?)</tr>", re.I | re.S)
@@ -267,10 +274,22 @@ def recover_failed_original(base, month, code, market):
 
 def capture_details(base, months, master, limit, gap=2.0, getter=fetch):
     requested, succeeded, errors = 0, 0, []
-    # Discover recent-year buyers across the *whole* market first, not nine
-    # months of one stock before checking the next. Earlier months backfill later.
-    for month in reversed(months):
-        for code in sorted(master):
+    # Accelerate official verification of public 2026 buyer leads, then scan
+    # EVERY remaining listed/OTC issuer. Prioritization never proves a buy.
+    # Fill each priority issuer's entire Jan-2026-onward window first;
+    # broad market discovery remains most-recent-month-first after that.
+    def pairs():
+        for code in PRIORITY_REVIEW_CODES:
+            if code in master:
+                for month in reversed(months):
+                    yield month, code
+        other_codes = [code for code in sorted(master)
+                       if code not in PRIORITY_REVIEW_CODES]
+        for month in reversed(months):
+            for code in other_codes:
+                yield month, code
+
+    for month, code in pairs():
             record = base / "detail" / month / (code + ".json")
             prior = get_json(record)
             if prior:
