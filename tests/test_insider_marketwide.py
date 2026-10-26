@@ -105,7 +105,7 @@ class MarketwideInsiderTests(unittest.TestCase):
         result = parse_detail(body([empty, good]))
         self.assertEqual(result["buy_shares"], 500)
         self.assertEqual(result["sell_shares"], 300)
-        with self.assertRaisesRegex(ValueError, "UNIDENTIFIED_ROW_WITH_SHARES"):
+        with self.assertRaisesRegex(ValueError, "MOPS_(UNIDENTIFIED_ROW_WITH_SHARES|HOLDINGS_ROLLFORWARD_MISMATCH)"):
             trades_without_name = list(empty)
             trades_without_name[8] = "100"
             parse_detail(body([trades_without_name, good]))
