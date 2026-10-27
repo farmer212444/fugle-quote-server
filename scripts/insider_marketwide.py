@@ -33,6 +33,18 @@ MARKETS = {"TWSE": "sii", "TPEX": "otc"}
 PRIORITY_REVIEW_CODES = (
     "9802", "2520", "6116", "4919", "3705",
     "6176", "2106", "6869", "9938", "3040",
+    # 2026 footwear supply-chain market-buyer leads: candidates only.
+    # MOPS market-trade fields, original SHA256 and holder dedup must pass
+    # before ANY company is counted as a verified buyer.
+    "9910", "6965", "6768", "4766",
+    # Peer controls: no positive-buy inference from third-party zero/absence.
+    "9904", "6890", "8404", "1307", "8935", "4426", "3679",
+)
+# Dedicated sector override: footwear production and directly linked materials.
+# Do not equate inclusion with an observed trade or a zero-purchase finding.
+FOOTWEAR_SUPPLY_CHAIN_CODES = (
+    "9802", "9938", "9910", "6965", "6768", "4766",
+    "9904", "6890", "8404", "1307", "8935", "4426", "3679",
 )
 HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; research-audit/1.0)",
            "Accept": "application/json,text/html;q=0.9"}
@@ -373,6 +385,7 @@ def capture_details(base, months, master, limit, gap=2.0, getter=fetch):
 
 def build_ranking(base, months, master):
     complete, pending, positive_observed = [], [], []
+    footwear_watchlist = []
     detail_ok = 0
     for code, item in sorted(master.items()):
         buy = sell = 0
@@ -408,6 +421,26 @@ def build_ranking(base, months, master):
         complete_months = len(observed) == len(months) and len(months) > 0
         if not complete_months:
             pending.append({"code": code, "missing_months": missing})
+        if code in FOOTWEAR_SUPPLY_CHAIN_CODES:
+            # Built ONLY from archive bytes that passed gzip, SHA256, parser
+            # rollforward, and buy/sell numeric consistency checks above.
+            # Unchecked months must never be inferred to contain zero buys.
+            footwear_watchlist.append({
+                "code": code, "market": item["market"],
+                "buy_lots": round(buy / 1000, 3),
+                "sell_lots": round(sell / 1000, 3),
+                "net_lots": round((buy - sell) / 1000, 3),
+                "buy_pct_of_issued": round(buy / item["issued_shares"] * 100, 5),
+                "observed_months": observed,
+                "missing_months": missing,
+                "observed_month_count": len(observed),
+                "expected_ytd_month_count": len(months),
+                "positive_buy_observed": buy > 0,
+                "status": ("HASHED_MOPS_BUY_OBSERVED_HOLDER_NOT_FORMALLY_CERTIFIED"
+                           if buy > 0 else
+                           "FULL_SCOPE_VERIFIED_NO_BUY" if complete_months else
+                           "PARTIAL_SCOPE_NO_BUY_OBSERVED_NOT_ZERO"),
+            })
         if not observed:
             continue
         shares = item["issued_shares"]
@@ -432,6 +465,8 @@ def build_ranking(base, months, master):
     sort_by_purchase = lambda x: (-x["buy_pct_of_issued"], -x["net_pct_of_issued"], x["code"])
     complete.sort(key=sort_by_purchase)
     positive_observed.sort(key=sort_by_purchase)
+    footwear_watchlist.sort(key=lambda x: (not x["positive_buy_observed"],
+                                            -x["buy_pct_of_issued"], x["code"]))
     status = ("COMPLETE_YTD_RESEARCH_SCOPE_NOT_FORMALLY_CERTIFIED"
               if master and not pending and months
               else "PARTIAL_YTD_BUYER_DISCOVERY_NOT_MARKETWIDE")
@@ -451,7 +486,9 @@ def build_ranking(base, months, master):
             "positive_buy_complete_sample_top100": [r for r in complete if r["buy_lots"] > 0][:100],
             "pending_examples": pending[:60],
             "all_observed_positive": positive_observed,
-            "all_complete_sample": complete}
+            "all_complete_sample": complete,
+            "footwear_supply_chain_watchlist": footwear_watchlist,
+            "footwear_supply_chain_category": "footwear_manufacturing_and_direct_materials"}
 
 def main():
     p = argparse.ArgumentParser()
@@ -501,6 +538,14 @@ def main():
                   f"{r['buy_lots']:,.1f}|{r['sell_lots']:,.1f}|"
                   f"{r['buy_pct_of_issued']:.3f}%|{r['net_pct_of_issued']:.3f}%|"
                   f"{r['positive_net_months']}|")
+    md.extend(["", "## 製鞋供應鏈專項（非全市場正式排行）",
+               "第三方線索不作買進認證；只列已通過官方MOPS原件SHA256覆核的月份。",
+               "部分月份的未核資料不是零買進；持有人正式歸戶仍未認證。",
+               "", "|股票|已核月份|市場買進張數|市場賣出張數|狀態|",
+               "|---|---:|---:|---:|---|"])
+    for rec in result.get("footwear_supply_chain_watchlist", []):
+        md.append(f"|{rec['code']}|{rec['observed_month_count']}/{rec['expected_ytd_month_count']}|"
+                  f"{rec['buy_lots']:,.3f}|{rec['sell_lots']:,.3f}|{rec['status']}|")
     atomic(ROOT / "tw-market-data" / "rankings" / "insider_marketwide_latest.md",
            ("\n".join(md) + "\n").encode("utf-8"))
     print(json.dumps({"status": result["status"], "issuers": len(master),

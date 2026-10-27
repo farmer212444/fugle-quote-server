@@ -7,7 +7,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from scripts.insider_marketwide import (build_ranking, capture_details, recover_failed_original, months_ending, months_year_to_date, parse_detail,
+from scripts.insider_marketwide import (PRIORITY_REVIEW_CODES, build_ranking, capture_details, recover_failed_original, months_ending, months_year_to_date, parse_detail,
                                         parse_irb110, put_json, save_original)
 
 def row(identity="董事本人", name="甲", prev=10000, buy=3000, sell=1000,
@@ -262,6 +262,48 @@ class MarketwideInsiderTests(unittest.TestCase):
     def test_irb_rejects_tiny_response(self):
         with self.assertRaises(ValueError):
             parse_irb110(("<table><tr><td>1234 公司</td><td>1,000,000</td>"+'<td>0</td>'*6+"</tr></table>").encode("big5"))
+
+    def test_footwear_supply_chain_leads_are_priority_not_certified_buyers(self):
+        # A third-party lead only changes the MOPS collection order. It never
+        # creates a purchase, a zero-purchase finding or a certified holder.
+        buyer_leads = {"9910", "6965", "6768", "4766"}
+        control_peers = {"9904", "6890", "8404", "1307"}
+        self.assertTrue((buyer_leads | control_peers).issubset(set(PRIORITY_REVIEW_CODES)))
+        with tempfile.TemporaryDirectory() as tmp:
+            base = Path(tmp)
+            master = {code: {"market": "TWSE", "issued_shares": 1000000}
+                      for code in sorted(buyer_leads | control_peers)}
+            before = build_ranking(base, ["2026-09"], master)
+            self.assertEqual(before["observed_positive_issuer_count"], 0)
+            self.assertEqual(before["pending_issuer_count"], len(master))
+            self.assertFalse(before["marketwide_rank_claim_permitted"])
+            self.assertEqual(len(before["footwear_supply_chain_watchlist"]), len(master))
+            self.assertEqual({v["status"] for v in before["footwear_supply_chain_watchlist"]},
+                             {"PARTIAL_SCOPE_NO_BUY_OBSERVED_NOT_ZERO"})
+            queried = []
+            def getter(url, payload):
+                queried.append(payload["companyId"])
+                return body([row(buy=2000, sell=0)])
+            result = capture_details(base, ["2026-09"], master, 1,
+                                     gap=0, getter=getter)
+            self.assertEqual(result["succeeded"], 1)
+            self.assertEqual(queried, ["9910"])
+            after = build_ranking(base, ["2026-09"], master)
+            self.assertEqual(after["observed_positive_issuer_count"], 1)
+            self.assertEqual(after["all_observed_positive"][0]["code"], "9910")
+            self.assertFalse(after["holder_identity_formal_certification"])
+            self.assertFalse(after["marketwide_rank_claim_permitted"])
+            observed_buyer = next(v for v in after["footwear_supply_chain_watchlist"]
+                                  if v["code"] == "9910")
+            self.assertEqual(observed_buyer["buy_lots"], 2)
+            self.assertEqual(observed_buyer["status"],
+                             "HASHED_MOPS_BUY_OBSERVED_HOLDER_NOT_FORMALLY_CERTIFIED")
+            pending_peer = next(v for v in after["footwear_supply_chain_watchlist"]
+                                if v["code"] == "9904")
+            self.assertEqual(pending_peer["observed_month_count"], 0)
+            self.assertEqual(pending_peer["missing_months"], ["2026-09"])
+            self.assertEqual(pending_peer["status"], "PARTIAL_SCOPE_NO_BUY_OBSERVED_NOT_ZERO")
+
 
 if __name__ == "__main__":
     unittest.main()
