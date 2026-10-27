@@ -33,6 +33,12 @@ MARKETS = {"TWSE": "sii", "TPEX": "otc"}
 PRIORITY_REVIEW_CODES = (
     "9802", "2520", "6116", "4919", "3705",
     "6176", "2106", "6869", "9938", "3040",
+    # 2026 footwear supply-chain market-buyer leads: candidates only.
+    # MOPS market-trade fields, original SHA256 and holder dedup must pass
+    # before ANY company is counted as a verified buyer.
+    "9910", "6965", "6768", "4766",
+    # Peer controls: no positive-buy inference from third-party zero/absence.
+    "9904", "6890", "8404", "1307",
 )
 HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; research-audit/1.0)",
            "Accept": "application/json,text/html;q=0.9"}
