@@ -277,6 +277,9 @@ class MarketwideInsiderTests(unittest.TestCase):
             self.assertEqual(before["observed_positive_issuer_count"], 0)
             self.assertEqual(before["pending_issuer_count"], len(master))
             self.assertFalse(before["marketwide_rank_claim_permitted"])
+            self.assertEqual(len(before["footwear_supply_chain_watchlist"]), len(master))
+            self.assertEqual({v["status"] for v in before["footwear_supply_chain_watchlist"]},
+                             {"PARTIAL_SCOPE_NO_BUY_OBSERVED_NOT_ZERO"})
             queried = []
             def getter(url, payload):
                 queried.append(payload["companyId"])
@@ -290,6 +293,16 @@ class MarketwideInsiderTests(unittest.TestCase):
             self.assertEqual(after["all_observed_positive"][0]["code"], "9910")
             self.assertFalse(after["holder_identity_formal_certification"])
             self.assertFalse(after["marketwide_rank_claim_permitted"])
+            observed_buyer = next(v for v in after["footwear_supply_chain_watchlist"]
+                                  if v["code"] == "9910")
+            self.assertEqual(observed_buyer["buy_lots"], 2)
+            self.assertEqual(observed_buyer["status"],
+                             "HASHED_MOPS_BUY_OBSERVED_HOLDER_NOT_FORMALLY_CERTIFIED")
+            pending_peer = next(v for v in after["footwear_supply_chain_watchlist"]
+                                if v["code"] == "9904")
+            self.assertEqual(pending_peer["observed_month_count"], 0)
+            self.assertEqual(pending_peer["missing_months"], ["2026-09"])
+            self.assertEqual(pending_peer["status"], "PARTIAL_SCOPE_NO_BUY_OBSERVED_NOT_ZERO")
 
 
 if __name__ == "__main__":
