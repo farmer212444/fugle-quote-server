@@ -350,7 +350,7 @@ def source_failure(exc):
                              "NON_200_RESPONSE"))
 
 
-def capture_details(base, months, master, limit, gap=2.0, getter=fetch):
+def capture_details(base, months, master, limit, gap=2.0, getter=fetch, deadline=None):
     requested, succeeded, errors = 0, 0, []
     consecutive_source_failures = deferred_reviews = 0
     # Accelerate official verification of public 2026 buyer leads, then scan
@@ -392,6 +392,12 @@ def capture_details(base, months, master, limit, gap=2.0, getter=fetch):
             if requested >= limit:
                 return {"requested": requested, "succeeded": succeeded, "errors": errors,
                         "deferred_identity_conflicts": deferred_reviews}
+            # Leave 30s for a final MOPS request, and further workflow time
+            # for rebuilding the audited report and pushing source receipts.
+            if deadline is not None and time.monotonic() + 30 >= deadline:
+                return {"requested": requested, "succeeded": succeeded, "errors": errors,
+                        "deferred_identity_conflicts": deferred_reviews,
+                        "stopped": "TIME_BUDGET_GRACEFUL_PARTIAL_COMMIT"}
             requested += 1
             y, m = month.split("-")
             payload = {"companyId": code, "dataType": "2", "subsidiaryCompanyId": "",
@@ -548,17 +554,23 @@ def main():
                    help="Optional rolling period override; default is current-year reported months")
     p.add_argument("--max-details", type=int, default=360)
     p.add_argument("--gap", type=float, default=2.0)
+    p.add_argument("--time-budget-seconds", type=int, default=1200,
+                   help="Gracefully stop MOPS HTTP requests with time left for ranking and Git push")
     p.add_argument("--asof", default=None, help="Taiwan-local date YYYY-MM-DD")
     args = p.parse_args()
-    if (args.months is not None and not 1 <= args.months <= 36) or not 0 <= args.max_details <= 2000:
-        p.error("unsafe window or request cap")
+    if ((args.months is not None and not 1 <= args.months <= 36)
+            or not 0 <= args.max_details <= 2000
+            or not 60 <= args.time_budget_seconds <= 1500):
+        p.error("unsafe window, request cap or time budget")
+    deadline = time.monotonic() + args.time_budget_seconds
     today = dt.date.fromisoformat(args.asof) if args.asof else dt.datetime.now(TW).date()
     months = months_ending(today, args.months) if args.months is not None else months_year_to_date(today)
     base = Path(args.base)
     failures = capture_irb(base, months)
     master = irb_master(base, months[-1]) if months else {}
     if master:
-        state = capture_details(base, months, master, args.max_details, args.gap)
+        state = capture_details(base, months, master, args.max_details, args.gap,
+                                deadline=deadline)
         result = build_ranking(base, months, master)
     else:
         state = {"requested": 0, "succeeded": 0, "errors": [],
