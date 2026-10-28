@@ -287,6 +287,33 @@ class MarketwideInsiderTests(unittest.TestCase):
             self.assertEqual(repeat["deferred_identity_conflicts"], 25)
             self.assertEqual(build_ranking(base, ["2026-09"], master)["pending_issuer_count"], 25)
 
+    def test_identity_review_resets_consecutive_source_outage_streak(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            base = Path(tmp)
+            master = {f"{i:04d}": {"market": "TWSE", "issued_shares": 1000000}
+                      for i in range(3300, 3350)}
+            colliding = body([row(name="同名", buy=3000, sell=0),
+                              row(name="同名", buy=4000, sell=0)])
+            valid = body([row(name="可用資料", buy=5000, sell=0)])
+            calls = []
+            def mixed_feed(url, payload):
+                code = payload["companyId"]
+                calls.append(code)
+                index = int(code) - 3300
+                if index == 19:
+                    return colliding  # Official content with unresolved identity.
+                if index == 49:
+                    return valid
+                raise OSError("temporary MOPS outage")
+            out = capture_details(base, ["2026-09"], master, 50,
+                                  gap=0, getter=mixed_feed)
+            self.assertEqual(out["requested"], 50)
+            self.assertEqual(out["succeeded"], 1)
+            self.assertNotIn("stopped", out)
+            self.assertEqual(len(calls), 50)
+            self.assertEqual(build_ranking(base, ["2026-09"], master)
+                             ["verified_detail_month_count"], 1)
+
     def test_real_source_outage_still_stops_after_twenty_errors(self):
         with tempfile.TemporaryDirectory() as tmp:
             base = Path(tmp)
