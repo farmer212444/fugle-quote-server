@@ -314,6 +314,30 @@ class MarketwideInsiderTests(unittest.TestCase):
             self.assertEqual(build_ranking(base, ["2026-09"], master)
                              ["verified_detail_month_count"], 1)
 
+    def test_time_budget_does_not_lose_partial_cached_evidence(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            base = Path(tmp)
+            month = "2026-09"
+            code = "3300"
+            orig = body([row(name="證實買入", buy=2000, sell=0)])
+            receipt_path = base / "detail" / month / (code + ".json")
+            saved = save_original(receipt_path, orig,
+                                  "https://mops.twse.com.tw/mops/api/query6_1", month)
+            put_json(receipt_path, dict(saved, code=code, month=month,
+                                        buy_shares=2000, sell_shares=0))
+            master = {code: {"market": "TWSE", "issued_shares": 1000000},
+                      "3301": {"market": "TWSE", "issued_shares": 1000000}}
+            def must_not_fetch(url, payload):
+                raise AssertionError("time budget must prevent new HTTP requests")
+            state = capture_details(base, [month], master, limit=100,
+                                    gap=0, getter=must_not_fetch, deadline=-1)
+            self.assertEqual(state["requested"], 0)
+            self.assertEqual(state["stopped"], "TIME_BUDGET_GRACEFUL_PARTIAL_COMMIT")
+            rank = build_ranking(base, [month], master)
+            self.assertEqual(rank["verified_detail_month_count"], 1)
+            self.assertEqual(rank["pending_issuer_count"], 1)
+            self.assertEqual(rank["positive_buy_observed_sample_top100"][0]["buy_lots"], 2)
+
     def test_real_source_outage_still_stops_after_twenty_errors(self):
         with tempfile.TemporaryDirectory() as tmp:
             base = Path(tmp)
