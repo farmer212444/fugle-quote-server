@@ -287,6 +287,57 @@ class MarketwideInsiderTests(unittest.TestCase):
             self.assertEqual(repeat["deferred_identity_conflicts"], 25)
             self.assertEqual(build_ranking(base, ["2026-09"], master)["pending_issuer_count"], 25)
 
+    def test_identity_review_resets_consecutive_source_outage_streak(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            base = Path(tmp)
+            master = {f"{i:04d}": {"market": "TWSE", "issued_shares": 1000000}
+                      for i in range(3300, 3350)}
+            colliding = body([row(name="同名", buy=3000, sell=0),
+                              row(name="同名", buy=4000, sell=0)])
+            valid = body([row(name="可用資料", buy=5000, sell=0)])
+            calls = []
+            def mixed_feed(url, payload):
+                code = payload["companyId"]
+                calls.append(code)
+                index = int(code) - 3300
+                if index in (19, 39):
+                    return colliding  # Official content with unresolved identity.
+                if index == 49:
+                    return valid
+                raise OSError("temporary MOPS outage")
+            out = capture_details(base, ["2026-09"], master, 50,
+                                  gap=0, getter=mixed_feed)
+            self.assertEqual(out["requested"], 50)
+            self.assertEqual(out["succeeded"], 1)
+            self.assertNotIn("stopped", out)
+            self.assertEqual(len(calls), 50)
+            self.assertEqual(build_ranking(base, ["2026-09"], master)
+                             ["verified_detail_month_count"], 1)
+
+    def test_time_budget_does_not_lose_partial_cached_evidence(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            base = Path(tmp)
+            month = "2026-09"
+            code = "3300"
+            orig = body([row(name="證實買入", buy=2000, sell=0)])
+            receipt_path = base / "detail" / month / (code + ".json")
+            saved = save_original(receipt_path, orig,
+                                  "https://mops.twse.com.tw/mops/api/query6_1", month)
+            put_json(receipt_path, dict(saved, code=code, month=month,
+                                        buy_shares=2000, sell_shares=0))
+            master = {code: {"market": "TWSE", "issued_shares": 1000000},
+                      "3301": {"market": "TWSE", "issued_shares": 1000000}}
+            def must_not_fetch(url, payload):
+                raise AssertionError("time budget must prevent new HTTP requests")
+            state = capture_details(base, [month], master, limit=100,
+                                    gap=0, getter=must_not_fetch, deadline=-1)
+            self.assertEqual(state["requested"], 0)
+            self.assertEqual(state["stopped"], "TIME_BUDGET_GRACEFUL_PARTIAL_COMMIT")
+            rank = build_ranking(base, [month], master)
+            self.assertEqual(rank["verified_detail_month_count"], 1)
+            self.assertEqual(rank["pending_issuer_count"], 1)
+            self.assertEqual(rank["positive_buy_observed_sample_top100"][0]["buy_lots"], 2)
+
     def test_real_source_outage_still_stops_after_twenty_errors(self):
         with tempfile.TemporaryDirectory() as tmp:
             base = Path(tmp)
