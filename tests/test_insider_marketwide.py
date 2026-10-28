@@ -351,6 +351,61 @@ class MarketwideInsiderTests(unittest.TestCase):
             self.assertEqual(result["stopped"], "SOURCE_OUTAGE_NO_ZERO_FILL")
             self.assertEqual(build_ranking(base, ["2026-09"], master)["complete_issuer_count"], 0)
 
+    def test_offline_reconcile_uses_merged_receipts_and_never_fetches(self):
+        # Simulate publication after concurrent main updates: a matching
+        # current-month archive must appear in the rebuilt coverage result.
+        from unittest.mock import patch
+        import scripts.insider_marketwide as insider
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            base = root / "tw-market-data" / "insider"
+            month = "2026-09"
+            original = body([row(name="已驗證帳戶", buy=1500, sell=0)])
+            dest = base / "detail" / month / "1234.json"
+            receipt = save_original(dest, original,
+                                    "https://mops.twse.com.tw/mops/api/query6_1", month)
+            put_json(dest, dict(receipt, code="1234", month=month,
+                                market="TWSE", buy_shares=1500, sell_shares=0))
+            months = months_year_to_date(dt.date(2026, 10, 28))
+            snapshot = root / "before-rebase.json"
+            put_json(snapshot, {
+                "schema": "INSIDER_MARKETWIDE_YTD_V2",
+                "months": months,
+                "collection": {"requested": 360, "succeeded": 354, "errors": []},
+                "monthly_master_failures": []})
+            master = {"1234": {"market": "TWSE", "issued_shares": 1000000}}
+            argv = ["insider_marketwide.py", "--asof", "2026-10-28",
+                    "--base", str(base), "--rebuild-only",
+                    "--collection-state-file", str(snapshot),
+                    "--max-details", "0"]
+            with patch("sys.argv", argv), patch.object(insider, "ROOT", root), \
+                 patch.object(insider, "irb_master", return_value=master), \
+                 patch.object(insider, "capture_irb", side_effect=AssertionError("SIIS HTTP forbidden")), \
+                 patch.object(insider, "capture_details", side_effect=AssertionError("MOPS HTTP forbidden")):
+                self.assertEqual(insider.main(), 0)
+            published = json.loads((root / "tw-market-data" / "rankings" /
+                                    "insider_marketwide_latest.json").read_text())
+            self.assertEqual(published["verified_detail_month_count"], 1)
+            self.assertEqual(published["positive_buy_observed_sample_top100"][0]["buy_lots"], 1.5)
+            self.assertEqual(published["collection"]["requested"], 360)
+            self.assertEqual(published["collection"]["succeeded"], 354)
+            self.assertTrue(published["collection"]["offline_reconciled_after_rebase"])
+            self.assertFalse(published["marketwide_rank_claim_permitted"])
+
+    def test_offline_reconcile_rejects_wrong_month_scope(self):
+        from unittest.mock import patch
+        import scripts.insider_marketwide as insider
+        with tempfile.TemporaryDirectory() as tmp:
+            snapshot = Path(tmp) / "snapshot.json"
+            put_json(snapshot, {"schema": "INSIDER_MARKETWIDE_YTD_V2",
+                                "months": ["2026-09"],
+                                "collection": {"requested": 10}})
+            argv = ["insider_marketwide.py", "--asof", "2026-10-28",
+                    "--rebuild-only", "--collection-state-file", str(snapshot)]
+            with patch("sys.argv", argv):
+                with self.assertRaises(SystemExit):
+                    insider.main()
+
     def test_irb_rejects_tiny_response(self):
         with self.assertRaises(ValueError):
             parse_irb110(("<table><tr><td>1234 公司</td><td>1,000,000</td>"+'<td>0</td>'*6+"</tr></table>").encode("big5"))
