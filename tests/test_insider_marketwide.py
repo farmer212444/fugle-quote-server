@@ -259,6 +259,47 @@ class MarketwideInsiderTests(unittest.TestCase):
             self.assertEqual(gzip.decompress(archive.read_bytes()), original)
             self.assertEqual(build_ranking(base, [month], master)["complete_issuer_count"], 1)
 
+    def test_many_identity_conflicts_do_not_masquerade_as_source_outage(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            base = Path(tmp)
+            codes = [f"{i:04d}" for i in range(3300, 3326)]
+            master = {code: {"market": "TWSE", "issued_shares": 1000000}
+                      for code in codes}
+            conflicting = body([row(name="同名", buy=3000, sell=0),
+                                row(name="同名", buy=4000, sell=0)])
+            good = body([row(name="已確認", buy=1000, sell=0)])
+            calls = []
+            def fetcher(url, payload):
+                calls.append(payload["companyId"])
+                return good if payload["companyId"] == codes[-1] else conflicting
+            result = capture_details(base, ["2026-09"], master, 40, gap=0, getter=fetcher)
+            self.assertEqual(len(calls), 26)
+            self.assertEqual(result["requested"], 26)
+            self.assertEqual(result["succeeded"], 1)
+            self.assertEqual(len(result["errors"]), 25)
+            self.assertNotIn("stopped", result)
+            self.assertEqual(build_ranking(base, ["2026-09"], master)["verified_detail_month_count"], 1)
+
+            def offline(url, payload):
+                raise AssertionError("Stable unresolved identity conflicts must be deferred")
+            repeat = capture_details(base, ["2026-09"], master, 40, gap=0, getter=offline)
+            self.assertEqual(repeat["requested"], 0)
+            self.assertEqual(repeat["deferred_identity_conflicts"], 25)
+            self.assertEqual(build_ranking(base, ["2026-09"], master)["pending_issuer_count"], 25)
+
+    def test_real_source_outage_still_stops_after_twenty_errors(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            base = Path(tmp)
+            master = {f"{i:04d}": {"market": "TWSE", "issued_shares": 1000000}
+                      for i in range(3300, 3330)}
+            def offline(url, payload):
+                raise OSError("official feed unavailable")
+            result = capture_details(base, ["2026-09"], master, 30, gap=0, getter=offline)
+            self.assertEqual(result["requested"], 20)
+            self.assertEqual(result["succeeded"], 0)
+            self.assertEqual(result["stopped"], "SOURCE_OUTAGE_NO_ZERO_FILL")
+            self.assertEqual(build_ranking(base, ["2026-09"], master)["complete_issuer_count"], 0)
+
     def test_irb_rejects_tiny_response(self):
         with self.assertRaises(ValueError):
             parse_irb110(("<table><tr><td>1234 公司</td><td>1,000,000</td>"+'<td>0</td>'*6+"</tr></table>").encode("big5"))

@@ -314,8 +314,45 @@ def recover_failed_original(base, month, code, market):
     except (OSError, ValueError, KeyError, TypeError, json.JSONDecodeError):
         return False
 
+def deferred_identity_conflict(base, month, code, last_error, now=None):
+    """Cache unresolved duplicate-identity official records without pretending they are verified.
+
+    Always reparse the SHA-checked failed original before deferring; parser fixes
+    will take effect immediately. Retry the official source after seven days.
+    """
+    if not last_error or last_error.get("reason") != "MOPS_SAME_NAME_ACCOUNT_COLLISION_NEEDS_REVIEW":
+        return False
+    try:
+        now = now or dt.datetime.now(dt.timezone.utc)
+        last = dt.datetime.fromisoformat(last_error["last_attempted_at"])
+        if now - last >= dt.timedelta(days=7):
+            return False
+        rec = get_json(base / "failed" / month / (code + ".json"))
+        if not rec:
+            return False
+        raw = gzip.decompress((base / "failed" / month / rec["raw_archive"]).read_bytes())
+        if hashlib.sha256(raw).hexdigest() != rec["sha256"]:
+            return False
+        try:
+            parse_detail(raw)
+        except ValueError as exc:
+            return str(exc) == "MOPS_SAME_NAME_ACCOUNT_COLLISION_NEEDS_REVIEW"
+        return False
+    except (OSError, EOFError, ValueError, KeyError, TypeError):
+        return False
+
+
+def source_failure(exc):
+    """An identity conflict is not a source outage."""
+    return (isinstance(exc, (OSError, json.JSONDecodeError))
+            or str(exc) in ("MOPS_UNSUCCESSFUL_RESPONSE_NOT_ZERO",
+                             "MOPS_DATA_MISSING_NOT_ZERO",
+                             "NON_200_RESPONSE"))
+
+
 def capture_details(base, months, master, limit, gap=2.0, getter=fetch):
     requested, succeeded, errors = 0, 0, []
+    consecutive_source_failures = deferred_reviews = 0
     # Accelerate official verification of public 2026 buyer leads, then scan
     # EVERY remaining listed/OTC issuer. Prioritization never proves a buy.
     # Fill each priority issuer's entire Jan-2026-onward window first;
@@ -342,6 +379,9 @@ def capture_details(base, months, master, limit, gap=2.0, getter=fetch):
                 continue
             retry = base / "retry" / month / (code + ".json")
             last_error = get_json(retry)
+            if deferred_identity_conflict(base, month, code, last_error):
+                deferred_reviews += 1
+                continue
             if not prior and last_error and last_error.get("last_attempted_at"):
                 try:
                     elapsed = dt.datetime.now(dt.timezone.utc) - dt.datetime.fromisoformat(last_error["last_attempted_at"])
@@ -350,7 +390,8 @@ def capture_details(base, months, master, limit, gap=2.0, getter=fetch):
                 except (ValueError, TypeError):
                     pass
             if requested >= limit:
-                return {"requested": requested, "succeeded": succeeded, "errors": errors}
+                return {"requested": requested, "succeeded": succeeded, "errors": errors,
+                        "deferred_identity_conflicts": deferred_reviews}
             requested += 1
             y, m = month.split("-")
             payload = {"companyId": code, "dataType": "2", "subsidiaryCompanyId": "",
@@ -364,6 +405,7 @@ def capture_details(base, months, master, limit, gap=2.0, getter=fetch):
                                       market=master[code]["market"],
                                       status="OFFICIAL_MOPS_CAPTURED_HOLDER_DEDUP_UNVERIFIED"))
                 succeeded += 1
+                consecutive_source_failures = 0
             except (OSError, ValueError, TypeError, KeyError, json.JSONDecodeError) as ex:
                 err = {"code": code, "month": month, "reason": str(ex)[:250]}
                 errors.append(err)
@@ -376,12 +418,16 @@ def capture_details(base, months, master, limit, gap=2.0, getter=fetch):
                     except (OSError, ValueError):
                         err["failed_payload_archive"] = "UNAVAILABLE"
                 put_json(retry, dict(err, last_attempted_at=dt.datetime.now(dt.timezone.utc).isoformat()))
-                if len(errors) >= 20 and succeeded == 0:
+                if source_failure(ex):
+                    consecutive_source_failures += 1
+                if consecutive_source_failures >= 20:
                     return {"requested": requested, "succeeded": succeeded,
-                            "errors": errors, "stopped": "SOURCE_OUTAGE_NO_ZERO_FILL"}
+                            "errors": errors, "deferred_identity_conflicts": deferred_reviews,
+                            "stopped": "SOURCE_OUTAGE_NO_ZERO_FILL"}
             if gap > 0:
                 time.sleep(gap)
-    return {"requested": requested, "succeeded": succeeded, "errors": errors}
+    return {"requested": requested, "succeeded": succeeded, "errors": errors,
+            "deferred_identity_conflicts": deferred_reviews}
 
 def build_ranking(base, months, master):
     complete, pending, positive_observed = [], [], []
@@ -495,7 +541,7 @@ def main():
     p.add_argument("--base", default=str(BASE))
     p.add_argument("--months", type=int, default=None,
                    help="Optional rolling period override; default is current-year reported months")
-    p.add_argument("--max-details", type=int, default=240)
+    p.add_argument("--max-details", type=int, default=360)
     p.add_argument("--gap", type=float, default=2.0)
     p.add_argument("--asof", default=None, help="Taiwan-local date YYYY-MM-DD")
     args = p.parse_args()

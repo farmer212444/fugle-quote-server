@@ -13,8 +13,8 @@ on:
       - 'scripts/insider_marketwide.py'
       - 'tests/test_insider_marketwide.py'
   schedule:
-    # 09:30 and 21:30 Taipei time. The reported-month cutoff is the 15th.
-    - cron: '30 1,13 * * *'
+    # 03:30, 09:30, 15:30, 21:30 Taipei; 6-hour spacing, 2s/request.
+    - cron: '30 1,7,13,19 * * *'
 permissions:
   contents: write
 concurrency:
@@ -42,7 +42,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Discover actual current-year market buyers; archive partial coverage
-        run: python scripts/insider_marketwide.py --max-details 240 --gap 2
+        run: python scripts/insider_marketwide.py --max-details 360 --gap 2
       - name: Publish no-trade-claim coverage diagnostics even when feeds are down
         if: always()
         uses: actions/upload-artifact@v4
