@@ -300,7 +300,7 @@ class MarketwideInsiderTests(unittest.TestCase):
                 code = payload["companyId"]
                 calls.append(code)
                 index = int(code) - 3300
-                if index == 19:
+                if index in (19, 39):
                     return colliding  # Official content with unresolved identity.
                 if index == 49:
                     return valid
