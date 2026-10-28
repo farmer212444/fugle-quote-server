@@ -556,21 +556,44 @@ def main():
     p.add_argument("--gap", type=float, default=2.0)
     p.add_argument("--time-budget-seconds", type=int, default=1200,
                    help="Gracefully stop MOPS HTTP requests with time left for ranking and Git push")
+    p.add_argument("--rebuild-only", action="store_true",
+                   help="Offline recalculation from already-archived SHA-checked source receipts")
+    p.add_argument("--collection-state-file", default=None,
+                   help="Original same-run JSON to preserve MOPS request diagnostics after rebase")
     p.add_argument("--asof", default=None, help="Taiwan-local date YYYY-MM-DD")
     args = p.parse_args()
     if ((args.months is not None and not 1 <= args.months <= 36)
             or not 0 <= args.max_details <= 2000
             or not 60 <= args.time_budget_seconds <= 1500):
         p.error("unsafe window, request cap or time budget")
+    if bool(args.rebuild_only) != bool(args.collection_state_file):
+        p.error("--rebuild-only requires --collection-state-file, and vice versa")
     deadline = time.monotonic() + args.time_budget_seconds
     today = dt.date.fromisoformat(args.asof) if args.asof else dt.datetime.now(TW).date()
     months = months_ending(today, args.months) if args.months is not None else months_year_to_date(today)
     base = Path(args.base)
-    failures = capture_irb(base, months)
+    previous = None
+    if args.rebuild_only:
+        previous = get_json(args.collection_state_file)
+        if (not isinstance(previous, dict)
+                or previous.get("schema") != "INSIDER_MARKETWIDE_YTD_V2"
+                or previous.get("months") != months
+                or not isinstance(previous.get("collection"), dict)):
+            p.error("offline rebase requires a matching verified-run report for this window")
+    failures = (previous.get("monthly_master_failures", []) if previous is not None
+                else capture_irb(base, months))
     master = irb_master(base, months[-1]) if months else {}
     if master:
-        state = capture_details(base, months, master, args.max_details, args.gap,
-                                deadline=deadline)
+        if args.rebuild_only:
+            # No MOPS or SIIS HTTP is permitted in this path; rebuild after
+            # choosing upstream receipt pointers on concurrent rebase conflicts,
+            # and include all distinct archived issuer-month sources.
+            state = dict(previous["collection"])
+            state["offline_reconciled_after_rebase"] = True
+            state["conflicting_receipt_policy"] = "UPSTREAM_POINTER_PREFERRED"
+        else:
+            state = capture_details(base, months, master, args.max_details, args.gap,
+                                    deadline=deadline)
         result = build_ranking(base, months, master)
     else:
         state = {"requested": 0, "succeeded": 0, "errors": [],

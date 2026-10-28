@@ -66,6 +66,26 @@ jobs:
             echo 'No new certified raw snapshots.'
             exit 0
           fi
+          # Snapshot the actual network collection stats before any concurrent
+          # main-branch rebase may replace the ranking JSON.
+          cp tw-market-data/rankings/insider_marketwide_latest.json "${RUNNER_TEMP}/insider-original-run.json"
           git commit -m 'data: progressive official insider filings and fail-closed marketwide coverage'
-          git pull --rebase origin main
-          git push origin HEAD:main
+          # Rebase chooses the already-published main-side receipt on conflicting
+          # mutable pointers; immutable hash-addressed originals are still
+          # retained in the union. Then regenerate the report from the *merged*
+          # SHA-checked archives offline, never from stale pre-rebase totals.
+          for attempt in 1 2 3; do
+            git fetch origin main
+            git rebase -X ours origin/main
+            python scripts/insider_marketwide.py --rebuild-only --max-details 0 --collection-state-file "${RUNNER_TEMP}/insider-original-run.json"
+            git add tw-market-data/rankings/insider_marketwide_latest.json tw-market-data/rankings/insider_marketwide_latest.md
+            if ! git diff --cached --quiet; then
+              git commit -m 'data: reconcile verified insider coverage after concurrent main update'
+            fi
+            if git push origin HEAD:main; then
+              exit 0
+            fi
+            echo "Remote moved during archive publish; retrying verified rebase (${attempt}/3)." >&2
+          done
+          echo 'Failed to publish verified source receipts after three safe retries.' >&2
+          exit 1
