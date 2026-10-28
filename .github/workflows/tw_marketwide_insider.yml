@@ -42,7 +42,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Discover actual current-year market buyers; archive partial coverage
-        run: python scripts/insider_marketwide.py --max-details 360 --gap 2
+        run: python scripts/insider_marketwide.py --max-details 360 --gap 2 --time-budget-seconds 1200
       - name: Publish no-trade-claim coverage diagnostics even when feeds are down
         if: always()
         uses: actions/upload-artifact@v4
