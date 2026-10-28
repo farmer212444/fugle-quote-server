@@ -541,7 +541,7 @@ def main():
     p.add_argument("--base", default=str(BASE))
     p.add_argument("--months", type=int, default=None,
                    help="Optional rolling period override; default is current-year reported months")
-    p.add_argument("--max-details", type=int, default=240)
+    p.add_argument("--max-details", type=int, default=360)
     p.add_argument("--gap", type=float, default=2.0)
     p.add_argument("--asof", default=None, help="Taiwan-local date YYYY-MM-DD")
     args = p.parse_args()
