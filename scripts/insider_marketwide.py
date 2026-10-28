@@ -420,6 +420,11 @@ def capture_details(base, months, master, limit, gap=2.0, getter=fetch):
                 put_json(retry, dict(err, last_attempted_at=dt.datetime.now(dt.timezone.utc).isoformat()))
                 if source_failure(ex):
                     consecutive_source_failures += 1
+                else:
+                    # The official endpoint returned a response; this is a
+                    # row/identity review, not another consecutive outage.
+                    # Keep the issuer-month pending without halting discovery.
+                    consecutive_source_failures = 0
                 if consecutive_source_failures >= 20:
                     return {"requested": requested, "succeeded": succeeded,
                             "errors": errors, "deferred_identity_conflicts": deferred_reviews,
