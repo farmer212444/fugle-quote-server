@@ -8,6 +8,8 @@ on:
       - 'tests/test_insider_marketwide.py'
       - 'README_INSIDER_MARKETWIDE.md'
   push:
+    branches:
+      - main
     paths:
       - '.github/workflows/tw_marketwide_insider.yml'
       - 'scripts/insider_marketwide.py'
@@ -18,7 +20,9 @@ on:
 permissions:
   contents: write
 concurrency:
-  group: marketwide-insider-archive
+  # CI for proposed fixes must not queue behind a 30-minute main data capture.
+  # All main push/schedule/dispatch capture jobs remain serialized.
+  group: insider-${{ github.event_name == 'pull_request' && github.head_ref || 'main-capture' }}
   cancel-in-progress: false
 jobs:
   offline-tests:
