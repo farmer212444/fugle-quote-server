@@ -97,6 +97,14 @@ def issue(root, spec, *, now=None):
     if baseline is not None:
         baseline = probability(baseline)
         source_check(root, baseline_proof)
+    # One event is one binary observation, even when a second ID or model is used.
+    same_event = (spec["market"].strip(), spec["code"].strip(), spec["event_definition"].strip(), due.isoformat())
+    for existing in (root_dir(root) / "issued").glob("*.json"):
+        previous = read_record(existing)
+        validate_issue(root, previous, existing.stem)
+        signature = (previous["market"], previous["code"], previous["event_definition"], previous["event_due_date"])
+        if signature == same_event:
+            raise ValueError("DUPLICATE_EVENT_CANNOT_COUNT_TWICE")
     record = dict(schema=SCHEMA, forecast_id=fid, market=spec["market"].strip(),
                   code=spec["code"].strip(), event_definition=spec["event_definition"].strip(),
                   event_due_date=due.isoformat(), probability=p,
@@ -182,9 +190,14 @@ def report(root, *, asof=None, minimum=100):
     resolved_files = sorted((folder / "resolved").glob("*.json"))
     try:
         issuances = {}
+        seen_events = set()
         for path in issued_files:
             row = read_record(path)
             validate_issue(root, row, path.stem)
+            event_key = (row["market"], row["code"], row["event_definition"], row["event_due_date"])
+            if event_key in seen_events:
+                raise ValueError("DUPLICATE_EVENT_CANNOT_COUNT_TWICE")
+            seen_events.add(event_key)
             issuances[path.stem] = row
         resolutions = {}
         for path in resolved_files:
