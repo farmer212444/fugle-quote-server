@@ -117,6 +117,11 @@ class SuperforecastLedgerTests(unittest.TestCase):
         (folder / "FCAST_001.json").write_text("{}")
         self.assertEqual(report(self.root, asof=T1)["status"], "LEDGER_REJECTED")
 
+    def test_same_event_with_different_id_cannot_inflate_results(self):
+        issue(self.root, self.spec(), now=T0)
+        with self.assertRaisesRegex(ValueError, "DUPLICATE_EVENT_CANNOT_COUNT_TWICE"):
+            issue(self.root, self.spec(fid="FCAST_002"), now=T0)
+
     def test_preissue_time_is_not_user_supplied(self):
         spec = self.spec()
         spec["issued_at_utc"] = "2020-01-01T00:00:00+00:00"
