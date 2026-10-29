@@ -236,6 +236,7 @@ jobs:
           python -m unittest -v tests.test_footwear_review
           python -m unittest -v tests.test_earnings_version_review
           python -m unittest -v tests.test_9802_cash_review
+          python -m unittest -v tests.test_superforecast_ledger
           python -m unittest -v tests.test_v8a8_forward_top30_0050
           python -m unittest discover -s tests -p test_v891_6206_gate_triage.py
           python -m unittest discover -s tests -p test_v892_top20_quality_audit.py
