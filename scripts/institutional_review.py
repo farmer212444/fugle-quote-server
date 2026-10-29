@@ -17,6 +17,7 @@ from tw_model_v880.evidence import timestamp
 from tw_model_v880.forward import forward_observations
 from tw_model_v880.portfolio import constrained_portfolio,reverse_execution_capacity,finite
 from tw_model_v880.experiments import compare_models,calibration_summary
+from tw_model_v880.superforecast import report as superforecast_report,parse_time as parse_forecast_time
 from tw_model_v880.validation_io import collect_trials,source
 from tw_model_v880.return_search import registered_trial_count
 from scripts.benchmark_validation import build as build_benchmark_validation
@@ -246,6 +247,7 @@ def build(root):
                 model_competition=competitions,validation_inputs=collected,
                 benchmark_validation=build_benchmark_validation(root,observed_at),
                 probability_validation=calibration_summary(collected['probability_records']),
+                preissued_probability_validation=superforecast_report(root,asof=parse_forecast_time(observed_at)),
                 scenario_probabilities=None,expected_net_return=None,
                 implemented_controls_are_not_evidence_of_investment_outperformance=True,
                 operations=dict(existing_schedule_reused=True,trade_orders_created=0,
@@ -285,6 +287,11 @@ def render(report):
             '模型競賽包含時間順序、重疊標籤排除、區塊重抽樣及多次試驗修正；目前樣本不足，不產生勝率或自動升級。',
             '部位引擎限制個股、產業、共同風險、壓力損失及成交參與率；設定為明示的研究假設。',
             f"本次假設資金{report['portfolio']['reference_capital_ntd']:,.0f}元，研究配置現金{report['portfolio']['cash_weight']:.0%}；不代表使用者持倉或實際交易。",'']
+    forecast=report['preissued_probability_validation']
+    lines+=['## 事前機率預測校準','',
+            f"登錄{forecast['issued_count']}筆；到期並有證據可評分{forecast['scored_count']}筆；狀態：{forecast['status']}。",
+            ('Brier：'+str(forecast['brier_score']) if forecast['brier_score'] is not None else 'Brier：有效樣本不足，不公布勝率。'),
+            '來源雜湊不等於外部可信時間戳，機率校準不代表投資超額報酬；不會自動升級A+。','']
     benchmark=report['benchmark_validation']
     lines+=['## 模型與大盤含息基準','',
             f"已登錄大盤比較實驗{benchmark['registered_benchmark_trials']}組；已由原件重算期間{benchmark['verified_outcomes']}個。",
