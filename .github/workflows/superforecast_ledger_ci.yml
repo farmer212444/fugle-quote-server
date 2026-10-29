@@ -1,0 +1,32 @@
+name: KEM Superforecast Ledger CI
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/superforecast_ledger_ci.yml'
+      - 'tw_model_v880/superforecast.py'
+      - 'tw_model_v880/experiments.py'
+      - 'tw_model_v880/evidence.py'
+      - 'scripts/superforecast_ledger.py'
+      - 'scripts/institutional_review.py'
+      - 'tests/test_superforecast_ledger.py'
+  push:
+    paths:
+      - '.github/workflows/superforecast_ledger_ci.yml'
+      - 'tw_model_v880/superforecast.py'
+      - 'tw_model_v880/experiments.py'
+      - 'tw_model_v880/evidence.py'
+      - 'scripts/superforecast_ledger.py'
+      - 'scripts/institutional_review.py'
+      - 'tests/test_superforecast_ledger.py'
+
+jobs:
+  ledger-regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test preissuance and probability calibration integrity
+        run: python -m unittest -v tests.test_superforecast_ledger
