@@ -85,6 +85,8 @@ def issue(root, spec, *, now=None):
     """Actual issue clock is recorded by the runner, never supplied in spec."""
     when = clock(now)
     fid = issued_identity(spec)
+    if (root_dir(root) / "issued" / (fid + ".json")).exists():
+        raise FileExistsError("FORECAST_ID_ALREADY_REGISTERED")
     due = dt.date.fromisoformat(spec["event_due_date"])
     if due <= when.astimezone(TAIPEI).date():
         raise ValueError("FORECAST_MUST_PRECEDE_DUE_DATE")
