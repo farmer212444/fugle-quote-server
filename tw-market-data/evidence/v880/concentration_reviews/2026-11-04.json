@@ -1,0 +1,163 @@
+{
+  "schema": "CONCENTRATION_OBSERVATIONS_V1",
+  "source_commit": "36c621539d7fc4b9df3a9fec7ea41b4dd29cdc4d",
+  "observations": [
+    {
+      "code": "2330",
+      "kind": "Q3_CASHFLOW_RECONCILED",
+      "published_on": "2026-10-15",
+      "source_url": "https://investor.tsmc.com/english/encrypt/files/encrypt_file/reports/2026-10/3a94d1034b9e6b22446b674f7aaf3d088a12a193/FS.pdf",
+      "source_tier": "ISSUER_ORIGINAL_WEB_REVIEW",
+      "facts": {
+        "period": "2026-Q3",
+        "unit": "NTD_millions",
+        "ocf_ytd": 2402117,
+        "ocf_single_quarter": 919776,
+        "ppe_paid_ytd": 1289971
+      },
+      "summary": "已以封存的Q3簡明財報核對現金流：前三季營業現金流2.402兆元，扣購置PPE後為1.112兆元；完整附註、海外成本與2027推導仍待核。",
+      "first_observed_at": "2026-11-04T23:24:47.762445+08:00",
+      "publication_time_verified": false,
+      "locally_archived_original_bytes": true,
+      "review_type": "AI_RESEARCH_FACT_CHECK_NOT_HUMAN_CERTIFICATE"
+    },
+    {
+      "code": "6206",
+      "kind": "INVENTORY_BUILD_EXPLANATION_FOUND",
+      "published_on": "2026-01-08",
+      "source_url": "https://www.flytech.com.tw/news.php?act=view&id=317",
+      "source_tier": "ISSUER_ORIGINAL_WEB_REVIEW",
+      "facts": {
+        "management_explained_prebuy_for_supply_shortage": true,
+        "later_sales_and_inventory_age_verified": false
+      },
+      "summary": "已找到公司提前備料的原始說明：因供應鏈成本與缺料，按需求提高關鍵料庫存。這解決備貨說法的來源缺口，仍不能證明庫存均能消化或沒有跌價。",
+      "first_observed_at": "2026-11-04T23:24:47.762445+08:00",
+      "publication_time_verified": false,
+      "locally_archived_original_bytes": false,
+      "review_type": "AI_RESEARCH_FACT_CHECK_NOT_HUMAN_CERTIFICATE"
+    },
+    {
+      "code": "2317",
+      "kind": "WORKING_CAPITAL_EXPLANATION_RECONCILED",
+      "published_on": "2026-08-18",
+      "source_url": "https://image.honhai.com/upload/202608/law_talk/Hon_Hai_2Q26_Results_Transcript_Chinese_20260818_4465.pdf",
+      "source_tier": "ISSUER_ORIGINAL_WEB_REVIEW",
+      "facts": {
+        "ocf_h1_billion_ntd": -69.1,
+        "cash_conversion_days": 42,
+        "cash_conversion_days_without_receivable_tools": 52,
+        "net_cash_billion_ntd": 219.8
+      },
+      "summary": "官方逐字稿將上半年負OCF連結至應收及存貨成長；現金週轉42天，排除應收帳款管理工具後52天。已釐清公司說法與期間，但尚未驗證後續實際收款。",
+      "first_observed_at": "2026-11-04T23:24:47.762445+08:00",
+      "publication_time_verified": false,
+      "locally_archived_original_bytes": false,
+      "review_type": "AI_RESEARCH_FACT_CHECK_NOT_HUMAN_CERTIFICATE"
+    },
+    {
+      "code": "4771",
+      "kind": "SPECIFIC_PATENT_CASE_WITHDRAWN",
+      "published_on": "2025-09-12",
+      "source_url": "https://www.vizionfocus.com/data/%E6%99%B6%E7%A2%A9%E6%92%A4%E8%A8%B4%E6%96%B0%E8%81%9E%E7%A8%BF20250912.pdf",
+      "source_tier": "ISSUER_ORIGINAL_WEB_REVIEW",
+      "facts": {
+        "specific_case_withdrawal_announced": true,
+        "court_docket_independently_checked": false,
+        "all_other_legal_risks_cleared": false
+      },
+      "summary": "公司原始新聞稿確認晶碩撤回該專利侵權訴訟，關閉上一則該筆歷史訴訟待查；沒有據此宣稱全公司司法風險已清查完畢。",
+      "first_observed_at": "2026-11-04T23:24:47.762445+08:00",
+      "publication_time_verified": false,
+      "locally_archived_original_bytes": false,
+      "review_type": "AI_RESEARCH_FACT_CHECK_NOT_HUMAN_CERTIFICATE"
+    },
+    {
+      "code": "8110",
+      "kind": "VOLATILE_NONOPERATING_PROFIT_DEPENDENCE",
+      "published_on": "2026-08-07",
+      "source_url": "https://www.walton.com.tw/files/investors/files/%E8%B2%A1%E5%8B%99%E5%A0%B1%E8%A1%A8/%E5%90%88%E4%BD%B5/ZH/8110%E8%8F%AF%E6%9D%B1-115%20Q2.pdf",
+      "source_tier": "ISSUER_ORIGINAL_WEB_REVIEW",
+      "facts": {
+        "period": "2026-Q2",
+        "unit": "NTD_thousands",
+        "operating_profit_ytd": 107247,
+        "pretax_ytd": 1410548,
+        "nonoperating_ytd": 1303301,
+        "fv_profit_ytd": 1036729,
+        "disposal_equity_method_profit_ytd": 97064,
+        "fx_net_ytd": 92369,
+        "ppe_disposal_ytd": 4885
+      },
+      "summary": "原始H1附註顯示13.033億元業外占稅前92.4%，其中金融資產評價利益10.367億元。原模型2027業外及26倍PE欠持續性支持，暫停集中持有候選資格。",
+      "blocks_concentration": true,
+      "first_observed_at": "2026-11-04T23:24:47.762445+08:00",
+      "publication_time_verified": false,
+      "locally_archived_original_bytes": false,
+      "review_type": "AI_RESEARCH_FACT_CHECK_NOT_HUMAN_CERTIFICATE"
+    },
+    {
+      "code": "8110",
+      "kind": "NEW_Q3_ANNOUNCEMENT_NOT_IN_BASE",
+      "published_on": "2026-11-04",
+      "source_url": "https://tw.stock.yahoo.com/news/%E8%8F%AF%E6%9D%B1-%E5%85%AC%E5%91%8A%E6%9C%AC%E5%85%AC%E5%8F%B8%E8%91%A3%E4%BA%8B%E6%9C%83%E9%80%9A%E9%81%8E115%E5%B9%B4%E7%AC%AC%E4%B8%89%E5%AD%A3%E5%90%88%E4%BD%B5%E8%B2%A1%E5%8B%99%E5%A0%B1%E5%91%8A-094900980.html",
+      "source_tier": "ISSUER_ANNOUNCEMENT_REPUBLICATION",
+      "facts": {
+        "period": "2026-Q3",
+        "unit": "NTD_thousands",
+        "revenue_ytd": 6176402,
+        "gross_profit_ytd": 627674,
+        "operating_profit_ytd": 256638,
+        "pretax_ytd": 1480568,
+        "net_income_ytd": 1326154,
+        "parent_profit_ytd": 1335094,
+        "basic_eps_ytd": 2.6,
+        "full_q3_cashflow_original_not_yet_reviewed": true
+      },
+      "summary": "11/4公司Q3公告轉載顯示前三季EPS2.60元，H1為2.59元；單季EPS差額僅供觀察，不等於同股數基礎獲利。完整Q3現金流與附註尚未納入估值，原87.66元情境暫停作決策依據。",
+      "blocks_concentration": true,
+      "first_observed_at": "2026-11-04T23:24:47.762445+08:00",
+      "publication_time_verified": false,
+      "locally_archived_original_bytes": false,
+      "review_type": "AI_RESEARCH_FACT_CHECK_NOT_HUMAN_CERTIFICATE"
+    },
+    {
+      "code": "8390",
+      "kind": "QUALIFIED_REVIEW_SCOPE_IDENTIFIED",
+      "published_on": "2026-08-11",
+      "source_url": "https://www.jyd.com.tw/storage/system/PDF/2026/JYD-115Q2-Consolidated-Financial-Repot.pdf",
+      "source_tier": "ISSUER_ORIGINAL_WEB_REVIEW",
+      "facts": {
+        "unreviewed_subsidiaries_assets_k": 793978,
+        "unreviewed_subsidiaries_assets_pct": 16,
+        "unreviewed_subsidiaries_liabilities_k": 44676,
+        "unreviewed_subsidiaries_h1_comprehensive_loss_k": -3544,
+        "unreviewed_equity_method_investments_k": 9600
+      },
+      "summary": "已讀原始核閱報告：未核閱子公司資產7.940億元，占合併資產16%，另有未核閱權益法投資960萬元。範圍缺口已查明，重要性與調整風險尚不能簽核通過。",
+      "blocks_concentration": true,
+      "first_observed_at": "2026-11-04T23:24:47.762445+08:00",
+      "publication_time_verified": false,
+      "locally_archived_original_bytes": false,
+      "review_type": "AI_RESEARCH_FACT_CHECK_NOT_HUMAN_CERTIFICATE"
+    },
+    {
+      "code": "8390",
+      "kind": "OFFERING_PRICE_PUBLISHED",
+      "published_on": "2026-11-04",
+      "source_url": "https://line.today/tw/v3/article/aGpyZD2",
+      "source_tier": "ISSUER_ANNOUNCEMENT_REPUBLICATION",
+      "facts": {
+        "new_shares": 8000000,
+        "subscription_price_twd": 62,
+        "subscription_record_date": "2026-11-17",
+        "not_already_issued": true
+      },
+      "summary": "11/4補充公告轉載已定增資價62元、800萬股，募資總額4.96億元；仍屬未發行。將價格、股數及理論除權情境分列，不把募資現金直接當成EPS。",
+      "first_observed_at": "2026-11-04T23:24:47.762445+08:00",
+      "publication_time_verified": false,
+      "locally_archived_original_bytes": false,
+      "review_type": "AI_RESEARCH_FACT_CHECK_NOT_HUMAN_CERTIFICATE"
+    }
+  ]
+}

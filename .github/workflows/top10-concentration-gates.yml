@@ -1,0 +1,33 @@
+name: Top10 concentration gate regression tests
+on:
+  pull_request:
+    paths:
+      - 'tw_model_v880/**'
+      - 'scripts/concentration_gate_audit.py'
+      - 'scripts/v884_evidence_probe.py'
+      - 'scripts/v881_unmodeled_blockers.py'
+      - 'scripts/v881_thin_shadow.py'
+      - 'tests/**'
+      - 'tw-market-data/evidence/v880/concentration_reviews/**'
+      - 'tw-market-data/evidence/v880/equity_offerings/**'
+      - '.github/workflows/top10-concentration-gates.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Evidence clocks, actual turnover, history reconciliation and audit tests
+        env:
+          PYTHONPATH: '.:tests'
+        run: >-
+          python -m unittest
+          tests.test_equity_offering tests.test_integration_v880
+          tests.test_v881 tests.test_v884_evidence_probe
+          tests.test_concentration_gate_audit tests.test_v880
+          tests.test_v893_tpex_daily_backfill tests.test_governance_events

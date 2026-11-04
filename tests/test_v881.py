@@ -12,14 +12,14 @@ from tw_model_v880.calibration import fit_accounting
 class CoverageRegressionTests(unittest.TestCase):
     def test_full_ledger_does_not_hide_filtered_issuers_from_thin_discovery(self):
         from scripts.v881_thin_shadow import discover_shadow
-        d=FakeData();d.prices[('TEST','SYNTHETIC_A')]['volume_shares']=1
+        d=FakeData();d.prices[('TEST','SYNTHETIC_A')].update(volume_shares=1,turnover_ntd=10)
         report=dict(estimate_vintage=ASOF,target_date='2027-12-31',all_model_row_summary=[dict(code='SYNTHETIC_A',status='TURNOVER_FILTER_BELOW_1M_TWD'),dict(code='SYNTHETIC_B',status='PENDING')])
         examined,eligible,rows,failures=discover_shadow(d,report,CAL)
         self.assertEqual((examined,eligible,len(rows),len(failures)),(1,1,1,0))
         self.assertFalse(rows[0]['rankable']);self.assertFalse(rows[0]['formal_Aplus'])
     def test_full_ledger_preserves_input_blockers_and_master_only_identities(self):
         from scripts.v881_unmodeled_blockers import classify
-        d=FakeData();d.prices[('TEST','SYNTHETIC_A')]['volume_shares']=1
+        d=FakeData();d.prices[('TEST','SYNTHETIC_A')].update(volume_shares=1,turnover_ntd=10)
         d.evidence['master']['NEW']=dict(market='TEST',issued_shares=10000)
         report=dict(model='V8.8.2',estimate_vintage=ASOF,asof_price_date='2026-10-16',data_scope=dict(normalized_issuers=2,model_rows=3),all_model_row_summary=[dict(code='SYNTHETIC_A',status='TURNOVER_FILTER_BELOW_1M_TWD'),dict(code='SYNTHETIC_B',status='PENDING'),dict(code='NEW',status='CURRENT_FINANCIAL_STATEMENT_MISSING')])
         r=classify(d,report)
@@ -40,7 +40,7 @@ class CoverageRegressionTests(unittest.TestCase):
     def test_price_only_master_only_and_filtered_issuers_remain_in_ledger(self):
         d=FakeData();d.prices[('TEST','PRICE_ONLY')]=dict(close=10,volume_shares=10)
         d.evidence['master']['MASTER_ONLY']=dict(market='TEST',name='MASTER_ONLY',issued_shares=100000)
-        d.prices[('TEST','SYNTHETIC_A')]['volume_shares']=1
+        d.prices[('TEST','SYNTHETIC_A')].update(volume_shares=1,turnover_ntd=10)
         with tempfile.TemporaryDirectory() as tmp,patch('scripts.tw_v880_run.MarketData',return_value=d),patch('scripts.tw_v880_run.fit_accounting',return_value=CAL),contextlib.redirect_stdout(io.StringIO()):
             r=run(tmp,ASOF,'2027-12-31',tmp)
         by_code={x['code']:x for x in r['all_model_rows']}

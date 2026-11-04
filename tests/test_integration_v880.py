@@ -15,7 +15,7 @@ class FakeData:
             for y in range(2024,2027):
                 for q in range(1,5):
                     r=1000*q/4*(1.2 if y==2026 else 1);rows[f'{y}-Q{q}']=dict(code=code,name=code,revenue_ytd_k=r,gross_profit_ytd_k=.2*r,operating_profit_ytd_k=.1*r,basic_eps_ytd=123)
-            self.history[key]=rows;self.prices[key]=dict(close=10,volume_shares=2000000);self.revenue[code]=dict(industry='SYNTHETIC_MANUFACTURING',monthly_yoy_pct=10,ytd_yoy_pct=5.55,ytd_revenue_k=950,last_year_ytd_revenue_k=900)
+            self.history[key]=rows;self.prices[key]=dict(close=10,volume_shares=2000000,turnover_ntd=20000000);self.revenue[code]=dict(industry='SYNTHETIC_MANUFACTURING',monthly_yoy_pct=10,ytd_yoy_pct=5.55,ytd_revenue_k=950,last_year_ytd_revenue_k=900)
             self.evidence['master'][code]=dict(issued_shares=100000,industry_code='X');self.evidence['pe_history'][code]=[dict(pe=12) for _ in range(12)]
             no=dict(sensitivity_gap_ex_volatile_k=10,reported_gap_k=10)
             self.evidence['primary'][code]=dict(values=dict(revenue_k=600,gross_profit_k=120,operating_profit_k=60,pretax_profit_k=70,net_income_k=56,parent_net_income_k=56,ocf_k=-10,ppe_cash_flow_signed_k=-5,cash_k=100),
@@ -60,29 +60,48 @@ class IntegrationTests(unittest.TestCase):
         self.assertEqual([r['code'] for r in out],['9802']);self.assertEqual(out[0]['base']['target_price'],55.06);self.assertFalse(out[0]['formal_Aplus'])
     def test_one_million_research_gate_and_separate_tradability_gate(self):
         d=FakeData();price=d.prices[('TEST','SYNTHETIC_A')]
-        price['volume_shares']=100000 # NT$10 x 100k = NT$1m exactly
+        price['turnover_ntd']=1000000
         at_floor=estimate(d,('TEST','SYNTHETIC_A'),CAL,ASOF,'2027-12-31')
         self.assertTrue(at_floor['rankable'])
         self.assertEqual(at_floor['single_day_turnover_ntd'],1000000)
         self.assertEqual(at_floor['liquidity_research_band'],'RESEARCH_1M_TO_12M_PENDING_EXECUTION')
         self.assertEqual(at_floor['gates']['tradability']['status'],'PENDING')
         self.assertFalse(at_floor['formal_Aplus'])
-        price['volume_shares']=99999
+        price['turnover_ntd']=999999
         under_floor=estimate(d,('TEST','SYNTHETIC_A'),CAL,ASOF,'2027-12-31')
         self.assertFalse(under_floor['rankable'])
         self.assertEqual(under_floor['status'],'TURNOVER_FILTER_BELOW_1M_TWD')
-        price['volume_shares']=1200000
+        price['turnover_ntd']=12000000
         above_review=estimate(d,('TEST','SYNTHETIC_A'),CAL,ASOF,'2027-12-31')
         self.assertTrue(above_review['rankable'])
         self.assertEqual(above_review['liquidity_research_band'],'RESEARCH_AT_LEAST_12M_PENDING_EVIDENCE')
     def test_low_turnover_cannot_reuse_generic_tradability_pass(self):
-        d=FakeData();d.prices[('TEST','SYNTHETIC_A')]['volume_shares']=150000
+        d=FakeData();d.prices[('TEST','SYNTHETIC_A')]['turnover_ntd']=1500000
         d.evidence['certificates']['SYNTHETIC_A']={'tradability':dict(status='PASS')}
         a=estimate(d,('TEST','SYNTHETIC_A'),CAL,ASOF,'2027-12-31')
         self.assertTrue(a['rankable'])
         self.assertEqual(a['gates']['tradability']['status'],'PENDING')
         self.assertIn('EXIT_CAPACITY_REVIEW',a['gates']['tradability']['reason'])
         self.assertFalse(a['formal_Aplus'])
+    def test_reported_amount_not_closing_price_proxy_controls_liquidity_band(self):
+        d=FakeData();quote=d.prices[('TEST','SYNTHETIC_A')]
+        quote.update(close=10,volume_shares=2000000,turnover_ntd=11999999)
+        a=estimate(d,('TEST','SYNTHETIC_A'),CAL,ASOF,'2027-12-31')
+        self.assertEqual(a['single_day_turnover_ntd'],11999999)
+        self.assertEqual(a['liquidity_research_band'],'RESEARCH_1M_TO_12M_PENDING_EXECUTION')
+        self.assertEqual(a['gates']['tradability']['status'],'PENDING')
+        self.assertFalse(a['formal_Aplus'])
+    def test_missing_or_malformed_reported_amount_is_never_imputed(self):
+        for value in (None,True,-1,float('nan'),float('inf'),'not a value'):
+            d=FakeData();d.prices[('TEST','SYNTHETIC_A')]['turnover_ntd']=value
+            a=estimate(d,('TEST','SYNTHETIC_A'),CAL,ASOF,'2027-12-31')
+            self.assertFalse(a['rankable'])
+            self.assertEqual(a['status'],'REPORTED_TURNOVER_MISSING_OR_INVALID')
+    def test_zero_reported_trading_value_remains_zero_and_below_research_floor(self):
+        d=FakeData();d.prices[('TEST','SYNTHETIC_A')]['turnover_ntd']=0
+        a=estimate(d,('TEST','SYNTHETIC_A'),CAL,ASOF,'2027-12-31')
+        self.assertFalse(a['rankable'])
+        self.assertEqual(a['status'],'TURNOVER_FILTER_BELOW_1M_TWD')
     def test_reported_eps_edit_does_not_change_operating_forecast(self):
         d=FakeData();a=estimate(d,('TEST','SYNTHETIC_A'),CAL,ASOF,'2027-12-31')
         for row in d.history[('TEST','SYNTHETIC_A')].values():row['basic_eps_ytd']*=20

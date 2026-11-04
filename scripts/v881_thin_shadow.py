@@ -19,7 +19,7 @@ if str(ROOT) not in sys.path:
 from scripts.tw_v880_run import public_row
 from tw_model_v880.data import MarketData
 from tw_model_v880.calibration import fit_accounting
-from tw_model_v880.model import estimate, RESEARCH_MIN_TURNOVER_NTD
+from tw_model_v880.model import estimate, RESEARCH_MIN_TURNOVER_NTD, reported_trading_value
 from tw_model_v880.math import number
 
 def discover_shadow(data, report, calibrated):
@@ -40,9 +40,10 @@ def discover_shadow(data, report, calibrated):
             continue
         close = number(p.get("close"))
         volume = number(p.get("volume_shares"))
-        if close is None or volume is None or close <= 0:
+        amount = reported_trading_value(p)
+        if close is None or volume is None or close <= 0 or amount is None:
             continue
-        if not (close < 8 or close * volume < RESEARCH_MIN_TURNOVER_NTD):
+        if not (close < 8 or amount < RESEARCH_MIN_TURNOVER_NTD):
             failures.append({"market":market,"code":code,"reason":"UNEXPECTED_NON_THIN_MODEL_EXCLUSION"})
             continue
         eligible += 1

@@ -25,6 +25,28 @@ def equity_offering_overlay(root, code, asof, target_date, base, issued_common_s
     announced = timestamp(event['announced_at'])
     if announced > cut or observed > cut:
         return None
+    # Pricing may be announced after the original share-count event. Keep its
+    # separate discovery clock so today's issue price cannot leak into old PIT.
+    issue_price=number(event.get('issuance_price_twd'))
+    price_source_url=event.get('source_url')
+    price_first_observed_at=None
+    prior_update_clock=None
+    for update in event.get('pricing_updates', []):
+        update_clock=timestamp(update['first_observed_at'])
+        public_date=timestamp(update['announced_on']+'T00:00:00+08:00')
+        if prior_update_clock is not None and update_clock<=prior_update_clock:
+            raise ValueError('OFFERING_PRICING_UPDATES_NOT_ORDERED')
+        prior_update_clock=update_clock
+        if update_clock<public_date:
+            raise ValueError('OFFERING_PRICING_UPDATE_BEFORE_PUBLICATION')
+        if update_clock>cut or public_date>cut:
+            continue
+        value=number(update.get('issuance_price_twd'))
+        if value is None or value<=0 or not str(update.get('source_url','')).startswith('https://'):
+            raise ValueError('OFFERING_PRICING_UPDATE_INVALID')
+        issue_price=value
+        price_source_url=update['source_url']
+        price_first_observed_at=update['first_observed_at']
     if target_date < event['planned_subscription_record_date']:
         return None
     if event.get('status') != 'ANNOUNCED_NOT_YET_ISSUED':
@@ -62,8 +84,11 @@ def equity_offering_overlay(root, code, asof, target_date, base, issued_common_s
         first_observed_at=event['first_observed_at'],
         announced_at=event['announced_at'],
         planned_subscription_record_date=event['planned_subscription_record_date'],
-        expected_proceeds_twd=None,
-        issuance_price_twd=event.get('issuance_price_twd'),
+        expected_proceeds_twd=shares*issue_price if issue_price is not None else None,
+        proceeds_basis='ANNOUNCED_GROSS_NOT_RECEIVED_NOT_NET_OF_COSTS' if issue_price is not None else None,
+        issuance_price_twd=issue_price,
+        pricing_source_url=price_source_url,
+        pricing_first_observed_at=price_first_observed_at,
         is_new_stock_already_outstanding=False,
         rank_using_mechanical_sensitivity=False,
         price_upside_from_pre_ex_rights_close_not_comparable=True,
