@@ -8,6 +8,34 @@ from types import SimpleNamespace
 from scripts.v884_evidence_probe import price_archive,liquidity_probe,probe,financial_probe,capital_probe,issuer_backfill_probe,reconcile_issuer_reference_history
 
 class OfficialEvidenceProbeTests(unittest.TestCase):
+    def test_tpex_daily_history_uses_new_reference_and_rejects_conflicting_overlap(self):
+        from scripts.v893_tpex_daily_backfill import build_issuer, daily_url
+        samples={}
+        for i in range(35):
+            day=dt.date(2026,10,22)-dt.timedelta(days=i)
+            if day.weekday()<5:
+                stamp=day.isoformat()
+                samples[stamp]=dict(date=stamp,source_url=daily_url(stamp),
+                    original_response_sha256='a'*64,
+                    row=dict(date=stamp,turnover_ntd=10000000,volume_shares=100000,close=100.))
+        with tempfile.TemporaryDirectory() as temporary:
+            root=pathlib.Path(temporary);folder=root/'prices/issuer_history/TPEX';folder.mkdir(parents=True)
+            (folder/'8390.json').write_text(json.dumps(build_issuer('8390','2026-10-22',samples)))
+            newer=[('2026-10-27',{('TPEX','8390'):12000000})]
+            before=issuer_backfill_probe(root,'2026-10-27','TPEX','8390')
+            self.assertEqual(before['status'],'PENDING_REFERENCE_SESSION_MISSING')
+            merged=issuer_backfill_probe(root,'2026-10-27','TPEX','8390',newer)
+            self.assertEqual(merged['validated_archive_additions'],1)
+            self.assertEqual(merged['twenty_day']['last'],'2026-10-27')
+            self.assertEqual(merged['tradability_gate'],'PENDING_NOT_CERTIFIED')
+            conflict=issuer_backfill_probe(root,'2026-10-27','TPEX','8390',
+                newer+[('2026-10-22',{('TPEX','8390'):10000001})])
+            self.assertEqual(conflict['status'],'SOURCE_CONFLICT_REVIEW_REQUIRED')
+            self.assertIsNone(conflict['twenty_day'])
+            with self.assertRaisesRegex(ValueError,'DAILY_ARCHIVE_AFTER_PRICE_REFERENCE_DATE'):
+                issuer_backfill_probe(root,'2026-10-27','TPEX','8390',
+                    [('2026-10-28',{('TPEX','8390'):12000000})])
+
     def test_stale_monthly_history_merged_with_real_dated_official_reference(self):
         # Keep the real dated exchange values, but isolate this old regression
         # from the live issuer file that the collector legitimately advances.

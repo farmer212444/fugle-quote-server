@@ -15,7 +15,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 from tw_model_v880.data import MarketData
 from tw_model_v880.math import number
-from tw_model_v880.model import RESEARCH_MIN_TURNOVER_NTD
+from tw_model_v880.model import RESEARCH_MIN_TURNOVER_NTD, reported_trading_value
 
 def classify(data, report):
     expected = report["data_scope"]["normalized_issuers"]
@@ -52,11 +52,14 @@ def classify(data, report):
         else:
             close = number(price.get("close"))
             volume = number(price.get("volume_shares"))
+            amount = reported_trading_value(price)
             if close is None or volume is None:
                 missing.append("NO_ELIGIBLE_CLOSE_OR_VOLUME")
+            elif amount is None:
+                missing.append("REPORTED_TURNOVER_MISSING_OR_INVALID")
             elif close < 8:
                 missing.append("PRICE_BELOW_8_MODEL_RESEARCH_FLOOR")
-            elif close * volume < RESEARCH_MIN_TURNOVER_NTD:
+            elif amount < RESEARCH_MIN_TURNOVER_NTD:
                 missing.append("LOW_SINGLE_DAY_TRADING_VALUE_BELOW_1M_NTD")
         if code not in data.revenue:
             missing.append("NO_CURRENT_MONTHLY_REVENUE")

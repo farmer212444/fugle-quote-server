@@ -18,6 +18,11 @@ from .offering import equity_offering_overlay
 RESEARCH_MIN_TURNOVER_NTD = 1_000_000
 TRADABILITY_REVIEW_TURNOVER_NTD = 12_000_000
 
+def reported_trading_value(quote):
+    raw=quote.get('turnover_ntd')
+    value=None if isinstance(raw,bool) else number(raw)
+    return value if value is not None and value>=0 else None
+
 def finite_values(d,keys):return all(d.get(k) is not None and math.isfinite(d[k]) for k in keys)
 def research_gates(primary,code,period,cash,coverage):
     gates={k:gate('PENDING','SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED') for k in GATES}
@@ -45,7 +50,11 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
     calibration=calibration.get('sector_parameters',{}).get(rev.get('industry'),calibration)
     close=number(p['close']);volume=number(p.get('volume_shares'))
     if close is None or volume is None or close<=0 or volume<0:return unavailable('REFERENCE_PRICE_OR_VOLUME_INVALID')
-    turnover=close*volume
+    # Closing price times volume is not the exchange's traded value. Using that
+    # proxy can move an issuer across a liquidity threshold on a volatile day.
+    # An absent/invalid reported amount stays unavailable rather than inferred.
+    turnover=reported_trading_value(p)
+    if turnover is None:return unavailable('REPORTED_TURNOVER_MISSING_OR_INVALID')
     thin=close<8 or turnover<RESEARCH_MIN_TURNOVER_NTD
     low_turnover_review=turnover<TRADABILITY_REVIEW_TURNOVER_NTD
     if close<8 and not shadow_thin:return unavailable('PRICE_FILTER_BELOW_8_TWD')
@@ -311,6 +320,7 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
         annual_forecast_still_requires_issuer_operating_bridge=True,
         event_state=getattr(data,'earnings_event_states',{}).get(code)),
       reference_close=close,single_day_turnover_ntd=turnover,
+      single_day_turnover_basis='ARCHIVED_REPORTED_TRADING_VALUE_NOT_CLOSE_TIMES_VOLUME',
       liquidity_research_band=('SHADOW_BELOW_1M_OR_PRICE_FLOOR' if thin else 'RESEARCH_1M_TO_12M_PENDING_EXECUTION' if low_turnover_review else 'RESEARCH_AT_LEAST_12M_PENDING_EVIDENCE'),
       price_date=data.price_date,revenue_month=data.revenue_month,estimate_vintage=asof,target_date=target_date,
       source_tier='ISSUER_CONDENSED_ORIGINAL_STATEMENTS' if condensed else 'ISSUER_SELF_REPORTED_ORIGINAL_TABLE' if event else 'ORIGINAL_CURRENT_ISSUER_NUMERICS' if primary else 'OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL',rankable=rankable,point_valuation_available=point,
