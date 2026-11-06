@@ -5,6 +5,7 @@ import datetime as dt
 import gzip
 import hashlib
 import json
+import os
 import re
 import time
 import urllib.request
@@ -134,7 +135,7 @@ def archive(root,spec,raw,now=None):
 
 
 def fetch(url):
-    request=urllib.request.Request(url,headers={'User-Agent':UA,'Accept-Encoding':'identity'})
+    request=urllib.request.Request(url,headers={'User-Agent':os.environ.get('SEC_HTTP_USER_AGENT',UA),'Accept-Encoding':'identity'})
     with urllib.request.urlopen(request,timeout=40) as response:
         require(response.status==200 and response.geturl()==url,'SEC_HTTP_STATUS_OR_REDIRECT_UNEXPECTED')
         body=response.read(MAX_BYTES+1)
@@ -164,6 +165,7 @@ def collect(root,manifest,fetcher=fetch,offline=False):
                 time.sleep(.2)
         except (ValueError,KeyError,TypeError,OSError,EOFError) as exc:
             errors.append(dict(accession=spec['accession'],reason=str(exc)))
+            time.sleep(.2)
     return dict(schema='REGULATORY_SOURCE_INTAKE_STATUS_V1',observed_at_utc=dt.datetime.now(dt.timezone.utc).isoformat(),
         status='SOURCE_ERRORS' if errors else 'SOURCE_COLLECTION_PENDING' if pending else 'ORIGINAL_SUBMISSIONS_VERIFIED',
         requested_filings=len(sources),verified_original_versions=len(receipts),

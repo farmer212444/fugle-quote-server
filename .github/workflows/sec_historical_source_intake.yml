@@ -34,6 +34,17 @@ jobs:
           python-version: '3.12'
       - name: Check archive identity clocks and immutability
         run: python -m unittest -v tests.test_sec_pit_intake tests.test_sec_api_intake
+      - name: Declare researcher contact as required by SEC fair-access guidance
+        if: github.event_name != 'pull_request'
+        run: |
+          python - <<'PY'
+          import os,re,subprocess
+          contact=subprocess.check_output(['git','log','-1','--format=%ae','--','scripts/sec_pit_intake.py'],text=True).strip()
+          if not re.fullmatch(r'[A-Za-z0-9_.+-]+@[A-Za-z0-9.-]+',contact):
+              raise SystemExit('A valid public source-author research contact is unavailable.')
+          with open(os.environ['GITHUB_ENV'],'a',encoding='utf-8') as stream:
+              stream.write('SEC_HTTP_USER_AGENT=Farmer212444HistoricalResearch '+contact+' (https://github.com/farmer212444/fugle-quote-server)\n')
+          PY
       - name: Capture two explicitly scoped regulator originals
         if: github.event_name != 'pull_request'
         id: capture
