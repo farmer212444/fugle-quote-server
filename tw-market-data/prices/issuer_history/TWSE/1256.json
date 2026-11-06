@@ -2,10 +2,10 @@
   "schema": "V889_OFFICIAL_TWSE_ISSUER_MONTHLY",
   "issuer": "1256",
   "market": "TWSE",
-  "price_reference_asof": "2026-10-22",
+  "price_reference_asof": "2026-11-06",
   "source_type": "OFFICIAL_TWSE_MONTHLY_STOCK_DAY",
   "original_raw_responses_preserved_in_actions_artifact_not_repository": false,
-  "durable_original_months": 24,
+  "durable_original_months": 25,
   "backfill_capture_not_point_in_time_trade_history": true,
   "share_adjustments_dividends_and_spread_not_verified": true,
   "original_source_not_cryptographically_signed": true,
@@ -7763,9 +7763,182 @@
           "session_times_are_scheduled_not_broker_fills": true
         }
       ]
+    },
+    "2026-11": {
+      "source_url": "https://www.twse.com.tw/rwd/zh/afterTrading/STOCK_DAY?date=20261101&stockNo=1256&response=json",
+      "original_response_sha256": "21a92a488fc7c9290828f96b7ad3ce3a5a401f542a23176a455191da6ac4c1a9",
+      "captured_at_utc": "2026-11-06T13:57:38.662175+00:00",
+      "original_archive": {
+        "schema": "HISTORICAL_EXCHANGE_ORIGINAL_V1",
+        "market": "TWSE",
+        "identity": "1256-2026-11",
+        "source_url": "https://www.twse.com.tw/rwd/zh/afterTrading/STOCK_DAY?date=20261101&stockNo=1256&response=json",
+        "captured_at_utc": "2026-11-06T13:57:38.662175+00:00",
+        "archive_path": "prices/originals/history/TWSE/1256-2026-11/21a92a488fc7c9290828f96b7ad3ce3a5a401f542a23176a455191da6ac4c1a9.json.gz",
+        "original_response_sha256": "21a92a488fc7c9290828f96b7ad3ce3a5a401f542a23176a455191da6ac4c1a9",
+        "parsed_rows_sha256": "fff098f9689027ca5cecbf35593aedc2b082b74eee4f4480a0dd7df8669adcf0",
+        "bytes": 1306,
+        "issuer_publication_pit_verified": false,
+        "contemporaneous_universe_verified": false,
+        "fillability_verified": false,
+        "receipt_path": "prices/originals/history/TWSE/1256-2026-11/e44a58fb45759ec63bd5d327aa7751cfb2001da42e49dbb3e758f090549d88be.json"
+      },
+      "original_exchange_signature_verified": false,
+      "rows": [
+        {
+          "date": "2026-11-02",
+          "code": "1256",
+          "market": "TWSE",
+          "volume_shares": 21933,
+          "turnover_ntd": 3637431,
+          "close": 167.5,
+          "high": 167.5,
+          "low": 165.0,
+          "open": 165.0,
+          "open_at": "2026-11-02T09:00:00+08:00",
+          "close_at": "2026-11-02T13:30:00+08:00",
+          "fillability_verified": false,
+          "session_times_are_scheduled_not_broker_fills": true
+        },
+        {
+          "date": "2026-11-03",
+          "code": "1256",
+          "market": "TWSE",
+          "volume_shares": 25979,
+          "turnover_ntd": 4264182,
+          "close": 164.0,
+          "high": 166.0,
+          "low": 163.0,
+          "open": 166.0,
+          "open_at": "2026-11-03T09:00:00+08:00",
+          "close_at": "2026-11-03T13:30:00+08:00",
+          "fillability_verified": false,
+          "session_times_are_scheduled_not_broker_fills": true
+        },
+        {
+          "date": "2026-11-04",
+          "code": "1256",
+          "market": "TWSE",
+          "volume_shares": 45408,
+          "turnover_ntd": 7413018,
+          "close": 163.0,
+          "high": 167.5,
+          "low": 161.0,
+          "open": 167.5,
+          "open_at": "2026-11-04T09:00:00+08:00",
+          "close_at": "2026-11-04T13:30:00+08:00",
+          "fillability_verified": false,
+          "session_times_are_scheduled_not_broker_fills": true
+        },
+        {
+          "date": "2026-11-05",
+          "code": "1256",
+          "market": "TWSE",
+          "volume_shares": 33495,
+          "turnover_ntd": 5469165,
+          "close": 162.5,
+          "high": 165.0,
+          "low": 162.5,
+          "open": 163.0,
+          "open_at": "2026-11-05T09:00:00+08:00",
+          "close_at": "2026-11-05T13:30:00+08:00",
+          "fillability_verified": false,
+          "session_times_are_scheduled_not_broker_fills": true
+        },
+        {
+          "date": "2026-11-06",
+          "code": "1256",
+          "market": "TWSE",
+          "volume_shares": 90382,
+          "turnover_ntd": 14295985,
+          "close": 160.0,
+          "high": 162.5,
+          "low": 155.0,
+          "open": 159.5,
+          "open_at": "2026-11-06T09:00:00+08:00",
+          "close_at": "2026-11-06T13:30:00+08:00",
+          "fillability_verified": false,
+          "session_times_are_scheduled_not_broker_fills": true
+        }
+      ]
     }
   },
   "sessions": [
+    {
+      "date": "2026-11-06",
+      "code": "1256",
+      "market": "TWSE",
+      "volume_shares": 90382,
+      "turnover_ntd": 14295985,
+      "close": 160.0,
+      "high": 162.5,
+      "low": 155.0,
+      "open": 159.5,
+      "open_at": "2026-11-06T09:00:00+08:00",
+      "close_at": "2026-11-06T13:30:00+08:00",
+      "fillability_verified": false,
+      "session_times_are_scheduled_not_broker_fills": true
+    },
+    {
+      "date": "2026-11-05",
+      "code": "1256",
+      "market": "TWSE",
+      "volume_shares": 33495,
+      "turnover_ntd": 5469165,
+      "close": 162.5,
+      "high": 165.0,
+      "low": 162.5,
+      "open": 163.0,
+      "open_at": "2026-11-05T09:00:00+08:00",
+      "close_at": "2026-11-05T13:30:00+08:00",
+      "fillability_verified": false,
+      "session_times_are_scheduled_not_broker_fills": true
+    },
+    {
+      "date": "2026-11-04",
+      "code": "1256",
+      "market": "TWSE",
+      "volume_shares": 45408,
+      "turnover_ntd": 7413018,
+      "close": 163.0,
+      "high": 167.5,
+      "low": 161.0,
+      "open": 167.5,
+      "open_at": "2026-11-04T09:00:00+08:00",
+      "close_at": "2026-11-04T13:30:00+08:00",
+      "fillability_verified": false,
+      "session_times_are_scheduled_not_broker_fills": true
+    },
+    {
+      "date": "2026-11-03",
+      "code": "1256",
+      "market": "TWSE",
+      "volume_shares": 25979,
+      "turnover_ntd": 4264182,
+      "close": 164.0,
+      "high": 166.0,
+      "low": 163.0,
+      "open": 166.0,
+      "open_at": "2026-11-03T09:00:00+08:00",
+      "close_at": "2026-11-03T13:30:00+08:00",
+      "fillability_verified": false,
+      "session_times_are_scheduled_not_broker_fills": true
+    },
+    {
+      "date": "2026-11-02",
+      "code": "1256",
+      "market": "TWSE",
+      "volume_shares": 21933,
+      "turnover_ntd": 3637431,
+      "close": 167.5,
+      "high": 167.5,
+      "low": 165.0,
+      "open": 165.0,
+      "open_at": "2026-11-02T09:00:00+08:00",
+      "close_at": "2026-11-02T13:30:00+08:00",
+      "fillability_verified": false,
+      "session_times_are_scheduled_not_broker_fills": true
+    },
     {
       "date": "2026-10-22",
       "code": "1256",
@@ -14970,30 +15143,30 @@
   "liquidity": {
     "5": {
       "sessions": 5,
-      "first": "2026-10-16",
-      "last": "2026-10-22",
-      "median_turnover_ntd": 5224748,
-      "min_turnover_ntd": 3056195,
+      "first": "2026-11-02",
+      "last": "2026-11-06",
+      "median_turnover_ntd": 5469165,
+      "min_turnover_ntd": 3637431,
       "zero_turnover_sessions": 0,
-      "idealized_5m_exit_sessions_at_20pct": 4.78
+      "idealized_5m_exit_sessions_at_20pct": 4.57
     },
     "20": {
       "sessions": 20,
-      "first": "2026-09-22",
-      "last": "2026-10-22",
-      "median_turnover_ntd": 5171816.5,
+      "first": "2026-10-01",
+      "last": "2026-11-06",
+      "median_turnover_ntd": 4388108.5,
       "min_turnover_ntd": 2024766,
       "zero_turnover_sessions": 0,
-      "idealized_5m_exit_sessions_at_20pct": 4.83
+      "idealized_5m_exit_sessions_at_20pct": 5.7
     },
     "60": {
       "sessions": 60,
-      "first": "2026-07-28",
-      "last": "2026-10-22",
-      "median_turnover_ntd": 7639504.5,
+      "first": "2026-08-04",
+      "last": "2026-11-06",
+      "median_turnover_ntd": 7077760.0,
       "min_turnover_ntd": 2024766,
       "zero_turnover_sessions": 0,
-      "idealized_5m_exit_sessions_at_20pct": 3.27
+      "idealized_5m_exit_sessions_at_20pct": 3.53
     }
   }
 }
