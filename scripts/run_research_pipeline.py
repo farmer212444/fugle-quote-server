@@ -44,6 +44,7 @@ def research_stages(phase='full'):
         ('return_model_search', ['return_model_search.py']),
         ('expected_returns', ['expected_returns.py']),
         ('expected_return_readiness', ['expected_return_readiness.py']),
+        ('expected_return_blocker_triage', ['expected_return_blocker_triage.py']),
         ('shadow_comparison', ['institutional_shadow.py']),
         ('benchmark_validation', ['benchmark_validation.py']),
         ('institutional_review', ['institutional_review.py']),
