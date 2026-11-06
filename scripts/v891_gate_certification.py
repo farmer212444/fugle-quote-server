@@ -26,6 +26,7 @@ if str(ROOT) not in sys.path:
 from tw_model_v880.evidence import GATES, certify, timestamp, verify_certificate_archives
 from tw_model_v880.contracts import OBLIGATIONS
 from scripts.v896_original_archive import validate_bundle, original_quarter_coverage
+from scripts.tsmc_original_statements import validate_archive as validate_tsmc_originals
 from scripts.ensure_research_current import full_result_reasons
 
 MANUAL_REVIEW_GATES = frozenset((
@@ -302,6 +303,14 @@ def build_progress(root):
                 statuses=["ORIGINAL_SOURCE_REJECTED"],reason=str(exc),
                 original_archive_hashes_verified=False,formal_pass_count=0)
             source_rejections.append(dict(code=code,source="original_bundle",reason=str(exc)))
+    try:
+        original_bundles['2330']=validate_tsmc_originals(root,period,asof)
+        original_quarter_windows['2330']=original_bundles['2330']['coverage']
+    except (ValueError,KeyError,TypeError,OSError,AttributeError,RuntimeError) as exc:
+        original_bundles['2330']=dict(issuer='2330',records=0,
+            statuses=['ORIGINAL_SOURCE_REJECTED'],reason=str(exc),
+            original_archive_hashes_verified=False,formal_pass_count=0)
+        source_rejections.append(dict(code='2330',source='original_bundle',reason=str(exc)))
     jobs=dispatch.get("all_issuer_jobs",[])
     if len(jobs)!=dispatch.get("tracked_issuer_count") or len(jobs)!=research["data_scope"]["model_rows"]:
         raise ValueError("GATE_CERTIFICATION_LEDGER_INCOMPLETE")
@@ -363,7 +372,7 @@ def build_progress(root):
                 kinds=archives.get("document_kinds") or {}
                 if (gate=="original_eight_quarter_statements" and
                         kinds.get("quarterly",0)>0 and
-                        state in ("MIRROR_CAPTURED","SOURCE_MISSING")):
+                        state in ("MIRROR_CAPTURED","SOURCE_MISSING","NOT_PROBED")):
                     state="SOURCE_CAPTURED"
                     coverage=original_quarter_windows.get(code)
                     if coverage is None:
@@ -374,6 +383,11 @@ def build_progress(root):
                                 +" period-specific original PDFs SHA-archived, missing "+
                                 (",".join(coverage["missing_quarters"]) or "none")+"; issuer PDF internal identity, "
                                 "full notes, auditor scope and MOPS publication PIT unreviewed")
+                        if code=='2330':
+                            reason=(str(len(coverage['found_quarters']))+'/8 issuer-directory-linked original PDFs SHA-archived through '
+                                +coverage['source_window_end']+'; native cover/contents identified for '
+                                +str(len(coverage['native_cover_identity_verified_quarters']))+'/8; scanned pages, '
+                                'full financial contents, auditor scope and MOPS publication PIT remain unreviewed')
                 if (gate=="management_promises" and kinds.get("presentation",0)>0
                         and state=="REVIEW_PENDING"):
                     state="SOURCE_CAPTURED"
@@ -393,7 +407,7 @@ def build_progress(root):
         if is_high and not evaluated["formal_Aplus"]:
             counts["high_upside_formal_pending"]+=1
         if evaluated["formal_Aplus"]:counts["formal_Aplus_total"]+=1
-        if (is_high or profile is not None or code in ("6206","9802")):
+        if (is_high or profile is not None or code in ("2330","6206","9802")):
             issuer_reports.append(dict(code=code,name=item.get("name"),market=item.get("market"),
                  research_upside_pct=round(upside,2) if upside is not None else None,
                  financial_period=issuer_period,reviewed_financial_period=row.get("reviewed_financial_period",period),
@@ -460,7 +474,7 @@ def render_md(r, admitted):
       "## 個股工作進度（前30檔及指定關注）","",
       "|股票|模型漲幅|正式通過|正式失敗|待驗|目前已有的資料|",
       "|---|---:|---:|---:|---:|---|"]
-    keep=rows[:30]+[x for x in rows[30:] if x["code"] in ("6206","9802")]
+    keep=rows[:30]+[x for x in rows[30:] if x["code"] in ("2330","6206","9802")]
     for x in keep:
         stages=x["gate_stage"]
         observable=[]
@@ -483,6 +497,11 @@ def render_md(r, admitted):
         if not observable:observable.append("原始證據待補")
         upside='無可比估值' if x['research_upside_pct'] is None else f"{x['research_upside_pct']:+.1f}%"
         out.append(f"|{x['code']} {x['name'] or ''}|{upside}|{len(x['formally_passed_gates'])}/13|{len(x['formally_failed_gates'])}|{len(x['still_pending_gates'])}|{'、'.join(observable)}|")
+    tsmc=r['source_quarter_coverage_diagnostic'].get('2330')
+    if tsmc:
+        out+=['',f"2330原件視窗為{tsmc['required_quarters'][0]}至{tsmc['source_window_end']}；"
+            f"封面／目錄原生文字已辨識{len(tsmc['native_cover_identity_verified_quarters'])}/8季。"
+            '掃描頁、完整附註、會計師範圍及公告PIT尚待覆核；2026-Q3簡明附件不能替代完整季報。']
     focus={x['code']:x for x in rows if x['code'] in ('6206','9802')}
     if focus:
         out += ['', '## 飛捷與鈺齊：主模型實際擋關原因', '',

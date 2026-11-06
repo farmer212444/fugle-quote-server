@@ -63,6 +63,7 @@ on:
       - 'tests/test_v8a6_etf_rotation_watch.py'
       - 'scripts/v897_freeze_model_vintage.py'
       - 'scripts/v8a9_8383_original_archive.py'
+      - 'scripts/tsmc_original_statements.py'
       - 'tw-market-data/evidence/v880/auditor_scope_watch/**'
       - 'scripts/v8a8_forward_top30_0050.py'
       - 'scripts/v8b4_0056_forward_top10.py'
@@ -148,6 +149,7 @@ on:
       - 'tests/test_v8a6_etf_rotation_watch.py'
       - 'scripts/v897_freeze_model_vintage.py'
       - 'scripts/v8a9_8383_original_archive.py'
+      - 'scripts/tsmc_original_statements.py'
       - 'tw-market-data/evidence/v880/auditor_scope_watch/**'
       - 'scripts/v8a8_forward_top30_0050.py'
       - 'scripts/v8b4_0056_forward_top10.py'
@@ -258,6 +260,9 @@ jobs:
         run: python scripts/v8a9_8383_original_archive.py
       - name: Run bounded 8383 original PDF archive regression checks
         run: python -m unittest discover -s tests -p test_v8a9_8383_original_archive.py
+      - name: Archive issuer-linked 2330 full financial statements without certifying unreviewed contents
+        if: github.event_name != 'pull_request'
+        run: python scripts/tsmc_original_statements.py
       - name: Admit verified original-source review packs before valuation
         run: python scripts/v891_gate_certification.py --issue-only
       - name: Produce dated scenarios and evidence decisions
@@ -296,6 +301,7 @@ jobs:
               python scripts/refresh_v880_public.py
               python scripts/benchmark_sources.py
               python scripts/v8a9_8383_original_archive.py
+              python scripts/tsmc_original_statements.py
               python scripts/v891_gate_certification.py --issue-only
               python scripts/run_research_pipeline.py --phase core
             fi
