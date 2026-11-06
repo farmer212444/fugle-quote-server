@@ -1,0 +1,40 @@
+{
+  "schema": "EXPECTED_RETURN_READINESS_V1",
+  "status": "NOT_ESTIMABLE_WITH_CURRENT_EVIDENCE",
+  "source_model": "V8.10.8",
+  "source_estimate_vintage": "2026-11-06T17:34:33.519780+08:00",
+  "research_price_date": "2026-11-05",
+  "latest_archived_official_price_date": "2026-11-05",
+  "horizon_evidence": [
+    {
+      "holding_sessions": 21,
+      "verified_return_periods": 0,
+      "walk_forward_test_periods": 0
+    },
+    {
+      "holding_sessions": 63,
+      "verified_return_periods": 0,
+      "walk_forward_test_periods": 0
+    },
+    {
+      "holding_sessions": 126,
+      "verified_return_periods": 0,
+      "walk_forward_test_periods": 0
+    }
+  ],
+  "blockers": [
+    "2027_SCENARIO_PROBABILITIES_NOT_VALIDATED",
+    "ISSUER_LEVEL_COST_ADJUSTED_EXPECTED_RETURNS_NOT_CALIBRATED",
+    "INSUFFICIENT_PIT_COST_ADJUSTED_WALK_FORWARD_PERIODS"
+  ],
+  "expected_net_return_top10": null,
+  "calibrated_issuer_scenario_probabilities": null,
+  "base_price_upside_ranking_is_expected_return": false,
+  "formal_Aplus_status_unchanged": true,
+  "trading_orders_created": false,
+  "source_sha256": {
+    "research": "461ccecba5b2db55153499dbbd7420a42aaad687dea751465a18620830fa4591",
+    "return_search": "9516fa93c57ba4292031286ee878ea0b7821640058bbde85535adc5601fe467a",
+    "prices": "0b6203700fa69b5fa4bbbd0139f180d621101e22a5feb1061916ec4215fea87d"
+  }
+}
