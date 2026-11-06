@@ -58,5 +58,35 @@ class TestRealModelEntryBlockers(unittest.TestCase):
         row=next(x for x in result["unmodeled_issuers"] if x["code"]=="2345")
         self.assertIn("PRICE_BELOW_8_MODEL_RESEARCH_FLOOR",row["all_blockers"])
 
+    def test_post_entry_failure_is_not_counted_as_a_comparable_valuation(self):
+        data,report=self.fixture()
+        report['all_model_row_summary']=[dict(code='1234',status='TAX_PARENT_EARNINGS_COMPONENTS_MISSING',rankable=False),
+            dict(code='2345',status='CERTIFICATION_PENDING',rankable=False,exclusion_reasons=['PE_SAMPLE_INSUFFICIENT']),
+            dict(code='5678',status='CERTIFICATION_PENDING',rankable=True)]
+        report['data_scope'].update(model_rows=3,market_research_rankable=1)
+        report['formal_decisions_evaluated']=2
+        result=classify(data,report)
+        self.assertEqual(result['entry_precheck_eligible_count'],3)
+        self.assertEqual(result['modeled'],1);self.assertEqual(result['unmodeled'],2)
+        self.assertEqual(result['quality_decision_evaluated_count'],2)
+        self.assertEqual(result['primary_blocker_counts']['TAX_PARENT_EARNINGS_COMPONENTS_MISSING'],1)
+        self.assertEqual(result['primary_blocker_counts']['PE_SAMPLE_INSUFFICIENT'],1)
+
+    def test_tracked_issuer_outside_financial_universe_does_not_inflate_coverage(self):
+        data,report=self.fixture();data.prices[('TWSE','9999')]={'close':100}
+        report['all_model_row_summary']=[dict(code='1234',rankable=True,status='CERTIFICATION_PENDING'),
+            dict(code='9999',rankable=False,status='CURRENT_FINANCIAL_STATEMENT_MISSING')]
+        report['data_scope'].update(model_rows=2,market_research_rankable=1)
+        result=classify(data,report)
+        self.assertEqual(result['tracked_rows_outside_financial_universe'],1)
+        self.assertEqual(result['tracked_comparable_valuation_count'],1)
+        self.assertEqual(result['modeled']+result['unmodeled'],3)
+
+    def test_partial_or_forged_valuation_summary_rejected(self):
+        data,report=self.fixture();report['data_scope']['market_research_rankable']=1
+        with self.assertRaisesRegex(ValueError,'VALUATION_STATUS_MISSING'):classify(data,report)
+        report['all_model_row_summary'][0].update(rankable=False,status='CERTIFICATION_PENDING')
+        with self.assertRaisesRegex(ValueError,'VALUATION_COUNT_MISMATCH'):classify(data,report)
+
 if __name__ == "__main__":
     unittest.main()

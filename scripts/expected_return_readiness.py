@@ -8,6 +8,7 @@ import argparse
 import datetime as dt
 import hashlib
 import json
+import math
 import os
 import tempfile
 from pathlib import Path
@@ -15,11 +16,78 @@ import sys
 
 PACKAGE_ROOT=Path(__file__).resolve().parents[1]
 if str(PACKAGE_ROOT) not in sys.path:sys.path.insert(0,str(PACKAGE_ROOT))
-from tw_model_v880.expected_returns import POLICY
+from tw_model_v880.expected_returns import POLICY,RETURN_DEFINITION,STATES
+from tw_model_v880.contracts import canonical_hash
+from tw_model_v880.portfolio import finite
 from tw_model_v880.historical_pit import calibration_feasibility
 
 
-def evaluate(research, returns, price_manifest=None):
+def annual_context_matches(annual,research):
+    return (isinstance(annual,dict) and annual.get('schema')=='EXPECTED_RETURN_STATUS_V1'
+        and annual.get('model')==research['model']
+        and annual.get('source_estimate_vintage')==research['estimate_vintage']
+        and annual.get('source_price_date')==research['asof_price_date']
+        and annual.get('target_date')==research.get('target_date'))
+
+
+def validated_annual_ranking(annual,research):
+    """Check the engine's output boundary, never infer probabilities from Base.
+
+    The annual engine remains responsible for original-byte outcome validation,
+    frozen cohorts and OOS estimation. This report consumes its matching result
+    without rewriting it or changing the registered method identity.
+    """
+    if not annual_context_matches(annual,research) or annual.get('source_errors'):
+        return []
+    ranking=annual.get('research_expected_return_ranking')
+    if not ranking:return []
+    def require(ok):
+        if not ok:raise ValueError('EXPECTED_RETURN_ANNUAL_RESULT_NOT_VERIFIABLE')
+    require(annual.get('status')=='RESEARCH_ESTIMATES_AFTER_OOS_CHECKS'
+        and annual.get('policy')==POLICY and annual.get('return_definition')==RETURN_DEFINITION
+        and annual.get('formal_Aplus_added')==0 and annual.get('trade_orders_created')==0)
+    require(type(annual.get('verified_mature_observations')) is int
+        and annual['verified_mature_observations']>=POLICY['minimum_train_rows']+POLICY['minimum_oos_rows'])
+    rows=annual.get('issuer_results');require(isinstance(rows,list))
+    lookup={(r.get('market'),r.get('code')):r for r in rows}
+    require(len(lookup)==len(rows)==annual.get('universe_rows')==research['data_scope']['model_rows'])
+    eligible=[r for r in rows if r.get('expected_net_total_return') is not None]
+    require(isinstance(ranking,list) and len(ranking)==len(eligible)
+        and len({(r.get('market'),r.get('code')) for r in ranking})==len(ranking))
+    for r in ranking:
+        require(lookup.get((r.get('market'),r.get('code')))==r
+            and r.get('status')=='EMPIRICAL_EXPECTATION_AFTER_OOS_CHECKS_RESEARCH_ONLY'
+            and r.get('automatic_deployment') is False and r.get('formal_Aplus_added')==0
+            and r.get('research_policy_sha256')==canonical_hash(POLICY)
+            and r.get('holding_calendar_days')==(dt.date.fromisoformat(research['target_date'])-dt.date.fromisoformat(research['asof_price_date'])).days)
+        diagnostics=r.get('diagnostics',{})
+        require(diagnostics.get('diagnostics_passed') is True
+            and diagnostics.get('status')=='OOS_DIAGNOSTICS_WITHIN_RESEARCH_POLICY')
+        for key,floor in (('oos_cohorts',POLICY['minimum_oos_cohorts']),('oos_rows',POLICY['minimum_oos_rows']),('market_regimes',POLICY['minimum_market_regimes'])):
+            require(type(diagnostics.get(key)) is int and diagnostics[key]>=floor)
+        for key,reference in (('multiclass_brier','uniform_baseline_brier'),('expected_return_mae','price_only_base_mae')):
+            require(finite(diagnostics.get(key)) and finite(diagnostics.get(reference))
+                and diagnostics[key]<=diagnostics[reference])
+        gap=diagnostics.get('maximum_reliability_gap')
+        require(finite(gap) and 0<=gap<=POLICY['maximum_reliability_gap'])
+        probabilities=r.get('scenario_probabilities');conditional=r.get('conditional_scenario_means')
+        require(isinstance(probabilities,dict) and set(probabilities)==set(STATES)
+            and isinstance(conditional,dict) and set(conditional)==set(STATES))
+        total=0.
+        for state in STATES:
+            p=probabilities[state];mean=conditional[state]
+            require(finite(p) and 0<=p<=1)
+            if p:
+                require(isinstance(mean,dict) and finite(mean.get('net_return')))
+                total+=p*mean['net_return']
+            else:require(mean is None)
+        require(math.isclose(sum(probabilities.values()),1.,abs_tol=1e-9)
+            and finite(r.get('expected_net_total_return'))
+            and math.isclose(total,r['expected_net_total_return'],rel_tol=1e-9,abs_tol=1e-9))
+    return sorted(ranking,key=lambda r:(-r['expected_net_total_return'],r['market'],r['code']))
+
+
+def evaluate(research, returns, price_manifest=None, annual=None):
     if not isinstance(research, dict) or not isinstance(returns, dict):
         raise ValueError('EXPECTED_RETURN_INVALID_INPUTS')
     for field in ('model', 'asof_price_date', 'estimate_vintage'):
@@ -69,8 +137,17 @@ def evaluate(research, returns, price_manifest=None):
                  if research.get('target_date') else None)
     if feasibility and not feasibility['fixed_target_only_can_satisfy_policy']:
         blockers.append('FIXED_TARGET_ONLY_CANNOT_SUPPLY_INDEPENDENT_ANNUAL_CALIBRATION_COHORTS')
+    ranking=validated_annual_ranking(annual,research)
+    if ranking:
+        # Short-horizon searches are diagnostic evidence, not an extra gate for
+        # an annual engine that has passed its own exact-horizon OOS policy.
+        blockers=mismatches
+    elif annual is not None:
+        if not annual_context_matches(annual,research):blockers.append('ANNUAL_ENGINE_REPORT_CONTEXT_MISMATCH')
+        elif annual.get('source_errors'):blockers.append('ANNUAL_ENGINE_SOURCE_REJECTIONS_REQUIRE_REPAIR')
+    ready=bool(ranking) and not blockers
     return dict(schema='EXPECTED_RETURN_READINESS_V1',
-        status='NOT_ESTIMABLE_WITH_CURRENT_EVIDENCE',
+        status='RESEARCH_EXPECTED_RETURN_AVAILABLE' if ready else 'NOT_ESTIMABLE_WITH_CURRENT_EVIDENCE',
         source_model=research['model'],
         source_estimate_vintage=research['estimate_vintage'],
         research_price_date=research['asof_price_date'],
@@ -78,8 +155,11 @@ def evaluate(research, returns, price_manifest=None):
         horizon_evidence=horizons,
         annual_calibration_feasibility=feasibility,
         blockers=blockers,
-        expected_net_return_top10=None,
-        calibrated_issuer_scenario_probabilities=None,
+        expected_net_return_top10=ranking[:10] if ready else None,
+        calibrated_issuer_scenario_probabilities={r['market']+':'+r['code']:r['scenario_probabilities'] for r in ranking[:10]} if ready else None,
+        annual_engine_context_matches=annual_context_matches(annual,research),
+        annual_engine_status=annual.get('status') if isinstance(annual,dict) else None,
+        expected_return_scope='RESEARCH_ONLY_SEPARATE_FROM_FORMAL_APLUS',
         base_price_upside_ranking_is_expected_return=False,
         formal_Aplus_status_unchanged=True,
         trading_orders_created=False)
@@ -93,37 +173,18 @@ def publish(root):
         'prices':root/'prices/latest_manifest.json',
     }
     docs={key:json.loads(path.read_bytes()) for key,path in sources.items()}
-    record=evaluate(docs['research'],docs['return_search'],docs['prices'])
     annual_path=root/'rankings/latest_expected_returns.json'
-    feasibility=record.get('annual_calibration_feasibility')
-    if annual_path.exists() and feasibility:
-        annual=json.loads(annual_path.read_bytes())
-        context=(annual.get('schema')=='EXPECTED_RETURN_STATUS_V1'
-            and annual.get('source_estimate_vintage')==record['source_estimate_vintage']
-            and annual.get('source_price_date')==record['research_price_date']
-            and annual.get('target_date')==docs['research']['target_date'])
-        record['annual_engine_context_matches']=context
-        if context:
-            annual['annual_calibration_feasibility']=feasibility
-            if annual.get('verified_mature_observations')==0 and not annual.get('source_errors'):
-                annual['status']='BLOCKED_ANNUAL_CALIBRATION_DESIGN_REQUIRES_HISTORICAL_REPLAY'
-            # Reporting-only annotation; do not alter the registered forecasting
-            # code, its method identity, frozen cohorts, weights or estimates.
-            from scripts.run_research_pipeline import atomic_json
-            from scripts.expected_returns import render as render_annual
-            atomic_json(annual_path,annual)
-            annual_text=render_annual(annual)
-            annual_text+='\n校準可行性：固定同一目標日期最多只有1個不重疊持有窗；目前政策要求24個。\n'
-            annual_text+=f"原政策的歷史長度下限約 {feasibility['minimum_history_span_years_ignoring_embargo']} 年；此為該研究政策的要求，不是金融學通用門檻。\n"
-            annual_text+='只等2027年底到期不能解決；須補歷史PIT重建與獨立時間外驗證協定，不能直接降低門檻湊出數字。\n'
-            (root/'rankings/latest_expected_returns.md').write_text(annual_text,encoding='utf-8')
-            record['annual_engine_status']=annual['status']
-            record['annual_engine_report_sha256']=hashlib.sha256(annual_path.read_bytes()).hexdigest()
+    annual=json.loads(annual_path.read_bytes()) if annual_path.exists() else None
+    record=evaluate(docs['research'],docs['return_search'],docs['prices'],annual)
+    if annual_path.exists():
+        sources['annual_engine']=annual_path
+        record['annual_engine_report_sha256']=hashlib.sha256(annual_path.read_bytes()).hexdigest()
     record['source_sha256']={key:hashlib.sha256(path.read_bytes()).hexdigest()
                              for key,path in sources.items()}
     text=json.dumps(record,ensure_ascii=False,indent=2,allow_nan=False)+'\n'
-    lines=['# 2027 期望報酬率 TOP10：證據準備狀態', '',
-           '**狀態：尚不能計算機率加權期望報酬率，沒有正式 TOP10。**', '',
+    headline=('**狀態：年度模型已產生通過內部OOS檢查的研究期望淨報酬；正式A+另行認證。**'
+              if record['expected_net_return_top10'] else '**狀態：尚不能計算機率加權期望報酬率，沒有正式 TOP10。**')
+    lines=['# 2027 期望報酬率 TOP10：證據準備狀態', '',headline, '',
            f"估值模型：{record['source_model']}；估值價格日：{record['research_price_date']}；",
            f"已封存最新官方行情日：{record['latest_archived_official_price_date']}。", '',
            '|持有交易日|驗證的報酬期數|Walk-Forward測試期數|',
@@ -132,7 +193,11 @@ def publish(root):
         lines.append(f"|{h['holding_sessions']}|{h['verified_return_periods']}|{h['walk_forward_test_periods']}|")
     lines+=['', '## 尚未解除的阻礙', '']
     lines.extend('- '+b for b in record['blockers'])
-    lines+=['', 'Base價差、Bear／Bull情境和雙降20%測試不是已校準期望值。',
+    if not record['blockers']:lines.append('年度研究政策檢查已通過；不代表正式投資績效或A+認證。')
+    if record['expected_net_return_top10']:
+        lines+=['','|股票|研究期望淨報酬|','|---|---:|']
+        lines += [f"|{r['code']} {r.get('name','')}|{r['expected_net_total_return']:.2%}|" for r in record['expected_net_return_top10']]
+    lines+=['', 'Base價差、Bear／Bull情境和EPS／PE壓力測試不是已校準期望值。',
              '不更改預測EPS／PE、13項品質認證、正式A+、原始報酬試驗、交易或排程。', '']
     feasibility=record.get('annual_calibration_feasibility')
     if feasibility:
