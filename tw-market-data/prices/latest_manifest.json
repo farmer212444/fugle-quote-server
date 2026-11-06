@@ -4,13 +4,13 @@
   "TPEX_rows": 892,
   "total": 1991,
   "path": "tw-market-data/prices/2026-11-05.json",
-  "normalized_sha256": "69932908d250ac78d692c60b36940998327224cd45f10ad730fdb12cd675290d",
+  "normalized_sha256": "7b0c004f4bb11e8608c6716a53e89ec5701c1a3fe029242511b0d7b00e233892",
   "raw_source_sha256": {
-    "TWSE": "fb4e711cc78e07cf8f699d1f546ae4c645090f3cfe01439a3dd5b81f0aaa4a75",
+    "TWSE": "3916f4718c3c1d32805b679707f368d80e6433bbf0937d0aab6154ca9d36cc5f",
     "TPEX": "90417d229be64406bc7ac59a858093445746d4d4a47f9b098c37e4ac687e2e54"
   },
   "sources": {
-    "TWSE": "https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX?date=20261105&type=ALLBUT0999&response=json",
+    "TWSE": "https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL",
     "TPEX": "https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_close_quotes"
   },
   "unadjusted_quotes": true,
