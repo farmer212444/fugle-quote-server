@@ -1,0 +1,51 @@
+{
+  "schema": "ISSUER_EARNINGS_INTAKE_STATUS_V1",
+  "observed_at_utc": "2026-11-06T21:50:17.510392+00:00",
+  "status": "SOURCE_ERRORS",
+  "requested_documents": 6,
+  "verified_document_versions": 0,
+  "issuer_count": 0,
+  "records": [],
+  "errors": [
+    {
+      "url": "https://pr.tsmc.com/english/news/3101",
+      "reason": "HTTP Error 403: Forbidden"
+    },
+    {
+      "url": "https://pr.tsmc.com/english/news/3131",
+      "reason": "HTTP Error 403: Forbidden"
+    },
+    {
+      "url": "https://pr.tsmc.com/english/news/3160",
+      "reason": "HTTP Error 403: Forbidden"
+    },
+    {
+      "url": "https://pr.tsmc.com/english/news/3180",
+      "reason": "HTTP Error 403: Forbidden"
+    },
+    {
+      "url": "https://pr.tsmc.com/english/news/3201",
+      "reason": "HTTP Error 403: Forbidden"
+    },
+    {
+      "url": "https://pr.tsmc.com/english/news/3281",
+      "reason": "HTTP Error 403: Forbidden"
+    }
+  ],
+  "pending": [],
+  "research_ttm_replays": [
+    {
+      "as_of": "2024-10-18T00:00:00+08:00",
+      "status": "BLOCKED",
+      "reason": "ISSUER_FOUR_RELEASED_QUARTERS_REQUIRED"
+    },
+    {
+      "as_of": "2025-01-17T00:00:00+08:00",
+      "status": "BLOCKED",
+      "reason": "ISSUER_FOUR_RELEASED_QUARTERS_REQUIRED"
+    }
+  ],
+  "full_historical_financial_PIT_admitted": 0,
+  "calibrated_expected_returns_created": 0,
+  "formal_Aplus_added": 0
+}
