@@ -126,7 +126,7 @@ def parse(market,raw,day,min_issuers=300):
 def recover(market,requested_date,last_openapi_date,rawdir,fetch=download):
     if market not in METHODS or DATE.fullmatch(str(requested_date)) is None:
         raise ValueError("INVALID_EXCHANGE_DATE")
-    if requested_date<=str(last_openapi_date):
+    if last_openapi_date is not None and requested_date<=str(last_openapi_date):
         raise ValueError("BACKFILL_DATE_NOT_NEWER_THAN_OPENAPI")
     u=source_url(market,requested_date)
     payload=fetch(u)
@@ -135,6 +135,18 @@ def recover(market,requested_date,last_openapi_date,rawdir,fetch=download):
     p.parent.mkdir(parents=True,exist_ok=True)
     p.write_bytes(payload)
     return rows,requested_date,hashlib.sha256(payload).hexdigest(),u
+
+
+def collect_openapi_sources(source_urls,fetch_fn):
+    """An unavailable or malformed primary feed must reach dated recovery."""
+    gathered={};errors={}
+    for market,url in source_urls.items():
+        try:
+            gathered[market]=fetch_fn(market,url)
+        except (OSError,ValueError,UnicodeError,EOFError,http.client.IncompleteRead) as exc:
+            gathered[market]=None
+            errors[market]=type(exc).__name__+":"+str(exc)[:160]
+    return gathered,errors
 
 
 def reconcile_sessions(gathered,source_urls,rawdir,now,closed_sessions=(),recover_fn=None):
@@ -160,10 +172,11 @@ def reconcile_sessions(gathered,source_urls,rawdir,now,closed_sessions=(),recove
         raise ValueError("BOTH_OFFICIAL_MARKETS_REQUIRED")
     repair=recover_fn or recover
     for market in ("TWSE","TPEX"):
-        old_date=dt.date.fromisoformat(updated[market][1]).isoformat()
-        if old_date>target:
+        old_date=(dt.date.fromisoformat(updated[market][1]).isoformat()
+                  if updated[market] is not None else None)
+        if old_date is not None and old_date>target:
             raise ValueError("EXCHANGE_DATE_AFTER_PUBLISHABLE_SESSION")
-        if old_date<target:
+        if old_date is None or old_date<target:
             rows,day,digest,url=repair(market,target,old_date,rawdir)
             if day!=target or not rows or any(r.get("date")!=target or r.get("market")!=market for r in rows):
                 raise ValueError("RECOVERED_MARKET_DATE_OR_IDENTITY_MISMATCH")
