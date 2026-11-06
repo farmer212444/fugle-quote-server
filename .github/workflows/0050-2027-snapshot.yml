@@ -1,0 +1,42 @@
+name: 0050 2027 model snapshot Top10 (research)
+on:
+  pull_request:
+    paths:
+      - 'scripts/research_0050_2027_snapshot.py'
+      - 'scripts/research_0050_top3_quality_audit.py'
+      - 'scripts/research_2027_top3_bridge.py'
+      - 'tests/test_2027_top3_bridge.py'
+      - 'tests/test_0050_2027_snapshot_stress.py'
+      - '.github/workflows/0050-2027-snapshot.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  research-0050-top10:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify stress and publication-time guards
+        run: python -m unittest discover -s tests -p 'test_0050_2027_snapshot_stress.py' -v
+      - name: Extract full model scenario and reproduce Top10
+        run: python scripts/research_0050_2027_snapshot.py
+      - name: Review Foxconn Quanta and FPCC risk evidence
+        run: python -m scripts.research_0050_top3_quality_audit --output /tmp/0050-2027/top3_quality_audit.json
+      - name: Test operating profit bridge and GDR/ECL guards
+        run: python -m unittest -v tests.test_2027_top3_bridge
+      - name: Reconcile three-issuer 2027 revenue margin profit bridge
+        run: python scripts/research_2027_top3_bridge.py
+      - name: Archive complete 0050 research snapshot
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: 0050-v8108-2027-research-top10
+          path: /tmp/0050-2027/
+          retention-days: 14
+          if-no-files-found: warn
