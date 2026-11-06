@@ -86,7 +86,8 @@ class EarningsVersionReview(unittest.TestCase):
         before=model_source_state(self.root);self.review['review_note']='receipt update';self.save();after=model_source_state(self.root)
         self.assertNotEqual(before[REVIEW],after[REVIEW])
         for doc in self.docs:self.assertIn(doc['archive_path'],after)
-        data=MarketData(ROOT,ASOF);paths={r['path'] for r in data.input_receipts}
+        # Keep the historical review tests above fixed; this is a current-source smoke check.
+        data=MarketData(ROOT,dt.datetime.now(dt.timezone.utc).isoformat());paths={r['path'] for r in data.input_receipts}
         self.assertIn(REVIEW,paths)
         for doc in self.docs:self.assertIn(doc['archive_path'],paths)
 

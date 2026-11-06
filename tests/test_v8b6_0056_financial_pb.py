@@ -6,8 +6,10 @@ This is a reverse ROE/PB hurdle research screen only. It must never certify
 import copy
 import json
 from pathlib import Path
+import shutil
 import tempfile
 import unittest
+from unittest.mock import patch
 
 from scripts.v8b6_0056_financial_pb_hurdle import screen,validate_bvps,write_report
 from scripts.v8b4_0056_forward_top10 import load_inputs
@@ -38,9 +40,12 @@ class FinancialNine0056Tests(unittest.TestCase):
     def test_h1_eps_and_pb_market_identity(self):
         rows={r['code']:r for r in self.data['financials_sorted_by_conditional_hurdle_gap']}
         self.assertEqual(set(rows),{'2880','2883','2884','2885','2886','2887','2890','2891','5876'})
-        self.assertAlmostEqual(rows['2891']['current_pb_multiple'],74.9/34.99)
-        self.assertAlmostEqual(rows['5876']['current_pb_multiple'],54.6/44.14)
-        self.assertAlmostEqual(rows['2883']['current_pb_multiple'],37.75/25.28)
+        _,_,full=load_inputs(ROOT)
+        quotes={r['code']:r for r in json.loads((ROOT/'prices'/f"{full['asof_price_date']}.json").read_text())}
+        self.assertEqual(self.data['official_close_date'],full['asof_price_date'])
+        for code,book in {'2891':34.99,'5876':44.14,'2883':25.28}.items():
+            self.assertEqual(rows[code]['official_reference_close_ntd'],quotes[code]['close'])
+            self.assertAlmostEqual(rows[code]['current_pb_multiple'],quotes[code]['close']/book)
         self.assertEqual(rows['2890']['eps_2026_h1_official_ytd'],1.66)
         for r in rows.values():
             self.assertAlmostEqual(r['illustrative_required_sustainable_roe_pct'],
@@ -83,6 +88,31 @@ class FinancialNine0056Tests(unittest.TestCase):
             self.assertIn('不屬2027合理價',t)
             self.assertIn('正式2027 EPS',t)
             self.assertIn('凱基金',t)
+
+    def test_frozen_model_quotes_survive_latest_manifest_update_but_reject_tampering(self):
+        holdings,compact,full=load_inputs(ROOT)
+        quote=f"prices/{full['asof_price_date']}.json"
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp)
+            for rel in ('config/0056_financial_bvps_2026-Q2_watch.json',
+                        'fundamentals/2026-Q2/TWSE_income.json',quote):
+                path=root/rel;path.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(ROOT/rel,path)
+            (root/'prices/latest_manifest.json').write_text('{"date":"2026-12-31","path":"unused-new-vintage"}')
+            with patch('scripts.v8b6_0056_financial_pb_hurdle.load_inputs',return_value=(holdings,compact,full)):
+                self.assertEqual(screen(root,ASOF),self.data)
+                (root/quote).write_text('[]')
+                with self.assertRaisesRegex(ValueError,'PRICE_SOURCE_DATE_OR_SHA_MISMATCH'):
+                    screen(root,ASOF)
+
+    def test_missing_or_duplicate_frozen_price_receipt_is_rejected(self):
+        holdings,compact,full=load_inputs(ROOT)
+        rel=f"prices/{full['asof_price_date']}.json"
+        receipt=next(r for r in full['input_receipts'] if r['path']==rel)
+        for refs in ([],[receipt,receipt]):
+            changed=dict(full,input_receipts=refs)
+            with patch('scripts.v8b6_0056_financial_pb_hurdle.load_inputs',return_value=(holdings,compact,changed)):
+                with self.assertRaisesRegex(ValueError,'PRICE_RECEIPT_MISSING_OR_AMBIGUOUS'):
+                    screen(ROOT,ASOF)
 
     def test_print_financial_hurdle_for_research_review(self):
         import json

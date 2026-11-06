@@ -201,7 +201,21 @@ class BenchmarkIntegration(unittest.TestCase):
     def test_standalone_freeze_cli_can_import_and_register_from_outside_repository(self):
         env=dict(os.environ);env.pop('PYTHONPATH',None)
         script=Path(__file__).parents[1]/'scripts/v897_freeze_model_vintage.py'
-        completed=subprocess.run([sys.executable,str(script),'--data-root',str(self.root),'--register-benchmark'],
+        # Freeze the test clock with its synthetic vintage. Production still uses
+        # the real capture clock and rejects stale or backdated market archives.
+        program='''import datetime as dt, runpy, sys
+from unittest.mock import patch
+class FixtureClock(dt.datetime):
+    @classmethod
+    def now(cls, tz=None):
+        instant=cls.fromisoformat("2026-10-21T00:15:00+00:00")
+        return instant.astimezone(tz) if tz else instant.replace(tzinfo=None)
+script, root=sys.argv[1:]
+sys.argv=[script, "--data-root", root, "--register-benchmark"]
+with patch("datetime.datetime", FixtureClock):
+    runpy.run_path(script, run_name="__main__")
+'''
+        completed=subprocess.run([sys.executable,'-c',program,str(script),str(self.root)],
                                  cwd=self.root,env=env,check=True,capture_output=True,text=True)
         output=json.loads(completed.stdout)
         self.assertEqual(output['benchmark_registration']['trial_id'],self.trial_id)

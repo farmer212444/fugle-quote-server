@@ -14,9 +14,9 @@ class TestRealModelEntryBlockers(unittest.TestCase):
             period="2026-Q2",
             required_periods=["2026-Q1", "2026-Q2"],
             prices={
-                ("TWSE", "1234"): {"close":20,"volume_shares":1000000},
-                ("TPEX", "5678"): {"close":20,"volume_shares":1000000},
-                ("TWSE", "2345"): {"close":20,"volume_shares":1000000}
+                ("TWSE", "1234"): {"close":20,"volume_shares":1000000,"turnover_ntd":20000000},
+                ("TPEX", "5678"): {"close":20,"volume_shares":1000000,"turnover_ntd":20000000},
+                ("TWSE", "2345"): {"close":20,"volume_shares":1000000,"turnover_ntd":20000000}
             },
             revenue={"1234":{},"5678":{},"2345":{}},
             evidence={"master":{"1234":{"issued_shares":1},"5678":{"issued_shares":1}}},

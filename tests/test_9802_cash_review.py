@@ -95,7 +95,8 @@ class OriginalCashReview(unittest.TestCase):
             path=root/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_text('{}')
         before=model_source_state(root);record=copy.deepcopy(self.record);record['note']='review update';(root/RECEIPT).write_text(json.dumps(record));after=model_source_state(root)
         self.assertNotEqual(before[RECEIPT],after[RECEIPT])
-        data=MarketData(ROOT,ASOF);self.assertEqual(data.working_capital_watch['9802']['status'],STATUS)
+        # This checks today's moving input inventory, not a historical decision.
+        data=MarketData(ROOT,dt.datetime.now(dt.timezone.utc).isoformat());self.assertEqual(data.working_capital_watch['9802']['status'],STATUS)
         paths={r['path'] for r in data.input_receipts};self.assertIn(RECEIPT,paths)
         for source in self.record['sources']:self.assertIn(source['archive_path'],paths)
 
