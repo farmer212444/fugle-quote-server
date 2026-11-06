@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Explain EXACTLY why normalized issuers never reach V8.8.1 model rows.
+"""Reconcile tracking, entry checks and actual comparable model valuations.
 
 Uses the same MarketData instance as the real engine, but never changes estimates.
 This is a diagnostic only; not a substitute for PIT or financial certification.
@@ -34,12 +34,24 @@ def classify(data, report):
                  "REFERENCE_PRICE_OR_VOLUME_INVALID", "PRICE_FILTER_BELOW_8_TWD",
                  "TURNOVER_FILTER_BELOW_1M_TWD", "CURRENT_FINANCIAL_STATEMENT_MISSING"}
     excluded = {str(x["code"]) for x in report["all_model_row_summary"] if x.get("status") in prechecks}
+    summary={str(x['code']):x for x in report['all_model_row_summary']}
+    modern='market_research_rankable' in report['data_scope']
+    if modern and any(type(x.get('rankable')) is not bool or not x.get('status')
+                      for x in summary.values()):
+        raise ValueError('MODEL_SUMMARY_VALUATION_STATUS_MISSING')
+    comparable={code for code,row in summary.items()
+                if row.get('rankable',code not in excluded) is True}
+    if modern and len(comparable)!=report['data_scope']['market_research_rankable']:
+        raise ValueError('COMPARABLE_VALUATION_COUNT_MISMATCH')
     new = []
     master = data.evidence.get("master", {})
     for (market, code), historical in sorted(data.history.items()):
-        if code in modeled and code not in excluded:
+        if code in comparable:
             continue
-        missing = []
+        row=summary.get(code,{})
+        # Preserve the engine's actual rejection, including failures occurring
+        # after entry checks (tax/parent components, PE samples, specialist lanes).
+        missing=list(row.get('exclusion_reasons') or ([row['status']] if row.get('status') else []))
         if data.period not in historical:
             missing.append("NO_CURRENT_ELIGIBLE_QUARTER_INCOME")
         else:
@@ -70,13 +82,14 @@ def classify(data, report):
         latest = historical.get(data.period) or next(iter(historical.values()))
         new.append({
             "market": market, "code": code, "name": latest.get("name"),
+            "model_status": row.get('status','NO_TRACKING_RECORD'),
             "primary_blocker": missing[0], "all_blockers": missing,
             "latest_quarter_present": data.period in historical,
             "quarters_present": len(historical),
             "PIT_issuer_master_verified": False,
             "formal_Aplus": False
         })
-    if len(new) != sum(code not in modeled or code in excluded for market, code in data.history):
+    if len(new) != sum(code not in comparable for market, code in data.history):
         raise ValueError("UNMODELED_IDENTITY_RECONCILIATION_MISMATCH")
     counts = dict(sorted(collections.Counter(x["primary_blocker"] for x in new).items()))
     all_blockers = dict(sorted(collections.Counter(k for x in new for k in x["all_blockers"]).items()))
@@ -86,6 +99,13 @@ def classify(data, report):
         "reference_price_date": report["asof_price_date"],
         "financial_last_quarter": data.period,
         "normalized_universe": expected, "modeled": expected-len(new), "unmodeled": len(new),
+        "modeled_definition": ("COMPARABLE_RESEARCH_VALUATION_WITHIN_NORMALIZED_UNIVERSE_NOT_QUALITY_CERTIFIED"
+                               if modern else "LEGACY_ENTRY_ELIGIBILITY_COMPARABILITY_UNKNOWN"),
+        "unmodeled_definition": "NO_COMPARABLE_VALUATION_WITHIN_NORMALIZED_UNIVERSE" if modern else "LEGACY_ENTRY_CHECK_EXCLUSION",
+        "entry_precheck_eligible_count": sum(code in modeled and code not in excluded for market,code in data.history),
+        "quality_decision_evaluated_count": report.get('formal_decisions_evaluated'),
+        "tracked_comparable_valuation_count": len(comparable) if modern else None,
+        "tracked_not_comparable_valuation_count": len(modeled)-len(comparable) if modern else None,
         "tracked_issuer_rows": len(modeled),
         "tracked_rows_outside_financial_universe": len(set(modeled)-{key[1] for key in data.history}),
         "ledger_membership_does_not_mean_valuation_or_certification": True,
@@ -94,7 +114,8 @@ def classify(data, report):
         "source_errors": len(data.errors),
         "PIT_universe_verified": False, "certified_marketwide_ranking": False,
         "interpretation": (
-            "Exact model entry exclusions as of estimate vintage. Multiple blockers preserved. "
+            "Actual comparable valuations and non-valued engine results as of estimate vintage. "
+            "Entry checks, quality decisions and comparable valuation counts are distinct. Multiple blockers preserved. "
             "Policy prices and one-day trading value are model research floors, not exchange delisting status. "
             "Missing share master cannot be filled with guessed shares."
         ),

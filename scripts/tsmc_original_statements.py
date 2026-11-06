@@ -216,19 +216,30 @@ def collect(root,last_quarter,*,fetcher=fetch,clock=lambda:dt.datetime.now(dt.ti
     m=json.loads(path.read_text(encoding='utf-8')) if path.exists() else dict(
         schema=SCHEMA,issuer='2330',formal_gate_pass=False,original_MOPS_PIT_verified=False,
         full_content_review_complete=False,index_versions=[],documents=[])
+    errors=[];using_archived_directory=False
     try:
         raw=fetcher(DIRECTORY,3_000_000);specs=discover(raw,required);index_hash=digest(raw)
     except (OSError,ValueError,EOFError,http.client.IncompleteRead) as exc:
-        m['last_intake_at_utc']=clock().isoformat();m['last_requested_window_end']=last_quarter
-        m['last_fetch_errors']=[dict(period='DIRECTORY',error=type(exc).__name__+':'+str(exc))]
-        atomic_json(path,m)
-        result=validate_archive(root,last_quarter,clock().isoformat());result['fetch_errors']=m['last_fetch_errors']
-        return result
+        errors.append(dict(period='DIRECTORY',error=type(exc).__name__+':'+str(exc)))
+        # An already archived, hash-rechecked issuer directory can identify
+        # immutable original URLs even when the live HTML blocks a CI request.
+        # It cannot discover a later filing or establish current revision/PIT.
+        previous=[x for x in m['index_versions'] if aware(x['captured_at_utc'])<=clock()]
+        if not previous:
+            m['last_intake_at_utc']=clock().isoformat();m['last_requested_window_end']=last_quarter
+            m['last_fetch_errors']=errors
+            atomic_json(path,m)
+            result=validate_archive(root,last_quarter,clock().isoformat());result['fetch_errors']=errors
+            return result
+        entry=max(previous,key=lambda x:aware(x['captured_at_utc']))
+        raw=safe(root,entry['archive_path']).read_bytes();index_hash=digest(raw)
+        if index_hash!=entry['sha256']:raise ValueError('TSMC_SOURCE_INDEX_HASH_MISMATCH')
+        specs=discover(raw,required);using_archived_directory=True
     rel=f'{FOLDER}/index_{index_hash}.html';store_bytes(root/rel,raw)
     if not any(x['sha256']==index_hash for x in m['index_versions']):
         m['index_versions'].append(dict(source_url=DIRECTORY,sha256=index_hash,archive_path=rel,captured_at_utc=clock().isoformat()))
     pending=[s for s in specs.values() if not any(d['period']==s['period'] and d['source_url']==s['source_url'] for d in m['documents'])]
-    errors=[];batch_bytes=0
+    batch_bytes=0
     # Network reads are independent; publication of originals and receipts is ordered.
     with concurrent.futures.ThreadPoolExecutor(max_workers=3) as pool:
         futures=[(spec,pool.submit(fetcher,spec['source_url'],MAX_PDF)) for spec in pending]
@@ -244,6 +255,7 @@ def collect(root,last_quarter,*,fetcher=fetch,clock=lambda:dt.datetime.now(dt.ti
                 errors.append(dict(period=spec['period'],error=type(exc).__name__+':'+str(exc)))
     m['last_intake_at_utc']=clock().isoformat();m['last_requested_window_end']=last_quarter
     m['last_fetch_errors']=errors
+    m['last_intake_used_archived_directory']=using_archived_directory
     atomic_json(path,m)
     result=validate_archive(root,last_quarter,clock().isoformat())
     result['fetch_errors']=errors
@@ -257,11 +269,14 @@ def main():
     result=collect(root,last)
     report={k:result[k] for k in ('issuer','records','coverage','fetch_errors','formal_pass_count')}
     report['source_window_end']=last
+    report['status']=('SOURCE_WINDOW_COMPLETE' if len(result['coverage']['found_quarters'])==8
+                      else 'PARTIAL_SOURCE_WINDOW' if result['records'] else 'SOURCE_UNAVAILABLE')
     report['checked_at_utc']=dt.datetime.now(dt.timezone.utc).isoformat()
     report['documents']=[{k:d[k] for k in ('period','title','source_url','archive_path','sha256','bytes','captured_at_utc','pdf_identity')} for d in result['documents']]
     report['all_13_formal_gates_unchanged']=True
     atomic_json(root/'rankings/tsmc_original_statements_intake.json',report)
     lines=['# 2330 台積電完整財報原件收集進度','',
+        f"來源狀態：{report['status']}。",'',
         f"原件視窗：{result['coverage']['required_quarters'][0]} 至 {last}；檢查時間：{report['checked_at_utc']}。",'',
         f"官方目錄連結及雜湊已覆核：{len(result['coverage']['found_quarters'])}/8 季；"
         f"原生文字封面與目錄辨識：{len(result['coverage']['native_cover_identity_verified_quarters'])}/8 季。",'',
@@ -277,7 +292,7 @@ def main():
         lines+=['','本輪來源錯誤：']+[f"- {e['period']}：{e['error']}" for e in result['fetch_errors']]
     from scripts.tw_v880_run import atomic
     atomic(root/'rankings/tsmc_original_statements_intake.md','\n'.join(lines)+'\n')
-    print(json.dumps({k:result[k] for k in ('issuer','records','coverage','fetch_errors','formal_pass_count')},ensure_ascii=False))
+    print(json.dumps(dict(status=report['status'],**{k:result[k] for k in ('issuer','records','coverage','fetch_errors','formal_pass_count')}),ensure_ascii=False))
 
 
 if __name__=='__main__':main()

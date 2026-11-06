@@ -137,6 +137,26 @@ class OriginalIntakeTests(unittest.TestCase):
         self.assertEqual(result['fetch_errors'][0]['period'],'DIRECTORY')
         self.assertFalse(result['coverage']['formal_gate_pass'])
 
+    def test_verified_directory_snapshot_can_bootstrap_pdfs_when_live_html_is_blocked(self):
+        self.collect();m=self.manifest();m['documents']=[];self.save(m)
+        def blocked(url,limit):
+            if url==mod.DIRECTORY:raise OSError('SYNTHETIC HTTP 403')
+            return self.fetch(url,limit)
+        result=self.collect(fetcher=blocked)
+        self.assertEqual(result['records'],8)
+        self.assertTrue(self.manifest()['last_intake_used_archived_directory'])
+        self.assertEqual(result['fetch_errors'][0]['period'],'DIRECTORY')
+        self.assertFalse(result['coverage']['original_MOPS_PIT_verified'])
+
+    def test_future_or_modified_directory_snapshot_cannot_bootstrap_sources(self):
+        self.collect();m=self.manifest();m['documents']=[]
+        m['index_versions'][0]['captured_at_utc']=(STAMP+dt.timedelta(days=1)).isoformat();self.save(m)
+        def blocked(url,limit):raise OSError('SYNTHETIC HTTP 403')
+        self.assertEqual(self.collect(fetcher=blocked)['records'],0)
+        m['index_versions'][0]['captured_at_utc']=STAMP.isoformat();self.save(m)
+        (self.root/m['index_versions'][0]['archive_path']).write_bytes(b'tampered')
+        with self.assertRaisesRegex(ValueError,'INDEX_HASH_MISMATCH'):self.collect(fetcher=blocked)
+
     def test_first_capture_preserved_and_future_records_invisible(self):
         self.collect();old=self.manifest()['documents'];self.calls=[]
         self.collect(clock=lambda:STAMP+dt.timedelta(days=1))
