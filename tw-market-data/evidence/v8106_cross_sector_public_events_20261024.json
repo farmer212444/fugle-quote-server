@@ -1,0 +1,32 @@
+{
+  "schema": "V8106_PUBLIC_COMPANY_MATERIAL_EVENT_RESEARCH_LEDGER_V1",
+  "research_cutoff": "2026-10-24",
+  "limitations": {
+    "publisher": "Original company MOPS disclosure is faithfully quoted by dated secondary reports; original announcement byte archive not yet independently verified.",
+    "source_uniqueness": "No assumption that omitted issuers have zero governance incidents",
+    "valuation_policy": "Events can trigger manual review and block clean-risk classification but cannot automatically alter EPS, PE, formal A+, Exit, or publish a legal determination."
+  },
+  "events": [
+    {
+      "code": "3130",
+      "issuer": "一零四",
+      "event_id": "3130_CYBER_RESUME_DISCLOSURE_20261006",
+      "event_date": "2026-10-06",
+      "source_publication_at": "2026-10-06T17:01:34+08:00",
+      "source_url": "https://news.cnyes.com/news/id/6622859",
+      "additional_report_url": "https://www.ithome.com.tw/news/179476",
+      "source_type": "DATED_REPUBLICATION_OF_COMPANY_MATERIAL_DISCLOSURE",
+      "official_company_original_bytes_sha256": null,
+      "original_company_first_available_timestamp_verified": false,
+      "company_disclosure_claim": "According to the company's Oct 6 material disclosure, abnormal App reads led to approximately 120000 resume records being accessed without authorization. Company reports operations continuing and ongoing assessment.",
+      "reported_affected_resume_count_approx": 120000,
+      "impact_fully_resolved": false,
+      "confirmed_financial_loss_amount": null,
+      "legal_liability_or_official_penalty_determined": false,
+      "research_risk_flag": "CYBERSECURITY_PERSONAL_DATA_INCIDENT_IMPACT_OPEN",
+      "remove_from_clean_risk_lane": true,
+      "quality_risk_requires_independent_original_review": true,
+      "formal_governance_gate_passed": false
+    }
+  ]
+}
