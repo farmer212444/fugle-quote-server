@@ -127,16 +127,17 @@ jobs:
               else:
                   print(f'::warning::EARLY_PROBE_ONLY dates differ TWSE={tdate} TPEx={pdate}; await retry.')
               raise SystemExit(0)
-          source_routes = dict(urls)
-          if tdate < pdate:
-              # Only confirmed same-day exchange quotes may replace a stale bulk OpenAPI.
-              from scripts.v8a4_market_close_recovery import recover
-              twse, tdate, thash, source_routes['TWSE'] = recover('TWSE', pdate, tdate, RAW)
-              print(f'::notice::OFFICIAL_TWSE_DATED_FALLBACK_USED asof={tdate}', flush=True)
-          elif pdate < tdate:
-              from scripts.v8a4_market_close_recovery import recover
-              tpex, pdate, phash, source_routes['TPEX'] = recover('TPEX', tdate, pdate, RAW)
-              print(f'::notice::OFFICIAL_TPEX_DATED_FALLBACK_USED asof={pdate}', flush=True)
+          # Both feeds can lag together. Comparing only their two dates misses
+          # that case and leaves a successful collector publishing yesterday.
+          from scripts.v8a4_market_close_recovery import reconcile_sessions
+          from tw_model_v880.freshness import load_dated_exchange_closures
+          gathered, source_routes, repaired = reconcile_sessions(
+              gathered, urls, RAW, dt.datetime.now(TAIPEI),
+              load_dated_exchange_closures('tw-market-data'))
+          twse, tdate, thash = gathered['TWSE']
+          tpex, pdate, phash = gathered['TPEX']
+          for market in repaired:
+              print(f'::notice::OFFICIAL_{market}_DATED_FALLBACK_USED asof={tdate}', flush=True)
           if tdate != pdate:
               raise ValueError(f'Exchange dates differ even after official dated recovery TWSE={tdate}, TPEx={pdate}')
           latest = OUTPUT / 'latest_manifest.json'

@@ -15,6 +15,7 @@ from tw_model_v880.freshness import assess_price_freshness,load_dated_exchange_c
 from tw_model_v880.contracts import canonical_hash
 from tw_model_v880.governance import issuer_review,COVERAGE
 from tw_model_v880.credibility import build_research_priority
+from tw_model_v880.certification_status import summarize_certification
 def atomic(path,content):
     path.parent.mkdir(parents=True,exist_ok=True);fd,tmp=tempfile.mkstemp(prefix=path.name+'.',dir=path.parent)
     try:
@@ -111,6 +112,8 @@ def run(data_dir,asof,target_date,out_dir=None,variant='current-information'):
       early_recovery_watch=ordered_recovery_watch(rows),
       early_recovery_watch_selection='Original current issuer numerics first, then issuer code; review visibility only, full list retained in hashed results',
       pending_work=pending,source_failures=data.errors,issuer_failures=failures)
+    diagnostics=summarize_certification(rows,backtest,price_freshness)
+    result['certification_diagnostics']=diagnostics
     out=pathlib.Path(out_dir) if out_dir else pathlib.Path(data_dir)/'rankings';out.mkdir(parents=True,exist_ok=True)
     fmt=lambda v:'待補' if v is None else f'{v:.2f}'
     report=[f'# {VERSION} 台股 {target_year} 營運情境與證據分級','',f'估計形成：{asof}；參考收盤：{data.price_date}；目標：{target_date}。',
@@ -119,6 +122,12 @@ def run(data_dir,asof,target_date,out_dir=None,variant='current-information'):
       '以下依 Base 價差排序，已移除既有66家名單限制。來源層級逐列標示；歷史明細與完整附註仍待驗，並非全市場正式 A+ 排名。未知未來股息及交易成本不列入價差，不附未校準的機率。','',
       '營收加速與歷史毛利恢復只產生觀察情境，不能自行提高Base；公司別營運推導另需原始證據。已核對的公司自結表可更新研究估計，來源與現金流期間分開標示。','',
       f'|序|公司|收盤|{target_year} EPS|PE|{target_year} Base價|潛在漲幅|Bear價|Bull價|當期來源|治理|','|---:|---|---:|---:|---:|---:|---:|---:|---:|---|---|']
+    report[5:5]=[
+      f"認證覆核已完成13項有效判定：{diagnostics['fully_decided_issuers']}/{len(rows)}家；"
+      f"僅符合A+價格門檻的研究情境：{diagnostics['price_only_Aplus_threshold_count']}檔。",
+      f"認證流程尚未完成；已認證{len(formal)}檔，不能據此判定全市場符合條件的公司總數。"
+      if diagnostics['blocking_reasons'] else '以上認證統計僅適用本次已追蹤母體。',
+      '共同及流程缺口：'+('、'.join(diagnostics['blocking_reasons']) or '無未決流程缺口')+'。','']
     if price_freshness["equity_source_may_be_stale"]:
         report[3:3]=[
             "⚠️ **收盤參考價可能落後**：截至估計形成時間，尚有 "+
@@ -424,6 +433,8 @@ def run(data_dir,asof,target_date,out_dir=None,variant='current-information'):
     atomic(out/'v880_validation.json',json.dumps(dict(model=VERSION,calibration=cal,backtest=backtest),ensure_ascii=False,indent=2)+'\n')
     print(json.dumps(dict(model=VERSION,**result['data_scope'],formal_Aplus=len(formal),formal_Aplusplus=len(aq),
       market_top10=[dict(code=r['code'],name=r['name'],target=round(r['base']['target_price'],2),upside=round(r['base']['price_upside_pct'],1)) for r in broad[:10]],
+      certification_status=diagnostics['status'],price_only_Aplus_threshold_count=diagnostics['price_only_Aplus_threshold_count'],
+      fully_decided_issuers=diagnostics['fully_decided_issuers'],
       holdout=cal.get('deployed_sector_or_global_holdout_metrics')),ensure_ascii=False))
     return result
 def resolve_asof(raw,now):

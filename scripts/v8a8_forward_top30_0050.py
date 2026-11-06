@@ -176,6 +176,7 @@ def run(root, now=None):
     out = root / OUT
     frozen_path = out / "monthly" / (month + ".json")
     selection = None
+    selection_blocker = None
     status = "WAITING_FOR_POLICY_ACTIVATION" if now < activation else "WAITING_FOR_FIRST_NEW_VERIFIED_ARCHIVE"
     if frozen_path.exists():
         selection = verify_locked(read(frozen_path), policy)
@@ -183,18 +184,32 @@ def run(root, now=None):
     elif now >= activation:
         eligible = earliest_eligible_receipt(root, policy, now)
         if eligible:
-            selection = lock_selection(root, policy, eligible, now)
-            if frozen_path.exists():
-                verify_locked(read(frozen_path), policy)
-                raise ValueError("CONCURRENT_MONTHLY_SELECTION_WRITE")
-            write_atomic(frozen_path, selection)
-            status = "MONTHLY_TOP30_FROZEN_AWAITING_VERIFIED_FILLS_AND_BENCHMARK"
+            try:
+                selection = lock_selection(root, policy, eligible, now)
+            except ValueError as exc:
+                # An incomplete/non-original cohort is a missing prerequisite,
+                # not permission to skip to a later, more attractive archive.
+                # Corrupt bytes, identities and duplicate picks still fail hard.
+                if str(exc) not in {"TOP30_PRIMARY_LIST_NOT_COMPLETE","TOP30_NOT_PRIMARY_ORIGINAL_NUMERIC_COHORT"}:
+                    raise
+                receipt_path=eligible[1]
+                selection_blocker=dict(reason=str(exc),
+                    frozen_source_receipt=receipt_path.relative_to(root).as_posix(),
+                    frozen_source_receipt_sha256=hashlib.sha256(receipt_path.read_bytes()).hexdigest())
+                status="BLOCKED_FIRST_ARCHIVE_COHORT_INELIGIBLE"
+            else:
+                if frozen_path.exists():
+                    verify_locked(read(frozen_path), policy)
+                    raise ValueError("CONCURRENT_MONTHLY_SELECTION_WRITE")
+                write_atomic(frozen_path, selection)
+                status = "MONTHLY_TOP30_FROZEN_AWAITING_VERIFIED_FILLS_AND_BENCHMARK"
     report = {
         "schema": SCHEMA, "status": status, "policy_sha256": digest(policy),
         "activation_at": policy["activation_at"], "local_month": month,
         "reference_capital_ntd": policy["capital_ntd"],
         "selection_path": frozen_path.relative_to(root).as_posix() if selection else None,
         "selection_sha256": selection["selection_sha256"] if selection else None,
+        "selection_blocker": selection_blocker,
         "research_top30_count": len(selection["research_top30"]) if selection else 0,
         "formal_Aplus_strategy_currently_in_cash": selection is None or selection["formal_Aplus_count_at_selection"] == 0,
         "verified_trading_results": 0,

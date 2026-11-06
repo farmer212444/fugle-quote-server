@@ -135,3 +135,37 @@ def recover(market,requested_date,last_openapi_date,rawdir,fetch=download):
     p.parent.mkdir(parents=True,exist_ok=True)
     p.write_bytes(payload)
     return rows,requested_date,hashlib.sha256(payload).hexdigest(),u
+
+
+def reconcile_sessions(gathered,source_urls,rawdir,now,closed_sessions=(),recover_fn=None):
+    """Recover both stale feeds, then return one complete publishable session.
+
+    The calendar determines what to request, never what to fabricate: every
+    replacement still needs an exact dated official response for that session.
+    A failed second market leaves the caller's original inputs unchanged.
+    """
+    if now.tzinfo is None:
+        raise ValueError("EXCHANGE_RECOVERY_TIMEZONE_REQUIRED")
+    local=now.astimezone(dt.timezone(dt.timedelta(hours=8)))
+    closed={r["date"] for r in closed_sessions
+            if dt.datetime.fromisoformat(r["observed_public_at"])<=now}
+    expected=local.date()
+    if (local.hour,local.minute)<(14,20):
+        expected-=dt.timedelta(days=1)
+    while expected.weekday()>=5 or expected.isoformat() in closed:
+        expected-=dt.timedelta(days=1)
+    target=expected.isoformat()
+    updated=dict(gathered);routes=dict(source_urls);recovered=[]
+    if set(updated)!={"TWSE","TPEX"}:
+        raise ValueError("BOTH_OFFICIAL_MARKETS_REQUIRED")
+    repair=recover_fn or recover
+    for market in ("TWSE","TPEX"):
+        old_date=dt.date.fromisoformat(updated[market][1]).isoformat()
+        if old_date>target:
+            raise ValueError("EXCHANGE_DATE_AFTER_PUBLISHABLE_SESSION")
+        if old_date<target:
+            rows,day,digest,url=repair(market,target,old_date,rawdir)
+            if day!=target or not rows or any(r.get("date")!=target or r.get("market")!=market for r in rows):
+                raise ValueError("RECOVERED_MARKET_DATE_OR_IDENTITY_MISMATCH")
+            updated[market]=(rows,day,digest);routes[market]=url;recovered.append(market)
+    return updated,routes,recovered

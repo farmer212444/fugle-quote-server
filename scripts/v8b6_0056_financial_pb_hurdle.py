@@ -71,14 +71,16 @@ def screen(root,read_at):
     previously=filter_top10(holdings,full)
     source=json.loads((root/SOURCE).read_text(encoding="utf-8"))
     positions=validate_bvps(source,holdings,read_at)
-    manifest=json.loads((root/PRICE_MANIFEST).read_text(encoding="utf-8"))
-    if (manifest.get("date")!=full["asof_price_date"] or
-        manifest.get("path")!=f"tw-market-data/prices/{manifest['date']}.json"):
-        raise ValueError("0056_FINANCIAL_PRICE_MANIFEST_UNSAFE_PATH_OR_DATE")
-    close_path=root/"prices"/f"{manifest['date']}.json"
+    # Bind the comparison to the forecast's consumed quote bytes. A newer daily
+    # manifest must not invalidate, or silently reprice, an older frozen model.
+    day=dt.date.fromisoformat(full["asof_price_date"]).isoformat()
+    rel=f"prices/{day}.json"
+    refs=[r for r in full.get("input_receipts",[]) if r.get("path")==rel]
+    if len(refs)!=1 or not isinstance(refs[0].get("sha256"),str):
+        raise ValueError("0056_FINANCIAL_MODEL_PRICE_RECEIPT_MISSING_OR_AMBIGUOUS")
+    close_path=root/rel
     price_bytes=close_path.read_bytes()
-    if (hashlib.sha256(price_bytes).hexdigest()!=manifest["normalized_sha256"] or
-        manifest["date"]!=full["asof_price_date"]):
+    if hashlib.sha256(price_bytes).hexdigest()!=refs[0]["sha256"]:
         raise ValueError("0056_FINANCIAL_PRICE_SOURCE_DATE_OR_SHA_MISMATCH")
     quoted=json.loads(price_bytes)
     matched_price={}
@@ -87,7 +89,7 @@ def screen(root,read_at):
         if code in {p["code"] for p in positions}:
             if code in matched_price:
                 raise ValueError("0056_FINANCIAL_DUPLICATE_OFFICIAL_PRICE")
-            if row.get("market")!="TWSE" or row.get("date")!=manifest["date"] or not numeric(row.get("close")) or row["close"]<=0:
+            if row.get("market")!="TWSE" or row.get("date")!=day or not numeric(row.get("close")) or row["close"]<=0:
                 raise ValueError("0056_FINANCIAL_OFFICIAL_CLOSE_IDENTITY_INVALID")
             matched_price[code]=row
     official_bytes=(root/FINANCIAL_STATEMENT).read_bytes()
@@ -170,7 +172,7 @@ def write_report(data,path):
             "條件公式：P/B=(ROE-g)/(Ke-g)，所以持有現價所隱含的長期ROE"
             "=g+(Ke-g)×現有P/B；2026上半年EPS×2÷2026Q2末每股淨值只是一個"
             "未校正季節性與期初平均股東權益的**替代指標**，不能視為真實ROE或2027 ROE。","",
-            "|公司|BVPS Q2|10/22收盤|目前P/B|H1 EPS|簡化獲利/期末淨值|條件ROE門檻|門檻差|",
+            f"|公司|BVPS Q2|{x['official_close_date']}收盤|目前P/B|H1 EPS|簡化獲利/期末淨值|條件ROE門檻|門檻差|",
             "|---|---:|---:|---:|---:|---:|---:|---:|"]
         for r in x["financials_sorted_by_conditional_hurdle_gap"]:
             lines.append(
@@ -181,7 +183,7 @@ def write_report(data,path):
                 f"{r['illustrative_required_sustainable_roe_pct']:.1f}%|"
                 f"{r['illustrative_required_roe_minus_h1_proxy_pp']:+.1f}pp|")
         lines+=["","BVPS為第三方StatementDog對2026Q2財報的整理（非原始MOPS稽核簽章），"
-            "各來源由紀錄中的發行人網址核對；H1 EPS及10/22收盤價係本模型具SHA的官方標準化資料。",
+            "各來源由紀錄中的發行人網址核對；H1 EPS及表列日期收盤價係本模型具SHA的官方標準化資料。",
             "保險業OCI、持股淨值、資本適足率、稀釋及除權息使跨產業P/B不可直接排名。",
             "正式2027 EPS、BVPS、合理P/B、合理價與漲幅**全部維持空值**；不變更原34檔排名、A+或宣稱勝過0056。",""]
         text="\n".join(lines)

@@ -1,9 +1,11 @@
 """Official-dated whole-market close backfill: no mixing dates or inventing data."""
+import copy
+import datetime as dt
 import json
 import tempfile
 import unittest
 from pathlib import Path
-from scripts.v8a4_market_close_recovery import source_url, parse, recover
+from scripts.v8a4_market_close_recovery import source_url, parse, recover, reconcile_sessions
 
 def fixture(market="TWSE",date="2026-10-20"):
     if market=="TWSE":
@@ -54,6 +56,63 @@ class DatedMarketRecoveryTests(unittest.TestCase):
         self.assertEqual(len(parse("TWSE",raw,"2026-10-20")),320)
         with self.assertRaises(ValueError):
             parse("TPEX",raw,"2026-10-20")
+
+    def inputs(self,twse="2026-11-05",tpex="2026-11-05"):
+        return {m:([dict(market=m,date=d)],d,m+"-old-sha")
+                for m,d in (("TWSE",twse),("TPEX",tpex))}
+
+    def test_both_stale_openapis_recover_today_from_exact_official_dates(self):
+        gathered=self.inputs();before=copy.deepcopy(gathered);calls=[]
+        def repair(market,day,previous,rawdir):
+            calls.append((market,day,previous))
+            return [dict(market=market,date=day)],day,market+"-new-sha",source_url(market,day)
+        fixed,routes,recovered=reconcile_sessions(gathered,{},"/tmp",
+            dt.datetime.fromisoformat("2026-11-06T15:00:00+08:00"),recover_fn=repair)
+        self.assertEqual(recovered,["TWSE","TPEX"])
+        self.assertEqual([x[1] for x in calls],["2026-11-06"]*2)
+        self.assertEqual({x[1] for x in fixed.values()},{"2026-11-06"})
+        self.assertEqual(gathered,before)
+        self.assertIn("date=20261106",routes["TWSE"])
+
+    def test_current_feeds_do_not_redownload_and_mismatched_feeds_repair_only_one(self):
+        calls=[]
+        def repair(market,day,previous,rawdir):
+            calls.append(market)
+            return [dict(market=market,date=day)],day,"sha",source_url(market,day)
+        now=dt.datetime.fromisoformat("2026-11-06T16:00:00+08:00")
+        reconcile_sessions(self.inputs("2026-11-06","2026-11-06"),{},"/tmp",now,recover_fn=repair)
+        self.assertFalse(calls)
+        reconcile_sessions(self.inputs("2026-11-06"),{},"/tmp",now,recover_fn=repair)
+        self.assertEqual(calls,["TPEX"])
+
+    def test_morning_and_weekend_recovery_do_not_request_an_unfinished_session(self):
+        for clock in ("2026-11-06T08:10:00+08:00","2026-11-07T08:10:00+08:00"):
+            expected="2026-11-05" if "11-06" in clock else "2026-11-06"
+            calls=[]
+            def repair(market,day,previous,rawdir):
+                calls.append(day)
+                return [dict(market=market,date=day)],day,"sha","url"
+            reconcile_sessions(self.inputs("2026-11-04","2026-11-04"),{},"/tmp",
+                dt.datetime.fromisoformat(clock),recover_fn=repair)
+            self.assertEqual(calls,[expected]*2)
+
+    def test_second_market_failure_never_returns_a_mixed_date_snapshot(self):
+        gathered=self.inputs();before=copy.deepcopy(gathered)
+        def repair(market,day,previous,rawdir):
+            if market=="TPEX":raise ValueError("not final")
+            return [dict(market=market,date=day)],day,"sha","url"
+        with self.assertRaisesRegex(ValueError,"not final"):
+            reconcile_sessions(gathered,{},"/tmp",dt.datetime.fromisoformat("2026-11-06T16:00:00+08:00"),recover_fn=repair)
+        self.assertEqual(gathered,before)
+
+    def test_known_closure_preserves_last_session_and_future_feed_is_rejected(self):
+        now=dt.datetime.fromisoformat("2026-10-23T16:00:00+08:00")
+        closed=[dict(date="2026-10-23",observed_public_at="2026-10-22T20:00:00+08:00")]
+        fixed,_,repaired=reconcile_sessions(self.inputs("2026-10-22","2026-10-22"),{},"/tmp",now,closed)
+        self.assertFalse(repaired)
+        self.assertEqual(fixed["TWSE"][1],"2026-10-22")
+        with self.assertRaisesRegex(ValueError,"AFTER_PUBLISHABLE_SESSION"):
+            reconcile_sessions(self.inputs("2026-11-06","2026-11-06"),{},"/tmp",now)
 
 if __name__=="__main__":
     unittest.main()

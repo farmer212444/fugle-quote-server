@@ -111,6 +111,32 @@ class ForwardTop30CompetitionTests(unittest.TestCase):
         self.assertIn("2026-11.json", report["selection_path"])
         self.assertTrue((self.root / "experiments/forward_top30_0050_v1/monthly/2026-10.json").exists())
 
+    def test_ineligible_first_archive_reports_blocker_without_skipping_to_later_picks(self):
+        first=self.add_archive("first","2026-10-23T09:00:00+08:00")
+        data=challenge.read(first/'latest_research.json')
+        data['top30_quality_priority'][0]['source_tier']='ISSUER_CONDENSED_ORIGINAL_STATEMENTS'
+        self.write(first/'latest_research.json',data)
+        self.add_archive("later","2026-10-23T12:00:00+08:00",rank_first='4000')
+        report=challenge.run(self.root,dt.datetime.fromisoformat("2026-10-23T16:00:00+08:00"))
+        self.assertEqual(report['status'],'BLOCKED_FIRST_ARCHIVE_COHORT_INELIGIBLE')
+        self.assertEqual(report['selection_blocker']['reason'],'TOP30_NOT_PRIMARY_ORIGINAL_NUMERIC_COHORT')
+        self.assertIn('/first/',report['selection_blocker']['frozen_source_receipt'])
+        self.assertIsNone(report['selection_path'])
+        self.assertIsNone(report['model_net_total_return_pct'])
+        self.assertEqual(report['research_top30_count'],0)
+        self.assertFalse((self.root/challenge.OUT/'monthly/2026-10.json').exists())
+
+    def test_incomplete_primary_cohort_is_pending_and_duplicate_security_still_raises(self):
+        first=self.add_archive("first","2026-10-23T09:00:00+08:00")
+        path=first/'latest_research.json';data=challenge.read(path)
+        pick=data['top30_quality_priority'].pop();self.write(path,data)
+        now=dt.datetime.fromisoformat("2026-10-23T16:00:00+08:00")
+        report=challenge.run(self.root,now)
+        self.assertEqual(report['selection_blocker']['reason'],'TOP30_PRIMARY_LIST_NOT_COMPLETE')
+        data['top30_quality_priority'].append(dict(data['top30_quality_priority'][0]));self.write(path,data)
+        with self.assertRaisesRegex(ValueError,'DUPLICATE_TOP30_SECURITY'):
+            challenge.run(self.root,now)
+
 
 if __name__ == "__main__":
     unittest.main()

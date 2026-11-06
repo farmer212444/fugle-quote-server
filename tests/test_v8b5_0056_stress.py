@@ -27,18 +27,20 @@ class Fund0056EPSStressTests(unittest.TestCase):
         self.assertTrue(r['dividends_and_fees_unmodeled'])
         self.assertTrue(r['strategy_outperformance_vs_0056_not_tested'])
 
-    def test_top3_earnings_stretch_differ_strongly(self):
-        rows={x['code']:x for x in self.report['top10']}
-        self.assertEqual([x['code'] for x in self.report['top10'][:3]],
-                         ['2317','2376','2382'])
-        self.assertEqual(rows['2317']['h1_2026_basic_eps'],7.84)
-        self.assertAlmostEqual(rows['2317']['base_2027_eps_vs_h1_annualized_pct'],71.98,delta=.08)
-        self.assertTrue(rows['2317']['base_2027_eps_above_h1_runrate_by_50pct'])
-        self.assertEqual(rows['2376']['h1_2026_basic_eps'],17.73)
-        self.assertAlmostEqual(rows['2376']['base_2027_eps_vs_h1_annualized_pct'],-3.61,delta=.08)
-        self.assertEqual(rows['2382']['h1_2026_basic_eps'],12.93)
-        self.assertAlmostEqual(rows['2382']['base_2027_eps_vs_h1_annualized_pct'],18.65,delta=.08)
-        self.assertFalse(rows['2376']['base_2027_eps_above_h1_runrate_by_30pct'])
+    def test_named_issuer_stretch_binds_current_forecast_to_historical_h1(self):
+        # Today's prices may legitimately reorder the same issuers. Check the
+        # source/forecast contract rather than freeze an old market ranking.
+        rows={x['code']:x for x in self.report['all_34_ranked']}
+        _,_,full=load_inputs(ROOT)
+        forecasts={r['code']:r for r in full['all_model_rows']}
+        for code,h1 in {'2317':7.84,'2376':17.73,'2382':12.93}.items():
+            row=rows[code]
+            self.assertEqual(row['h1_2026_basic_eps'],h1)
+            self.assertEqual(row['forward_2027_eps'],forecasts[code]['base']['eps'])
+            stretch=100*(forecasts[code]['base']['eps']/(2*h1)-1)
+            self.assertAlmostEqual(row['base_2027_eps_vs_h1_annualized_pct'],stretch)
+            self.assertEqual(row['base_2027_eps_above_h1_runrate_by_30pct'],stretch>=30)
+            self.assertEqual(row['base_2027_eps_above_h1_runrate_by_50pct'],stretch>=50)
 
     def test_eps_pe_stress_mathematically_exact_not_certified(self):
         for row in self.report['all_34_ranked']:
