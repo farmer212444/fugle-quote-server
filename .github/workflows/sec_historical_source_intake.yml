@@ -1,0 +1,55 @@
+name: SEC historical original source intake
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, codex/annual-pit-data-20261107]
+    paths:
+      - 'scripts/sec_pit_intake.py'
+      - 'tests/test_sec_pit_intake.py'
+      - 'tw-market-data/config/sec_historical_sources_v1.json'
+      - '.github/workflows/sec_historical_source_intake.yml'
+  pull_request:
+    paths:
+      - 'scripts/sec_pit_intake.py'
+      - 'tests/test_sec_pit_intake.py'
+      - 'tw-market-data/config/sec_historical_sources_v1.json'
+      - '.github/workflows/sec_historical_source_intake.yml'
+permissions:
+  contents: write
+concurrency:
+  group: sec-source-intake-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check archive identity clocks and immutability
+        run: python -m unittest -v tests.test_sec_pit_intake
+      - name: Capture two explicitly scoped regulator originals
+        if: github.event_name != 'pull_request'
+        id: capture
+        run: python scripts/sec_pit_intake.py
+      - name: Retain source evidence and failure receipts
+        if: always() && github.event_name != 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: sec-regulatory-originals
+          path: |
+            tw-market-data/evidence/v880/regulatory_submissions/
+            tw-market-data/rankings/latest_regulatory_source_intake.json
+          if-no-files-found: ignore
+          retention-days: 30
+      - name: Publish verified source archives on the same branch
+        if: success() && github.event_name != 'pull_request'
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add tw-market-data/evidence/v880/regulatory_submissions tw-market-data/rankings/latest_regulatory_source_intake.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'data: retain dated SEC original submissions and integrity receipts'
+          git push origin HEAD:"$GITHUB_REF_NAME"
