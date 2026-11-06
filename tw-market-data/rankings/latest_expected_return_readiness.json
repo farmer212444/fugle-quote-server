@@ -2,7 +2,7 @@
   "schema": "EXPECTED_RETURN_READINESS_V1",
   "status": "NOT_ESTIMABLE_WITH_CURRENT_EVIDENCE",
   "source_model": "V8.10.8",
-  "source_estimate_vintage": "2026-11-06T22:10:17.328853+08:00",
+  "source_estimate_vintage": "2026-11-06T22:44:30.761820+08:00",
   "research_price_date": "2026-11-06",
   "latest_archived_official_price_date": "2026-11-06",
   "horizon_evidence": [
@@ -22,19 +22,37 @@
       "walk_forward_test_periods": 0
     }
   ],
+  "annual_calibration_feasibility": {
+    "status": "HISTORICAL_REPLAY_PROTOCOL_REQUIRED",
+    "holding_calendar_days": 420,
+    "minimum_train_cohorts": 12,
+    "minimum_oos_cohorts": 12,
+    "minimum_total_nonoverlapping_cohorts": 24,
+    "maximum_nonoverlapping_cohorts_with_same_terminal_date": 1,
+    "fixed_target_only_can_satisfy_policy": false,
+    "minimum_history_span_days_ignoring_embargo": 10080,
+    "minimum_history_span_years_ignoring_embargo": 27.6,
+    "waiting_until_target_date_alone_resolves_calibration": false,
+    "exact_horizon_industry_method_matches_still_required": true,
+    "historical_replay_is_a_separate_protocol_not_backdated_prospective_forecasts": true
+  },
   "blockers": [
     "2027_SCENARIO_PROBABILITIES_NOT_VALIDATED",
     "ISSUER_LEVEL_COST_ADJUSTED_EXPECTED_RETURNS_NOT_CALIBRATED",
-    "INSUFFICIENT_PIT_COST_ADJUSTED_WALK_FORWARD_PERIODS"
+    "INSUFFICIENT_PIT_COST_ADJUSTED_WALK_FORWARD_PERIODS",
+    "FIXED_TARGET_ONLY_CANNOT_SUPPLY_INDEPENDENT_ANNUAL_CALIBRATION_COHORTS"
   ],
   "expected_net_return_top10": null,
   "calibrated_issuer_scenario_probabilities": null,
   "base_price_upside_ranking_is_expected_return": false,
   "formal_Aplus_status_unchanged": true,
   "trading_orders_created": false,
+  "annual_engine_context_matches": true,
+  "annual_engine_status": "BLOCKED_ANNUAL_CALIBRATION_DESIGN_REQUIRES_HISTORICAL_REPLAY",
+  "annual_engine_report_sha256": "1f7585b0359323f8f7b2f47ce8d706b5611801ec5463d64a03a41daf1af9ef79",
   "source_sha256": {
-    "research": "531b8d7b7b309bd0ce2b41ec549e181ccbb54632d99b0ddd034b8b1ddac22869",
-    "return_search": "babd1991a4b22a596604712f43089ad82d3ae12179d70ffc3beb0644a5909614",
+    "research": "39e709f038616dce78cf1e69d3729668f229b9cadcdb92d771b5179b4daf3c29",
+    "return_search": "64864896f903e5097616f577e458dfde732b4f73a2862f9dda1fcf71e0ca9e93",
     "prices": "b70c03e12c766902e8463377ba3f060de80f16d72194ec3f64de80cb1a017032"
   }
 }

@@ -1,12 +1,12 @@
 {
   "schema": "EXPECTED_RETURN_STATUS_V1",
   "model": "V8.10.8",
-  "observed_at": "2026-11-06T14:10:43.331101+00:00",
-  "source_estimate_vintage": "2026-11-06T22:10:17.328853+08:00",
+  "observed_at": "2026-11-06T14:45:04.157864+00:00",
+  "source_estimate_vintage": "2026-11-06T22:44:30.761820+08:00",
   "source_price_date": "2026-11-06",
   "target_date": "2027-12-31",
   "return_definition": "HYPOTHETICAL_REFERENCE_CLOSE_TO_TARGET_NET_TOTAL_RETURN",
-  "status": "AWAITING_MATCHED_MATURE_CALIBRATION",
+  "status": "BLOCKED_ANNUAL_CALIBRATION_DESIGN_REQUIRES_HISTORICAL_REPLAY",
   "policy": {
     "schema": "EMPIRICAL_TERMINAL_WEALTH_V1",
     "minimum_train_rows": 100,
@@ -31385,6 +31385,11 @@
       "cohort_id": "e594b9a7803acf3ef76263e26bbcf59ff745a20e524b05d6ec70b8aef3e431f9",
       "target_date": "2027-12-31",
       "stocks": 806
+    },
+    {
+      "cohort_id": "59aba3c7faec4968ab8895fcbb9ed3da50da6492fc530c7aeb79d2d7b78a438c",
+      "target_date": "2027-12-31",
+      "stocks": 806
     }
   ],
   "scenario_probabilities": null,
@@ -31392,5 +31397,19 @@
   "existing_schedules_reused": true,
   "binary_event_scores_reused_as_stock_return_probabilities": false,
   "formal_Aplus_added": 0,
-  "trade_orders_created": 0
+  "trade_orders_created": 0,
+  "annual_calibration_feasibility": {
+    "status": "HISTORICAL_REPLAY_PROTOCOL_REQUIRED",
+    "holding_calendar_days": 420,
+    "minimum_train_cohorts": 12,
+    "minimum_oos_cohorts": 12,
+    "minimum_total_nonoverlapping_cohorts": 24,
+    "maximum_nonoverlapping_cohorts_with_same_terminal_date": 1,
+    "fixed_target_only_can_satisfy_policy": false,
+    "minimum_history_span_days_ignoring_embargo": 10080,
+    "minimum_history_span_years_ignoring_embargo": 27.6,
+    "waiting_until_target_date_alone_resolves_calibration": false,
+    "exact_horizon_industry_method_matches_still_required": true,
+    "historical_replay_is_a_separate_protocol_not_backdated_prospective_forecasts": true
+  }
 }
