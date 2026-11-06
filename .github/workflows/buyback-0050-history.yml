@@ -1,0 +1,35 @@
+name: Buyback historical 0050 official ETF close archive
+on:
+  pull_request:
+    paths:
+      - 'scripts/buyback_collect_0050_close.py'
+      - '.github/workflows/buyback-0050-history.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  etf-0050-original-quotes:
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        year: [2020, 2021, 2022, 2023, 2024, 2025]
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Download 0050 UNADJUSTED official stock quotes
+        run: python -m scripts.buyback_collect_0050_close --year ${{ matrix.year }} --out /tmp/buyback-etf-0050-${{ matrix.year }}
+      - name: Archive original monthly source responses
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: buyback-etf-0050-unadjusted-${{ matrix.year }}
+          path: /tmp/buyback-etf-0050-${{ matrix.year }}/
+          retention-days: 14
+          if-no-files-found: warn
