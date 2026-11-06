@@ -105,6 +105,28 @@ class TpexResearchLiquidity(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'CONFLICTING_MARKET_AND_ISSUER'):
             liquidity_history(self.root,self.row(),self.asof)
 
+    def test_reviewed_momentum_provenance_is_bound_to_cohort_inputs(self):
+        folder=self.root/'fundamentals/2026-Q2';folder.mkdir(parents=True,exist_ok=True)
+        (folder/'TPEX_income.json').write_text(json.dumps(dict(
+            period='2026-Q2',market='TPEX',rows=[dict(code='6494',revenue_ytd_k=1000)])))
+        review=self.root/'evidence/v880/momentum_reviews/6494.json'
+        review.parent.mkdir(parents=True)
+        review.write_text(json.dumps(dict(review='SYNTHETIC_ONLY')))
+        row=dict(self.row(),rankable=True,financial_period='2026-Q2',
+                 industry='SEMICONDUCTOR',liquidity=dict(ocf_k=200),
+                 scenario_upside_pct=50,margin_bridge=dict(current_ytd_gm=.3,prior_ytd_gm=.2))
+        full=dict(all_model_rows=[row],asof_price_date=self.day,financial_last_quarter='2026-Q2')
+        with patch('scripts.return_model_search.reviewed_momentum',return_value=12.0):
+            features,references,errors=feature_rows(self.root,full,self.asof)
+        key='evidence/v880/momentum_reviews/6494.json'
+        self.assertEqual(errors,[])
+        self.assertEqual(features[0]['features']['momentum_63_21_pct'],12.0)
+        self.assertEqual(references[key],hashlib.sha256(review.read_bytes()).hexdigest())
+        review.write_text(json.dumps(dict(review='SYNTHETIC_CHANGED')))
+        with patch('scripts.return_model_search.reviewed_momentum',return_value=12.0):
+            _,updated,_=feature_rows(self.root,full,self.asof)
+        self.assertNotEqual(references[key],updated[key])
+
     def test_return_features_consume_tpex_history_and_preserve_governance_block(self):
         folder=self.root/'fundamentals/2026-Q2';folder.mkdir(parents=True)
         (folder/'TPEX_income.json').write_text(json.dumps(dict(period='2026-Q2',market='TPEX',
