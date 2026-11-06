@@ -1,13 +1,18 @@
 {
   "schema": "V8A8_FORWARD_TOP30_V1_NOT_YET_RETURN_VALIDATED",
-  "status": "MONTHLY_TOP30_FROZEN_AWAITING_VERIFIED_FILLS_AND_BENCHMARK",
+  "status": "BLOCKED_FIRST_ARCHIVE_COHORT_INELIGIBLE",
   "policy_sha256": "c27a1e7b1bf86b49d6de62732e9284f9ef813aae6af99ab4f2a8d9a339d17d4f",
   "activation_at": "2026-10-23T00:00:00+08:00",
-  "local_month": "2026-10",
+  "local_month": "2026-11",
   "reference_capital_ntd": 10000000,
-  "selection_path": "experiments/forward_top30_0050_v1/monthly/2026-10.json",
-  "selection_sha256": "ff099eba9c718fb9eb163700dd51ad545c92668b3c0f7fb095f72d98c63bc408",
-  "research_top30_count": 30,
+  "selection_path": null,
+  "selection_sha256": null,
+  "selection_blocker": {
+    "reason": "TOP30_NOT_PRIMARY_ORIGINAL_NUMERIC_COHORT",
+    "frozen_source_receipt": "pit_vintages/2026-11-06/be84ed0043d184e2612a/receipt.json",
+    "frozen_source_receipt_sha256": "677d021c3083397ee63147913cb4830e6a8d4dcaf2b8784baad1e34f2e5ec43d"
+  },
+  "research_top30_count": 0,
   "formal_Aplus_strategy_currently_in_cash": true,
   "verified_trading_results": 0,
   "model_net_total_return_pct": null,
