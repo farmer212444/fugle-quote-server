@@ -27,6 +27,19 @@ def read(path):
     return json.loads(Path(path).read_text(encoding='utf-8'))
 
 
+def expected_return_status(root,research):
+    path=Path(root)/'rankings/latest_expected_returns.json'
+    if not path.exists():return dict(status='EXPECTED_RETURN_REPORT_NOT_YET_GENERATED')
+    report=read(path)
+    if (report.get('schema')!='EXPECTED_RETURN_STATUS_V1' or
+            report.get('source_estimate_vintage')!=research['estimate_vintage'] or
+            report.get('source_price_date')!=research['asof_price_date'] or
+            report.get('target_date')!=research['target_date'] or report.get('model')!=research['model']):
+        return dict(status='EXPECTED_RETURN_REPORT_CONTEXT_REJECTED')
+    return {k:report[k] for k in ('status','target_date','verified_mature_observations',
+                                'comparable_forecasts','issuer_status_counts','source_errors','return_definition')}
+
+
 class DailyTurnoverSnapshot:
     """Read each market session once, scoped to one report and its cutoff.
 
@@ -248,6 +261,7 @@ def build(root):
                 benchmark_validation=build_benchmark_validation(root,observed_at),
                 probability_validation=calibration_summary(collected['probability_records']),
                 preissued_probability_validation=superforecast_report(root,asof=parse_forecast_time(observed_at)),
+                annual_expected_return_validation=expected_return_status(root,research),
                 scenario_probabilities=None,expected_net_return=None,
                 implemented_controls_are_not_evidence_of_investment_outperformance=True,
                 operations=dict(existing_schedule_reused=True,trade_orders_created=0,
@@ -293,6 +307,10 @@ def render(report):
             ('Brier：'+str(forecast['brier_score']) if forecast['brier_score'] is not None else 'Brier：有效樣本不足，不公布勝率。'),
             '來源雜湊不等於外部可信時間戳，機率校準不代表投資超額報酬；不會自動升級A+。','']
     benchmark=report['benchmark_validation']
+    annual=report.get('annual_expected_return_validation',{})
+    lines+=['## 2027機率加權期望報酬率','',
+            f"狀態：{annual.get('status','EXPECTED_RETURN_REPORT_NOT_YET_GENERATED')}；同期限成熟樣本：{annual.get('verified_mature_observations',0)}。",
+            '不把短期績效、二元事件Brier或Base價差當成年度期望報酬；逐檔缺件見 latest_expected_returns.md。','']
     lines+=['## 模型與大盤含息基準','',
             f"已登錄大盤比較實驗{benchmark['registered_benchmark_trials']}組；已由原件重算期間{benchmark['verified_outcomes']}個。",
             'Top30等權、下一交易日收盤、21個交易日報酬區間；同期間加權報酬指數含股息，模型扣明示成本。',

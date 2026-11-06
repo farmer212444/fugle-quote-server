@@ -24,17 +24,23 @@ def scenarios(payload):
     prices=[out[k]["scenario_target_price"] for k in ("bear","base","bull")]
     if prices!=sorted(prices):
         raise ValueError("nonmonotonic bear/base/bull prices; reconcile assumptions")
-    weights=payload.get("probabilities",{"bear":0.25,"base":0.5,"bull":0.25})
+    weights=payload.get("probabilities")
+    result={"model":"V8.8.0 independent 2027 three-scenario shadow",
+            "scenario_results":out,"probabilities":None,"probability_weighted_price":None,
+            "illustrative_scenario_weights":None,"illustrative_weighted_price":None,
+            "scenario_probability_status":"UNCALIBRATED_NO_DEFAULT_WEIGHTS",
+            "formal_grade":"NOT_CERTIFIED",
+            "warning":"Research sensitivity only; supplied weights are illustrative, not calibrated probabilities; issuer PIT, share reconciliation, historical PE and walk-forward remain unverified."}
+    if weights is None:return result
+    if not isinstance(weights,dict):raise ValueError("probabilities must be object")
     if set(weights)!={"bear","base","bull"}:raise ValueError("invalid probability keys")
     weights={k:number(v,k) for k,v in weights.items()}
     if any(v<0 or v>1 for v in weights.values()) or abs(sum(weights.values())-1)>1e-8:
         raise ValueError("probabilities must total one")
     expected=sum(weights[k]*out[k]["scenario_target_price"] for k in weights)
-    return {"model":"V8.8.0 independent 2027 three-scenario shadow",
-            "scenario_results":out,"probabilities":weights,
-            "probability_weighted_price":round(expected,2),
-            "formal_grade":"NOT_CERTIFIED",
-            "warning":"Research sensitivity only; no verified issuer PIT, share reconciliation, historical PE or walk-forward."}
+    result.update(illustrative_scenario_weights=weights,illustrative_weighted_price=round(expected,2),
+                  scenario_probability_status="USER_SUPPLIED_ILLUSTRATIVE_WEIGHTS_NOT_CALIBRATED")
+    return result
 
 def self_test():
     x={"revenue_h1":100000,"gross_profit_h1":20000,"operating_profit_h1":10000,
@@ -49,6 +55,9 @@ def self_test():
     r=scenarios(p)
     assert r["scenario_results"]["base"]["diluted_eps_2027"]==1.84
     assert r["formal_grade"]=="NOT_CERTIFIED"
+    assert r["probabilities"] is None and r["probability_weighted_price"] is None
+    explicit=scenarios(dict(p,probabilities={"bear":0.25,"base":0.5,"bull":0.25}))
+    assert explicit["probabilities"] is None and explicit["illustrative_weighted_price"] is not None
     for bad in (dict(p,probabilities={"bear":0.4,"base":0.5,"bull":0.5}),
                 dict(p,scenario_assumptions={"bear":{"pe":30},"base":{"pe":15},"bull":{"pe":10}})):
         try:scenarios(bad)
