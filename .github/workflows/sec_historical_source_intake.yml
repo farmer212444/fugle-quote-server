@@ -6,16 +6,22 @@ on:
     paths:
       - 'scripts/sec_pit_intake.py'
       - 'scripts/sec_api_intake.py'
+      - 'scripts/issuer_earnings_intake.py'
       - 'tests/test_sec_pit_intake.py'
       - 'tests/test_sec_api_intake.py'
+      - 'tests/test_issuer_earnings_intake.py'
+      - 'tw-market-data/config/issuer_earnings_sources_v1.json'
       - 'tw-market-data/config/sec_historical_sources_v1.json'
       - '.github/workflows/sec_historical_source_intake.yml'
   pull_request:
     paths:
       - 'scripts/sec_pit_intake.py'
       - 'scripts/sec_api_intake.py'
+      - 'scripts/issuer_earnings_intake.py'
       - 'tests/test_sec_pit_intake.py'
       - 'tests/test_sec_api_intake.py'
+      - 'tests/test_issuer_earnings_intake.py'
+      - 'tw-market-data/config/issuer_earnings_sources_v1.json'
       - 'tw-market-data/config/sec_historical_sources_v1.json'
       - '.github/workflows/sec_historical_source_intake.yml'
 permissions:
@@ -33,7 +39,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Check archive identity clocks and immutability
-        run: python -m unittest -v tests.test_sec_pit_intake tests.test_sec_api_intake
+        run: python -m unittest -v tests.test_sec_pit_intake tests.test_sec_api_intake tests.test_issuer_earnings_intake
       - name: Declare researcher contact as required by SEC fair-access guidance
         if: github.event_name != 'pull_request'
         run: |
@@ -55,6 +61,11 @@ jobs:
         id: api
         continue-on-error: true
         run: python scripts/sec_api_intake.py
+      - name: Capture issuer originals and replay disclosed quarterly EPS arithmetic
+        if: github.event_name != 'pull_request'
+        id: issuer
+        continue-on-error: true
+        run: python scripts/issuer_earnings_intake.py
       - name: Retain source evidence and failure receipts
         if: always() && github.event_name != 'pull_request'
         uses: actions/upload-artifact@v4
@@ -62,8 +73,10 @@ jobs:
           name: sec-regulatory-originals
           path: |
             tw-market-data/evidence/v880/regulatory_submissions/
+            tw-market-data/evidence/v880/issuer_earnings/
             tw-market-data/rankings/latest_regulatory_source_intake.json
             tw-market-data/rankings/latest_sec_api_intake.json
+            tw-market-data/rankings/latest_issuer_earnings_intake.json
           if-no-files-found: ignore
           retention-days: 30
       - name: Publish verified source archives on the same branch
@@ -71,12 +84,15 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add tw-market-data/rankings/latest_regulatory_source_intake.json tw-market-data/rankings/latest_sec_api_intake.json
+          git add tw-market-data/rankings/latest_regulatory_source_intake.json tw-market-data/rankings/latest_sec_api_intake.json tw-market-data/rankings/latest_issuer_earnings_intake.json
           if [ -d tw-market-data/evidence/v880/regulatory_submissions ]; then
             git add tw-market-data/evidence/v880/regulatory_submissions
           fi
+          if [ -d tw-market-data/evidence/v880/issuer_earnings ]; then
+            git add tw-market-data/evidence/v880/issuer_earnings
+          fi
           if git diff --cached --quiet; then exit 0; fi
-          git commit -m 'data: retain dated SEC original submissions and integrity receipts'
+          git commit -m 'data: retain dated issuer and regulatory originals with integrity receipts'
           git push origin HEAD:"$GITHUB_REF_NAME"
       - name: Require a verified source rather than a successful empty run
         if: github.event_name != 'pull_request'
@@ -87,6 +103,8 @@ jobs:
           root=Path('tw-market-data/rankings')
           a=json.loads((root/'latest_regulatory_source_intake.json').read_text())
           b=json.loads((root/'latest_sec_api_intake.json').read_text())
-          if not (a['verified_original_versions'] or b['captured_api_responses']):
+          c=json.loads((root/'latest_issuer_earnings_intake.json').read_text())
+          if not (a['verified_original_versions'] or b['captured_api_responses'] or c['verified_document_versions']):
               raise SystemExit('No verified source was captured; preserve failures without claiming completion.')
+          print('Source capture only. Historical-version admission and return calibration remain separate, unpassed gates.')
           PY

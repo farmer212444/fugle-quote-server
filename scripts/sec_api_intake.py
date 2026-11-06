@@ -8,9 +8,9 @@ import re
 from pathlib import Path
 
 try:
-    from scripts.sec_pit_intake import aware,digest,fetch,require
+    from scripts.sec_pit_intake import aware,digest,fetch,require,safe
 except ModuleNotFoundError:
-    from sec_pit_intake import aware,digest,fetch,require
+    from sec_pit_intake import aware,digest,fetch,require,safe
 
 FOLDER='evidence/v880/regulatory_submissions/api'
 
@@ -61,8 +61,12 @@ def capture(root,cik,kind,fetcher=fetch):
     original=folder/(identity+'.json.gz');receipt=folder/(identity+'.receipt.json')
     if receipt.exists():
         record=json.loads(receipt.read_bytes())
-        old=gzip.decompress((root/record['archive_path']).read_bytes())
-        require(digest(old)==identity and summarize(old,cik,kind)==record['summary'],'SEC_API_CACHE_CORRUPT')
+        old=gzip.decompress(safe(root,record['archive_path']).read_bytes())
+        require(record.get('schema')=='SEC_API_ORIGINAL_V1' and record.get('source_url')==endpoint
+                and record.get('cik')==str(int(cik)) and record.get('kind')==kind
+                and record.get('raw_sha256')==identity and record.get('bytes')==len(old)
+                and digest(old)==identity and summarize(old,cik,kind)==record['summary'],'SEC_API_CACHE_CORRUPT')
+        aware(record['first_captured_at_utc'])
         return record
     now=dt.datetime.now(dt.timezone.utc).isoformat()
     record=dict(schema='SEC_API_ORIGINAL_V1',source_url=endpoint,kind=kind,cik=str(int(cik)),
@@ -84,7 +88,8 @@ def run(root,ciks,fetcher=fetch):
         for kind in ('submissions','companyfacts'):
             try:records.append(capture(root,cik,kind,fetcher))
             except (ValueError,KeyError,TypeError,OSError,EOFError) as e:errors.append(dict(cik=cik,kind=kind,reason=str(e)))
-    return dict(schema='SEC_API_INTAKE_STATUS_V1',status='SOURCE_ERRORS' if errors else 'API_ORIGINALS_CAPTURED',
+    return dict(schema='SEC_API_INTAKE_STATUS_V1',observed_at_utc=dt.datetime.now(dt.timezone.utc).isoformat(),
+        status='SOURCE_ERRORS' if errors else 'API_ORIGINALS_CAPTURED',
         captured_api_responses=len(records),records=records,errors=errors,
         full_original_submission_documents_captured=0,calibrated_returns_created=0,formal_Aplus_added=0)
 
