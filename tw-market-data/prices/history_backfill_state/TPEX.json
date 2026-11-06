@@ -2,9 +2,9 @@
   "schema": "TPEX_HISTORY_RETRY_V1",
   "dates": {
     "2026-10-09": {
-      "attempts": 4,
-      "last_attempt_utc": "2026-10-26T06:01:48.141834+00:00",
-      "retry_after_utc": "2026-10-28T06:01:48.141834+00:00",
+      "attempts": 5,
+      "last_attempt_utc": "2026-11-06T13:57:33.453204+00:00",
+      "retry_after_utc": "2026-11-10T13:57:33.453204+00:00",
       "source_url": "https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes?response=json&date=115%2F10%2F09",
       "last_error": "ValueError:TPEX_OFFICIAL_MARKET_SHARD_UNDERSIZED",
       "status": "RETRY_REQUIRED_NOT_VERIFIED_AS_NONTRADING"
@@ -46,6 +46,22 @@
       "last_attempt_utc": "2026-10-27T13:08:24.735221+00:00",
       "retry_after_utc": "2026-10-27T19:08:24.735221+00:00",
       "source_url": "https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes?response=json&date=115%2F05%2F01",
+      "last_error": "ValueError:TPEX_OFFICIAL_MARKET_SHARD_UNDERSIZED",
+      "status": "RETRY_REQUIRED_NOT_VERIFIED_AS_NONTRADING"
+    },
+    "2026-10-26": {
+      "attempts": 1,
+      "last_attempt_utc": "2026-11-06T13:57:33.453204+00:00",
+      "retry_after_utc": "2026-11-06T19:57:33.453204+00:00",
+      "source_url": "https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes?response=json&date=115%2F10%2F26",
+      "last_error": "ValueError:TPEX_OFFICIAL_MARKET_SHARD_UNDERSIZED",
+      "status": "RETRY_REQUIRED_NOT_VERIFIED_AS_NONTRADING"
+    },
+    "2026-10-23": {
+      "attempts": 1,
+      "last_attempt_utc": "2026-11-06T13:57:33.453204+00:00",
+      "retry_after_utc": "2026-11-06T19:57:33.453204+00:00",
+      "source_url": "https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes?response=json&date=115%2F10%2F23",
       "last_error": "ValueError:TPEX_OFFICIAL_MARKET_SHARD_UNDERSIZED",
       "status": "RETRY_REQUIRED_NOT_VERIFIED_AS_NONTRADING"
     }
