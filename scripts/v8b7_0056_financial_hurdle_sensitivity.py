@@ -30,14 +30,15 @@ def finite_number(x):
 def sensitivity(data,root):
     root=Path(root)
     if (data.get("nine_financial_ROE_PB_hurdle_only_count")!=9 or
-        data.get("remaining_missing_comparable_count")!=7 or
+        type(data.get("other_sector_base_price_comparable_count")) is not int or
+        data.get("remaining_missing_comparable_count")!=50-9-data.get("other_sector_base_price_comparable_count",0) or
         data.get("total_constituents")!=50 or
         data.get("finance_ranking_is_not_a_2027_return_ranking") is not True or
         data.get("exact_historical_original_BVPS_unverified") is not True or
         data.get("all_13_formal_gates_preserved") is not True or
         data.get("original_0056_top10_unchanged") is not True or
         data.get("same_day_intraday_PIT_proven") is not False or
-        data.get("official_close_date")!="2026-10-22" or
+        data.get("membership_date")!="2026-10-22" or
         data.get("cost_of_equity_assumption_pct")!=BASE_KE or
         data.get("long_term_growth_assumption_pct")!=BASE_G):
         raise ValueError("0056_FINANCIAL_HURDLE_SOURCE_NOT_ELIGIBLE")
@@ -47,8 +48,13 @@ def sensitivity(data,root):
     vintage=dt.datetime.fromisoformat(data["model_estimate_vintage"])
     if vintage.tzinfo is None:
         raise ValueError("0056_FINANCIAL_HURDLE_VINTAGE_UNAWARE")
+    local_day=vintage.astimezone(dt.timezone(dt.timedelta(hours=8))).date()
+    price_day=dt.date.fromisoformat(data["official_close_date"])
+    if (price_day.isoformat()!=data["official_close_date"] or
+        not dt.date.fromisoformat(data["membership_date"])<=price_day<=local_day):
+        raise ValueError("0056_FINANCIAL_HURDLE_PRICE_DATE_OUTSIDE_MODEL_CONTEXT")
     first_observed=dt.date.fromisoformat(data["secondary_financial_BVPS_first_reviewed_on"])
-    if vintage.date()<first_observed:
+    if local_day<first_observed:
         raise ValueError("0056_FINANCIAL_HURDLE_FUTURE_SOURCE")
     h1_bytes=(root/H1_INPUT).read_bytes()
     if hashlib.sha256(h1_bytes).hexdigest()!=data["H1_eps_source_sha256"]:
