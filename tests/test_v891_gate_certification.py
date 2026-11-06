@@ -212,6 +212,36 @@ class GateAdmissionTests(unittest.TestCase):
         self.assertEqual(report['source_rejections'][0]['code'],'9802')
         self.assertFalse(report['durable_original_archive_receipts']['9802']['original_archive_hashes_verified'])
 
+    def test_tsmc_original_source_intake_is_not_a_formal_quality_pass(self):
+        self.progress_fixture()
+        folder=self.root/'rankings'
+        research=mod.load(folder/'latest_research.json')
+        dispatch=mod.load(folder/'v883_gate_dispatch.json')
+        probe=mod.load(folder/'v884_evidence_progress.json')
+        dispatch['all_issuer_jobs'][0].update(code='2330',name='台積電',research_upside_pct=5)
+        self.save_snapshot(research,dispatch,probe)
+        quarters=['2024-Q3','2024-Q4','2025-Q1','2025-Q2','2025-Q3','2025-Q4','2026-Q1','2026-Q2']
+        coverage=dict(required_quarters=quarters,found_quarters=quarters,missing_quarters=[],
+            source_window_end='2026-Q2',native_cover_identity_verified_quarters=quarters[:-1])
+        bundle=dict(issuer='2330',records=8,document_kinds={'quarterly':8},coverage=coverage,
+            formal_pass_count=0,original_archive_hashes_verified=True)
+        with patch.object(mod,'validate_tsmc_originals',return_value=bundle):
+            report=mod.build_progress(self.root)
+        row=next(x for x in report['issuer_diagnostics'] if x['code']=='2330')
+        gate=row['gate_stage']['original_eight_quarter_statements']
+        self.assertEqual(gate['stage'],'SOURCE_CAPTURED')
+        self.assertFalse(gate['formal_pass'])
+        self.assertEqual(len(row['still_pending_gates']),13)
+        self.assertIn('2330原件視窗為2024-Q3至2026-Q2',mod.render_md(report,[]))
+
+    def test_corrupt_tsmc_archive_is_isolated(self):
+        self.progress_fixture()
+        with patch.object(mod,'validate_tsmc_originals',side_effect=ValueError('TSMC_ORIGINAL_PDF_HASH_OR_SIZE_MISMATCH')):
+            report=mod.build_progress(self.root)
+        self.assertEqual(report['tracked_issuer_count'],2)
+        self.assertTrue(any(x['code']=='2330' for x in report['source_rejections']))
+        self.assertFalse(report['durable_original_archive_receipts']['2330']['original_archive_hashes_verified'])
+
     def test_changed_original_revokes_only_that_gate_in_current_audit(self):
         certificate=mod.validate_review_pack(self.item,self.file,self.root,mod.timestamp(STAMP),'2026-Q2')
         row=dict(code='6206',market='TWSE',financial_period='2026-Q2',scenario_upside_pct=42,
