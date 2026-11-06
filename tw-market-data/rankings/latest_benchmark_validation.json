@@ -1,6 +1,6 @@
 {
   "schema": "TOP30_VS_TAIEX_TR_V1",
-  "observed_at": "2026-11-06T20:03:06.069599+00:00",
+  "observed_at": "2026-11-06T21:34:27.561631+00:00",
   "benchmark_id": "TAIEX_TR",
   "trials": [
     {
@@ -315,6 +315,60 @@
         {
           "status": "AWAITING_FUTURE_HOLDING_SESSIONS",
           "cohort_id": "5322e6c0535a6eaa6d0ac606"
+        }
+      ],
+      "rejected_outcomes": [],
+      "matured_unusable_periods": 0,
+      "status": "NO_VERIFIED_OUTCOMES",
+      "verified_nonoverlapping_periods": 0,
+      "model_total_return": null,
+      "benchmark_total_return": null,
+      "excess_return_pp": null,
+      "evidence_supports_benchmark_edge": false,
+      "formal_out_of_sample_pass": false
+    },
+    {
+      "trial_id": "taiex-tr-5bf014a1a17241d6e08132fa",
+      "registered_at": "2026-11-06T21:34:23.376693+00:00",
+      "spec": {
+        "protocol": "TOP30_VS_TAIEX_TR_V1",
+        "strategy_variant_sha256": "4b5097dbfc88f14e78a69f3a26d6da0b9e342a74857a7bea3b6d7147a680d52a",
+        "model_code_sha256": "87abf60d2341658ad31d59f302c01c5bf944c3a147fe219ed00dfef6eee5fa11",
+        "model_target_date": "2027-12-31",
+        "cost_policy": {
+          "buy_fee_rate": 0.001425,
+          "sell_fee_rate": 0.001425,
+          "sell_tax_rate": 0.003,
+          "buy_slippage_rate": 0.001,
+          "sell_slippage_rate": 0.001,
+          "half_spread_rate": 0.0005,
+          "minimum_fee_ntd": 20
+        },
+        "benchmark_policy": {
+          "benchmark_id": "TAIEX_TR",
+          "selection_rule": "RESEARCH_TOP30_EQUAL_WEIGHT_NEXT_SESSION_CLOSE",
+          "selection_source": "top30_provisional",
+          "holding_intervals": 21,
+          "number_of_stocks": 30,
+          "dividend_policy": "GROSS_DIVIDENDS_RETAINED_AS_CASH_OR_RECEIVABLE_NO_REINVESTMENT",
+          "benchmark_cost_policy": "COSTLESS_OFFICIAL_GROSS_TOTAL_RETURN_INDEX",
+          "fractional_shares_are_research_assumption": true,
+          "minimum_nonoverlapping_oos_periods": 60,
+          "minimum_market_regimes": 2,
+          "bootstrap_draws": 10000,
+          "bootstrap_block_size": 21,
+          "stress_cost_multiplier_excluding_tax": 2,
+          "regime_lookback_sessions": 63,
+          "regime_return_threshold": 0.03,
+          "automatic_deployment": false
+        },
+        "reference_capital_ntd": 10000000,
+        "max_daily_participation": 0.05
+      },
+      "outcomes": [
+        {
+          "status": "AWAITING_FUTURE_HOLDING_SESSIONS",
+          "cohort_id": "8919af1b595081570e32ca4a"
         }
       ],
       "rejected_outcomes": [],
@@ -1408,8 +1462,8 @@
       "formal_out_of_sample_pass": false
     }
   ],
-  "registered_benchmark_trials": 26,
-  "all_registered_designs": 5823,
+  "registered_benchmark_trials": 27,
+  "all_registered_designs": 6065,
   "verified_outcomes": 0,
   "benchmark_sessions": 148,
   "benchmark_months": [
@@ -1551,6 +1605,7 @@
         "7b77c09d43a926a98cea13a0",
         "f362ae5d0b0a5fdbd80f0aba",
         "5322e6c0535a6eaa6d0ac606",
+        "8919af1b595081570e32ca4a",
         "d13ce349bfc4212222f821be",
         "7624ef50da168e9063458d6f",
         "1a48ac8cf8d5b1194705517c",
@@ -1612,6 +1667,7 @@
         "7b77c09d43a926a98cea13a0",
         "f362ae5d0b0a5fdbd80f0aba",
         "5322e6c0535a6eaa6d0ac606",
+        "8919af1b595081570e32ca4a",
         "d13ce349bfc4212222f821be",
         "7624ef50da168e9063458d6f",
         "1a48ac8cf8d5b1194705517c",
@@ -1673,6 +1729,7 @@
         "7b77c09d43a926a98cea13a0",
         "f362ae5d0b0a5fdbd80f0aba",
         "5322e6c0535a6eaa6d0ac606",
+        "8919af1b595081570e32ca4a",
         "d13ce349bfc4212222f821be",
         "7624ef50da168e9063458d6f",
         "1a48ac8cf8d5b1194705517c",
@@ -1705,6 +1762,7 @@
         "7b77c09d43a926a98cea13a0",
         "f362ae5d0b0a5fdbd80f0aba",
         "5322e6c0535a6eaa6d0ac606",
+        "8919af1b595081570e32ca4a",
         "d13ce349bfc4212222f821be",
         "7624ef50da168e9063458d6f",
         "1a48ac8cf8d5b1194705517c",
@@ -1737,6 +1795,7 @@
         "7b77c09d43a926a98cea13a0",
         "f362ae5d0b0a5fdbd80f0aba",
         "5322e6c0535a6eaa6d0ac606",
+        "8919af1b595081570e32ca4a",
         "d13ce349bfc4212222f821be",
         "7624ef50da168e9063458d6f",
         "1a48ac8cf8d5b1194705517c",
@@ -1799,6 +1858,7 @@
         "7b77c09d43a926a98cea13a0",
         "f362ae5d0b0a5fdbd80f0aba",
         "5322e6c0535a6eaa6d0ac606",
+        "8919af1b595081570e32ca4a",
         "d13ce349bfc4212222f821be",
         "7624ef50da168e9063458d6f",
         "1a48ac8cf8d5b1194705517c",
@@ -1831,6 +1891,7 @@
         "7b77c09d43a926a98cea13a0",
         "f362ae5d0b0a5fdbd80f0aba",
         "5322e6c0535a6eaa6d0ac606",
+        "8919af1b595081570e32ca4a",
         "d13ce349bfc4212222f821be",
         "7624ef50da168e9063458d6f",
         "1a48ac8cf8d5b1194705517c",
@@ -1863,6 +1924,7 @@
         "7b77c09d43a926a98cea13a0",
         "f362ae5d0b0a5fdbd80f0aba",
         "5322e6c0535a6eaa6d0ac606",
+        "8919af1b595081570e32ca4a",
         "d13ce349bfc4212222f821be",
         "7624ef50da168e9063458d6f",
         "1a48ac8cf8d5b1194705517c",
@@ -1895,6 +1957,7 @@
         "7b77c09d43a926a98cea13a0",
         "f362ae5d0b0a5fdbd80f0aba",
         "5322e6c0535a6eaa6d0ac606",
+        "8919af1b595081570e32ca4a",
         "d13ce349bfc4212222f821be",
         "7624ef50da168e9063458d6f",
         "1a48ac8cf8d5b1194705517c",
@@ -1927,6 +1990,7 @@
         "7b77c09d43a926a98cea13a0",
         "f362ae5d0b0a5fdbd80f0aba",
         "5322e6c0535a6eaa6d0ac606",
+        "8919af1b595081570e32ca4a",
         "d13ce349bfc4212222f821be",
         "7624ef50da168e9063458d6f",
         "1a48ac8cf8d5b1194705517c",
@@ -1959,6 +2023,7 @@
         "7b77c09d43a926a98cea13a0",
         "f362ae5d0b0a5fdbd80f0aba",
         "5322e6c0535a6eaa6d0ac606",
+        "8919af1b595081570e32ca4a",
         "d13ce349bfc4212222f821be",
         "7624ef50da168e9063458d6f",
         "1a48ac8cf8d5b1194705517c",
@@ -1991,6 +2056,7 @@
         "7b77c09d43a926a98cea13a0",
         "f362ae5d0b0a5fdbd80f0aba",
         "5322e6c0535a6eaa6d0ac606",
+        "8919af1b595081570e32ca4a",
         "d13ce349bfc4212222f821be",
         "7624ef50da168e9063458d6f",
         "1a48ac8cf8d5b1194705517c",
@@ -2023,6 +2089,7 @@
         "7b77c09d43a926a98cea13a0",
         "f362ae5d0b0a5fdbd80f0aba",
         "5322e6c0535a6eaa6d0ac606",
+        "8919af1b595081570e32ca4a",
         "d13ce349bfc4212222f821be",
         "7624ef50da168e9063458d6f",
         "1a48ac8cf8d5b1194705517c",
@@ -2171,6 +2238,7 @@
         "7b77c09d43a926a98cea13a0",
         "f362ae5d0b0a5fdbd80f0aba",
         "5322e6c0535a6eaa6d0ac606",
+        "8919af1b595081570e32ca4a",
         "d13ce349bfc4212222f821be",
         "7624ef50da168e9063458d6f",
         "1a48ac8cf8d5b1194705517c",
@@ -2203,6 +2271,7 @@
         "7b77c09d43a926a98cea13a0",
         "f362ae5d0b0a5fdbd80f0aba",
         "5322e6c0535a6eaa6d0ac606",
+        "8919af1b595081570e32ca4a",
         "d13ce349bfc4212222f821be",
         "7624ef50da168e9063458d6f",
         "1a48ac8cf8d5b1194705517c",
@@ -2234,6 +2303,7 @@
         "494a7043debb43f36d93a07c",
         "7b77c09d43a926a98cea13a0",
         "5322e6c0535a6eaa6d0ac606",
+        "8919af1b595081570e32ca4a",
         "d13ce349bfc4212222f821be",
         "7624ef50da168e9063458d6f",
         "1a48ac8cf8d5b1194705517c",
@@ -2266,6 +2336,7 @@
         "7b77c09d43a926a98cea13a0",
         "f362ae5d0b0a5fdbd80f0aba",
         "5322e6c0535a6eaa6d0ac606",
+        "8919af1b595081570e32ca4a",
         "d13ce349bfc4212222f821be",
         "7624ef50da168e9063458d6f",
         "1a48ac8cf8d5b1194705517c",
@@ -2297,6 +2368,7 @@
         "494a7043debb43f36d93a07c",
         "7b77c09d43a926a98cea13a0",
         "5322e6c0535a6eaa6d0ac606",
+        "8919af1b595081570e32ca4a",
         "d13ce349bfc4212222f821be",
         "7624ef50da168e9063458d6f",
         "1a48ac8cf8d5b1194705517c",
@@ -2373,6 +2445,7 @@
       "market": "TPEX",
       "code": "8155",
       "cohort_ids": [
+        "8919af1b595081570e32ca4a",
         "95dd27c5938979d4762464fa",
         "d3c36ce10b0faa5d1ed1cff1",
         "a789f1733f1318630cca9f87"
@@ -2382,6 +2455,7 @@
       "market": "TWSE",
       "code": "2432",
       "cohort_ids": [
+        "8919af1b595081570e32ca4a",
         "95dd27c5938979d4762464fa",
         "d3c36ce10b0faa5d1ed1cff1",
         "a789f1733f1318630cca9f87"
@@ -2391,6 +2465,7 @@
       "market": "TPEX",
       "code": "8091",
       "cohort_ids": [
+        "8919af1b595081570e32ca4a",
         "95dd27c5938979d4762464fa",
         "d3c36ce10b0faa5d1ed1cff1",
         "a789f1733f1318630cca9f87"
@@ -2400,6 +2475,7 @@
       "market": "TPEX",
       "code": "8383",
       "cohort_ids": [
+        "8919af1b595081570e32ca4a",
         "95dd27c5938979d4762464fa",
         "d3c36ce10b0faa5d1ed1cff1",
         "a789f1733f1318630cca9f87"
@@ -2409,6 +2485,7 @@
       "market": "TWSE",
       "code": "6781",
       "cohort_ids": [
+        "8919af1b595081570e32ca4a",
         "95dd27c5938979d4762464fa",
         "d3c36ce10b0faa5d1ed1cff1",
         "a789f1733f1318630cca9f87"
@@ -2418,6 +2495,7 @@
       "market": "TPEX",
       "code": "3171",
       "cohort_ids": [
+        "8919af1b595081570e32ca4a",
         "95dd27c5938979d4762464fa",
         "d3c36ce10b0faa5d1ed1cff1"
       ]
@@ -2426,6 +2504,7 @@
       "market": "TPEX",
       "code": "3357",
       "cohort_ids": [
+        "8919af1b595081570e32ca4a",
         "95dd27c5938979d4762464fa",
         "d3c36ce10b0faa5d1ed1cff1",
         "a789f1733f1318630cca9f87"
@@ -2435,6 +2514,7 @@
       "market": "TWSE",
       "code": "2364",
       "cohort_ids": [
+        "8919af1b595081570e32ca4a",
         "95dd27c5938979d4762464fa",
         "d3c36ce10b0faa5d1ed1cff1",
         "a789f1733f1318630cca9f87"
@@ -2444,6 +2524,7 @@
       "market": "TWSE",
       "code": "8114",
       "cohort_ids": [
+        "8919af1b595081570e32ca4a",
         "95dd27c5938979d4762464fa",
         "d3c36ce10b0faa5d1ed1cff1",
         "a789f1733f1318630cca9f87"
@@ -2453,6 +2534,7 @@
       "market": "TPEX",
       "code": "6613",
       "cohort_ids": [
+        "8919af1b595081570e32ca4a",
         "95dd27c5938979d4762464fa",
         "d3c36ce10b0faa5d1ed1cff1"
       ]
@@ -2461,6 +2543,7 @@
       "market": "TWSE",
       "code": "6505",
       "cohort_ids": [
+        "8919af1b595081570e32ca4a",
         "95dd27c5938979d4762464fa",
         "d3c36ce10b0faa5d1ed1cff1",
         "a789f1733f1318630cca9f87"
@@ -2470,6 +2553,7 @@
       "market": "TPEX",
       "code": "3689",
       "cohort_ids": [
+        "8919af1b595081570e32ca4a",
         "95dd27c5938979d4762464fa",
         "d3c36ce10b0faa5d1ed1cff1"
       ]

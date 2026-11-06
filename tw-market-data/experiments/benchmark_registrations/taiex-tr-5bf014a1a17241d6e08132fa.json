@@ -1,0 +1,41 @@
+{
+  "schema": "TOP30_VS_TAIEX_TR_V1",
+  "trial_id": "taiex-tr-5bf014a1a17241d6e08132fa",
+  "registered_at": "2026-11-06T21:34:23.376693+00:00",
+  "spec": {
+    "protocol": "TOP30_VS_TAIEX_TR_V1",
+    "strategy_variant_sha256": "4b5097dbfc88f14e78a69f3a26d6da0b9e342a74857a7bea3b6d7147a680d52a",
+    "model_code_sha256": "87abf60d2341658ad31d59f302c01c5bf944c3a147fe219ed00dfef6eee5fa11",
+    "model_target_date": "2027-12-31",
+    "cost_policy": {
+      "buy_fee_rate": 0.001425,
+      "sell_fee_rate": 0.001425,
+      "sell_tax_rate": 0.003,
+      "buy_slippage_rate": 0.001,
+      "sell_slippage_rate": 0.001,
+      "half_spread_rate": 0.0005,
+      "minimum_fee_ntd": 20
+    },
+    "benchmark_policy": {
+      "benchmark_id": "TAIEX_TR",
+      "selection_rule": "RESEARCH_TOP30_EQUAL_WEIGHT_NEXT_SESSION_CLOSE",
+      "selection_source": "top30_provisional",
+      "holding_intervals": 21,
+      "number_of_stocks": 30,
+      "dividend_policy": "GROSS_DIVIDENDS_RETAINED_AS_CASH_OR_RECEIVABLE_NO_REINVESTMENT",
+      "benchmark_cost_policy": "COSTLESS_OFFICIAL_GROSS_TOTAL_RETURN_INDEX",
+      "fractional_shares_are_research_assumption": true,
+      "minimum_nonoverlapping_oos_periods": 60,
+      "minimum_market_regimes": 2,
+      "bootstrap_draws": 10000,
+      "bootstrap_block_size": 21,
+      "stress_cost_multiplier_excluding_tax": 2,
+      "regime_lookback_sessions": 63,
+      "regime_return_threshold": 0.03,
+      "automatic_deployment": false
+    },
+    "reference_capital_ntd": 10000000,
+    "max_daily_participation": 0.05
+  },
+  "spec_sha256": "5bf014a1a17241d6e08132fa69c58b93b084fbb07a101ff84f1ac83de127b481"
+}
