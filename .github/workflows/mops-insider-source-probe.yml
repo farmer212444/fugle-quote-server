@@ -1,0 +1,47 @@
+name: MOPS Insider Source Probe
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/insider-pit-shadow-20261023
+    paths:
+      - 'scripts/v8105_mops_insider_original_probe.py'
+      - 'tests/test_v8105_mops_insider_original_probe.py'
+      - 'scripts/v8105_mops_insider_archive.py'
+      - '.github/workflows/mops-insider-source-probe.yml'
+permissions:
+  contents: write
+jobs:
+  bounded-original-probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Strict offline parser unit tests
+        run: python -m unittest -v tests.test_v8105_mops_insider_original_probe
+      - name: Capture up to 6 dated original HTTP responses - no PIT claim
+        run: python scripts/v8105_mops_insider_original_probe.py --out mops_insider_probe_artifact --codes 9802,6965 --months 2026-07,2026-08,2026-09
+      - name: Archive original HTTP bytes only to research branch, immutable per run
+        if: success() && github.ref == 'refs/heads/research/insider-pit-shadow-20261023'
+        env:
+          ARCHIVE_ID: run_${{ github.run_id }}_${{ github.run_attempt }}
+        run: |
+          python scripts/v8105_mops_insider_archive.py --source mops_insider_probe_artifact --dest tw-market-data/evidence/v880/insider_reviews/original_probe_archive --archive-id "$ARCHIVE_ID"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add tw-market-data/evidence/v880/insider_reviews/original_probe_archive/
+          if ! git diff --cached --quiet; then
+            git commit -m "data: archive MOPS query6_1 raw-source research probe ($ARCHIVE_ID)"
+            git push origin HEAD:research/insider-pit-shadow-20261023
+          fi
+      - name: Preserve raw bytes, SHA receipts, and blocked source attempts as artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mops-insider-original-probe
+          path: mops_insider_probe_artifact/
+          if-no-files-found: warn
+          retention-days: 30

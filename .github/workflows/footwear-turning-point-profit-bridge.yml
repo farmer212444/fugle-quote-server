@@ -1,0 +1,36 @@
+name: Footwear Earnings Turning-Point Audit
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/insider-pit-shadow-20261023
+    paths:
+      - 'scripts/v8105_footwear_turning_point.py'
+      - 'tests/test_v8105_footwear_turning_point.py'
+      - 'tw-market-data/evidence/v880/insider_reviews/footwear_turning_point_corporate_20261023.json'
+      - '.github/workflows/footwear-turning-point-profit-bridge.yml'
+permissions:
+  contents: write
+jobs:
+  research-profit-bridge:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Check dated-source margin and operating-profit bridge guardrails
+        run: python -m unittest -v tests.test_v8105_footwear_turning_point
+      - name: Produce standalone shadow diagnosis and no A+ recommendation
+        run: python scripts/v8105_footwear_turning_point.py
+      - name: Archive research shadow evidence in unmerged PR
+        if: success() && github.ref == 'refs/heads/research/insider-pit-shadow-20261023'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add tw-market-data/evidence/v880/insider_reviews/20261023_footwear_turning_point_shadow.json
+          if ! git diff --cached --quiet; then
+            git commit -m "data: preserve source-dated footwear operational-turning-point research shadow"
+            git push origin HEAD:research/insider-pit-shadow-20261023
+          fi

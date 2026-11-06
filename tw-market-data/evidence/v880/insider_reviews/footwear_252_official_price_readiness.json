@@ -1,0 +1,486 @@
+{
+  "status": "RESEARCH_UNADJUSTED_PRICE_WINDOW_ONLY",
+  "ref_date": "2026-10-22",
+  "benchmark_calendar": "0050",
+  "calendar_window": [
+    "2025-10-08",
+    "2026-10-22"
+  ],
+  "calendar_sessions": 252,
+  "research_price_candidates": {
+    "9802": {
+      "status": "252_SOURCE_BACKED_UNADJUSTED_CLOSE_RESEARCH_ONLY",
+      "window_start": "2025-10-08",
+      "window_end": "2026-10-22",
+      "window_sessions": 252,
+      "range_min_close": 62.6,
+      "range_max_close": 115.0,
+      "reference_close": 62.6,
+      "range_position": 0.0,
+      "provisional_bottom_20pct": true,
+      "source_backed_unadjusted_prices": true,
+      "complete_dividend_and_splits_window_review": false,
+      "price_low_window_certified": false,
+      "entry_open_and_fillability_verified": false
+    },
+    "6965": {
+      "status": "252_SOURCE_BACKED_UNADJUSTED_CLOSE_RESEARCH_ONLY",
+      "window_start": "2025-10-08",
+      "window_end": "2026-10-22",
+      "window_sessions": 252,
+      "range_min_close": 59.8,
+      "range_max_close": 100.5,
+      "reference_close": 64.3,
+      "range_position": 0.11056511,
+      "provisional_bottom_20pct": true,
+      "source_backed_unadjusted_prices": true,
+      "complete_dividend_and_splits_window_review": false,
+      "price_low_window_certified": false,
+      "entry_open_and_fillability_verified": false
+    }
+  },
+  "signal_created": false,
+  "formal_Aplus_changed": false,
+  "benchmark_0050_dividend_adjusted_12m_return_certified": false,
+  "source_data": {
+    "issuer_universe": "9802_AND_6965_NOT_COMPLETE_FOOTWEAR_SECTOR",
+    "capture_method": "OFFICIAL_TWSE_STOCK_DAY_MONTHLY_ORIGINAL_BYTES",
+    "latest_daily_official_reference": "2026-10-22",
+    "months_requested": [
+      "2025-08",
+      "2025-09",
+      "2025-10",
+      "2025-11",
+      "2025-12",
+      "2026-01",
+      "2026-02",
+      "2026-03",
+      "2026-04",
+      "2026-05",
+      "2026-06",
+      "2026-07",
+      "2026-08",
+      "2026-09",
+      "2026-10"
+    ],
+    "attempts": [
+      {
+        "code": "0050",
+        "month": "2025-08",
+        "status": "ORIGINAL_REPARSED_AND_SHA256_VERIFIED",
+        "row_count": 21,
+        "receipt_path": "prices/originals/history/TWSE/0050-2025-08/d6dac6c350f1074923ee921c8ca48a5901721fe707a8800acdaaeee371ecf2a5.json",
+        "original_sha256": "82d7f1f4cbb37b95a80cf178027a0642e7508268d2a3752b4a8609186e4ec179"
+      },
+      {
+        "code": "0050",
+        "month": "2025-09",
+        "status": "ORIGINAL_REPARSED_AND_SHA256_VERIFIED",
+        "row_count": 21,
+        "receipt_path": "prices/originals/history/TWSE/0050-2025-09/442ddb04e66bc81a802598744b540a0efa8e56db3038927bff2a408f540bbe13.json",
+        "original_sha256": "412133823f6f171a67a92bbfe14145784446f863a76eb479b4f4898db0c24828"
+      },
+      {
+        "code": "0050",
+        "month": "2025-10",
+        "status": "ORIGINAL_REPARSED_AND_SHA256_VERIFIED",
+        "row_count": 20,
+        "receipt_path": "prices/originals/history/TWSE/0050-2025-10/417a12f8df05c63376ce4233bd32f8fd21d62c08c90a21021ef7714759b00d69.json",
+        "original_sha256": "a8d196bd6f20dc95406655ea8debf533a40be7482c5a22d88e8f6589a2e04b2c"
+      },
+      {
+        "code": "0050",
+        "month": "2025-11",
+        "status": "ORIGINAL_REPARSED_AND_SHA256_VERIFIED",
+        "row_count": 20,
+        "receipt_path": "prices/originals/history/TWSE/0050-2025-11/31fd34b928865db457a5bab04bf19ec1ba296f50dd65fd415e95beb9168dac98.json",
+        "original_sha256": "ef0125936c60eca28350965db8d1190a27039203e744c70d7105d6e8c623b3e4"
+      },
+      {
+        "code": "0050",
+        "month": "2025-12",
+        "status": "ORIGINAL_REPARSED_AND_SHA256_VERIFIED",
+        "row_count": 22,
+        "receipt_path": "prices/originals/history/TWSE/0050-2025-12/616986178e92c2ccbee2aa708cc41fbc8dd4fc8edff989e8185fe172e0b638fb.json",
+        "original_sha256": "2eaf317993500338f8fcc2546518012e587dea5f85794580c546684bf77bf172"
+      },
+      {
+        "code": "0050",
+        "month": "2026-01",
+        "status": "ORIGINAL_REPARSED_AND_SHA256_VERIFIED",
+        "row_count": 21,
+        "receipt_path": "prices/originals/history/TWSE/0050-2026-01/71f8b98d1325dded96308c79edddd47580876b970c33139e4fb6bb7b54bffb3e.json",
+        "original_sha256": "986d7910cc2b0eb42c318f5a87a6d9bd295d9ced27f91ef9800048205c76eb02"
+      },
+      {
+        "code": "0050",
+        "month": "2026-02",
+        "status": "ORIGINAL_REPARSED_AND_SHA256_VERIFIED",
+        "row_count": 12,
+        "receipt_path": "prices/originals/history/TWSE/0050-2026-02/0a4fa26b8846ee0a8c5f4a8f8f3c869315bffa86d1446cf1de2fceaba0ba41c4.json",
+        "original_sha256": "f0fac3e6688e913d64e2cc497191f70f86fc5a6160abfbbedc048b27d8af1434"
+      },
+      {
+        "code": "0050",
+        "month": "2026-03",
+        "status": "ORIGINAL_REPARSED_AND_SHA256_VERIFIED",
+        "row_count": 22,
+        "receipt_path": "prices/originals/history/TWSE/0050-2026-03/25c97d7bb1ce5f7d1aa1b0ec6dc78486e3d0461cf2995887421d48b68eed9469.json",
+        "original_sha256": "01a49250fddbdf8eea03174b885d45764df10618f71bf55731c0cf569a5a2183"
+      },
+      {
+        "code": "0050",
+        "month": "2026-04",
+        "status": "ORIGINAL_REPARSED_AND_SHA256_VERIFIED",
+        "row_count": 20,
+        "receipt_path": "prices/originals/history/TWSE/0050-2026-04/db47e3dc740d7c73dfcf9c321cdac118be1608e70e30ebbde26a4e2a8a5f41b8.json",
+        "original_sha256": "5b1173a71f0f85ea126aa84edaa6e74f7f5962ee810bb3e9096acf558a948d45"
+      },
+      {
+        "code": "0050",
+        "month": "2026-05",
+        "status": "ORIGINAL_REPARSED_AND_SHA256_VERIFIED",
+        "row_count": 20,
+        "receipt_path": "prices/originals/history/TWSE/0050-2026-05/486da10e8e6bdc6e3d406ac54c868ad5abf3e5aa6d369f5319906f81d0cac2be.json",
+        "original_sha256": "8b60db9708ec4ae1f5af29a5b4d4d92d0dc94c2263d73215a5512bd1774526fc"
+      },
+      {
+        "code": "0050",
+        "month": "2026-06",
+        "status": "ORIGINAL_REPARSED_AND_SHA256_VERIFIED",
+        "row_count": 21,
+        "receipt_path": "prices/originals/history/TWSE/0050-2026-06/39f74fac35829ad48985eaede659b3a45039bfcb5fc533d46ed5ba035943c3bb.json",
+        "original_sha256": "8a1116eec7561544266735111b4cc20d3558eb3d7b4564528bc75ff0aefc3431"
+      },
+      {
+        "code": "0050",
+        "month": "2026-07",
+        "status": "ORIGINAL_REPARSED_AND_SHA256_VERIFIED",
+        "row_count": 22,
+        "receipt_path": "prices/originals/history/TWSE/0050-2026-07/a6cc352100158c82bc943ab82b06b8312ab6b719263b0eeadee7ee991a858609.json",
+        "original_sha256": "97006d0b71358317601fa9dfe646c34c0d6b2decc49e9afb82dfbd2aa932fc8d"
+      },
+      {
+        "code": "0050",
+        "month": "2026-08",
+        "status": "ORIGINAL_REPARSED_AND_SHA256_VERIFIED",
+        "row_count": 21,
+        "receipt_path": "prices/originals/history/TWSE/0050-2026-08/91d5004d85535bdd1096022a0be265001e37fb9c3feb33440a243cb980f0e938.json",
+        "original_sha256": "4e176ace7a80a09e7f145e61cb6f81b59d0f4cc9146fa5cf0107fc02556357b1"
+      },
+      {
+        "code": "0050",
+        "month": "2026-09",
+        "status": "ORIGINAL_REPARSED_AND_SHA256_VERIFIED",
+        "row_count": 20,
+        "receipt_path": "prices/originals/history/TWSE/0050-2026-09/a7e439a901bb9011fea77261c615d04e24fa0ad14a73d6e83266b2452e98d624.json",
+        "original_sha256": "bf757d6c5bdc5b4b1d8f659e697aa482b025dde1d5aa8bb0e9947882c2212470"
+      },
+      {
+        "code": "0050",
+        "month": "2026-10",
+        "status": "ORIGINAL_REPARSED_AND_SHA256_VERIFIED",
+        "row_count": 15,
+        "receipt_path": "prices/originals/history/TWSE/0050-2026-10/a8374ed3aa44f90487b64c9145db7e779948105b3128d1829163ade7f7d95229.json",
+        "original_sha256": "12fbbbb0519103da7cbf391c15ce48dfc20ac1da3ea60eb8e0d67d8a99a0d0f8"
+      },
+      {
+        "code": "9802",
+        "month": "2025-08",
+        "status": "ORIGINAL_REPARSED_AND_SHA256_VERIFIED",
+        "row_count": 21,
+        "receipt_path": "prices/originals/history/TWSE/9802-2025-08/73341db233387f3583cce7010b7af8eb046f5327ddcc902ba148dfca1c240619.json",
+        "original_sha256": "76f6e3ef6e1e9b94b4e0f4576cc3e6482238db51d85e914af16efe4f2703987c"
+      },
+      {
+        "code": "9802",
+        "month": "2025-09",
+        "status": "ORIGINAL_REPARSED_AND_SHA256_VERIFIED",
+        "row_count": 21,
+        "receipt_path": "prices/originals/history/TWSE/9802-2025-09/c10a353497b8e395084ffad06ab2d843375fa0c6f31ae81b7b3427e0a154e059.json",
+        "original_sha256": "4bc529c06b023d72dae102f55a7550591f68e2930b9b42d7e9ac47bc08984203"
+      },
+      {
+        "code": "9802",
+        "month": "2025-10",
+        "status": "ORIGINAL_REPARSED_AND_SHA256_VERIFIED",
+        "row_count": 20,
+        "receipt_path": "prices/originals/history/TWSE/9802-2025-10/d26e46de6ec83c43bd7606f2d07027381e9d681f69defd0b8ab02a160989ce19.json",
+        "original_sha256": "6a797552491a7094a8fff375cb099e6968410d82921f0eafa3b7b73c5198c180"
+      },
+      {
+        "code": "9802",
+        "month": "2025-11",
+        "status": "ORIGINAL_REPARSED_AND_SHA256_VERIFIED",
+        "row_count": 20,
+        "receipt_path": "prices/originals/history/TWSE/9802-2025-11/c165fbfe7b7cfe6171c0bfab96581a69e4ebd7720f29f2a718b7cb3155dc412f.json",
+        "original_sha256": "4971f75207609ecbaebc01664d911bc3b6c1efeff6371f4f2afeb74d9a345214"
+      },
+      {
+        "code": "9802",
+        "month": "2025-12",
+        "status": "ORIGINAL_REPARSED_AND_SHA256_VERIFIED",
+        "row_count": 22,
+        "receipt_path": "prices/originals/history/TWSE/9802-2025-12/f41d14169ac78553804b64e692dc108ab7bfab0690b5ed94af9c9ed88b86b435.json",
+        "original_sha256": "eaaf195632c2ae8c9193f791f0bfc9921b36f14462545397f882a6bef98aacb2"
+      },
+      {
+        "code": "9802",
+        "month": "2026-01",
+        "status": "ORIGINAL_REPARSED_AND_SHA256_VERIFIED",
+        "row_count": 21,
+        "receipt_path": "prices/originals/history/TWSE/9802-2026-01/651abd42a2f60406c67bbdbfcd3339d9cfb1e81344fbf169d451f9143283f72d.json",
+        "original_sha256": "4330a263b8cd500a1059035bfb5777e53d9a464c81ec9f9f02ae5bfd5ecadc3c"
+      },
+      {
+        "code": "9802",
+        "month": "2026-02",
+        "status": "ORIGINAL_REPARSED_AND_SHA256_VERIFIED",
+        "row_count": 12,
+        "receipt_path": "prices/originals/history/TWSE/9802-2026-02/0accabfae3f8480c690519e58edaffae50d79330a6bd8de9638d0b21205e17cf.json",
+        "original_sha256": "76537b17d39663a7819a6041a4b0e5d77d7de6baa35cf8469e851444c98fa27f"
+      },
+      {
+        "code": "9802",
+        "month": "2026-03",
+        "status": "ORIGINAL_REPARSED_AND_SHA256_VERIFIED",
+        "row_count": 22,
+        "receipt_path": "prices/originals/history/TWSE/9802-2026-03/73dac2f9785687bbcbd26ce58bcbb2e28375b371cd28cb51667a55be904b215a.json",
+        "original_sha256": "38efc3b97b7312195293314123ff0a3a7e573790f2f31596cf4ab1d69359e121"
+      },
+      {
+        "code": "9802",
+        "month": "2026-04",
+        "status": "ORIGINAL_REPARSED_AND_SHA256_VERIFIED",
+        "row_count": 20,
+        "receipt_path": "prices/originals/history/TWSE/9802-2026-04/2fe398f70e66956126ddd0a26311f7e1e1acb1c838c861a60f72cd5542c1869f.json",
+        "original_sha256": "55531fdd7e4361833d6cd29ddcbc384c882756d4900cd029cf4eeca809361f19"
+      },
+      {
+        "code": "9802",
+        "month": "2026-05",
+        "status": "ORIGINAL_REPARSED_AND_SHA256_VERIFIED",
+        "row_count": 20,
+        "receipt_path": "prices/originals/history/TWSE/9802-2026-05/0c89bf6843d91548c13c3914f82b5ff1dfa6fbc58d0a89b8705d5fdeee69b830.json",
+        "original_sha256": "fe91bef339a27d1f226d904f9656ba790468e45480d9fcd5450e6d10306500cb"
+      },
+      {
+        "code": "9802",
+        "month": "2026-06",
+        "status": "ORIGINAL_REPARSED_AND_SHA256_VERIFIED",
+        "row_count": 21,
+        "receipt_path": "prices/originals/history/TWSE/9802-2026-06/cd4865bd7ddb19ee6835ab25894b3a4f5c8ec7c6b33f25d8eed67901eebb213c.json",
+        "original_sha256": "14292d54de0f3c68cd42b4d8a958ddd3e9354ba7720ef89dcb16306357cecfa5"
+      },
+      {
+        "code": "9802",
+        "month": "2026-07",
+        "status": "ORIGINAL_REPARSED_AND_SHA256_VERIFIED",
+        "row_count": 22,
+        "receipt_path": "prices/originals/history/TWSE/9802-2026-07/8b9726ec2f7003bdf4ab89d7022a7869974f07db216d8a4757e328c705ab6e0b.json",
+        "original_sha256": "f90ce9229a417e35cf40b5d5b887e878375ce40b59dd3b95b9f79a1f1e529d88"
+      },
+      {
+        "code": "9802",
+        "month": "2026-08",
+        "status": "ORIGINAL_REPARSED_AND_SHA256_VERIFIED",
+        "row_count": 21,
+        "receipt_path": "prices/originals/history/TWSE/9802-2026-08/9e4554ca7c7667bbc7e96d1b9398db1b1c3bc400ffc6e5b7d610c127d94de21a.json",
+        "original_sha256": "e6d7e12447bbe08464174a6763244dc80be037098bca32b6041b8efef4c863f3"
+      },
+      {
+        "code": "9802",
+        "month": "2026-09",
+        "status": "ORIGINAL_REPARSED_AND_SHA256_VERIFIED",
+        "row_count": 20,
+        "receipt_path": "prices/originals/history/TWSE/9802-2026-09/f52be3267c73aa89a7d55cff0fd5a60784edce0617c3ad87d9f819297a8377b8.json",
+        "original_sha256": "3c028ecee27d8b22aa319834a7c804867a50483dc9be731927724a6a0a5171d9"
+      },
+      {
+        "code": "9802",
+        "month": "2026-10",
+        "status": "ORIGINAL_REPARSED_AND_SHA256_VERIFIED",
+        "row_count": 15,
+        "receipt_path": "prices/originals/history/TWSE/9802-2026-10/1717feb171767f2d5cd2e4ec841045e5b7466c703961892f6b660ed1ff8ededc.json",
+        "original_sha256": "20c5b644a181328dae144bbf276879182f38ba991957329f482ed4bd45568e49"
+      },
+      {
+        "code": "6965",
+        "month": "2025-08",
+        "status": "ORIGINAL_REPARSED_AND_SHA256_VERIFIED",
+        "row_count": 21,
+        "receipt_path": "prices/originals/history/TWSE/6965-2025-08/7aa6dc799d224d9794d14a4edf300b60dbd1e0f017a9942ebdc596619c36e8d0.json",
+        "original_sha256": "7cef53b20fad2a456e5c1fd2ee3afa54880213a5b5574fbca0c766c28aa100e1"
+      },
+      {
+        "code": "6965",
+        "month": "2025-09",
+        "status": "ORIGINAL_REPARSED_AND_SHA256_VERIFIED",
+        "row_count": 21,
+        "receipt_path": "prices/originals/history/TWSE/6965-2025-09/1af17f2d98c7887974c7631feca5bc3f20fec03dbf5f0ba439406588cb41a64a.json",
+        "original_sha256": "e6858db92ec6d897aad0f8215805a80970d442167dfdeec8f23c1af3ad7e3812"
+      },
+      {
+        "code": "6965",
+        "month": "2025-10",
+        "status": "ORIGINAL_REPARSED_AND_SHA256_VERIFIED",
+        "row_count": 20,
+        "receipt_path": "prices/originals/history/TWSE/6965-2025-10/f2d403f297a84134be118d2f1c635cfb5891a9e92ea4d2edc5deddbb13df4768.json",
+        "original_sha256": "e5d82f92b63684cd6ba93867bd1c1ffaf28f898ecffd6a2959a03b267b9ff911"
+      },
+      {
+        "code": "6965",
+        "month": "2025-11",
+        "status": "ORIGINAL_REPARSED_AND_SHA256_VERIFIED",
+        "row_count": 20,
+        "receipt_path": "prices/originals/history/TWSE/6965-2025-11/1ee4e09da638c353c258bdff08288ec11d4277eb29091768f6b48519a9ccbf3d.json",
+        "original_sha256": "c33df5ba1ee45e2a45819183c1c8660a9c16ca77db97632c904f70a1ebde8622"
+      },
+      {
+        "code": "6965",
+        "month": "2025-12",
+        "status": "ORIGINAL_REPARSED_AND_SHA256_VERIFIED",
+        "row_count": 22,
+        "receipt_path": "prices/originals/history/TWSE/6965-2025-12/8b6ef4cde6a1ac8cc059dcc0ca101bc96f69d0c200d75e22e199767b33ceca69.json",
+        "original_sha256": "c895dcbe50c92248c4b560c6da32412c2eff46d932efffe15c037ed4ac5eaa96"
+      },
+      {
+        "code": "6965",
+        "month": "2026-01",
+        "status": "ORIGINAL_REPARSED_AND_SHA256_VERIFIED",
+        "row_count": 21,
+        "receipt_path": "prices/originals/history/TWSE/6965-2026-01/25c429607379103f46ff76767d78b63540ebcb2650650990fa8ccfe0768392f6.json",
+        "original_sha256": "d8eae3ca7e514a0b5d744c80a1504f6cd8c3063f67416acd2a8fe9b23dcf6eb6"
+      },
+      {
+        "code": "6965",
+        "month": "2026-02",
+        "status": "ORIGINAL_REPARSED_AND_SHA256_VERIFIED",
+        "row_count": 12,
+        "receipt_path": "prices/originals/history/TWSE/6965-2026-02/89bc76453a65cc164df5053386262c249f8803e91909173d4bae12f2c6ec746f.json",
+        "original_sha256": "f112e0308cececacc6af7d26b9d1c9cc10b620e7f4b9b04f6f19d7e48dd72c62"
+      },
+      {
+        "code": "6965",
+        "month": "2026-03",
+        "status": "ORIGINAL_REPARSED_AND_SHA256_VERIFIED",
+        "row_count": 22,
+        "receipt_path": "prices/originals/history/TWSE/6965-2026-03/200437dbb547270149af2faada0208b85b0c430c58394809705adaf1303f6064.json",
+        "original_sha256": "9910baa764341b92567ddd96c1b180ddb5c69172ba6ca61333f5eff70e6b44b2"
+      },
+      {
+        "code": "6965",
+        "month": "2026-04",
+        "status": "ORIGINAL_REPARSED_AND_SHA256_VERIFIED",
+        "row_count": 20,
+        "receipt_path": "prices/originals/history/TWSE/6965-2026-04/5b6b28dffd8383ba8749c31ef90332e5b9e15791833f0daeb4f1d3aedc8a1798.json",
+        "original_sha256": "645f379c9c77ec017f2a22e743e528c2d8231dd4b0a759c0da7d242cef7a9abb"
+      },
+      {
+        "code": "6965",
+        "month": "2026-05",
+        "status": "ORIGINAL_REPARSED_AND_SHA256_VERIFIED",
+        "row_count": 20,
+        "receipt_path": "prices/originals/history/TWSE/6965-2026-05/e5ff3e3f29e70eac13078ec5d125505fbac2a0aabddbf7c0374088feef1dec93.json",
+        "original_sha256": "bf57ab06a29d242e517dd697237b4163a189fbbf3cf31dca25c108022d3a508c"
+      },
+      {
+        "code": "6965",
+        "month": "2026-06",
+        "status": "ORIGINAL_REPARSED_AND_SHA256_VERIFIED",
+        "row_count": 21,
+        "receipt_path": "prices/originals/history/TWSE/6965-2026-06/56aeae5c9f4d1fbb81cb9e00ea9d02c70a82b8095eac1cf96e28ca28b8f26d13.json",
+        "original_sha256": "5cef22931a5b132e3c3bd5e4f47893caa51955bce1e3fa2eca742196a4e96c70"
+      },
+      {
+        "code": "6965",
+        "month": "2026-07",
+        "status": "ORIGINAL_REPARSED_AND_SHA256_VERIFIED",
+        "row_count": 22,
+        "receipt_path": "prices/originals/history/TWSE/6965-2026-07/e1b699978c6e304f5685e22d4e28f7dfb619c7609d3a0989b0ee691e2194ef04.json",
+        "original_sha256": "58ca557eedea4b7a217d7d54c3b6e91b8c89cc5e441b96eadae6bc37c75d0561"
+      },
+      {
+        "code": "6965",
+        "month": "2026-08",
+        "status": "ORIGINAL_REPARSED_AND_SHA256_VERIFIED",
+        "row_count": 21,
+        "receipt_path": "prices/originals/history/TWSE/6965-2026-08/a21cfa4a65bdc23c3643209a5e0f9cc989ee31477c0a56be1bc15341dfb39dd4.json",
+        "original_sha256": "2a2dd9c3b881dafad518eb2d49e57c1c7f08e31574a86bddf8cb365fd44e0a32"
+      },
+      {
+        "code": "6965",
+        "month": "2026-09",
+        "status": "ORIGINAL_REPARSED_AND_SHA256_VERIFIED",
+        "row_count": 20,
+        "receipt_path": "prices/originals/history/TWSE/6965-2026-09/52ed0efafe685c99a574b44b8d9ae50d376b53c7e182e664663643af35b613c0.json",
+        "original_sha256": "46a4fb6fc874ddc576a4b5ad8bd0b7f1eb95ceb9296cda26f4f19b4b29404f12"
+      },
+      {
+        "code": "6965",
+        "month": "2026-10",
+        "status": "ORIGINAL_REPARSED_AND_SHA256_VERIFIED",
+        "row_count": 15,
+        "receipt_path": "prices/originals/history/TWSE/6965-2026-10/27091cf5782936f449e599865650f39197b06004d19447122c0fb01fd8db8cc0.json",
+        "original_sha256": "7f1a17e4b917ddd2ea239de3a90aed7d2be506ff8e5acfb187f061ed6dbb008f"
+      }
+    ],
+    "verified_original_months_by_code": {
+      "0050": [
+        "2025-08",
+        "2025-09",
+        "2025-10",
+        "2025-11",
+        "2025-12",
+        "2026-01",
+        "2026-02",
+        "2026-03",
+        "2026-04",
+        "2026-05",
+        "2026-06",
+        "2026-07",
+        "2026-08",
+        "2026-09",
+        "2026-10"
+      ],
+      "9802": [
+        "2025-08",
+        "2025-09",
+        "2025-10",
+        "2025-11",
+        "2025-12",
+        "2026-01",
+        "2026-02",
+        "2026-03",
+        "2026-04",
+        "2026-05",
+        "2026-06",
+        "2026-07",
+        "2026-08",
+        "2026-09",
+        "2026-10"
+      ],
+      "6965": [
+        "2025-08",
+        "2025-09",
+        "2025-10",
+        "2025-11",
+        "2025-12",
+        "2026-01",
+        "2026-02",
+        "2026-03",
+        "2026-04",
+        "2026-05",
+        "2026-06",
+        "2026-07",
+        "2026-08",
+        "2026-09",
+        "2026-10"
+      ]
+    },
+    "official_price_originals_are_not_historical_disclosure_receipts": true,
+    "unadjusted_prices_may_contain_corporate_action_distortions": true
+  },
+  "stock_one_year_vs_0050_win_rate": null,
+  "historical_13_gates_modified": false
+}
