@@ -6,6 +6,7 @@ import gzip
 import hashlib
 import json
 import sys
+from collections import Counter
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:sys.path.insert(0,str(ROOT))
@@ -121,6 +122,11 @@ def feature_rows(root,full,asof):
         try:momentum=reviewed_momentum(root,row,asof,cache)
         except (ValueError,KeyError,OSError,TypeError) as exc:
             momentum=None;errors.append(dict(code=row['code'],feature='momentum_63_21_pct',reason=str(exc)))
+        # Bind the actual reviewed momentum document, not merely the computed
+        # number, to the immutable search cohort's source-hash manifest.
+        review_path=root/'evidence/v880/momentum_reviews'/(row['code']+'.json')
+        if finite(momentum) and review_path.is_file():
+            references[review_path.relative_to(root).as_posix()]=hashlib.sha256(review_path.read_bytes()).hexdigest()
         trend=row.get('revenue_bridge',{}).get('trend_inputs',{});margin=row.get('margin_bridge',{});ocf=row.get('liquidity',{}).get('ocf_k')
         def difference(a,b):return (a-b)*100 if finite(a) and finite(b) else None
         features=dict(forward_upside_pct=row.get('scenario_upside_pct'),revenue_acceleration_pp=difference(trend.get('latest_month_yoy'),trend.get('monthly_ytd_yoy')),
@@ -131,6 +137,38 @@ def feature_rows(root,full,asof):
         path=root/'prices/issuer_history'/row['market']/(row['code']+'.json')
         if path.exists():references[path.relative_to(root).as_posix()]=hashlib.sha256(path.read_bytes()).hexdigest()
     return rows,references,errors
+
+
+def input_repair_queue(features):
+    """Surface ALL missing research inputs, even if no strategy can select the stock.
+
+    This is a collection queue, not a substitute observation or a buy signal.
+    Missing momentum needs source-authenticated OHLC and corporate-action review;
+    unavailable values must remain None in the frozen strategy.
+    """
+    require(len({(r['market'],r['code']) for r in features})==len(features),
+            'RETURN_INPUT_REPAIR_DUPLICATE_ISSUER')
+    queue=[]
+    for row in sorted(features,key=lambda r:(r['market'],r['code'])):
+        data=row.get('features') or {}
+        gaps=[]
+        if not finite(row.get('adv20_ntd'),positive=True):
+            gaps.append('OFFICIAL_20_SESSION_TURNOVER_HISTORY')
+        if not finite(data.get('momentum_63_21_pct')):
+            gaps.append('OFFICIAL_64_SESSION_MOMENTUM_AND_ACTION_REVIEW')
+        if not finite(data.get('ocf_to_sales')):
+            gaps.append('MATCHED_PERIOD_CASHFLOW_AND_REVENUE')
+        if not finite(data.get('revenue_acceleration_pp')):
+            gaps.append('REVENUE_ACCELERATION_ORIGINALS')
+        if not finite(data.get('gross_margin_delta_pp')):
+            gaps.append('GROSS_MARGIN_COMPARATIVE_ORIGINALS')
+        if not finite(data.get('forward_upside_pct')):
+            gaps.append('DATED_FORWARD_VALUATION_SOURCE')
+        if gaps:
+            queue.append(dict(market=row['market'],code=row['code'],missing_evidence=gaps,
+                              recommendation_blocked=bool(row.get('recommendation_blocked')),
+                              evidence_not_inferred=True,formal_Aplus_created=0))
+    return queue
 
 
 def current_research_screens(full,features,registered,asof):
@@ -296,6 +334,8 @@ def run(root,now=None):
     require(timestamp(research['estimate_vintage'])<=timestamp(now),'RETURN_SEARCH_MODEL_FROM_FUTURE')
     full=json.loads(gzip.decompress((root/'rankings/v880_full_results.json.gz').read_bytes()));policy=read(root/CONFIG);reg=registration(root,policy,research,now)
     features,references,errors=feature_rows(root,full,dt.datetime.now(dt.timezone.utc).isoformat());prepared=dt.datetime.now(dt.timezone.utc).isoformat()
+    repair_queue=input_repair_queue(features)
+    repair_counts=dict(sorted(Counter(gap for item in repair_queue for gap in item['missing_evidence']).items()))
     cal,months,cal_errors=calendar(root,prepared);index=load_index(root,prepared);reports=[];cache={};queue={}
     for horizon in policy['grid']['holding_sessions']:
         receipt,cohort,created=freeze(root,reg,full,features,references,horizon,prepared,cal,months)
@@ -311,7 +351,9 @@ def run(root,now=None):
         input_coverage_by_market={market:dict(source_universe_count=sum(r['market']==market for r in features),
             adv20_coverage=sum(r['market']==market and finite(r['adv20_ntd'],positive=True) for r in features))
             for market in sorted({r['market'] for r in features})},
-        horizon_reports=reports,feature_source_errors=errors,calendar_errors=cal_errors,regime_source_errors=index['errors'],collection_queue=list(queue.values()),all_registered_search_trials=registered_trial_count(root),
+        horizon_reports=reports,feature_source_errors=errors,calendar_errors=cal_errors,regime_source_errors=index['errors'],collection_queue=list(queue.values()),
+        input_repair_queue=repair_queue,input_repair_counts=repair_counts,
+        input_repair_queue_is_not_certified_source_data=True,all_registered_search_trials=registered_trial_count(root),
         current_research_screens=current_research_screens(full,features,reg,prepared),
         selected_live_model=None,status='PARAMETER_HYPOTHESES_REGISTERED_AWAITING_VERIFIED_RETURNS' if not any(h['walk_forward_test_periods'] for h in reports) else 'RETURN_MODELS_EVALUATED_REVIEW_REQUIRED',
         formal_Aplus_created=0,trade_orders_created=0,automatic_deployment=False,
@@ -329,6 +371,11 @@ def render(r):
         '持股10／20／30／50檔；持有21／63／126交易日（含進場日）；20日成交額中位數門檻1,200萬／3,000萬元；產業上限25%／40%。','',
         '|組別|起始特徵權重（待驗）|','|---|---|']
     for family,weights in {p['family']:p['weights'] for p in r['parameters']}.items():lines.append('|'+names[family]+'|'+'、'.join(f'{labels[k]} {v:.0%}' for k,v in weights.items())+'|')
+    if r.get('input_repair_counts'):
+        lines+=['','## 缺件優先回補（不代表已驗證）','',
+            '缺件公司即使沒有入選任何策略，仍保留在機器可讀的 input_repair_queue；不自動填補、補零、降低證據門檻或授予A+。',
+            '|缺件類型|公司數|','|---|---:|']
+        lines += [f'|{k}|{v}|' for k,v in sorted(r['input_repair_counts'].items(),key=lambda item:(-item[1],item[0]))]
     if r.get('input_coverage_by_market'):
         lines+=['','|市場|研究母體|有效20日成交額|','|---|---:|---:|']
         for market,coverage in sorted(r['input_coverage_by_market'].items()):

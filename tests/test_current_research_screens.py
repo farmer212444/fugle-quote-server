@@ -2,7 +2,7 @@
 import copy
 import unittest
 
-from scripts.return_model_search import current_research_screens,render
+from scripts.return_model_search import current_research_screens,input_repair_queue,render
 from tw_model_v880.return_search import parameters,select_portfolio
 from tests.test_return_model_search import ASOF,features,policy
 
@@ -56,6 +56,23 @@ class CurrentResearchScreens(unittest.TestCase):
         self.full=baseline
         self.full['estimate_vintage']='2027-01-01T00:00:00+08:00'
         with self.assertRaisesRegex(ValueError,'FUTURE_MODEL'):self.build()
+
+    def test_missing_input_queue_includes_issuers_unavailable_to_every_strategy(self):
+        rows=features()
+        for row in rows:
+            row['features']['momentum_63_21_pct']=None
+        rows[0]['adv20_ntd']=None
+        rows[1]['features']['ocf_to_sales']=None
+        rows[2]['recommendation_blocked']=True
+        queue=input_repair_queue(rows)
+        self.assertEqual(len(queue),len(rows))
+        self.assertIn('OFFICIAL_20_SESSION_TURNOVER_HISTORY',queue[0]['missing_evidence'])
+        self.assertIn('OFFICIAL_64_SESSION_MOMENTUM_AND_ACTION_REVIEW',queue[-1]['missing_evidence'])
+        self.assertTrue(queue[2]['recommendation_blocked'])
+        self.assertTrue(all(entry['formal_Aplus_created']==0 for entry in queue))
+        self.assertEqual(queue,input_repair_queue(list(reversed(rows))))
+        with self.assertRaisesRegex(ValueError,'DUPLICATE_ISSUER'):
+            input_repair_queue(rows+[copy.deepcopy(rows[0])])
 
     def test_report_exposes_stock_names_and_scenario_limits(self):
         report=dict(model='TEST',asof_price_date='2026-10-22',parameter_count=240,
