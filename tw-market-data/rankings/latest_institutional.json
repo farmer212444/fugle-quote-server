@@ -1,8 +1,8 @@
 {
   "schema": "V810_INSTITUTIONAL_RESEARCH_CONTROLS",
   "model": "V8.10.8",
-  "estimate_vintage": "2026-11-06T22:44:30.761820+08:00",
-  "report_observed_at": "2026-11-06T14:45:34.326676+00:00",
+  "estimate_vintage": "2026-11-07T01:33:05.989631+08:00",
+  "report_observed_at": "2026-11-06T17:34:02.702031+00:00",
   "asof_price_date": "2026-11-06",
   "source_model_sha256": "f7e63dd136c421f24befb15c1aca54f2c57fddf3697bf94a77a58751727e14cf",
   "policy_sha256": "3f378fb673213f6178983a4698ed80c7e5a8c5b62e82192a85eea1c6a3b0b493",
@@ -5115,8 +5115,8 @@
   },
   "forward_observations": {
     "status": "PROSPECTIVE_OBSERVATION_NOT_CERTIFIED_INVESTMENT_PERFORMANCE",
-    "distinct_signal_days": 6,
-    "strategy_date_cohorts": 74,
+    "distinct_signal_days": 7,
+    "strategy_date_cohorts": 76,
     "cohorts": [
       {
         "model": "V8.8.2",
@@ -6733,6 +6733,46 @@
           "Dividends/splits/rights/delistings coverage for full holding period",
           "Matched benchmark total returns and predeclared evaluation horizon"
         ]
+      },
+      {
+        "model": "V8.10.8",
+        "model_code_sha256": "f7e63dd136c421f24befb15c1aca54f2c57fddf3697bf94a77a58751727e14cf",
+        "strategy_variant_sha256": "135c02a55e343023494a6d8aaae02de5499a71d265009a119b7ba6b03407da68",
+        "strategy_variant": "without-earnings-events",
+        "estimate_vintage": "2026-11-07T01:33:05.989631+08:00",
+        "archived_at_utc": "2026-11-06T17:33:47.257653+00:00",
+        "prospective_signal_at": "2026-11-06T17:33:47.257653+00:00",
+        "prospective_signal_clock": "LATER_OF_ESTIMATE_AND_REAL_ARCHIVE",
+        "reference_price_date": "2026-11-06",
+        "receipt_path": "pit_vintages/2026-11-07/7ee323900b4dd4b05787/receipt.json",
+        "status": "AWAITING_SUBSEQUENT_SESSION",
+        "formal_out_of_sample_pass": false,
+        "missing_for_certified_return": [
+          "Verified next-session open and fillability",
+          "Explicit spread/slippage/fees/tax policy fixed before outcome",
+          "Dividends/splits/rights/delistings coverage for full holding period",
+          "Matched benchmark total returns and predeclared evaluation horizon"
+        ]
+      },
+      {
+        "model": "V8.10.8",
+        "model_code_sha256": "f7e63dd136c421f24befb15c1aca54f2c57fddf3697bf94a77a58751727e14cf",
+        "strategy_variant_sha256": "3ff28075df5c25b49e9bc03ad64ed6b0eb4791d72e101fa418f49ef2b3539fc1",
+        "strategy_variant": "current-information",
+        "estimate_vintage": "2026-11-07T01:33:05.989631+08:00",
+        "archived_at_utc": "2026-11-06T17:33:41.942713+00:00",
+        "prospective_signal_at": "2026-11-06T17:33:41.942713+00:00",
+        "prospective_signal_clock": "LATER_OF_ESTIMATE_AND_REAL_ARCHIVE",
+        "reference_price_date": "2026-11-06",
+        "receipt_path": "pit_vintages/2026-11-07/8777ecf73f93d014b44b/receipt.json",
+        "status": "AWAITING_SUBSEQUENT_SESSION",
+        "formal_out_of_sample_pass": false,
+        "missing_for_certified_return": [
+          "Verified next-session open and fillability",
+          "Explicit spread/slippage/fees/tax policy fixed before outcome",
+          "Dividends/splits/rights/delistings coverage for full holding period",
+          "Matched benchmark total returns and predeclared evaluation horizon"
+        ]
       }
     ],
     "archive_errors": [],
@@ -7116,7 +7156,7 @@
   },
   "benchmark_validation": {
     "schema": "TOP30_VS_TAIEX_TR_V1",
-    "observed_at": "2026-11-06T14:45:34.326676+00:00",
+    "observed_at": "2026-11-06T17:34:02.702031+00:00",
     "benchmark_id": "TAIEX_TR",
     "trials": [
       {
