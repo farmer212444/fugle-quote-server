@@ -82,6 +82,7 @@ jobs:
               return int(s) if re.fullmatch(r'\d+', s) else None
 
           def fetch(market, url):
+              print('FETCH', market, url, flush=True)
               req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0 (research archival collector)'})
               with urllib.request.urlopen(req, timeout=65) as response:
                   data = response.read(20000001)
@@ -115,17 +116,14 @@ jobs:
                   raise ValueError(market + ' insufficient valid closing prices')
               return parsed, next(iter(all_dates)), hashlib.sha256(data).hexdigest()
 
-          gathered = {}
-          for market, url in urls.items():
-              print('FETCH', market, url, flush=True)
-              gathered[market] = fetch(market, url)
-          twse, tdate, thash = gathered['TWSE']
-          tpex, pdate, phash = gathered['TPEX']
+          from scripts.v8a4_market_close_recovery import collect_openapi_sources
+          gathered, primary_errors = collect_openapi_sources(urls, fetch)
+          for market, error in primary_errors.items():
+              print(f'::warning::OFFICIAL_{market}_OPENAPI_UNAVAILABLE {error}; trying strictly dated official source.', flush=True)
           if os.environ.get('PROBE_ONLY', '').lower() == 'true':
-              if tdate == pdate:
-                  print(f'::notice::EARLY_PROBE_ONLY exchange_session={tdate}; no price files or ranking will be published.')
-              else:
-                  print(f'::warning::EARLY_PROBE_ONLY dates differ TWSE={tdate} TPEx={pdate}; await retry.')
+              dates = {market: value[1] if value is not None else 'UNAVAILABLE'
+                       for market, value in gathered.items()}
+              print(f'::notice::EARLY_PROBE_ONLY exchange_sessions={dates}; no price files or ranking will be published.')
               raise SystemExit(0)
           # Both feeds can lag together. Comparing only their two dates misses
           # that case and leaves a successful collector publishing yesterday.

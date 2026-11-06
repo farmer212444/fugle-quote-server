@@ -5,7 +5,7 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
-from scripts.v8a4_market_close_recovery import source_url, parse, recover, reconcile_sessions
+from scripts.v8a4_market_close_recovery import source_url, parse, recover, reconcile_sessions, collect_openapi_sources
 
 def fixture(market="TWSE",date="2026-10-20"):
     if market=="TWSE":
@@ -113,6 +113,39 @@ class DatedMarketRecoveryTests(unittest.TestCase):
         self.assertEqual(fixed["TWSE"][1],"2026-10-22")
         with self.assertRaisesRegex(ValueError,"AFTER_PUBLISHABLE_SESSION"):
             reconcile_sessions(self.inputs("2026-11-06","2026-11-06"),{},"/tmp",now)
+
+    def test_malformed_primary_json_reaches_dated_official_recovery(self):
+        def primary(market,url):
+            if market=='TPEX':return json.loads('{broken-json')
+            return self.inputs('2026-11-06')['TWSE']
+        gathered,errors=collect_openapi_sources({'TWSE':'twse','TPEX':'tpex'},primary)
+        self.assertIsNone(gathered['TPEX'])
+        self.assertIn('JSONDecodeError',errors['TPEX'])
+        calls=[]
+        def repair(market,day,previous,rawdir):
+            calls.append((market,day,previous))
+            return [dict(market=market,date=day)],day,'sha',source_url(market,day)
+        fixed,routes,repaired=reconcile_sessions(gathered,{},'/tmp',
+            dt.datetime.fromisoformat('2026-11-06T17:00:00+08:00'),recover_fn=repair)
+        self.assertEqual(calls,[('TPEX','2026-11-06',None)])
+        self.assertEqual(repaired,['TPEX'])
+        self.assertEqual(fixed['TPEX'][1],'2026-11-06')
+
+    def test_unavailable_primaries_preserve_errors_and_still_require_both_official_sources(self):
+        def primary(market,url):raise OSError('unavailable')
+        gathered,errors=collect_openapi_sources({'TWSE':'twse','TPEX':'tpex'},primary)
+        self.assertEqual(set(errors),{'TWSE','TPEX'})
+        self.assertEqual(gathered,{'TWSE':None,'TPEX':None})
+        def failed_recovery(*args):raise ValueError('dated source unavailable')
+        with self.assertRaisesRegex(ValueError,'dated source unavailable'):
+            reconcile_sessions(gathered,{},'/tmp',dt.datetime.fromisoformat('2026-11-06T17:00:00+08:00'),recover_fn=failed_recovery)
+
+    def test_absent_primary_date_does_not_disable_exact_fallback_date_validation(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            rows,day,_,_=recover('TPEX','2026-10-20',None,tmp,fetch=lambda u:fixture('TPEX'))
+            self.assertEqual((len(rows),day),(320,'2026-10-20'))
+            with self.assertRaisesRegex(ValueError,'RESPONSE_DATE_MISMATCH'):
+                recover('TPEX','2026-10-21',None,tmp,fetch=lambda u:fixture('TPEX'))
 
 if __name__=="__main__":
     unittest.main()
