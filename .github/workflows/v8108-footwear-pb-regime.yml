@@ -1,0 +1,49 @@
+name: V8.10.8 Footwear PB Regime & Duration
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/footwear-pb-2016-2026-20261024
+    paths:
+      - 'scripts/v8108_footwear_pb_regime_study.py'
+      - 'tests/test_v8108_footwear_pb_regime_study.py'
+      - '.github/workflows/v8108-footwear-pb-regime.yml'
+permissions:
+  contents: write
+concurrency:
+  group: v8108-footwear-pb-regime-20261024
+  cancel-in-progress: true
+jobs:
+  audit-9050-official-days:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Test official source full 9050 daily PB and no-actual-return guards
+        run: python -m unittest -v tests.test_v8108_footwear_pb_regime_study
+      - name: Calculate below-NAV spells, recent medians and 252d PB multiple reversals
+        run: python -m scripts.v8108_footwear_pb_regime_study
+      - name: Commit historical PB-only study in PR branch
+        if: success()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add tw-market-data/research/footwear_pb_2016_2026/footwear_pb_regime_and_reversion_shadow.json
+          if ! git diff --cached --quiet; then
+            git commit -m "data: 10year PB below-book spells and 252d prior-window PB reversion"
+            for attempt in 1 2 3; do
+              git fetch origin research/footwear-pb-2016-2026-20261024
+              git rebase origin/research/footwear-pb-2016-2026-20261024 || {
+                git rebase --abort || true
+                exit 1
+              }
+              if git push origin HEAD:research/footwear-pb-2016-2026-20261024; then
+                exit 0
+              fi
+              sleep 2
+            done
+            exit 1
+          fi
