@@ -1,0 +1,32 @@
+{
+  "record_sha256": "1664c700dda3e6e5a9c128f7f86725709e8c7348512d8a956f5461bd6fd283c6",
+  "registered_at": "2026-11-06T14:03:56.879991+00:00",
+  "registration_id": "76d35f8cbc54fe00a66370849c4461d0de4a47b0a3a7d2fd4b3aaaade01bcf9d",
+  "spec": {
+    "costs": {
+      "buy_fee_rate": 0.001425,
+      "buy_slippage_rate": 0.001,
+      "half_spread_rate": 0.0005,
+      "minimum_fee_ntd": 20,
+      "sell_fee_rate": 0.001425,
+      "sell_slippage_rate": 0.001,
+      "sell_tax_rate": 0.003
+    },
+    "method_sha256": "7c04d1b8dc678dfae702258b9b59197a87ab49d08e815a81cdb5317b17633064",
+    "notional_ntd": 1000000.0,
+    "policy": {
+      "automatic_deployment": false,
+      "bootstrap_draws": 2000,
+      "embargo_days": 5,
+      "maximum_reliability_gap": 0.1,
+      "minimum_issuers": 20,
+      "minimum_market_regimes": 2,
+      "minimum_oos_cohorts": 12,
+      "minimum_oos_rows": 100,
+      "minimum_train_cohorts": 12,
+      "minimum_train_rows": 100,
+      "schema": "EMPIRICAL_TERMINAL_WEALTH_V1"
+    },
+    "return_definition": "HYPOTHETICAL_REFERENCE_CLOSE_TO_TARGET_NET_TOTAL_RETURN"
+  }
+}

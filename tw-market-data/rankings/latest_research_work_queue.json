@@ -1,9 +1,9 @@
 {
   "schema": "RESEARCH_EVIDENCE_WORK_QUEUE_V1",
   "model": "V8.10.8",
-  "estimate_vintage": "2026-11-06T21:48:31.291219+08:00",
+  "estimate_vintage": "2026-11-06T22:03:22.932437+08:00",
   "asof_price_date": "2026-11-06",
-  "source_model_sha256": "e50c6f21ce138b0dbb9abe7c76820306c684d4c7a91bdf6862eaa10a822b5dfd",
+  "source_model_sha256": "8b01a6acca19f5cdd065ce6305389837e422bab78b9d99428f4883bf9343c249",
   "issuer_job_count": 205,
   "unresolved_gate_count": 2665,
   "scope": "ISSUERS_INCLUDED_IN_CURRENT_GATE_DIAGNOSTICS_NOT_ALL_TRACKED_COMPANIES",
@@ -3796,11 +3796,11 @@
         {
           "gate": "tradability",
           "decision": "PENDING",
-          "stage": "SOURCE_MISSING",
-          "next_action": "CAPTURE_AND_VERIFY_ORIGINAL_SOURCE",
+          "stage": "SOURCE_CAPTURED",
+          "next_action": "REVIEW_ARCHIVED_SOURCE_AND_COMPLETE_SIGNOFF",
           "scope": "EXECUTION",
           "required_evidence": "多日成交、價差、參與率與清倉能力",
-          "reason": "20 daily market sessions unavailable for this issuer",
+          "reason": "20 daily turnovers archived; bid/ask spread and actual executable exit not verified",
           "model_reason": "BELOW_12M_DAILY_TURNOVER_REQUIRES_MULTI_SESSION_SPREAD_AND_EXIT_CAPACITY_REVIEW",
           "invalidates_on": "股價／成交條件改變"
         },
@@ -9844,11 +9844,11 @@
         {
           "gate": "tradability",
           "decision": "PENDING",
-          "stage": "SOURCE_MISSING",
-          "next_action": "CAPTURE_AND_VERIFY_ORIGINAL_SOURCE",
+          "stage": "SOURCE_CAPTURED",
+          "next_action": "REVIEW_ARCHIVED_SOURCE_AND_COMPLETE_SIGNOFF",
           "scope": "EXECUTION",
           "required_evidence": "多日成交、價差、參與率與清倉能力",
-          "reason": "20 daily market sessions unavailable for this issuer",
+          "reason": "20 daily turnovers archived; bid/ask spread and actual executable exit not verified",
           "model_reason": "SINGLE_DAY_QUOTE_IS_NOT_CONTINUOUS_TRADABILITY_CERTIFICATION",
           "invalidates_on": "股價／成交條件改變"
         },
@@ -14716,11 +14716,11 @@
         {
           "gate": "tradability",
           "decision": "PENDING",
-          "stage": "SOURCE_MISSING",
-          "next_action": "CAPTURE_AND_VERIFY_ORIGINAL_SOURCE",
+          "stage": "SOURCE_CAPTURED",
+          "next_action": "REVIEW_ARCHIVED_SOURCE_AND_COMPLETE_SIGNOFF",
           "scope": "EXECUTION",
           "required_evidence": "多日成交、價差、參與率與清倉能力",
-          "reason": "20 daily market sessions unavailable for this issuer",
+          "reason": "20 daily turnovers archived; bid/ask spread and actual executable exit not verified",
           "model_reason": "SINGLE_DAY_QUOTE_IS_NOT_CONTINUOUS_TRADABILITY_CERTIFICATION",
           "invalidates_on": "股價／成交條件改變"
         },
@@ -14884,11 +14884,11 @@
         {
           "gate": "tradability",
           "decision": "PENDING",
-          "stage": "SOURCE_MISSING",
-          "next_action": "CAPTURE_AND_VERIFY_ORIGINAL_SOURCE",
+          "stage": "SOURCE_CAPTURED",
+          "next_action": "REVIEW_ARCHIVED_SOURCE_AND_COMPLETE_SIGNOFF",
           "scope": "EXECUTION",
           "required_evidence": "多日成交、價差、參與率與清倉能力",
-          "reason": "20 daily market sessions unavailable for this issuer",
+          "reason": "20 daily turnovers archived; bid/ask spread and actual executable exit not verified",
           "model_reason": "SINGLE_DAY_QUOTE_IS_NOT_CONTINUOUS_TRADABILITY_CERTIFICATION",
           "invalidates_on": "股價／成交條件改變"
         },
@@ -15724,11 +15724,11 @@
         {
           "gate": "tradability",
           "decision": "PENDING",
-          "stage": "SOURCE_MISSING",
-          "next_action": "CAPTURE_AND_VERIFY_ORIGINAL_SOURCE",
+          "stage": "SOURCE_CAPTURED",
+          "next_action": "REVIEW_ARCHIVED_SOURCE_AND_COMPLETE_SIGNOFF",
           "scope": "EXECUTION",
           "required_evidence": "多日成交、價差、參與率與清倉能力",
-          "reason": "20 daily market sessions unavailable for this issuer",
+          "reason": "20 daily turnovers archived; bid/ask spread and actual executable exit not verified",
           "model_reason": "BELOW_12M_DAILY_TURNOVER_REQUIRES_MULTI_SESSION_SPREAD_AND_EXIT_CAPACITY_REVIEW",
           "invalidates_on": "股價／成交條件改變"
         },
@@ -16060,11 +16060,11 @@
         {
           "gate": "tradability",
           "decision": "PENDING",
-          "stage": "SOURCE_MISSING",
-          "next_action": "CAPTURE_AND_VERIFY_ORIGINAL_SOURCE",
+          "stage": "SOURCE_CAPTURED",
+          "next_action": "REVIEW_ARCHIVED_SOURCE_AND_COMPLETE_SIGNOFF",
           "scope": "EXECUTION",
           "required_evidence": "多日成交、價差、參與率與清倉能力",
-          "reason": "20 daily market sessions unavailable for this issuer",
+          "reason": "20 daily turnovers archived; bid/ask spread and actual executable exit not verified",
           "model_reason": "SINGLE_DAY_QUOTE_IS_NOT_CONTINUOUS_TRADABILITY_CERTIFICATION",
           "invalidates_on": "股價／成交條件改變"
         },
@@ -16564,11 +16564,11 @@
         {
           "gate": "tradability",
           "decision": "PENDING",
-          "stage": "SOURCE_MISSING",
-          "next_action": "CAPTURE_AND_VERIFY_ORIGINAL_SOURCE",
+          "stage": "SOURCE_CAPTURED",
+          "next_action": "REVIEW_ARCHIVED_SOURCE_AND_COMPLETE_SIGNOFF",
           "scope": "EXECUTION",
           "required_evidence": "多日成交、價差、參與率與清倉能力",
-          "reason": "20 daily market sessions unavailable for this issuer",
+          "reason": "20 daily turnovers archived; bid/ask spread and actual executable exit not verified",
           "model_reason": "SINGLE_DAY_QUOTE_IS_NOT_CONTINUOUS_TRADABILITY_CERTIFICATION",
           "invalidates_on": "股價／成交條件改變"
         },
@@ -16900,11 +16900,11 @@
         {
           "gate": "tradability",
           "decision": "PENDING",
-          "stage": "SOURCE_MISSING",
-          "next_action": "CAPTURE_AND_VERIFY_ORIGINAL_SOURCE",
+          "stage": "SOURCE_CAPTURED",
+          "next_action": "REVIEW_ARCHIVED_SOURCE_AND_COMPLETE_SIGNOFF",
           "scope": "EXECUTION",
           "required_evidence": "多日成交、價差、參與率與清倉能力",
-          "reason": "20 daily market sessions unavailable for this issuer",
+          "reason": "20 daily turnovers archived; bid/ask spread and actual executable exit not verified",
           "model_reason": "SINGLE_DAY_QUOTE_IS_NOT_CONTINUOUS_TRADABILITY_CERTIFICATION",
           "invalidates_on": "股價／成交條件改變"
         },
@@ -18244,11 +18244,11 @@
         {
           "gate": "tradability",
           "decision": "PENDING",
-          "stage": "SOURCE_MISSING",
-          "next_action": "CAPTURE_AND_VERIFY_ORIGINAL_SOURCE",
+          "stage": "SOURCE_CAPTURED",
+          "next_action": "REVIEW_ARCHIVED_SOURCE_AND_COMPLETE_SIGNOFF",
           "scope": "EXECUTION",
           "required_evidence": "多日成交、價差、參與率與清倉能力",
-          "reason": "20 daily market sessions unavailable for this issuer",
+          "reason": "20 daily turnovers archived; bid/ask spread and actual executable exit not verified",
           "model_reason": "BELOW_12M_DAILY_TURNOVER_REQUIRES_MULTI_SESSION_SPREAD_AND_EXIT_CAPACITY_REVIEW",
           "invalidates_on": "股價／成交條件改變"
         },
@@ -18580,11 +18580,11 @@
         {
           "gate": "tradability",
           "decision": "PENDING",
-          "stage": "SOURCE_MISSING",
-          "next_action": "CAPTURE_AND_VERIFY_ORIGINAL_SOURCE",
+          "stage": "SOURCE_CAPTURED",
+          "next_action": "REVIEW_ARCHIVED_SOURCE_AND_COMPLETE_SIGNOFF",
           "scope": "EXECUTION",
           "required_evidence": "多日成交、價差、參與率與清倉能力",
-          "reason": "20 daily market sessions unavailable for this issuer",
+          "reason": "20 daily turnovers archived; bid/ask spread and actual executable exit not verified",
           "model_reason": "SINGLE_DAY_QUOTE_IS_NOT_CONTINUOUS_TRADABILITY_CERTIFICATION",
           "invalidates_on": "股價／成交條件改變"
         },
@@ -20092,11 +20092,11 @@
         {
           "gate": "tradability",
           "decision": "PENDING",
-          "stage": "SOURCE_MISSING",
-          "next_action": "CAPTURE_AND_VERIFY_ORIGINAL_SOURCE",
+          "stage": "SOURCE_CAPTURED",
+          "next_action": "REVIEW_ARCHIVED_SOURCE_AND_COMPLETE_SIGNOFF",
           "scope": "EXECUTION",
           "required_evidence": "多日成交、價差、參與率與清倉能力",
-          "reason": "20 daily market sessions unavailable for this issuer",
+          "reason": "20 daily turnovers archived; bid/ask spread and actual executable exit not verified",
           "model_reason": "SINGLE_DAY_QUOTE_IS_NOT_CONTINUOUS_TRADABILITY_CERTIFICATION",
           "invalidates_on": "股價／成交條件改變"
         },
@@ -20428,11 +20428,11 @@
         {
           "gate": "tradability",
           "decision": "PENDING",
-          "stage": "SOURCE_MISSING",
-          "next_action": "CAPTURE_AND_VERIFY_ORIGINAL_SOURCE",
+          "stage": "SOURCE_CAPTURED",
+          "next_action": "REVIEW_ARCHIVED_SOURCE_AND_COMPLETE_SIGNOFF",
           "scope": "EXECUTION",
           "required_evidence": "多日成交、價差、參與率與清倉能力",
-          "reason": "20 daily market sessions unavailable for this issuer",
+          "reason": "20 daily turnovers archived; bid/ask spread and actual executable exit not verified",
           "model_reason": "SINGLE_DAY_QUOTE_IS_NOT_CONTINUOUS_TRADABILITY_CERTIFICATION",
           "invalidates_on": "股價／成交條件改變"
         },
@@ -20596,11 +20596,11 @@
         {
           "gate": "tradability",
           "decision": "PENDING",
-          "stage": "SOURCE_MISSING",
-          "next_action": "CAPTURE_AND_VERIFY_ORIGINAL_SOURCE",
+          "stage": "SOURCE_CAPTURED",
+          "next_action": "REVIEW_ARCHIVED_SOURCE_AND_COMPLETE_SIGNOFF",
           "scope": "EXECUTION",
           "required_evidence": "多日成交、價差、參與率與清倉能力",
-          "reason": "20 daily market sessions unavailable for this issuer",
+          "reason": "20 daily turnovers archived; bid/ask spread and actual executable exit not verified",
           "model_reason": "SINGLE_DAY_QUOTE_IS_NOT_CONTINUOUS_TRADABILITY_CERTIFICATION",
           "invalidates_on": "股價／成交條件改變"
         },
@@ -20764,11 +20764,11 @@
         {
           "gate": "tradability",
           "decision": "PENDING",
-          "stage": "SOURCE_MISSING",
-          "next_action": "CAPTURE_AND_VERIFY_ORIGINAL_SOURCE",
+          "stage": "SOURCE_CAPTURED",
+          "next_action": "REVIEW_ARCHIVED_SOURCE_AND_COMPLETE_SIGNOFF",
           "scope": "EXECUTION",
           "required_evidence": "多日成交、價差、參與率與清倉能力",
-          "reason": "20 daily market sessions unavailable for this issuer",
+          "reason": "20 daily turnovers archived; bid/ask spread and actual executable exit not verified",
           "model_reason": "BELOW_12M_DAILY_TURNOVER_REQUIRES_MULTI_SESSION_SPREAD_AND_EXIT_CAPACITY_REVIEW",
           "invalidates_on": "股價／成交條件改變"
         },
@@ -22276,11 +22276,11 @@
         {
           "gate": "tradability",
           "decision": "PENDING",
-          "stage": "SOURCE_MISSING",
-          "next_action": "CAPTURE_AND_VERIFY_ORIGINAL_SOURCE",
+          "stage": "SOURCE_CAPTURED",
+          "next_action": "REVIEW_ARCHIVED_SOURCE_AND_COMPLETE_SIGNOFF",
           "scope": "EXECUTION",
           "required_evidence": "多日成交、價差、參與率與清倉能力",
-          "reason": "20 daily market sessions unavailable for this issuer",
+          "reason": "20 daily turnovers archived; bid/ask spread and actual executable exit not verified",
           "model_reason": "SINGLE_DAY_QUOTE_IS_NOT_CONTINUOUS_TRADABILITY_CERTIFICATION",
           "invalidates_on": "股價／成交條件改變"
         },
@@ -22780,11 +22780,11 @@
         {
           "gate": "tradability",
           "decision": "PENDING",
-          "stage": "SOURCE_MISSING",
-          "next_action": "CAPTURE_AND_VERIFY_ORIGINAL_SOURCE",
+          "stage": "SOURCE_CAPTURED",
+          "next_action": "REVIEW_ARCHIVED_SOURCE_AND_COMPLETE_SIGNOFF",
           "scope": "EXECUTION",
           "required_evidence": "多日成交、價差、參與率與清倉能力",
-          "reason": "20 daily market sessions unavailable for this issuer",
+          "reason": "20 daily turnovers archived; bid/ask spread and actual executable exit not verified",
           "model_reason": "BELOW_12M_DAILY_TURNOVER_REQUIRES_MULTI_SESSION_SPREAD_AND_EXIT_CAPACITY_REVIEW",
           "invalidates_on": "股價／成交條件改變"
         },
@@ -23116,11 +23116,11 @@
         {
           "gate": "tradability",
           "decision": "PENDING",
-          "stage": "SOURCE_MISSING",
-          "next_action": "CAPTURE_AND_VERIFY_ORIGINAL_SOURCE",
+          "stage": "SOURCE_CAPTURED",
+          "next_action": "REVIEW_ARCHIVED_SOURCE_AND_COMPLETE_SIGNOFF",
           "scope": "EXECUTION",
           "required_evidence": "多日成交、價差、參與率與清倉能力",
-          "reason": "20 daily market sessions unavailable for this issuer",
+          "reason": "20 daily turnovers archived; bid/ask spread and actual executable exit not verified",
           "model_reason": "SINGLE_DAY_QUOTE_IS_NOT_CONTINUOUS_TRADABILITY_CERTIFICATION",
           "invalidates_on": "股價／成交條件改變"
         },
@@ -23620,11 +23620,11 @@
         {
           "gate": "tradability",
           "decision": "PENDING",
-          "stage": "SOURCE_MISSING",
-          "next_action": "CAPTURE_AND_VERIFY_ORIGINAL_SOURCE",
+          "stage": "SOURCE_CAPTURED",
+          "next_action": "REVIEW_ARCHIVED_SOURCE_AND_COMPLETE_SIGNOFF",
           "scope": "EXECUTION",
           "required_evidence": "多日成交、價差、參與率與清倉能力",
-          "reason": "20 daily market sessions unavailable for this issuer",
+          "reason": "20 daily turnovers archived; bid/ask spread and actual executable exit not verified",
           "model_reason": "SINGLE_DAY_QUOTE_IS_NOT_CONTINUOUS_TRADABILITY_CERTIFICATION",
           "invalidates_on": "股價／成交條件改變"
         },
@@ -27148,11 +27148,11 @@
         {
           "gate": "tradability",
           "decision": "PENDING",
-          "stage": "SOURCE_MISSING",
-          "next_action": "CAPTURE_AND_VERIFY_ORIGINAL_SOURCE",
+          "stage": "SOURCE_CAPTURED",
+          "next_action": "REVIEW_ARCHIVED_SOURCE_AND_COMPLETE_SIGNOFF",
           "scope": "EXECUTION",
           "required_evidence": "多日成交、價差、參與率與清倉能力",
-          "reason": "20 daily market sessions unavailable for this issuer",
+          "reason": "20 daily turnovers archived; bid/ask spread and actual executable exit not verified",
           "model_reason": "SINGLE_DAY_QUOTE_IS_NOT_CONTINUOUS_TRADABILITY_CERTIFICATION",
           "invalidates_on": "股價／成交條件改變"
         },
@@ -27316,11 +27316,11 @@
         {
           "gate": "tradability",
           "decision": "PENDING",
-          "stage": "SOURCE_MISSING",
-          "next_action": "CAPTURE_AND_VERIFY_ORIGINAL_SOURCE",
+          "stage": "SOURCE_CAPTURED",
+          "next_action": "REVIEW_ARCHIVED_SOURCE_AND_COMPLETE_SIGNOFF",
           "scope": "EXECUTION",
           "required_evidence": "多日成交、價差、參與率與清倉能力",
-          "reason": "20 daily market sessions unavailable for this issuer",
+          "reason": "20 daily turnovers archived; bid/ask spread and actual executable exit not verified",
           "model_reason": "SINGLE_DAY_QUOTE_IS_NOT_CONTINUOUS_TRADABILITY_CERTIFICATION",
           "invalidates_on": "股價／成交條件改變"
         },
@@ -27484,11 +27484,11 @@
         {
           "gate": "tradability",
           "decision": "PENDING",
-          "stage": "SOURCE_MISSING",
-          "next_action": "CAPTURE_AND_VERIFY_ORIGINAL_SOURCE",
+          "stage": "SOURCE_CAPTURED",
+          "next_action": "REVIEW_ARCHIVED_SOURCE_AND_COMPLETE_SIGNOFF",
           "scope": "EXECUTION",
           "required_evidence": "多日成交、價差、參與率與清倉能力",
-          "reason": "20 daily market sessions unavailable for this issuer",
+          "reason": "20 daily turnovers archived; bid/ask spread and actual executable exit not verified",
           "model_reason": "BELOW_12M_DAILY_TURNOVER_REQUIRES_MULTI_SESSION_SPREAD_AND_EXIT_CAPACITY_REVIEW",
           "invalidates_on": "股價／成交條件改變"
         },
@@ -28996,11 +28996,11 @@
         {
           "gate": "tradability",
           "decision": "PENDING",
-          "stage": "SOURCE_MISSING",
-          "next_action": "CAPTURE_AND_VERIFY_ORIGINAL_SOURCE",
+          "stage": "SOURCE_CAPTURED",
+          "next_action": "REVIEW_ARCHIVED_SOURCE_AND_COMPLETE_SIGNOFF",
           "scope": "EXECUTION",
           "required_evidence": "多日成交、價差、參與率與清倉能力",
-          "reason": "20 daily market sessions unavailable for this issuer",
+          "reason": "20 daily turnovers archived; bid/ask spread and actual executable exit not verified",
           "model_reason": "BELOW_12M_DAILY_TURNOVER_REQUIRES_MULTI_SESSION_SPREAD_AND_EXIT_CAPACITY_REVIEW",
           "invalidates_on": "股價／成交條件改變"
         },
@@ -29164,11 +29164,11 @@
         {
           "gate": "tradability",
           "decision": "PENDING",
-          "stage": "SOURCE_MISSING",
-          "next_action": "CAPTURE_AND_VERIFY_ORIGINAL_SOURCE",
+          "stage": "SOURCE_CAPTURED",
+          "next_action": "REVIEW_ARCHIVED_SOURCE_AND_COMPLETE_SIGNOFF",
           "scope": "EXECUTION",
           "required_evidence": "多日成交、價差、參與率與清倉能力",
-          "reason": "20 daily market sessions unavailable for this issuer",
+          "reason": "20 daily turnovers archived; bid/ask spread and actual executable exit not verified",
           "model_reason": "BELOW_12M_DAILY_TURNOVER_REQUIRES_MULTI_SESSION_SPREAD_AND_EXIT_CAPACITY_REVIEW",
           "invalidates_on": "股價／成交條件改變"
         },
@@ -29500,11 +29500,11 @@
         {
           "gate": "tradability",
           "decision": "PENDING",
-          "stage": "SOURCE_MISSING",
-          "next_action": "CAPTURE_AND_VERIFY_ORIGINAL_SOURCE",
+          "stage": "SOURCE_CAPTURED",
+          "next_action": "REVIEW_ARCHIVED_SOURCE_AND_COMPLETE_SIGNOFF",
           "scope": "EXECUTION",
           "required_evidence": "多日成交、價差、參與率與清倉能力",
-          "reason": "20 daily market sessions unavailable for this issuer",
+          "reason": "20 daily turnovers archived; bid/ask spread and actual executable exit not verified",
           "model_reason": "SINGLE_DAY_QUOTE_IS_NOT_CONTINUOUS_TRADABILITY_CERTIFICATION",
           "invalidates_on": "股價／成交條件改變"
         },
@@ -29668,11 +29668,11 @@
         {
           "gate": "tradability",
           "decision": "PENDING",
-          "stage": "SOURCE_MISSING",
-          "next_action": "CAPTURE_AND_VERIFY_ORIGINAL_SOURCE",
+          "stage": "SOURCE_CAPTURED",
+          "next_action": "REVIEW_ARCHIVED_SOURCE_AND_COMPLETE_SIGNOFF",
           "scope": "EXECUTION",
           "required_evidence": "多日成交、價差、參與率與清倉能力",
-          "reason": "20 daily market sessions unavailable for this issuer",
+          "reason": "20 daily turnovers archived; bid/ask spread and actual executable exit not verified",
           "model_reason": "BELOW_12M_DAILY_TURNOVER_REQUIRES_MULTI_SESSION_SPREAD_AND_EXIT_CAPACITY_REVIEW",
           "invalidates_on": "股價／成交條件改變"
         },
@@ -30004,11 +30004,11 @@
         {
           "gate": "tradability",
           "decision": "PENDING",
-          "stage": "SOURCE_MISSING",
-          "next_action": "CAPTURE_AND_VERIFY_ORIGINAL_SOURCE",
+          "stage": "SOURCE_CAPTURED",
+          "next_action": "REVIEW_ARCHIVED_SOURCE_AND_COMPLETE_SIGNOFF",
           "scope": "EXECUTION",
           "required_evidence": "多日成交、價差、參與率與清倉能力",
-          "reason": "20 daily market sessions unavailable for this issuer",
+          "reason": "20 daily turnovers archived; bid/ask spread and actual executable exit not verified",
           "model_reason": "BELOW_12M_DAILY_TURNOVER_REQUIRES_MULTI_SESSION_SPREAD_AND_EXIT_CAPACITY_REVIEW",
           "invalidates_on": "股價／成交條件改變"
         },
@@ -30172,11 +30172,11 @@
         {
           "gate": "tradability",
           "decision": "PENDING",
-          "stage": "SOURCE_MISSING",
-          "next_action": "CAPTURE_AND_VERIFY_ORIGINAL_SOURCE",
+          "stage": "SOURCE_CAPTURED",
+          "next_action": "REVIEW_ARCHIVED_SOURCE_AND_COMPLETE_SIGNOFF",
           "scope": "EXECUTION",
           "required_evidence": "多日成交、價差、參與率與清倉能力",
-          "reason": "20 daily market sessions unavailable for this issuer",
+          "reason": "20 daily turnovers archived; bid/ask spread and actual executable exit not verified",
           "model_reason": "BELOW_12M_DAILY_TURNOVER_REQUIRES_MULTI_SESSION_SPREAD_AND_EXIT_CAPACITY_REVIEW",
           "invalidates_on": "股價／成交條件改變"
         },
@@ -30340,11 +30340,11 @@
         {
           "gate": "tradability",
           "decision": "PENDING",
-          "stage": "SOURCE_MISSING",
-          "next_action": "CAPTURE_AND_VERIFY_ORIGINAL_SOURCE",
+          "stage": "SOURCE_CAPTURED",
+          "next_action": "REVIEW_ARCHIVED_SOURCE_AND_COMPLETE_SIGNOFF",
           "scope": "EXECUTION",
           "required_evidence": "多日成交、價差、參與率與清倉能力",
-          "reason": "20 daily market sessions unavailable for this issuer",
+          "reason": "20 daily turnovers archived; bid/ask spread and actual executable exit not verified",
           "model_reason": "SINGLE_DAY_QUOTE_IS_NOT_CONTINUOUS_TRADABILITY_CERTIFICATION",
           "invalidates_on": "股價／成交條件改變"
         },
@@ -30508,11 +30508,11 @@
         {
           "gate": "tradability",
           "decision": "PENDING",
-          "stage": "SOURCE_MISSING",
-          "next_action": "CAPTURE_AND_VERIFY_ORIGINAL_SOURCE",
+          "stage": "SOURCE_CAPTURED",
+          "next_action": "REVIEW_ARCHIVED_SOURCE_AND_COMPLETE_SIGNOFF",
           "scope": "EXECUTION",
           "required_evidence": "多日成交、價差、參與率與清倉能力",
-          "reason": "20 daily market sessions unavailable for this issuer",
+          "reason": "20 daily turnovers archived; bid/ask spread and actual executable exit not verified",
           "model_reason": "SINGLE_DAY_QUOTE_IS_NOT_CONTINUOUS_TRADABILITY_CERTIFICATION",
           "invalidates_on": "股價／成交條件改變"
         },
@@ -31348,11 +31348,11 @@
         {
           "gate": "tradability",
           "decision": "PENDING",
-          "stage": "SOURCE_MISSING",
-          "next_action": "CAPTURE_AND_VERIFY_ORIGINAL_SOURCE",
+          "stage": "SOURCE_CAPTURED",
+          "next_action": "REVIEW_ARCHIVED_SOURCE_AND_COMPLETE_SIGNOFF",
           "scope": "EXECUTION",
           "required_evidence": "多日成交、價差、參與率與清倉能力",
-          "reason": "20 daily market sessions unavailable for this issuer",
+          "reason": "20 daily turnovers archived; bid/ask spread and actual executable exit not verified",
           "model_reason": "BELOW_12M_DAILY_TURNOVER_REQUIRES_MULTI_SESSION_SPREAD_AND_EXIT_CAPACITY_REVIEW",
           "invalidates_on": "股價／成交條件改變"
         },
@@ -32020,11 +32020,11 @@
         {
           "gate": "tradability",
           "decision": "PENDING",
-          "stage": "SOURCE_MISSING",
-          "next_action": "CAPTURE_AND_VERIFY_ORIGINAL_SOURCE",
+          "stage": "SOURCE_CAPTURED",
+          "next_action": "REVIEW_ARCHIVED_SOURCE_AND_COMPLETE_SIGNOFF",
           "scope": "EXECUTION",
           "required_evidence": "多日成交、價差、參與率與清倉能力",
-          "reason": "20 daily market sessions unavailable for this issuer",
+          "reason": "20 daily turnovers archived; bid/ask spread and actual executable exit not verified",
           "model_reason": "BELOW_12M_DAILY_TURNOVER_REQUIRES_MULTI_SESSION_SPREAD_AND_EXIT_CAPACITY_REVIEW",
           "invalidates_on": "股價／成交條件改變"
         },
@@ -32188,11 +32188,11 @@
         {
           "gate": "tradability",
           "decision": "PENDING",
-          "stage": "SOURCE_MISSING",
-          "next_action": "CAPTURE_AND_VERIFY_ORIGINAL_SOURCE",
+          "stage": "SOURCE_CAPTURED",
+          "next_action": "REVIEW_ARCHIVED_SOURCE_AND_COMPLETE_SIGNOFF",
           "scope": "EXECUTION",
           "required_evidence": "多日成交、價差、參與率與清倉能力",
-          "reason": "20 daily market sessions unavailable for this issuer",
+          "reason": "20 daily turnovers archived; bid/ask spread and actual executable exit not verified",
           "model_reason": "BELOW_12M_DAILY_TURNOVER_REQUIRES_MULTI_SESSION_SPREAD_AND_EXIT_CAPACITY_REVIEW",
           "invalidates_on": "股價／成交條件改變"
         },
@@ -32356,11 +32356,11 @@
         {
           "gate": "tradability",
           "decision": "PENDING",
-          "stage": "SOURCE_MISSING",
-          "next_action": "CAPTURE_AND_VERIFY_ORIGINAL_SOURCE",
+          "stage": "SOURCE_CAPTURED",
+          "next_action": "REVIEW_ARCHIVED_SOURCE_AND_COMPLETE_SIGNOFF",
           "scope": "EXECUTION",
           "required_evidence": "多日成交、價差、參與率與清倉能力",
-          "reason": "20 daily market sessions unavailable for this issuer",
+          "reason": "20 daily turnovers archived; bid/ask spread and actual executable exit not verified",
           "model_reason": "SINGLE_DAY_QUOTE_IS_NOT_CONTINUOUS_TRADABILITY_CERTIFICATION",
           "invalidates_on": "股價／成交條件改變"
         },
@@ -33364,11 +33364,11 @@
         {
           "gate": "tradability",
           "decision": "PENDING",
-          "stage": "SOURCE_MISSING",
-          "next_action": "CAPTURE_AND_VERIFY_ORIGINAL_SOURCE",
+          "stage": "SOURCE_CAPTURED",
+          "next_action": "REVIEW_ARCHIVED_SOURCE_AND_COMPLETE_SIGNOFF",
           "scope": "EXECUTION",
           "required_evidence": "多日成交、價差、參與率與清倉能力",
-          "reason": "20 daily market sessions unavailable for this issuer",
+          "reason": "20 daily turnovers archived; bid/ask spread and actual executable exit not verified",
           "model_reason": "SINGLE_DAY_QUOTE_IS_NOT_CONTINUOUS_TRADABILITY_CERTIFICATION",
           "invalidates_on": "股價／成交條件改變"
         },
@@ -33532,11 +33532,11 @@
         {
           "gate": "tradability",
           "decision": "PENDING",
-          "stage": "SOURCE_MISSING",
-          "next_action": "CAPTURE_AND_VERIFY_ORIGINAL_SOURCE",
+          "stage": "SOURCE_CAPTURED",
+          "next_action": "REVIEW_ARCHIVED_SOURCE_AND_COMPLETE_SIGNOFF",
           "scope": "EXECUTION",
           "required_evidence": "多日成交、價差、參與率與清倉能力",
-          "reason": "20 daily market sessions unavailable for this issuer",
+          "reason": "20 daily turnovers archived; bid/ask spread and actual executable exit not verified",
           "model_reason": "SINGLE_DAY_QUOTE_IS_NOT_CONTINUOUS_TRADABILITY_CERTIFICATION",
           "invalidates_on": "股價／成交條件改變"
         },
@@ -34372,11 +34372,11 @@
         {
           "gate": "tradability",
           "decision": "PENDING",
-          "stage": "SOURCE_MISSING",
-          "next_action": "CAPTURE_AND_VERIFY_ORIGINAL_SOURCE",
+          "stage": "SOURCE_CAPTURED",
+          "next_action": "REVIEW_ARCHIVED_SOURCE_AND_COMPLETE_SIGNOFF",
           "scope": "EXECUTION",
           "required_evidence": "多日成交、價差、參與率與清倉能力",
-          "reason": "20 daily market sessions unavailable for this issuer",
+          "reason": "20 daily turnovers archived; bid/ask spread and actual executable exit not verified",
           "model_reason": "SINGLE_DAY_QUOTE_IS_NOT_CONTINUOUS_TRADABILITY_CERTIFICATION",
           "invalidates_on": "股價／成交條件改變"
         },
@@ -34522,7 +34522,7 @@
   ],
   "shared_strategy_collection_task": {
     "gate": "out_of_sample_validation",
-    "strategy_variant_sha256": "d580fdd422babd9c76a0954e904290861fb1a4489ec84ecc21db43b24ed3ac05",
+    "strategy_variant_sha256": "08ef8ad3b84ddabc7ec4a03f41612f706297548c2823b5bd1ddd7f434753fec2",
     "target_date": "2027-12-31",
     "affected_issuers": [
       {
@@ -35557,5 +35557,5 @@
   },
   "formal_gate_decisions_changed": 0,
   "certificates_issued": 0,
-  "source_progress_sha256": "6b442ec16029454b067d810494308ec73c3f825ed0e31e05131639cc3e1c394c"
+  "source_progress_sha256": "464f064cccfe21c57e5b8518bb83d9f52738ff1600078eeebe93030768dad413"
 }
