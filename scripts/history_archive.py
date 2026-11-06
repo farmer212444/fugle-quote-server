@@ -36,6 +36,8 @@ def outstanding_benchmark_codes(root,market):
     for _,cohort in frozen_search_cohorts(root):
         for selection in cohort['selections'].values():
             if selection['parameter_inputs_ready']:rows.extend(selection['positions'])
+    from tw_model_v880.expected_returns import frozen_cohorts
+    for cohort in frozen_cohorts(root):rows.extend(cohort['forecasts'])
     for row in rows:
         if row.get('market')!=market:continue
         code=row.get('code')
