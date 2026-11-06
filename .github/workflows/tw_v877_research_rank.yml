@@ -246,6 +246,7 @@ jobs:
           python -m unittest -v tests.test_expected_returns tests.test_expected_return_readiness
           python -m unittest -v tests.test_historical_pit_admission tests.test_historical_pit_readiness
           python -m unittest -v tests.test_v8a8_forward_top30_0050
+          python -m unittest -v tests.test_buffett_owner_economics
           python -m unittest discover -s tests -p test_v891_6206_gate_triage.py
           python -m unittest discover -s tests -p test_v892_top20_quality_audit.py
           python -m unittest discover -s tests -p test_v894_revenue_lead_discovery.py
