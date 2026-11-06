@@ -18,6 +18,7 @@ from scripts.tw_history_backfill import parse as parse_twse
 from scripts.v893_tpex_daily_backfill import parse_daily as parse_tpex
 from tw_model_v880.execution import COST_FIELDS
 from tw_model_v880.portfolio import finite
+from tw_model_v880.historical_pit import admitted_batches
 
 
 def explicit_cost_policy(policy):
@@ -101,6 +102,9 @@ def build(root,start_date='2025-01-01'):
                 reason='NORMALIZED_MIRROR_IS_NOT_ORIGINAL_FILING_VERSION_OR_PUBLICATION_PROOF'))
         except (ValueError,KeyError,TypeError,OSError) as exc:
             errors.append(dict(path=path.relative_to(root).as_posix(),reason=str(exc)))
+    observed=dt.datetime.now(dt.timezone.utc).isoformat()
+    admission=admitted_batches(root,observed)
+    errors.extend(admission['rejected'])
     config=json.loads((root/'config/institutional_research.json').read_text())
     policy=config.get('cost_policy')
     blockers=['ISSUER_ORIGINAL_PUBLICATION_AND_REVISION_VERSIONS_REQUIRED',
@@ -113,11 +117,12 @@ def build(root,start_date='2025-01-01'):
     policy_ready=explicit_cost_policy(policy)
     if not policy_ready:blockers.append('PROSPECTIVE_COST_POLICY_NOT_FIXED')
     return dict(schema='HISTORICAL_PIT_SOURCE_READINESS_V1',
-        observed_at=dt.datetime.now(dt.timezone.utc).isoformat(),
+        observed_at=observed,
         historical_start=start_date,historical_end=end,
         verified_durable_original_receipts=len(sources),issuer_price_coverage=list(issuer_rows.values()),
         source_backed_price_sessions_by_market=dict(sessions),financial_mirrors=financial,
-        admitted_historical_financial_pit_batches=0,source_rejections=errors,
+        admitted_historical_financial_pit_batches=len(admission['admitted']),
+        historical_financial_pit_admissions=admission['admitted'],source_rejections=errors,
         retrospective_replay_status='BLOCKED_MISSING_ORIGINAL_PIT_INPUTS',blockers=blockers,
         prospective_cost_policy_fixed=policy_ready,
         historical_reconstruction_is_not_a_prospective_frozen_model=True,
@@ -131,7 +136,7 @@ def render(report):
         f"已重新核對永久行情原件 {report['verified_durable_original_receipts']} 份；"
         f"有原件可重算行情的公司 {len(report['issuer_price_coverage'])} 家。",'',
         '歷史行情的實際擷取時間另行保留；它不能替代財報首次公開及修訂版本證據。',
-        '目前歷史PIT財報驗收批次0；尚無可認證的歷史樣本外投資績效。','',
+        f"歷史PIT財報驗收批次：{report['admitted_historical_financial_pit_batches']}；財報來源驗收不等於完整樣本外績效認證。",'',
         '|股票|原件支持交易日|有開盤價|起日|迄日|', '|---|---:|---:|---|---|']
     for row in report['issuer_price_coverage']:
         lines.append(f"|{row['market']} {row['code']}|{row['source_sessions']}|{row['sessions_with_observed_open']}|{row['first']}|{row['last']}|")
@@ -162,7 +167,7 @@ def main():
     print(json.dumps(dict(originals=result['verified_durable_original_receipts'],
         issuers_with_source_backed_prices=len(result['issuer_price_coverage']),
         rejected_sources=len(result['source_rejections']),
-        historical_financial_pit_admitted=0,formal_Aplus_added=0)))
+        historical_financial_pit_admitted=result['admitted_historical_financial_pit_batches'],formal_Aplus_added=0)))
 
 
 if __name__=='__main__':main()
