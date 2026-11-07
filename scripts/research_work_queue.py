@@ -10,6 +10,7 @@ ROOT=Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0,str(ROOT))
 from tw_model_v880.evidence import GATES
+from tw_model_v880.readiness_lanes import classify_issuer, summarize_lanes, render_readiness_report
 from scripts.run_research_pipeline import atomic_json
 
 FILING_GATES=frozenset(('original_eight_quarter_statements','cash_and_working_capital',
@@ -44,6 +45,7 @@ def build_queue(progress,research,sec_archive=None):
         if identity in seen:
             raise ValueError('WORK_QUEUE_DUPLICATE_ISSUER')
         seen.add(identity)
+        lanes=classify_issuer(row)
         decisions=row['gate_stage']
         if set(decisions)!=set(GATES):
             raise ValueError('WORK_QUEUE_INCOMPLETE_GATE_LEDGER')
@@ -127,15 +129,17 @@ def build_queue(progress,research,sec_archive=None):
                             and w['stage']=='SOURCE_CAPTURED'
                             and w['decision']=='PENDING'
                             and w['next_action']!='CAPTURE_MISSING_QUARTER_ORIGINALS']
-        upside=row.get('research_upside_pct')
-        price_lane=('A_PLUS_PRICE_ONLY' if type(upside) in (int,float) and upside>=30
-                    else 'A_DISCOVERY_PRICE_ONLY' if type(upside) in (int,float) and upside>=25
-                    else 'PRICE_GATE_NOT_MET')
+        upside=lanes['research_upside_pct']
+        price_lane={
+            'A_PLUS_PRICE_CANDIDATE_UNVERIFIED':'A_PLUS_PRICE_ONLY',
+            'A_DISCOVERY_PRICE_CANDIDATE_UNVERIFIED':'A_DISCOVERY_PRICE_ONLY',
+        }.get(lanes['price_lane'],'PRICE_GATE_NOT_MET')
         jobs.append(dict(market=row['market'],code=row['code'],name=row.get('name'),
                          financial_period=row['financial_period'],
                          reviewed_financial_period=row.get('reviewed_financial_period'),
                          research_upside_pct=row.get('research_upside_pct'),
                          original_quarter_coverage=original_coverage,
+                         independent_decision_lanes=lanes,
                          watchlist_focus=row['code'] in WATCHLIST,
                          passed_gate_count=len(passed),failed_gates=failed,
                          unresolved_gate_count=len(work),work=work,
@@ -208,7 +212,12 @@ def build_queue(progress,research,sec_archive=None):
             sec_6k_corroboration=sec_status,
             next_issuer_action=tsmc['next_issuer_action'],
             source_only_is_not_signed_certification=True)
+    independent_lanes=[x['independent_decision_lanes'] for x in jobs]
+    lanes_summary=summarize_lanes(independent_lanes)
+    if lanes_summary['formal_aplus_count']!=sum(bool(x['formal_Aplus']) for x in jobs):
+        raise ValueError('READINESS_FORMAL_COUNT_RECONCILIATION_FAILED')
     return dict(schema='RESEARCH_EVIDENCE_WORK_QUEUE_V1',
+                decision_lanes_summary=lanes_summary,
                 model=research['model'],estimate_vintage=research['estimate_vintage'],
                 asof_price_date=research['asof_price_date'],
                 source_model_sha256=research['model_code_sha256'],
@@ -333,6 +342,18 @@ def main():
     sec=json.loads(sec_path.read_bytes()) if sec_path.exists() else None
     report=build_queue(json.loads(raw),research,sec_archive=sec)
     report['source_progress_sha256']=hashlib.sha256(raw).hexdigest()
+    lane_payload=dict(
+        schema='APLUS_INDEPENDENT_DECISION_LANES_V1',
+        model=report['model'],estimate_vintage=report['estimate_vintage'],
+        asof_price_date=report['asof_price_date'],
+        source_progress_sha256=report['source_progress_sha256'],
+        counts=report['decision_lanes_summary'],
+        issuers=[job['independent_decision_lanes'] for job in report['issuer_jobs']],
+        all_13_formal_gate_decisions_preserved=True,
+        formal_certificates_issued_by_this_report=0)
+    atomic_json(root/'rankings/latest_aplus_decision_lanes.json',lane_payload)
+    (root/'rankings/latest_aplus_decision_lanes.md').write_text(
+        render_readiness_report(lane_payload),encoding='utf-8')
     atomic_json(root/'rankings/latest_research_work_queue.json',report)
     (root/'rankings/latest_research_work_queue.md').write_text(render(report),encoding='utf-8')
     print(json.dumps(dict(issuer_jobs=report['issuer_job_count'],unresolved_gates=report['unresolved_gate_count'],
