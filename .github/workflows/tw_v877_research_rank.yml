@@ -239,6 +239,7 @@ jobs:
       - name: Validate model controls and independent 6206 triage
         run: |
           python scripts/tw_v880_run.py --self-test
+          python -m unittest -v tests.test_aplus_work_queue_repair tests.test_research_pipeline
           python -m unittest -v tests.test_footwear_review
           python -m unittest -v tests.test_earnings_version_review
           python -m unittest -v tests.test_9802_cash_review
