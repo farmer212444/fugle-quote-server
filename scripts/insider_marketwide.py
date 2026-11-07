@@ -33,6 +33,9 @@ MARKETS = {"TWSE": "sii", "TPEX": "otc"}
 PRIORITY_REVIEW_CODES = (
     "9802", "2520", "6116", "4919", "3705",
     "6176", "2106", "6869", "9938", "3040",
+    # 3189 is a public selling lead; priority for MOPS verification ONLY.
+    # Neither the screenshot nor this queue entry proves actual market selling.
+    "3189",
     # 2026 footwear supply-chain market-buyer leads: candidates only.
     # MOPS market-trade fields, original SHA256 and holder dedup must pass
     # before ANY company is counted as a verified buyer.
