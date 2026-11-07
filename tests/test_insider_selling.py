@@ -75,11 +75,16 @@ class InsiderSellingResearchTests(unittest.TestCase):
         self.assertEqual(observations["verified_seller_count"], 1)
         self.assertEqual(observations["invalid_seller_count"], 0)
         candidate = {"code": "1234", "market": "TWSE", "base": {"eps": 4.5, "pe": 12},
-                     "formal_Aplus": False, "score": None, "warning_flags": []}
+                     "formal_Aplus": False, "score": None, "warning_flags": [],
+                     "revenue_bridge": {"trend_inputs": {"latest_month_yoy": -0.07}},
+                     "margin_bridge": {"current_ytd_gm": 0.14, "prior_ytd_gm": 0.17}}
         attach_selling_risk(candidate, observations)
         risk = candidate["insider_selling_risk"]
         self.assertEqual(risk["risk_review_priority"], "REVIEW")
-        self.assertTrue(candidate["warning_flags"])
+        self.assertIn("INSIDER_SELLING_WITH_OPERATING_WEAKNESS_RESEARCH_ONLY",
+                      candidate["warning_flags"])
+        self.assertEqual(set(risk["operating_context_flags"]),
+                         {"LATEST_MONTH_REVENUE_YOY_NEGATIVE", "YTD_GROSS_MARGIN_BELOW_PRIOR_YEAR"})
         self.assertEqual(candidate["base"], {"eps": 4.5, "pe": 12})
         self.assertIsNone(candidate["score"])
         self.assertFalse(risk["can_change_EPS_PE_Aplus_or_Exit"])
