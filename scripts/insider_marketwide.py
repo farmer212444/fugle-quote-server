@@ -441,12 +441,12 @@ def capture_details(base, months, master, limit, gap=2.0, getter=fetch, deadline
             "deferred_identity_conflicts": deferred_reviews}
 
 def build_ranking(base, months, master):
-    complete, pending, positive_observed = [], [], []
+    complete, pending, positive_observed, selling_observed = [], [], [], []
     footwear_watchlist = []
     detail_ok = 0
     for code, item in sorted(master.items()):
         buy = sell = 0
-        positive_months = 0
+        positive_months = negative_net_months = sell_months = 0
         missing = []
         observed = []
         for month in months:
@@ -471,6 +471,10 @@ def build_ranking(base, months, master):
             sell += parsed["sell_shares"]
             if parsed["buy_shares"] > parsed["sell_shares"]:
                 positive_months += 1
+            if parsed["sell_shares"] > 0:
+                sell_months += 1
+            if parsed["sell_shares"] > parsed["buy_shares"]:
+                negative_net_months += 1
         if not item.get("issued_shares") or item["issued_shares"] <= 0:
             pending.append({"code": code, "missing_months": missing,
                             "reason": "INVALID_DENOMINATOR"})
@@ -505,23 +509,32 @@ def build_ranking(base, months, master):
                  "buy_lots": round(buy / 1000, 3), "sell_lots": round(sell / 1000, 3),
                  "net_lots": round((buy - sell) / 1000, 3),
                  "buy_pct_of_issued": round(buy / shares * 100, 5),
+                 "sell_pct_of_issued": round(sell / shares * 100, 5),
                  "net_pct_of_issued": round((buy - sell) / shares * 100, 5),
+                 "net_sell_pct_of_issued": round(max(sell - buy, 0) / shares * 100, 5),
                  "positive_net_months": positive_months,
+                 "negative_net_months": negative_net_months,
+                 "sell_months": sell_months,
                  "observed_month_count": len(observed),
                  "expected_ytd_month_count": len(months),
                  "observed_months": observed,
                  "missing_months": missing,
                  "year_to_date_complete": complete_months,
-                 "buy_amount_is_observed_months_only": not complete_months}
+                 "buy_amount_is_observed_months_only": not complete_months,
+                 "sell_amount_is_observed_months_only": not complete_months}
         if complete_months:
             complete.append(entry)
         # The user wants ONLY stocks with recorded actual market purchases.
         # An incomplete issuer can appear provisionally with coverage disclosed.
         if buy > 0:
             positive_observed.append(entry)
+        if sell > 0:
+            selling_observed.append(entry)
     sort_by_purchase = lambda x: (-x["buy_pct_of_issued"], -x["net_pct_of_issued"], x["code"])
     complete.sort(key=sort_by_purchase)
     positive_observed.sort(key=sort_by_purchase)
+    selling_observed.sort(key=lambda x: (-x["sell_pct_of_issued"],
+                                         -x["net_sell_pct_of_issued"], x["code"]))
     footwear_watchlist.sort(key=lambda x: (not x["positive_buy_observed"],
                                             -x["buy_pct_of_issued"], x["code"]))
     status = ("COMPLETE_YTD_RESEARCH_SCOPE_NOT_FORMALLY_CERTIFIED"
@@ -533,16 +546,22 @@ def build_ranking(base, months, master):
             "complete_issuer_count": len(complete), "pending_issuer_count": len(pending),
             "observed_positive_issuer_count": len(positive_observed),
             "partial_positive_issuer_count": sum(not r["year_to_date_complete"] for r in positive_observed),
+            "observed_selling_issuer_count": len(selling_observed),
+            "partial_selling_issuer_count": sum(not r["year_to_date_complete"] for r in selling_observed),
             "verified_detail_month_count": detail_ok,
             "expected_detail_month_count": len(master) * len(months),
             "marketwide_rank_claim_permitted": False,
+            "marketwide_sell_rank_claim_permitted": False,
             "observed_ranking_is_not_full_year_total": bool(pending),
             "holder_identity_formal_certification": False,
             "forward_EPS_PE_Aplus_or_Exit_changed": False,
             "positive_buy_observed_sample_top100": positive_observed[:100],
             "positive_buy_complete_sample_top100": [r for r in complete if r["buy_lots"] > 0][:100],
+            "positive_sell_observed_sample_top100": selling_observed[:100],
+            "positive_sell_complete_sample_top100": [r for r in selling_observed if r["year_to_date_complete"]][:100],
             "pending_examples": pending[:60],
             "all_observed_positive": positive_observed,
+            "all_observed_sellers": selling_observed,
             "all_complete_sample": complete,
             "footwear_supply_chain_watchlist": footwear_watchlist,
             "footwear_supply_chain_category": "footwear_manufacturing_and_direct_materials"}
@@ -602,7 +621,11 @@ def main():
                   "scope_start_month": "2026-01", "scope_rule": "SINCE_2026",
                   "months": months, "listed_otc_issuer_count": 0, "complete_issuer_count": 0,
                   "marketwide_rank_claim_permitted": False, "observed_positive_issuer_count": 0,
-                  "positive_buy_observed_sample_top100": [], "positive_buy_complete_sample_top100": []}
+                  "positive_buy_observed_sample_top100": [], "positive_buy_complete_sample_top100": [],
+                   "observed_selling_issuer_count": 0, "partial_selling_issuer_count": 0,
+                   "marketwide_sell_rank_claim_permitted": False,
+                   "positive_sell_observed_sample_top100": [], "positive_sell_complete_sample_top100": [],
+                   "all_observed_sellers": []}
     result["attempted_at_utc"] = dt.datetime.now(dt.timezone.utc).isoformat()
     result["collection"] = state
     result["monthly_master_failures"] = failures
@@ -624,6 +647,17 @@ def main():
                   f"{r['buy_lots']:,.1f}|{r['sell_lots']:,.1f}|"
                   f"{r['buy_pct_of_issued']:.3f}%|{r['net_pct_of_issued']:.3f}%|"
                   f"{r['positive_net_months']}|")
+    md.extend(["", "## 已核月份內部人市場賣出觀察榜（非正式全市場排行）",
+               f"已觀察市場賣出 {result.get('observed_selling_issuer_count', 0)} 家；其中部分月份 {result.get('partial_selling_issuer_count', 0)} 家。",
+               "只計入MOPS原件SHA256及持股橋接通過的月份；未查月份不補零。",
+               "身份歸戶與PIT未認證；不更改模型EPS、PE、A+或Exit。",
+               "", "|觀察序|股票|已核月份|賣出張數|買進張數|賣出/股本|淨賣/股本|淨賣月數|",
+               "|---:|---|---:|---:|---:|---:|---:|---:|"])
+    for i, r in enumerate(result.get("positive_sell_observed_sample_top100", []), 1):
+        md.append(f"|{i}|{r['code']}|{r['observed_month_count']}/{r['expected_ytd_month_count']}|"
+                  f"{r['sell_lots']:,.1f}|{r['buy_lots']:,.1f}|"
+                  f"{r['sell_pct_of_issued']:.3f}%|{r['net_sell_pct_of_issued']:.3f}%|"
+                  f"{r['negative_net_months']}|")
     md.extend(["", "## 製鞋供應鏈專項（非全市場正式排行）",
                "第三方線索不作買進認證；只列已通過官方MOPS原件SHA256覆核的月份。",
                "部分月份的未核資料不是零買進；持有人正式歸戶仍未認證。",
@@ -634,6 +668,39 @@ def main():
                   f"{rec['buy_lots']:,.3f}|{rec['sell_lots']:,.3f}|{rec['status']}|")
     atomic(ROOT / "tw-market-data" / "rankings" / "insider_marketwide_latest.md",
            ("\n".join(md) + "\n").encode("utf-8"))
+    seller_report = {
+        "schema": "INSIDER_MARKETWIDE_SELL_OBSERVATION_V1",
+        "status": "RESEARCH_ONLY_NOT_FORMALLY_CERTIFIED",
+        "months": months, "attempted_at_utc": result["attempted_at_utc"],
+        "listed_otc_issuer_count": result["listed_otc_issuer_count"],
+        "complete_issuer_count": result["complete_issuer_count"],
+        "pending_issuer_count": result.get("pending_issuer_count"),
+        "verified_detail_month_count": result.get("verified_detail_month_count"),
+        "expected_detail_month_count": result.get("expected_detail_month_count"),
+        "observed_selling_issuer_count": result.get("observed_selling_issuer_count", 0),
+        "partial_selling_issuer_count": result.get("partial_selling_issuer_count", 0),
+        "holder_identity_formal_certification": False,
+        "historical_PIT_certified": False,
+        "marketwide_rank_claim_permitted": False,
+        "automatic_Exit_or_Aplus_change": False,
+        "positive_sell_observed_sample_top100": result.get("positive_sell_observed_sample_top100", []),
+        "all_observed_sellers": result.get("all_observed_sellers", [])}
+    put_json(ROOT / "tw-market-data" / "rankings" / "insider_marketwide_sellers_latest.json",
+             seller_report)
+    sell_md = ["# 內部人市場賣出觀察榜（研究用途）", "",
+               f"已觀察賣出 {seller_report['observed_selling_issuer_count']} 家；"
+               f"完整核對 {seller_report['complete_issuer_count']}/{seller_report['listed_otc_issuer_count']} 家。",
+               "按已核月份市場賣出占最新股本排序；未查月份不補零，身分與PIT尚未正式認證。",
+               "不修改EPS、PE、A+或自動Exit。", "",
+               "|觀察序|股票|已核月份|賣出張數|買進張數|賣出/股本|淨賣/股本|淨賣月數|",
+               "|---:|---|---:|---:|---:|---:|---:|---:|"]
+    for i, r in enumerate(seller_report["positive_sell_observed_sample_top100"], 1):
+        sell_md.append(f"|{i}|{r['code']}|{r['observed_month_count']}/{r['expected_ytd_month_count']}|"
+                       f"{r['sell_lots']:,.1f}|{r['buy_lots']:,.1f}|"
+                       f"{r['sell_pct_of_issued']:.3f}%|{r['net_sell_pct_of_issued']:.3f}%|"
+                       f"{r['negative_net_months']}|")
+    atomic(ROOT / "tw-market-data" / "rankings" / "insider_marketwide_sellers_latest.md",
+           ("\n".join(sell_md) + "\n").encode("utf-8"))
     print(json.dumps({"status": result["status"], "issuers": len(master),
                       "complete_issuers": result["complete_issuer_count"],
                       "attempts": state["requested"], "successful": state["succeeded"]},
