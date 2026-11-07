@@ -6,6 +6,7 @@ holder identity, historical PIT, causal predictive power or trading signals.
 """
 import datetime as dt
 import json
+import math
 from pathlib import Path
 
 TW = dt.timezone(dt.timedelta(hours=8))
@@ -102,17 +103,49 @@ def assess_sell_risk(record, source_status):
             "rule_status": "EXPLORATORY_THRESHOLDS_NOT_WALK_FORWARD_VALIDATED"}
 
 
+def operating_weakness_context(row):
+    """Read only already-computed financial facts; never forecast or score.
+
+    Absence of comparable periods is unknown, not evidence of strength.
+    Revenue is a signed year-on-year fraction, while YTD gross margin uses
+    the model's same-period comparison. No dated price-momentum claim is made.
+    """
+    signals = []
+    trend = (row.get("revenue_bridge") or {}).get("trend_inputs") or {}
+    yoy = trend.get("latest_month_yoy")
+    if (isinstance(yoy, (int, float)) and not isinstance(yoy, bool)
+            and math.isfinite(yoy) and yoy < 0):
+        signals.append("LATEST_REVENUE_YOY_NEGATIVE")
+    margins = row.get("margin_bridge") or {}
+    now = margins.get("current_ytd_gm")
+    prior = margins.get("prior_ytd_gm")
+    if (all(isinstance(value, (int, float)) and not isinstance(value, bool)
+            and math.isfinite(value) for value in (now, prior))
+            and now < prior):
+        signals.append("YTD_GROSS_MARGIN_BELOW_SAME_PERIOD_PRIOR_YEAR")
+    return signals
+
+
 def annotate_issuer_rows(rows, feed):
     """Add research warnings only; never change formal ranking or certificates."""
     watched = []
     by_code = feed.get("records", {})
     for row in rows:
         alert = assess_sell_risk(by_code.get(row.get("code")), feed["status"])
+        # Corroboration is visible only for source-backed selling observations.
+        # It never changes sell tiers, earnings, estimates or formal approvals.
+        signals = operating_weakness_context(row) if alert["tier"] != "UNKNOWN" else []
+        alert["operating_context_flags"] = signals
+        alert["operating_crosscheck_is_research_only"] = True
+        alert["dated_price_trend_verified"] = False
         row["insider_sell_overlay"] = alert
         if alert["needs_manual_review"]:
             row.setdefault("warning_flags", [])
             if "INSIDER_SELL_RESEARCH_REVIEW_REQUIRED" not in row["warning_flags"]:
                 row["warning_flags"].append("INSIDER_SELL_RESEARCH_REVIEW_REQUIRED")
+            if (signals and "INSIDER_SELL_AND_OPERATING_WEAKNESS_SHADOW_REVIEW"
+                    not in row["warning_flags"]):
+                row["warning_flags"].append("INSIDER_SELL_AND_OPERATING_WEAKNESS_SHADOW_REVIEW")
             watched.append({"code": row["code"], "name": row.get("name"),
                             "market": row.get("market"), **alert})
     watched.sort(key=lambda x: (-x["net_sell_pct_of_issued"],
