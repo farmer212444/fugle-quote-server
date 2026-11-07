@@ -37,6 +37,8 @@ class FourStockValueHurdlesTests(unittest.TestCase):
             self.assertTrue(by[code]['post_close_disclosures'])
             self.assertTrue(all(not e['available_by_reference_close'] for e in by[code]['post_close_disclosures']))
         self.assertIn('不能回填',render(r))
+        self.assertIn('|6285 啟碁|164.50|10.10（3季）|14|11.75|15.28|15.87|',render(r))
+        self.assertIn('|8299 群聯|1500.00|325.49（3季）|8|187.50|243.75|253.13|',render(r))
 
     def test_invalid_inputs_fail_closed(self):
         for bad in ('pe','stock_count','missing_sources','future_income','late_event','wrong_quarter'):
