@@ -65,6 +65,44 @@ class AplusQueueRepairTests(unittest.TestCase):
         self.assertIn('補可轉債',render(report))
         self.assertEqual(report['formal_gate_decisions_changed'],0)
 
+    def test_tsmc_partial_issuer_pdf_window_is_not_review_ready_or_formal_aplus(self):
+        progress,research=self.make_inputs()
+        source=next(x for x in progress['issuer_diagnostics'] if x['code']=='2330')
+        source['gate_stage']['original_eight_quarter_statements']['stage']='SOURCE_CAPTURED'
+        source['durable_original_archive']=dict(coverage=dict(
+            required_quarters=['2024-Q3','2024-Q4','2025-Q1'],
+            found_quarters=['2024-Q4'],
+            missing_quarters=['2024-Q3','2025-Q1'],
+            full_original_pdf_content_reviewed=False))
+        report=build_queue(progress,research)
+        row=next(x for x in report['issuer_jobs'] if x['code']=='2330')
+        self.assertEqual(row['next_issuer_action'],'CAPTURE_MISSING_QUARTER_ORIGINALS')
+        self.assertEqual(row['review_ready_original_gate_count'],0)
+        self.assertEqual(row['original_quarter_coverage']['archived'],1)
+        self.assertEqual(row['original_quarter_coverage']['missing_quarters'],
+                         ['2024-Q3','2025-Q1'])
+        status=report['tsmc_aplus_research_status']
+        self.assertEqual(status['price_lane'],'A_PLUS_PRICE_ONLY')
+        self.assertFalse(status['formal_Aplus'])
+        self.assertEqual(status['company_gates_passed'],0)
+        self.assertEqual(status['company_gates_pending'],12)
+        self.assertEqual(status['strategy_oos_gate_decision'],'PENDING')
+        text=render(report)
+        self.assertIn('A+價格候選（研究限定）',text)
+        self.assertIn('1/3季封存',text)
+        self.assertIn('補齊缺少季度',text)
+        self.assertIn('否（未完成正式證據認證）',text)
+
+    def test_inconsistent_issuer_archive_quarter_coverage_fails_closed(self):
+        progress,research=self.make_inputs()
+        source=next(x for x in progress['issuer_diagnostics'] if x['code']=='2330')
+        source['durable_original_archive']=dict(coverage=dict(
+            required_quarters=['2024-Q3','2024-Q4'],
+            found_quarters=['2024-Q4'],
+            missing_quarters=[]))
+        with self.assertRaisesRegex(ValueError,'COVERAGE_INCONSISTENT'):
+            build_queue(progress,research)
+
     def test_oos_is_shared_and_cannot_be_mistaken_for_captured_original(self):
         progress,research=self.make_inputs()
         row=progress['issuer_diagnostics'][0]
