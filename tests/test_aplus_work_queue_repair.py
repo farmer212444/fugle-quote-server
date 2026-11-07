@@ -103,6 +103,28 @@ class AplusQueueRepairTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'COVERAGE_INCONSISTENT'):
             build_queue(progress,research)
 
+    def test_sec_english_report_corroboration_never_substitutes_for_issuer_review(self):
+        progress,research=self.make_inputs()
+        sec=dict(schema='TSMC_SEC_6K_SOURCE_ARCHIVE_V1',issuer='2330',
+                 formal_gate_pass=False,expected_sec_exhibits=7,
+                 sec_translated_exhibits_verified=7,
+                 archived_quarters=['2024-Q3','2025-Q1','2025-Q2','2025-Q3',
+                                    '2025-Q4','2026-Q1','2026-Q2'],source_errors=[])
+        original=copy.deepcopy(progress)
+        report=build_queue(progress,research,sec_archive=sec)
+        tsmc=report['tsmc_aplus_research_status']
+        self.assertEqual(tsmc['sec_6k_corroboration']['translated_exhibit_quarters_archived'],7)
+        self.assertFalse(tsmc['formal_Aplus'])
+        self.assertEqual(tsmc['company_gates_passed'],0)
+        self.assertIn('仍須與中文原件勾稽',render(report))
+        self.assertEqual(progress,original)
+        invalid=copy.deepcopy(sec);invalid['sec_translated_exhibits_verified']=8
+        with self.assertRaisesRegex(ValueError,'COVERAGE_INCONSISTENT'):
+            build_queue(progress,research,sec_archive=invalid)
+        invalid=copy.deepcopy(sec);invalid['formal_gate_pass']=True
+        with self.assertRaisesRegex(ValueError,'UNTRUSTED_SEC_SOURCE_REPORT'):
+            build_queue(progress,research,sec_archive=invalid)
+
     def test_oos_is_shared_and_cannot_be_mistaken_for_captured_original(self):
         progress,research=self.make_inputs()
         row=progress['issuer_diagnostics'][0]
