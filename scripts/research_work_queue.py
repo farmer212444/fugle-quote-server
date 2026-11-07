@@ -14,13 +14,14 @@ from scripts.run_research_pipeline import atomic_json
 
 FILING_GATES=frozenset(('original_eight_quarter_statements','cash_and_working_capital',
                        'nonoperating_components','auditor_scope','point_in_time'))
-WATCHLIST=frozenset(('6206','9802'))
+WATCHLIST=frozenset(('2330','6206','9802'))
 # Prioritize work that can actually advance with already archived issuer originals.
 # A review-pending label or share/turnover mirror does not establish a
 # complete issuer original, let alone permission to issue a formal PASS.
 ORIGINAL_REVIEW_GATES=frozenset(('original_eight_quarter_statements','management_promises'))
 ACTION_ZH={
     'REVIEW_ARCHIVED_SOURCE_AND_COMPLETE_SIGNOFF':'核閱已封存原件並補齊附註後再具名覆核',
+    'CAPTURE_MISSING_QUARTER_ORIGINALS':'補齊缺少季度的完整財報原件、來源收據與SHA；已封存部分仍待全文審核',
     'REVIEW_MANAGEMENT_GUIDANCE':'核對已封存法說承諾與後續實績',
     'VERIFY_CAPITAL_DILUTION_TERMS':'已取得股數摘要；補可轉債、員工認股及稀釋分母原件',
     'VERIFY_MARKET_SPREAD_EXIT_CAPACITY':'已有成交額；補價差、滑價及清倉能力驗證',
@@ -49,6 +50,19 @@ def build_queue(progress,research):
         work=[]
         passed=[]
         failed=[]
+        original_archive=row.get('durable_original_archive') or {}
+        coverage=original_archive.get('coverage') or {}
+        required_quarters=coverage.get('required_quarters') or []
+        found_quarters=coverage.get('found_quarters') or []
+        missing_quarters=coverage.get('missing_quarters') or []
+        if required_quarters and set(found_quarters)-set(required_quarters):
+            raise ValueError('WORK_QUEUE_ORIGINAL_COVERAGE_OUTSIDE_WINDOW')
+        if required_quarters and set(missing_quarters)!=set(required_quarters)-set(found_quarters):
+            raise ValueError('WORK_QUEUE_ORIGINAL_COVERAGE_INCONSISTENT')
+        original_coverage=(dict(required=len(required_quarters),archived=len(found_quarters),
+                                missing_quarters=missing_quarters,
+                                content_review_complete=bool(coverage.get('full_original_pdf_content_reviewed')))
+                           if required_quarters else None)
         for name in GATES:
             item=decisions[name]
             decision=item['decision']
@@ -75,6 +89,12 @@ def build_queue(progress,research):
                       else 'COMPLETE_EVIDENCE_BRIDGE_AND_REVIEW')
             else:
                 action='COMPLETE_EVIDENCE_BRIDGE_AND_REVIEW'
+            # One archived PDF is not eight complete original statements.
+            # Keep the model's gate decision unchanged; only correct the
+            # next collection/review instruction and readiness count.
+            if (name=='original_eight_quarter_statements' and missing_quarters
+                    and decision=='PENDING'):
+                action='CAPTURE_MISSING_QUARTER_ORIGINALS'
             work.append(dict(gate=name,decision=decision,stage=item['stage'],
                              next_action=action,scope=item['scope'],
                              required_evidence=item['required_evidence'],
@@ -87,7 +107,9 @@ def build_queue(progress,research):
         issuer_work=[w for w in work if w['gate']!='out_of_sample_validation']
         def task_priority(task):
             if task['decision']=='FAIL':
-                return (0,GATES.index(task['gate']))
+                return (0,GATES.index(task['gate']),0)
+            if task['next_action']=='CAPTURE_MISSING_QUARTER_ORIGINALS':
+                return (1,0,GATES.index(task['gate']))
             return ({
                 'SOURCE_CAPTURED':1,
                 'MIRROR_CAPTURED':2,
@@ -95,12 +117,16 @@ def build_queue(progress,research):
                 'SOURCE_MISSING':4,
                 'NOT_PROBED':5,
             }.get(task['stage'],6),
-                0 if task['gate'] in ORIGINAL_REVIEW_GATES else 1,
+                1 if task['gate'] in ORIGINAL_REVIEW_GATES else 2,
                 GATES.index(task['gate']))
         next_issuer_task=min(issuer_work,key=task_priority) if issuer_work else None
         source_advanced_gates=[w['gate'] for w in issuer_work
                                if w['stage']=='SOURCE_CAPTURED' and w['decision']=='PENDING']
-        ready_issuer_gates=[g for g in source_advanced_gates if g in ORIGINAL_REVIEW_GATES]
+        ready_issuer_gates=[w['gate'] for w in issuer_work
+                            if w['gate'] in ORIGINAL_REVIEW_GATES
+                            and w['stage']=='SOURCE_CAPTURED'
+                            and w['decision']=='PENDING'
+                            and w['next_action']!='CAPTURE_MISSING_QUARTER_ORIGINALS']
         upside=row.get('research_upside_pct')
         price_lane=('A_PLUS_PRICE_ONLY' if type(upside) in (int,float) and upside>=30
                     else 'A_DISCOVERY_PRICE_ONLY' if type(upside) in (int,float) and upside>=25
@@ -109,6 +135,7 @@ def build_queue(progress,research):
                          financial_period=row['financial_period'],
                          reviewed_financial_period=row.get('reviewed_financial_period'),
                          research_upside_pct=row.get('research_upside_pct'),
+                         original_quarter_coverage=original_coverage,
                          watchlist_focus=row['code'] in WATCHLIST,
                          passed_gate_count=len(passed),failed_gates=failed,
                          unresolved_gate_count=len(work),work=work,
@@ -139,6 +166,30 @@ def build_queue(progress,research):
                                   -(x['research_upside_pct'] or 0),x['code']))
     gate_blockers={g:sum(g in {w['gate'] for w in issuer['work']}
                          for issuer in high_upside) for g in GATES}
+    # Distinguish eligibility for a price-only research lane from signed
+    # company-quality gates and the independent strategy OOS gate.
+    tsmc=next((r for r in jobs if r['code']=='2330'),None)
+    tsmc_lane=None
+    if tsmc is not None:
+        strategy=next((g for g in tsmc['work']
+                       if g['gate']=='out_of_sample_validation'),None)
+        tsmc_lane=dict(
+            issuer='2330',name=tsmc['name'],price_lane=tsmc['price_lane'],
+            research_upside_pct=tsmc['research_upside_pct'],
+            company_gates_passed=tsmc['passed_gate_count']
+                                 -int('out_of_sample_validation' not in {w['gate'] for w in tsmc['work']}),
+            company_gates_total=len(GATES)-1,
+            company_gates_pending=sum(w['decision']=='PENDING' for w in tsmc['work']
+                                      if w['gate']!='out_of_sample_validation'),
+            company_gates_failed=sum(w['decision']=='FAIL' for w in tsmc['work']
+                                     if w['gate']!='out_of_sample_validation'),
+            strategy_oos_gate_decision=(strategy['decision'] if strategy else 'PASS'),
+            formal_Aplus=tsmc['formal_Aplus'],
+            valuation_financial_period=tsmc['financial_period'],
+            reviewed_financial_period=tsmc['reviewed_financial_period'],
+            original_quarter_coverage=tsmc['original_quarter_coverage'],
+            next_issuer_action=tsmc['next_issuer_action'],
+            source_only_is_not_signed_certification=True)
     return dict(schema='RESEARCH_EVIDENCE_WORK_QUEUE_V1',
                 model=research['model'],estimate_vintage=research['estimate_vintage'],
                 asof_price_date=research['asof_price_date'],
@@ -146,6 +197,7 @@ def build_queue(progress,research):
                 issuer_job_count=len(jobs),unresolved_gate_count=sum(r['unresolved_gate_count'] for r in jobs),
                 scope='ISSUERS_INCLUDED_IN_CURRENT_GATE_DIAGNOSTICS_NOT_ALL_TRACKED_COMPANIES',
                 issuer_jobs=jobs,
+                tsmc_aplus_research_status=tsmc_lane,
                 aplus_repair=dict(
                     price_qualified_research_issuers=len(high_upside),
                     strategy_level_gate='out_of_sample_validation',
@@ -186,10 +238,31 @@ def build_queue(progress,research):
 
 def render(report):
     aplus=report['aplus_repair']
+    tsmc=report.get('tsmc_aplus_research_status')
     lines=['# A+ 原始證據修復佇列','',
            f"模型：{report['model']}；估計：{report['estimate_vintage']}。",
            '僅涵蓋當次認證診斷名單。優先關注股，再按已完成門檻排序；潛在漲幅僅作同順位排序。',
-           '同公司原始財報集中蒐集，各項仍須獨立查核；策略證據集中蒐集後仍須核對個股與子群適用性。','',
+           '同公司原始財報集中蒐集，各項仍須獨立查核；策略證據集中蒐集後仍須核對個股與子群適用性。','']
+    if tsmc:
+        name='A+價格候選（研究限定）' if tsmc['price_lane']=='A_PLUS_PRICE_ONLY' else tsmc['price_lane']
+        coverage=tsmc['original_quarter_coverage']
+        source_note=(f"{coverage['archived']}/{coverage['required']}季封存，缺："
+                     +('、'.join(coverage['missing_quarters']) or '無')
+                     if coverage else '原始完整八季覆蓋未核')
+        lines+=['## 2330 台積電：價格候選與正式認證分離','',
+                '|項目|狀態|','|---|---|',
+                f"|價格研究分級|{name}，研究價差{tsmc['research_upside_pct']:+.1f}%|",
+                f"|公司品質證據|{tsmc['company_gates_passed']}/{tsmc['company_gates_total']}正式PASS；"
+                f"{tsmc['company_gates_pending']}項待驗、{tsmc['company_gates_failed']}項FAIL|",
+                f"|策略樣本外回測|{tsmc['strategy_oos_gate_decision']}|",
+                f"|正式A+|{'是' if tsmc['formal_Aplus'] else '否（未完成正式證據認證）'}|",
+                f"|完整財報原件|{source_note}|",
+                f"|模型估值基期／核對基期|{tsmc['valuation_financial_period']}／"
+                f"{tsmc['reviewed_financial_period']}|",
+                f"|下一步|{ACTION_ZH.get(tsmc['next_issuer_action'],'逐項核對原始證據')}|",
+                '',
+                '注意：A+價格候選不是正式A+；資料缺漏不等於品質FAIL，且未校準的研究價差不是機率加權期望報酬。','']
+    lines += [
            f"僅達A+價格門檻的研究候選：{aplus['price_qualified_research_issuers']}；"
            f"其中已封存部分可進一步核閱的原件：{aplus['original_captured_review_pending_issuers']}家、"
            f"{aplus['review_ready_gate_issues']}項待核；其他已取得局部股數或交易資料的項目，仍須補齊法律條款及成交能力。",'',
