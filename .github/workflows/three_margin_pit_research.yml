@@ -1,0 +1,20 @@
+name: Three-margin PIT research tests
+on:
+  pull_request:
+    paths:
+      - 'tw_model_v880/three_margin.py'
+      - 'tests/test_three_margin.py'
+      - '.github/workflows/three_margin_pit_research.yml'
+  workflow_dispatch:
+jobs:
+  synthetic-pit:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Fail-closed synthetic PIT tests (not investment backtest)
+        run: python -m unittest -v tests.test_three_margin
