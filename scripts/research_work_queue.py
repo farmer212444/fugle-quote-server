@@ -32,7 +32,7 @@ ACTION_ZH={
 }
 
 
-def build_queue(progress,research):
+def build_queue(progress,research,sec_archive=None):
     for key in ('model','estimate_vintage','asof_price_date'):
         if progress.get(key)!=research.get(key):
             raise ValueError('WORK_QUEUE_MODEL_CONTEXT_MISMATCH')
@@ -171,6 +171,23 @@ def build_queue(progress,research):
     tsmc=next((r for r in jobs if r['code']=='2330'),None)
     tsmc_lane=None
     if tsmc is not None:
+        sec_status=None
+        if sec_archive is not None:
+            if (sec_archive.get('issuer')!='2330'
+                or sec_archive.get('schema')!='TSMC_SEC_6K_SOURCE_ARCHIVE_V1'
+                or sec_archive.get('formal_gate_pass') is not False):
+                raise ValueError('WORK_QUEUE_UNTRUSTED_SEC_SOURCE_REPORT')
+            archived=sec_archive.get('archived_quarters',[])
+            if (len(archived)!=sec_archive.get('sec_translated_exhibits_verified')
+                or any(q not in ('2024-Q3','2025-Q1','2025-Q2','2025-Q3',
+                                 '2025-Q4','2026-Q1','2026-Q2') for q in archived)):
+                raise ValueError('WORK_QUEUE_SEC_ARCHIVE_COVERAGE_INCONSISTENT')
+            sec_status=dict(
+                translated_exhibit_quarters_archived=len(archived),
+                expected_translated_exhibits=sec_archive['expected_sec_exhibits'],
+                source_error_count=len(sec_archive.get('source_errors',[])),
+                english_translation_not_chinese_original=True,
+                human_review_and_formal_gate_still_pending=True)
         strategy=next((g for g in tsmc['work']
                        if g['gate']=='out_of_sample_validation'),None)
         tsmc_lane=dict(
@@ -188,6 +205,7 @@ def build_queue(progress,research):
             valuation_financial_period=tsmc['financial_period'],
             reviewed_financial_period=tsmc['reviewed_financial_period'],
             original_quarter_coverage=tsmc['original_quarter_coverage'],
+            sec_6k_corroboration=sec_status,
             next_issuer_action=tsmc['next_issuer_action'],
             source_only_is_not_signed_certification=True)
     return dict(schema='RESEARCH_EVIDENCE_WORK_QUEUE_V1',
@@ -257,6 +275,11 @@ def render(report):
                 f"|策略樣本外回測|{tsmc['strategy_oos_gate_decision']}|",
                 f"|正式A+|{'是' if tsmc['formal_Aplus'] else '否（未完成正式證據認證）'}|",
                 f"|完整財報原件|{source_note}|",
+                f"|SEC 6-K 英譯備援文件|"
+                + (f"{tsmc['sec_6k_corroboration']['translated_exhibit_quarters_archived']}/"
+                   f"{tsmc['sec_6k_corroboration']['expected_translated_exhibits']}期已SHA封存；"
+                   f"仍須與中文原件勾稽"
+                   if tsmc['sec_6k_corroboration'] else '尚無SEC原件封存收據')+"|",
                 f"|模型估值基期／核對基期|{tsmc['valuation_financial_period']}／"
                 f"{tsmc['reviewed_financial_period']}|",
                 f"|下一步|{ACTION_ZH.get(tsmc['next_issuer_action'],'逐項核對原始證據')}|",
@@ -306,7 +329,9 @@ def main():
     root=Path(args.data_root)
     raw=(root/'rankings/v891_gate_progress.json').read_bytes()
     research=json.loads((root/'rankings/latest_research.json').read_bytes())
-    report=build_queue(json.loads(raw),research)
+    sec_path=root/'rankings/tsmc_sec_filing_archive.json'
+    sec=json.loads(sec_path.read_bytes()) if sec_path.exists() else None
+    report=build_queue(json.loads(raw),research,sec_archive=sec)
     report['source_progress_sha256']=hashlib.sha256(raw).hexdigest()
     atomic_json(root/'rankings/latest_research_work_queue.json',report)
     (root/'rankings/latest_research_work_queue.md').write_text(render(report),encoding='utf-8')
