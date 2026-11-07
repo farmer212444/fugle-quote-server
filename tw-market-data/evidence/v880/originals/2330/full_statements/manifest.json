@@ -43,11 +43,40 @@
       "formal_gate_pass": false
     }
   ],
-  "last_intake_at_utc": "2026-11-07T14:14:43.382424+00:00",
+  "last_intake_at_utc": "2026-11-07T14:25:38.452865+00:00",
   "last_requested_window_end": "2026-Q2",
   "last_fetch_errors": [
     {
       "period": "DIRECTORY",
+      "error": "HTTPError:HTTP Error 403: Forbidden",
+      "recovery": "SHA_VERIFIED_ARCHIVED_ISSUER_INDEX"
+    },
+    {
+      "period": "2026-Q1",
+      "error": "HTTPError:HTTP Error 403: Forbidden"
+    },
+    {
+      "period": "2026-Q2",
+      "error": "HTTPError:HTTP Error 403: Forbidden"
+    },
+    {
+      "period": "2025-Q1",
+      "error": "HTTPError:HTTP Error 403: Forbidden"
+    },
+    {
+      "period": "2025-Q2",
+      "error": "HTTPError:HTTP Error 403: Forbidden"
+    },
+    {
+      "period": "2025-Q3",
+      "error": "HTTPError:HTTP Error 403: Forbidden"
+    },
+    {
+      "period": "2025-Q4",
+      "error": "HTTPError:HTTP Error 403: Forbidden"
+    },
+    {
+      "period": "2024-Q3",
       "error": "HTTPError:HTTP Error 403: Forbidden"
     }
   ]
