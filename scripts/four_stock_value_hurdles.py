@@ -10,6 +10,7 @@ import datetime as dt
 import json
 import math
 from pathlib import Path
+from decimal import Decimal, ROUND_CEILING
 
 REQUIRED_CODES = {"3231", "6285", "8299", "3260"}
 
@@ -96,6 +97,11 @@ def evaluate(payload):
                 formal_grade="NOT_CERTIFIED",stocks=records)
 
 
+def min_eps_2(value):
+    """Ceiling: a displayed EPS hurdle must be sufficient, not just nearest."""
+    return format(Decimal(str(value)).quantize(Decimal('0.01'), rounding=ROUND_CEILING), '.2f')
+
+
 def render(report):
     lines = ["# 2026-11-06 收盤四檔研究：2027 EPS × PE 反推門檻", "",
              "**研究狀態：不核發 A+、不產生機率加權期望報酬、不是當日可成交訊號。**", "",
@@ -105,7 +111,7 @@ def render(report):
              "|---:|---|---:|---:|---:|---:|---:|---:|"]
     for s in report['stocks']:
         h=s['eps_hurdles_2027']
-        lines.append(f"|{s['priority']}|{s['code']} {s['name']}|{s['reference_close']:.2f}|{s['latest_2026_ytd_eps']:.2f}（{s['reported_quarters']}季）|{s['illustrative_pe']:.0f}|{h['breakeven']:.2f}|{h['upside_30pct']:.2f}|{h['upside_35pct']:.2f}|")
+        lines.append(f"|{s['priority']}|{s['code']} {s['name']}|{s['reference_close']:.2f}|{s['latest_2026_ytd_eps']:.2f}（{s['reported_quarters']}季）|{s['illustrative_pe']:.0f}|{min_eps_2(h['breakeven'])}|{min_eps_2(h['upside_30pct'])}|{min_eps_2(h['upside_35pct'])}|")
     lines += ['', '## 逐檔確認前不可重押的事項','']
     for s in report['stocks']:
         lines.append(f"- **{s['code']} {s['name']}**：{s['qualitative_focus']}。{('公告時點晚於參考收盤，不能當作11/6收盤前訊號。' if not s['eps_available_by_reference_close'] else '')}")
