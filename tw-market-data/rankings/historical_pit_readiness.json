@@ -1,6 +1,6 @@
 {
   "schema": "HISTORICAL_PIT_SOURCE_READINESS_V1",
-  "observed_at": "2026-11-06T22:02:12.696943+00:00",
+  "observed_at": "2026-11-07T04:35:03.347761+00:00",
   "historical_start": "2025-01-01",
   "historical_end": "2026-11-06",
   "verified_durable_original_receipts": 480,
@@ -3525,6 +3525,62 @@
   "admitted_historical_financial_pit_batches": 0,
   "historical_financial_pit_admissions": [],
   "source_rejections": [],
+  "issuer_original_source_pilot": {
+    "status": "ISSUER_ORIGINALS_CAPTURED",
+    "observed_at_utc": "2026-11-07T04:35:04.210596+00:00",
+    "verified_pdf_originals": 6,
+    "issuer_count": 1,
+    "verified_financial_periods": 6,
+    "date_aware_eps_arithmetic_replays": [
+      {
+        "as_of": "2024-10-18T00:00:00+08:00",
+        "method": "SUM_FOUR_REPORTED_QUARTER_DILUTED_EPS_RESEARCH",
+        "sum_reported_diluted_eps_twd": "40.01",
+        "is_exact_annual_diluted_eps": false,
+        "note": "Quarterly diluted denominators can differ; summed reported EPS is an approximation.",
+        "report_periods": [
+          "2023-12-31",
+          "2024-03-31",
+          "2024-06-30",
+          "2024-09-30"
+        ],
+        "source_hashes": [
+          "d55bae9e791c53a024195977443971bd7ee833b32943b6917ffc279d4de64d04",
+          "d2d261a48d36b944c71f5108e06fd775b3ecc90016440f09917363c2fcfed3eb",
+          "e3795d4c2ceca6a40c737b9ca5b37cf82dd1e93a41284464c6bd2122681ec498",
+          "74e9bb6ac0257b313503cf070c33e893790daaf5911a5d85204c760793309ebc"
+        ],
+        "retrospective_PIT_verified": false,
+        "eligible_for_expected_return_calibration": false
+      },
+      {
+        "as_of": "2025-01-17T00:00:00+08:00",
+        "method": "SUM_FOUR_REPORTED_QUARTER_DILUTED_EPS_RESEARCH",
+        "sum_reported_diluted_eps_twd": "45.25",
+        "is_exact_annual_diluted_eps": false,
+        "note": "Quarterly diluted denominators can differ; summed reported EPS is an approximation.",
+        "report_periods": [
+          "2024-03-31",
+          "2024-06-30",
+          "2024-09-30",
+          "2024-12-31"
+        ],
+        "source_hashes": [
+          "d2d261a48d36b944c71f5108e06fd775b3ecc90016440f09917363c2fcfed3eb",
+          "e3795d4c2ceca6a40c737b9ca5b37cf82dd1e93a41284464c6bd2122681ec498",
+          "74e9bb6ac0257b313503cf070c33e893790daaf5911a5d85204c760793309ebc",
+          "41f569f32c63a71978372a13d1d933e8b5edd37a19dd654a2a2fb96ea4dc0aea"
+        ],
+        "retrospective_PIT_verified": false,
+        "eligible_for_expected_return_calibration": false
+      }
+    ],
+    "historical_financial_pit_admitted": 0,
+    "return_backtest_observations": 0,
+    "historical_version_at_publication_verified": false,
+    "errors": [],
+    "pending": []
+  },
   "retrospective_replay_status": "BLOCKED_MISSING_ORIGINAL_PIT_INPUTS",
   "blockers": [
     "ISSUER_ORIGINAL_PUBLICATION_AND_REVISION_VERSIONS_REQUIRED",
