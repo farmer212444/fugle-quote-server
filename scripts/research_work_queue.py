@@ -16,9 +16,14 @@ FILING_GATES=frozenset(('original_eight_quarter_statements','cash_and_working_ca
                        'nonoperating_components','auditor_scope','point_in_time'))
 WATCHLIST=frozenset(('6206','9802'))
 # Prioritize work that can actually advance with already archived issuer originals.
-# A review-pending label alone is not evidence that original bytes exist.
+# A review-pending label or share/turnover mirror does not establish a
+# complete issuer original, let alone permission to issue a formal PASS.
+ORIGINAL_REVIEW_GATES=frozenset(('original_eight_quarter_statements','management_promises'))
 ACTION_ZH={
-    'REVIEW_ARCHIVED_SOURCE_AND_COMPLETE_SIGNOFF':'核閱已封存原件並完成具名覆核',
+    'REVIEW_ARCHIVED_SOURCE_AND_COMPLETE_SIGNOFF':'核閱已封存原件並補齊附註後再具名覆核',
+    'REVIEW_MANAGEMENT_GUIDANCE':'核對已封存法說承諾與後續實績',
+    'VERIFY_CAPITAL_DILUTION_TERMS':'已取得股數摘要；補可轉債、員工認股及稀釋分母原件',
+    'VERIFY_MARKET_SPREAD_EXIT_CAPACITY':'已有成交額；補價差、滑價及清倉能力驗證',
     'COMPLETE_EVIDENCE_BRIDGE_AND_REVIEW':'補公司別勾稽與具名覆核',
     'CAPTURE_AND_VERIFY_ORIGINAL_SOURCE':'蒐集並驗證原始資料及SHA',
     'RESTORE_REQUIRED_MODEL_INPUTS':'修復缺漏的模型輸入',
@@ -62,7 +67,12 @@ def build_queue(progress,research):
             elif item['stage'] in ('NOT_PROBED','SOURCE_MISSING','MIRROR_CAPTURED'):
                 action='CAPTURE_AND_VERIFY_ORIGINAL_SOURCE'
             elif item['stage']=='SOURCE_CAPTURED':
-                action='REVIEW_ARCHIVED_SOURCE_AND_COMPLETE_SIGNOFF'
+                action={
+                    'fully_diluted_shares':'VERIFY_CAPITAL_DILUTION_TERMS',
+                    'tradability':'VERIFY_MARKET_SPREAD_EXIT_CAPACITY',
+                    'management_promises':'REVIEW_MANAGEMENT_GUIDANCE',
+                }.get(name,'REVIEW_ARCHIVED_SOURCE_AND_COMPLETE_SIGNOFF' if name in ORIGINAL_REVIEW_GATES
+                      else 'COMPLETE_EVIDENCE_BRIDGE_AND_REVIEW')
             else:
                 action='COMPLETE_EVIDENCE_BRIDGE_AND_REVIEW'
             work.append(dict(gate=name,decision=decision,stage=item['stage'],
@@ -84,10 +94,13 @@ def build_queue(progress,research):
                 'REVIEW_PENDING':3,
                 'SOURCE_MISSING':4,
                 'NOT_PROBED':5,
-            }.get(task['stage'],6),GATES.index(task['gate']))
+            }.get(task['stage'],6),
+                0 if task['gate'] in ORIGINAL_REVIEW_GATES else 1,
+                GATES.index(task['gate']))
         next_issuer_task=min(issuer_work,key=task_priority) if issuer_work else None
-        ready_issuer_gates=[w['gate'] for w in issuer_work
-                            if w['stage']=='SOURCE_CAPTURED' and w['decision']=='PENDING']
+        source_advanced_gates=[w['gate'] for w in issuer_work
+                               if w['stage']=='SOURCE_CAPTURED' and w['decision']=='PENDING']
+        ready_issuer_gates=[g for g in source_advanced_gates if g in ORIGINAL_REVIEW_GATES]
         upside=row.get('research_upside_pct')
         price_lane=('A_PLUS_PRICE_ONLY' if type(upside) in (int,float) and upside>=30
                     else 'A_DISCOVERY_PRICE_ONLY' if type(upside) in (int,float) and upside>=25
@@ -99,7 +112,10 @@ def build_queue(progress,research):
                          watchlist_focus=row['code'] in WATCHLIST,
                          passed_gate_count=len(passed),failed_gates=failed,
                          unresolved_gate_count=len(work),work=work,
-                         price_lane=price_lane,review_ready_original_gate_count=len(ready_issuer_gates),
+                         price_lane=price_lane,
+                         source_advanced_gate_count=len(source_advanced_gates),
+                         source_advanced_gates=source_advanced_gates,
+                         review_ready_original_gate_count=len(ready_issuer_gates),
                          review_ready_original_gates=ready_issuer_gates,
                          next_issuer_gate=next_issuer_task['gate'] if next_issuer_task else None,
                          next_issuer_action=next_issuer_task['next_action'] if next_issuer_task else None,
@@ -138,6 +154,8 @@ def build_queue(progress,research):
                     original_captured_review_pending_issuers=sum(
                         bool(r['review_ready_original_gate_count']) for r in high_upside),
                     review_ready_gate_issues=sum(r['review_ready_original_gate_count'] for r in high_upside),
+                    source_advanced_issuers=sum(bool(r['source_advanced_gate_count']) for r in high_upside),
+                    source_advanced_gate_issues=sum(r['source_advanced_gate_count'] for r in high_upside),
                     verification_priority=[
                         dict(code=r['code'],name=r['name'],
                              upside_pct=r['research_upside_pct'],
@@ -174,7 +192,9 @@ def render(report):
            '同公司原始財報集中蒐集，各項仍須獨立查核；策略證據集中蒐集後仍須核對個股與子群適用性。','',
            f"僅達A+價格門檻的研究候選：{aplus['price_qualified_research_issuers']}；"
            f"其中已封存部分可進一步核閱的原件：{aplus['original_captured_review_pending_issuers']}家、"
-           f"{aplus['review_ready_gate_issues']}項待核；這不是正式A+或品質PASS。",'',
+           f"{aplus['review_ready_gate_issues']}項待核；其他已取得局部股數或交易資料的項目，仍須補齊法律條款及成交能力。",'',
+           f"已有局部來源可繼續核對：{aplus['source_advanced_issuers']}家、"
+           f"{aplus['source_advanced_gate_issues']}項（不等於完整原始證據或品質PASS）。",'',
            '## 先核閱已封存原件（價差≥30%研究候選）','',
            '|公司|研究漲幅|已有原件待核項目|下一項實際動作|',
            '|---|---:|---|---|']
