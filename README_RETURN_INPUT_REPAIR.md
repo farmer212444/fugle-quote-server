@@ -17,3 +17,11 @@ python -m unittest -v tests.test_tpex_research_liquidity tests.test_current_rese
 ```
 
 新測試使用明示的合成原件，覆蓋上櫃20日中位數、原件共用、未來資料、公司／日期／金額衝突、原件損壞、報酬特徵接入與治理排除；它們是工程回歸檢查，不是投資績效。
+
+## 2026-11-07：補件佇列與動能原件綁定修正
+
+研究選參原先只把已可構成候選組合的股票放入 `collection_queue`。當動能特徵全部缺件，無法組成候選的股票便不會藉由該佇列被提示回補；這是蒐證可觀測性缺口，不能拿動能0/859當作0報酬。本次另輸出 `input_repair_queue` 與 `input_repair_counts`，對每檔可估值公司列明缺少的20日官方成交額、64個交易日動能與完整公司行動核閱、同期間現金流／營收、營收加速、毛利比較及估值資料。既有實驗名單與來源收集義務不變；此新增清單不會自行產生審閱文件或補零。
+
+動能來源若已完整核對並計算成功，將其 `momentum_reviews/{code}.json` 原始檔SHA256納入凍結來源清單，日後可追查該數值對應的核閱文件版本。測試以合成審閱模擬驗證來源綁定；不代表現實資料已到齊。此修復僅補資料完整性與可追溯性，不更動已登錄的權重、2027 EPS／PE、正式品質門檻、PIT認證及交易。
+
+回歸測試：`python -m unittest -v tests.test_current_research_screens tests.test_tpex_research_liquidity tests.test_return_model_search`。正式2027機率校準及年度歷史回放仍依 `README_EXPECTED_RETURNS.md` 受阻，不為了出榜而降低門檻。

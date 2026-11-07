@@ -11,7 +11,8 @@ SOURCE_JSON_PATTERNS=('evidence/v880/certificates/*.json','evidence/v880/issuer_
     'evidence/v880/working_capital_watch/*.json',
     'evidence/v880/inventory_original_watch/*.json',
     'evidence/v880/earnings_version_reviews/*.json',
-    'evidence/v880/originals/*/manifest.json')
+    'evidence/v880/originals/*/manifest.json',
+    'evidence/v880/originals/2330/full_statements/manifest.json')
 
 def source_ledgers(root):
     return sorted({p for pattern in SOURCE_JSON_PATTERNS for p in root.glob(pattern)})

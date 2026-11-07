@@ -7,6 +7,7 @@ on their own, establish the content that was publicly available years ago.
 import argparse
 import datetime as dt
 import gzip
+import io
 import json
 import re
 import time
@@ -72,6 +73,10 @@ def parse(raw, spec):
     require(len(dates) == 1 and dates[0].replace('/', '-') == spec['published_on'],
             'ISSUER_PUBLICATION_DATE_MISMATCH')
     require('Issued by: TSMC' in text, 'ISSUER_AUTHOR_MISSING')
+    return financial_facts(text, spec)
+
+
+def financial_facts(text, spec):
     number = r'([\d,]+\.\d+)'
     pattern = (r'TSMC\s*\(TWSE:\s*2330,\s*NYSE:\s*TSM\)\s*today announced '
                r'consolidated revenue of NT\$' + number + r' billion, '
@@ -98,17 +103,91 @@ def parse(raw, spec):
                 financial_paragraph_sha256=digest(matches[0].__repr__().encode()))
 
 
+def pdf_source_url(endpoint):
+    require(isinstance(endpoint, str) and re.fullmatch(
+        r'https://pr\.tsmc\.com/system/files/newspdf/attachment/[0-9a-f]{40}/[^/?#]+\.pdf', endpoint),
+        'ISSUER_PDF_SOURCE_NOT_ALLOWLISTED')
+    return endpoint
+
+
+def parse_pdf(raw, spec):
+    source_url(spec)
+    require(isinstance(raw, bytes) and 0 < len(raw) <= 5*1024*1024
+            and raw.startswith(b'%PDF-'), 'ISSUER_PDF_REQUIRED_OR_TOO_LARGE')
+    from pypdf import PdfReader
+    try:
+        reader = PdfReader(io.BytesIO(raw), strict=True)
+        require(not reader.is_encrypted and 0 < len(reader.pages) <= 8,
+                'ISSUER_PDF_ENCRYPTED_OR_UNBOUNDED')
+        parts = []
+        for page in reader.pages:
+            stream = page.get_contents()
+            require(stream is None or len(stream.get_data()) <= 10*1024*1024,
+                    'ISSUER_PDF_CONTENT_STREAM_TOO_LARGE')
+            parts.append(page.extract_text())
+    except Exception as exc:
+        raise ValueError('ISSUER_PDF_READ_FAILED: '+str(exc)) from exc
+    text = re.sub(r'\s+', ' ', ' '.join(parts)).strip()
+    # Word-generated PDFs sometimes split the day and year into text fragments.
+    # Repair spacing only in the explicitly identified release-date field.
+    dates = re.findall(r'(?:HSINCHU|Hsinchu), Taiwan, R\.O\.C\., '
+                       r'([A-Za-z]+)\.? ([\d ]{1,4})\s*, ([\d ]{4,8}) -- TSMC', text)
+    require(len(dates) == 1, 'ISSUER_PDF_RELEASE_DATE_MISSING_OR_DUPLICATE')
+    month, day, year = dates[0]
+    published = dt.datetime.strptime(month[:3]+' '+day.replace(' ', '')+' '+year.replace(' ', ''),
+                                     '%b %d %Y').date().isoformat()
+    require(published == spec['published_on'], 'ISSUER_PDF_PUBLICATION_DATE_MISMATCH')
+    facts = financial_facts(text, spec)
+    return facts
+
+
 def verify(root, receipt):
     raw = gzip.decompress(safe(root, receipt['archive_path']).read_bytes())
     require(receipt.get('schema') == SCHEMA and receipt['raw_sha256'] == digest(raw)
             and receipt['bytes'] == len(raw), 'ISSUER_ARCHIVE_BYTES_MISMATCH')
-    require(receipt['source_url'] == source_url(receipt['requested_spec']),
-            'ISSUER_ARCHIVE_SOURCE_MISMATCH')
-    facts = parse(raw, receipt['requested_spec'])
+    if receipt.get('media_type') == 'application/pdf':
+        require(receipt.get('source_page') == source_url(receipt['requested_spec']),
+                'ISSUER_ARCHIVE_SOURCE_MISMATCH')
+        pdf_source_url(receipt['source_url'])
+        facts = parse_pdf(raw, receipt['requested_spec'])
+    else:
+        require(receipt['source_url'] == source_url(receipt['requested_spec']),
+                'ISSUER_ARCHIVE_SOURCE_MISMATCH')
+        facts = parse(raw, receipt['requested_spec'])
     require(facts == receipt['facts'], 'ISSUER_ARCHIVE_FACTS_MISMATCH')
     require(aware(receipt['first_captured_at_utc']).astimezone(TAIPEI).date()
             >= dt.date.fromisoformat(facts['published_on']), 'ISSUER_CAPTURE_PREDATES_DOCUMENT')
+    require(aware(receipt['first_captured_at_utc']) <= dt.datetime.now(dt.timezone.utc),
+            'ISSUER_CAPTURE_CLOCK_FROM_FUTURE')
     return facts
+
+
+def imported_pdf_receipts(root, manifest):
+    require(manifest.get('schema') == 'ISSUER_PDF_DOWNLOAD_MANIFEST_V1', 'ISSUER_PDF_MANIFEST_SCHEMA')
+    rows = manifest.get('records')
+    require(isinstance(rows, list) and 0 < len(rows) <= 16, 'ISSUER_PDF_MANIFEST_UNBOUNDED')
+    require(len({r['archive_path'] for r in rows}) == len(rows), 'ISSUER_PDF_DUPLICATE_ARCHIVE')
+    receipts = []
+    for row in rows:
+        require(row.get('source_capture_method') == 'BROWSER_DOWNLOAD_FROM_VISIBLE_OFFICIAL_ISSUER_LINK',
+                'ISSUER_PDF_CAPTURE_METHOD_UNDOCUMENTED')
+        require(row.get('historical_version_at_publication_verified') is False
+                and row.get('full_historical_financial_PIT_admitted') is False,
+                'ISSUER_PDF_CANNOT_SELF_CERTIFY_HISTORICAL_PIT')
+        spec = row['requested_spec']
+        require(row['source_page'] == source_url(spec), 'ISSUER_PDF_PAGE_MISMATCH')
+        pdf_source_url(row['source_url'])
+        require(row['archive_path'] == 'evidence/v880/issuer_earnings_pdf/2330/'+spec['report_period']
+                +'/'+row['raw_sha256']+'.pdf.gz', 'ISSUER_PDF_ARCHIVE_IDENTITY_MISMATCH')
+        raw = gzip.decompress(safe(root, row['archive_path']).read_bytes())
+        require(digest(raw) == row['raw_sha256'] and len(raw) == row['bytes'],
+                'ISSUER_ARCHIVE_BYTES_MISMATCH')
+        receipt = dict(row, schema=SCHEMA, media_type='application/pdf', facts=parse_pdf(raw, spec),
+                       publication_date_and_current_content_verified=True,
+                       historical_universe_verified=False, formal_Aplus_added=0)
+        verify(root, receipt)
+        receipts.append(receipt)
+    return receipts
 
 
 def archive(root, spec, raw, now=None):
@@ -185,7 +264,17 @@ def collect(root, manifest, fetcher=fetch, offline=False):
     require(isinstance(sources, list) and 0 < len(sources) <= 16, 'ISSUER_MANIFEST_UNBOUNDED')
     require(len({source_url(s) for s in sources}) == len(sources), 'ISSUER_DUPLICATE_SOURCE')
     receipts, errors, pending = [], [], []
+    pdf_manifest = Path(root)/'config/issuer_pdf_downloads_v1.json'
+    if pdf_manifest.exists():
+        try:
+            receipts = imported_pdf_receipts(root, json.loads(pdf_manifest.read_bytes()))
+            require(all(r['requested_spec'] in sources for r in receipts), 'ISSUER_PDF_OUTSIDE_PILOT_SCOPE')
+        except (ValueError, KeyError, TypeError, OSError, EOFError) as exc:
+            receipts = []
+            errors.append(dict(url='config/issuer_pdf_downloads_v1.json', reason=str(exc)))
     for spec in sources:
+        if any(r['requested_spec'] == spec for r in receipts):
+            continue
         try:
             if offline:
                 paths = sorted((Path(root)/FOLDER/spec['code']/spec['report_period']).glob('*.json'))
@@ -205,6 +294,8 @@ def collect(root, manifest, fetcher=fetch, offline=False):
         observed_at_utc=dt.datetime.now(dt.timezone.utc).isoformat(),
         status='SOURCE_ERRORS' if errors else 'SOURCE_COLLECTION_PENDING' if pending else 'ISSUER_ORIGINALS_CAPTURED',
         requested_documents=len(sources), verified_document_versions=len(receipts),
+        verified_financial_periods=len({r['facts']['report_period'] for r in receipts}),
+        verified_pdf_originals=sum(r.get('media_type') == 'application/pdf' for r in receipts),
         issuer_count=len({r['facts']['code'] for r in receipts}), records=receipts,
         errors=errors, pending=pending, research_ttm_replays=[],
         full_historical_financial_PIT_admitted=0, calibrated_expected_returns_created=0,

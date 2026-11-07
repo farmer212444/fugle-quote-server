@@ -27,6 +27,27 @@ def explicit_cost_policy(policy):
             policy['sell_fee_rate']+policy['sell_tax_rate']<1)
 
 
+def issuer_original_pilot(root):
+    manifest=Path(root)/'config/issuer_earnings_sources_v1.json'
+    if not manifest.exists():
+        return dict(status='NOT_CONFIGURED',verified_pdf_originals=0,issuer_count=0,
+                    historical_financial_pit_admitted=0,return_backtest_observations=0)
+    try:
+        from scripts.issuer_earnings_intake import collect
+        report=collect(root,json.loads(manifest.read_bytes()),offline=True)
+        return dict(status=report['status'],observed_at_utc=report['observed_at_utc'],
+            verified_pdf_originals=report['verified_pdf_originals'],issuer_count=report['issuer_count'],
+            verified_financial_periods=report['verified_financial_periods'],
+            date_aware_eps_arithmetic_replays=report['research_ttm_replays'],
+            historical_financial_pit_admitted=0,return_backtest_observations=0,
+            historical_version_at_publication_verified=False,
+            errors=report['errors'],pending=report['pending'])
+    except (ValueError,KeyError,TypeError,OSError,EOFError,ImportError) as exc:
+        return dict(status='SOURCE_VERIFICATION_FAILED',verified_pdf_originals=0,issuer_count=0,
+            errors=[dict(path=manifest.as_posix(),reason=str(exc))],
+            historical_financial_pit_admitted=0,return_backtest_observations=0)
+
+
 def build(root,start_date='2025-01-01'):
     root=Path(root)
     dt.date.fromisoformat(start_date)
@@ -123,6 +144,7 @@ def build(root,start_date='2025-01-01'):
         source_backed_price_sessions_by_market=dict(sessions),financial_mirrors=financial,
         admitted_historical_financial_pit_batches=len(admission['admitted']),
         historical_financial_pit_admissions=admission['admitted'],source_rejections=errors,
+        issuer_original_source_pilot=issuer_original_pilot(root),
         retrospective_replay_status='BLOCKED_MISSING_ORIGINAL_PIT_INPUTS',blockers=blockers,
         prospective_cost_policy_fixed=policy_ready,
         historical_reconstruction_is_not_a_prospective_frozen_model=True,
@@ -149,6 +171,16 @@ def render(report):
         '- 只使用訓練期資料選參數，再執行未參與調參的保留期驗證。',
         '- 事前固定交易成本；目前'+('已有明示政策。' if report['prospective_cost_policy_fixed'] else '尚未固定。'),'',
         '歷史重建可用於回溯驗證，但不得回填成當時已封存的模型；本報告不升級正式A+。']
+    pilot=report.get('issuer_original_source_pilot',{})
+    if pilot.get('status')!='NOT_CONFIGURED':
+        lines+=['','## 公司公告原件試驗','',
+            f"重新解析官方 PDF 原件：{pilot.get('verified_pdf_originals',0)} 份；公司：{pilot.get('issuer_count',0)} 家；狀態：{pilot.get('status')}。",
+            '此為原件與 EPS 日期隔離算術試驗，尚未核實歷史發布版本，不能計入股票報酬回測樣本。']
+        for result in pilot.get('date_aware_eps_arithmetic_replays',[]):
+            if result.get('sum_reported_diluted_eps_twd') is not None:
+                lines.append(f"- 截止 {result['as_of']}：已公告四季稀釋 EPS 加總 {result['sum_reported_diluted_eps_twd']} 元；季度股數可能不同，不視為精確年度 EPS。")
+        for error in pilot.get('errors',[]):
+            lines.append('- 原件試驗問題：'+error.get('reason','UNKNOWN'))
     if report['source_rejections']:
         lines+=['','## 已隔離來源問題','']
         lines += [f"- {row['path']}：{row['reason']}" for row in report['source_rejections']]

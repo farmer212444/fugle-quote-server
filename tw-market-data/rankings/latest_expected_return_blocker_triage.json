@@ -1,0 +1,1291 @@
+{
+  "schema": "EXPECTED_RETURN_BLOCKER_TRIAGE_V1",
+  "model": "V8.10.8",
+  "asof_price_date": "2026-11-06",
+  "source_sha256": {
+    "research": "3dc824335d14519e40d7801ff001128a6309e41dbb69ffad95a73b40f4bfeae1",
+    "returns": "094debffc1cacd73d6faf7735ccfafbfa7198a453f90147a960bf2520dfb8df1",
+    "history": "029a35c12f6fdad960861fa5661103b4b0086d0614901062a992c87de1749be4",
+    "full_results_gzip": "5013ca0d5873b90dbbf6bd76cdbb524c1871d1be38d29e944bf233b29b1e5bf4"
+  },
+  "issuer_count": 2004,
+  "issuer_status_counts": {
+    "NO_COMPARABLE_FORECAST": 1145,
+    "EXPECTED_RETURN_SCENARIOS_INVALID": 53,
+    "AWAITING_MATCHED_MATURE_OOS_COHORTS": 806
+  },
+  "invalid_scenario_count": 53,
+  "invalid_scenario_issuers": [
+    {
+      "market": "TPEX",
+      "code": "1259",
+      "name": "安心",
+      "target_prices": {
+        "bear": null,
+        "base": 27.491921901573193,
+        "bull": 86.96377601990103
+      },
+      "reasons": [
+        "MISSING_OR_NONFINITE_BEAR_TARGET"
+      ],
+      "status": "REVIEW_ONLY_NO_ESTIMATE"
+    },
+    {
+      "market": "TPEX",
+      "code": "1336",
+      "name": "台翰",
+      "target_prices": {
+        "bear": null,
+        "base": 2.012368455539422,
+        "bull": 34.38509872242015
+      },
+      "reasons": [
+        "MISSING_OR_NONFINITE_BEAR_TARGET"
+      ],
+      "status": "REVIEW_ONLY_NO_ESTIMATE"
+    },
+    {
+      "market": "TPEX",
+      "code": "1784",
+      "name": "訊聯",
+      "target_prices": {
+        "bear": null,
+        "base": 2.682790319623705,
+        "bull": 8.923942544599486
+      },
+      "reasons": [
+        "MISSING_OR_NONFINITE_BEAR_TARGET"
+      ],
+      "status": "REVIEW_ONLY_NO_ESTIMATE"
+    },
+    {
+      "market": "TPEX",
+      "code": "2643",
+      "name": "捷迅",
+      "target_prices": {
+        "bear": null,
+        "base": 47.68327532942933,
+        "bull": 169.70909418679167
+      },
+      "reasons": [
+        "MISSING_OR_NONFINITE_BEAR_TARGET"
+      ],
+      "status": "REVIEW_ONLY_NO_ESTIMATE"
+    },
+    {
+      "market": "TPEX",
+      "code": "2743",
+      "name": "山富",
+      "target_prices": {
+        "bear": null,
+        "base": 21.026291054400073,
+        "bull": 118.54813488730208
+      },
+      "reasons": [
+        "MISSING_OR_NONFINITE_BEAR_TARGET"
+      ],
+      "status": "REVIEW_ONLY_NO_ESTIMATE"
+    },
+    {
+      "market": "TPEX",
+      "code": "3093",
+      "name": "港建*",
+      "target_prices": {
+        "bear": null,
+        "base": 10.466705300013071,
+        "bull": 46.54033120305475
+      },
+      "reasons": [
+        "MISSING_OR_NONFINITE_BEAR_TARGET"
+      ],
+      "status": "REVIEW_ONLY_NO_ESTIMATE"
+    },
+    {
+      "market": "TPEX",
+      "code": "3162",
+      "name": "精確",
+      "target_prices": {
+        "bear": null,
+        "base": 2.7715652308142746,
+        "bull": 96.32230093848779
+      },
+      "reasons": [
+        "MISSING_OR_NONFINITE_BEAR_TARGET"
+      ],
+      "status": "REVIEW_ONLY_NO_ESTIMATE"
+    },
+    {
+      "market": "TPEX",
+      "code": "3289",
+      "name": "宜特",
+      "target_prices": {
+        "bear": null,
+        "base": 12.601176835679075,
+        "bull": 111.2852990739647
+      },
+      "reasons": [
+        "MISSING_OR_NONFINITE_BEAR_TARGET"
+      ],
+      "status": "REVIEW_ONLY_NO_ESTIMATE"
+    },
+    {
+      "market": "TPEX",
+      "code": "3290",
+      "name": "東浦",
+      "target_prices": {
+        "bear": null,
+        "base": 25.468598209985988,
+        "bull": 173.8615095357588
+      },
+      "reasons": [
+        "MISSING_OR_NONFINITE_BEAR_TARGET"
+      ],
+      "status": "REVIEW_ONLY_NO_ESTIMATE"
+    },
+    {
+      "market": "TPEX",
+      "code": "3310",
+      "name": "佳穎",
+      "target_prices": {
+        "bear": null,
+        "base": 84.16614049298953,
+        "bull": 329.9436811553848
+      },
+      "reasons": [
+        "MISSING_OR_NONFINITE_BEAR_TARGET"
+      ],
+      "status": "REVIEW_ONLY_NO_ESTIMATE"
+    },
+    {
+      "market": "TPEX",
+      "code": "3490",
+      "name": "單井",
+      "target_prices": {
+        "bear": null,
+        "base": 0.09346657311981395,
+        "bull": 2.3867314535500834
+      },
+      "reasons": [
+        "MISSING_OR_NONFINITE_BEAR_TARGET"
+      ],
+      "status": "REVIEW_ONLY_NO_ESTIMATE"
+    },
+    {
+      "market": "TPEX",
+      "code": "3558",
+      "name": "神準",
+      "target_prices": {
+        "bear": null,
+        "base": 24.431359401794037,
+        "bull": 189.9219425915706
+      },
+      "reasons": [
+        "MISSING_OR_NONFINITE_BEAR_TARGET"
+      ],
+      "status": "REVIEW_ONLY_NO_ESTIMATE"
+    },
+    {
+      "market": "TPEX",
+      "code": "3564",
+      "name": "其陽",
+      "target_prices": {
+        "bear": null,
+        "base": 0.0899724907252152,
+        "bull": 47.15601515395893
+      },
+      "reasons": [
+        "MISSING_OR_NONFINITE_BEAR_TARGET"
+      ],
+      "status": "REVIEW_ONLY_NO_ESTIMATE"
+    },
+    {
+      "market": "TPEX",
+      "code": "3594",
+      "name": "磐儀",
+      "target_prices": {
+        "bear": null,
+        "base": 14.568257465511302,
+        "bull": 70.59014979575973
+      },
+      "reasons": [
+        "MISSING_OR_NONFINITE_BEAR_TARGET"
+      ],
+      "status": "REVIEW_ONLY_NO_ESTIMATE"
+    },
+    {
+      "market": "TPEX",
+      "code": "4729",
+      "name": "熒茂",
+      "target_prices": {
+        "bear": null,
+        "base": 1.8850328846293907,
+        "bull": 7.2116900289086034
+      },
+      "reasons": [
+        "MISSING_OR_NONFINITE_BEAR_TARGET"
+      ],
+      "status": "REVIEW_ONLY_NO_ESTIMATE"
+    },
+    {
+      "market": "TPEX",
+      "code": "5356",
+      "name": "協益",
+      "target_prices": {
+        "bear": null,
+        "base": 2.205108586246106,
+        "bull": 21.71328244556654
+      },
+      "reasons": [
+        "MISSING_OR_NONFINITE_BEAR_TARGET"
+      ],
+      "status": "REVIEW_ONLY_NO_ESTIMATE"
+    },
+    {
+      "market": "TPEX",
+      "code": "5465",
+      "name": "富驊",
+      "target_prices": {
+        "bear": null,
+        "base": 19.402086763095223,
+        "bull": 58.845025627457154
+      },
+      "reasons": [
+        "MISSING_OR_NONFINITE_BEAR_TARGET"
+      ],
+      "status": "REVIEW_ONLY_NO_ESTIMATE"
+    },
+    {
+      "market": "TPEX",
+      "code": "6101",
+      "name": "寬魚國際",
+      "target_prices": {
+        "bear": null,
+        "base": 8.386325539523128,
+        "bull": 132.34310499809473
+      },
+      "reasons": [
+        "MISSING_OR_NONFINITE_BEAR_TARGET"
+      ],
+      "status": "REVIEW_ONLY_NO_ESTIMATE"
+    },
+    {
+      "market": "TPEX",
+      "code": "6194",
+      "name": "育富",
+      "target_prices": {
+        "bear": null,
+        "base": 1.365931053610813,
+        "bull": 34.4622087463859
+      },
+      "reasons": [
+        "MISSING_OR_NONFINITE_BEAR_TARGET"
+      ],
+      "status": "REVIEW_ONLY_NO_ESTIMATE"
+    },
+    {
+      "market": "TPEX",
+      "code": "6234",
+      "name": "高僑",
+      "target_prices": {
+        "bear": null,
+        "base": 0.025232745135772026,
+        "bull": 15.694356409765934
+      },
+      "reasons": [
+        "MISSING_OR_NONFINITE_BEAR_TARGET"
+      ],
+      "status": "REVIEW_ONLY_NO_ESTIMATE"
+    },
+    {
+      "market": "TPEX",
+      "code": "6432",
+      "name": "今展科",
+      "target_prices": {
+        "bear": null,
+        "base": 8.858372296006884,
+        "bull": 53.96206074187278
+      },
+      "reasons": [
+        "MISSING_OR_NONFINITE_BEAR_TARGET"
+      ],
+      "status": "REVIEW_ONLY_NO_ESTIMATE"
+    },
+    {
+      "market": "TPEX",
+      "code": "6470",
+      "name": "宇智",
+      "target_prices": {
+        "bear": null,
+        "base": 3.7273436347543054,
+        "bull": 17.695465700777994
+      },
+      "reasons": [
+        "MISSING_OR_NONFINITE_BEAR_TARGET"
+      ],
+      "status": "REVIEW_ONLY_NO_ESTIMATE"
+    },
+    {
+      "market": "TPEX",
+      "code": "8111",
+      "name": "立碁",
+      "target_prices": {
+        "bear": null,
+        "base": 1.9373478925907417,
+        "bull": 8.759163713436678
+      },
+      "reasons": [
+        "MISSING_OR_NONFINITE_BEAR_TARGET"
+      ],
+      "status": "REVIEW_ONLY_NO_ESTIMATE"
+    },
+    {
+      "market": "TPEX",
+      "code": "8928",
+      "name": "鉅明",
+      "target_prices": {
+        "bear": null,
+        "base": 4.108719959803498,
+        "bull": 29.76325407380207
+      },
+      "reasons": [
+        "MISSING_OR_NONFINITE_BEAR_TARGET"
+      ],
+      "status": "REVIEW_ONLY_NO_ESTIMATE"
+    },
+    {
+      "market": "TWSE",
+      "code": "1220",
+      "name": "台榮",
+      "target_prices": {
+        "bear": null,
+        "base": 2.710301913063889,
+        "bull": 13.804986677829621
+      },
+      "reasons": [
+        "MISSING_OR_NONFINITE_BEAR_TARGET"
+      ],
+      "status": "REVIEW_ONLY_NO_ESTIMATE"
+    },
+    {
+      "market": "TWSE",
+      "code": "1339",
+      "name": "昭輝",
+      "target_prices": {
+        "bear": null,
+        "base": 3.341770212239419,
+        "bull": 41.269326546885516
+      },
+      "reasons": [
+        "MISSING_OR_NONFINITE_BEAR_TARGET"
+      ],
+      "status": "REVIEW_ONLY_NO_ESTIMATE"
+    },
+    {
+      "market": "TWSE",
+      "code": "1464",
+      "name": "得力",
+      "target_prices": {
+        "bear": null,
+        "base": 0.238371949153788,
+        "bull": 16.68585999339445
+      },
+      "reasons": [
+        "MISSING_OR_NONFINITE_BEAR_TARGET"
+      ],
+      "status": "REVIEW_ONLY_NO_ESTIMATE"
+    },
+    {
+      "market": "TWSE",
+      "code": "1541",
+      "name": "錩泰",
+      "target_prices": {
+        "bear": null,
+        "base": 6.159202714306618,
+        "bull": 33.05890676214954
+      },
+      "reasons": [
+        "MISSING_OR_NONFINITE_BEAR_TARGET"
+      ],
+      "status": "REVIEW_ONLY_NO_ESTIMATE"
+    },
+    {
+      "market": "TWSE",
+      "code": "1582",
+      "name": "信錦",
+      "target_prices": {
+        "bear": null,
+        "base": 12.658195004725062,
+        "bull": 151.6539856552313
+      },
+      "reasons": [
+        "MISSING_OR_NONFINITE_BEAR_TARGET"
+      ],
+      "status": "REVIEW_ONLY_NO_ESTIMATE"
+    },
+    {
+      "market": "TWSE",
+      "code": "1605",
+      "name": "華新",
+      "target_prices": {
+        "bear": null,
+        "base": 2.6870405553358188,
+        "bull": 25.253699788149135
+      },
+      "reasons": [
+        "MISSING_OR_NONFINITE_BEAR_TARGET"
+      ],
+      "status": "REVIEW_ONLY_NO_ESTIMATE"
+    },
+    {
+      "market": "TWSE",
+      "code": "1795",
+      "name": "美時",
+      "target_prices": {
+        "bear": null,
+        "base": 220.54057552055815,
+        "bull": 814.9905305251266
+      },
+      "reasons": [
+        "MISSING_OR_NONFINITE_BEAR_TARGET"
+      ],
+      "status": "REVIEW_ONLY_NO_ESTIMATE"
+    },
+    {
+      "market": "TWSE",
+      "code": "2324",
+      "name": "仁寶",
+      "target_prices": {
+        "bear": null,
+        "base": 33.481473745472535,
+        "bull": 98.84852321176872
+      },
+      "reasons": [
+        "MISSING_OR_NONFINITE_BEAR_TARGET"
+      ],
+      "status": "REVIEW_ONLY_NO_ESTIMATE"
+    },
+    {
+      "market": "TWSE",
+      "code": "2328",
+      "name": "廣宇",
+      "target_prices": {
+        "bear": null,
+        "base": 5.655140447970247,
+        "bull": 54.365130681986095
+      },
+      "reasons": [
+        "MISSING_OR_NONFINITE_BEAR_TARGET"
+      ],
+      "status": "REVIEW_ONLY_NO_ESTIMATE"
+    },
+    {
+      "market": "TWSE",
+      "code": "2352",
+      "name": "佳世達",
+      "target_prices": {
+        "bear": null,
+        "base": 11.218641665799986,
+        "bull": 39.744724108141966
+      },
+      "reasons": [
+        "MISSING_OR_NONFINITE_BEAR_TARGET"
+      ],
+      "status": "REVIEW_ONLY_NO_ESTIMATE"
+    },
+    {
+      "market": "TWSE",
+      "code": "2362",
+      "name": "藍天",
+      "target_prices": {
+        "bear": null,
+        "base": 19.306537122985834,
+        "bull": 98.49459127299129
+      },
+      "reasons": [
+        "MISSING_OR_NONFINITE_BEAR_TARGET"
+      ],
+      "status": "REVIEW_ONLY_NO_ESTIMATE"
+    },
+    {
+      "market": "TWSE",
+      "code": "2427",
+      "name": "三商電",
+      "target_prices": {
+        "bear": null,
+        "base": 15.132023406576902,
+        "bull": 77.52968802820132
+      },
+      "reasons": [
+        "MISSING_OR_NONFINITE_BEAR_TARGET"
+      ],
+      "status": "REVIEW_ONLY_NO_ESTIMATE"
+    },
+    {
+      "market": "TWSE",
+      "code": "2630",
+      "name": "亞航",
+      "target_prices": {
+        "bear": null,
+        "base": 1.9954171501220768,
+        "bull": 10.424017034723224
+      },
+      "reasons": [
+        "MISSING_OR_NONFINITE_BEAR_TARGET"
+      ],
+      "status": "REVIEW_ONLY_NO_ESTIMATE"
+    },
+    {
+      "market": "TWSE",
+      "code": "2945",
+      "name": "三商家購",
+      "target_prices": {
+        "bear": null,
+        "base": 30.26409529312922,
+        "bull": 121.83493652264282
+      },
+      "reasons": [
+        "MISSING_OR_NONFINITE_BEAR_TARGET"
+      ],
+      "status": "REVIEW_ONLY_NO_ESTIMATE"
+    },
+    {
+      "market": "TWSE",
+      "code": "3308",
+      "name": "聯德",
+      "target_prices": {
+        "bear": 14.80033733719064,
+        "base": 11.956665990853788,
+        "bull": null
+      },
+      "reasons": [
+        "MISSING_OR_NONFINITE_BULL_TARGET"
+      ],
+      "status": "REVIEW_ONLY_NO_ESTIMATE"
+    },
+    {
+      "market": "TWSE",
+      "code": "3376",
+      "name": "新日興",
+      "target_prices": {
+        "bear": null,
+        "base": 1.4266760172831672,
+        "bull": 110.1416066698687
+      },
+      "reasons": [
+        "MISSING_OR_NONFINITE_BEAR_TARGET"
+      ],
+      "status": "REVIEW_ONLY_NO_ESTIMATE"
+    },
+    {
+      "market": "TWSE",
+      "code": "3532",
+      "name": "台勝科",
+      "target_prices": {
+        "bear": null,
+        "base": 17.323063584996877,
+        "bull": 294.96493820172185
+      },
+      "reasons": [
+        "MISSING_OR_NONFINITE_BEAR_TARGET"
+      ],
+      "status": "REVIEW_ONLY_NO_ESTIMATE"
+    },
+    {
+      "market": "TWSE",
+      "code": "3715",
+      "name": "定穎投控",
+      "target_prices": {
+        "bear": null,
+        "base": 4.971712235464617,
+        "bull": 242.62813515984908
+      },
+      "reasons": [
+        "MISSING_OR_NONFINITE_BEAR_TARGET"
+      ],
+      "status": "REVIEW_ONLY_NO_ESTIMATE"
+    },
+    {
+      "market": "TWSE",
+      "code": "4133",
+      "name": "亞諾法",
+      "target_prices": {
+        "bear": null,
+        "base": 0.893496144320585,
+        "bull": 4.523545414273535
+      },
+      "reasons": [
+        "MISSING_OR_NONFINITE_BEAR_TARGET"
+      ],
+      "status": "REVIEW_ONLY_NO_ESTIMATE"
+    },
+    {
+      "market": "TWSE",
+      "code": "4720",
+      "name": "德淵",
+      "target_prices": {
+        "bear": null,
+        "base": 4.062161397859096,
+        "bull": 19.842167286885427
+      },
+      "reasons": [
+        "MISSING_OR_NONFINITE_BEAR_TARGET"
+      ],
+      "status": "REVIEW_ONLY_NO_ESTIMATE"
+    },
+    {
+      "market": "TWSE",
+      "code": "5388",
+      "name": "中磊",
+      "target_prices": {
+        "bear": null,
+        "base": 45.90253373599294,
+        "bull": 436.53662680089354
+      },
+      "reasons": [
+        "MISSING_OR_NONFINITE_BEAR_TARGET"
+      ],
+      "status": "REVIEW_ONLY_NO_ESTIMATE"
+    },
+    {
+      "market": "TWSE",
+      "code": "6591",
+      "name": "動力-KY",
+      "target_prices": {
+        "bear": 6.562851360903845,
+        "base": 2.355849030713653,
+        "bull": 61.49262689096383
+      },
+      "reasons": [
+        "BEAR_BASE_BULL_NOT_STRICTLY_ASCENDING"
+      ],
+      "status": "REVIEW_ONLY_NO_ESTIMATE"
+    },
+    {
+      "market": "TWSE",
+      "code": "6641",
+      "name": "基士德-KY",
+      "target_prices": {
+        "bear": null,
+        "base": 0.7288096730168948,
+        "bull": 18.408753648601966
+      },
+      "reasons": [
+        "MISSING_OR_NONFINITE_BEAR_TARGET"
+      ],
+      "status": "REVIEW_ONLY_NO_ESTIMATE"
+    },
+    {
+      "market": "TWSE",
+      "code": "6715",
+      "name": "嘉基",
+      "target_prices": {
+        "bear": null,
+        "base": 3.407113156829799,
+        "bull": 69.09882735979997
+      },
+      "reasons": [
+        "MISSING_OR_NONFINITE_BEAR_TARGET"
+      ],
+      "status": "REVIEW_ONLY_NO_ESTIMATE"
+    },
+    {
+      "market": "TWSE",
+      "code": "6756",
+      "name": "威鋒電子",
+      "target_prices": {
+        "bear": null,
+        "base": 1.456505354030758,
+        "bull": 71.40238791791386
+      },
+      "reasons": [
+        "MISSING_OR_NONFINITE_BEAR_TARGET"
+      ],
+      "status": "REVIEW_ONLY_NO_ESTIMATE"
+    },
+    {
+      "market": "TWSE",
+      "code": "6863",
+      "name": "永道-KY",
+      "target_prices": {
+        "bear": null,
+        "base": 24.935240270153372,
+        "bull": 307.8958098024549
+      },
+      "reasons": [
+        "MISSING_OR_NONFINITE_BEAR_TARGET"
+      ],
+      "status": "REVIEW_ONLY_NO_ESTIMATE"
+    },
+    {
+      "market": "TWSE",
+      "code": "8011",
+      "name": "台通",
+      "target_prices": {
+        "bear": null,
+        "base": 5.786811088054621,
+        "bull": 34.27300738665846
+      },
+      "reasons": [
+        "MISSING_OR_NONFINITE_BEAR_TARGET"
+      ],
+      "status": "REVIEW_ONLY_NO_ESTIMATE"
+    },
+    {
+      "market": "TWSE",
+      "code": "8163",
+      "name": "達方",
+      "target_prices": {
+        "bear": null,
+        "base": 0.9635247528799806,
+        "bull": 39.48146617783261
+      },
+      "reasons": [
+        "MISSING_OR_NONFINITE_BEAR_TARGET"
+      ],
+      "status": "REVIEW_ONLY_NO_ESTIMATE"
+    },
+    {
+      "market": "TWSE",
+      "code": "8442",
+      "name": "威宏-KY",
+      "target_prices": {
+        "bear": null,
+        "base": 8.622809374306936,
+        "bull": 78.97673009750768
+      },
+      "reasons": [
+        "MISSING_OR_NONFINITE_BEAR_TARGET"
+      ],
+      "status": "REVIEW_ONLY_NO_ESTIMATE"
+    }
+  ],
+  "existing_historical_original_receipts": 480,
+  "admitted_historical_pit_batches": 0,
+  "unadmitted_financial_mirrors": [
+    {
+      "market": "TPEX",
+      "period": "2022-Q3",
+      "kind": "cashflow",
+      "path": "fundamentals/2022-Q3/TPEX_cashflow.json",
+      "required_evidence": "OFFICIAL_PUBLICATION_AND_REVISION_VERSION_WITH_NAMED_REVIEW",
+      "verified_pit": false
+    },
+    {
+      "market": "TPEX",
+      "period": "2022-Q3",
+      "kind": "income",
+      "path": "fundamentals/2022-Q3/TPEX_income.json",
+      "required_evidence": "OFFICIAL_PUBLICATION_AND_REVISION_VERSION_WITH_NAMED_REVIEW",
+      "verified_pit": false
+    },
+    {
+      "market": "TWSE",
+      "period": "2022-Q3",
+      "kind": "cashflow",
+      "path": "fundamentals/2022-Q3/TWSE_cashflow.json",
+      "required_evidence": "OFFICIAL_PUBLICATION_AND_REVISION_VERSION_WITH_NAMED_REVIEW",
+      "verified_pit": false
+    },
+    {
+      "market": "TWSE",
+      "period": "2022-Q3",
+      "kind": "income",
+      "path": "fundamentals/2022-Q3/TWSE_income.json",
+      "required_evidence": "OFFICIAL_PUBLICATION_AND_REVISION_VERSION_WITH_NAMED_REVIEW",
+      "verified_pit": false
+    },
+    {
+      "market": "TPEX",
+      "period": "2022-Q4",
+      "kind": "cashflow",
+      "path": "fundamentals/2022-Q4/TPEX_cashflow.json",
+      "required_evidence": "OFFICIAL_PUBLICATION_AND_REVISION_VERSION_WITH_NAMED_REVIEW",
+      "verified_pit": false
+    },
+    {
+      "market": "TPEX",
+      "period": "2022-Q4",
+      "kind": "income",
+      "path": "fundamentals/2022-Q4/TPEX_income.json",
+      "required_evidence": "OFFICIAL_PUBLICATION_AND_REVISION_VERSION_WITH_NAMED_REVIEW",
+      "verified_pit": false
+    },
+    {
+      "market": "TWSE",
+      "period": "2022-Q4",
+      "kind": "cashflow",
+      "path": "fundamentals/2022-Q4/TWSE_cashflow.json",
+      "required_evidence": "OFFICIAL_PUBLICATION_AND_REVISION_VERSION_WITH_NAMED_REVIEW",
+      "verified_pit": false
+    },
+    {
+      "market": "TWSE",
+      "period": "2022-Q4",
+      "kind": "income",
+      "path": "fundamentals/2022-Q4/TWSE_income.json",
+      "required_evidence": "OFFICIAL_PUBLICATION_AND_REVISION_VERSION_WITH_NAMED_REVIEW",
+      "verified_pit": false
+    },
+    {
+      "market": "TPEX",
+      "period": "2023-Q1",
+      "kind": "cashflow",
+      "path": "fundamentals/2023-Q1/TPEX_cashflow.json",
+      "required_evidence": "OFFICIAL_PUBLICATION_AND_REVISION_VERSION_WITH_NAMED_REVIEW",
+      "verified_pit": false
+    },
+    {
+      "market": "TPEX",
+      "period": "2023-Q1",
+      "kind": "income",
+      "path": "fundamentals/2023-Q1/TPEX_income.json",
+      "required_evidence": "OFFICIAL_PUBLICATION_AND_REVISION_VERSION_WITH_NAMED_REVIEW",
+      "verified_pit": false
+    },
+    {
+      "market": "TWSE",
+      "period": "2023-Q1",
+      "kind": "cashflow",
+      "path": "fundamentals/2023-Q1/TWSE_cashflow.json",
+      "required_evidence": "OFFICIAL_PUBLICATION_AND_REVISION_VERSION_WITH_NAMED_REVIEW",
+      "verified_pit": false
+    },
+    {
+      "market": "TWSE",
+      "period": "2023-Q1",
+      "kind": "income",
+      "path": "fundamentals/2023-Q1/TWSE_income.json",
+      "required_evidence": "OFFICIAL_PUBLICATION_AND_REVISION_VERSION_WITH_NAMED_REVIEW",
+      "verified_pit": false
+    },
+    {
+      "market": "TPEX",
+      "period": "2023-Q2",
+      "kind": "cashflow",
+      "path": "fundamentals/2023-Q2/TPEX_cashflow.json",
+      "required_evidence": "OFFICIAL_PUBLICATION_AND_REVISION_VERSION_WITH_NAMED_REVIEW",
+      "verified_pit": false
+    },
+    {
+      "market": "TPEX",
+      "period": "2023-Q2",
+      "kind": "income",
+      "path": "fundamentals/2023-Q2/TPEX_income.json",
+      "required_evidence": "OFFICIAL_PUBLICATION_AND_REVISION_VERSION_WITH_NAMED_REVIEW",
+      "verified_pit": false
+    },
+    {
+      "market": "TWSE",
+      "period": "2023-Q2",
+      "kind": "cashflow",
+      "path": "fundamentals/2023-Q2/TWSE_cashflow.json",
+      "required_evidence": "OFFICIAL_PUBLICATION_AND_REVISION_VERSION_WITH_NAMED_REVIEW",
+      "verified_pit": false
+    },
+    {
+      "market": "TWSE",
+      "period": "2023-Q2",
+      "kind": "income",
+      "path": "fundamentals/2023-Q2/TWSE_income.json",
+      "required_evidence": "OFFICIAL_PUBLICATION_AND_REVISION_VERSION_WITH_NAMED_REVIEW",
+      "verified_pit": false
+    },
+    {
+      "market": "TPEX",
+      "period": "2023-Q3",
+      "kind": "cashflow",
+      "path": "fundamentals/2023-Q3/TPEX_cashflow.json",
+      "required_evidence": "OFFICIAL_PUBLICATION_AND_REVISION_VERSION_WITH_NAMED_REVIEW",
+      "verified_pit": false
+    },
+    {
+      "market": "TPEX",
+      "period": "2023-Q3",
+      "kind": "income",
+      "path": "fundamentals/2023-Q3/TPEX_income.json",
+      "required_evidence": "OFFICIAL_PUBLICATION_AND_REVISION_VERSION_WITH_NAMED_REVIEW",
+      "verified_pit": false
+    },
+    {
+      "market": "TWSE",
+      "period": "2023-Q3",
+      "kind": "cashflow",
+      "path": "fundamentals/2023-Q3/TWSE_cashflow.json",
+      "required_evidence": "OFFICIAL_PUBLICATION_AND_REVISION_VERSION_WITH_NAMED_REVIEW",
+      "verified_pit": false
+    },
+    {
+      "market": "TWSE",
+      "period": "2023-Q3",
+      "kind": "income",
+      "path": "fundamentals/2023-Q3/TWSE_income.json",
+      "required_evidence": "OFFICIAL_PUBLICATION_AND_REVISION_VERSION_WITH_NAMED_REVIEW",
+      "verified_pit": false
+    },
+    {
+      "market": "TPEX",
+      "period": "2023-Q4",
+      "kind": "cashflow",
+      "path": "fundamentals/2023-Q4/TPEX_cashflow.json",
+      "required_evidence": "OFFICIAL_PUBLICATION_AND_REVISION_VERSION_WITH_NAMED_REVIEW",
+      "verified_pit": false
+    },
+    {
+      "market": "TPEX",
+      "period": "2023-Q4",
+      "kind": "income",
+      "path": "fundamentals/2023-Q4/TPEX_income.json",
+      "required_evidence": "OFFICIAL_PUBLICATION_AND_REVISION_VERSION_WITH_NAMED_REVIEW",
+      "verified_pit": false
+    },
+    {
+      "market": "TWSE",
+      "period": "2023-Q4",
+      "kind": "cashflow",
+      "path": "fundamentals/2023-Q4/TWSE_cashflow.json",
+      "required_evidence": "OFFICIAL_PUBLICATION_AND_REVISION_VERSION_WITH_NAMED_REVIEW",
+      "verified_pit": false
+    },
+    {
+      "market": "TWSE",
+      "period": "2023-Q4",
+      "kind": "income",
+      "path": "fundamentals/2023-Q4/TWSE_income.json",
+      "required_evidence": "OFFICIAL_PUBLICATION_AND_REVISION_VERSION_WITH_NAMED_REVIEW",
+      "verified_pit": false
+    },
+    {
+      "market": "TPEX",
+      "period": "2024-Q1",
+      "kind": "cashflow",
+      "path": "fundamentals/2024-Q1/TPEX_cashflow.json",
+      "required_evidence": "OFFICIAL_PUBLICATION_AND_REVISION_VERSION_WITH_NAMED_REVIEW",
+      "verified_pit": false
+    },
+    {
+      "market": "TPEX",
+      "period": "2024-Q1",
+      "kind": "income",
+      "path": "fundamentals/2024-Q1/TPEX_income.json",
+      "required_evidence": "OFFICIAL_PUBLICATION_AND_REVISION_VERSION_WITH_NAMED_REVIEW",
+      "verified_pit": false
+    },
+    {
+      "market": "TWSE",
+      "period": "2024-Q1",
+      "kind": "cashflow",
+      "path": "fundamentals/2024-Q1/TWSE_cashflow.json",
+      "required_evidence": "OFFICIAL_PUBLICATION_AND_REVISION_VERSION_WITH_NAMED_REVIEW",
+      "verified_pit": false
+    },
+    {
+      "market": "TWSE",
+      "period": "2024-Q1",
+      "kind": "income",
+      "path": "fundamentals/2024-Q1/TWSE_income.json",
+      "required_evidence": "OFFICIAL_PUBLICATION_AND_REVISION_VERSION_WITH_NAMED_REVIEW",
+      "verified_pit": false
+    },
+    {
+      "market": "TPEX",
+      "period": "2024-Q2",
+      "kind": "cashflow",
+      "path": "fundamentals/2024-Q2/TPEX_cashflow.json",
+      "required_evidence": "OFFICIAL_PUBLICATION_AND_REVISION_VERSION_WITH_NAMED_REVIEW",
+      "verified_pit": false
+    },
+    {
+      "market": "TPEX",
+      "period": "2024-Q2",
+      "kind": "income",
+      "path": "fundamentals/2024-Q2/TPEX_income.json",
+      "required_evidence": "OFFICIAL_PUBLICATION_AND_REVISION_VERSION_WITH_NAMED_REVIEW",
+      "verified_pit": false
+    },
+    {
+      "market": "TWSE",
+      "period": "2024-Q2",
+      "kind": "cashflow",
+      "path": "fundamentals/2024-Q2/TWSE_cashflow.json",
+      "required_evidence": "OFFICIAL_PUBLICATION_AND_REVISION_VERSION_WITH_NAMED_REVIEW",
+      "verified_pit": false
+    },
+    {
+      "market": "TWSE",
+      "period": "2024-Q2",
+      "kind": "income",
+      "path": "fundamentals/2024-Q2/TWSE_income.json",
+      "required_evidence": "OFFICIAL_PUBLICATION_AND_REVISION_VERSION_WITH_NAMED_REVIEW",
+      "verified_pit": false
+    },
+    {
+      "market": "TPEX",
+      "period": "2024-Q3",
+      "kind": "cashflow",
+      "path": "fundamentals/2024-Q3/TPEX_cashflow.json",
+      "required_evidence": "OFFICIAL_PUBLICATION_AND_REVISION_VERSION_WITH_NAMED_REVIEW",
+      "verified_pit": false
+    },
+    {
+      "market": "TPEX",
+      "period": "2024-Q3",
+      "kind": "income",
+      "path": "fundamentals/2024-Q3/TPEX_income.json",
+      "required_evidence": "OFFICIAL_PUBLICATION_AND_REVISION_VERSION_WITH_NAMED_REVIEW",
+      "verified_pit": false
+    },
+    {
+      "market": "TWSE",
+      "period": "2024-Q3",
+      "kind": "cashflow",
+      "path": "fundamentals/2024-Q3/TWSE_cashflow.json",
+      "required_evidence": "OFFICIAL_PUBLICATION_AND_REVISION_VERSION_WITH_NAMED_REVIEW",
+      "verified_pit": false
+    },
+    {
+      "market": "TWSE",
+      "period": "2024-Q3",
+      "kind": "income",
+      "path": "fundamentals/2024-Q3/TWSE_income.json",
+      "required_evidence": "OFFICIAL_PUBLICATION_AND_REVISION_VERSION_WITH_NAMED_REVIEW",
+      "verified_pit": false
+    },
+    {
+      "market": "TPEX",
+      "period": "2024-Q4",
+      "kind": "cashflow",
+      "path": "fundamentals/2024-Q4/TPEX_cashflow.json",
+      "required_evidence": "OFFICIAL_PUBLICATION_AND_REVISION_VERSION_WITH_NAMED_REVIEW",
+      "verified_pit": false
+    },
+    {
+      "market": "TPEX",
+      "period": "2024-Q4",
+      "kind": "income",
+      "path": "fundamentals/2024-Q4/TPEX_income.json",
+      "required_evidence": "OFFICIAL_PUBLICATION_AND_REVISION_VERSION_WITH_NAMED_REVIEW",
+      "verified_pit": false
+    },
+    {
+      "market": "TWSE",
+      "period": "2024-Q4",
+      "kind": "cashflow",
+      "path": "fundamentals/2024-Q4/TWSE_cashflow.json",
+      "required_evidence": "OFFICIAL_PUBLICATION_AND_REVISION_VERSION_WITH_NAMED_REVIEW",
+      "verified_pit": false
+    },
+    {
+      "market": "TWSE",
+      "period": "2024-Q4",
+      "kind": "income",
+      "path": "fundamentals/2024-Q4/TWSE_income.json",
+      "required_evidence": "OFFICIAL_PUBLICATION_AND_REVISION_VERSION_WITH_NAMED_REVIEW",
+      "verified_pit": false
+    },
+    {
+      "market": "TPEX",
+      "period": "2025-Q1",
+      "kind": "cashflow",
+      "path": "fundamentals/2025-Q1/TPEX_cashflow.json",
+      "required_evidence": "OFFICIAL_PUBLICATION_AND_REVISION_VERSION_WITH_NAMED_REVIEW",
+      "verified_pit": false
+    },
+    {
+      "market": "TPEX",
+      "period": "2025-Q1",
+      "kind": "income",
+      "path": "fundamentals/2025-Q1/TPEX_income.json",
+      "required_evidence": "OFFICIAL_PUBLICATION_AND_REVISION_VERSION_WITH_NAMED_REVIEW",
+      "verified_pit": false
+    },
+    {
+      "market": "TWSE",
+      "period": "2025-Q1",
+      "kind": "cashflow",
+      "path": "fundamentals/2025-Q1/TWSE_cashflow.json",
+      "required_evidence": "OFFICIAL_PUBLICATION_AND_REVISION_VERSION_WITH_NAMED_REVIEW",
+      "verified_pit": false
+    },
+    {
+      "market": "TWSE",
+      "period": "2025-Q1",
+      "kind": "income",
+      "path": "fundamentals/2025-Q1/TWSE_income.json",
+      "required_evidence": "OFFICIAL_PUBLICATION_AND_REVISION_VERSION_WITH_NAMED_REVIEW",
+      "verified_pit": false
+    },
+    {
+      "market": "TPEX",
+      "period": "2025-Q2",
+      "kind": "cashflow",
+      "path": "fundamentals/2025-Q2/TPEX_cashflow.json",
+      "required_evidence": "OFFICIAL_PUBLICATION_AND_REVISION_VERSION_WITH_NAMED_REVIEW",
+      "verified_pit": false
+    },
+    {
+      "market": "TPEX",
+      "period": "2025-Q2",
+      "kind": "income",
+      "path": "fundamentals/2025-Q2/TPEX_income.json",
+      "required_evidence": "OFFICIAL_PUBLICATION_AND_REVISION_VERSION_WITH_NAMED_REVIEW",
+      "verified_pit": false
+    },
+    {
+      "market": "TWSE",
+      "period": "2025-Q2",
+      "kind": "cashflow",
+      "path": "fundamentals/2025-Q2/TWSE_cashflow.json",
+      "required_evidence": "OFFICIAL_PUBLICATION_AND_REVISION_VERSION_WITH_NAMED_REVIEW",
+      "verified_pit": false
+    },
+    {
+      "market": "TWSE",
+      "period": "2025-Q2",
+      "kind": "income",
+      "path": "fundamentals/2025-Q2/TWSE_income.json",
+      "required_evidence": "OFFICIAL_PUBLICATION_AND_REVISION_VERSION_WITH_NAMED_REVIEW",
+      "verified_pit": false
+    },
+    {
+      "market": "TPEX",
+      "period": "2025-Q3",
+      "kind": "cashflow",
+      "path": "fundamentals/2025-Q3/TPEX_cashflow.json",
+      "required_evidence": "OFFICIAL_PUBLICATION_AND_REVISION_VERSION_WITH_NAMED_REVIEW",
+      "verified_pit": false
+    },
+    {
+      "market": "TPEX",
+      "period": "2025-Q3",
+      "kind": "income",
+      "path": "fundamentals/2025-Q3/TPEX_income.json",
+      "required_evidence": "OFFICIAL_PUBLICATION_AND_REVISION_VERSION_WITH_NAMED_REVIEW",
+      "verified_pit": false
+    },
+    {
+      "market": "TWSE",
+      "period": "2025-Q3",
+      "kind": "cashflow",
+      "path": "fundamentals/2025-Q3/TWSE_cashflow.json",
+      "required_evidence": "OFFICIAL_PUBLICATION_AND_REVISION_VERSION_WITH_NAMED_REVIEW",
+      "verified_pit": false
+    },
+    {
+      "market": "TWSE",
+      "period": "2025-Q3",
+      "kind": "income",
+      "path": "fundamentals/2025-Q3/TWSE_income.json",
+      "required_evidence": "OFFICIAL_PUBLICATION_AND_REVISION_VERSION_WITH_NAMED_REVIEW",
+      "verified_pit": false
+    },
+    {
+      "market": "TPEX",
+      "period": "2025-Q4",
+      "kind": "cashflow",
+      "path": "fundamentals/2025-Q4/TPEX_cashflow.json",
+      "required_evidence": "OFFICIAL_PUBLICATION_AND_REVISION_VERSION_WITH_NAMED_REVIEW",
+      "verified_pit": false
+    },
+    {
+      "market": "TPEX",
+      "period": "2025-Q4",
+      "kind": "income",
+      "path": "fundamentals/2025-Q4/TPEX_income.json",
+      "required_evidence": "OFFICIAL_PUBLICATION_AND_REVISION_VERSION_WITH_NAMED_REVIEW",
+      "verified_pit": false
+    },
+    {
+      "market": "TWSE",
+      "period": "2025-Q4",
+      "kind": "cashflow",
+      "path": "fundamentals/2025-Q4/TWSE_cashflow.json",
+      "required_evidence": "OFFICIAL_PUBLICATION_AND_REVISION_VERSION_WITH_NAMED_REVIEW",
+      "verified_pit": false
+    },
+    {
+      "market": "TWSE",
+      "period": "2025-Q4",
+      "kind": "income",
+      "path": "fundamentals/2025-Q4/TWSE_income.json",
+      "required_evidence": "OFFICIAL_PUBLICATION_AND_REVISION_VERSION_WITH_NAMED_REVIEW",
+      "verified_pit": false
+    },
+    {
+      "market": "TPEX",
+      "period": "2026-Q1",
+      "kind": "cashflow",
+      "path": "fundamentals/2026-Q1/TPEX_cashflow.json",
+      "required_evidence": "OFFICIAL_PUBLICATION_AND_REVISION_VERSION_WITH_NAMED_REVIEW",
+      "verified_pit": false
+    },
+    {
+      "market": "TPEX",
+      "period": "2026-Q1",
+      "kind": "income",
+      "path": "fundamentals/2026-Q1/TPEX_income.json",
+      "required_evidence": "OFFICIAL_PUBLICATION_AND_REVISION_VERSION_WITH_NAMED_REVIEW",
+      "verified_pit": false
+    },
+    {
+      "market": "TWSE",
+      "period": "2026-Q1",
+      "kind": "cashflow",
+      "path": "fundamentals/2026-Q1/TWSE_cashflow.json",
+      "required_evidence": "OFFICIAL_PUBLICATION_AND_REVISION_VERSION_WITH_NAMED_REVIEW",
+      "verified_pit": false
+    },
+    {
+      "market": "TWSE",
+      "period": "2026-Q1",
+      "kind": "income",
+      "path": "fundamentals/2026-Q1/TWSE_income.json",
+      "required_evidence": "OFFICIAL_PUBLICATION_AND_REVISION_VERSION_WITH_NAMED_REVIEW",
+      "verified_pit": false
+    },
+    {
+      "market": "TPEX",
+      "period": "2026-Q2",
+      "kind": "cashflow",
+      "path": "fundamentals/2026-Q2/TPEX_cashflow.json",
+      "required_evidence": "OFFICIAL_PUBLICATION_AND_REVISION_VERSION_WITH_NAMED_REVIEW",
+      "verified_pit": false
+    },
+    {
+      "market": "TPEX",
+      "period": "2026-Q2",
+      "kind": "income",
+      "path": "fundamentals/2026-Q2/TPEX_income.json",
+      "required_evidence": "OFFICIAL_PUBLICATION_AND_REVISION_VERSION_WITH_NAMED_REVIEW",
+      "verified_pit": false
+    },
+    {
+      "market": "TWSE",
+      "period": "2026-Q2",
+      "kind": "cashflow",
+      "path": "fundamentals/2026-Q2/TWSE_cashflow.json",
+      "required_evidence": "OFFICIAL_PUBLICATION_AND_REVISION_VERSION_WITH_NAMED_REVIEW",
+      "verified_pit": false
+    },
+    {
+      "market": "TWSE",
+      "period": "2026-Q2",
+      "kind": "income",
+      "path": "fundamentals/2026-Q2/TWSE_income.json",
+      "required_evidence": "OFFICIAL_PUBLICATION_AND_REVISION_VERSION_WITH_NAMED_REVIEW",
+      "verified_pit": false
+    }
+  ],
+  "historical_replay_blockers": [
+    "ISSUER_ORIGINAL_PUBLICATION_AND_REVISION_VERSIONS_REQUIRED",
+    "CONTEMPORANEOUS_LISTING_DELISTING_UNIVERSE_REQUIRED",
+    "DATED_MONTHLY_REVENUE_RELEASE_VERSIONS_REQUIRED",
+    "HISTORICAL_SHARES_CB_TERMS_AND_VALUATION_INPUTS_REQUIRED",
+    "COMPLETE_DIVIDEND_SPLIT_RIGHTS_AND_DELISTING_ACTIONS_REQUIRED",
+    "HISTORICAL_EXECUTION_CAPACITY_AND_NEXT_OPEN_REVIEW_REQUIRED",
+    "TRAINING_ONLY_MODEL_FIT_AND_HELD_OUT_REPLAY_NOT_COMPLETED"
+  ],
+  "verified_mature_returns": 0,
+  "expected_return_top10": null,
+  "formal_Aplus_added": 0,
+  "orders_created": false
+}
