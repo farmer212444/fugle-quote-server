@@ -1,6 +1,7 @@
 """All fixtures are synthetic engineering checks, not investment evidence."""
 import copy
 import datetime as dt
+import hashlib
 import json
 import tempfile
 import unittest
@@ -83,6 +84,55 @@ class ExpectedReturns(unittest.TestCase):
         self.assertEqual(r['scenario_probabilities']['base'],1.)
         self.assertTrue(r['interval_is_not_a_future_return_prediction_interval'])
         self.assertFalse(r['investment_outperformance_proven'])
+
+    def test_oos_issuer_floor_is_independent_of_training_issuer_coverage(self):
+        sample = [r for r in records()
+                  if int(r['cohort_id'].split('-')[-1]) < 12
+                  or int(r['forecast']['code']) < 1009]
+        diagnostic = walk_forward(sample,ZERO,1e6)
+        self.assertEqual(diagnostic['oos_cohorts'],12)
+        self.assertEqual(diagnostic['oos_rows'],108)
+        self.assertFalse(diagnostic['diagnostics_passed'])
+        self.assertEqual(diagnostic['oos_issuers'],9)
+        r = self.calculate(samples=sample)
+        self.assertIsNone(r['scenario_probabilities'])
+        self.assertIsNone(r['expected_net_total_return'])
+
+    def test_forecast_from_future_is_rejected_before_estimation(self):
+        for f in (forecast(start='2030-01-01'),
+                  dict(forecast(),estimate_vintage='2026-01-01T16:00:00+08:00')):
+            with self.assertRaisesRegex(ValueError,'FORECAST_FROM_FUTURE'):
+                self.calculate(f,records())
+
+    def test_estimation_after_target_close_is_not_a_new_forecast(self):
+        with self.assertRaisesRegex(ValueError,'TARGET_ALREADY_CLOSED'):
+            self.calculate(forecast(start='2020-01-01'),records())
+
+    def test_forecast_vintage_at_or_after_target_close_is_rejected(self):
+        f = forecast(start='2026-01-01',days=1)
+        for when in ('2026-01-02T13:30:00+08:00','2026-01-02T05:30:00+00:00',
+                     '2026-01-03T00:00:00+08:00'):
+            invalid = dict(f,estimate_vintage=when)
+            with self.assertRaisesRegex(ValueError,'FORECAST_NOT_PROSPECTIVE'):
+                distribution(invalid,[records(1,1)],ZERO,1e6)
+
+    def test_freeze_rejects_target_close_even_with_valid_recent_source(self):
+        with tempfile.TemporaryDirectory() as t:
+            root = Path(t)
+            f = forecast(start='2026-01-01',days=1)
+            f['estimate_vintage'] = '2026-01-02T13:29:00+08:00'
+            research = dict(estimate_vintage=f['estimate_vintage'],asof_price_date=f['price_date'],
+                target_date=f['target_date'],model_code_sha256='c'*64,full_results=dict(sha256='d'*64))
+            reg = dict(registration_id='e'*64,record_sha256='f'*64)
+            raw = json.dumps([dict(market='TWSE',code='1000',close=100.)]).encode()
+            quotes = root/'prices/quotes.json';quotes.parent.mkdir();quotes.write_bytes(raw)
+            manifest = dict(date=f['price_date'],path='tw-market-data/prices/quotes.json',
+                            normalized_sha256=hashlib.sha256(raw).hexdigest())
+            (root/'prices/latest_manifest.json').write_text(json.dumps(manifest))
+            accepted = runner.freeze(root,research,[f],reg,'2026-01-02T13:29:30+08:00')
+            self.assertEqual(accepted['issued_at'],'2026-01-02T13:29:30+08:00')
+            with self.assertRaisesRegex(ValueError,'TARGET_ALREADY_CLOSED'):
+                runner.freeze(root,research,[f],reg,'2026-01-02T13:30:00+08:00')
 
     def test_method_sector_and_exact_horizon_must_match(self):
         for f in (dict(forecast(),industry='OTHER'),forecast(days=366),

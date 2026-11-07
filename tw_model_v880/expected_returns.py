@@ -53,6 +53,17 @@ def scope(f):
     return method, f['industry'], horizon(f)
 
 
+def target_close(f):
+    return dt.datetime.combine(dt.date.fromisoformat(f['target_date']),dt.time(13,30),tzinfo=TAIPEI)
+
+
+def validate_forecast_at(f, asof):
+    """Keep issuance and estimation prospective at the caller's actual clock."""
+    instant = timestamp(asof)
+    require(timestamp(f['estimate_vintage']) <= instant,'EXPECTED_RETURN_FORECAST_FROM_FUTURE')
+    require(instant < target_close(f),'EXPECTED_RETURN_TARGET_ALREADY_CLOSED')
+
+
 def prices(f):
     p = [f.get(s, {}).get('target_price') for s in STATES]
     require(all(finite(v, positive=True) for v in p) and p[0] < p[1] < p[2],
@@ -60,6 +71,7 @@ def prices(f):
     require(finite(f.get('reference_close'), positive=True), 'EXPECTED_RETURN_REFERENCE_INVALID')
     require(dt.date.fromisoformat(f['price_date']) <= timestamp(f['estimate_vintage']).astimezone(TAIPEI).date(),
             'EXPECTED_RETURN_REFERENCE_AFTER_FORECAST')
+    require(timestamp(f['estimate_vintage']) < target_close(f),'EXPECTED_RETURN_FORECAST_NOT_PROSPECTIVE')
     scope(f)
     return p
 
@@ -189,16 +201,21 @@ def walk_forward(records, costs, notional, policy=POLICY):
             actual = net_return(f['reference_close'],r['terminal_value_per_initial_share'],r['dividends_per_initial_share'],costs,notional)
             baseline = net_return(f['reference_close'],f['base']['target_price'],0.,costs,notional)
             probabilities = pred['scenario_probabilities']
-            results.append(dict(probabilities=probabilities,actual_state=actual_state,
+            results.append(dict(market=f['market'],code=f['code'],probabilities=probabilities,actual_state=actual_state,
                 brier=sum((probabilities[s]-int(actual_state == s))**2 for s in STATES),
                 uniform_brier=sum((1/3-int(actual_state == s))**2 for s in STATES),
                 absolute_error=abs(pred['expected_net_total_return']-actual),base_error=abs(baseline-actual),
                 market_regime=r['market_regime']))
         tests.append(results)
     count = sum(map(len,tests))
+    oos_issuers = {(r['market'],r['code']) for g in tests for r in g}
     result = dict(status='AWAITING_MATCHED_MATURE_OOS_COHORTS',diagnostics_passed=False,
-                  oos_cohorts=len(tests),oos_rows=count,multiclass_brier=None,reliability_bins=[])
+                  oos_cohorts=len(tests),oos_rows=count,oos_issuers=len(oos_issuers),
+                  minimum_oos_issuers=policy['minimum_issuers'],multiclass_brier=None,reliability_bins=[])
     if len(tests) < policy['minimum_oos_cohorts'] or count < policy['minimum_oos_rows']:
+        return result
+    if len(oos_issuers) < policy['minimum_issuers']:
+        result['status'] = 'AWAITING_MATCHED_MATURE_OOS_ISSUERS'
         return result
     def avg(key):
         return statistics.fmean(statistics.fmean(r[key] for r in g) for g in tests)
@@ -224,7 +241,8 @@ def walk_forward(records, costs, notional, policy=POLICY):
 
 
 def estimate(forecast, records, *, asof, costs, notional, policy=POLICY):
-    validate_policy(policy); validate_costs(costs); prices(forecast); validate_observations(records,asof)
+    validate_policy(policy); validate_costs(costs); prices(forecast); validate_forecast_at(forecast,asof)
+    validate_observations(records,asof)
     cut = min(timestamp(asof),timestamp(forecast['estimate_vintage']))-dt.timedelta(days=policy['embargo_days'])
     matched = [r for r in records if scope(r['forecast']) == scope(forecast)
                and timestamp(r['first_verified_at']) < cut and timestamp(r['exit_at']) < cut]

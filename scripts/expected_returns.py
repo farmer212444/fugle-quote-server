@@ -15,7 +15,7 @@ if str(ROOT) not in sys.path:
 from tw_model_v880.contracts import canonical_hash
 from tw_model_v880.evidence import timestamp
 from tw_model_v880.expected_returns import (POLICY,FOLDER,RETURN_DEFINITION,TAIPEI,
-    estimate,frozen_cohorts,prices,require,validate_observations)
+    estimate,frozen_cohorts,prices,require,validate_forecast_at,validate_observations)
 from tw_model_v880.portfolio import finite
 from tw_model_v880.superforecast import read_record,write_once,digest
 from tw_model_v880.validation_io import source
@@ -68,6 +68,7 @@ def freeze(root,research,rows,registration,now):
     age = instant.astimezone(TAIPEI).date()-dt.date.fromisoformat(research['asof_price_date'])
     require(0 <= age.days <= 7 and 0 <= (instant-vintage).total_seconds() <= 7*86400,
             'EXPECTED_RETURN_STALE_OR_FUTURE_SOURCE')
+    validate_forecast_at(research,now)
     forecasts,excluded = [],[]
     for row in rows:
         try:
