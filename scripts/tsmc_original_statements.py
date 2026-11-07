@@ -216,19 +216,38 @@ def collect(root,last_quarter,*,fetcher=fetch,clock=lambda:dt.datetime.now(dt.ti
     m=json.loads(path.read_text(encoding='utf-8')) if path.exists() else dict(
         schema=SCHEMA,issuer='2330',formal_gate_pass=False,original_MOPS_PIT_verified=False,
         full_content_review_complete=False,index_versions=[],documents=[])
+    directory_errors=[]
     try:
         raw=fetcher(DIRECTORY,3_000_000);specs=discover(raw,required);index_hash=digest(raw)
     except (OSError,ValueError,EOFError,http.client.IncompleteRead) as exc:
-        m['last_intake_at_utc']=clock().isoformat();m['last_requested_window_end']=last_quarter
-        m['last_fetch_errors']=[dict(period='DIRECTORY',error=type(exc).__name__+':'+str(exc))]
-        atomic_json(path,m)
-        result=validate_archive(root,last_quarter,clock().isoformat());result['fetch_errors']=m['last_fetch_errors']
-        return result
+        error=dict(period='DIRECTORY',error=type(exc).__name__+':'+str(exc))
+        # The origin's index can be temporarily blocked while its documents
+        # remain downloadable. Reuse only an already-provenanced, SHA-verified
+        # original issuer index; never guess financial-report URLs or permit
+        # an unrelated mirror to establish issuer provenance.
+        cached=[]
+        for entry in m.get('index_versions',[]):
+            if aware(entry['captured_at_utc'])>now:continue
+            data=safe(root,entry['archive_path']).read_bytes()
+            if digest(data)!=entry['sha256']:
+                raise ValueError('TSMC_CACHED_INDEX_HASH_MISMATCH')
+            spec=discover(data,required)
+            if spec:cached.append((len(spec),entry['captured_at_utc'],entry['sha256'],data,spec))
+        if cached:
+            _,_,index_hash,raw,specs=max(cached,key=lambda x:(x[0],x[1]))
+            error['recovery']='SHA_VERIFIED_ARCHIVED_ISSUER_INDEX'
+            directory_errors.append(error)
+        else:
+            m['last_intake_at_utc']=clock().isoformat();m['last_requested_window_end']=last_quarter
+            m['last_fetch_errors']=[error]
+            atomic_json(path,m)
+            result=validate_archive(root,last_quarter,clock().isoformat());result['fetch_errors']=m['last_fetch_errors']
+            return result
     rel=f'{FOLDER}/index_{index_hash}.html';store_bytes(root/rel,raw)
     if not any(x['sha256']==index_hash for x in m['index_versions']):
         m['index_versions'].append(dict(source_url=DIRECTORY,sha256=index_hash,archive_path=rel,captured_at_utc=clock().isoformat()))
     pending=[s for s in specs.values() if not any(d['period']==s['period'] and d['source_url']==s['source_url'] for d in m['documents'])]
-    errors=[];batch_bytes=0
+    errors=list(directory_errors);batch_bytes=0
     # Network reads are independent; publication of originals and receipts is ordered.
     with concurrent.futures.ThreadPoolExecutor(max_workers=3) as pool:
         futures=[(spec,pool.submit(fetcher,spec['source_url'],MAX_PDF)) for spec in pending]
