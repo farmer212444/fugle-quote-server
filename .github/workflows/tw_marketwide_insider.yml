@@ -6,6 +6,12 @@ on:
       - '.github/workflows/tw_marketwide_insider.yml'
       - 'scripts/insider_marketwide.py'
       - 'tests/test_insider_marketwide.py'
+      - 'tests/test_insider_sell_risk.py'
+      - 'scripts/insider_sell_risk.py'
+      - 'scripts/tw_v880_run.py'
+      - 'tests/test_insider_sell_risk.py'
+      - 'scripts/insider_sell_risk.py'
+      - 'scripts/tw_v880_run.py'
       - 'README_INSIDER_MARKETWIDE.md'
   push:
     branches:
@@ -34,7 +40,9 @@ jobs:
         with:
           python-version: '3.12'
       - name: Validate source parser, market-only transactions and coverage guards
-        run: python -m unittest discover -s tests -p 'test_insider_marketwide.py' -v
+        run: |
+          python -m unittest discover -s tests -p 'test_insider_marketwide.py' -v
+          python -m unittest discover -s tests -p 'test_insider_sell_risk.py' -v
   capture:
     needs: offline-tests
     if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
