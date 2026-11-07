@@ -20,6 +20,7 @@ class SECIntakeTests(unittest.TestCase):
             'Taiwan Semiconductor Manufacturing Company Limited and Subsidiaries',
             'Consolidated Balance Sheets',
             'Consolidated Statements of Comprehensive Income',
+            'Consolidated Statements of Changes in Equity',
             'Consolidated Statements of Cash Flows',
             'Notes to Consolidated Financial Statements',period])
         return ('<html><body>'+sections+'<p>'+('Synthetic not issuer data. '*3900)+
