@@ -51,6 +51,20 @@ class AplusQueueRepairTests(unittest.TestCase):
         self.assertIn('共同策略阻礙',markdown)
         self.assertNotIn('PASS已自動核發',markdown)
 
+    def test_share_and_turnover_summaries_do_not_count_as_reviewed_originals(self):
+        progress,research=self.make_inputs()
+        row=next(x for x in progress['issuer_diagnostics'] if x['code']=='2330')
+        for name in ('fully_diluted_shares','tradability'):
+            row['gate_stage'][name]['stage']='SOURCE_CAPTURED'
+        report=build_queue(progress,research)
+        job=next(x for x in report['issuer_jobs'] if x['code']=='2330')
+        self.assertEqual(job['source_advanced_gate_count'],2)
+        self.assertEqual(job['review_ready_original_gate_count'],0)
+        self.assertEqual(job['next_issuer_action'],'VERIFY_CAPITAL_DILUTION_TERMS')
+        self.assertEqual(report['aplus_repair']['source_advanced_gate_issues'],3)
+        self.assertIn('補可轉債',render(report))
+        self.assertEqual(report['formal_gate_decisions_changed'],0)
+
     def test_oos_is_shared_and_cannot_be_mistaken_for_captured_original(self):
         progress,research=self.make_inputs()
         row=progress['issuer_diagnostics'][0]
