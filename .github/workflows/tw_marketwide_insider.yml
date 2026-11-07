@@ -9,9 +9,6 @@ on:
       - 'tests/test_insider_sell_risk.py'
       - 'scripts/insider_sell_risk.py'
       - 'scripts/tw_v880_run.py'
-      - 'tests/test_insider_sell_risk.py'
-      - 'scripts/insider_sell_risk.py'
-      - 'scripts/tw_v880_run.py'
       - 'README_INSIDER_MARKETWIDE.md'
   push:
     branches:
@@ -20,6 +17,9 @@ on:
       - '.github/workflows/tw_marketwide_insider.yml'
       - 'scripts/insider_marketwide.py'
       - 'tests/test_insider_marketwide.py'
+      - 'tests/test_insider_sell_risk.py'
+      - 'scripts/insider_sell_risk.py'
+      - 'scripts/tw_v880_run.py'
   schedule:
     # 03:30, 09:30, 15:30, 21:30 Taipei; 6-hour spacing, 2s/request.
     - cron: '30 1,7,13,19 * * *'
