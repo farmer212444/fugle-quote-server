@@ -92,3 +92,11 @@
 研究輸出：
 - `tw-market-data/rankings/insider_marketwide_latest.json`、`.md`：買進、賣出對稱觀察樣本。
 - `tw-market-data/rankings/latest_research.json`、`.md`：若來源已在估值 as-of 之前產生，提供賣出風險註記；不重排原始 2027 價值情境榜單。
+
+
+## 2026-11-07：內部人賣出 × 營運轉弱交叉警示
+
+- 在已核對的內部人市場賣出研究警示旁，同時檢查既有模型可得的最新月營收年增（負值）及可比同期累計毛利率（低於去年同期）。若出現任一訊號，標記 `INSIDER_SELL_AND_OPERATING_WEAKNESS_SHADOW_REVIEW`，並附 `operating_context_flags`。
+- 僅在有賣出來源且模型判定需要人工覆核時，才增加交叉警示；沒有賣出資料、營收／毛利缺值或數值無效，**都不得假稱已證實賣壓與營運轉弱**。
+- 尚無可獨立核實的歷史股價趨勢，本項不推算股價動能。這些旗標不升降已定義的賣出研究等級，更不改動 EPS、PE、2027 Base、A+/A++、正式 Exit 或估值名次。
+- 每個觀察結果保留在各公司 `insider_sell_overlay`，研究報告的賣出覆核表增加「營運交叉警示」欄。合成單元測試涵蓋來源缺漏、NaN／無窮大、財報與評級不得被改寫。
