@@ -1,6 +1,6 @@
 {
   "model": "V8.10.8",
-  "estimate_vintage": "2026-11-07T21:04:17.013910+08:00",
+  "estimate_vintage": "2026-11-07T21:39:23.321789+08:00",
   "asof_price_date": "2026-11-06",
   "financial_period": "2026-Q2",
   "research_candidates": 859,
@@ -13675,8 +13675,8 @@
       "formal_Aplusplus": false,
       "gate_stage": {
         "original_eight_quarter_statements": {
-          "stage": "MIRROR_CAPTURED",
-          "reason": "8 income and 8 cashflow summary periods; original full notes and issuer filing PIT missing",
+          "stage": "SOURCE_CAPTURED",
+          "reason": "1/8 issuer-directory-linked original PDFs SHA-archived through 2026-Q2; native cover/contents identified for 1/8; scanned pages, full financial contents, auditor scope and MOPS publication PIT remain unreviewed",
           "decision": "PENDING",
           "model_reason": "LATEST_CONDENSED_STATEMENTS_ARE_NOT_FULL_NOTES_REVIEW",
           "scope": "ISSUER",
@@ -13807,14 +13807,14 @@
       },
       "durable_original_archive": {
         "issuer": "2330",
-        "records": 0,
+        "records": 1,
         "document_kinds": {
-          "quarterly": 0
+          "quarterly": 1
         },
-        "original_archive_hashes_verified": false,
+        "original_archive_hashes_verified": true,
         "formal_pass_count": 0,
         "statuses": [
-          "NO_DURABLE_FULL_ORIGINALS_YET"
+          "ISSUER_LINKED_ORIGINAL_BYTES_RECHECKED_NOT_CONTENT_CERTIFIED"
         ],
         "coverage": {
           "required_quarters": [
@@ -13827,10 +13827,11 @@
             "2026-Q1",
             "2026-Q2"
           ],
-          "found_quarters": [],
+          "found_quarters": [
+            "2024-Q4"
+          ],
           "missing_quarters": [
             "2024-Q3",
-            "2024-Q4",
             "2025-Q1",
             "2025-Q2",
             "2025-Q3",
@@ -13839,8 +13840,10 @@
             "2026-Q2"
           ],
           "source_title_coverage_complete": false,
-          "pdf_accounting_period_internal_identity_verified": false,
-          "native_cover_identity_verified_quarters": [],
+          "pdf_accounting_period_internal_identity_verified": true,
+          "native_cover_identity_verified_quarters": [
+            "2024-Q4"
+          ],
           "native_cover_identity_pending_quarters": [],
           "full_original_pdf_content_reviewed": false,
           "eight_full_report_notes_and_auditor_scope_reviewed": false,
@@ -13848,7 +13851,37 @@
           "formal_gate_pass": false,
           "source_window_end": "2026-Q2"
         },
-        "documents": []
+        "documents": [
+          {
+            "period": "2024-Q4",
+            "title": "2024年",
+            "source_url": "https://investor.tsmc.com/sites/ir/financial-report/2024/TSMC%202024Q4%20Consolidated%20Financial%20Statements_C.pdf",
+            "sha256": "6ed0ee9be5beb71bf7be4aa63eb4dd48357e9729421d930ce119373a8d00f88a",
+            "bytes": 9814510,
+            "archive_path": "evidence/v880/originals/2330/full_statements/2024-Q4_6ed0ee9be5beb71bf7be.pdf",
+            "index_sha256": "4531fd57b7eea3a5056630cbad24c706be972b4e41e245102d31bcbef9c324ba",
+            "captured_at_utc": "2026-11-07T13:39:22.839234+00:00",
+            "pdf_identity": {
+              "page_count": 124,
+              "pdf_cover_issuer_and_period_verified": true,
+              "four_statements_and_notes_listed_in_contents": true,
+              "identity_status": "NATIVE_COVER_AND_CONTENTS_CHECKED",
+              "raster_or_unextractable_core_pages_1based": [
+                3,
+                4,
+                7,
+                8,
+                9,
+                10,
+                11,
+                12
+              ],
+              "financial_statement_and_note_content_review_complete": false,
+              "auditor_opinion_formally_reviewed": false
+            },
+            "formal_gate_pass": false
+          }
+        ]
       }
     },
     {
@@ -33614,7 +33647,8 @@
     "management_promises__SOURCE_CAPTURED": 1,
     "matched_peers_and_cycle__REVIEW_PENDING": 204,
     "nonoperating_components__REVIEW_PENDING": 204,
-    "original_eight_quarter_statements__MIRROR_CAPTURED": 204,
+    "original_eight_quarter_statements__MIRROR_CAPTURED": 203,
+    "original_eight_quarter_statements__SOURCE_CAPTURED": 1,
     "out_of_sample_validation__REVIEW_PENDING": 204,
     "point_in_time__REVIEW_PENDING": 204,
     "tradability__SOURCE_CAPTURED": 144,
@@ -33652,14 +33686,14 @@
     },
     "2330": {
       "issuer": "2330",
-      "records": 0,
+      "records": 1,
       "document_kinds": {
-        "quarterly": 0
+        "quarterly": 1
       },
-      "original_archive_hashes_verified": false,
+      "original_archive_hashes_verified": true,
       "formal_pass_count": 0,
       "statuses": [
-        "NO_DURABLE_FULL_ORIGINALS_YET"
+        "ISSUER_LINKED_ORIGINAL_BYTES_RECHECKED_NOT_CONTENT_CERTIFIED"
       ],
       "coverage": {
         "required_quarters": [
@@ -33672,10 +33706,11 @@
           "2026-Q1",
           "2026-Q2"
         ],
-        "found_quarters": [],
+        "found_quarters": [
+          "2024-Q4"
+        ],
         "missing_quarters": [
           "2024-Q3",
-          "2024-Q4",
           "2025-Q1",
           "2025-Q2",
           "2025-Q3",
@@ -33684,8 +33719,10 @@
           "2026-Q2"
         ],
         "source_title_coverage_complete": false,
-        "pdf_accounting_period_internal_identity_verified": false,
-        "native_cover_identity_verified_quarters": [],
+        "pdf_accounting_period_internal_identity_verified": true,
+        "native_cover_identity_verified_quarters": [
+          "2024-Q4"
+        ],
         "native_cover_identity_pending_quarters": [],
         "full_original_pdf_content_reviewed": false,
         "eight_full_report_notes_and_auditor_scope_reviewed": false,
@@ -33693,7 +33730,37 @@
         "formal_gate_pass": false,
         "source_window_end": "2026-Q2"
       },
-      "documents": []
+      "documents": [
+        {
+          "period": "2024-Q4",
+          "title": "2024年",
+          "source_url": "https://investor.tsmc.com/sites/ir/financial-report/2024/TSMC%202024Q4%20Consolidated%20Financial%20Statements_C.pdf",
+          "sha256": "6ed0ee9be5beb71bf7be4aa63eb4dd48357e9729421d930ce119373a8d00f88a",
+          "bytes": 9814510,
+          "archive_path": "evidence/v880/originals/2330/full_statements/2024-Q4_6ed0ee9be5beb71bf7be.pdf",
+          "index_sha256": "4531fd57b7eea3a5056630cbad24c706be972b4e41e245102d31bcbef9c324ba",
+          "captured_at_utc": "2026-11-07T13:39:22.839234+00:00",
+          "pdf_identity": {
+            "page_count": 124,
+            "pdf_cover_issuer_and_period_verified": true,
+            "four_statements_and_notes_listed_in_contents": true,
+            "identity_status": "NATIVE_COVER_AND_CONTENTS_CHECKED",
+            "raster_or_unextractable_core_pages_1based": [
+              3,
+              4,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12
+            ],
+            "financial_statement_and_note_content_review_complete": false,
+            "auditor_opinion_formally_reviewed": false
+          },
+          "formal_gate_pass": false
+        }
+      ]
     }
   },
   "source_quarter_coverage_diagnostic": {
@@ -33739,10 +33806,11 @@
         "2026-Q1",
         "2026-Q2"
       ],
-      "found_quarters": [],
+      "found_quarters": [
+        "2024-Q4"
+      ],
       "missing_quarters": [
         "2024-Q3",
-        "2024-Q4",
         "2025-Q1",
         "2025-Q2",
         "2025-Q3",
@@ -33751,8 +33819,10 @@
         "2026-Q2"
       ],
       "source_title_coverage_complete": false,
-      "pdf_accounting_period_internal_identity_verified": false,
-      "native_cover_identity_verified_quarters": [],
+      "pdf_accounting_period_internal_identity_verified": true,
+      "native_cover_identity_verified_quarters": [
+        "2024-Q4"
+      ],
       "native_cover_identity_pending_quarters": [],
       "full_original_pdf_content_reviewed": false,
       "eight_full_report_notes_and_auditor_scope_reviewed": false,

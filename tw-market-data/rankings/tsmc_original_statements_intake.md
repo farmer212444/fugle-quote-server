@@ -1,16 +1,23 @@
 # 2330 台積電完整財報原件收集進度
 
-原件視窗：2024-Q3 至 2026-Q2；檢查時間：2026-11-07T13:04:16.672722+00:00。
+原件視窗：2024-Q3 至 2026-Q2；檢查時間：2026-11-07T13:39:23.028349+00:00。
 
-官方目錄連結及雜湊已覆核：0/8 季；原生文字封面與目錄辨識：0/8 季。
+官方目錄連結及雜湊已覆核：1/8 季；原生文字封面與目錄辨識：1/8 季。
 
 此處8/8只代表官方目錄列示的原始PDF已封存；掃描頁、會計數值、完整附註、會計師範圍及公告PIT仍待覆核。
 2026-Q3簡明自結／法說附件是不同來源，不能替代該季完整財報。13項正式品質門檻不變。
 
 |資料期|頁數|封面／目錄機器辨識|SHA-256|
 |---|---:|---|---|
+|2024-Q4|124|已辨識；全文待核|6ed0ee9be5beb71bf7be4aa63eb4dd48357e9729421d930ce119373a8d00f88a|
 
-缺少原件：2024-Q3, 2024-Q4, 2025-Q1, 2025-Q2, 2025-Q3, 2025-Q4, 2026-Q1, 2026-Q2
+缺少原件：2024-Q3, 2025-Q1, 2025-Q2, 2025-Q3, 2025-Q4, 2026-Q1, 2026-Q2
 
 本輪來源錯誤：
-- DIRECTORY：HTTPError:HTTP Error 403: Forbidden
+- 2026-Q1：HTTPError:HTTP Error 403: Forbidden
+- 2026-Q2：HTTPError:HTTP Error 403: Forbidden
+- 2025-Q1：HTTPError:HTTP Error 403: Forbidden
+- 2025-Q2：HTTPError:HTTP Error 403: Forbidden
+- 2025-Q3：HTTPError:HTTP Error 403: Forbidden
+- 2025-Q4：HTTPError:HTTP Error 403: Forbidden
+- 2024-Q3：HTTPError:HTTP Error 403: Forbidden

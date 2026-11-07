@@ -4,13 +4,74 @@
   "formal_gate_pass": false,
   "original_MOPS_PIT_verified": false,
   "full_content_review_complete": false,
-  "index_versions": [],
-  "documents": [],
-  "last_intake_at_utc": "2026-11-07T13:04:16.671305+00:00",
+  "index_versions": [
+    {
+      "source_url": "https://investor.tsmc.com/chinese/financial-reports",
+      "sha256": "4531fd57b7eea3a5056630cbad24c706be972b4e41e245102d31bcbef9c324ba",
+      "archive_path": "evidence/v880/originals/2330/full_statements/index_4531fd57b7eea3a5056630cbad24c706be972b4e41e245102d31bcbef9c324ba.html",
+      "captured_at_utc": "2026-11-07T13:39:21.740959+00:00"
+    }
+  ],
+  "documents": [
+    {
+      "period": "2024-Q4",
+      "title": "2024年",
+      "source_url": "https://investor.tsmc.com/sites/ir/financial-report/2024/TSMC%202024Q4%20Consolidated%20Financial%20Statements_C.pdf",
+      "sha256": "6ed0ee9be5beb71bf7be4aa63eb4dd48357e9729421d930ce119373a8d00f88a",
+      "bytes": 9814510,
+      "archive_path": "evidence/v880/originals/2330/full_statements/2024-Q4_6ed0ee9be5beb71bf7be.pdf",
+      "index_sha256": "4531fd57b7eea3a5056630cbad24c706be972b4e41e245102d31bcbef9c324ba",
+      "captured_at_utc": "2026-11-07T13:39:22.839234+00:00",
+      "pdf_identity": {
+        "page_count": 124,
+        "pdf_cover_issuer_and_period_verified": true,
+        "four_statements_and_notes_listed_in_contents": true,
+        "identity_status": "NATIVE_COVER_AND_CONTENTS_CHECKED",
+        "raster_or_unextractable_core_pages_1based": [
+          3,
+          4,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12
+        ],
+        "financial_statement_and_note_content_review_complete": false,
+        "auditor_opinion_formally_reviewed": false
+      },
+      "formal_gate_pass": false
+    }
+  ],
+  "last_intake_at_utc": "2026-11-07T13:39:22.839633+00:00",
   "last_requested_window_end": "2026-Q2",
   "last_fetch_errors": [
     {
-      "period": "DIRECTORY",
+      "period": "2026-Q1",
+      "error": "HTTPError:HTTP Error 403: Forbidden"
+    },
+    {
+      "period": "2026-Q2",
+      "error": "HTTPError:HTTP Error 403: Forbidden"
+    },
+    {
+      "period": "2025-Q1",
+      "error": "HTTPError:HTTP Error 403: Forbidden"
+    },
+    {
+      "period": "2025-Q2",
+      "error": "HTTPError:HTTP Error 403: Forbidden"
+    },
+    {
+      "period": "2025-Q3",
+      "error": "HTTPError:HTTP Error 403: Forbidden"
+    },
+    {
+      "period": "2025-Q4",
+      "error": "HTTPError:HTTP Error 403: Forbidden"
+    },
+    {
+      "period": "2024-Q3",
       "error": "HTTPError:HTTP Error 403: Forbidden"
     }
   ]
