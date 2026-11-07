@@ -111,6 +111,55 @@ class InsiderSellRiskTests(unittest.TestCase):
         self.assertEqual(row["base"], {"eps": 7.5, "pe": 15, "target_price": 112.5})
         self.assertIn("INSIDER_SELL_RESEARCH_REVIEW_REQUIRED", row["warning_flags"])
 
+    def test_operating_crosscheck_flags_only_without_changing_model_economics(self):
+        observed = dict(sell_pct_of_issued=1.2, net_sell_pct_of_issued=.9,
+                        negative_net_months=1, max_consecutive_net_sell_months=1,
+                        observed_month_count=1, expected_ytd_month_count=1,
+                        year_to_date_complete=True)
+        row = {"code": "3189", "name": "synthetic", "market": "TWSE",
+               "formal_Aplus": True, "formal_Aplusplus": True,
+               "base": {"eps": 7.5, "pe": 15, "target_price": 112.5},
+               "warning_flags": [],
+               "revenue_bridge": {"trend_inputs": {"latest_month_yoy": -0.12}},
+               "margin_bridge": {"current_ytd_gm": 0.14, "prior_ytd_gm": 0.17}}
+        watch = annotate_issuer_rows(
+            [row], {"status": "ASOF_VALID_RESEARCH_ONLY_UNCERTIFIED_HOLDER_IDENTITY",
+                    "records": {"3189": observed}})
+        self.assertEqual(len(watch), 1)
+        signals = watch[0]["operating_context_flags"]
+        self.assertEqual(set(signals), {"LATEST_REVENUE_YOY_NEGATIVE",
+                                        "YTD_GROSS_MARGIN_BELOW_SAME_PERIOD_PRIOR_YEAR"})
+        self.assertIn("INSIDER_SELL_AND_OPERATING_WEAKNESS_SHADOW_REVIEW",
+                      row["warning_flags"])
+        self.assertFalse(watch[0]["dated_price_trend_verified"])
+        self.assertEqual(row["base"], {"eps": 7.5, "pe": 15, "target_price": 112.5})
+        self.assertTrue(row["formal_Aplus"])
+        self.assertTrue(row["formal_Aplusplus"])
+
+    def test_weak_financials_without_sell_source_do_not_fake_insider_warning(self):
+        row = {"code": "3189", "market": "TWSE",
+               "revenue_bridge": {"trend_inputs": {"latest_month_yoy": -0.5}},
+               "margin_bridge": {"current_ytd_gm": .01, "prior_ytd_gm": .03},
+               "warning_flags": []}
+        self.assertEqual(
+            annotate_issuer_rows([row], {"status": "SOURCE_MISSING", "records": {}}), [])
+        self.assertEqual(row["insider_sell_overlay"]["tier"], "UNKNOWN")
+        self.assertEqual(row["insider_sell_overlay"]["operating_context_flags"], [])
+        self.assertEqual(row["warning_flags"], [])
+
+    def test_invalid_operating_numbers_cannot_raise_corroboration_flags(self):
+        observed = dict(sell_pct_of_issued=.8, net_sell_pct_of_issued=.5,
+                        negative_net_months=2, max_consecutive_net_sell_months=2,
+                        observed_month_count=2, expected_ytd_month_count=2,
+                        year_to_date_complete=True)
+        row = {"code": "3189", "market": "TWSE",
+               "revenue_bridge": {"trend_inputs": {"latest_month_yoy": float("nan")}},
+               "margin_bridge": {"current_ytd_gm": float("inf"), "prior_ytd_gm": .1}}
+        watch = annotate_issuer_rows(
+            [row], {"status": "ok", "records": {"3189": observed}})
+        self.assertEqual(watch[0]["operating_context_flags"], [])
+        self.assertEqual(watch[0]["tier"], "HIGH_REVIEW")
+
     def test_no_sell_record_is_unknown_not_claimed_zero(self):
         self.assertEqual(assess_sell_risk(None, "MISSING")["tier"], "UNKNOWN")
         self.assertEqual(assess_sell_risk(None, "MISSING")["reason"],
