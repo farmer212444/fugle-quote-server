@@ -1,10 +1,10 @@
 {
   "schema": "V810_INSTITUTIONAL_RESEARCH_CONTROLS",
   "model": "V8.10.8",
-  "estimate_vintage": "2026-11-07T12:42:16.863270+08:00",
-  "report_observed_at": "2026-11-07T04:43:18.267177+00:00",
+  "estimate_vintage": "2026-11-07T20:46:44.153888+08:00",
+  "report_observed_at": "2026-11-07T12:47:40.350991+00:00",
   "asof_price_date": "2026-11-06",
-  "source_model_sha256": "a47dc6fcdc30a27acdc18a4b35c98bb7ffef911cf41be65f9483e16d8e82d8a9",
+  "source_model_sha256": "b07de3d1ffbb1f07127af1ce8b7a28d17a2736740c67ab808f84fcf8b9e1b21b",
   "policy_sha256": "3f378fb673213f6178983a4698ed80c7e5a8c5b62e82192a85eea1c6a3b0b493",
   "universe": {
     "normalized_issuers": 1982,
@@ -5116,7 +5116,7 @@
   "forward_observations": {
     "status": "PROSPECTIVE_OBSERVATION_NOT_CERTIFIED_INVESTMENT_PERFORMANCE",
     "distinct_signal_days": 7,
-    "strategy_date_cohorts": 80,
+    "strategy_date_cohorts": 82,
     "cohorts": [
       {
         "model": "V8.8.2",
@@ -6853,6 +6853,46 @@
           "Dividends/splits/rights/delistings coverage for full holding period",
           "Matched benchmark total returns and predeclared evaluation horizon"
         ]
+      },
+      {
+        "model": "V8.10.8",
+        "model_code_sha256": "b07de3d1ffbb1f07127af1ce8b7a28d17a2736740c67ab808f84fcf8b9e1b21b",
+        "strategy_variant_sha256": "d5216fe22f8162eb248e07e152fe3250d91675c6adad3c14c1a4814dd2d97936",
+        "strategy_variant": "without-earnings-events",
+        "estimate_vintage": "2026-11-07T20:46:44.153888+08:00",
+        "archived_at_utc": "2026-11-07T12:47:26.849265+00:00",
+        "prospective_signal_at": "2026-11-07T12:47:26.849265+00:00",
+        "prospective_signal_clock": "LATER_OF_ESTIMATE_AND_REAL_ARCHIVE",
+        "reference_price_date": "2026-11-06",
+        "receipt_path": "pit_vintages/2026-11-07/425e62492f4bf997e722/receipt.json",
+        "status": "AWAITING_SUBSEQUENT_SESSION",
+        "formal_out_of_sample_pass": false,
+        "missing_for_certified_return": [
+          "Verified next-session open and fillability",
+          "Explicit spread/slippage/fees/tax policy fixed before outcome",
+          "Dividends/splits/rights/delistings coverage for full holding period",
+          "Matched benchmark total returns and predeclared evaluation horizon"
+        ]
+      },
+      {
+        "model": "V8.10.8",
+        "model_code_sha256": "b07de3d1ffbb1f07127af1ce8b7a28d17a2736740c67ab808f84fcf8b9e1b21b",
+        "strategy_variant_sha256": "72e01699b143ad2b5b6abae03666d20228513e4cc457cc3c3e75540d85253683",
+        "strategy_variant": "current-information",
+        "estimate_vintage": "2026-11-07T20:46:44.153888+08:00",
+        "archived_at_utc": "2026-11-07T12:47:22.428732+00:00",
+        "prospective_signal_at": "2026-11-07T12:47:22.428732+00:00",
+        "prospective_signal_clock": "LATER_OF_ESTIMATE_AND_REAL_ARCHIVE",
+        "reference_price_date": "2026-11-06",
+        "receipt_path": "pit_vintages/2026-11-07/bf55b1ea99df45b651f2/receipt.json",
+        "status": "AWAITING_SUBSEQUENT_SESSION",
+        "formal_out_of_sample_pass": false,
+        "missing_for_certified_return": [
+          "Verified next-session open and fillability",
+          "Explicit spread/slippage/fees/tax policy fixed before outcome",
+          "Dividends/splits/rights/delistings coverage for full holding period",
+          "Matched benchmark total returns and predeclared evaluation horizon"
+        ]
       }
     ],
     "archive_errors": [],
@@ -6861,6 +6901,11 @@
     "formal_out_of_sample_pass": false
   },
   "model_competition": [
+    {
+      "trial_id": "earnings-events-0350d6a600a426bacea2",
+      "status": "INSUFFICIENT_BOOTSTRAP_DRAWS_FOR_TRIAL_CORRECTION",
+      "promotion_eligible": false
+    },
     {
       "trial_id": "earnings-events-0382dfa2729e0b36246e",
       "status": "INSUFFICIENT_BOOTSTRAP_DRAWS_FOR_TRIAL_CORRECTION",
@@ -7039,6 +7084,12 @@
   ],
   "validation_inputs": {
     "trials": [
+      {
+        "trial_id": "earnings-events-0350d6a600a426bacea2",
+        "status": "AWAITING_FUTURE_OUTCOME_INPUTS",
+        "pairs": [],
+        "promotion_eligible": false
+      },
       {
         "trial_id": "earnings-events-0382dfa2729e0b36246e",
         "status": "AWAITING_FUTURE_OUTCOME_INPUTS",
@@ -7252,13 +7303,13 @@
     ],
     "errors": [],
     "probability_records": [],
-    "registered_trial_count": 35,
+    "registered_trial_count": 36,
     "validated_trade_observations": 0,
     "formal_out_of_sample_pass": false
   },
   "benchmark_validation": {
     "schema": "TOP30_VS_TAIEX_TR_V1",
-    "observed_at": "2026-11-07T04:43:18.267177+00:00",
+    "observed_at": "2026-11-07T12:47:40.350991+00:00",
     "benchmark_id": "TAIEX_TR",
     "trials": [
       {
@@ -8720,6 +8771,60 @@
         "formal_out_of_sample_pass": false
       },
       {
+        "trial_id": "taiex-tr-eec29b11f2994190073398a5",
+        "registered_at": "2026-11-07T12:47:23.284544+00:00",
+        "spec": {
+          "protocol": "TOP30_VS_TAIEX_TR_V1",
+          "strategy_variant_sha256": "72e01699b143ad2b5b6abae03666d20228513e4cc457cc3c3e75540d85253683",
+          "model_code_sha256": "b07de3d1ffbb1f07127af1ce8b7a28d17a2736740c67ab808f84fcf8b9e1b21b",
+          "model_target_date": "2027-12-31",
+          "cost_policy": {
+            "buy_fee_rate": 0.001425,
+            "sell_fee_rate": 0.001425,
+            "sell_tax_rate": 0.003,
+            "buy_slippage_rate": 0.001,
+            "sell_slippage_rate": 0.001,
+            "half_spread_rate": 0.0005,
+            "minimum_fee_ntd": 20
+          },
+          "benchmark_policy": {
+            "benchmark_id": "TAIEX_TR",
+            "selection_rule": "RESEARCH_TOP30_EQUAL_WEIGHT_NEXT_SESSION_CLOSE",
+            "selection_source": "top30_provisional",
+            "holding_intervals": 21,
+            "number_of_stocks": 30,
+            "dividend_policy": "GROSS_DIVIDENDS_RETAINED_AS_CASH_OR_RECEIVABLE_NO_REINVESTMENT",
+            "benchmark_cost_policy": "COSTLESS_OFFICIAL_GROSS_TOTAL_RETURN_INDEX",
+            "fractional_shares_are_research_assumption": true,
+            "minimum_nonoverlapping_oos_periods": 60,
+            "minimum_market_regimes": 2,
+            "bootstrap_draws": 10000,
+            "bootstrap_block_size": 21,
+            "stress_cost_multiplier_excluding_tax": 2,
+            "regime_lookback_sessions": 63,
+            "regime_return_threshold": 0.03,
+            "automatic_deployment": false
+          },
+          "reference_capital_ntd": 10000000,
+          "max_daily_participation": 0.05
+        },
+        "outcomes": [
+          {
+            "status": "AWAITING_FUTURE_HOLDING_SESSIONS",
+            "cohort_id": "51637b5cd67613e23b961493"
+          }
+        ],
+        "rejected_outcomes": [],
+        "matured_unusable_periods": 0,
+        "status": "NO_VERIFIED_OUTCOMES",
+        "verified_nonoverlapping_periods": 0,
+        "model_total_return": null,
+        "benchmark_total_return": null,
+        "excess_return_pp": null,
+        "evidence_supports_benchmark_edge": false,
+        "formal_out_of_sample_pass": false
+      },
+      {
         "trial_id": "taiex-tr-faacd614b7f5a41576c5358d",
         "registered_at": "2026-11-06T09:25:56.023086+00:00",
         "spec": {
@@ -8774,8 +8879,8 @@
         "formal_out_of_sample_pass": false
       }
     ],
-    "registered_benchmark_trials": 28,
-    "all_registered_designs": 6547,
+    "registered_benchmark_trials": 29,
+    "all_registered_designs": 6789,
     "verified_outcomes": 0,
     "benchmark_sessions": 148,
     "benchmark_months": [
@@ -8938,6 +9043,7 @@
           "b4b50c399a8b2a047e339286",
           "af0a659c04da6a26dde6e5bd",
           "b42c3044eeec6f445a0ea3be",
+          "51637b5cd67613e23b961493",
           "a789f1733f1318630cca9f87"
         ]
       },
@@ -9001,6 +9107,7 @@
           "b4b50c399a8b2a047e339286",
           "af0a659c04da6a26dde6e5bd",
           "b42c3044eeec6f445a0ea3be",
+          "51637b5cd67613e23b961493",
           "a789f1733f1318630cca9f87"
         ]
       },
@@ -9064,6 +9171,7 @@
           "b4b50c399a8b2a047e339286",
           "af0a659c04da6a26dde6e5bd",
           "b42c3044eeec6f445a0ea3be",
+          "51637b5cd67613e23b961493",
           "a789f1733f1318630cca9f87"
         ]
       },
@@ -9098,6 +9206,7 @@
           "b4b50c399a8b2a047e339286",
           "af0a659c04da6a26dde6e5bd",
           "b42c3044eeec6f445a0ea3be",
+          "51637b5cd67613e23b961493",
           "a789f1733f1318630cca9f87"
         ]
       },
@@ -9132,6 +9241,7 @@
           "b4b50c399a8b2a047e339286",
           "af0a659c04da6a26dde6e5bd",
           "b42c3044eeec6f445a0ea3be",
+          "51637b5cd67613e23b961493",
           "a789f1733f1318630cca9f87"
         ]
       },
@@ -9196,6 +9306,7 @@
           "b4b50c399a8b2a047e339286",
           "af0a659c04da6a26dde6e5bd",
           "b42c3044eeec6f445a0ea3be",
+          "51637b5cd67613e23b961493",
           "a789f1733f1318630cca9f87"
         ]
       },
@@ -9230,6 +9341,7 @@
           "b4b50c399a8b2a047e339286",
           "af0a659c04da6a26dde6e5bd",
           "b42c3044eeec6f445a0ea3be",
+          "51637b5cd67613e23b961493",
           "a789f1733f1318630cca9f87"
         ]
       },
@@ -9264,6 +9376,7 @@
           "b4b50c399a8b2a047e339286",
           "af0a659c04da6a26dde6e5bd",
           "b42c3044eeec6f445a0ea3be",
+          "51637b5cd67613e23b961493",
           "a789f1733f1318630cca9f87"
         ]
       },
@@ -9298,6 +9411,7 @@
           "b4b50c399a8b2a047e339286",
           "af0a659c04da6a26dde6e5bd",
           "b42c3044eeec6f445a0ea3be",
+          "51637b5cd67613e23b961493",
           "a789f1733f1318630cca9f87"
         ]
       },
@@ -9332,6 +9446,7 @@
           "b4b50c399a8b2a047e339286",
           "af0a659c04da6a26dde6e5bd",
           "b42c3044eeec6f445a0ea3be",
+          "51637b5cd67613e23b961493",
           "a789f1733f1318630cca9f87"
         ]
       },
@@ -9366,6 +9481,7 @@
           "b4b50c399a8b2a047e339286",
           "af0a659c04da6a26dde6e5bd",
           "b42c3044eeec6f445a0ea3be",
+          "51637b5cd67613e23b961493",
           "a789f1733f1318630cca9f87"
         ]
       },
@@ -9400,6 +9516,7 @@
           "b4b50c399a8b2a047e339286",
           "af0a659c04da6a26dde6e5bd",
           "b42c3044eeec6f445a0ea3be",
+          "51637b5cd67613e23b961493",
           "a789f1733f1318630cca9f87"
         ]
       },
@@ -9434,6 +9551,7 @@
           "b4b50c399a8b2a047e339286",
           "af0a659c04da6a26dde6e5bd",
           "b42c3044eeec6f445a0ea3be",
+          "51637b5cd67613e23b961493",
           "a789f1733f1318630cca9f87"
         ]
       },
@@ -9584,6 +9702,7 @@
           "b4b50c399a8b2a047e339286",
           "af0a659c04da6a26dde6e5bd",
           "b42c3044eeec6f445a0ea3be",
+          "51637b5cd67613e23b961493",
           "a789f1733f1318630cca9f87"
         ]
       },
@@ -9618,6 +9737,7 @@
           "b4b50c399a8b2a047e339286",
           "af0a659c04da6a26dde6e5bd",
           "b42c3044eeec6f445a0ea3be",
+          "51637b5cd67613e23b961493",
           "a789f1733f1318630cca9f87"
         ]
       },
@@ -9651,6 +9771,7 @@
           "b4b50c399a8b2a047e339286",
           "af0a659c04da6a26dde6e5bd",
           "b42c3044eeec6f445a0ea3be",
+          "51637b5cd67613e23b961493",
           "a789f1733f1318630cca9f87"
         ]
       },
@@ -9685,6 +9806,7 @@
           "b4b50c399a8b2a047e339286",
           "af0a659c04da6a26dde6e5bd",
           "b42c3044eeec6f445a0ea3be",
+          "51637b5cd67613e23b961493",
           "a789f1733f1318630cca9f87"
         ]
       },
@@ -9718,6 +9840,7 @@
           "b4b50c399a8b2a047e339286",
           "af0a659c04da6a26dde6e5bd",
           "b42c3044eeec6f445a0ea3be",
+          "51637b5cd67613e23b961493",
           "a789f1733f1318630cca9f87"
         ]
       },
@@ -9758,6 +9881,7 @@
           "8919af1b595081570e32ca4a",
           "95dd27c5938979d4762464fa",
           "d3c36ce10b0faa5d1ed1cff1",
+          "51637b5cd67613e23b961493",
           "a789f1733f1318630cca9f87"
         ]
       },
@@ -9769,6 +9893,7 @@
           "8919af1b595081570e32ca4a",
           "95dd27c5938979d4762464fa",
           "d3c36ce10b0faa5d1ed1cff1",
+          "51637b5cd67613e23b961493",
           "a789f1733f1318630cca9f87"
         ]
       },
@@ -9780,6 +9905,7 @@
           "8919af1b595081570e32ca4a",
           "95dd27c5938979d4762464fa",
           "d3c36ce10b0faa5d1ed1cff1",
+          "51637b5cd67613e23b961493",
           "a789f1733f1318630cca9f87"
         ]
       },
@@ -9791,6 +9917,7 @@
           "8919af1b595081570e32ca4a",
           "95dd27c5938979d4762464fa",
           "d3c36ce10b0faa5d1ed1cff1",
+          "51637b5cd67613e23b961493",
           "a789f1733f1318630cca9f87"
         ]
       },
@@ -9802,6 +9929,7 @@
           "8919af1b595081570e32ca4a",
           "95dd27c5938979d4762464fa",
           "d3c36ce10b0faa5d1ed1cff1",
+          "51637b5cd67613e23b961493",
           "a789f1733f1318630cca9f87"
         ]
       },
@@ -9812,7 +9940,8 @@
           "faebc3a33346c7c412ab32fd",
           "8919af1b595081570e32ca4a",
           "95dd27c5938979d4762464fa",
-          "d3c36ce10b0faa5d1ed1cff1"
+          "d3c36ce10b0faa5d1ed1cff1",
+          "51637b5cd67613e23b961493"
         ]
       },
       {
@@ -9823,6 +9952,7 @@
           "8919af1b595081570e32ca4a",
           "95dd27c5938979d4762464fa",
           "d3c36ce10b0faa5d1ed1cff1",
+          "51637b5cd67613e23b961493",
           "a789f1733f1318630cca9f87"
         ]
       },
@@ -9834,6 +9964,7 @@
           "8919af1b595081570e32ca4a",
           "95dd27c5938979d4762464fa",
           "d3c36ce10b0faa5d1ed1cff1",
+          "51637b5cd67613e23b961493",
           "a789f1733f1318630cca9f87"
         ]
       },
@@ -9845,6 +9976,7 @@
           "8919af1b595081570e32ca4a",
           "95dd27c5938979d4762464fa",
           "d3c36ce10b0faa5d1ed1cff1",
+          "51637b5cd67613e23b961493",
           "a789f1733f1318630cca9f87"
         ]
       },
@@ -9855,7 +9987,8 @@
           "faebc3a33346c7c412ab32fd",
           "8919af1b595081570e32ca4a",
           "95dd27c5938979d4762464fa",
-          "d3c36ce10b0faa5d1ed1cff1"
+          "d3c36ce10b0faa5d1ed1cff1",
+          "51637b5cd67613e23b961493"
         ]
       },
       {
@@ -9866,6 +9999,7 @@
           "8919af1b595081570e32ca4a",
           "95dd27c5938979d4762464fa",
           "d3c36ce10b0faa5d1ed1cff1",
+          "51637b5cd67613e23b961493",
           "a789f1733f1318630cca9f87"
         ]
       },
@@ -9876,7 +10010,8 @@
           "faebc3a33346c7c412ab32fd",
           "8919af1b595081570e32ca4a",
           "95dd27c5938979d4762464fa",
-          "d3c36ce10b0faa5d1ed1cff1"
+          "d3c36ce10b0faa5d1ed1cff1",
+          "51637b5cd67613e23b961493"
         ]
       },
       {
