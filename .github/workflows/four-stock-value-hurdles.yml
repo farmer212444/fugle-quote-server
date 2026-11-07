@@ -1,0 +1,31 @@
+name: Four-stock value hurdle PIT checks
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/four_stock_value_hurdles.py'
+      - 'tests/test_four_stock_value_hurdles.py'
+      - 'tw-market-data/research/four_stock_value_inputs_20261107.json'
+      - '.github/workflows/four-stock-value-hurdles.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify dated inputs, earnings hurdles and PIT exclusion
+        run: python -m unittest -v tests.test_four_stock_value_hurdles
+      - name: Smoke test deterministic report
+        run: >-
+          python scripts/four_stock_value_hurdles.py
+          tw-market-data/research/four_stock_value_inputs_20261107.json
+          --json-out /tmp/four_stock_value_hurdles.json
+          --md-out /tmp/four_stock_value_hurdles.md
