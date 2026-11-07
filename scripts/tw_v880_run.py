@@ -16,6 +16,7 @@ from tw_model_v880.contracts import canonical_hash
 from tw_model_v880.governance import issuer_review,COVERAGE
 from tw_model_v880.credibility import build_research_priority
 from tw_model_v880.certification_status import summarize_certification
+from scripts.insider_sell_risk import load_sell_feed, annotate_issuer_rows
 def atomic(path,content):
     path.parent.mkdir(parents=True,exist_ok=True);fd,tmp=tempfile.mkstemp(prefix=path.name+'.',dir=path.parent)
     try:
@@ -29,7 +30,7 @@ def public_row(r):
       'target_year_eps_scenario','research_2027_price_scenario','eps_2027_base_scenario','research_pe_assumption','research_lane','rating','score',
       'specialist_model_requirements','base_scenario_role','early_recovery_watch','cycle_research','stress_eps90_pe90_upside_pct','original_current_issuer_numeric_checked','exclusion_reasons','margin_recovery','margin_bridge',
       'reviewed_financial_period','cashflow_financial_period','fresh_earnings_update','forecast_binding',
-      'governance_review','recommendation_blocked','equity_offering_overlay']
+      'governance_review','recommendation_blocked','equity_offering_overlay','insider_sell_overlay']
     out={k:r[k] for k in keys if k in r}
     for name in ('base','bear','bull'):
         if name in out:out[name]={k:r[name][k] for k in ('eps','pe','target_price','price_upside_pct','total_return_pct') if k in r[name]}
@@ -77,6 +78,9 @@ def run(data_dir,asof,target_date,out_dir=None,variant='current-information'):
     for row in rows:
         row.setdefault('governance_review',issuer_review(getattr(data,'governance_reviews',{}),row['code'],row['market']))
         row.setdefault('recommendation_blocked',row['governance_review']['blocks_recommendation'])
+    # Current information only: a post-trade report captured after asof is ignored.
+    sell_feed = load_sell_feed(pathlib.Path(data_dir)/'rankings'/'insider_marketwide_latest.json', asof)
+    insider_sell_watch = annotate_issuer_rows(rows, sell_feed)
     governance_watch=[dict(code=r['code'],market=r['market'],name=r.get('name'),
                            governance_review=r['governance_review']) for r in rows if r['recommendation_blocked']]
     broad=sorted([r for r in rows if r.get('rankable')],key=lambda r:(r['base']['price_upside_pct'],r['code']),reverse=True)
@@ -96,6 +100,9 @@ def run(data_dir,asof,target_date,out_dir=None,variant='current-information'):
         primary_research_rankable=len(primary),market_research_rankable=len(broad),not_rankable=len(rows)-len(broad),broad_unverified_historical_detail_rankable=len(broad),source_errors=len(data.errors),issuer_failures=len(failures)),
       input_evidence_qa=data.evidence.get('qa'),input_receipts=getattr(data,'input_receipts',[]),earnings_event_states=getattr(data,'earnings_event_states',{}),
       governance_coverage=COVERAGE,governance_blocked_count=len(governance_watch),governance_watch=governance_watch,
+      insider_sell_overlay_status=sell_feed['status'],insider_sell_review_count=len(insider_sell_watch),
+      insider_sell_risk_watch=insider_sell_watch,
+      insider_sell_policy='Observed post-trade selling is a research warning; no automatic EPS, PE, A+/A++, exit or expected-return adjustment until identity, PIT and walk-forward validation.',
       earnings_event_updates=sum(r.get('fresh_earnings_update',{}).get('applied',False) for r in rows),calibration=cal,backtest=backtest,formal_Aplus_count=len(formal),formal_Aplusplus_count=len(aq),
       formal_decisions_evaluated=sum('certification' in r for r in rows),zero_certified_explanation='No issuer currently satisfies every evidence gate; no assertion that the market contains no A+ opportunities',
       ranking_scope='ALL_TRACKED_ISSUERS; comparable research scenarios regardless of legacy primary cohort; source tiers disclosed; not certified investment returns',
@@ -147,6 +154,8 @@ def run(data_dir,asof,target_date,out_dir=None,variant='current-information'):
     for i,r in enumerate(broad[:10],1):
         b=r['base'];tier='公司簡明財報' if r.get('source_tier')=='ISSUER_CONDENSED_ORIGINAL_STATEMENTS' else '公司自結暫估' if r.get('fresh_earnings_update',{}).get('applied') else '原始核對' if r['original_current_issuer_numeric_checked'] else '官方彙總'
         governance_label='**重大治理待查**' if r['recommendation_blocked'] else '未全面核查'
+        if r.get('insider_sell_overlay',{}).get('needs_manual_review'):
+            governance_label+='；**內部人賣出待查**'
         report.append(f"|{i}|{r['code']} {r['name']}|{fmt(r['reference_close'])}|{fmt(b['eps'])}|{fmt(b['pe'])}|{fmt(b['target_price'])}|{b['price_upside_pct']:+.1f}%|{fmt(r['bear']['target_price'])}|{fmt(r['bull']['target_price'])}|{tier}|{governance_label}|")
     offering_rows=[r for r in rows if r.get('equity_offering_overlay')]
     if offering_rows:
@@ -416,10 +425,20 @@ def run(data_dir,asof,target_date,out_dir=None,variant='current-information'):
       'CB未確認後續轉換條件、完整公告PIT／歷史母體、管理承諾與內部人資料仍須補齊。',
       'A++ 壓測採EPS/PE各下修10%、CB轉換價下修10%增加稀釋股數，並要求潛在漲幅非負；壓測設計屬明列的實作假設。',
       '未校準情境機率，未知明年股息留空；不產生交易委託或自動Exit。','']
+    report+=['','## 內部人集中市場賣出：模型研究風險註記（非正式交易訊號）','',
+      f"來源狀態：{sell_feed['status']}；已觀察賣壓需人工覆核 {len(insider_sell_watch)} 檔。",
+      '僅使用在估值 as-of 之前產生的官方原件核對彙總；未核月份不當零。持有人正式歸戶、歷史 PIT 及閾值回測尚未完成。',
+      '這些警示不自動改變 EPS、PE、A+/A++、正式退出、期望報酬率或原先的估值排序。','',
+      '|股票|賣出/股本|淨賣/股本|已核月份|淨賣月數|最長連續淨賣月|警示|',
+      '|---|---:|---:|---:|---:|---:|---|']
+    for w in insider_sell_watch[:30]:
+        report.append(f"|{w['code']} {w.get('name') or ''}|{w['sell_pct_of_issued']:.3f}%|"
+          f"{w['net_sell_pct_of_issued']:.3f}%|{w['observed_month_count']}/{w['expected_ytd_month_count']}|"
+          f"{w['net_sell_months']}|{w['max_consecutive_net_sell_months']}|{w['tier']}|")
     full=json.dumps(result,ensure_ascii=False,separators=(',',':')).encode();packed=gzip.compress(full,mtime=0);atomic(out/'v880_full_results.json.gz',packed)
     compact={k:v for k,v in result.items() if k not in ['all_model_rows','all_primary_research','all_market_research','early_recovery_watch','pending_work']}
     for k in ['top10_market_research','top10_primary_research','top30_provisional','top30_quality_priority','top30_audit_required']:compact[k]=[public_row(r) for r in result[k]]
-    compact['all_model_row_summary']=[{k:r[k] for k in ['market','code','name','status','rankable','scenario_upside_pct','source_tier','exclusion_reasons','recommendation_blocked'] if k in r} for r in rows]
+    compact['all_model_row_summary']=[{k:r[k] for k in ['market','code','name','status','rankable','scenario_upside_pct','source_tier','exclusion_reasons','recommendation_blocked','insider_sell_overlay'] if k in r} for r in rows]
     compact['top48_primary_research']=[public_row(r) for r in primary[:48]]
     compact['conditional_recovery_audit']=result['conditional_recovery_audit']
     compact['conditional_recovery_applied_count']=sum(r.get('margin_recovery',{}).get('applied',False) for r in rows)
