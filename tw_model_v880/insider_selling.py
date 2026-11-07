@@ -188,8 +188,34 @@ def attach_selling_risk(row, observations):
             "risk_review_priority": "UNKNOWN",
             "can_change_EPS_PE_Aplus_or_Exit": False}
         return row
-    row["insider_selling_risk"] = dict(record)
+    risk = dict(record)
+    # Operating corroboration is descriptive, not proof of insider motives.
+    # These inputs are the model's existing observed financial/revenue context;
+    # never change its estimated financials, ranked order, or formal gates.
+    context = []
+    trend = (row.get("revenue_bridge") or {}).get("trend_inputs") or {}
+    latest_revenue_yoy = trend.get("latest_month_yoy")
+    if (isinstance(latest_revenue_yoy, (int, float))
+            and not isinstance(latest_revenue_yoy, bool)
+            and math.isfinite(latest_revenue_yoy)
+            and latest_revenue_yoy < 0):
+        context.append("LATEST_MONTH_REVENUE_YOY_NEGATIVE")
+    margin = row.get("margin_bridge") or {}
+    current_margin = margin.get("current_ytd_gm")
+    previous_margin = margin.get("prior_ytd_gm")
+    if (isinstance(current_margin, (int, float))
+            and isinstance(previous_margin, (int, float))
+            and not isinstance(current_margin, bool)
+            and not isinstance(previous_margin, bool)
+            and math.isfinite(current_margin) and math.isfinite(previous_margin)
+            and current_margin < previous_margin):
+        context.append("YTD_GROSS_MARGIN_BELOW_PRIOR_YEAR")
+    risk["operating_context_flags"] = context
+    risk["operating_crosscheck_research_only"] = True
+    row["insider_selling_risk"] = risk
     if record["risk_review_priority"] in ("HIGH_REVIEW", "REVIEW"):
         row.setdefault("warning_flags", []).append(
             "INSIDER_NET_SELLING_RESEARCH_WATCH_ONLY")
+        if context:
+            row["warning_flags"].append("INSIDER_SELLING_WITH_OPERATING_WEAKNESS_RESEARCH_ONLY")
     return row
