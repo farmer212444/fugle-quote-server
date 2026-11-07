@@ -429,12 +429,14 @@ def run(data_dir,asof,target_date,out_dir=None,variant='current-information'):
       f"來源狀態：{sell_feed['status']}；已觀察賣壓需人工覆核 {len(insider_sell_watch)} 檔。",
       '僅使用在估值 as-of 之前產生的官方原件核對彙總；未核月份不當零。持有人正式歸戶、歷史 PIT 及閾值回測尚未完成。',
       '這些警示不自動改變 EPS、PE、A+/A++、正式退出、期望報酬率或原先的估值排序。','',
-      '|股票|賣出/股本|淨賣/股本|已核月份|淨賣月數|最長連續淨賣月|警示|',
-      '|---|---:|---:|---:|---:|---:|---|']
+      '營運交叉訊號：只檢查既有已知月營收年增與可比較的同期累計毛利率；未核對視為缺證據，不推定股價趨勢。',
+      '|股票|賣出/股本|淨賣/股本|已核月份|淨賣月數|最長連續淨賣月|警示|營運交叉警示|',
+      '|---|---:|---:|---:|---:|---:|---|---|']
     for w in insider_sell_watch[:30]:
         report.append(f"|{w['code']} {w.get('name') or ''}|{w['sell_pct_of_issued']:.3f}%|"
           f"{w['net_sell_pct_of_issued']:.3f}%|{w['observed_month_count']}/{w['expected_ytd_month_count']}|"
-          f"{w['net_sell_months']}|{w['max_consecutive_net_sell_months']}|{w['tier']}|")
+          f"{w['net_sell_months']}|{w['max_consecutive_net_sell_months']}|{w['tier']}|"
+          f"{'、'.join(w['operating_context_flags']) or '未觀察到指定轉弱訊號／資料待核'}|")
     full=json.dumps(result,ensure_ascii=False,separators=(',',':')).encode();packed=gzip.compress(full,mtime=0);atomic(out/'v880_full_results.json.gz',packed)
     compact={k:v for k,v in result.items() if k not in ['all_model_rows','all_primary_research','all_market_research','early_recovery_watch','pending_work']}
     for k in ['top10_market_research','top10_primary_research','top30_provisional','top30_quality_priority','top30_audit_required']:compact[k]=[public_row(r) for r in result[k]]
