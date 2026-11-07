@@ -15,6 +15,15 @@ from scripts.run_research_pipeline import atomic_json
 FILING_GATES=frozenset(('original_eight_quarter_statements','cash_and_working_capital',
                        'nonoperating_components','auditor_scope','point_in_time'))
 WATCHLIST=frozenset(('6206','9802'))
+# Prioritize work that can actually advance with already archived issuer originals.
+# A review-pending label alone is not evidence that original bytes exist.
+ACTION_ZH={
+    'REVIEW_ARCHIVED_SOURCE_AND_COMPLETE_SIGNOFF':'核閱已封存原件並完成具名覆核',
+    'COMPLETE_EVIDENCE_BRIDGE_AND_REVIEW':'補公司別勾稽與具名覆核',
+    'CAPTURE_AND_VERIFY_ORIGINAL_SOURCE':'蒐集並驗證原始資料及SHA',
+    'RESTORE_REQUIRED_MODEL_INPUTS':'修復缺漏的模型輸入',
+    'RESOLVE_DOCUMENTED_FORMAL_FAILURE':'處理已明確失敗的證據',
+}
 
 
 def build_queue(progress,research):
@@ -63,6 +72,26 @@ def build_queue(progress,research):
                              invalidates_on=item['invalidates_on']))
             if name=='out_of_sample_validation':
                 strategy_issuers.append(dict(market=row['market'],code=row['code'],decision=decision))
+        # The strategy-level OOS gate is collected once for a fixed strategy,
+        # not repeatedly presented as each issuer's first clerical task.
+        issuer_work=[w for w in work if w['gate']!='out_of_sample_validation']
+        def task_priority(task):
+            if task['decision']=='FAIL':
+                return (0,GATES.index(task['gate']))
+            return ({
+                'SOURCE_CAPTURED':1,
+                'MIRROR_CAPTURED':2,
+                'REVIEW_PENDING':3,
+                'SOURCE_MISSING':4,
+                'NOT_PROBED':5,
+            }.get(task['stage'],6),GATES.index(task['gate']))
+        next_issuer_task=min(issuer_work,key=task_priority) if issuer_work else None
+        ready_issuer_gates=[w['gate'] for w in issuer_work
+                            if w['stage']=='SOURCE_CAPTURED' and w['decision']=='PENDING']
+        upside=row.get('research_upside_pct')
+        price_lane=('A_PLUS_PRICE_ONLY' if type(upside) in (int,float) and upside>=30
+                    else 'A_DISCOVERY_PRICE_ONLY' if type(upside) in (int,float) and upside>=25
+                    else 'PRICE_GATE_NOT_MET')
         jobs.append(dict(market=row['market'],code=row['code'],name=row.get('name'),
                          financial_period=row['financial_period'],
                          reviewed_financial_period=row.get('reviewed_financial_period'),
@@ -70,6 +99,11 @@ def build_queue(progress,research):
                          watchlist_focus=row['code'] in WATCHLIST,
                          passed_gate_count=len(passed),failed_gates=failed,
                          unresolved_gate_count=len(work),work=work,
+                         price_lane=price_lane,review_ready_original_gate_count=len(ready_issuer_gates),
+                         review_ready_original_gates=ready_issuer_gates,
+                         next_issuer_gate=next_issuer_task['gate'] if next_issuer_task else None,
+                         next_issuer_action=next_issuer_task['next_action'] if next_issuer_task else None,
+                         next_issuer_stage=next_issuer_task['stage'] if next_issuer_task else None,
                          filing_collection_packet=dict(
                              gates=[item['gate'] for item in work if item['gate'] in FILING_GATES],
                              reuse='COLLECT_SAME_ISSUER_ORIGINALS_ONCE_REVIEW_EACH_GATE_SEPARATELY'),
@@ -80,6 +114,15 @@ def build_queue(progress,research):
                               -row['passed_gate_count'],
                               -(row['research_upside_pct'] if row['research_upside_pct'] is not None else -float('inf')),
                               row['market'],row['code']))
+    # Explicit high-upside lane: source-readiness, not upside alone, picks the
+    # next issuer to audit. Formal certification counts remain engine-owned.
+    high_upside=[r for r in jobs if r['price_lane']=='A_PLUS_PRICE_ONLY']
+    high_upside.sort(key=lambda x:(bool(x['failed_gates']),
+                                  -x['passed_gate_count'],
+                                  -x['review_ready_original_gate_count'],
+                                  -(x['research_upside_pct'] or 0),x['code']))
+    gate_blockers={g:sum(g in {w['gate'] for w in issuer['work']}
+                         for issuer in high_upside) for g in GATES}
     return dict(schema='RESEARCH_EVIDENCE_WORK_QUEUE_V1',
                 model=research['model'],estimate_vintage=research['estimate_vintage'],
                 asof_price_date=research['asof_price_date'],
@@ -87,6 +130,25 @@ def build_queue(progress,research):
                 issuer_job_count=len(jobs),unresolved_gate_count=sum(r['unresolved_gate_count'] for r in jobs),
                 scope='ISSUERS_INCLUDED_IN_CURRENT_GATE_DIAGNOSTICS_NOT_ALL_TRACKED_COMPANIES',
                 issuer_jobs=jobs,
+                aplus_repair=dict(
+                    price_qualified_research_issuers=len(high_upside),
+                    strategy_level_gate='out_of_sample_validation',
+                    strategy_backtest_requires_real_PIT_and_cost_adjusted_OOS=True,
+                    high_upside_gate_pending_counts=gate_blockers,
+                    original_captured_review_pending_issuers=sum(
+                        bool(r['review_ready_original_gate_count']) for r in high_upside),
+                    review_ready_gate_issues=sum(r['review_ready_original_gate_count'] for r in high_upside),
+                    verification_priority=[
+                        dict(code=r['code'],name=r['name'],
+                             upside_pct=r['research_upside_pct'],
+                             pass_count=r['passed_gate_count'],
+                             review_ready_original_gates=r['review_ready_original_gates'],
+                             next_issuer_gate=r['next_issuer_gate'],
+                             next_issuer_action=r['next_issuer_action'],
+                             next_issuer_stage=r['next_issuer_stage'])
+                        for r in high_upside[:30]],
+                    no_gate_auto_passed=True,
+                    no_reviewer_or_historical_results_fabricated=True),
                 governance_followup_tasks=[dict(code=row['code'],market=row['market'],
                     name=row.get('name'),status=row['governance_review']['status'],
                     recommendation_blocked=True,
@@ -105,16 +167,35 @@ def build_queue(progress,research):
 
 
 def render(report):
-    lines=['# 原始證據工作佇列','',
+    aplus=report['aplus_repair']
+    lines=['# A+ 原始證據修復佇列','',
            f"模型：{report['model']}；估計：{report['estimate_vintage']}。",
            '僅涵蓋當次認證診斷名單。優先關注股，再按已完成門檻排序；潛在漲幅僅作同順位排序。',
            '同公司原始財報集中蒐集，各項仍須獨立查核；策略證據集中蒐集後仍須核對個股與子群適用性。','',
-           '|股票|已通過|明確未通過|未結案|下一項工作|','|---|---:|---:|---:|---|']
+           f"僅達A+價格門檻的研究候選：{aplus['price_qualified_research_issuers']}；"
+           f"其中已封存部分可進一步核閱的原件：{aplus['original_captured_review_pending_issuers']}家、"
+           f"{aplus['review_ready_gate_issues']}項待核；這不是正式A+或品質PASS。",'',
+           '## 先核閱已封存原件（價差≥30%研究候選）','',
+           '|公司|研究漲幅|已有原件待核項目|下一項實際動作|',
+           '|---|---:|---|---|']
+    for item in aplus['verification_priority']:
+        action=ACTION_ZH.get(item['next_issuer_action'],'已無公司別待辦')
+        lines.append(f"|{item['code']} {item.get('name') or ''}|{item['upside_pct']:+.1f}%|"
+                     f"{'、'.join(item['review_ready_original_gates']) or '尚無可直接簽核原件'}|"
+                     f"{item['next_issuer_gate'] or '策略共同驗證'}：{action}|")
+    lines+=['','## 全部診斷公司的待辦（公司別及共同驗證分開）','',
+            '|股票|A+價格狀態|正式通過|明確未通過|未結案|下一步|',
+            '|---|---|---:|---:|---:|---|']
     for job in report['issuer_jobs']:
-        first=job['work'][0] if job['work'] else None
-        action=first['required_evidence'] if first else '已無待辦項目'
-        lines.append(f"|{job['code']} {job.get('name') or ''}|{job['passed_gate_count']}/13|"
-                     f"{len(job['failed_gates'])}|{job['unresolved_gate_count']}|{action}|")
+        action=ACTION_ZH.get(job['next_issuer_action'],'已無公司別待辦')
+        target=job['next_issuer_gate'] or '僅策略共同驗證'
+        lines.append(f"|{job['code']} {job.get('name') or ''}|{job['price_lane']}|"
+                     f"{job['passed_gate_count']}/13|{len(job['failed_gates'])}|"
+                     f"{job['unresolved_gate_count']}|{target}：{action}|")
+    lines+=['','## 共同策略阻礙：樣本外驗證','',
+            '須重建歷史PIT、完整公司行動與交易成本，並以固定版本做Walk-Forward。'
+            '不能把尚未成熟的2027報酬或相同日期的重複樣本視為完成。',
+            '每家公司仍須確認該策略／子群適用性；本報告不產生證書、買賣訊號或人工簽核。']
     if report.get('governance_followup_tasks'):
         lines+=['','## 重大治理事件待辦','',
                 '僅涵蓋已登錄事件；維持暫停推薦，不能以營運正常或單純時間經過自動解除。','']
