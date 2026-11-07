@@ -128,6 +128,35 @@ class OriginalIntakeTests(unittest.TestCase):
         self.assertEqual(result['fetch_errors'][0]['period'],'2025-Q4')
         self.assertEqual(self.collect()['coverage']['missing_quarters'],[])
 
+    def test_403_directory_uses_hash_verified_old_index_to_retry_missing_pdfs(self):
+        first_missing=self.specs['2026-Q2'][0]
+        def partial(url,limit):
+            if url==first_missing:raise OSError('document temporarily unavailable')
+            return self.fetch(url,limit)
+        initial=self.collect(fetcher=partial)
+        self.assertEqual(initial['coverage']['missing_quarters'],['2026-Q2'])
+        def blocked_index(url,limit):
+            if url==mod.DIRECTORY:raise OSError('HTTP 403 Forbidden')
+            return self.fetch(url,limit)
+        after=self.collect(fetcher=blocked_index,clock=lambda:STAMP+dt.timedelta(minutes=1))
+        self.assertEqual(after['coverage']['found_quarters'],self.periods)
+        self.assertTrue(after['coverage']['source_title_coverage_complete'])
+        self.assertEqual(after['fetch_errors'][0]['period'],'DIRECTORY')
+        self.assertEqual(after['fetch_errors'][0]['recovery'],
+                         'SHA_VERIFIED_ARCHIVED_ISSUER_INDEX')
+        self.assertEqual(len(self.manifest()['index_versions']),1)
+        self.assertFalse(after['coverage']['formal_gate_pass'])
+        self.assertFalse(after['coverage']['full_original_pdf_content_reviewed'])
+
+    def test_403_without_prior_issuer_index_cannot_fabricate_urls(self):
+        def blocked_index(url,limit):
+            raise OSError('HTTP 403 Forbidden')
+        result=self.collect(fetcher=blocked_index)
+        self.assertEqual(len(result['coverage']['missing_quarters']),8)
+        self.assertEqual(result['fetch_errors'][0]['period'],'DIRECTORY')
+        self.assertNotIn('recovery',result['fetch_errors'][0])
+        self.assertFalse(result['coverage']['formal_gate_pass'])
+
     def test_directory_failure_preserves_archived_bytes_and_pending_state(self):
         self.collect();old=self.manifest()['documents']
         def unavailable(url,limit):raise OSError('offline')
