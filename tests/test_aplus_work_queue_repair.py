@@ -125,6 +125,50 @@ class AplusQueueRepairTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'UNTRUSTED_SEC_SOURCE_REPORT'):
             build_queue(progress,research,sec_archive=invalid)
 
+    def test_partial_issuer_details_are_reconciled_with_full_market(self):
+        progress,research=self.make_inputs()
+        progress.update(tracked_issuer_count=6,
+                        model_evaluated_issuer_count=4,
+                        not_evaluated_issuer_count=2,
+                        high_upside_research_candidates=2,
+                        formally_certified_Aplus_in_report=0)
+        report=build_queue(progress,research)
+        scope=report['universe_coverage']
+        self.assertEqual(scope['total_tracked'],6)
+        self.assertEqual(scope['detailed_issuer_diagnostics'],3)
+        self.assertEqual(scope['remaining_without_detailed_diagnostic'],3)
+        self.assertEqual(scope['count_scope'],'DETAIL_ONLY_NOT_FULL_MARKET')
+        from tw_model_v880.readiness_lanes import render_readiness_report
+        page=dict(model=report['model'],estimate_vintage=report['estimate_vintage'],
+                  asof_price_date=report['asof_price_date'],
+                  counts=report['decision_lanes_summary'],
+                  universe_coverage=scope,
+                  issuers=[x['independent_decision_lanes'] for x in report['issuer_jobs']])
+        text=render_readiness_report(page)
+        self.assertIn('模型全市場追蹤 6 家',text)
+        self.assertIn('本表僅逐股詳細列出 3 家',text)
+        self.assertIn('全市場正式A+ 0 家',text)
+
+    def test_partial_issuer_coverage_inconsistent_or_incomplete_fails_closed(self):
+        progress,research=self.make_inputs()
+        progress.update(tracked_issuer_count=6,
+                        model_evaluated_issuer_count=4,
+                        not_evaluated_issuer_count=2,
+                        high_upside_research_candidates=2,
+                        formally_certified_Aplus_in_report=0)
+        invalid=copy.deepcopy(progress)
+        invalid['not_evaluated_issuer_count']=1
+        with self.assertRaisesRegex(ValueError,'UNIVERSE_COVERAGE_RECONCILIATION_FAILED'):
+            build_queue(invalid,research)
+        invalid=copy.deepcopy(progress)
+        invalid['high_upside_research_candidates']=3
+        with self.assertRaisesRegex(ValueError,'UNIVERSE_COVERAGE_RECONCILIATION_FAILED'):
+            build_queue(invalid,research)
+        invalid=copy.deepcopy(progress)
+        del invalid['model_evaluated_issuer_count']
+        with self.assertRaisesRegex(ValueError,'UNIVERSE_COVERAGE_INCOMPLETE'):
+            build_queue(invalid,research)
+
     def test_oos_is_shared_and_cannot_be_mistaken_for_captured_original(self):
         progress,research=self.make_inputs()
         row=progress['issuer_diagnostics'][0]
