@@ -14,7 +14,7 @@ class DualLaneTests(unittest.TestCase):
                            required_evidence='TEST',invalidates_on='TEST',
                            reason='UNREVIEWED') for g in GATES}
             return dict(code=code,market='TWSE',name=code,
-                        financial_period='2026-Q2',research_upside_pct=40,
+                        financial_period='2026-Q2',reviewed_financial_period='2026-Q2',research_upside_pct=40,
                         formal_Aplus=False,gate_stage=stages)
         progress=dict(base,issuer_diagnostics=[issuer('2317'),issuer('2330'),issuer('9999')])
         research=dict(base)
