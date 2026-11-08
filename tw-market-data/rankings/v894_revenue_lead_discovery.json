@@ -1,8 +1,8 @@
 {
   "status": "REVENUE_LEADING_DISCOVERY_NOT_FORMAL_CERTIFICATION",
   "source_model": "V8.10.8",
-  "source_model_code_sha256": "819c6863e7d85caa21b4e884754a4ca56e1f0735e38b35486c4921e237d99e0f",
-  "estimate_vintage": "2026-11-08T21:39:07.790614+08:00",
+  "source_model_code_sha256": "957665ba8d64938cfad2911a593392f8140a2d9db2039ff4638892256bcc44bb",
+  "estimate_vintage": "2026-11-08T22:36:43.805243+08:00",
   "price_date": "2026-11-06",
   "revenue_month": "2026-09",
   "issuer_count": 1968,
@@ -7223,7 +7223,8 @@
       "eligible_for_lead_ranking": true,
       "data_quality_flags": [],
       "risk_flags": [
-        "MULTI_MONTH_CONTINUITY_NOT_YET_OBSERVED"
+        "MULTI_MONTH_CONTINUITY_NOT_YET_OBSERVED",
+        "VALUATION_NOT_COMPARABLE"
       ],
       "monthly_yoy_pct": 71.997,
       "ytd_yoy_pct": 12.97,
@@ -16422,6 +16423,32 @@
       "observed_persistence_points": 10.0,
       "continuity_points": 0,
       "revenue_points": 37.33
+    },
+    {
+      "code": "2404",
+      "name": "漢唐",
+      "market": "TWSE",
+      "industry": "其他電子業",
+      "report_month": "11509",
+      "lead_score": 37.327,
+      "valuation_unreflected_points": 20.0,
+      "formal_grade_changed": false,
+      "early_layout_only": true,
+      "eligible_for_lead_ranking": true,
+      "data_quality_flags": [],
+      "risk_flags": [
+        "MULTI_MONTH_CONTINUITY_NOT_YET_OBSERVED",
+        "MONTHLY_YOY_DECELERATED_AT_LEAST_20PP_VS_YTD"
+      ],
+      "monthly_yoy_pct": 12.561,
+      "ytd_yoy_pct": 62.201,
+      "acceleration_pp": -49.641,
+      "mom_pct": -13.03,
+      "revenue_level_points": 7.327,
+      "acceleration_points": 0.0,
+      "observed_persistence_points": 10.0,
+      "continuity_points": 0,
+      "revenue_points": 17.327
     },
     {
       "code": "6612",
@@ -27221,33 +27248,6 @@
       "revenue_points": 0.0
     },
     {
-      "code": "2404",
-      "name": "漢唐",
-      "market": "TWSE",
-      "industry": "其他電子業",
-      "report_month": "11509",
-      "lead_score": 17.327,
-      "valuation_unreflected_points": 0.0,
-      "formal_grade_changed": false,
-      "early_layout_only": true,
-      "eligible_for_lead_ranking": true,
-      "data_quality_flags": [],
-      "risk_flags": [
-        "MULTI_MONTH_CONTINUITY_NOT_YET_OBSERVED",
-        "MONTHLY_YOY_DECELERATED_AT_LEAST_20PP_VS_YTD",
-        "VALUATION_NOT_COMPARABLE"
-      ],
-      "monthly_yoy_pct": 12.561,
-      "ytd_yoy_pct": 62.201,
-      "acceleration_pp": -49.641,
-      "mom_pct": -13.03,
-      "revenue_level_points": 7.327,
-      "acceleration_points": 0.0,
-      "observed_persistence_points": 10.0,
-      "continuity_points": 0,
-      "revenue_points": 17.327
-    },
-    {
       "code": "8291",
       "name": "尚茂",
       "market": "TPEX",
@@ -34556,7 +34556,8 @@
       "data_quality_flags": [],
       "risk_flags": [
         "MULTI_MONTH_CONTINUITY_NOT_YET_OBSERVED",
-        "YTD_REVENUE_GROWTH_NONPOSITIVE"
+        "YTD_REVENUE_GROWTH_NONPOSITIVE",
+        "VALUATION_NOT_COMPARABLE"
       ],
       "monthly_yoy_pct": 5.181,
       "ytd_yoy_pct": -5.146,

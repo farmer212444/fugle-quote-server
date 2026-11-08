@@ -1,6 +1,6 @@
 {
   "schema": "TOP30_VS_TAIEX_TR_V1",
-  "observed_at": "2026-11-08T13:39:59.835103+00:00",
+  "observed_at": "2026-11-08T14:37:39.017514+00:00",
   "benchmark_id": "TAIEX_TR",
   "trials": [
     {
@@ -639,6 +639,60 @@
         {
           "status": "AWAITING_FUTURE_HOLDING_SESSIONS",
           "cohort_id": "d13ce349bfc4212222f821be"
+        }
+      ],
+      "rejected_outcomes": [],
+      "matured_unusable_periods": 0,
+      "status": "NO_VERIFIED_OUTCOMES",
+      "verified_nonoverlapping_periods": 0,
+      "model_total_return": null,
+      "benchmark_total_return": null,
+      "excess_return_pp": null,
+      "evidence_supports_benchmark_edge": false,
+      "formal_out_of_sample_pass": false
+    },
+    {
+      "trial_id": "taiex-tr-735b2e89c1413fef01ac074d",
+      "registered_at": "2026-11-08T14:37:32.630285+00:00",
+      "spec": {
+        "protocol": "TOP30_VS_TAIEX_TR_V1",
+        "strategy_variant_sha256": "ff1b79220735ba7987f77fe24c6bb167dc986de833d3e071438cbcd61fd8ea47",
+        "model_code_sha256": "957665ba8d64938cfad2911a593392f8140a2d9db2039ff4638892256bcc44bb",
+        "model_target_date": "2027-12-31",
+        "cost_policy": {
+          "buy_fee_rate": 0.001425,
+          "sell_fee_rate": 0.001425,
+          "sell_tax_rate": 0.003,
+          "buy_slippage_rate": 0.001,
+          "sell_slippage_rate": 0.001,
+          "half_spread_rate": 0.0005,
+          "minimum_fee_ntd": 20
+        },
+        "benchmark_policy": {
+          "benchmark_id": "TAIEX_TR",
+          "selection_rule": "RESEARCH_TOP30_EQUAL_WEIGHT_NEXT_SESSION_CLOSE",
+          "selection_source": "top30_provisional",
+          "holding_intervals": 21,
+          "number_of_stocks": 30,
+          "dividend_policy": "GROSS_DIVIDENDS_RETAINED_AS_CASH_OR_RECEIVABLE_NO_REINVESTMENT",
+          "benchmark_cost_policy": "COSTLESS_OFFICIAL_GROSS_TOTAL_RETURN_INDEX",
+          "fractional_shares_are_research_assumption": true,
+          "minimum_nonoverlapping_oos_periods": 60,
+          "minimum_market_regimes": 2,
+          "bootstrap_draws": 10000,
+          "bootstrap_block_size": 21,
+          "stress_cost_multiplier_excluding_tax": 2,
+          "regime_lookback_sessions": 63,
+          "regime_return_threshold": 0.03,
+          "automatic_deployment": false
+        },
+        "reference_capital_ntd": 10000000,
+        "max_daily_participation": 0.05
+      },
+      "outcomes": [
+        {
+          "status": "AWAITING_FUTURE_HOLDING_SESSIONS",
+          "cohort_id": "6af0eae1205e988236d460eb"
         }
       ],
       "rejected_outcomes": [],
@@ -1732,8 +1786,8 @@
       "formal_out_of_sample_pass": false
     }
   ],
-  "registered_benchmark_trials": 32,
-  "all_registered_designs": 7515,
+  "registered_benchmark_trials": 33,
+  "all_registered_designs": 7757,
   "verified_outcomes": 0,
   "benchmark_sessions": 148,
   "benchmark_months": [
@@ -1764,6 +1818,7 @@
         "5322e6c0535a6eaa6d0ac606",
         "8919af1b595081570e32ca4a",
         "d13ce349bfc4212222f821be",
+        "6af0eae1205e988236d460eb",
         "7624ef50da168e9063458d6f",
         "1a48ac8cf8d5b1194705517c",
         "3d655b7249fc0a433dcbb0f2",
@@ -1802,6 +1857,7 @@
         "5322e6c0535a6eaa6d0ac606",
         "8919af1b595081570e32ca4a",
         "d13ce349bfc4212222f821be",
+        "6af0eae1205e988236d460eb",
         "7624ef50da168e9063458d6f",
         "1a48ac8cf8d5b1194705517c",
         "3d655b7249fc0a433dcbb0f2",
@@ -1840,6 +1896,7 @@
         "5322e6c0535a6eaa6d0ac606",
         "8919af1b595081570e32ca4a",
         "d13ce349bfc4212222f821be",
+        "6af0eae1205e988236d460eb",
         "7624ef50da168e9063458d6f",
         "1a48ac8cf8d5b1194705517c",
         "3d655b7249fc0a433dcbb0f2",
@@ -1878,6 +1935,7 @@
         "5322e6c0535a6eaa6d0ac606",
         "8919af1b595081570e32ca4a",
         "d13ce349bfc4212222f821be",
+        "6af0eae1205e988236d460eb",
         "7624ef50da168e9063458d6f",
         "1a48ac8cf8d5b1194705517c",
         "3d655b7249fc0a433dcbb0f2",
@@ -1916,6 +1974,7 @@
         "5322e6c0535a6eaa6d0ac606",
         "8919af1b595081570e32ca4a",
         "d13ce349bfc4212222f821be",
+        "6af0eae1205e988236d460eb",
         "7624ef50da168e9063458d6f",
         "1a48ac8cf8d5b1194705517c",
         "3d655b7249fc0a433dcbb0f2",
@@ -1954,6 +2013,7 @@
         "5322e6c0535a6eaa6d0ac606",
         "8919af1b595081570e32ca4a",
         "d13ce349bfc4212222f821be",
+        "6af0eae1205e988236d460eb",
         "7624ef50da168e9063458d6f",
         "1a48ac8cf8d5b1194705517c",
         "3d655b7249fc0a433dcbb0f2",
@@ -1992,6 +2052,7 @@
         "5322e6c0535a6eaa6d0ac606",
         "8919af1b595081570e32ca4a",
         "d13ce349bfc4212222f821be",
+        "6af0eae1205e988236d460eb",
         "7624ef50da168e9063458d6f",
         "1a48ac8cf8d5b1194705517c",
         "3d655b7249fc0a433dcbb0f2",
@@ -2029,6 +2090,7 @@
         "5322e6c0535a6eaa6d0ac606",
         "8919af1b595081570e32ca4a",
         "d13ce349bfc4212222f821be",
+        "6af0eae1205e988236d460eb",
         "7624ef50da168e9063458d6f",
         "1a48ac8cf8d5b1194705517c",
         "3d655b7249fc0a433dcbb0f2",
@@ -2067,6 +2129,7 @@
         "5322e6c0535a6eaa6d0ac606",
         "8919af1b595081570e32ca4a",
         "d13ce349bfc4212222f821be",
+        "6af0eae1205e988236d460eb",
         "7624ef50da168e9063458d6f",
         "1a48ac8cf8d5b1194705517c",
         "3d655b7249fc0a433dcbb0f2",
@@ -2105,6 +2168,7 @@
         "5322e6c0535a6eaa6d0ac606",
         "8919af1b595081570e32ca4a",
         "d13ce349bfc4212222f821be",
+        "6af0eae1205e988236d460eb",
         "7624ef50da168e9063458d6f",
         "1a48ac8cf8d5b1194705517c",
         "3d655b7249fc0a433dcbb0f2",
@@ -2181,6 +2245,7 @@
         "5322e6c0535a6eaa6d0ac606",
         "8919af1b595081570e32ca4a",
         "d13ce349bfc4212222f821be",
+        "6af0eae1205e988236d460eb",
         "7624ef50da168e9063458d6f",
         "1a48ac8cf8d5b1194705517c",
         "3d655b7249fc0a433dcbb0f2",
@@ -2219,6 +2284,7 @@
         "5322e6c0535a6eaa6d0ac606",
         "8919af1b595081570e32ca4a",
         "d13ce349bfc4212222f821be",
+        "6af0eae1205e988236d460eb",
         "7624ef50da168e9063458d6f",
         "1a48ac8cf8d5b1194705517c",
         "3d655b7249fc0a433dcbb0f2",
@@ -2250,6 +2316,7 @@
         "9046f7892e103e1aefeeae31",
         "cb22c98080b615e2c2d79dad",
         "8919af1b595081570e32ca4a",
+        "6af0eae1205e988236d460eb",
         "95dd27c5938979d4762464fa",
         "d3c36ce10b0faa5d1ed1cff1",
         "51637b5cd67613e23b961493",
@@ -2265,6 +2332,7 @@
         "9046f7892e103e1aefeeae31",
         "cb22c98080b615e2c2d79dad",
         "8919af1b595081570e32ca4a",
+        "6af0eae1205e988236d460eb",
         "95dd27c5938979d4762464fa",
         "d3c36ce10b0faa5d1ed1cff1",
         "51637b5cd67613e23b961493",
@@ -2287,6 +2355,7 @@
         "5322e6c0535a6eaa6d0ac606",
         "8919af1b595081570e32ca4a",
         "d13ce349bfc4212222f821be",
+        "6af0eae1205e988236d460eb",
         "7624ef50da168e9063458d6f",
         "1a48ac8cf8d5b1194705517c",
         "3d655b7249fc0a433dcbb0f2",
@@ -2325,6 +2394,7 @@
         "5322e6c0535a6eaa6d0ac606",
         "8919af1b595081570e32ca4a",
         "d13ce349bfc4212222f821be",
+        "6af0eae1205e988236d460eb",
         "7624ef50da168e9063458d6f",
         "1a48ac8cf8d5b1194705517c",
         "3d655b7249fc0a433dcbb0f2",
@@ -2356,6 +2426,7 @@
         "9046f7892e103e1aefeeae31",
         "cb22c98080b615e2c2d79dad",
         "8919af1b595081570e32ca4a",
+        "6af0eae1205e988236d460eb",
         "95dd27c5938979d4762464fa",
         "d3c36ce10b0faa5d1ed1cff1",
         "51637b5cd67613e23b961493",
@@ -2371,6 +2442,7 @@
         "9046f7892e103e1aefeeae31",
         "cb22c98080b615e2c2d79dad",
         "8919af1b595081570e32ca4a",
+        "6af0eae1205e988236d460eb",
         "95dd27c5938979d4762464fa",
         "d3c36ce10b0faa5d1ed1cff1",
         "51637b5cd67613e23b961493",
@@ -2386,6 +2458,7 @@
         "9046f7892e103e1aefeeae31",
         "cb22c98080b615e2c2d79dad",
         "8919af1b595081570e32ca4a",
+        "6af0eae1205e988236d460eb",
         "95dd27c5938979d4762464fa",
         "d3c36ce10b0faa5d1ed1cff1",
         "51637b5cd67613e23b961493",
@@ -2401,6 +2474,7 @@
         "9046f7892e103e1aefeeae31",
         "cb22c98080b615e2c2d79dad",
         "8919af1b595081570e32ca4a",
+        "6af0eae1205e988236d460eb",
         "95dd27c5938979d4762464fa",
         "d3c36ce10b0faa5d1ed1cff1",
         "51637b5cd67613e23b961493"
@@ -2415,6 +2489,7 @@
         "9046f7892e103e1aefeeae31",
         "cb22c98080b615e2c2d79dad",
         "8919af1b595081570e32ca4a",
+        "6af0eae1205e988236d460eb",
         "95dd27c5938979d4762464fa",
         "d3c36ce10b0faa5d1ed1cff1",
         "51637b5cd67613e23b961493",
@@ -2430,6 +2505,7 @@
         "9046f7892e103e1aefeeae31",
         "cb22c98080b615e2c2d79dad",
         "8919af1b595081570e32ca4a",
+        "6af0eae1205e988236d460eb",
         "95dd27c5938979d4762464fa",
         "d3c36ce10b0faa5d1ed1cff1",
         "51637b5cd67613e23b961493",
@@ -2451,6 +2527,7 @@
         "5322e6c0535a6eaa6d0ac606",
         "8919af1b595081570e32ca4a",
         "d13ce349bfc4212222f821be",
+        "6af0eae1205e988236d460eb",
         "7624ef50da168e9063458d6f",
         "1a48ac8cf8d5b1194705517c",
         "3d655b7249fc0a433dcbb0f2",
@@ -2482,6 +2559,7 @@
         "9046f7892e103e1aefeeae31",
         "cb22c98080b615e2c2d79dad",
         "8919af1b595081570e32ca4a",
+        "6af0eae1205e988236d460eb",
         "95dd27c5938979d4762464fa",
         "d3c36ce10b0faa5d1ed1cff1",
         "51637b5cd67613e23b961493",
@@ -2504,6 +2582,7 @@
         "5322e6c0535a6eaa6d0ac606",
         "8919af1b595081570e32ca4a",
         "d13ce349bfc4212222f821be",
+        "6af0eae1205e988236d460eb",
         "7624ef50da168e9063458d6f",
         "1a48ac8cf8d5b1194705517c",
         "3d655b7249fc0a433dcbb0f2",
@@ -2535,6 +2614,7 @@
         "9046f7892e103e1aefeeae31",
         "cb22c98080b615e2c2d79dad",
         "8919af1b595081570e32ca4a",
+        "6af0eae1205e988236d460eb",
         "95dd27c5938979d4762464fa",
         "d3c36ce10b0faa5d1ed1cff1",
         "51637b5cd67613e23b961493"
@@ -2549,6 +2629,7 @@
         "9046f7892e103e1aefeeae31",
         "cb22c98080b615e2c2d79dad",
         "8919af1b595081570e32ca4a",
+        "6af0eae1205e988236d460eb",
         "95dd27c5938979d4762464fa",
         "d3c36ce10b0faa5d1ed1cff1",
         "51637b5cd67613e23b961493",
@@ -2564,6 +2645,7 @@
         "9046f7892e103e1aefeeae31",
         "cb22c98080b615e2c2d79dad",
         "8919af1b595081570e32ca4a",
+        "6af0eae1205e988236d460eb",
         "95dd27c5938979d4762464fa",
         "d3c36ce10b0faa5d1ed1cff1",
         "51637b5cd67613e23b961493"
@@ -2585,6 +2667,7 @@
         "5322e6c0535a6eaa6d0ac606",
         "8919af1b595081570e32ca4a",
         "d13ce349bfc4212222f821be",
+        "6af0eae1205e988236d460eb",
         "7624ef50da168e9063458d6f",
         "1a48ac8cf8d5b1194705517c",
         "3d655b7249fc0a433dcbb0f2",
@@ -2976,6 +3059,13 @@
       "code": "7704",
       "cohort_ids": [
         "f362ae5d0b0a5fdbd80f0aba"
+      ]
+    },
+    {
+      "market": "TWSE",
+      "code": "2404",
+      "cohort_ids": [
+        "6af0eae1205e988236d460eb"
       ]
     }
   ],

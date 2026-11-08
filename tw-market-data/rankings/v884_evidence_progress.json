@@ -1,6 +1,6 @@
 {
   "model": "V8.10.8",
-  "estimate_vintage": "2026-11-08T21:39:07.790614+08:00",
+  "estimate_vintage": "2026-11-08T22:36:43.805243+08:00",
   "asof_price_date": "2026-11-06",
   "tracked_issuers": 2004,
   "valued_candidates": 859,
@@ -230,17 +230,17 @@
       "source_tier": "NORMALIZED_ARCHIVE_AND_CAPTURE_RECEIPTS_NOT_INDEPENDENT_ORIGINAL_ATTESTATION"
     },
     {
-      "code": "8390",
-      "name": "金益鼎",
-      "market": "TPEX",
-      "research_upside_pct": 140.00043209383955,
+      "code": "2483",
+      "name": "百容",
+      "market": "TWSE",
+      "research_upside_pct": 141.84902364889527,
       "source_status": "CERTIFICATION_PENDING",
       "financial": {
         "normalized_income_8q_count": 8,
         "normalized_cashflow_8q_count": 8,
         "missing_income_periods": [],
         "missing_cashflow_periods": [],
-        "latest_primary_key_numbers_checked": true,
+        "latest_primary_key_numbers_checked": false,
         "full_eight_quarter_original_notes_audit": false,
         "filing_specific_disclosure_timestamps_verified": false,
         "original_eight_quarter_gate": "PENDING_NOT_CERTIFIED"
@@ -261,12 +261,12 @@
           "sessions": 5,
           "first": "2026-11-02",
           "last": "2026-11-06",
-          "median_turnover_ntd": 45329292,
-          "min_turnover_ntd": 32874343,
+          "median_turnover_ntd": 37963197,
+          "min_turnover_ntd": 18077145,
           "zero_turnover_days": 0,
           "hypothetical_position_ntd": 5000000,
           "participation_cap": 0.2,
-          "exit_sessions_at_median": 0.55,
+          "exit_sessions_at_median": 0.66,
           "estimates_are_idealized_not_fills": true
         },
         "twenty_day": null,
@@ -276,13 +276,13 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 140,
+        "available_sessions": 65,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-07",
           "last": "2026-11-06",
-          "median_turnover_ntd": 33702670.0,
-          "min_turnover_ntd": 10842272,
+          "median_turnover_ntd": 33751220.5,
+          "min_turnover_ntd": 12058277,
           "zero_turnover_days": 0,
           "hypothetical_position_ntd": 5000000,
           "participation_cap": 0.2,
@@ -293,30 +293,86 @@
           "sessions": 5,
           "first": "2026-11-02",
           "last": "2026-11-06",
-          "median_turnover_ntd": 45329292,
-          "min_turnover_ntd": 32874343,
+          "median_turnover_ntd": 37963197,
+          "min_turnover_ntd": 18077145,
           "zero_turnover_days": 0,
           "hypothetical_position_ntd": 5000000,
           "participation_cap": 0.2,
-          "exit_sessions_at_median": 0.55,
+          "exit_sessions_at_median": 0.66,
           "estimates_are_idealized_not_fills": true
         },
         "sixty_day": {
           "sessions": 60,
           "first": "2026-08-10",
           "last": "2026-11-06",
-          "median_turnover_ntd": 34294335.5,
-          "min_turnover_ntd": 10842272,
+          "median_turnover_ntd": 31618739.5,
+          "min_turnover_ntd": 6779537,
           "zero_turnover_days": 0,
           "hypothetical_position_ntd": 5000000,
           "participation_cap": 0.2,
-          "exit_sessions_at_median": 0.73,
+          "exit_sessions_at_median": 0.79,
           "estimates_are_idealized_not_fills": true
         },
-        "validated_archive_additions": 0,
-        "validated_archive_added_sessions": [],
-        "overlapping_sessions_checked": 14,
-        "reused_issuer_history_sessions": 140,
+        "validated_archive_additions": 11,
+        "validated_archive_added_sessions": [
+          {
+            "date": "2026-11-06",
+            "turnover_ntd": 37963197,
+            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
+          },
+          {
+            "date": "2026-11-05",
+            "turnover_ntd": 102206665,
+            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
+          },
+          {
+            "date": "2026-11-04",
+            "turnover_ntd": 64999235,
+            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
+          },
+          {
+            "date": "2026-11-03",
+            "turnover_ntd": 26188656,
+            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
+          },
+          {
+            "date": "2026-11-02",
+            "turnover_ntd": 18077145,
+            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
+          },
+          {
+            "date": "2026-10-30",
+            "turnover_ntd": 32321700,
+            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
+          },
+          {
+            "date": "2026-10-29",
+            "turnover_ntd": 30516817,
+            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
+          },
+          {
+            "date": "2026-10-28",
+            "turnover_ntd": 16640057,
+            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
+          },
+          {
+            "date": "2026-10-27",
+            "turnover_ntd": 32233694,
+            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
+          },
+          {
+            "date": "2026-10-22",
+            "turnover_ntd": 167241384,
+            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
+          },
+          {
+            "date": "2026-10-21",
+            "turnover_ntd": 35180741,
+            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
+          }
+        ],
+        "overlapping_sessions_checked": 3,
+        "reused_issuer_history_sessions": 54,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -473,27 +529,25 @@
       "source_tier": "NORMALIZED_ARCHIVE_AND_CAPTURE_RECEIPTS_NOT_INDEPENDENT_ORIGINAL_ATTESTATION"
     },
     {
-      "code": "2374",
-      "name": "佳能",
-      "market": "TWSE",
-      "research_upside_pct": 133.99968613917554,
+      "code": "8390",
+      "name": "金益鼎",
+      "market": "TPEX",
+      "research_upside_pct": 137.81828627427038,
       "source_status": "CERTIFICATION_PENDING",
       "financial": {
         "normalized_income_8q_count": 8,
         "normalized_cashflow_8q_count": 8,
         "missing_income_periods": [],
         "missing_cashflow_periods": [],
-        "latest_primary_key_numbers_checked": false,
+        "latest_primary_key_numbers_checked": true,
         "full_eight_quarter_original_notes_audit": false,
         "filing_specific_disclosure_timestamps_verified": false,
         "original_eight_quarter_gate": "PENDING_NOT_CERTIFIED"
       },
       "capital": {
         "issued_share_master_present": true,
-        "reported_bond_count": 1,
-        "unverified_bond_terms": [
-          "23742"
-        ],
+        "reported_bond_count": 0,
+        "unverified_bond_terms": [],
         "dated_capital_terms_receipt_present": false,
         "dated_capital_terms_fully_certified": false,
         "no_listed_bond_does_not_prove_no_other_dilution": true,
@@ -506,12 +560,12 @@
           "sessions": 5,
           "first": "2026-11-02",
           "last": "2026-11-06",
-          "median_turnover_ntd": 135574159,
-          "min_turnover_ntd": 57497125,
+          "median_turnover_ntd": 45329292,
+          "min_turnover_ntd": 32874343,
           "zero_turnover_days": 0,
           "hypothetical_position_ntd": 5000000,
           "participation_cap": 0.2,
-          "exit_sessions_at_median": 0.18,
+          "exit_sessions_at_median": 0.55,
           "estimates_are_idealized_not_fills": true
         },
         "twenty_day": null,
@@ -521,68 +575,47 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 446,
+        "available_sessions": 140,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-07",
           "last": "2026-11-06",
-          "median_turnover_ntd": 137502750.5,
-          "min_turnover_ntd": 56736751,
+          "median_turnover_ntd": 33702670.0,
+          "min_turnover_ntd": 10842272,
           "zero_turnover_days": 0,
           "hypothetical_position_ntd": 5000000,
           "participation_cap": 0.2,
-          "exit_sessions_at_median": 0.18,
+          "exit_sessions_at_median": 0.74,
           "estimates_are_idealized_not_fills": true
         },
         "five_day": {
           "sessions": 5,
           "first": "2026-11-02",
           "last": "2026-11-06",
-          "median_turnover_ntd": 135574159,
-          "min_turnover_ntd": 57497125,
+          "median_turnover_ntd": 45329292,
+          "min_turnover_ntd": 32874343,
           "zero_turnover_days": 0,
           "hypothetical_position_ntd": 5000000,
           "participation_cap": 0.2,
-          "exit_sessions_at_median": 0.18,
+          "exit_sessions_at_median": 0.55,
           "estimates_are_idealized_not_fills": true
         },
         "sixty_day": {
           "sessions": 60,
           "first": "2026-08-10",
           "last": "2026-11-06",
-          "median_turnover_ntd": 133068081.0,
-          "min_turnover_ntd": 56736751,
+          "median_turnover_ntd": 34294335.5,
+          "min_turnover_ntd": 10842272,
           "zero_turnover_days": 0,
           "hypothetical_position_ntd": 5000000,
           "participation_cap": 0.2,
-          "exit_sessions_at_median": 0.19,
+          "exit_sessions_at_median": 0.73,
           "estimates_are_idealized_not_fills": true
         },
-        "validated_archive_additions": 4,
-        "validated_archive_added_sessions": [
-          {
-            "date": "2026-10-30",
-            "turnover_ntd": 139431342,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          },
-          {
-            "date": "2026-10-29",
-            "turnover_ntd": 115726279,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          },
-          {
-            "date": "2026-10-28",
-            "turnover_ntd": 198972757,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          },
-          {
-            "date": "2026-10-27",
-            "turnover_ntd": 191972590,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          }
-        ],
-        "overlapping_sessions_checked": 10,
-        "reused_issuer_history_sessions": 442,
+        "validated_archive_additions": 0,
+        "validated_archive_added_sessions": [],
+        "overlapping_sessions_checked": 14,
+        "reused_issuer_history_sessions": 140,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -694,6 +727,140 @@
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 14,
         "reused_issuer_history_sessions": 140,
+        "original_capture_is_not_authenticated_issuer_PIT": true,
+        "spread_and_limit_price_execution_not_verified": true,
+        "tradability_gate": "PENDING_NOT_CERTIFIED"
+      },
+      "pending_gates": [
+        "original_eight_quarter_statements",
+        "cash_and_working_capital",
+        "nonoperating_components",
+        "fully_diluted_shares",
+        "matched_peers_and_cycle",
+        "management_promises",
+        "auditor_scope",
+        "tradability",
+        "forecast_bridge",
+        "insider_claims",
+        "dividend_window",
+        "point_in_time",
+        "out_of_sample_validation"
+      ],
+      "ready_for_formal_certification": false,
+      "newly_passed_gates": [],
+      "source_tier": "NORMALIZED_ARCHIVE_AND_CAPTURE_RECEIPTS_NOT_INDEPENDENT_ORIGINAL_ATTESTATION"
+    },
+    {
+      "code": "2374",
+      "name": "佳能",
+      "market": "TWSE",
+      "research_upside_pct": 118.35239927182006,
+      "source_status": "CERTIFICATION_PENDING",
+      "financial": {
+        "normalized_income_8q_count": 8,
+        "normalized_cashflow_8q_count": 8,
+        "missing_income_periods": [],
+        "missing_cashflow_periods": [],
+        "latest_primary_key_numbers_checked": false,
+        "full_eight_quarter_original_notes_audit": false,
+        "filing_specific_disclosure_timestamps_verified": false,
+        "original_eight_quarter_gate": "PENDING_NOT_CERTIFIED"
+      },
+      "capital": {
+        "issued_share_master_present": true,
+        "reported_bond_count": 1,
+        "unverified_bond_terms": [
+          "23742"
+        ],
+        "dated_capital_terms_receipt_present": false,
+        "dated_capital_terms_fully_certified": false,
+        "no_listed_bond_does_not_prove_no_other_dilution": true,
+        "fully_diluted_shares_gate": "PENDING_NOT_CERTIFIED"
+      },
+      "market_history": {
+        "available_market_archives": 14,
+        "observed_20_session_issuer_count": 14,
+        "five_day": {
+          "sessions": 5,
+          "first": "2026-11-02",
+          "last": "2026-11-06",
+          "median_turnover_ntd": 135574159,
+          "min_turnover_ntd": 57497125,
+          "zero_turnover_days": 0,
+          "hypothetical_position_ntd": 5000000,
+          "participation_cap": 0.2,
+          "exit_sessions_at_median": 0.18,
+          "estimates_are_idealized_not_fills": true
+        },
+        "twenty_day": null,
+        "sixty_day": null,
+        "spread_and_order_book_evidence_available": false,
+        "tradability_gate": "PENDING_NOT_CERTIFIED"
+      },
+      "issuer_historical_market_data": {
+        "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
+        "available_sessions": 446,
+        "twenty_day": {
+          "sessions": 20,
+          "first": "2026-10-07",
+          "last": "2026-11-06",
+          "median_turnover_ntd": 137502750.5,
+          "min_turnover_ntd": 56736751,
+          "zero_turnover_days": 0,
+          "hypothetical_position_ntd": 5000000,
+          "participation_cap": 0.2,
+          "exit_sessions_at_median": 0.18,
+          "estimates_are_idealized_not_fills": true
+        },
+        "five_day": {
+          "sessions": 5,
+          "first": "2026-11-02",
+          "last": "2026-11-06",
+          "median_turnover_ntd": 135574159,
+          "min_turnover_ntd": 57497125,
+          "zero_turnover_days": 0,
+          "hypothetical_position_ntd": 5000000,
+          "participation_cap": 0.2,
+          "exit_sessions_at_median": 0.18,
+          "estimates_are_idealized_not_fills": true
+        },
+        "sixty_day": {
+          "sessions": 60,
+          "first": "2026-08-10",
+          "last": "2026-11-06",
+          "median_turnover_ntd": 133068081.0,
+          "min_turnover_ntd": 56736751,
+          "zero_turnover_days": 0,
+          "hypothetical_position_ntd": 5000000,
+          "participation_cap": 0.2,
+          "exit_sessions_at_median": 0.19,
+          "estimates_are_idealized_not_fills": true
+        },
+        "validated_archive_additions": 4,
+        "validated_archive_added_sessions": [
+          {
+            "date": "2026-10-30",
+            "turnover_ntd": 139431342,
+            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
+          },
+          {
+            "date": "2026-10-29",
+            "turnover_ntd": 115726279,
+            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
+          },
+          {
+            "date": "2026-10-28",
+            "turnover_ntd": 198972757,
+            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
+          },
+          {
+            "date": "2026-10-27",
+            "turnover_ntd": 191972590,
+            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
+          }
+        ],
+        "overlapping_sessions_checked": 10,
+        "reused_issuer_history_sessions": 442,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -961,305 +1128,6 @@
       "source_tier": "NORMALIZED_ARCHIVE_AND_CAPTURE_RECEIPTS_NOT_INDEPENDENT_ORIGINAL_ATTESTATION"
     },
     {
-      "code": "2483",
-      "name": "百容",
-      "market": "TWSE",
-      "research_upside_pct": 112.1168261031782,
-      "source_status": "CERTIFICATION_PENDING",
-      "financial": {
-        "normalized_income_8q_count": 8,
-        "normalized_cashflow_8q_count": 8,
-        "missing_income_periods": [],
-        "missing_cashflow_periods": [],
-        "latest_primary_key_numbers_checked": false,
-        "full_eight_quarter_original_notes_audit": false,
-        "filing_specific_disclosure_timestamps_verified": false,
-        "original_eight_quarter_gate": "PENDING_NOT_CERTIFIED"
-      },
-      "capital": {
-        "issued_share_master_present": true,
-        "reported_bond_count": 0,
-        "unverified_bond_terms": [],
-        "dated_capital_terms_receipt_present": false,
-        "dated_capital_terms_fully_certified": false,
-        "no_listed_bond_does_not_prove_no_other_dilution": true,
-        "fully_diluted_shares_gate": "PENDING_NOT_CERTIFIED"
-      },
-      "market_history": {
-        "available_market_archives": 14,
-        "observed_20_session_issuer_count": 14,
-        "five_day": {
-          "sessions": 5,
-          "first": "2026-11-02",
-          "last": "2026-11-06",
-          "median_turnover_ntd": 37963197,
-          "min_turnover_ntd": 18077145,
-          "zero_turnover_days": 0,
-          "hypothetical_position_ntd": 5000000,
-          "participation_cap": 0.2,
-          "exit_sessions_at_median": 0.66,
-          "estimates_are_idealized_not_fills": true
-        },
-        "twenty_day": null,
-        "sixty_day": null,
-        "spread_and_order_book_evidence_available": false,
-        "tradability_gate": "PENDING_NOT_CERTIFIED"
-      },
-      "issuer_historical_market_data": {
-        "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 65,
-        "twenty_day": {
-          "sessions": 20,
-          "first": "2026-10-07",
-          "last": "2026-11-06",
-          "median_turnover_ntd": 33751220.5,
-          "min_turnover_ntd": 12058277,
-          "zero_turnover_days": 0,
-          "hypothetical_position_ntd": 5000000,
-          "participation_cap": 0.2,
-          "exit_sessions_at_median": 0.74,
-          "estimates_are_idealized_not_fills": true
-        },
-        "five_day": {
-          "sessions": 5,
-          "first": "2026-11-02",
-          "last": "2026-11-06",
-          "median_turnover_ntd": 37963197,
-          "min_turnover_ntd": 18077145,
-          "zero_turnover_days": 0,
-          "hypothetical_position_ntd": 5000000,
-          "participation_cap": 0.2,
-          "exit_sessions_at_median": 0.66,
-          "estimates_are_idealized_not_fills": true
-        },
-        "sixty_day": {
-          "sessions": 60,
-          "first": "2026-08-10",
-          "last": "2026-11-06",
-          "median_turnover_ntd": 31618739.5,
-          "min_turnover_ntd": 6779537,
-          "zero_turnover_days": 0,
-          "hypothetical_position_ntd": 5000000,
-          "participation_cap": 0.2,
-          "exit_sessions_at_median": 0.79,
-          "estimates_are_idealized_not_fills": true
-        },
-        "validated_archive_additions": 11,
-        "validated_archive_added_sessions": [
-          {
-            "date": "2026-11-06",
-            "turnover_ntd": 37963197,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          },
-          {
-            "date": "2026-11-05",
-            "turnover_ntd": 102206665,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          },
-          {
-            "date": "2026-11-04",
-            "turnover_ntd": 64999235,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          },
-          {
-            "date": "2026-11-03",
-            "turnover_ntd": 26188656,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          },
-          {
-            "date": "2026-11-02",
-            "turnover_ntd": 18077145,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          },
-          {
-            "date": "2026-10-30",
-            "turnover_ntd": 32321700,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          },
-          {
-            "date": "2026-10-29",
-            "turnover_ntd": 30516817,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          },
-          {
-            "date": "2026-10-28",
-            "turnover_ntd": 16640057,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          },
-          {
-            "date": "2026-10-27",
-            "turnover_ntd": 32233694,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          },
-          {
-            "date": "2026-10-22",
-            "turnover_ntd": 167241384,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          },
-          {
-            "date": "2026-10-21",
-            "turnover_ntd": 35180741,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          }
-        ],
-        "overlapping_sessions_checked": 3,
-        "reused_issuer_history_sessions": 54,
-        "original_capture_is_not_authenticated_issuer_PIT": true,
-        "spread_and_limit_price_execution_not_verified": true,
-        "tradability_gate": "PENDING_NOT_CERTIFIED"
-      },
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ],
-      "ready_for_formal_certification": false,
-      "newly_passed_gates": [],
-      "source_tier": "NORMALIZED_ARCHIVE_AND_CAPTURE_RECEIPTS_NOT_INDEPENDENT_ORIGINAL_ATTESTATION"
-    },
-    {
-      "code": "2331",
-      "name": "精英",
-      "market": "TWSE",
-      "research_upside_pct": 110.99770835372725,
-      "source_status": "CERTIFICATION_PENDING",
-      "financial": {
-        "normalized_income_8q_count": 8,
-        "normalized_cashflow_8q_count": 8,
-        "missing_income_periods": [],
-        "missing_cashflow_periods": [],
-        "latest_primary_key_numbers_checked": false,
-        "full_eight_quarter_original_notes_audit": false,
-        "filing_specific_disclosure_timestamps_verified": false,
-        "original_eight_quarter_gate": "PENDING_NOT_CERTIFIED"
-      },
-      "capital": {
-        "issued_share_master_present": true,
-        "reported_bond_count": 0,
-        "unverified_bond_terms": [],
-        "dated_capital_terms_receipt_present": false,
-        "dated_capital_terms_fully_certified": false,
-        "no_listed_bond_does_not_prove_no_other_dilution": true,
-        "fully_diluted_shares_gate": "PENDING_NOT_CERTIFIED"
-      },
-      "market_history": {
-        "available_market_archives": 14,
-        "observed_20_session_issuer_count": 14,
-        "five_day": {
-          "sessions": 5,
-          "first": "2026-11-02",
-          "last": "2026-11-06",
-          "median_turnover_ntd": 26677570,
-          "min_turnover_ntd": 14314104,
-          "zero_turnover_days": 0,
-          "hypothetical_position_ntd": 5000000,
-          "participation_cap": 0.2,
-          "exit_sessions_at_median": 0.94,
-          "estimates_are_idealized_not_fills": true
-        },
-        "twenty_day": null,
-        "sixty_day": null,
-        "spread_and_order_book_evidence_available": false,
-        "tradability_gate": "PENDING_NOT_CERTIFIED"
-      },
-      "issuer_historical_market_data": {
-        "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 265,
-        "twenty_day": {
-          "sessions": 20,
-          "first": "2026-10-07",
-          "last": "2026-11-06",
-          "median_turnover_ntd": 18903347.5,
-          "min_turnover_ntd": 7133719,
-          "zero_turnover_days": 0,
-          "hypothetical_position_ntd": 5000000,
-          "participation_cap": 0.2,
-          "exit_sessions_at_median": 1.32,
-          "estimates_are_idealized_not_fills": true
-        },
-        "five_day": {
-          "sessions": 5,
-          "first": "2026-11-02",
-          "last": "2026-11-06",
-          "median_turnover_ntd": 26677570,
-          "min_turnover_ntd": 14314104,
-          "zero_turnover_days": 0,
-          "hypothetical_position_ntd": 5000000,
-          "participation_cap": 0.2,
-          "exit_sessions_at_median": 0.94,
-          "estimates_are_idealized_not_fills": true
-        },
-        "sixty_day": {
-          "sessions": 60,
-          "first": "2026-08-10",
-          "last": "2026-11-06",
-          "median_turnover_ntd": 19437314.5,
-          "min_turnover_ntd": 7133719,
-          "zero_turnover_days": 0,
-          "hypothetical_position_ntd": 5000000,
-          "participation_cap": 0.2,
-          "exit_sessions_at_median": 1.29,
-          "estimates_are_idealized_not_fills": true
-        },
-        "validated_archive_additions": 4,
-        "validated_archive_added_sessions": [
-          {
-            "date": "2026-10-30",
-            "turnover_ntd": 28642117,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          },
-          {
-            "date": "2026-10-29",
-            "turnover_ntd": 7133719,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          },
-          {
-            "date": "2026-10-28",
-            "turnover_ntd": 11163057,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          },
-          {
-            "date": "2026-10-27",
-            "turnover_ntd": 15146173,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          }
-        ],
-        "overlapping_sessions_checked": 10,
-        "reused_issuer_history_sessions": 261,
-        "original_capture_is_not_authenticated_issuer_PIT": true,
-        "spread_and_limit_price_execution_not_verified": true,
-        "tradability_gate": "PENDING_NOT_CERTIFIED"
-      },
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ],
-      "ready_for_formal_certification": false,
-      "newly_passed_gates": [],
-      "source_tier": "NORMALIZED_ARCHIVE_AND_CAPTURE_RECEIPTS_NOT_INDEPENDENT_ORIGINAL_ATTESTATION"
-    },
-    {
       "code": "6625",
       "name": "必應",
       "market": "TWSE",
@@ -1392,10 +1260,10 @@
       "source_tier": "NORMALIZED_ARCHIVE_AND_CAPTURE_RECEIPTS_NOT_INDEPENDENT_ORIGINAL_ATTESTATION"
     },
     {
-      "code": "2103",
-      "name": "台橡",
+      "code": "2331",
+      "name": "精英",
       "market": "TWSE",
-      "research_upside_pct": 109.81320338926727,
+      "research_upside_pct": 108.46899512659931,
       "source_status": "CERTIFICATION_PENDING",
       "financial": {
         "normalized_income_8q_count": 8,
@@ -1423,12 +1291,12 @@
           "sessions": 5,
           "first": "2026-11-02",
           "last": "2026-11-06",
-          "median_turnover_ntd": 124980814,
-          "min_turnover_ntd": 75208307,
+          "median_turnover_ntd": 26677570,
+          "min_turnover_ntd": 14314104,
           "zero_turnover_days": 0,
           "hypothetical_position_ntd": 5000000,
           "participation_cap": 0.2,
-          "exit_sessions_at_median": 0.2,
+          "exit_sessions_at_median": 0.94,
           "estimates_are_idealized_not_fills": true
         },
         "twenty_day": null,
@@ -1438,98 +1306,68 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 65,
+        "available_sessions": 265,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-07",
           "last": "2026-11-06",
-          "median_turnover_ntd": 103280702.0,
-          "min_turnover_ntd": 47309498,
+          "median_turnover_ntd": 18903347.5,
+          "min_turnover_ntd": 7133719,
           "zero_turnover_days": 0,
           "hypothetical_position_ntd": 5000000,
           "participation_cap": 0.2,
-          "exit_sessions_at_median": 0.24,
+          "exit_sessions_at_median": 1.32,
           "estimates_are_idealized_not_fills": true
         },
         "five_day": {
           "sessions": 5,
           "first": "2026-11-02",
           "last": "2026-11-06",
-          "median_turnover_ntd": 124980814,
-          "min_turnover_ntd": 75208307,
+          "median_turnover_ntd": 26677570,
+          "min_turnover_ntd": 14314104,
           "zero_turnover_days": 0,
           "hypothetical_position_ntd": 5000000,
           "participation_cap": 0.2,
-          "exit_sessions_at_median": 0.2,
+          "exit_sessions_at_median": 0.94,
           "estimates_are_idealized_not_fills": true
         },
         "sixty_day": {
           "sessions": 60,
           "first": "2026-08-10",
           "last": "2026-11-06",
-          "median_turnover_ntd": 117555774.5,
-          "min_turnover_ntd": 39681754,
+          "median_turnover_ntd": 19437314.5,
+          "min_turnover_ntd": 7133719,
           "zero_turnover_days": 0,
           "hypothetical_position_ntd": 5000000,
           "participation_cap": 0.2,
-          "exit_sessions_at_median": 0.21,
+          "exit_sessions_at_median": 1.29,
           "estimates_are_idealized_not_fills": true
         },
-        "validated_archive_additions": 10,
+        "validated_archive_additions": 4,
         "validated_archive_added_sessions": [
           {
-            "date": "2026-11-06",
-            "turnover_ntd": 305509505,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          },
-          {
-            "date": "2026-11-05",
-            "turnover_ntd": 104848785,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          },
-          {
-            "date": "2026-11-04",
-            "turnover_ntd": 124980814,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          },
-          {
-            "date": "2026-11-03",
-            "turnover_ntd": 144162228,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          },
-          {
-            "date": "2026-11-02",
-            "turnover_ntd": 75208307,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          },
-          {
             "date": "2026-10-30",
-            "turnover_ntd": 111242111,
+            "turnover_ntd": 28642117,
             "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
           },
           {
             "date": "2026-10-29",
-            "turnover_ntd": 73569681,
+            "turnover_ntd": 7133719,
             "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
           },
           {
             "date": "2026-10-28",
-            "turnover_ntd": 64846149,
+            "turnover_ntd": 11163057,
             "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
           },
           {
             "date": "2026-10-27",
-            "turnover_ntd": 101712619,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          },
-          {
-            "date": "2026-10-22",
-            "turnover_ntd": 56043337,
+            "turnover_ntd": 15146173,
             "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
           }
         ],
-        "overlapping_sessions_checked": 4,
-        "reused_issuer_history_sessions": 55,
+        "overlapping_sessions_checked": 10,
+        "reused_issuer_history_sessions": 261,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -9086,6 +8924,168 @@
         ],
         "overlapping_sessions_checked": 2,
         "reused_issuer_history_sessions": 53,
+        "original_capture_is_not_authenticated_issuer_PIT": true,
+        "spread_and_limit_price_execution_not_verified": true,
+        "tradability_gate": "PENDING_NOT_CERTIFIED"
+      },
+      "pending_gates": [
+        "original_eight_quarter_statements",
+        "cash_and_working_capital",
+        "nonoperating_components",
+        "fully_diluted_shares",
+        "matched_peers_and_cycle",
+        "management_promises",
+        "auditor_scope",
+        "tradability",
+        "forecast_bridge",
+        "insider_claims",
+        "dividend_window",
+        "point_in_time",
+        "out_of_sample_validation"
+      ],
+      "ready_for_formal_certification": false,
+      "newly_passed_gates": [],
+      "source_tier": "NORMALIZED_ARCHIVE_AND_CAPTURE_RECEIPTS_NOT_INDEPENDENT_ORIGINAL_ATTESTATION"
+    },
+    {
+      "code": "2103",
+      "name": "台橡",
+      "market": "TWSE",
+      "research_upside_pct": 62.63117696627414,
+      "source_status": "CERTIFICATION_PENDING",
+      "financial": {
+        "normalized_income_8q_count": 8,
+        "normalized_cashflow_8q_count": 8,
+        "missing_income_periods": [],
+        "missing_cashflow_periods": [],
+        "latest_primary_key_numbers_checked": false,
+        "full_eight_quarter_original_notes_audit": false,
+        "filing_specific_disclosure_timestamps_verified": false,
+        "original_eight_quarter_gate": "PENDING_NOT_CERTIFIED"
+      },
+      "capital": {
+        "issued_share_master_present": true,
+        "reported_bond_count": 0,
+        "unverified_bond_terms": [],
+        "dated_capital_terms_receipt_present": false,
+        "dated_capital_terms_fully_certified": false,
+        "no_listed_bond_does_not_prove_no_other_dilution": true,
+        "fully_diluted_shares_gate": "PENDING_NOT_CERTIFIED"
+      },
+      "market_history": {
+        "available_market_archives": 14,
+        "observed_20_session_issuer_count": 14,
+        "five_day": {
+          "sessions": 5,
+          "first": "2026-11-02",
+          "last": "2026-11-06",
+          "median_turnover_ntd": 124980814,
+          "min_turnover_ntd": 75208307,
+          "zero_turnover_days": 0,
+          "hypothetical_position_ntd": 5000000,
+          "participation_cap": 0.2,
+          "exit_sessions_at_median": 0.2,
+          "estimates_are_idealized_not_fills": true
+        },
+        "twenty_day": null,
+        "sixty_day": null,
+        "spread_and_order_book_evidence_available": false,
+        "tradability_gate": "PENDING_NOT_CERTIFIED"
+      },
+      "issuer_historical_market_data": {
+        "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
+        "available_sessions": 65,
+        "twenty_day": {
+          "sessions": 20,
+          "first": "2026-10-07",
+          "last": "2026-11-06",
+          "median_turnover_ntd": 103280702.0,
+          "min_turnover_ntd": 47309498,
+          "zero_turnover_days": 0,
+          "hypothetical_position_ntd": 5000000,
+          "participation_cap": 0.2,
+          "exit_sessions_at_median": 0.24,
+          "estimates_are_idealized_not_fills": true
+        },
+        "five_day": {
+          "sessions": 5,
+          "first": "2026-11-02",
+          "last": "2026-11-06",
+          "median_turnover_ntd": 124980814,
+          "min_turnover_ntd": 75208307,
+          "zero_turnover_days": 0,
+          "hypothetical_position_ntd": 5000000,
+          "participation_cap": 0.2,
+          "exit_sessions_at_median": 0.2,
+          "estimates_are_idealized_not_fills": true
+        },
+        "sixty_day": {
+          "sessions": 60,
+          "first": "2026-08-10",
+          "last": "2026-11-06",
+          "median_turnover_ntd": 117555774.5,
+          "min_turnover_ntd": 39681754,
+          "zero_turnover_days": 0,
+          "hypothetical_position_ntd": 5000000,
+          "participation_cap": 0.2,
+          "exit_sessions_at_median": 0.21,
+          "estimates_are_idealized_not_fills": true
+        },
+        "validated_archive_additions": 10,
+        "validated_archive_added_sessions": [
+          {
+            "date": "2026-11-06",
+            "turnover_ntd": 305509505,
+            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
+          },
+          {
+            "date": "2026-11-05",
+            "turnover_ntd": 104848785,
+            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
+          },
+          {
+            "date": "2026-11-04",
+            "turnover_ntd": 124980814,
+            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
+          },
+          {
+            "date": "2026-11-03",
+            "turnover_ntd": 144162228,
+            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
+          },
+          {
+            "date": "2026-11-02",
+            "turnover_ntd": 75208307,
+            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
+          },
+          {
+            "date": "2026-10-30",
+            "turnover_ntd": 111242111,
+            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
+          },
+          {
+            "date": "2026-10-29",
+            "turnover_ntd": 73569681,
+            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
+          },
+          {
+            "date": "2026-10-28",
+            "turnover_ntd": 64846149,
+            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
+          },
+          {
+            "date": "2026-10-27",
+            "turnover_ntd": 101712619,
+            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
+          },
+          {
+            "date": "2026-10-22",
+            "turnover_ntd": 56043337,
+            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
+          }
+        ],
+        "overlapping_sessions_checked": 4,
+        "reused_issuer_history_sessions": 55,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -23397,43 +23397,43 @@
       "automatic_pass_prohibited": true
     },
     {
-      "code": "8390",
-      "name": "金益鼎",
+      "code": "2483",
+      "name": "百容",
       "gate": "management_promises",
       "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
       "automatic_pass_prohibited": true
     },
     {
-      "code": "8390",
-      "name": "金益鼎",
+      "code": "2483",
+      "name": "百容",
       "gate": "auditor_scope",
       "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
       "automatic_pass_prohibited": true
     },
     {
-      "code": "8390",
-      "name": "金益鼎",
+      "code": "2483",
+      "name": "百容",
       "gate": "forecast_bridge",
       "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
       "automatic_pass_prohibited": true
     },
     {
-      "code": "8390",
-      "name": "金益鼎",
+      "code": "2483",
+      "name": "百容",
       "gate": "matched_peers_and_cycle",
       "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
       "automatic_pass_prohibited": true
     },
     {
-      "code": "8390",
-      "name": "金益鼎",
+      "code": "2483",
+      "name": "百容",
       "gate": "point_in_time",
       "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
       "automatic_pass_prohibited": true
     },
     {
-      "code": "8390",
-      "name": "金益鼎",
+      "code": "2483",
+      "name": "百容",
       "gate": "out_of_sample_validation",
       "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
       "automatic_pass_prohibited": true
@@ -23481,43 +23481,43 @@
       "automatic_pass_prohibited": true
     },
     {
-      "code": "2374",
-      "name": "佳能",
+      "code": "8390",
+      "name": "金益鼎",
       "gate": "management_promises",
       "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
       "automatic_pass_prohibited": true
     },
     {
-      "code": "2374",
-      "name": "佳能",
+      "code": "8390",
+      "name": "金益鼎",
       "gate": "auditor_scope",
       "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
       "automatic_pass_prohibited": true
     },
     {
-      "code": "2374",
-      "name": "佳能",
+      "code": "8390",
+      "name": "金益鼎",
       "gate": "forecast_bridge",
       "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
       "automatic_pass_prohibited": true
     },
     {
-      "code": "2374",
-      "name": "佳能",
+      "code": "8390",
+      "name": "金益鼎",
       "gate": "matched_peers_and_cycle",
       "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
       "automatic_pass_prohibited": true
     },
     {
-      "code": "2374",
-      "name": "佳能",
+      "code": "8390",
+      "name": "金益鼎",
       "gate": "point_in_time",
       "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
       "automatic_pass_prohibited": true
     },
     {
-      "code": "2374",
-      "name": "佳能",
+      "code": "8390",
+      "name": "金益鼎",
       "gate": "out_of_sample_validation",
       "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
       "automatic_pass_prohibited": true
@@ -23560,6 +23560,48 @@
     {
       "code": "3285",
       "name": "微端",
+      "gate": "out_of_sample_validation",
+      "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
+      "automatic_pass_prohibited": true
+    },
+    {
+      "code": "2374",
+      "name": "佳能",
+      "gate": "management_promises",
+      "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
+      "automatic_pass_prohibited": true
+    },
+    {
+      "code": "2374",
+      "name": "佳能",
+      "gate": "auditor_scope",
+      "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
+      "automatic_pass_prohibited": true
+    },
+    {
+      "code": "2374",
+      "name": "佳能",
+      "gate": "forecast_bridge",
+      "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
+      "automatic_pass_prohibited": true
+    },
+    {
+      "code": "2374",
+      "name": "佳能",
+      "gate": "matched_peers_and_cycle",
+      "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
+      "automatic_pass_prohibited": true
+    },
+    {
+      "code": "2374",
+      "name": "佳能",
+      "gate": "point_in_time",
+      "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
+      "automatic_pass_prohibited": true
+    },
+    {
+      "code": "2374",
+      "name": "佳能",
       "gate": "out_of_sample_validation",
       "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
       "automatic_pass_prohibited": true
@@ -23649,90 +23691,6 @@
       "automatic_pass_prohibited": true
     },
     {
-      "code": "2483",
-      "name": "百容",
-      "gate": "management_promises",
-      "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
-      "automatic_pass_prohibited": true
-    },
-    {
-      "code": "2483",
-      "name": "百容",
-      "gate": "auditor_scope",
-      "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
-      "automatic_pass_prohibited": true
-    },
-    {
-      "code": "2483",
-      "name": "百容",
-      "gate": "forecast_bridge",
-      "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
-      "automatic_pass_prohibited": true
-    },
-    {
-      "code": "2483",
-      "name": "百容",
-      "gate": "matched_peers_and_cycle",
-      "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
-      "automatic_pass_prohibited": true
-    },
-    {
-      "code": "2483",
-      "name": "百容",
-      "gate": "point_in_time",
-      "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
-      "automatic_pass_prohibited": true
-    },
-    {
-      "code": "2483",
-      "name": "百容",
-      "gate": "out_of_sample_validation",
-      "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
-      "automatic_pass_prohibited": true
-    },
-    {
-      "code": "2331",
-      "name": "精英",
-      "gate": "management_promises",
-      "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
-      "automatic_pass_prohibited": true
-    },
-    {
-      "code": "2331",
-      "name": "精英",
-      "gate": "auditor_scope",
-      "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
-      "automatic_pass_prohibited": true
-    },
-    {
-      "code": "2331",
-      "name": "精英",
-      "gate": "forecast_bridge",
-      "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
-      "automatic_pass_prohibited": true
-    },
-    {
-      "code": "2331",
-      "name": "精英",
-      "gate": "matched_peers_and_cycle",
-      "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
-      "automatic_pass_prohibited": true
-    },
-    {
-      "code": "2331",
-      "name": "精英",
-      "gate": "point_in_time",
-      "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
-      "automatic_pass_prohibited": true
-    },
-    {
-      "code": "2331",
-      "name": "精英",
-      "gate": "out_of_sample_validation",
-      "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
-      "automatic_pass_prohibited": true
-    },
-    {
       "code": "6625",
       "name": "必應",
       "gate": "management_promises",
@@ -23775,43 +23733,43 @@
       "automatic_pass_prohibited": true
     },
     {
-      "code": "2103",
-      "name": "台橡",
+      "code": "2331",
+      "name": "精英",
       "gate": "management_promises",
       "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
       "automatic_pass_prohibited": true
     },
     {
-      "code": "2103",
-      "name": "台橡",
+      "code": "2331",
+      "name": "精英",
       "gate": "auditor_scope",
       "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
       "automatic_pass_prohibited": true
     },
     {
-      "code": "2103",
-      "name": "台橡",
+      "code": "2331",
+      "name": "精英",
       "gate": "forecast_bridge",
       "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
       "automatic_pass_prohibited": true
     },
     {
-      "code": "2103",
-      "name": "台橡",
+      "code": "2331",
+      "name": "精英",
       "gate": "matched_peers_and_cycle",
       "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
       "automatic_pass_prohibited": true
     },
     {
-      "code": "2103",
-      "name": "台橡",
+      "code": "2331",
+      "name": "精英",
       "gate": "point_in_time",
       "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
       "automatic_pass_prohibited": true
     },
     {
-      "code": "2103",
-      "name": "台橡",
+      "code": "2331",
+      "name": "精英",
       "gate": "out_of_sample_validation",
       "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
       "automatic_pass_prohibited": true
@@ -26290,6 +26248,48 @@
     {
       "code": "3019",
       "name": "亞光",
+      "gate": "out_of_sample_validation",
+      "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
+      "automatic_pass_prohibited": true
+    },
+    {
+      "code": "2103",
+      "name": "台橡",
+      "gate": "management_promises",
+      "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
+      "automatic_pass_prohibited": true
+    },
+    {
+      "code": "2103",
+      "name": "台橡",
+      "gate": "auditor_scope",
+      "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
+      "automatic_pass_prohibited": true
+    },
+    {
+      "code": "2103",
+      "name": "台橡",
+      "gate": "forecast_bridge",
+      "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
+      "automatic_pass_prohibited": true
+    },
+    {
+      "code": "2103",
+      "name": "台橡",
+      "gate": "matched_peers_and_cycle",
+      "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
+      "automatic_pass_prohibited": true
+    },
+    {
+      "code": "2103",
+      "name": "台橡",
+      "gate": "point_in_time",
+      "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
+      "automatic_pass_prohibited": true
+    },
+    {
+      "code": "2103",
+      "name": "台橡",
       "gate": "out_of_sample_validation",
       "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
       "automatic_pass_prohibited": true

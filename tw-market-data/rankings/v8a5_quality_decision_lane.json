@@ -1,7 +1,7 @@
 {
   "schema": "V8A5_QUALITY_DECISION_RESEARCH_SHADOW",
   "asof_price_date": "2026-11-06",
-  "estimate_vintage": "2026-11-08T21:39:07.790614+08:00",
+  "estimate_vintage": "2026-11-08T22:36:43.805243+08:00",
   "current_financial_period": "2026-Q2",
   "top20_base_ranking_untouched": true,
   "has_statistical_outperformance_calibration": false,
@@ -28,7 +28,7 @@
   "issuer_count": 20,
   "verification_order": [
     {
-      "prior_base_rank": 7,
+      "prior_base_rank": 8,
       "code": "6763",
       "name": "綠界科技*",
       "price_date": "2026-11-06",
@@ -127,28 +127,31 @@
     },
     {
       "prior_base_rank": 2,
-      "code": "8390",
-      "name": "金益鼎",
+      "code": "2483",
+      "name": "百容",
       "price_date": "2026-11-06",
-      "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
-      "original_current_numerics_checked": true,
-      "base_2027_eps_scenario": 13.834,
-      "base_2027_pe_assumption": 13.22,
-      "base_target_price_scenario": 182.88,
-      "base_upside_pct": 140.0,
-      "q3_revenue_yoy_pct": 53.67,
-      "sensitivity_eps20_pe20_upside_pct": 53.6,
+      "source_tier": "MOPS_ISSUER_EARNINGS_ANNOUNCEMENT_RESEARCH",
+      "original_current_numerics_checked": false,
+      "base_2027_eps_scenario": 2.587,
+      "base_2027_pe_assumption": 27.345,
+      "base_target_price_scenario": 70.74,
+      "base_upside_pct": 141.85,
+      "q3_revenue_yoy_pct": 32.98,
+      "sensitivity_eps20_pe20_upside_pct": 54.78,
       "sensitivity_survives_30pct_threshold": true,
-      "operating_evidence_gaps": [
-        "AUDITOR_QUALIFIED_SCOPE_MATERIALITY_PENDING",
-        "EQUITY_ISSUANCE_NOT_CONFIRMED"
+      "operating_evidence_gaps": [],
+      "pe_evidence_gaps": [
+        "FORWARD_PE_AT_LEAST_20_REQUIRES_MATCHED_PEERS",
+        "HIGH_FORWARD_PE_UNVERIFIED_PEERS"
       ],
-      "pe_evidence_gaps": [],
       "capital_evidence_gaps": [],
-      "official_original_financial_review_needed": false,
+      "official_original_financial_review_needed": true,
       "other_critical_gaps": [
         "FORWARD_EPS_ABOVE_1_3X_H1_ANNUALIZED_OR_UNAVAILABLE",
+        "FORWARD_EPS_AT_LEAST_1_7X_H1_ANNUALIZED_HIGH_BRIDGE_RISK",
         "FORWARD_EPS_AT_LEAST_30PCT_ABOVE_NONSEASONAL_YTD_RUNRATE",
+        "FORWARD_PE_25X_OR_HIGHER_REQUIRES_STRONGER_JUSTIFICATION",
+        "ISSUER_ORIGINAL_NUMERICS_NOT_CROSSCHECKED",
         "MANUAL_FILING_NOTES_AND_PIT_UNVERIFIED"
       ],
       "model_13_gate_passed_count": 0,
@@ -227,38 +230,28 @@
     },
     {
       "prior_base_rank": 4,
-      "code": "2374",
-      "name": "佳能",
+      "code": "8390",
+      "name": "金益鼎",
       "price_date": "2026-11-06",
-      "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
+      "source_tier": "MOPS_ISSUER_EARNINGS_ANNOUNCEMENT_RESEARCH",
       "original_current_numerics_checked": false,
-      "base_2027_eps_scenario": 4.937,
-      "base_2027_pe_assumption": 25.31,
-      "base_target_price_scenario": 124.96,
-      "base_upside_pct": 134.0,
-      "q3_revenue_yoy_pct": 34.46,
-      "sensitivity_eps20_pe20_upside_pct": 49.76,
+      "base_2027_eps_scenario": 13.708,
+      "base_2027_pe_assumption": 13.22,
+      "base_target_price_scenario": 181.22,
+      "base_upside_pct": 137.82,
+      "q3_revenue_yoy_pct": 53.67,
+      "sensitivity_eps20_pe20_upside_pct": 52.2,
       "sensitivity_survives_30pct_threshold": true,
       "operating_evidence_gaps": [
-        "NEGATIVE_OR_ZERO_H1_OCF_REQUIRES_WORKING_CAPITAL_BRIDGE",
-        "NEGATIVE_YTD_OPERATING_CASHFLOW_CHECK_WORKING_CAPITAL"
+        "AUDITOR_QUALIFIED_SCOPE_MATERIALITY_PENDING",
+        "EQUITY_ISSUANCE_NOT_CONFIRMED"
       ],
-      "pe_evidence_gaps": [
-        "FORWARD_PE_AT_LEAST_20_REQUIRES_MATCHED_PEERS",
-        "HIGH_FORWARD_PE_UNVERIFIED_PEERS"
-      ],
-      "capital_evidence_gaps": [
-        "CB_LEGAL_TERMS_UNVERIFIED",
-        "LISTED_CB_TERMS_UNVERIFIED"
-      ],
+      "pe_evidence_gaps": [],
+      "capital_evidence_gaps": [],
       "official_original_financial_review_needed": true,
       "other_critical_gaps": [
-        "CURRENT_NUMERICS_BULK_ONLY_NOT_ORIGINAL_CHECKED",
         "FORWARD_EPS_ABOVE_1_3X_H1_ANNUALIZED_OR_UNAVAILABLE",
         "FORWARD_EPS_AT_LEAST_30PCT_ABOVE_NONSEASONAL_YTD_RUNRATE",
-        "FORWARD_PE_25X_OR_HIGHER_REQUIRES_STRONGER_JUSTIFICATION",
-        "GROSS_MARGIN_DECLINED_AT_LEAST_3PP",
-        "GROSS_MARGIN_DOWN_AT_LEAST_3PP",
         "ISSUER_ORIGINAL_NUMERICS_NOT_CROSSCHECKED",
         "MANUAL_FILING_NOTES_AND_PIT_UNVERIFIED"
       ],
@@ -341,6 +334,65 @@
     },
     {
       "prior_base_rank": 6,
+      "code": "2374",
+      "name": "佳能",
+      "price_date": "2026-11-06",
+      "source_tier": "MOPS_ISSUER_EARNINGS_ANNOUNCEMENT_RESEARCH",
+      "original_current_numerics_checked": false,
+      "base_2027_eps_scenario": 4.607,
+      "base_2027_pe_assumption": 25.31,
+      "base_target_price_scenario": 116.6,
+      "base_upside_pct": 118.35,
+      "q3_revenue_yoy_pct": 34.46,
+      "sensitivity_eps20_pe20_upside_pct": 39.75,
+      "sensitivity_survives_30pct_threshold": true,
+      "operating_evidence_gaps": [
+        "NEGATIVE_OR_ZERO_H1_OCF_REQUIRES_WORKING_CAPITAL_BRIDGE",
+        "NEGATIVE_YTD_OPERATING_CASHFLOW_CHECK_WORKING_CAPITAL"
+      ],
+      "pe_evidence_gaps": [
+        "FORWARD_PE_AT_LEAST_20_REQUIRES_MATCHED_PEERS",
+        "HIGH_FORWARD_PE_UNVERIFIED_PEERS"
+      ],
+      "capital_evidence_gaps": [
+        "CB_LEGAL_TERMS_UNVERIFIED",
+        "LISTED_CB_TERMS_UNVERIFIED"
+      ],
+      "official_original_financial_review_needed": true,
+      "other_critical_gaps": [
+        "FORWARD_EPS_ABOVE_1_3X_H1_ANNUALIZED_OR_UNAVAILABLE",
+        "FORWARD_EPS_AT_LEAST_30PCT_ABOVE_NONSEASONAL_YTD_RUNRATE",
+        "FORWARD_PE_25X_OR_HIGHER_REQUIRES_STRONGER_JUSTIFICATION",
+        "GROSS_MARGIN_DECLINED_AT_LEAST_3PP",
+        "GROSS_MARGIN_DOWN_AT_LEAST_3PP",
+        "ISSUER_ORIGINAL_NUMERICS_NOT_CROSSCHECKED",
+        "MANUAL_FILING_NOTES_AND_PIT_UNVERIFIED"
+      ],
+      "model_13_gate_passed_count": 0,
+      "model_13_gate_pending_count": 13,
+      "model_13_gate_failed_count": 0,
+      "quality_review_status": "OPERATING_PE_OR_DILUTION_RED_FLAGS_REVIEW",
+      "governance_review": {
+        "status": "NO_EVENT_LEDGER_NOT_LEGAL_CLEARANCE",
+        "coverage": "REGISTERED_EVENTS_ONLY_NOT_FULL_MARKET_LEGAL_CLEARANCE",
+        "blocks_recommendation": false,
+        "material_open_event_ids": [],
+        "events": []
+      },
+      "recommendation_blocked": false,
+      "etf_constituent_research_context": {
+        "research_review_status": "NO_EVENTS_IN_PARTIAL_COVERAGE_NOT_PROOF_OF_HOLDINGS",
+        "event_history_count": 0,
+        "live_archived_deletions_120d": 0,
+        "three_way_convergence_observed": false
+      },
+      "etf_warning_active": false,
+      "ETF_history_is_not_evidence_of_manager_forecast_accuracy": true,
+      "high_confidence_buy_or_Aplus_certified": false,
+      "verification_priority_rank": 7
+    },
+    {
+      "prior_base_rank": 7,
       "code": "8473",
       "name": "山林水",
       "price_date": "2026-11-06",
@@ -388,119 +440,10 @@
       "etf_warning_active": false,
       "ETF_history_is_not_evidence_of_manager_forecast_accuracy": true,
       "high_confidence_buy_or_Aplus_certified": false,
-      "verification_priority_rank": 7
-    },
-    {
-      "prior_base_rank": 8,
-      "code": "2483",
-      "name": "百容",
-      "price_date": "2026-11-06",
-      "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
-      "original_current_numerics_checked": false,
-      "base_2027_eps_scenario": 2.269,
-      "base_2027_pe_assumption": 27.345,
-      "base_target_price_scenario": 62.04,
-      "base_upside_pct": 112.12,
-      "q3_revenue_yoy_pct": 32.98,
-      "sensitivity_eps20_pe20_upside_pct": 35.75,
-      "sensitivity_survives_30pct_threshold": true,
-      "operating_evidence_gaps": [],
-      "pe_evidence_gaps": [
-        "FORWARD_PE_AT_LEAST_20_REQUIRES_MATCHED_PEERS",
-        "HIGH_FORWARD_PE_UNVERIFIED_PEERS"
-      ],
-      "capital_evidence_gaps": [],
-      "official_original_financial_review_needed": true,
-      "other_critical_gaps": [
-        "CURRENT_NUMERICS_BULK_ONLY_NOT_ORIGINAL_CHECKED",
-        "FORWARD_EPS_ABOVE_1_3X_H1_ANNUALIZED_OR_UNAVAILABLE",
-        "FORWARD_EPS_AT_LEAST_1_7X_H1_ANNUALIZED_HIGH_BRIDGE_RISK",
-        "FORWARD_EPS_AT_LEAST_30PCT_ABOVE_NONSEASONAL_YTD_RUNRATE",
-        "FORWARD_PE_25X_OR_HIGHER_REQUIRES_STRONGER_JUSTIFICATION",
-        "ISSUER_ORIGINAL_NUMERICS_NOT_CROSSCHECKED",
-        "MANUAL_FILING_NOTES_AND_PIT_UNVERIFIED"
-      ],
-      "model_13_gate_passed_count": 0,
-      "model_13_gate_pending_count": 13,
-      "model_13_gate_failed_count": 0,
-      "quality_review_status": "OPERATING_PE_OR_DILUTION_RED_FLAGS_REVIEW",
-      "governance_review": {
-        "status": "NO_EVENT_LEDGER_NOT_LEGAL_CLEARANCE",
-        "coverage": "REGISTERED_EVENTS_ONLY_NOT_FULL_MARKET_LEGAL_CLEARANCE",
-        "blocks_recommendation": false,
-        "material_open_event_ids": [],
-        "events": []
-      },
-      "recommendation_blocked": false,
-      "etf_constituent_research_context": {
-        "research_review_status": "NO_EVENTS_IN_PARTIAL_COVERAGE_NOT_PROOF_OF_HOLDINGS",
-        "event_history_count": 0,
-        "live_archived_deletions_120d": 0,
-        "three_way_convergence_observed": false
-      },
-      "etf_warning_active": false,
-      "ETF_history_is_not_evidence_of_manager_forecast_accuracy": true,
-      "high_confidence_buy_or_Aplus_certified": false,
       "verification_priority_rank": 8
     },
     {
       "prior_base_rank": 9,
-      "code": "2331",
-      "name": "精英",
-      "price_date": "2026-11-06",
-      "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
-      "original_current_numerics_checked": false,
-      "base_2027_eps_scenario": 1.851,
-      "base_2027_pe_assumption": 17.9,
-      "base_target_price_scenario": 33.13,
-      "base_upside_pct": 111.0,
-      "q3_revenue_yoy_pct": -22.03,
-      "sensitivity_eps20_pe20_upside_pct": 35.04,
-      "sensitivity_survives_30pct_threshold": true,
-      "operating_evidence_gaps": [
-        "NEGATIVE_OR_ZERO_H1_OCF_REQUIRES_WORKING_CAPITAL_BRIDGE",
-        "NEGATIVE_YTD_OPERATING_CASHFLOW_CHECK_WORKING_CAPITAL",
-        "Q3_REVENUE_GROWTH_DECELERATED_AT_LEAST_20PP"
-      ],
-      "pe_evidence_gaps": [],
-      "capital_evidence_gaps": [],
-      "official_original_financial_review_needed": true,
-      "other_critical_gaps": [
-        "CURRENT_NUMERICS_BULK_ONLY_NOT_ORIGINAL_CHECKED",
-        "FORWARD_EPS_ABOVE_1_3X_H1_ANNUALIZED_OR_UNAVAILABLE",
-        "FORWARD_EPS_AT_LEAST_1_7X_H1_ANNUALIZED_HIGH_BRIDGE_RISK",
-        "FORWARD_EPS_AT_LEAST_30PCT_ABOVE_NONSEASONAL_YTD_RUNRATE",
-        "GROSS_MARGIN_DECLINED_AT_LEAST_3PP",
-        "GROSS_MARGIN_DOWN_AT_LEAST_3PP",
-        "ISSUER_ORIGINAL_NUMERICS_NOT_CROSSCHECKED",
-        "MANUAL_FILING_NOTES_AND_PIT_UNVERIFIED",
-        "Q3_SALES_GROWTH_UNVERIFIED_OR_NONPOSITIVE"
-      ],
-      "model_13_gate_passed_count": 0,
-      "model_13_gate_pending_count": 13,
-      "model_13_gate_failed_count": 0,
-      "quality_review_status": "OPERATING_PE_OR_DILUTION_RED_FLAGS_REVIEW",
-      "governance_review": {
-        "status": "NO_EVENT_LEDGER_NOT_LEGAL_CLEARANCE",
-        "coverage": "REGISTERED_EVENTS_ONLY_NOT_FULL_MARKET_LEGAL_CLEARANCE",
-        "blocks_recommendation": false,
-        "material_open_event_ids": [],
-        "events": []
-      },
-      "recommendation_blocked": false,
-      "etf_constituent_research_context": {
-        "research_review_status": "NO_EVENTS_IN_PARTIAL_COVERAGE_NOT_PROOF_OF_HOLDINGS",
-        "event_history_count": 0,
-        "live_archived_deletions_120d": 0,
-        "three_way_convergence_observed": false
-      },
-      "etf_warning_active": false,
-      "ETF_history_is_not_evidence_of_manager_forecast_accuracy": true,
-      "high_confidence_buy_or_Aplus_certified": false,
-      "verification_priority_rank": 9
-    },
-    {
-      "prior_base_rank": 10,
       "code": "6625",
       "name": "必應",
       "price_date": "2026-11-06",
@@ -546,32 +489,39 @@
       "etf_warning_active": false,
       "ETF_history_is_not_evidence_of_manager_forecast_accuracy": true,
       "high_confidence_buy_or_Aplus_certified": false,
-      "verification_priority_rank": 10
+      "verification_priority_rank": 9
     },
     {
-      "prior_base_rank": 11,
-      "code": "2103",
-      "name": "台橡",
+      "prior_base_rank": 10,
+      "code": "2331",
+      "name": "精英",
       "price_date": "2026-11-06",
-      "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
+      "source_tier": "MOPS_ISSUER_EARNINGS_ANNOUNCEMENT_RESEARCH",
       "original_current_numerics_checked": false,
-      "base_2027_eps_scenario": 3.19,
-      "base_2027_pe_assumption": 15.16,
-      "base_target_price_scenario": 48.36,
-      "base_upside_pct": 109.81,
-      "q3_revenue_yoy_pct": 25.68,
-      "sensitivity_eps20_pe20_upside_pct": 34.28,
+      "base_2027_eps_scenario": 1.828,
+      "base_2027_pe_assumption": 17.9,
+      "base_target_price_scenario": 32.73,
+      "base_upside_pct": 108.47,
+      "q3_revenue_yoy_pct": -22.03,
+      "sensitivity_eps20_pe20_upside_pct": 33.42,
       "sensitivity_survives_30pct_threshold": true,
       "operating_evidence_gaps": [
-        "LOW_OCF_RELATIVE_TO_TOTAL_NET_INCOME"
+        "NEGATIVE_OR_ZERO_H1_OCF_REQUIRES_WORKING_CAPITAL_BRIDGE",
+        "NEGATIVE_YTD_OPERATING_CASHFLOW_CHECK_WORKING_CAPITAL",
+        "Q3_REVENUE_GROWTH_DECELERATED_AT_LEAST_20PP"
       ],
       "pe_evidence_gaps": [],
       "capital_evidence_gaps": [],
       "official_original_financial_review_needed": true,
       "other_critical_gaps": [
-        "CURRENT_NUMERICS_BULK_ONLY_NOT_ORIGINAL_CHECKED",
+        "FORWARD_EPS_ABOVE_1_3X_H1_ANNUALIZED_OR_UNAVAILABLE",
+        "FORWARD_EPS_AT_LEAST_1_7X_H1_ANNUALIZED_HIGH_BRIDGE_RISK",
+        "FORWARD_EPS_AT_LEAST_30PCT_ABOVE_NONSEASONAL_YTD_RUNRATE",
+        "GROSS_MARGIN_DECLINED_AT_LEAST_3PP",
+        "GROSS_MARGIN_DOWN_AT_LEAST_3PP",
         "ISSUER_ORIGINAL_NUMERICS_NOT_CROSSCHECKED",
-        "MANUAL_FILING_NOTES_AND_PIT_UNVERIFIED"
+        "MANUAL_FILING_NOTES_AND_PIT_UNVERIFIED",
+        "Q3_SALES_GROWTH_UNVERIFIED_OR_NONPOSITIVE"
       ],
       "model_13_gate_passed_count": 0,
       "model_13_gate_pending_count": 13,
@@ -594,10 +544,10 @@
       "etf_warning_active": false,
       "ETF_history_is_not_evidence_of_manager_forecast_accuracy": true,
       "high_confidence_buy_or_Aplus_certified": false,
-      "verification_priority_rank": 11
+      "verification_priority_rank": 10
     },
     {
-      "prior_base_rank": 12,
+      "prior_base_rank": 11,
       "code": "1256",
       "name": "鮮活果汁-KY",
       "price_date": "2026-11-06",
@@ -643,10 +593,10 @@
       "etf_warning_active": false,
       "ETF_history_is_not_evidence_of_manager_forecast_accuracy": true,
       "high_confidence_buy_or_Aplus_certified": false,
-      "verification_priority_rank": 12
+      "verification_priority_rank": 11
     },
     {
-      "prior_base_rank": 13,
+      "prior_base_rank": 12,
       "code": "6143",
       "name": "振曜",
       "price_date": "2026-11-06",
@@ -695,10 +645,10 @@
       "etf_warning_active": false,
       "ETF_history_is_not_evidence_of_manager_forecast_accuracy": true,
       "high_confidence_buy_or_Aplus_certified": false,
-      "verification_priority_rank": 13
+      "verification_priority_rank": 12
     },
     {
-      "prior_base_rank": 14,
+      "prior_base_rank": 13,
       "code": "8155",
       "name": "博智",
       "price_date": "2026-11-06",
@@ -748,10 +698,10 @@
       "etf_warning_active": false,
       "ETF_history_is_not_evidence_of_manager_forecast_accuracy": true,
       "high_confidence_buy_or_Aplus_certified": false,
-      "verification_priority_rank": 14
+      "verification_priority_rank": 13
     },
     {
-      "prior_base_rank": 15,
+      "prior_base_rank": 14,
       "code": "2432",
       "name": "倚天酷碁-創",
       "price_date": "2026-11-06",
@@ -800,10 +750,10 @@
       "etf_warning_active": false,
       "ETF_history_is_not_evidence_of_manager_forecast_accuracy": true,
       "high_confidence_buy_or_Aplus_certified": false,
-      "verification_priority_rank": 15
+      "verification_priority_rank": 14
     },
     {
-      "prior_base_rank": 16,
+      "prior_base_rank": 15,
       "code": "4721",
       "name": "美琪瑪",
       "price_date": "2026-11-06",
@@ -852,10 +802,10 @@
       "etf_warning_active": false,
       "ETF_history_is_not_evidence_of_manager_forecast_accuracy": true,
       "high_confidence_buy_or_Aplus_certified": false,
-      "verification_priority_rank": 16
+      "verification_priority_rank": 15
     },
     {
-      "prior_base_rank": 17,
+      "prior_base_rank": 16,
       "code": "2376",
       "name": "技嘉",
       "price_date": "2026-11-06",
@@ -902,10 +852,10 @@
       "etf_warning_active": false,
       "ETF_history_is_not_evidence_of_manager_forecast_accuracy": true,
       "high_confidence_buy_or_Aplus_certified": false,
-      "verification_priority_rank": 17
+      "verification_priority_rank": 16
     },
     {
-      "prior_base_rank": 18,
+      "prior_base_rank": 17,
       "code": "8091",
       "name": "翔名",
       "price_date": "2026-11-06",
@@ -954,10 +904,10 @@
       "etf_warning_active": false,
       "ETF_history_is_not_evidence_of_manager_forecast_accuracy": true,
       "high_confidence_buy_or_Aplus_certified": false,
-      "verification_priority_rank": 18
+      "verification_priority_rank": 17
     },
     {
-      "prior_base_rank": 19,
+      "prior_base_rank": 18,
       "code": "8383",
       "name": "千附",
       "price_date": "2026-11-06",
@@ -1005,10 +955,10 @@
       "etf_warning_active": false,
       "ETF_history_is_not_evidence_of_manager_forecast_accuracy": true,
       "high_confidence_buy_or_Aplus_certified": false,
-      "verification_priority_rank": 19
+      "verification_priority_rank": 18
     },
     {
-      "prior_base_rank": 20,
+      "prior_base_rank": 19,
       "code": "6781",
       "name": "AES-KY",
       "price_date": "2026-11-06",
@@ -1032,6 +982,59 @@
         "CURRENT_NUMERICS_BULK_ONLY_NOT_ORIGINAL_CHECKED",
         "EPS_PE_DOUBLE20_LOSES_30PCT_NUMERICAL_THRESHOLD",
         "FORWARD_PE_25X_OR_HIGHER_REQUIRES_STRONGER_JUSTIFICATION",
+        "ISSUER_ORIGINAL_NUMERICS_NOT_CROSSCHECKED",
+        "MANUAL_FILING_NOTES_AND_PIT_UNVERIFIED"
+      ],
+      "model_13_gate_passed_count": 0,
+      "model_13_gate_pending_count": 13,
+      "model_13_gate_failed_count": 0,
+      "quality_review_status": "OPERATING_PE_OR_DILUTION_RED_FLAGS_REVIEW",
+      "governance_review": {
+        "status": "NO_EVENT_LEDGER_NOT_LEGAL_CLEARANCE",
+        "coverage": "REGISTERED_EVENTS_ONLY_NOT_FULL_MARKET_LEGAL_CLEARANCE",
+        "blocks_recommendation": false,
+        "material_open_event_ids": [],
+        "events": []
+      },
+      "recommendation_blocked": false,
+      "etf_constituent_research_context": {
+        "research_review_status": "NO_EVENTS_IN_PARTIAL_COVERAGE_NOT_PROOF_OF_HOLDINGS",
+        "event_history_count": 0,
+        "live_archived_deletions_120d": 0,
+        "three_way_convergence_observed": false
+      },
+      "etf_warning_active": false,
+      "ETF_history_is_not_evidence_of_manager_forecast_accuracy": true,
+      "high_confidence_buy_or_Aplus_certified": false,
+      "verification_priority_rank": 19
+    },
+    {
+      "prior_base_rank": 20,
+      "code": "3171",
+      "name": "炎洲流通",
+      "price_date": "2026-11-06",
+      "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
+      "original_current_numerics_checked": false,
+      "base_2027_eps_scenario": 8.522,
+      "base_2027_pe_assumption": 12.57,
+      "base_target_price_scenario": 107.13,
+      "base_upside_pct": 97.65,
+      "q3_revenue_yoy_pct": 12.5,
+      "sensitivity_eps20_pe20_upside_pct": 26.5,
+      "sensitivity_survives_30pct_threshold": false,
+      "operating_evidence_gaps": [
+        "NEGATIVE_OR_ZERO_H1_OCF_REQUIRES_WORKING_CAPITAL_BRIDGE",
+        "NEGATIVE_YTD_OPERATING_CASHFLOW_CHECK_WORKING_CAPITAL",
+        "Q3_REVENUE_GROWTH_DECELERATED_AT_LEAST_20PP"
+      ],
+      "pe_evidence_gaps": [],
+      "capital_evidence_gaps": [],
+      "official_original_financial_review_needed": true,
+      "other_critical_gaps": [
+        "CURRENT_NUMERICS_BULK_ONLY_NOT_ORIGINAL_CHECKED",
+        "EPS_PE_DOUBLE20_LOSES_30PCT_NUMERICAL_THRESHOLD",
+        "GROSS_MARGIN_DECLINED_AT_LEAST_3PP",
+        "GROSS_MARGIN_DOWN_AT_LEAST_3PP",
         "ISSUER_ORIGINAL_NUMERICS_NOT_CROSSCHECKED",
         "MANUAL_FILING_NOTES_AND_PIT_UNVERIFIED"
       ],
@@ -1111,28 +1114,31 @@
     },
     {
       "prior_base_rank": 2,
-      "code": "8390",
-      "name": "金益鼎",
+      "code": "2483",
+      "name": "百容",
       "price_date": "2026-11-06",
-      "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
-      "original_current_numerics_checked": true,
-      "base_2027_eps_scenario": 13.834,
-      "base_2027_pe_assumption": 13.22,
-      "base_target_price_scenario": 182.88,
-      "base_upside_pct": 140.0,
-      "q3_revenue_yoy_pct": 53.67,
-      "sensitivity_eps20_pe20_upside_pct": 53.6,
+      "source_tier": "MOPS_ISSUER_EARNINGS_ANNOUNCEMENT_RESEARCH",
+      "original_current_numerics_checked": false,
+      "base_2027_eps_scenario": 2.587,
+      "base_2027_pe_assumption": 27.345,
+      "base_target_price_scenario": 70.74,
+      "base_upside_pct": 141.85,
+      "q3_revenue_yoy_pct": 32.98,
+      "sensitivity_eps20_pe20_upside_pct": 54.78,
       "sensitivity_survives_30pct_threshold": true,
-      "operating_evidence_gaps": [
-        "AUDITOR_QUALIFIED_SCOPE_MATERIALITY_PENDING",
-        "EQUITY_ISSUANCE_NOT_CONFIRMED"
+      "operating_evidence_gaps": [],
+      "pe_evidence_gaps": [
+        "FORWARD_PE_AT_LEAST_20_REQUIRES_MATCHED_PEERS",
+        "HIGH_FORWARD_PE_UNVERIFIED_PEERS"
       ],
-      "pe_evidence_gaps": [],
       "capital_evidence_gaps": [],
-      "official_original_financial_review_needed": false,
+      "official_original_financial_review_needed": true,
       "other_critical_gaps": [
         "FORWARD_EPS_ABOVE_1_3X_H1_ANNUALIZED_OR_UNAVAILABLE",
+        "FORWARD_EPS_AT_LEAST_1_7X_H1_ANNUALIZED_HIGH_BRIDGE_RISK",
         "FORWARD_EPS_AT_LEAST_30PCT_ABOVE_NONSEASONAL_YTD_RUNRATE",
+        "FORWARD_PE_25X_OR_HIGHER_REQUIRES_STRONGER_JUSTIFICATION",
+        "ISSUER_ORIGINAL_NUMERICS_NOT_CROSSCHECKED",
         "MANUAL_FILING_NOTES_AND_PIT_UNVERIFIED"
       ],
       "model_13_gate_passed_count": 0,
@@ -1211,38 +1217,28 @@
     },
     {
       "prior_base_rank": 4,
-      "code": "2374",
-      "name": "佳能",
+      "code": "8390",
+      "name": "金益鼎",
       "price_date": "2026-11-06",
-      "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
+      "source_tier": "MOPS_ISSUER_EARNINGS_ANNOUNCEMENT_RESEARCH",
       "original_current_numerics_checked": false,
-      "base_2027_eps_scenario": 4.937,
-      "base_2027_pe_assumption": 25.31,
-      "base_target_price_scenario": 124.96,
-      "base_upside_pct": 134.0,
-      "q3_revenue_yoy_pct": 34.46,
-      "sensitivity_eps20_pe20_upside_pct": 49.76,
+      "base_2027_eps_scenario": 13.708,
+      "base_2027_pe_assumption": 13.22,
+      "base_target_price_scenario": 181.22,
+      "base_upside_pct": 137.82,
+      "q3_revenue_yoy_pct": 53.67,
+      "sensitivity_eps20_pe20_upside_pct": 52.2,
       "sensitivity_survives_30pct_threshold": true,
       "operating_evidence_gaps": [
-        "NEGATIVE_OR_ZERO_H1_OCF_REQUIRES_WORKING_CAPITAL_BRIDGE",
-        "NEGATIVE_YTD_OPERATING_CASHFLOW_CHECK_WORKING_CAPITAL"
+        "AUDITOR_QUALIFIED_SCOPE_MATERIALITY_PENDING",
+        "EQUITY_ISSUANCE_NOT_CONFIRMED"
       ],
-      "pe_evidence_gaps": [
-        "FORWARD_PE_AT_LEAST_20_REQUIRES_MATCHED_PEERS",
-        "HIGH_FORWARD_PE_UNVERIFIED_PEERS"
-      ],
-      "capital_evidence_gaps": [
-        "CB_LEGAL_TERMS_UNVERIFIED",
-        "LISTED_CB_TERMS_UNVERIFIED"
-      ],
+      "pe_evidence_gaps": [],
+      "capital_evidence_gaps": [],
       "official_original_financial_review_needed": true,
       "other_critical_gaps": [
-        "CURRENT_NUMERICS_BULK_ONLY_NOT_ORIGINAL_CHECKED",
         "FORWARD_EPS_ABOVE_1_3X_H1_ANNUALIZED_OR_UNAVAILABLE",
         "FORWARD_EPS_AT_LEAST_30PCT_ABOVE_NONSEASONAL_YTD_RUNRATE",
-        "FORWARD_PE_25X_OR_HIGHER_REQUIRES_STRONGER_JUSTIFICATION",
-        "GROSS_MARGIN_DECLINED_AT_LEAST_3PP",
-        "GROSS_MARGIN_DOWN_AT_LEAST_3PP",
         "ISSUER_ORIGINAL_NUMERICS_NOT_CROSSCHECKED",
         "MANUAL_FILING_NOTES_AND_PIT_UNVERIFIED"
       ],
@@ -1325,6 +1321,65 @@
     },
     {
       "prior_base_rank": 6,
+      "code": "2374",
+      "name": "佳能",
+      "price_date": "2026-11-06",
+      "source_tier": "MOPS_ISSUER_EARNINGS_ANNOUNCEMENT_RESEARCH",
+      "original_current_numerics_checked": false,
+      "base_2027_eps_scenario": 4.607,
+      "base_2027_pe_assumption": 25.31,
+      "base_target_price_scenario": 116.6,
+      "base_upside_pct": 118.35,
+      "q3_revenue_yoy_pct": 34.46,
+      "sensitivity_eps20_pe20_upside_pct": 39.75,
+      "sensitivity_survives_30pct_threshold": true,
+      "operating_evidence_gaps": [
+        "NEGATIVE_OR_ZERO_H1_OCF_REQUIRES_WORKING_CAPITAL_BRIDGE",
+        "NEGATIVE_YTD_OPERATING_CASHFLOW_CHECK_WORKING_CAPITAL"
+      ],
+      "pe_evidence_gaps": [
+        "FORWARD_PE_AT_LEAST_20_REQUIRES_MATCHED_PEERS",
+        "HIGH_FORWARD_PE_UNVERIFIED_PEERS"
+      ],
+      "capital_evidence_gaps": [
+        "CB_LEGAL_TERMS_UNVERIFIED",
+        "LISTED_CB_TERMS_UNVERIFIED"
+      ],
+      "official_original_financial_review_needed": true,
+      "other_critical_gaps": [
+        "FORWARD_EPS_ABOVE_1_3X_H1_ANNUALIZED_OR_UNAVAILABLE",
+        "FORWARD_EPS_AT_LEAST_30PCT_ABOVE_NONSEASONAL_YTD_RUNRATE",
+        "FORWARD_PE_25X_OR_HIGHER_REQUIRES_STRONGER_JUSTIFICATION",
+        "GROSS_MARGIN_DECLINED_AT_LEAST_3PP",
+        "GROSS_MARGIN_DOWN_AT_LEAST_3PP",
+        "ISSUER_ORIGINAL_NUMERICS_NOT_CROSSCHECKED",
+        "MANUAL_FILING_NOTES_AND_PIT_UNVERIFIED"
+      ],
+      "model_13_gate_passed_count": 0,
+      "model_13_gate_pending_count": 13,
+      "model_13_gate_failed_count": 0,
+      "quality_review_status": "OPERATING_PE_OR_DILUTION_RED_FLAGS_REVIEW",
+      "governance_review": {
+        "status": "NO_EVENT_LEDGER_NOT_LEGAL_CLEARANCE",
+        "coverage": "REGISTERED_EVENTS_ONLY_NOT_FULL_MARKET_LEGAL_CLEARANCE",
+        "blocks_recommendation": false,
+        "material_open_event_ids": [],
+        "events": []
+      },
+      "recommendation_blocked": false,
+      "etf_constituent_research_context": {
+        "research_review_status": "NO_EVENTS_IN_PARTIAL_COVERAGE_NOT_PROOF_OF_HOLDINGS",
+        "event_history_count": 0,
+        "live_archived_deletions_120d": 0,
+        "three_way_convergence_observed": false
+      },
+      "etf_warning_active": false,
+      "ETF_history_is_not_evidence_of_manager_forecast_accuracy": true,
+      "high_confidence_buy_or_Aplus_certified": false,
+      "verification_priority_rank": 7
+    },
+    {
+      "prior_base_rank": 7,
       "code": "8473",
       "name": "山林水",
       "price_date": "2026-11-06",
@@ -1372,10 +1427,10 @@
       "etf_warning_active": false,
       "ETF_history_is_not_evidence_of_manager_forecast_accuracy": true,
       "high_confidence_buy_or_Aplus_certified": false,
-      "verification_priority_rank": 7
+      "verification_priority_rank": 8
     },
     {
-      "prior_base_rank": 7,
+      "prior_base_rank": 8,
       "code": "6763",
       "name": "綠界科技*",
       "price_date": "2026-11-06",
@@ -1424,116 +1479,7 @@
       "verification_priority_rank": 1
     },
     {
-      "prior_base_rank": 8,
-      "code": "2483",
-      "name": "百容",
-      "price_date": "2026-11-06",
-      "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
-      "original_current_numerics_checked": false,
-      "base_2027_eps_scenario": 2.269,
-      "base_2027_pe_assumption": 27.345,
-      "base_target_price_scenario": 62.04,
-      "base_upside_pct": 112.12,
-      "q3_revenue_yoy_pct": 32.98,
-      "sensitivity_eps20_pe20_upside_pct": 35.75,
-      "sensitivity_survives_30pct_threshold": true,
-      "operating_evidence_gaps": [],
-      "pe_evidence_gaps": [
-        "FORWARD_PE_AT_LEAST_20_REQUIRES_MATCHED_PEERS",
-        "HIGH_FORWARD_PE_UNVERIFIED_PEERS"
-      ],
-      "capital_evidence_gaps": [],
-      "official_original_financial_review_needed": true,
-      "other_critical_gaps": [
-        "CURRENT_NUMERICS_BULK_ONLY_NOT_ORIGINAL_CHECKED",
-        "FORWARD_EPS_ABOVE_1_3X_H1_ANNUALIZED_OR_UNAVAILABLE",
-        "FORWARD_EPS_AT_LEAST_1_7X_H1_ANNUALIZED_HIGH_BRIDGE_RISK",
-        "FORWARD_EPS_AT_LEAST_30PCT_ABOVE_NONSEASONAL_YTD_RUNRATE",
-        "FORWARD_PE_25X_OR_HIGHER_REQUIRES_STRONGER_JUSTIFICATION",
-        "ISSUER_ORIGINAL_NUMERICS_NOT_CROSSCHECKED",
-        "MANUAL_FILING_NOTES_AND_PIT_UNVERIFIED"
-      ],
-      "model_13_gate_passed_count": 0,
-      "model_13_gate_pending_count": 13,
-      "model_13_gate_failed_count": 0,
-      "quality_review_status": "OPERATING_PE_OR_DILUTION_RED_FLAGS_REVIEW",
-      "governance_review": {
-        "status": "NO_EVENT_LEDGER_NOT_LEGAL_CLEARANCE",
-        "coverage": "REGISTERED_EVENTS_ONLY_NOT_FULL_MARKET_LEGAL_CLEARANCE",
-        "blocks_recommendation": false,
-        "material_open_event_ids": [],
-        "events": []
-      },
-      "recommendation_blocked": false,
-      "etf_constituent_research_context": {
-        "research_review_status": "NO_EVENTS_IN_PARTIAL_COVERAGE_NOT_PROOF_OF_HOLDINGS",
-        "event_history_count": 0,
-        "live_archived_deletions_120d": 0,
-        "three_way_convergence_observed": false
-      },
-      "etf_warning_active": false,
-      "ETF_history_is_not_evidence_of_manager_forecast_accuracy": true,
-      "high_confidence_buy_or_Aplus_certified": false,
-      "verification_priority_rank": 8
-    },
-    {
       "prior_base_rank": 9,
-      "code": "2331",
-      "name": "精英",
-      "price_date": "2026-11-06",
-      "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
-      "original_current_numerics_checked": false,
-      "base_2027_eps_scenario": 1.851,
-      "base_2027_pe_assumption": 17.9,
-      "base_target_price_scenario": 33.13,
-      "base_upside_pct": 111.0,
-      "q3_revenue_yoy_pct": -22.03,
-      "sensitivity_eps20_pe20_upside_pct": 35.04,
-      "sensitivity_survives_30pct_threshold": true,
-      "operating_evidence_gaps": [
-        "NEGATIVE_OR_ZERO_H1_OCF_REQUIRES_WORKING_CAPITAL_BRIDGE",
-        "NEGATIVE_YTD_OPERATING_CASHFLOW_CHECK_WORKING_CAPITAL",
-        "Q3_REVENUE_GROWTH_DECELERATED_AT_LEAST_20PP"
-      ],
-      "pe_evidence_gaps": [],
-      "capital_evidence_gaps": [],
-      "official_original_financial_review_needed": true,
-      "other_critical_gaps": [
-        "CURRENT_NUMERICS_BULK_ONLY_NOT_ORIGINAL_CHECKED",
-        "FORWARD_EPS_ABOVE_1_3X_H1_ANNUALIZED_OR_UNAVAILABLE",
-        "FORWARD_EPS_AT_LEAST_1_7X_H1_ANNUALIZED_HIGH_BRIDGE_RISK",
-        "FORWARD_EPS_AT_LEAST_30PCT_ABOVE_NONSEASONAL_YTD_RUNRATE",
-        "GROSS_MARGIN_DECLINED_AT_LEAST_3PP",
-        "GROSS_MARGIN_DOWN_AT_LEAST_3PP",
-        "ISSUER_ORIGINAL_NUMERICS_NOT_CROSSCHECKED",
-        "MANUAL_FILING_NOTES_AND_PIT_UNVERIFIED",
-        "Q3_SALES_GROWTH_UNVERIFIED_OR_NONPOSITIVE"
-      ],
-      "model_13_gate_passed_count": 0,
-      "model_13_gate_pending_count": 13,
-      "model_13_gate_failed_count": 0,
-      "quality_review_status": "OPERATING_PE_OR_DILUTION_RED_FLAGS_REVIEW",
-      "governance_review": {
-        "status": "NO_EVENT_LEDGER_NOT_LEGAL_CLEARANCE",
-        "coverage": "REGISTERED_EVENTS_ONLY_NOT_FULL_MARKET_LEGAL_CLEARANCE",
-        "blocks_recommendation": false,
-        "material_open_event_ids": [],
-        "events": []
-      },
-      "recommendation_blocked": false,
-      "etf_constituent_research_context": {
-        "research_review_status": "NO_EVENTS_IN_PARTIAL_COVERAGE_NOT_PROOF_OF_HOLDINGS",
-        "event_history_count": 0,
-        "live_archived_deletions_120d": 0,
-        "three_way_convergence_observed": false
-      },
-      "etf_warning_active": false,
-      "ETF_history_is_not_evidence_of_manager_forecast_accuracy": true,
-      "high_confidence_buy_or_Aplus_certified": false,
-      "verification_priority_rank": 9
-    },
-    {
-      "prior_base_rank": 10,
       "code": "6625",
       "name": "必應",
       "price_date": "2026-11-06",
@@ -1579,32 +1525,39 @@
       "etf_warning_active": false,
       "ETF_history_is_not_evidence_of_manager_forecast_accuracy": true,
       "high_confidence_buy_or_Aplus_certified": false,
-      "verification_priority_rank": 10
+      "verification_priority_rank": 9
     },
     {
-      "prior_base_rank": 11,
-      "code": "2103",
-      "name": "台橡",
+      "prior_base_rank": 10,
+      "code": "2331",
+      "name": "精英",
       "price_date": "2026-11-06",
-      "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
+      "source_tier": "MOPS_ISSUER_EARNINGS_ANNOUNCEMENT_RESEARCH",
       "original_current_numerics_checked": false,
-      "base_2027_eps_scenario": 3.19,
-      "base_2027_pe_assumption": 15.16,
-      "base_target_price_scenario": 48.36,
-      "base_upside_pct": 109.81,
-      "q3_revenue_yoy_pct": 25.68,
-      "sensitivity_eps20_pe20_upside_pct": 34.28,
+      "base_2027_eps_scenario": 1.828,
+      "base_2027_pe_assumption": 17.9,
+      "base_target_price_scenario": 32.73,
+      "base_upside_pct": 108.47,
+      "q3_revenue_yoy_pct": -22.03,
+      "sensitivity_eps20_pe20_upside_pct": 33.42,
       "sensitivity_survives_30pct_threshold": true,
       "operating_evidence_gaps": [
-        "LOW_OCF_RELATIVE_TO_TOTAL_NET_INCOME"
+        "NEGATIVE_OR_ZERO_H1_OCF_REQUIRES_WORKING_CAPITAL_BRIDGE",
+        "NEGATIVE_YTD_OPERATING_CASHFLOW_CHECK_WORKING_CAPITAL",
+        "Q3_REVENUE_GROWTH_DECELERATED_AT_LEAST_20PP"
       ],
       "pe_evidence_gaps": [],
       "capital_evidence_gaps": [],
       "official_original_financial_review_needed": true,
       "other_critical_gaps": [
-        "CURRENT_NUMERICS_BULK_ONLY_NOT_ORIGINAL_CHECKED",
+        "FORWARD_EPS_ABOVE_1_3X_H1_ANNUALIZED_OR_UNAVAILABLE",
+        "FORWARD_EPS_AT_LEAST_1_7X_H1_ANNUALIZED_HIGH_BRIDGE_RISK",
+        "FORWARD_EPS_AT_LEAST_30PCT_ABOVE_NONSEASONAL_YTD_RUNRATE",
+        "GROSS_MARGIN_DECLINED_AT_LEAST_3PP",
+        "GROSS_MARGIN_DOWN_AT_LEAST_3PP",
         "ISSUER_ORIGINAL_NUMERICS_NOT_CROSSCHECKED",
-        "MANUAL_FILING_NOTES_AND_PIT_UNVERIFIED"
+        "MANUAL_FILING_NOTES_AND_PIT_UNVERIFIED",
+        "Q3_SALES_GROWTH_UNVERIFIED_OR_NONPOSITIVE"
       ],
       "model_13_gate_passed_count": 0,
       "model_13_gate_pending_count": 13,
@@ -1627,10 +1580,10 @@
       "etf_warning_active": false,
       "ETF_history_is_not_evidence_of_manager_forecast_accuracy": true,
       "high_confidence_buy_or_Aplus_certified": false,
-      "verification_priority_rank": 11
+      "verification_priority_rank": 10
     },
     {
-      "prior_base_rank": 12,
+      "prior_base_rank": 11,
       "code": "1256",
       "name": "鮮活果汁-KY",
       "price_date": "2026-11-06",
@@ -1676,10 +1629,10 @@
       "etf_warning_active": false,
       "ETF_history_is_not_evidence_of_manager_forecast_accuracy": true,
       "high_confidence_buy_or_Aplus_certified": false,
-      "verification_priority_rank": 12
+      "verification_priority_rank": 11
     },
     {
-      "prior_base_rank": 13,
+      "prior_base_rank": 12,
       "code": "6143",
       "name": "振曜",
       "price_date": "2026-11-06",
@@ -1728,10 +1681,10 @@
       "etf_warning_active": false,
       "ETF_history_is_not_evidence_of_manager_forecast_accuracy": true,
       "high_confidence_buy_or_Aplus_certified": false,
-      "verification_priority_rank": 13
+      "verification_priority_rank": 12
     },
     {
-      "prior_base_rank": 14,
+      "prior_base_rank": 13,
       "code": "8155",
       "name": "博智",
       "price_date": "2026-11-06",
@@ -1781,10 +1734,10 @@
       "etf_warning_active": false,
       "ETF_history_is_not_evidence_of_manager_forecast_accuracy": true,
       "high_confidence_buy_or_Aplus_certified": false,
-      "verification_priority_rank": 14
+      "verification_priority_rank": 13
     },
     {
-      "prior_base_rank": 15,
+      "prior_base_rank": 14,
       "code": "2432",
       "name": "倚天酷碁-創",
       "price_date": "2026-11-06",
@@ -1833,10 +1786,10 @@
       "etf_warning_active": false,
       "ETF_history_is_not_evidence_of_manager_forecast_accuracy": true,
       "high_confidence_buy_or_Aplus_certified": false,
-      "verification_priority_rank": 15
+      "verification_priority_rank": 14
     },
     {
-      "prior_base_rank": 16,
+      "prior_base_rank": 15,
       "code": "4721",
       "name": "美琪瑪",
       "price_date": "2026-11-06",
@@ -1885,10 +1838,10 @@
       "etf_warning_active": false,
       "ETF_history_is_not_evidence_of_manager_forecast_accuracy": true,
       "high_confidence_buy_or_Aplus_certified": false,
-      "verification_priority_rank": 16
+      "verification_priority_rank": 15
     },
     {
-      "prior_base_rank": 17,
+      "prior_base_rank": 16,
       "code": "2376",
       "name": "技嘉",
       "price_date": "2026-11-06",
@@ -1935,10 +1888,10 @@
       "etf_warning_active": false,
       "ETF_history_is_not_evidence_of_manager_forecast_accuracy": true,
       "high_confidence_buy_or_Aplus_certified": false,
-      "verification_priority_rank": 17
+      "verification_priority_rank": 16
     },
     {
-      "prior_base_rank": 18,
+      "prior_base_rank": 17,
       "code": "8091",
       "name": "翔名",
       "price_date": "2026-11-06",
@@ -1987,10 +1940,10 @@
       "etf_warning_active": false,
       "ETF_history_is_not_evidence_of_manager_forecast_accuracy": true,
       "high_confidence_buy_or_Aplus_certified": false,
-      "verification_priority_rank": 18
+      "verification_priority_rank": 17
     },
     {
-      "prior_base_rank": 19,
+      "prior_base_rank": 18,
       "code": "8383",
       "name": "千附",
       "price_date": "2026-11-06",
@@ -2038,10 +1991,10 @@
       "etf_warning_active": false,
       "ETF_history_is_not_evidence_of_manager_forecast_accuracy": true,
       "high_confidence_buy_or_Aplus_certified": false,
-      "verification_priority_rank": 19
+      "verification_priority_rank": 18
     },
     {
-      "prior_base_rank": 20,
+      "prior_base_rank": 19,
       "code": "6781",
       "name": "AES-KY",
       "price_date": "2026-11-06",
@@ -2065,6 +2018,59 @@
         "CURRENT_NUMERICS_BULK_ONLY_NOT_ORIGINAL_CHECKED",
         "EPS_PE_DOUBLE20_LOSES_30PCT_NUMERICAL_THRESHOLD",
         "FORWARD_PE_25X_OR_HIGHER_REQUIRES_STRONGER_JUSTIFICATION",
+        "ISSUER_ORIGINAL_NUMERICS_NOT_CROSSCHECKED",
+        "MANUAL_FILING_NOTES_AND_PIT_UNVERIFIED"
+      ],
+      "model_13_gate_passed_count": 0,
+      "model_13_gate_pending_count": 13,
+      "model_13_gate_failed_count": 0,
+      "quality_review_status": "OPERATING_PE_OR_DILUTION_RED_FLAGS_REVIEW",
+      "governance_review": {
+        "status": "NO_EVENT_LEDGER_NOT_LEGAL_CLEARANCE",
+        "coverage": "REGISTERED_EVENTS_ONLY_NOT_FULL_MARKET_LEGAL_CLEARANCE",
+        "blocks_recommendation": false,
+        "material_open_event_ids": [],
+        "events": []
+      },
+      "recommendation_blocked": false,
+      "etf_constituent_research_context": {
+        "research_review_status": "NO_EVENTS_IN_PARTIAL_COVERAGE_NOT_PROOF_OF_HOLDINGS",
+        "event_history_count": 0,
+        "live_archived_deletions_120d": 0,
+        "three_way_convergence_observed": false
+      },
+      "etf_warning_active": false,
+      "ETF_history_is_not_evidence_of_manager_forecast_accuracy": true,
+      "high_confidence_buy_or_Aplus_certified": false,
+      "verification_priority_rank": 19
+    },
+    {
+      "prior_base_rank": 20,
+      "code": "3171",
+      "name": "炎洲流通",
+      "price_date": "2026-11-06",
+      "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
+      "original_current_numerics_checked": false,
+      "base_2027_eps_scenario": 8.522,
+      "base_2027_pe_assumption": 12.57,
+      "base_target_price_scenario": 107.13,
+      "base_upside_pct": 97.65,
+      "q3_revenue_yoy_pct": 12.5,
+      "sensitivity_eps20_pe20_upside_pct": 26.5,
+      "sensitivity_survives_30pct_threshold": false,
+      "operating_evidence_gaps": [
+        "NEGATIVE_OR_ZERO_H1_OCF_REQUIRES_WORKING_CAPITAL_BRIDGE",
+        "NEGATIVE_YTD_OPERATING_CASHFLOW_CHECK_WORKING_CAPITAL",
+        "Q3_REVENUE_GROWTH_DECELERATED_AT_LEAST_20PP"
+      ],
+      "pe_evidence_gaps": [],
+      "capital_evidence_gaps": [],
+      "official_original_financial_review_needed": true,
+      "other_critical_gaps": [
+        "CURRENT_NUMERICS_BULK_ONLY_NOT_ORIGINAL_CHECKED",
+        "EPS_PE_DOUBLE20_LOSES_30PCT_NUMERICAL_THRESHOLD",
+        "GROSS_MARGIN_DECLINED_AT_LEAST_3PP",
+        "GROSS_MARGIN_DOWN_AT_LEAST_3PP",
         "ISSUER_ORIGINAL_NUMERICS_NOT_CROSSCHECKED",
         "MANUAL_FILING_NOTES_AND_PIT_UNVERIFIED"
       ],
