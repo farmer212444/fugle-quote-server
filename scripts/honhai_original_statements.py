@@ -26,6 +26,8 @@ MANIFEST=FOLDER+"/manifest.json"
 MAX_PDF_BYTES=30_000_000
 HTTP403_RETRY=dt.timedelta(hours=24)
 KNOWN={
+ "2024-Q3":"https://image.honhai.com/financy_by_quarterly/2024Q3_consolidared_report%28c%29.pdf",
+ "2024-Q4":"https://image.honhai.com/financy_by_quarterly/2024Q4_consolidared_report%28c%29.pdf",
  "2025-Q1":"https://image.honhai.com/financy_by_quarterly/2025Q1_consolidared_report%28c%29_1747304642.pdf",
  "2025-Q3":"https://image.honhai.com/upload/202511/financy_by_quarterly/2025Q3_consolidared_report%28c%29_20251114_4728.pdf",
  "2025-Q2":"https://image.honhai.com/upload/202508/financy_by_quarterly/2025Q2_consolidared_report%28c%29_20250814_9796.pdf",
