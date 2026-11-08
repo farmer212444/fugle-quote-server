@@ -27,7 +27,7 @@ class HonhaiCommandTests(unittest.TestCase):
 def fixture(period,*,code="2317",include_notes=True):
     roc=int(period[:4])-1911;q=int(period[-1])
     season=(f"民國{roc}年度及{roc-1}年度" if q==4
-            else f"民國{roc}年及{roc-1}年第{q}季")
+            else f"民國{roc}年及{roc-1}年第{h.CHINESE_QUARTERS[q-1]}季")
     doc=fitz.open()
     for _ in range(25):doc.new_page()
     doc[0].insert_text((45,55),"鴻海精密工業股份有限公司及子公司\n合併財務報告暨會計師核閱報告\n"+season+"\n股票代碼"+code,fontname="china-t",fontsize=10)
@@ -62,6 +62,20 @@ class HonhaiOriginalIntakeTests(unittest.TestCase):
         again=h.collect(self.root,"2026-Q2",fetcher=lambda url: self.fail("should use existing receipts"),
                         clock=lambda:STAMP+dt.timedelta(hours=1))
         self.assertEqual(again["records"],3)
+
+    def test_real_official_cover_wording_for_q1_and_q2_is_accepted(self):
+        # Actual 2025-Q2 and 2026-Q1 official covers use 第一季/第二季,
+        # not 第1季/第2季. These synthetic PDFs reproduce that exact wording.
+        for period in ("2025-Q2", "2026-Q1"):
+            raw=fixture(period)
+            identity=h.pdf_identity(raw,period)
+            self.assertTrue(identity["native_cover_issuer_and_period_verified"])
+            self.assertTrue(identity["contents_four_statements_notes_and_auditor_listed"])
+            self.assertFalse(identity["formal_gate_pass"])
+        # Preserve a strict quarter match: a Q1 original cannot pass as Q2.
+        with self.assertRaisesRegex(ValueError,"ISSUER_PERIOD_NOT_CONFIRMED"):
+            h.pdf_identity(fixture("2026-Q1"),"2025-Q2")
+        # Arabic 1/2 cannot silently replace the official Chinese quarter labels.
 
     def test_wrong_issuer_period_or_notes_rejected(self):
         for raw in (fixture("2026-Q1",code="2354"), fixture("2025-Q2"),
