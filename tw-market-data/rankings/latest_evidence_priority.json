@@ -24,21 +24,21 @@
   "realized_return_accuracy_calibrated": false,
   "formal_Aplus_added": 0,
   "blocked_governance_count": 0,
-  "eligible_count": 236,
-  "original_current_issuer_candidates": 30,
+  "eligible_count": 233,
+  "original_current_issuer_candidates": 29,
   "top10_evidence_first": [
     {
       "review_rank": 1,
-      "code": "2483",
+      "code": "2432",
       "market": "TWSE",
-      "name": "百容",
+      "name": "倚天酷碁-創",
       "source_lane": "ORIGINAL_CURRENT_RECONCILED",
-      "reference_close": 29.25,
-      "base_upside_pct": 141.84902364889527,
-      "base_eps": 2.5869752941050237,
-      "base_target_price": 70.74083941730187,
-      "eps_pe_each_minus20_upside_pct": 54.783375135292985,
-      "bear_upside_pct": 20.631829236595234,
+      "reference_close": 27.55,
+      "base_upside_pct": 101.86875412480494,
+      "base_eps": 3.462941579164617,
+      "base_target_price": 55.61484176138376,
+      "eps_pe_each_minus20_upside_pct": 29.19600263987516,
+      "bear_upside_pct": -7.733986071422105,
       "original_current_numeric_reconciled": true,
       "all_eight_quarters_and_notes_verified": false,
       "pending_offering": false,
@@ -61,25 +61,28 @@
       "formal_Aplus": false,
       "recommendation_blocked": false,
       "warning_flags": [
+        "NEGATIVE_OCF_REQUIRES_WORKING_CAPITAL_BRIDGE_NOT_AUTOMATIC_FAIL",
+        "Q2_OCF_POSITIVE_WHILE_PRIOR_Q1_NEGATIVE_NOT_SUSTAINED_PROOF",
         "PEER_PE_NOT_CERTIFIED",
         "2027_COMPANY_OPERATING_BRIDGE_UNVERIFIED",
         "REPORTED_YTD_NONOPERATING_GAP_GE20PCT_PRETAX_COMPONENTS_UNCERTIFIED",
-        "2027_EPS_GE30PCT_ABOVE_UNSEASONALIZED_CURRENT_YTD_RUN_RATE"
+        "2027_EPS_GE30PCT_ABOVE_UNSEASONALIZED_CURRENT_YTD_RUN_RATE",
+        "HIGH_ASSUMED_GROWTH_UNVERIFIED_2027_EXTRAPOLATION"
       ],
-      "forward_growth_assumption_pct": 11.273204145168425,
-      "latest_month_revenue_yoy_pct": 27.300801715360706,
-      "ytd_revenue_yoy_pct": 22.546408290336846,
+      "forward_growth_assumption_pct": 33.13413172103294,
+      "latest_month_revenue_yoy_pct": 98.87686452859533,
+      "ytd_revenue_yoy_pct": 66.26826344206586,
       "latest_month_reversal_warning": false,
       "one_month_reversal_is_certified_trend": false,
       "reversal_warning_changes_base_eps_or_pe": false,
-      "reported_ytd_abs_nonoperating_gap_share_pretax_pct": 63.48781318598138,
+      "reported_ytd_abs_nonoperating_gap_share_pretax_pct": 37.251448654343605,
       "reported_ytd_material_nonoperating_gap": true,
       "reported_ytd_nonoperating_gap_exceeds_pretax": false,
       "eps_runrate_near_zero_denominator": false,
-      "target_eps_minus_ytd_annualized_reference_ntd_per_share": 1.4289913274948447,
+      "target_eps_minus_ytd_annualized_reference_ntd_per_share": 1.2579625943602197,
       "reported_ytd_nonoperating_figure_not_recurring_earnings_claim": true,
-      "ytd_parent_eps_linear_annualized_reference": 1.157983966610179,
-      "target_eps_vs_unseasonalized_ytd_run_rate_pct": 123.4033776545282,
+      "ytd_parent_eps_linear_annualized_reference": 2.2049789848043972,
+      "target_eps_vs_unseasonalized_ytd_run_rate_pct": 57.05100153014897,
       "requires_2027_eps_stepup_bridge": true,
       "ytd_annualized_reference_not_profit_forecast": true,
       "earnings_quality_flags_do_not_change_base_or_priority": true,
@@ -106,17 +109,17 @@
         "no_certification_or_forecast_changed": true,
         "status": "DATED_NORMALIZED_YTD_BRIDGE",
         "previous_period": "2026-Q1",
-        "previous_ytd_ocf_k": 80941.0,
-        "latest_ytd_ocf_k": 40708.0,
-        "latest_standalone_ocf_k": -40233.0,
-        "earlier_standalone_ocf_k": 80941.0,
-        "latest_standalone_ocf_positive": false,
-        "h1_or_current_ytd_ocf_still_negative": false,
-        "changed_sign_after_q1": false,
-        "observation_label": "LATEST_STANDALONE_NONPOSITIVE",
+        "previous_ytd_ocf_k": -70149.0,
+        "latest_ytd_ocf_k": -42706.0,
+        "latest_standalone_ocf_k": 27443.0,
+        "earlier_standalone_ocf_k": -70149.0,
+        "latest_standalone_ocf_positive": true,
+        "h1_or_current_ytd_ocf_still_negative": true,
+        "changed_sign_after_q1": true,
+        "observation_label": "PREVIOUS_STANDALONE_NEGATIVE_CURRENT_POSITIVE",
         "current_quarter_positive_does_not_override_negative_ytd_review": true
       },
-      "latest_q2_standalone_ocf_recovered_after_q1": false,
+      "latest_q2_standalone_ocf_recovered_after_q1": true,
       "quarterly_ocf_observation_not_certified": true,
       "mechanical_margin_sensitivity_changes_base_or_rank": false,
       "original_working_capital_subcheck": null,
@@ -131,220 +134,6 @@
     },
     {
       "review_rank": 2,
-      "code": "2331",
-      "market": "TWSE",
-      "name": "精英",
-      "source_lane": "ORIGINAL_CURRENT_RECONCILED",
-      "reference_close": 15.7,
-      "base_upside_pct": 108.46899512659931,
-      "base_eps": 1.8284710745740835,
-      "base_target_price": 32.72963223487609,
-      "eps_pe_each_minus20_upside_pct": 33.42015688102358,
-      "bear_upside_pct": 9.959329782799408,
-      "original_current_numeric_reconciled": true,
-      "all_eight_quarters_and_notes_verified": false,
-      "pending_offering": false,
-      "cb_terms_or_shares_unresolved": false,
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ],
-      "formal_Aplus": false,
-      "recommendation_blocked": false,
-      "warning_flags": [
-        "NEGATIVE_OCF_REQUIRES_WORKING_CAPITAL_BRIDGE_NOT_AUTOMATIC_FAIL",
-        "PEER_PE_NOT_CERTIFIED",
-        "2027_COMPANY_OPERATING_BRIDGE_UNVERIFIED",
-        "REPORTED_YTD_NONOPERATING_GAP_GE20PCT_PRETAX_COMPONENTS_UNCERTIFIED",
-        "2027_EPS_GE30PCT_ABOVE_UNSEASONALIZED_CURRENT_YTD_RUN_RATE",
-        "LATEST_MONTH_REVENUE_FELL_AT_LEAST_10PCT_YOY_WHILE_YTD_POSITIVE"
-      ],
-      "forward_growth_assumption_pct": 2.000109471608569,
-      "latest_month_revenue_yoy_pct": -31.932181465301536,
-      "ytd_revenue_yoy_pct": 4.000225810946652,
-      "latest_month_reversal_warning": true,
-      "one_month_reversal_is_certified_trend": false,
-      "reversal_warning_changes_base_eps_or_pe": false,
-      "reported_ytd_abs_nonoperating_gap_share_pretax_pct": 86.26725318723001,
-      "reported_ytd_material_nonoperating_gap": true,
-      "reported_ytd_nonoperating_gap_exceeds_pretax": false,
-      "eps_runrate_near_zero_denominator": false,
-      "target_eps_minus_ytd_annualized_reference_ntd_per_share": 1.0278988513322918,
-      "reported_ytd_nonoperating_figure_not_recurring_earnings_claim": true,
-      "ytd_parent_eps_linear_annualized_reference": 0.8005722232417918,
-      "target_eps_vs_unseasonalized_ytd_run_rate_pct": 128.39551779225818,
-      "requires_2027_eps_stepup_bridge": true,
-      "ytd_annualized_reference_not_profit_forecast": true,
-      "earnings_quality_flags_do_not_change_base_or_priority": true,
-      "latest_standalone_quarter_gm_pct": null,
-      "prior_standalone_quarter_gm_pct": null,
-      "latest_quarter_gm_qoq_change_pp": null,
-      "latest_standalone_quarter_margin_compression_warning": false,
-      "standalone_quarter_margin_source_not_full_original_notes_verified": true,
-      "quarterly_margin_warning_changes_base_or_rank": false,
-      "recent_quarter_gm_flat_2027_sensitivity": {
-        "status": "NOT_COMPARABLE_INCOMPLETE_OR_NON_PE_BASE",
-        "difference_from_base_gm_pp": null,
-        "scenario_eps": null,
-        "scenario_target_price": null,
-        "scenario_price_upside_pct": null,
-        "eps_change_from_base": null
-      },
-      "operating_cashflow_quarter_bridge": {
-        "period": "2026-Q2",
-        "source": "DATED_NORMALIZED_MOPS_YTD_CASHFLOW_NOT_ORIGINAL_NOTES_ATTESTED",
-        "original_cash_notes_reconciled": false,
-        "working_capital_component_bridge_certified": false,
-        "one_quarter_improvement_is_not_sustained_cash_conversion": true,
-        "no_certification_or_forecast_changed": true,
-        "status": "DATED_NORMALIZED_YTD_BRIDGE",
-        "previous_period": "2026-Q1",
-        "previous_ytd_ocf_k": 39403.0,
-        "latest_ytd_ocf_k": -405083.0,
-        "latest_standalone_ocf_k": -444486.0,
-        "earlier_standalone_ocf_k": 39403.0,
-        "latest_standalone_ocf_positive": false,
-        "h1_or_current_ytd_ocf_still_negative": true,
-        "changed_sign_after_q1": false,
-        "observation_label": "LATEST_STANDALONE_NONPOSITIVE",
-        "current_quarter_positive_does_not_override_negative_ytd_review": true
-      },
-      "latest_q2_standalone_ocf_recovered_after_q1": false,
-      "quarterly_ocf_observation_not_certified": true,
-      "mechanical_margin_sensitivity_changes_base_or_rank": false,
-      "original_working_capital_subcheck": null,
-      "original_working_capital_three_line_tieout_completed": false,
-      "original_working_capital_subcheck_is_not_formal_gate": true,
-      "original_ir_inventory_turnover_subcheck": null,
-      "original_ir_inventory_turnover_partial_review": false,
-      "inventory_source_does_not_certify_working_capital": true,
-      "auditor_scope_original_observation": null,
-      "qualified_auditor_review_needs_subsidiary_scope_reconciliation": false,
-      "research_decision": "REVIEW_ONLY_NOT_BUY"
-    },
-    {
-      "review_rank": 3,
-      "code": "6143",
-      "market": "TPEX",
-      "name": "振曜",
-      "source_lane": "ORIGINAL_CURRENT_RECONCILED",
-      "reference_close": 65.1,
-      "base_upside_pct": 106.53845683573167,
-      "base_eps": 6.714433727843262,
-      "base_target_price": 134.4565354000613,
-      "eps_pe_each_minus20_upside_pct": 32.18461237486827,
-      "bear_upside_pct": 26.541434776881843,
-      "original_current_numeric_reconciled": true,
-      "all_eight_quarters_and_notes_verified": false,
-      "pending_offering": false,
-      "cb_terms_or_shares_unresolved": false,
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ],
-      "formal_Aplus": false,
-      "recommendation_blocked": false,
-      "warning_flags": [
-        "NEGATIVE_OCF_REQUIRES_WORKING_CAPITAL_BRIDGE_NOT_AUTOMATIC_FAIL",
-        "PEER_PE_NOT_CERTIFIED",
-        "2027_COMPANY_OPERATING_BRIDGE_UNVERIFIED",
-        "LATEST_MONTH_REVENUE_FELL_AT_LEAST_10PCT_YOY_WHILE_YTD_POSITIVE"
-      ],
-      "forward_growth_assumption_pct": 0.0,
-      "latest_month_revenue_yoy_pct": -26.880188686049785,
-      "ytd_revenue_yoy_pct": 6.116493617730361,
-      "latest_month_reversal_warning": true,
-      "one_month_reversal_is_certified_trend": false,
-      "reversal_warning_changes_base_eps_or_pe": false,
-      "reported_ytd_abs_nonoperating_gap_share_pretax_pct": 10.270925759253211,
-      "reported_ytd_material_nonoperating_gap": false,
-      "reported_ytd_nonoperating_gap_exceeds_pretax": false,
-      "eps_runrate_near_zero_denominator": false,
-      "target_eps_minus_ytd_annualized_reference_ntd_per_share": 0.6622994551950772,
-      "reported_ytd_nonoperating_figure_not_recurring_earnings_claim": true,
-      "ytd_parent_eps_linear_annualized_reference": 6.052134272648185,
-      "target_eps_vs_unseasonalized_ytd_run_rate_pct": 10.943237961329633,
-      "requires_2027_eps_stepup_bridge": false,
-      "ytd_annualized_reference_not_profit_forecast": true,
-      "earnings_quality_flags_do_not_change_base_or_priority": true,
-      "latest_standalone_quarter_gm_pct": 20.624780038276043,
-      "prior_standalone_quarter_gm_pct": 21.744379454853323,
-      "latest_quarter_gm_qoq_change_pp": -1.1195994165772798,
-      "latest_standalone_quarter_margin_compression_warning": false,
-      "standalone_quarter_margin_source_not_full_original_notes_verified": true,
-      "quarterly_margin_warning_changes_base_or_rank": false,
-      "recent_quarter_gm_flat_2027_sensitivity": {
-        "status": "MECHANICAL_2027_LAST_STANDALONE_GM_FLAT_ONLY",
-        "base_gross_margin_pct": 21.88314444406313,
-        "latest_standalone_gross_margin_pct": 20.624780038276043,
-        "difference_from_base_gm_pp": -1.258364405787085,
-        "eps_change_from_base": -0.6738914594456564,
-        "scenario_eps": 6.040542268397605,
-        "original_base_eps_unchanged": 6.714433727843262,
-        "other_operating_assumptions_held_fixed": true,
-        "not_a_margin_2027_forecast": true,
-        "not_a_return_probability": true,
-        "no_issuer_original_notes_signoff": true,
-        "changes_in_cash_flow_not_modeled": true,
-        "scenario_target_price": 120.96185892466202,
-        "scenario_price_upside_pct": 85.80930710393552
-      },
-      "operating_cashflow_quarter_bridge": {
-        "period": "2026-Q2",
-        "source": "DATED_NORMALIZED_MOPS_YTD_CASHFLOW_NOT_ORIGINAL_NOTES_ATTESTED",
-        "original_cash_notes_reconciled": false,
-        "working_capital_component_bridge_certified": false,
-        "one_quarter_improvement_is_not_sustained_cash_conversion": true,
-        "no_certification_or_forecast_changed": true,
-        "status": "DATED_NORMALIZED_YTD_BRIDGE",
-        "previous_period": "2026-Q1",
-        "previous_ytd_ocf_k": 81456.0,
-        "latest_ytd_ocf_k": -118623.0,
-        "latest_standalone_ocf_k": -200079.0,
-        "earlier_standalone_ocf_k": 81456.0,
-        "latest_standalone_ocf_positive": false,
-        "h1_or_current_ytd_ocf_still_negative": true,
-        "changed_sign_after_q1": false,
-        "observation_label": "LATEST_STANDALONE_NONPOSITIVE",
-        "current_quarter_positive_does_not_override_negative_ytd_review": true
-      },
-      "latest_q2_standalone_ocf_recovered_after_q1": false,
-      "quarterly_ocf_observation_not_certified": true,
-      "mechanical_margin_sensitivity_changes_base_or_rank": false,
-      "original_working_capital_subcheck": null,
-      "original_working_capital_three_line_tieout_completed": false,
-      "original_working_capital_subcheck_is_not_formal_gate": true,
-      "original_ir_inventory_turnover_subcheck": null,
-      "original_ir_inventory_turnover_partial_review": false,
-      "inventory_source_does_not_certify_working_capital": true,
-      "auditor_scope_original_observation": null,
-      "qualified_auditor_review_needs_subsidiary_scope_reconciliation": false,
-      "research_decision": "REVIEW_ONLY_NOT_BUY"
-    },
-    {
-      "review_rank": 4,
       "code": "8383",
       "market": "TPEX",
       "name": "千附",
@@ -551,7 +340,109 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 5,
+      "review_rank": 3,
+      "code": "6143",
+      "market": "TPEX",
+      "name": "振曜",
+      "source_lane": "ORIGINAL_CURRENT_RECONCILED",
+      "reference_close": 65.1,
+      "base_upside_pct": 92.22496115129357,
+      "base_eps": 6.249111096603851,
+      "base_target_price": 125.13844970949211,
+      "eps_pe_each_minus20_upside_pct": 23.02397513682788,
+      "bear_upside_pct": 16.8614525349847,
+      "original_current_numeric_reconciled": true,
+      "all_eight_quarters_and_notes_verified": false,
+      "pending_offering": false,
+      "cb_terms_or_shares_unresolved": false,
+      "pending_gates": [
+        "original_eight_quarter_statements",
+        "cash_and_working_capital",
+        "nonoperating_components",
+        "fully_diluted_shares",
+        "matched_peers_and_cycle",
+        "management_promises",
+        "auditor_scope",
+        "tradability",
+        "forecast_bridge",
+        "insider_claims",
+        "dividend_window",
+        "point_in_time",
+        "out_of_sample_validation"
+      ],
+      "formal_Aplus": false,
+      "recommendation_blocked": false,
+      "warning_flags": [
+        "NEGATIVE_OCF_REQUIRES_WORKING_CAPITAL_BRIDGE_NOT_AUTOMATIC_FAIL",
+        "PEER_PE_NOT_CERTIFIED",
+        "2027_COMPANY_OPERATING_BRIDGE_UNVERIFIED",
+        "LATEST_MONTH_REVENUE_FELL_AT_LEAST_10PCT_YOY_WHILE_YTD_POSITIVE"
+      ],
+      "forward_growth_assumption_pct": 0.0,
+      "latest_month_revenue_yoy_pct": -26.880188686049785,
+      "ytd_revenue_yoy_pct": 6.116493617730361,
+      "latest_month_reversal_warning": true,
+      "one_month_reversal_is_certified_trend": false,
+      "reversal_warning_changes_base_eps_or_pe": false,
+      "reported_ytd_abs_nonoperating_gap_share_pretax_pct": 9.265671641791045,
+      "reported_ytd_material_nonoperating_gap": false,
+      "reported_ytd_nonoperating_gap_exceeds_pretax": false,
+      "eps_runrate_near_zero_denominator": false,
+      "target_eps_minus_ytd_annualized_reference_ntd_per_share": 0.29734219737351797,
+      "reported_ytd_nonoperating_figure_not_recurring_earnings_claim": true,
+      "ytd_parent_eps_linear_annualized_reference": 5.951768899230333,
+      "target_eps_vs_unseasonalized_ytd_run_rate_pct": 4.995862615095303,
+      "requires_2027_eps_stepup_bridge": false,
+      "ytd_annualized_reference_not_profit_forecast": true,
+      "earnings_quality_flags_do_not_change_base_or_priority": true,
+      "latest_standalone_quarter_gm_pct": null,
+      "prior_standalone_quarter_gm_pct": null,
+      "latest_quarter_gm_qoq_change_pp": null,
+      "latest_standalone_quarter_margin_compression_warning": false,
+      "standalone_quarter_margin_source_not_full_original_notes_verified": true,
+      "quarterly_margin_warning_changes_base_or_rank": false,
+      "recent_quarter_gm_flat_2027_sensitivity": {
+        "status": "NOT_COMPARABLE_INCOMPLETE_OR_NON_PE_BASE",
+        "difference_from_base_gm_pp": null,
+        "scenario_eps": null,
+        "scenario_target_price": null,
+        "scenario_price_upside_pct": null,
+        "eps_change_from_base": null
+      },
+      "operating_cashflow_quarter_bridge": {
+        "period": "2026-Q2",
+        "source": "DATED_NORMALIZED_MOPS_YTD_CASHFLOW_NOT_ORIGINAL_NOTES_ATTESTED",
+        "original_cash_notes_reconciled": false,
+        "working_capital_component_bridge_certified": false,
+        "one_quarter_improvement_is_not_sustained_cash_conversion": true,
+        "no_certification_or_forecast_changed": true,
+        "status": "DATED_NORMALIZED_YTD_BRIDGE",
+        "previous_period": "2026-Q1",
+        "previous_ytd_ocf_k": 81456.0,
+        "latest_ytd_ocf_k": -118623.0,
+        "latest_standalone_ocf_k": -200079.0,
+        "earlier_standalone_ocf_k": 81456.0,
+        "latest_standalone_ocf_positive": false,
+        "h1_or_current_ytd_ocf_still_negative": true,
+        "changed_sign_after_q1": false,
+        "observation_label": "LATEST_STANDALONE_NONPOSITIVE",
+        "current_quarter_positive_does_not_override_negative_ytd_review": true
+      },
+      "latest_q2_standalone_ocf_recovered_after_q1": false,
+      "quarterly_ocf_observation_not_certified": true,
+      "mechanical_margin_sensitivity_changes_base_or_rank": false,
+      "original_working_capital_subcheck": null,
+      "original_working_capital_three_line_tieout_completed": false,
+      "original_working_capital_subcheck_is_not_formal_gate": true,
+      "original_ir_inventory_turnover_subcheck": null,
+      "original_ir_inventory_turnover_partial_review": false,
+      "inventory_source_does_not_certify_working_capital": true,
+      "auditor_scope_original_observation": null,
+      "qualified_auditor_review_needs_subsidiary_scope_reconciliation": false,
+      "research_decision": "REVIEW_ONLY_NOT_BUY"
+    },
+    {
+      "review_rank": 4,
       "code": "4953",
       "market": "TPEX",
       "name": "緯致",
@@ -662,7 +553,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 6,
+      "review_rank": 5,
       "code": "2027",
       "market": "TWSE",
       "name": "大成鋼",
@@ -770,7 +661,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 7,
+      "review_rank": 6,
       "code": "2103",
       "market": "TWSE",
       "name": "台橡",
@@ -872,7 +763,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 8,
+      "review_rank": 7,
       "code": "3088",
       "market": "TPEX",
       "name": "艾訊",
@@ -982,7 +873,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 9,
+      "review_rank": 8,
       "code": "2330",
       "market": "TWSE",
       "name": "台積電",
@@ -1076,7 +967,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 10,
+      "review_rank": 9,
       "code": "6206",
       "market": "TWSE",
       "name": "飛捷",
@@ -1225,6 +1116,116 @@
         }
       },
       "original_ir_inventory_turnover_partial_review": true,
+      "inventory_source_does_not_certify_working_capital": true,
+      "auditor_scope_original_observation": null,
+      "qualified_auditor_review_needs_subsidiary_scope_reconciliation": false,
+      "research_decision": "REVIEW_ONLY_NOT_BUY"
+    },
+    {
+      "review_rank": 10,
+      "code": "1736",
+      "market": "TWSE",
+      "name": "喬山",
+      "source_lane": "ORIGINAL_CURRENT_RECONCILED",
+      "reference_close": 110.5,
+      "base_upside_pct": 52.88540116716847,
+      "base_eps": 13.20862926424716,
+      "base_target_price": 168.93836828972115,
+      "eps_pe_each_minus20_upside_pct": -2.1533432530121854,
+      "bear_upside_pct": -10.625722523045356,
+      "original_current_numeric_reconciled": true,
+      "all_eight_quarters_and_notes_verified": false,
+      "pending_offering": false,
+      "cb_terms_or_shares_unresolved": false,
+      "pending_gates": [
+        "original_eight_quarter_statements",
+        "cash_and_working_capital",
+        "nonoperating_components",
+        "fully_diluted_shares",
+        "matched_peers_and_cycle",
+        "management_promises",
+        "auditor_scope",
+        "tradability",
+        "forecast_bridge",
+        "insider_claims",
+        "dividend_window",
+        "point_in_time",
+        "out_of_sample_validation"
+      ],
+      "formal_Aplus": false,
+      "recommendation_blocked": false,
+      "warning_flags": [
+        "PEER_PE_NOT_CERTIFIED",
+        "2027_COMPANY_OPERATING_BRIDGE_UNVERIFIED",
+        "REPORTED_YTD_NONOPERATING_GAP_GE20PCT_PRETAX_COMPONENTS_UNCERTIFIED",
+        "2027_EPS_GE30PCT_ABOVE_UNSEASONALIZED_CURRENT_YTD_RUN_RATE"
+      ],
+      "forward_growth_assumption_pct": 7.262562760666631,
+      "latest_month_revenue_yoy_pct": 17.113221213030823,
+      "ytd_revenue_yoy_pct": 14.525125521333262,
+      "latest_month_reversal_warning": false,
+      "one_month_reversal_is_certified_trend": false,
+      "reversal_warning_changes_base_eps_or_pe": false,
+      "reported_ytd_abs_nonoperating_gap_share_pretax_pct": 34.51500415847735,
+      "reported_ytd_material_nonoperating_gap": true,
+      "reported_ytd_nonoperating_gap_exceeds_pretax": false,
+      "eps_runrate_near_zero_denominator": false,
+      "target_eps_minus_ytd_annualized_reference_ntd_per_share": 6.662145283616745,
+      "reported_ytd_nonoperating_figure_not_recurring_earnings_claim": true,
+      "ytd_parent_eps_linear_annualized_reference": 6.5464839806304145,
+      "target_eps_vs_unseasonalized_ytd_run_rate_pct": 101.76676981611115,
+      "requires_2027_eps_stepup_bridge": true,
+      "ytd_annualized_reference_not_profit_forecast": true,
+      "earnings_quality_flags_do_not_change_base_or_priority": true,
+      "latest_standalone_quarter_gm_pct": 62.8242553249224,
+      "prior_standalone_quarter_gm_pct": 51.32639662250885,
+      "latest_quarter_gm_qoq_change_pp": 11.497858702413543,
+      "latest_standalone_quarter_margin_compression_warning": false,
+      "standalone_quarter_margin_source_not_full_original_notes_verified": true,
+      "quarterly_margin_warning_changes_base_or_rank": false,
+      "recent_quarter_gm_flat_2027_sensitivity": {
+        "status": "MECHANICAL_2027_LAST_STANDALONE_GM_FLAT_ONLY",
+        "base_gross_margin_pct": 54.87356832361363,
+        "latest_standalone_gross_margin_pct": 62.8242553249224,
+        "difference_from_base_gm_pp": 7.950687001308765,
+        "eps_change_from_base": 12.15034277449326,
+        "scenario_eps": 25.35897203874042,
+        "original_base_eps_unchanged": 13.20862926424716,
+        "other_operating_assumptions_held_fixed": true,
+        "not_a_margin_2027_forecast": true,
+        "not_a_return_probability": true,
+        "no_issuer_original_notes_signoff": true,
+        "changes_in_cash_flow_not_modeled": true,
+        "scenario_target_price": 324.34125237548994,
+        "scenario_price_upside_pct": 193.52149536243434
+      },
+      "operating_cashflow_quarter_bridge": {
+        "period": "2026-Q2",
+        "source": "DATED_NORMALIZED_MOPS_YTD_CASHFLOW_NOT_ORIGINAL_NOTES_ATTESTED",
+        "original_cash_notes_reconciled": false,
+        "working_capital_component_bridge_certified": false,
+        "one_quarter_improvement_is_not_sustained_cash_conversion": true,
+        "no_certification_or_forecast_changed": true,
+        "status": "DATED_NORMALIZED_YTD_BRIDGE",
+        "previous_period": "2026-Q1",
+        "previous_ytd_ocf_k": 37864.0,
+        "latest_ytd_ocf_k": 3238387.0,
+        "latest_standalone_ocf_k": 3200523.0,
+        "earlier_standalone_ocf_k": 37864.0,
+        "latest_standalone_ocf_positive": true,
+        "h1_or_current_ytd_ocf_still_negative": false,
+        "changed_sign_after_q1": false,
+        "observation_label": "LATEST_STANDALONE_POSITIVE",
+        "current_quarter_positive_does_not_override_negative_ytd_review": true
+      },
+      "latest_q2_standalone_ocf_recovered_after_q1": false,
+      "quarterly_ocf_observation_not_certified": true,
+      "mechanical_margin_sensitivity_changes_base_or_rank": false,
+      "original_working_capital_subcheck": null,
+      "original_working_capital_three_line_tieout_completed": false,
+      "original_working_capital_subcheck_is_not_formal_gate": true,
+      "original_ir_inventory_turnover_subcheck": null,
+      "original_ir_inventory_turnover_partial_review": false,
       "inventory_source_does_not_certify_working_capital": true,
       "auditor_scope_original_observation": null,
       "qualified_auditor_review_needs_subsidiary_scope_reconciliation": false,
@@ -1234,16 +1235,16 @@
   "top10_original_numeric_priority": [
     {
       "review_rank": 1,
-      "code": "2483",
+      "code": "2432",
       "market": "TWSE",
-      "name": "百容",
+      "name": "倚天酷碁-創",
       "source_lane": "ORIGINAL_CURRENT_RECONCILED",
-      "reference_close": 29.25,
-      "base_upside_pct": 141.84902364889527,
-      "base_eps": 2.5869752941050237,
-      "base_target_price": 70.74083941730187,
-      "eps_pe_each_minus20_upside_pct": 54.783375135292985,
-      "bear_upside_pct": 20.631829236595234,
+      "reference_close": 27.55,
+      "base_upside_pct": 101.86875412480494,
+      "base_eps": 3.462941579164617,
+      "base_target_price": 55.61484176138376,
+      "eps_pe_each_minus20_upside_pct": 29.19600263987516,
+      "bear_upside_pct": -7.733986071422105,
       "original_current_numeric_reconciled": true,
       "all_eight_quarters_and_notes_verified": false,
       "pending_offering": false,
@@ -1266,25 +1267,28 @@
       "formal_Aplus": false,
       "recommendation_blocked": false,
       "warning_flags": [
+        "NEGATIVE_OCF_REQUIRES_WORKING_CAPITAL_BRIDGE_NOT_AUTOMATIC_FAIL",
+        "Q2_OCF_POSITIVE_WHILE_PRIOR_Q1_NEGATIVE_NOT_SUSTAINED_PROOF",
         "PEER_PE_NOT_CERTIFIED",
         "2027_COMPANY_OPERATING_BRIDGE_UNVERIFIED",
         "REPORTED_YTD_NONOPERATING_GAP_GE20PCT_PRETAX_COMPONENTS_UNCERTIFIED",
-        "2027_EPS_GE30PCT_ABOVE_UNSEASONALIZED_CURRENT_YTD_RUN_RATE"
+        "2027_EPS_GE30PCT_ABOVE_UNSEASONALIZED_CURRENT_YTD_RUN_RATE",
+        "HIGH_ASSUMED_GROWTH_UNVERIFIED_2027_EXTRAPOLATION"
       ],
-      "forward_growth_assumption_pct": 11.273204145168425,
-      "latest_month_revenue_yoy_pct": 27.300801715360706,
-      "ytd_revenue_yoy_pct": 22.546408290336846,
+      "forward_growth_assumption_pct": 33.13413172103294,
+      "latest_month_revenue_yoy_pct": 98.87686452859533,
+      "ytd_revenue_yoy_pct": 66.26826344206586,
       "latest_month_reversal_warning": false,
       "one_month_reversal_is_certified_trend": false,
       "reversal_warning_changes_base_eps_or_pe": false,
-      "reported_ytd_abs_nonoperating_gap_share_pretax_pct": 63.48781318598138,
+      "reported_ytd_abs_nonoperating_gap_share_pretax_pct": 37.251448654343605,
       "reported_ytd_material_nonoperating_gap": true,
       "reported_ytd_nonoperating_gap_exceeds_pretax": false,
       "eps_runrate_near_zero_denominator": false,
-      "target_eps_minus_ytd_annualized_reference_ntd_per_share": 1.4289913274948447,
+      "target_eps_minus_ytd_annualized_reference_ntd_per_share": 1.2579625943602197,
       "reported_ytd_nonoperating_figure_not_recurring_earnings_claim": true,
-      "ytd_parent_eps_linear_annualized_reference": 1.157983966610179,
-      "target_eps_vs_unseasonalized_ytd_run_rate_pct": 123.4033776545282,
+      "ytd_parent_eps_linear_annualized_reference": 2.2049789848043972,
+      "target_eps_vs_unseasonalized_ytd_run_rate_pct": 57.05100153014897,
       "requires_2027_eps_stepup_bridge": true,
       "ytd_annualized_reference_not_profit_forecast": true,
       "earnings_quality_flags_do_not_change_base_or_priority": true,
@@ -1311,17 +1315,17 @@
         "no_certification_or_forecast_changed": true,
         "status": "DATED_NORMALIZED_YTD_BRIDGE",
         "previous_period": "2026-Q1",
-        "previous_ytd_ocf_k": 80941.0,
-        "latest_ytd_ocf_k": 40708.0,
-        "latest_standalone_ocf_k": -40233.0,
-        "earlier_standalone_ocf_k": 80941.0,
-        "latest_standalone_ocf_positive": false,
-        "h1_or_current_ytd_ocf_still_negative": false,
-        "changed_sign_after_q1": false,
-        "observation_label": "LATEST_STANDALONE_NONPOSITIVE",
+        "previous_ytd_ocf_k": -70149.0,
+        "latest_ytd_ocf_k": -42706.0,
+        "latest_standalone_ocf_k": 27443.0,
+        "earlier_standalone_ocf_k": -70149.0,
+        "latest_standalone_ocf_positive": true,
+        "h1_or_current_ytd_ocf_still_negative": true,
+        "changed_sign_after_q1": true,
+        "observation_label": "PREVIOUS_STANDALONE_NEGATIVE_CURRENT_POSITIVE",
         "current_quarter_positive_does_not_override_negative_ytd_review": true
       },
-      "latest_q2_standalone_ocf_recovered_after_q1": false,
+      "latest_q2_standalone_ocf_recovered_after_q1": true,
       "quarterly_ocf_observation_not_certified": true,
       "mechanical_margin_sensitivity_changes_base_or_rank": false,
       "original_working_capital_subcheck": null,
@@ -1336,220 +1340,6 @@
     },
     {
       "review_rank": 2,
-      "code": "2331",
-      "market": "TWSE",
-      "name": "精英",
-      "source_lane": "ORIGINAL_CURRENT_RECONCILED",
-      "reference_close": 15.7,
-      "base_upside_pct": 108.46899512659931,
-      "base_eps": 1.8284710745740835,
-      "base_target_price": 32.72963223487609,
-      "eps_pe_each_minus20_upside_pct": 33.42015688102358,
-      "bear_upside_pct": 9.959329782799408,
-      "original_current_numeric_reconciled": true,
-      "all_eight_quarters_and_notes_verified": false,
-      "pending_offering": false,
-      "cb_terms_or_shares_unresolved": false,
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ],
-      "formal_Aplus": false,
-      "recommendation_blocked": false,
-      "warning_flags": [
-        "NEGATIVE_OCF_REQUIRES_WORKING_CAPITAL_BRIDGE_NOT_AUTOMATIC_FAIL",
-        "PEER_PE_NOT_CERTIFIED",
-        "2027_COMPANY_OPERATING_BRIDGE_UNVERIFIED",
-        "REPORTED_YTD_NONOPERATING_GAP_GE20PCT_PRETAX_COMPONENTS_UNCERTIFIED",
-        "2027_EPS_GE30PCT_ABOVE_UNSEASONALIZED_CURRENT_YTD_RUN_RATE",
-        "LATEST_MONTH_REVENUE_FELL_AT_LEAST_10PCT_YOY_WHILE_YTD_POSITIVE"
-      ],
-      "forward_growth_assumption_pct": 2.000109471608569,
-      "latest_month_revenue_yoy_pct": -31.932181465301536,
-      "ytd_revenue_yoy_pct": 4.000225810946652,
-      "latest_month_reversal_warning": true,
-      "one_month_reversal_is_certified_trend": false,
-      "reversal_warning_changes_base_eps_or_pe": false,
-      "reported_ytd_abs_nonoperating_gap_share_pretax_pct": 86.26725318723001,
-      "reported_ytd_material_nonoperating_gap": true,
-      "reported_ytd_nonoperating_gap_exceeds_pretax": false,
-      "eps_runrate_near_zero_denominator": false,
-      "target_eps_minus_ytd_annualized_reference_ntd_per_share": 1.0278988513322918,
-      "reported_ytd_nonoperating_figure_not_recurring_earnings_claim": true,
-      "ytd_parent_eps_linear_annualized_reference": 0.8005722232417918,
-      "target_eps_vs_unseasonalized_ytd_run_rate_pct": 128.39551779225818,
-      "requires_2027_eps_stepup_bridge": true,
-      "ytd_annualized_reference_not_profit_forecast": true,
-      "earnings_quality_flags_do_not_change_base_or_priority": true,
-      "latest_standalone_quarter_gm_pct": null,
-      "prior_standalone_quarter_gm_pct": null,
-      "latest_quarter_gm_qoq_change_pp": null,
-      "latest_standalone_quarter_margin_compression_warning": false,
-      "standalone_quarter_margin_source_not_full_original_notes_verified": true,
-      "quarterly_margin_warning_changes_base_or_rank": false,
-      "recent_quarter_gm_flat_2027_sensitivity": {
-        "status": "NOT_COMPARABLE_INCOMPLETE_OR_NON_PE_BASE",
-        "difference_from_base_gm_pp": null,
-        "scenario_eps": null,
-        "scenario_target_price": null,
-        "scenario_price_upside_pct": null,
-        "eps_change_from_base": null
-      },
-      "operating_cashflow_quarter_bridge": {
-        "period": "2026-Q2",
-        "source": "DATED_NORMALIZED_MOPS_YTD_CASHFLOW_NOT_ORIGINAL_NOTES_ATTESTED",
-        "original_cash_notes_reconciled": false,
-        "working_capital_component_bridge_certified": false,
-        "one_quarter_improvement_is_not_sustained_cash_conversion": true,
-        "no_certification_or_forecast_changed": true,
-        "status": "DATED_NORMALIZED_YTD_BRIDGE",
-        "previous_period": "2026-Q1",
-        "previous_ytd_ocf_k": 39403.0,
-        "latest_ytd_ocf_k": -405083.0,
-        "latest_standalone_ocf_k": -444486.0,
-        "earlier_standalone_ocf_k": 39403.0,
-        "latest_standalone_ocf_positive": false,
-        "h1_or_current_ytd_ocf_still_negative": true,
-        "changed_sign_after_q1": false,
-        "observation_label": "LATEST_STANDALONE_NONPOSITIVE",
-        "current_quarter_positive_does_not_override_negative_ytd_review": true
-      },
-      "latest_q2_standalone_ocf_recovered_after_q1": false,
-      "quarterly_ocf_observation_not_certified": true,
-      "mechanical_margin_sensitivity_changes_base_or_rank": false,
-      "original_working_capital_subcheck": null,
-      "original_working_capital_three_line_tieout_completed": false,
-      "original_working_capital_subcheck_is_not_formal_gate": true,
-      "original_ir_inventory_turnover_subcheck": null,
-      "original_ir_inventory_turnover_partial_review": false,
-      "inventory_source_does_not_certify_working_capital": true,
-      "auditor_scope_original_observation": null,
-      "qualified_auditor_review_needs_subsidiary_scope_reconciliation": false,
-      "research_decision": "REVIEW_ONLY_NOT_BUY"
-    },
-    {
-      "review_rank": 3,
-      "code": "6143",
-      "market": "TPEX",
-      "name": "振曜",
-      "source_lane": "ORIGINAL_CURRENT_RECONCILED",
-      "reference_close": 65.1,
-      "base_upside_pct": 106.53845683573167,
-      "base_eps": 6.714433727843262,
-      "base_target_price": 134.4565354000613,
-      "eps_pe_each_minus20_upside_pct": 32.18461237486827,
-      "bear_upside_pct": 26.541434776881843,
-      "original_current_numeric_reconciled": true,
-      "all_eight_quarters_and_notes_verified": false,
-      "pending_offering": false,
-      "cb_terms_or_shares_unresolved": false,
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ],
-      "formal_Aplus": false,
-      "recommendation_blocked": false,
-      "warning_flags": [
-        "NEGATIVE_OCF_REQUIRES_WORKING_CAPITAL_BRIDGE_NOT_AUTOMATIC_FAIL",
-        "PEER_PE_NOT_CERTIFIED",
-        "2027_COMPANY_OPERATING_BRIDGE_UNVERIFIED",
-        "LATEST_MONTH_REVENUE_FELL_AT_LEAST_10PCT_YOY_WHILE_YTD_POSITIVE"
-      ],
-      "forward_growth_assumption_pct": 0.0,
-      "latest_month_revenue_yoy_pct": -26.880188686049785,
-      "ytd_revenue_yoy_pct": 6.116493617730361,
-      "latest_month_reversal_warning": true,
-      "one_month_reversal_is_certified_trend": false,
-      "reversal_warning_changes_base_eps_or_pe": false,
-      "reported_ytd_abs_nonoperating_gap_share_pretax_pct": 10.270925759253211,
-      "reported_ytd_material_nonoperating_gap": false,
-      "reported_ytd_nonoperating_gap_exceeds_pretax": false,
-      "eps_runrate_near_zero_denominator": false,
-      "target_eps_minus_ytd_annualized_reference_ntd_per_share": 0.6622994551950772,
-      "reported_ytd_nonoperating_figure_not_recurring_earnings_claim": true,
-      "ytd_parent_eps_linear_annualized_reference": 6.052134272648185,
-      "target_eps_vs_unseasonalized_ytd_run_rate_pct": 10.943237961329633,
-      "requires_2027_eps_stepup_bridge": false,
-      "ytd_annualized_reference_not_profit_forecast": true,
-      "earnings_quality_flags_do_not_change_base_or_priority": true,
-      "latest_standalone_quarter_gm_pct": 20.624780038276043,
-      "prior_standalone_quarter_gm_pct": 21.744379454853323,
-      "latest_quarter_gm_qoq_change_pp": -1.1195994165772798,
-      "latest_standalone_quarter_margin_compression_warning": false,
-      "standalone_quarter_margin_source_not_full_original_notes_verified": true,
-      "quarterly_margin_warning_changes_base_or_rank": false,
-      "recent_quarter_gm_flat_2027_sensitivity": {
-        "status": "MECHANICAL_2027_LAST_STANDALONE_GM_FLAT_ONLY",
-        "base_gross_margin_pct": 21.88314444406313,
-        "latest_standalone_gross_margin_pct": 20.624780038276043,
-        "difference_from_base_gm_pp": -1.258364405787085,
-        "eps_change_from_base": -0.6738914594456564,
-        "scenario_eps": 6.040542268397605,
-        "original_base_eps_unchanged": 6.714433727843262,
-        "other_operating_assumptions_held_fixed": true,
-        "not_a_margin_2027_forecast": true,
-        "not_a_return_probability": true,
-        "no_issuer_original_notes_signoff": true,
-        "changes_in_cash_flow_not_modeled": true,
-        "scenario_target_price": 120.96185892466202,
-        "scenario_price_upside_pct": 85.80930710393552
-      },
-      "operating_cashflow_quarter_bridge": {
-        "period": "2026-Q2",
-        "source": "DATED_NORMALIZED_MOPS_YTD_CASHFLOW_NOT_ORIGINAL_NOTES_ATTESTED",
-        "original_cash_notes_reconciled": false,
-        "working_capital_component_bridge_certified": false,
-        "one_quarter_improvement_is_not_sustained_cash_conversion": true,
-        "no_certification_or_forecast_changed": true,
-        "status": "DATED_NORMALIZED_YTD_BRIDGE",
-        "previous_period": "2026-Q1",
-        "previous_ytd_ocf_k": 81456.0,
-        "latest_ytd_ocf_k": -118623.0,
-        "latest_standalone_ocf_k": -200079.0,
-        "earlier_standalone_ocf_k": 81456.0,
-        "latest_standalone_ocf_positive": false,
-        "h1_or_current_ytd_ocf_still_negative": true,
-        "changed_sign_after_q1": false,
-        "observation_label": "LATEST_STANDALONE_NONPOSITIVE",
-        "current_quarter_positive_does_not_override_negative_ytd_review": true
-      },
-      "latest_q2_standalone_ocf_recovered_after_q1": false,
-      "quarterly_ocf_observation_not_certified": true,
-      "mechanical_margin_sensitivity_changes_base_or_rank": false,
-      "original_working_capital_subcheck": null,
-      "original_working_capital_three_line_tieout_completed": false,
-      "original_working_capital_subcheck_is_not_formal_gate": true,
-      "original_ir_inventory_turnover_subcheck": null,
-      "original_ir_inventory_turnover_partial_review": false,
-      "inventory_source_does_not_certify_working_capital": true,
-      "auditor_scope_original_observation": null,
-      "qualified_auditor_review_needs_subsidiary_scope_reconciliation": false,
-      "research_decision": "REVIEW_ONLY_NOT_BUY"
-    },
-    {
-      "review_rank": 4,
       "code": "8383",
       "market": "TPEX",
       "name": "千附",
@@ -1756,7 +1546,109 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 5,
+      "review_rank": 3,
+      "code": "6143",
+      "market": "TPEX",
+      "name": "振曜",
+      "source_lane": "ORIGINAL_CURRENT_RECONCILED",
+      "reference_close": 65.1,
+      "base_upside_pct": 92.22496115129357,
+      "base_eps": 6.249111096603851,
+      "base_target_price": 125.13844970949211,
+      "eps_pe_each_minus20_upside_pct": 23.02397513682788,
+      "bear_upside_pct": 16.8614525349847,
+      "original_current_numeric_reconciled": true,
+      "all_eight_quarters_and_notes_verified": false,
+      "pending_offering": false,
+      "cb_terms_or_shares_unresolved": false,
+      "pending_gates": [
+        "original_eight_quarter_statements",
+        "cash_and_working_capital",
+        "nonoperating_components",
+        "fully_diluted_shares",
+        "matched_peers_and_cycle",
+        "management_promises",
+        "auditor_scope",
+        "tradability",
+        "forecast_bridge",
+        "insider_claims",
+        "dividend_window",
+        "point_in_time",
+        "out_of_sample_validation"
+      ],
+      "formal_Aplus": false,
+      "recommendation_blocked": false,
+      "warning_flags": [
+        "NEGATIVE_OCF_REQUIRES_WORKING_CAPITAL_BRIDGE_NOT_AUTOMATIC_FAIL",
+        "PEER_PE_NOT_CERTIFIED",
+        "2027_COMPANY_OPERATING_BRIDGE_UNVERIFIED",
+        "LATEST_MONTH_REVENUE_FELL_AT_LEAST_10PCT_YOY_WHILE_YTD_POSITIVE"
+      ],
+      "forward_growth_assumption_pct": 0.0,
+      "latest_month_revenue_yoy_pct": -26.880188686049785,
+      "ytd_revenue_yoy_pct": 6.116493617730361,
+      "latest_month_reversal_warning": true,
+      "one_month_reversal_is_certified_trend": false,
+      "reversal_warning_changes_base_eps_or_pe": false,
+      "reported_ytd_abs_nonoperating_gap_share_pretax_pct": 9.265671641791045,
+      "reported_ytd_material_nonoperating_gap": false,
+      "reported_ytd_nonoperating_gap_exceeds_pretax": false,
+      "eps_runrate_near_zero_denominator": false,
+      "target_eps_minus_ytd_annualized_reference_ntd_per_share": 0.29734219737351797,
+      "reported_ytd_nonoperating_figure_not_recurring_earnings_claim": true,
+      "ytd_parent_eps_linear_annualized_reference": 5.951768899230333,
+      "target_eps_vs_unseasonalized_ytd_run_rate_pct": 4.995862615095303,
+      "requires_2027_eps_stepup_bridge": false,
+      "ytd_annualized_reference_not_profit_forecast": true,
+      "earnings_quality_flags_do_not_change_base_or_priority": true,
+      "latest_standalone_quarter_gm_pct": null,
+      "prior_standalone_quarter_gm_pct": null,
+      "latest_quarter_gm_qoq_change_pp": null,
+      "latest_standalone_quarter_margin_compression_warning": false,
+      "standalone_quarter_margin_source_not_full_original_notes_verified": true,
+      "quarterly_margin_warning_changes_base_or_rank": false,
+      "recent_quarter_gm_flat_2027_sensitivity": {
+        "status": "NOT_COMPARABLE_INCOMPLETE_OR_NON_PE_BASE",
+        "difference_from_base_gm_pp": null,
+        "scenario_eps": null,
+        "scenario_target_price": null,
+        "scenario_price_upside_pct": null,
+        "eps_change_from_base": null
+      },
+      "operating_cashflow_quarter_bridge": {
+        "period": "2026-Q2",
+        "source": "DATED_NORMALIZED_MOPS_YTD_CASHFLOW_NOT_ORIGINAL_NOTES_ATTESTED",
+        "original_cash_notes_reconciled": false,
+        "working_capital_component_bridge_certified": false,
+        "one_quarter_improvement_is_not_sustained_cash_conversion": true,
+        "no_certification_or_forecast_changed": true,
+        "status": "DATED_NORMALIZED_YTD_BRIDGE",
+        "previous_period": "2026-Q1",
+        "previous_ytd_ocf_k": 81456.0,
+        "latest_ytd_ocf_k": -118623.0,
+        "latest_standalone_ocf_k": -200079.0,
+        "earlier_standalone_ocf_k": 81456.0,
+        "latest_standalone_ocf_positive": false,
+        "h1_or_current_ytd_ocf_still_negative": true,
+        "changed_sign_after_q1": false,
+        "observation_label": "LATEST_STANDALONE_NONPOSITIVE",
+        "current_quarter_positive_does_not_override_negative_ytd_review": true
+      },
+      "latest_q2_standalone_ocf_recovered_after_q1": false,
+      "quarterly_ocf_observation_not_certified": true,
+      "mechanical_margin_sensitivity_changes_base_or_rank": false,
+      "original_working_capital_subcheck": null,
+      "original_working_capital_three_line_tieout_completed": false,
+      "original_working_capital_subcheck_is_not_formal_gate": true,
+      "original_ir_inventory_turnover_subcheck": null,
+      "original_ir_inventory_turnover_partial_review": false,
+      "inventory_source_does_not_certify_working_capital": true,
+      "auditor_scope_original_observation": null,
+      "qualified_auditor_review_needs_subsidiary_scope_reconciliation": false,
+      "research_decision": "REVIEW_ONLY_NOT_BUY"
+    },
+    {
+      "review_rank": 4,
       "code": "4953",
       "market": "TPEX",
       "name": "緯致",
@@ -1867,7 +1759,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 6,
+      "review_rank": 5,
       "code": "2027",
       "market": "TWSE",
       "name": "大成鋼",
@@ -1975,7 +1867,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 7,
+      "review_rank": 6,
       "code": "2103",
       "market": "TWSE",
       "name": "台橡",
@@ -2077,7 +1969,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 8,
+      "review_rank": 7,
       "code": "3088",
       "market": "TPEX",
       "name": "艾訊",
@@ -2187,7 +2079,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 9,
+      "review_rank": 8,
       "code": "2330",
       "market": "TWSE",
       "name": "台積電",
@@ -2281,7 +2173,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 10,
+      "review_rank": 9,
       "code": "6206",
       "market": "TWSE",
       "name": "飛捷",
@@ -2430,6 +2322,116 @@
         }
       },
       "original_ir_inventory_turnover_partial_review": true,
+      "inventory_source_does_not_certify_working_capital": true,
+      "auditor_scope_original_observation": null,
+      "qualified_auditor_review_needs_subsidiary_scope_reconciliation": false,
+      "research_decision": "REVIEW_ONLY_NOT_BUY"
+    },
+    {
+      "review_rank": 10,
+      "code": "1736",
+      "market": "TWSE",
+      "name": "喬山",
+      "source_lane": "ORIGINAL_CURRENT_RECONCILED",
+      "reference_close": 110.5,
+      "base_upside_pct": 52.88540116716847,
+      "base_eps": 13.20862926424716,
+      "base_target_price": 168.93836828972115,
+      "eps_pe_each_minus20_upside_pct": -2.1533432530121854,
+      "bear_upside_pct": -10.625722523045356,
+      "original_current_numeric_reconciled": true,
+      "all_eight_quarters_and_notes_verified": false,
+      "pending_offering": false,
+      "cb_terms_or_shares_unresolved": false,
+      "pending_gates": [
+        "original_eight_quarter_statements",
+        "cash_and_working_capital",
+        "nonoperating_components",
+        "fully_diluted_shares",
+        "matched_peers_and_cycle",
+        "management_promises",
+        "auditor_scope",
+        "tradability",
+        "forecast_bridge",
+        "insider_claims",
+        "dividend_window",
+        "point_in_time",
+        "out_of_sample_validation"
+      ],
+      "formal_Aplus": false,
+      "recommendation_blocked": false,
+      "warning_flags": [
+        "PEER_PE_NOT_CERTIFIED",
+        "2027_COMPANY_OPERATING_BRIDGE_UNVERIFIED",
+        "REPORTED_YTD_NONOPERATING_GAP_GE20PCT_PRETAX_COMPONENTS_UNCERTIFIED",
+        "2027_EPS_GE30PCT_ABOVE_UNSEASONALIZED_CURRENT_YTD_RUN_RATE"
+      ],
+      "forward_growth_assumption_pct": 7.262562760666631,
+      "latest_month_revenue_yoy_pct": 17.113221213030823,
+      "ytd_revenue_yoy_pct": 14.525125521333262,
+      "latest_month_reversal_warning": false,
+      "one_month_reversal_is_certified_trend": false,
+      "reversal_warning_changes_base_eps_or_pe": false,
+      "reported_ytd_abs_nonoperating_gap_share_pretax_pct": 34.51500415847735,
+      "reported_ytd_material_nonoperating_gap": true,
+      "reported_ytd_nonoperating_gap_exceeds_pretax": false,
+      "eps_runrate_near_zero_denominator": false,
+      "target_eps_minus_ytd_annualized_reference_ntd_per_share": 6.662145283616745,
+      "reported_ytd_nonoperating_figure_not_recurring_earnings_claim": true,
+      "ytd_parent_eps_linear_annualized_reference": 6.5464839806304145,
+      "target_eps_vs_unseasonalized_ytd_run_rate_pct": 101.76676981611115,
+      "requires_2027_eps_stepup_bridge": true,
+      "ytd_annualized_reference_not_profit_forecast": true,
+      "earnings_quality_flags_do_not_change_base_or_priority": true,
+      "latest_standalone_quarter_gm_pct": 62.8242553249224,
+      "prior_standalone_quarter_gm_pct": 51.32639662250885,
+      "latest_quarter_gm_qoq_change_pp": 11.497858702413543,
+      "latest_standalone_quarter_margin_compression_warning": false,
+      "standalone_quarter_margin_source_not_full_original_notes_verified": true,
+      "quarterly_margin_warning_changes_base_or_rank": false,
+      "recent_quarter_gm_flat_2027_sensitivity": {
+        "status": "MECHANICAL_2027_LAST_STANDALONE_GM_FLAT_ONLY",
+        "base_gross_margin_pct": 54.87356832361363,
+        "latest_standalone_gross_margin_pct": 62.8242553249224,
+        "difference_from_base_gm_pp": 7.950687001308765,
+        "eps_change_from_base": 12.15034277449326,
+        "scenario_eps": 25.35897203874042,
+        "original_base_eps_unchanged": 13.20862926424716,
+        "other_operating_assumptions_held_fixed": true,
+        "not_a_margin_2027_forecast": true,
+        "not_a_return_probability": true,
+        "no_issuer_original_notes_signoff": true,
+        "changes_in_cash_flow_not_modeled": true,
+        "scenario_target_price": 324.34125237548994,
+        "scenario_price_upside_pct": 193.52149536243434
+      },
+      "operating_cashflow_quarter_bridge": {
+        "period": "2026-Q2",
+        "source": "DATED_NORMALIZED_MOPS_YTD_CASHFLOW_NOT_ORIGINAL_NOTES_ATTESTED",
+        "original_cash_notes_reconciled": false,
+        "working_capital_component_bridge_certified": false,
+        "one_quarter_improvement_is_not_sustained_cash_conversion": true,
+        "no_certification_or_forecast_changed": true,
+        "status": "DATED_NORMALIZED_YTD_BRIDGE",
+        "previous_period": "2026-Q1",
+        "previous_ytd_ocf_k": 37864.0,
+        "latest_ytd_ocf_k": 3238387.0,
+        "latest_standalone_ocf_k": 3200523.0,
+        "earlier_standalone_ocf_k": 37864.0,
+        "latest_standalone_ocf_positive": true,
+        "h1_or_current_ytd_ocf_still_negative": false,
+        "changed_sign_after_q1": false,
+        "observation_label": "LATEST_STANDALONE_POSITIVE",
+        "current_quarter_positive_does_not_override_negative_ytd_review": true
+      },
+      "latest_q2_standalone_ocf_recovered_after_q1": false,
+      "quarterly_ocf_observation_not_certified": true,
+      "mechanical_margin_sensitivity_changes_base_or_rank": false,
+      "original_working_capital_subcheck": null,
+      "original_working_capital_three_line_tieout_completed": false,
+      "original_working_capital_subcheck_is_not_formal_gate": true,
+      "original_ir_inventory_turnover_subcheck": null,
+      "original_ir_inventory_turnover_partial_review": false,
       "inventory_source_does_not_certify_working_capital": true,
       "auditor_scope_original_observation": null,
       "qualified_auditor_review_needs_subsidiary_scope_reconciliation": false,
@@ -2440,16 +2442,16 @@
   "original_current_audit_priority": [
     {
       "review_rank": 1,
-      "code": "2483",
+      "code": "2432",
       "market": "TWSE",
-      "name": "百容",
+      "name": "倚天酷碁-創",
       "source_lane": "ORIGINAL_CURRENT_RECONCILED",
-      "reference_close": 29.25,
-      "base_upside_pct": 141.84902364889527,
-      "base_eps": 2.5869752941050237,
-      "base_target_price": 70.74083941730187,
-      "eps_pe_each_minus20_upside_pct": 54.783375135292985,
-      "bear_upside_pct": 20.631829236595234,
+      "reference_close": 27.55,
+      "base_upside_pct": 101.86875412480494,
+      "base_eps": 3.462941579164617,
+      "base_target_price": 55.61484176138376,
+      "eps_pe_each_minus20_upside_pct": 29.19600263987516,
+      "bear_upside_pct": -7.733986071422105,
       "original_current_numeric_reconciled": true,
       "all_eight_quarters_and_notes_verified": false,
       "pending_offering": false,
@@ -2472,25 +2474,28 @@
       "formal_Aplus": false,
       "recommendation_blocked": false,
       "warning_flags": [
+        "NEGATIVE_OCF_REQUIRES_WORKING_CAPITAL_BRIDGE_NOT_AUTOMATIC_FAIL",
+        "Q2_OCF_POSITIVE_WHILE_PRIOR_Q1_NEGATIVE_NOT_SUSTAINED_PROOF",
         "PEER_PE_NOT_CERTIFIED",
         "2027_COMPANY_OPERATING_BRIDGE_UNVERIFIED",
         "REPORTED_YTD_NONOPERATING_GAP_GE20PCT_PRETAX_COMPONENTS_UNCERTIFIED",
-        "2027_EPS_GE30PCT_ABOVE_UNSEASONALIZED_CURRENT_YTD_RUN_RATE"
+        "2027_EPS_GE30PCT_ABOVE_UNSEASONALIZED_CURRENT_YTD_RUN_RATE",
+        "HIGH_ASSUMED_GROWTH_UNVERIFIED_2027_EXTRAPOLATION"
       ],
-      "forward_growth_assumption_pct": 11.273204145168425,
-      "latest_month_revenue_yoy_pct": 27.300801715360706,
-      "ytd_revenue_yoy_pct": 22.546408290336846,
+      "forward_growth_assumption_pct": 33.13413172103294,
+      "latest_month_revenue_yoy_pct": 98.87686452859533,
+      "ytd_revenue_yoy_pct": 66.26826344206586,
       "latest_month_reversal_warning": false,
       "one_month_reversal_is_certified_trend": false,
       "reversal_warning_changes_base_eps_or_pe": false,
-      "reported_ytd_abs_nonoperating_gap_share_pretax_pct": 63.48781318598138,
+      "reported_ytd_abs_nonoperating_gap_share_pretax_pct": 37.251448654343605,
       "reported_ytd_material_nonoperating_gap": true,
       "reported_ytd_nonoperating_gap_exceeds_pretax": false,
       "eps_runrate_near_zero_denominator": false,
-      "target_eps_minus_ytd_annualized_reference_ntd_per_share": 1.4289913274948447,
+      "target_eps_minus_ytd_annualized_reference_ntd_per_share": 1.2579625943602197,
       "reported_ytd_nonoperating_figure_not_recurring_earnings_claim": true,
-      "ytd_parent_eps_linear_annualized_reference": 1.157983966610179,
-      "target_eps_vs_unseasonalized_ytd_run_rate_pct": 123.4033776545282,
+      "ytd_parent_eps_linear_annualized_reference": 2.2049789848043972,
+      "target_eps_vs_unseasonalized_ytd_run_rate_pct": 57.05100153014897,
       "requires_2027_eps_stepup_bridge": true,
       "ytd_annualized_reference_not_profit_forecast": true,
       "earnings_quality_flags_do_not_change_base_or_priority": true,
@@ -2517,17 +2522,17 @@
         "no_certification_or_forecast_changed": true,
         "status": "DATED_NORMALIZED_YTD_BRIDGE",
         "previous_period": "2026-Q1",
-        "previous_ytd_ocf_k": 80941.0,
-        "latest_ytd_ocf_k": 40708.0,
-        "latest_standalone_ocf_k": -40233.0,
-        "earlier_standalone_ocf_k": 80941.0,
-        "latest_standalone_ocf_positive": false,
-        "h1_or_current_ytd_ocf_still_negative": false,
-        "changed_sign_after_q1": false,
-        "observation_label": "LATEST_STANDALONE_NONPOSITIVE",
+        "previous_ytd_ocf_k": -70149.0,
+        "latest_ytd_ocf_k": -42706.0,
+        "latest_standalone_ocf_k": 27443.0,
+        "earlier_standalone_ocf_k": -70149.0,
+        "latest_standalone_ocf_positive": true,
+        "h1_or_current_ytd_ocf_still_negative": true,
+        "changed_sign_after_q1": true,
+        "observation_label": "PREVIOUS_STANDALONE_NEGATIVE_CURRENT_POSITIVE",
         "current_quarter_positive_does_not_override_negative_ytd_review": true
       },
-      "latest_q2_standalone_ocf_recovered_after_q1": false,
+      "latest_q2_standalone_ocf_recovered_after_q1": true,
       "quarterly_ocf_observation_not_certified": true,
       "mechanical_margin_sensitivity_changes_base_or_rank": false,
       "original_working_capital_subcheck": null,
@@ -2542,220 +2547,6 @@
     },
     {
       "review_rank": 2,
-      "code": "2331",
-      "market": "TWSE",
-      "name": "精英",
-      "source_lane": "ORIGINAL_CURRENT_RECONCILED",
-      "reference_close": 15.7,
-      "base_upside_pct": 108.46899512659931,
-      "base_eps": 1.8284710745740835,
-      "base_target_price": 32.72963223487609,
-      "eps_pe_each_minus20_upside_pct": 33.42015688102358,
-      "bear_upside_pct": 9.959329782799408,
-      "original_current_numeric_reconciled": true,
-      "all_eight_quarters_and_notes_verified": false,
-      "pending_offering": false,
-      "cb_terms_or_shares_unresolved": false,
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ],
-      "formal_Aplus": false,
-      "recommendation_blocked": false,
-      "warning_flags": [
-        "NEGATIVE_OCF_REQUIRES_WORKING_CAPITAL_BRIDGE_NOT_AUTOMATIC_FAIL",
-        "PEER_PE_NOT_CERTIFIED",
-        "2027_COMPANY_OPERATING_BRIDGE_UNVERIFIED",
-        "REPORTED_YTD_NONOPERATING_GAP_GE20PCT_PRETAX_COMPONENTS_UNCERTIFIED",
-        "2027_EPS_GE30PCT_ABOVE_UNSEASONALIZED_CURRENT_YTD_RUN_RATE",
-        "LATEST_MONTH_REVENUE_FELL_AT_LEAST_10PCT_YOY_WHILE_YTD_POSITIVE"
-      ],
-      "forward_growth_assumption_pct": 2.000109471608569,
-      "latest_month_revenue_yoy_pct": -31.932181465301536,
-      "ytd_revenue_yoy_pct": 4.000225810946652,
-      "latest_month_reversal_warning": true,
-      "one_month_reversal_is_certified_trend": false,
-      "reversal_warning_changes_base_eps_or_pe": false,
-      "reported_ytd_abs_nonoperating_gap_share_pretax_pct": 86.26725318723001,
-      "reported_ytd_material_nonoperating_gap": true,
-      "reported_ytd_nonoperating_gap_exceeds_pretax": false,
-      "eps_runrate_near_zero_denominator": false,
-      "target_eps_minus_ytd_annualized_reference_ntd_per_share": 1.0278988513322918,
-      "reported_ytd_nonoperating_figure_not_recurring_earnings_claim": true,
-      "ytd_parent_eps_linear_annualized_reference": 0.8005722232417918,
-      "target_eps_vs_unseasonalized_ytd_run_rate_pct": 128.39551779225818,
-      "requires_2027_eps_stepup_bridge": true,
-      "ytd_annualized_reference_not_profit_forecast": true,
-      "earnings_quality_flags_do_not_change_base_or_priority": true,
-      "latest_standalone_quarter_gm_pct": null,
-      "prior_standalone_quarter_gm_pct": null,
-      "latest_quarter_gm_qoq_change_pp": null,
-      "latest_standalone_quarter_margin_compression_warning": false,
-      "standalone_quarter_margin_source_not_full_original_notes_verified": true,
-      "quarterly_margin_warning_changes_base_or_rank": false,
-      "recent_quarter_gm_flat_2027_sensitivity": {
-        "status": "NOT_COMPARABLE_INCOMPLETE_OR_NON_PE_BASE",
-        "difference_from_base_gm_pp": null,
-        "scenario_eps": null,
-        "scenario_target_price": null,
-        "scenario_price_upside_pct": null,
-        "eps_change_from_base": null
-      },
-      "operating_cashflow_quarter_bridge": {
-        "period": "2026-Q2",
-        "source": "DATED_NORMALIZED_MOPS_YTD_CASHFLOW_NOT_ORIGINAL_NOTES_ATTESTED",
-        "original_cash_notes_reconciled": false,
-        "working_capital_component_bridge_certified": false,
-        "one_quarter_improvement_is_not_sustained_cash_conversion": true,
-        "no_certification_or_forecast_changed": true,
-        "status": "DATED_NORMALIZED_YTD_BRIDGE",
-        "previous_period": "2026-Q1",
-        "previous_ytd_ocf_k": 39403.0,
-        "latest_ytd_ocf_k": -405083.0,
-        "latest_standalone_ocf_k": -444486.0,
-        "earlier_standalone_ocf_k": 39403.0,
-        "latest_standalone_ocf_positive": false,
-        "h1_or_current_ytd_ocf_still_negative": true,
-        "changed_sign_after_q1": false,
-        "observation_label": "LATEST_STANDALONE_NONPOSITIVE",
-        "current_quarter_positive_does_not_override_negative_ytd_review": true
-      },
-      "latest_q2_standalone_ocf_recovered_after_q1": false,
-      "quarterly_ocf_observation_not_certified": true,
-      "mechanical_margin_sensitivity_changes_base_or_rank": false,
-      "original_working_capital_subcheck": null,
-      "original_working_capital_three_line_tieout_completed": false,
-      "original_working_capital_subcheck_is_not_formal_gate": true,
-      "original_ir_inventory_turnover_subcheck": null,
-      "original_ir_inventory_turnover_partial_review": false,
-      "inventory_source_does_not_certify_working_capital": true,
-      "auditor_scope_original_observation": null,
-      "qualified_auditor_review_needs_subsidiary_scope_reconciliation": false,
-      "research_decision": "REVIEW_ONLY_NOT_BUY"
-    },
-    {
-      "review_rank": 3,
-      "code": "6143",
-      "market": "TPEX",
-      "name": "振曜",
-      "source_lane": "ORIGINAL_CURRENT_RECONCILED",
-      "reference_close": 65.1,
-      "base_upside_pct": 106.53845683573167,
-      "base_eps": 6.714433727843262,
-      "base_target_price": 134.4565354000613,
-      "eps_pe_each_minus20_upside_pct": 32.18461237486827,
-      "bear_upside_pct": 26.541434776881843,
-      "original_current_numeric_reconciled": true,
-      "all_eight_quarters_and_notes_verified": false,
-      "pending_offering": false,
-      "cb_terms_or_shares_unresolved": false,
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ],
-      "formal_Aplus": false,
-      "recommendation_blocked": false,
-      "warning_flags": [
-        "NEGATIVE_OCF_REQUIRES_WORKING_CAPITAL_BRIDGE_NOT_AUTOMATIC_FAIL",
-        "PEER_PE_NOT_CERTIFIED",
-        "2027_COMPANY_OPERATING_BRIDGE_UNVERIFIED",
-        "LATEST_MONTH_REVENUE_FELL_AT_LEAST_10PCT_YOY_WHILE_YTD_POSITIVE"
-      ],
-      "forward_growth_assumption_pct": 0.0,
-      "latest_month_revenue_yoy_pct": -26.880188686049785,
-      "ytd_revenue_yoy_pct": 6.116493617730361,
-      "latest_month_reversal_warning": true,
-      "one_month_reversal_is_certified_trend": false,
-      "reversal_warning_changes_base_eps_or_pe": false,
-      "reported_ytd_abs_nonoperating_gap_share_pretax_pct": 10.270925759253211,
-      "reported_ytd_material_nonoperating_gap": false,
-      "reported_ytd_nonoperating_gap_exceeds_pretax": false,
-      "eps_runrate_near_zero_denominator": false,
-      "target_eps_minus_ytd_annualized_reference_ntd_per_share": 0.6622994551950772,
-      "reported_ytd_nonoperating_figure_not_recurring_earnings_claim": true,
-      "ytd_parent_eps_linear_annualized_reference": 6.052134272648185,
-      "target_eps_vs_unseasonalized_ytd_run_rate_pct": 10.943237961329633,
-      "requires_2027_eps_stepup_bridge": false,
-      "ytd_annualized_reference_not_profit_forecast": true,
-      "earnings_quality_flags_do_not_change_base_or_priority": true,
-      "latest_standalone_quarter_gm_pct": 20.624780038276043,
-      "prior_standalone_quarter_gm_pct": 21.744379454853323,
-      "latest_quarter_gm_qoq_change_pp": -1.1195994165772798,
-      "latest_standalone_quarter_margin_compression_warning": false,
-      "standalone_quarter_margin_source_not_full_original_notes_verified": true,
-      "quarterly_margin_warning_changes_base_or_rank": false,
-      "recent_quarter_gm_flat_2027_sensitivity": {
-        "status": "MECHANICAL_2027_LAST_STANDALONE_GM_FLAT_ONLY",
-        "base_gross_margin_pct": 21.88314444406313,
-        "latest_standalone_gross_margin_pct": 20.624780038276043,
-        "difference_from_base_gm_pp": -1.258364405787085,
-        "eps_change_from_base": -0.6738914594456564,
-        "scenario_eps": 6.040542268397605,
-        "original_base_eps_unchanged": 6.714433727843262,
-        "other_operating_assumptions_held_fixed": true,
-        "not_a_margin_2027_forecast": true,
-        "not_a_return_probability": true,
-        "no_issuer_original_notes_signoff": true,
-        "changes_in_cash_flow_not_modeled": true,
-        "scenario_target_price": 120.96185892466202,
-        "scenario_price_upside_pct": 85.80930710393552
-      },
-      "operating_cashflow_quarter_bridge": {
-        "period": "2026-Q2",
-        "source": "DATED_NORMALIZED_MOPS_YTD_CASHFLOW_NOT_ORIGINAL_NOTES_ATTESTED",
-        "original_cash_notes_reconciled": false,
-        "working_capital_component_bridge_certified": false,
-        "one_quarter_improvement_is_not_sustained_cash_conversion": true,
-        "no_certification_or_forecast_changed": true,
-        "status": "DATED_NORMALIZED_YTD_BRIDGE",
-        "previous_period": "2026-Q1",
-        "previous_ytd_ocf_k": 81456.0,
-        "latest_ytd_ocf_k": -118623.0,
-        "latest_standalone_ocf_k": -200079.0,
-        "earlier_standalone_ocf_k": 81456.0,
-        "latest_standalone_ocf_positive": false,
-        "h1_or_current_ytd_ocf_still_negative": true,
-        "changed_sign_after_q1": false,
-        "observation_label": "LATEST_STANDALONE_NONPOSITIVE",
-        "current_quarter_positive_does_not_override_negative_ytd_review": true
-      },
-      "latest_q2_standalone_ocf_recovered_after_q1": false,
-      "quarterly_ocf_observation_not_certified": true,
-      "mechanical_margin_sensitivity_changes_base_or_rank": false,
-      "original_working_capital_subcheck": null,
-      "original_working_capital_three_line_tieout_completed": false,
-      "original_working_capital_subcheck_is_not_formal_gate": true,
-      "original_ir_inventory_turnover_subcheck": null,
-      "original_ir_inventory_turnover_partial_review": false,
-      "inventory_source_does_not_certify_working_capital": true,
-      "auditor_scope_original_observation": null,
-      "qualified_auditor_review_needs_subsidiary_scope_reconciliation": false,
-      "research_decision": "REVIEW_ONLY_NOT_BUY"
-    },
-    {
-      "review_rank": 4,
       "code": "8383",
       "market": "TPEX",
       "name": "千附",
@@ -2962,7 +2753,109 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 5,
+      "review_rank": 3,
+      "code": "6143",
+      "market": "TPEX",
+      "name": "振曜",
+      "source_lane": "ORIGINAL_CURRENT_RECONCILED",
+      "reference_close": 65.1,
+      "base_upside_pct": 92.22496115129357,
+      "base_eps": 6.249111096603851,
+      "base_target_price": 125.13844970949211,
+      "eps_pe_each_minus20_upside_pct": 23.02397513682788,
+      "bear_upside_pct": 16.8614525349847,
+      "original_current_numeric_reconciled": true,
+      "all_eight_quarters_and_notes_verified": false,
+      "pending_offering": false,
+      "cb_terms_or_shares_unresolved": false,
+      "pending_gates": [
+        "original_eight_quarter_statements",
+        "cash_and_working_capital",
+        "nonoperating_components",
+        "fully_diluted_shares",
+        "matched_peers_and_cycle",
+        "management_promises",
+        "auditor_scope",
+        "tradability",
+        "forecast_bridge",
+        "insider_claims",
+        "dividend_window",
+        "point_in_time",
+        "out_of_sample_validation"
+      ],
+      "formal_Aplus": false,
+      "recommendation_blocked": false,
+      "warning_flags": [
+        "NEGATIVE_OCF_REQUIRES_WORKING_CAPITAL_BRIDGE_NOT_AUTOMATIC_FAIL",
+        "PEER_PE_NOT_CERTIFIED",
+        "2027_COMPANY_OPERATING_BRIDGE_UNVERIFIED",
+        "LATEST_MONTH_REVENUE_FELL_AT_LEAST_10PCT_YOY_WHILE_YTD_POSITIVE"
+      ],
+      "forward_growth_assumption_pct": 0.0,
+      "latest_month_revenue_yoy_pct": -26.880188686049785,
+      "ytd_revenue_yoy_pct": 6.116493617730361,
+      "latest_month_reversal_warning": true,
+      "one_month_reversal_is_certified_trend": false,
+      "reversal_warning_changes_base_eps_or_pe": false,
+      "reported_ytd_abs_nonoperating_gap_share_pretax_pct": 9.265671641791045,
+      "reported_ytd_material_nonoperating_gap": false,
+      "reported_ytd_nonoperating_gap_exceeds_pretax": false,
+      "eps_runrate_near_zero_denominator": false,
+      "target_eps_minus_ytd_annualized_reference_ntd_per_share": 0.29734219737351797,
+      "reported_ytd_nonoperating_figure_not_recurring_earnings_claim": true,
+      "ytd_parent_eps_linear_annualized_reference": 5.951768899230333,
+      "target_eps_vs_unseasonalized_ytd_run_rate_pct": 4.995862615095303,
+      "requires_2027_eps_stepup_bridge": false,
+      "ytd_annualized_reference_not_profit_forecast": true,
+      "earnings_quality_flags_do_not_change_base_or_priority": true,
+      "latest_standalone_quarter_gm_pct": null,
+      "prior_standalone_quarter_gm_pct": null,
+      "latest_quarter_gm_qoq_change_pp": null,
+      "latest_standalone_quarter_margin_compression_warning": false,
+      "standalone_quarter_margin_source_not_full_original_notes_verified": true,
+      "quarterly_margin_warning_changes_base_or_rank": false,
+      "recent_quarter_gm_flat_2027_sensitivity": {
+        "status": "NOT_COMPARABLE_INCOMPLETE_OR_NON_PE_BASE",
+        "difference_from_base_gm_pp": null,
+        "scenario_eps": null,
+        "scenario_target_price": null,
+        "scenario_price_upside_pct": null,
+        "eps_change_from_base": null
+      },
+      "operating_cashflow_quarter_bridge": {
+        "period": "2026-Q2",
+        "source": "DATED_NORMALIZED_MOPS_YTD_CASHFLOW_NOT_ORIGINAL_NOTES_ATTESTED",
+        "original_cash_notes_reconciled": false,
+        "working_capital_component_bridge_certified": false,
+        "one_quarter_improvement_is_not_sustained_cash_conversion": true,
+        "no_certification_or_forecast_changed": true,
+        "status": "DATED_NORMALIZED_YTD_BRIDGE",
+        "previous_period": "2026-Q1",
+        "previous_ytd_ocf_k": 81456.0,
+        "latest_ytd_ocf_k": -118623.0,
+        "latest_standalone_ocf_k": -200079.0,
+        "earlier_standalone_ocf_k": 81456.0,
+        "latest_standalone_ocf_positive": false,
+        "h1_or_current_ytd_ocf_still_negative": true,
+        "changed_sign_after_q1": false,
+        "observation_label": "LATEST_STANDALONE_NONPOSITIVE",
+        "current_quarter_positive_does_not_override_negative_ytd_review": true
+      },
+      "latest_q2_standalone_ocf_recovered_after_q1": false,
+      "quarterly_ocf_observation_not_certified": true,
+      "mechanical_margin_sensitivity_changes_base_or_rank": false,
+      "original_working_capital_subcheck": null,
+      "original_working_capital_three_line_tieout_completed": false,
+      "original_working_capital_subcheck_is_not_formal_gate": true,
+      "original_ir_inventory_turnover_subcheck": null,
+      "original_ir_inventory_turnover_partial_review": false,
+      "inventory_source_does_not_certify_working_capital": true,
+      "auditor_scope_original_observation": null,
+      "qualified_auditor_review_needs_subsidiary_scope_reconciliation": false,
+      "research_decision": "REVIEW_ONLY_NOT_BUY"
+    },
+    {
+      "review_rank": 4,
       "code": "4953",
       "market": "TPEX",
       "name": "緯致",
@@ -3073,7 +2966,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 6,
+      "review_rank": 5,
       "code": "2027",
       "market": "TWSE",
       "name": "大成鋼",
@@ -3181,7 +3074,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 7,
+      "review_rank": 6,
       "code": "2103",
       "market": "TWSE",
       "name": "台橡",
@@ -3283,7 +3176,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 8,
+      "review_rank": 7,
       "code": "3088",
       "market": "TPEX",
       "name": "艾訊",
@@ -3393,7 +3286,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 9,
+      "review_rank": 8,
       "code": "2330",
       "market": "TWSE",
       "name": "台積電",
@@ -3487,7 +3380,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 10,
+      "review_rank": 9,
       "code": "6206",
       "market": "TWSE",
       "name": "飛捷",
@@ -3642,7 +3535,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 11,
+      "review_rank": 10,
       "code": "1736",
       "market": "TWSE",
       "name": "喬山",
@@ -3752,7 +3645,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 12,
+      "review_rank": 11,
       "code": "2471",
       "market": "TWSE",
       "name": "資通",
@@ -3862,7 +3755,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 13,
+      "review_rank": 12,
       "code": "4746",
       "market": "TWSE",
       "name": "台耀",
@@ -3975,7 +3868,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 14,
+      "review_rank": 13,
       "code": "4771",
       "market": "TWSE",
       "name": "望隼",
@@ -4083,7 +3976,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 15,
+      "review_rank": 14,
       "code": "8436",
       "market": "TPEX",
       "name": "大江",
@@ -4191,7 +4084,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 16,
+      "review_rank": 15,
       "code": "3217",
       "market": "TPEX",
       "name": "優群",
@@ -4299,7 +4192,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 17,
+      "review_rank": 16,
       "code": "3130",
       "market": "TWSE",
       "name": "一零四",
@@ -4407,7 +4300,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 18,
+      "review_rank": 17,
       "code": "3537",
       "market": "TPEX",
       "name": "堡達",
@@ -4515,7 +4408,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 19,
+      "review_rank": 18,
       "code": "1795",
       "market": "TWSE",
       "name": "美時",
@@ -4628,7 +4521,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 20,
+      "review_rank": 19,
       "code": "2374",
       "market": "TWSE",
       "name": "佳能",
@@ -4732,7 +4625,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 21,
+      "review_rank": 20,
       "code": "1256",
       "market": "TWSE",
       "name": "鮮活果汁-KY",
@@ -4841,7 +4734,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 22,
+      "review_rank": 21,
       "code": "2376",
       "market": "TWSE",
       "name": "技嘉",
@@ -4952,7 +4845,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 23,
+      "review_rank": 22,
       "code": "2382",
       "market": "TWSE",
       "name": "廣達",
@@ -5064,7 +4957,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 24,
+      "review_rank": 23,
       "code": "6165",
       "market": "TWSE",
       "name": "浪凡",
@@ -5173,7 +5066,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 25,
+      "review_rank": 24,
       "code": "3706",
       "market": "TWSE",
       "name": "神達",
@@ -5286,7 +5179,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 26,
+      "review_rank": 25,
       "code": "4137",
       "market": "TWSE",
       "name": "麗豐-KY",
@@ -5396,7 +5289,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 27,
+      "review_rank": 26,
       "code": "9941",
       "market": "TWSE",
       "name": "裕融",
@@ -5505,7 +5398,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 28,
+      "review_rank": 27,
       "code": "3617",
       "market": "TWSE",
       "name": "碩天",
@@ -5614,7 +5507,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 29,
+      "review_rank": 28,
       "code": "6670",
       "market": "TWSE",
       "name": "復盛應用",
@@ -5723,7 +5616,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 30,
+      "review_rank": 29,
       "code": "8390",
       "market": "TPEX",
       "name": "金益鼎",
@@ -5829,16 +5722,16 @@
   "all_ranked": [
     {
       "review_rank": 1,
-      "code": "2483",
+      "code": "2432",
       "market": "TWSE",
-      "name": "百容",
+      "name": "倚天酷碁-創",
       "source_lane": "ORIGINAL_CURRENT_RECONCILED",
-      "reference_close": 29.25,
-      "base_upside_pct": 141.84902364889527,
-      "base_eps": 2.5869752941050237,
-      "base_target_price": 70.74083941730187,
-      "eps_pe_each_minus20_upside_pct": 54.783375135292985,
-      "bear_upside_pct": 20.631829236595234,
+      "reference_close": 27.55,
+      "base_upside_pct": 101.86875412480494,
+      "base_eps": 3.462941579164617,
+      "base_target_price": 55.61484176138376,
+      "eps_pe_each_minus20_upside_pct": 29.19600263987516,
+      "bear_upside_pct": -7.733986071422105,
       "original_current_numeric_reconciled": true,
       "all_eight_quarters_and_notes_verified": false,
       "pending_offering": false,
@@ -5861,25 +5754,28 @@
       "formal_Aplus": false,
       "recommendation_blocked": false,
       "warning_flags": [
+        "NEGATIVE_OCF_REQUIRES_WORKING_CAPITAL_BRIDGE_NOT_AUTOMATIC_FAIL",
+        "Q2_OCF_POSITIVE_WHILE_PRIOR_Q1_NEGATIVE_NOT_SUSTAINED_PROOF",
         "PEER_PE_NOT_CERTIFIED",
         "2027_COMPANY_OPERATING_BRIDGE_UNVERIFIED",
         "REPORTED_YTD_NONOPERATING_GAP_GE20PCT_PRETAX_COMPONENTS_UNCERTIFIED",
-        "2027_EPS_GE30PCT_ABOVE_UNSEASONALIZED_CURRENT_YTD_RUN_RATE"
+        "2027_EPS_GE30PCT_ABOVE_UNSEASONALIZED_CURRENT_YTD_RUN_RATE",
+        "HIGH_ASSUMED_GROWTH_UNVERIFIED_2027_EXTRAPOLATION"
       ],
-      "forward_growth_assumption_pct": 11.273204145168425,
-      "latest_month_revenue_yoy_pct": 27.300801715360706,
-      "ytd_revenue_yoy_pct": 22.546408290336846,
+      "forward_growth_assumption_pct": 33.13413172103294,
+      "latest_month_revenue_yoy_pct": 98.87686452859533,
+      "ytd_revenue_yoy_pct": 66.26826344206586,
       "latest_month_reversal_warning": false,
       "one_month_reversal_is_certified_trend": false,
       "reversal_warning_changes_base_eps_or_pe": false,
-      "reported_ytd_abs_nonoperating_gap_share_pretax_pct": 63.48781318598138,
+      "reported_ytd_abs_nonoperating_gap_share_pretax_pct": 37.251448654343605,
       "reported_ytd_material_nonoperating_gap": true,
       "reported_ytd_nonoperating_gap_exceeds_pretax": false,
       "eps_runrate_near_zero_denominator": false,
-      "target_eps_minus_ytd_annualized_reference_ntd_per_share": 1.4289913274948447,
+      "target_eps_minus_ytd_annualized_reference_ntd_per_share": 1.2579625943602197,
       "reported_ytd_nonoperating_figure_not_recurring_earnings_claim": true,
-      "ytd_parent_eps_linear_annualized_reference": 1.157983966610179,
-      "target_eps_vs_unseasonalized_ytd_run_rate_pct": 123.4033776545282,
+      "ytd_parent_eps_linear_annualized_reference": 2.2049789848043972,
+      "target_eps_vs_unseasonalized_ytd_run_rate_pct": 57.05100153014897,
       "requires_2027_eps_stepup_bridge": true,
       "ytd_annualized_reference_not_profit_forecast": true,
       "earnings_quality_flags_do_not_change_base_or_priority": true,
@@ -5906,17 +5802,17 @@
         "no_certification_or_forecast_changed": true,
         "status": "DATED_NORMALIZED_YTD_BRIDGE",
         "previous_period": "2026-Q1",
-        "previous_ytd_ocf_k": 80941.0,
-        "latest_ytd_ocf_k": 40708.0,
-        "latest_standalone_ocf_k": -40233.0,
-        "earlier_standalone_ocf_k": 80941.0,
-        "latest_standalone_ocf_positive": false,
-        "h1_or_current_ytd_ocf_still_negative": false,
-        "changed_sign_after_q1": false,
-        "observation_label": "LATEST_STANDALONE_NONPOSITIVE",
+        "previous_ytd_ocf_k": -70149.0,
+        "latest_ytd_ocf_k": -42706.0,
+        "latest_standalone_ocf_k": 27443.0,
+        "earlier_standalone_ocf_k": -70149.0,
+        "latest_standalone_ocf_positive": true,
+        "h1_or_current_ytd_ocf_still_negative": true,
+        "changed_sign_after_q1": true,
+        "observation_label": "PREVIOUS_STANDALONE_NEGATIVE_CURRENT_POSITIVE",
         "current_quarter_positive_does_not_override_negative_ytd_review": true
       },
-      "latest_q2_standalone_ocf_recovered_after_q1": false,
+      "latest_q2_standalone_ocf_recovered_after_q1": true,
       "quarterly_ocf_observation_not_certified": true,
       "mechanical_margin_sensitivity_changes_base_or_rank": false,
       "original_working_capital_subcheck": null,
@@ -5931,220 +5827,6 @@
     },
     {
       "review_rank": 2,
-      "code": "2331",
-      "market": "TWSE",
-      "name": "精英",
-      "source_lane": "ORIGINAL_CURRENT_RECONCILED",
-      "reference_close": 15.7,
-      "base_upside_pct": 108.46899512659931,
-      "base_eps": 1.8284710745740835,
-      "base_target_price": 32.72963223487609,
-      "eps_pe_each_minus20_upside_pct": 33.42015688102358,
-      "bear_upside_pct": 9.959329782799408,
-      "original_current_numeric_reconciled": true,
-      "all_eight_quarters_and_notes_verified": false,
-      "pending_offering": false,
-      "cb_terms_or_shares_unresolved": false,
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ],
-      "formal_Aplus": false,
-      "recommendation_blocked": false,
-      "warning_flags": [
-        "NEGATIVE_OCF_REQUIRES_WORKING_CAPITAL_BRIDGE_NOT_AUTOMATIC_FAIL",
-        "PEER_PE_NOT_CERTIFIED",
-        "2027_COMPANY_OPERATING_BRIDGE_UNVERIFIED",
-        "REPORTED_YTD_NONOPERATING_GAP_GE20PCT_PRETAX_COMPONENTS_UNCERTIFIED",
-        "2027_EPS_GE30PCT_ABOVE_UNSEASONALIZED_CURRENT_YTD_RUN_RATE",
-        "LATEST_MONTH_REVENUE_FELL_AT_LEAST_10PCT_YOY_WHILE_YTD_POSITIVE"
-      ],
-      "forward_growth_assumption_pct": 2.000109471608569,
-      "latest_month_revenue_yoy_pct": -31.932181465301536,
-      "ytd_revenue_yoy_pct": 4.000225810946652,
-      "latest_month_reversal_warning": true,
-      "one_month_reversal_is_certified_trend": false,
-      "reversal_warning_changes_base_eps_or_pe": false,
-      "reported_ytd_abs_nonoperating_gap_share_pretax_pct": 86.26725318723001,
-      "reported_ytd_material_nonoperating_gap": true,
-      "reported_ytd_nonoperating_gap_exceeds_pretax": false,
-      "eps_runrate_near_zero_denominator": false,
-      "target_eps_minus_ytd_annualized_reference_ntd_per_share": 1.0278988513322918,
-      "reported_ytd_nonoperating_figure_not_recurring_earnings_claim": true,
-      "ytd_parent_eps_linear_annualized_reference": 0.8005722232417918,
-      "target_eps_vs_unseasonalized_ytd_run_rate_pct": 128.39551779225818,
-      "requires_2027_eps_stepup_bridge": true,
-      "ytd_annualized_reference_not_profit_forecast": true,
-      "earnings_quality_flags_do_not_change_base_or_priority": true,
-      "latest_standalone_quarter_gm_pct": null,
-      "prior_standalone_quarter_gm_pct": null,
-      "latest_quarter_gm_qoq_change_pp": null,
-      "latest_standalone_quarter_margin_compression_warning": false,
-      "standalone_quarter_margin_source_not_full_original_notes_verified": true,
-      "quarterly_margin_warning_changes_base_or_rank": false,
-      "recent_quarter_gm_flat_2027_sensitivity": {
-        "status": "NOT_COMPARABLE_INCOMPLETE_OR_NON_PE_BASE",
-        "difference_from_base_gm_pp": null,
-        "scenario_eps": null,
-        "scenario_target_price": null,
-        "scenario_price_upside_pct": null,
-        "eps_change_from_base": null
-      },
-      "operating_cashflow_quarter_bridge": {
-        "period": "2026-Q2",
-        "source": "DATED_NORMALIZED_MOPS_YTD_CASHFLOW_NOT_ORIGINAL_NOTES_ATTESTED",
-        "original_cash_notes_reconciled": false,
-        "working_capital_component_bridge_certified": false,
-        "one_quarter_improvement_is_not_sustained_cash_conversion": true,
-        "no_certification_or_forecast_changed": true,
-        "status": "DATED_NORMALIZED_YTD_BRIDGE",
-        "previous_period": "2026-Q1",
-        "previous_ytd_ocf_k": 39403.0,
-        "latest_ytd_ocf_k": -405083.0,
-        "latest_standalone_ocf_k": -444486.0,
-        "earlier_standalone_ocf_k": 39403.0,
-        "latest_standalone_ocf_positive": false,
-        "h1_or_current_ytd_ocf_still_negative": true,
-        "changed_sign_after_q1": false,
-        "observation_label": "LATEST_STANDALONE_NONPOSITIVE",
-        "current_quarter_positive_does_not_override_negative_ytd_review": true
-      },
-      "latest_q2_standalone_ocf_recovered_after_q1": false,
-      "quarterly_ocf_observation_not_certified": true,
-      "mechanical_margin_sensitivity_changes_base_or_rank": false,
-      "original_working_capital_subcheck": null,
-      "original_working_capital_three_line_tieout_completed": false,
-      "original_working_capital_subcheck_is_not_formal_gate": true,
-      "original_ir_inventory_turnover_subcheck": null,
-      "original_ir_inventory_turnover_partial_review": false,
-      "inventory_source_does_not_certify_working_capital": true,
-      "auditor_scope_original_observation": null,
-      "qualified_auditor_review_needs_subsidiary_scope_reconciliation": false,
-      "research_decision": "REVIEW_ONLY_NOT_BUY"
-    },
-    {
-      "review_rank": 3,
-      "code": "6143",
-      "market": "TPEX",
-      "name": "振曜",
-      "source_lane": "ORIGINAL_CURRENT_RECONCILED",
-      "reference_close": 65.1,
-      "base_upside_pct": 106.53845683573167,
-      "base_eps": 6.714433727843262,
-      "base_target_price": 134.4565354000613,
-      "eps_pe_each_minus20_upside_pct": 32.18461237486827,
-      "bear_upside_pct": 26.541434776881843,
-      "original_current_numeric_reconciled": true,
-      "all_eight_quarters_and_notes_verified": false,
-      "pending_offering": false,
-      "cb_terms_or_shares_unresolved": false,
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ],
-      "formal_Aplus": false,
-      "recommendation_blocked": false,
-      "warning_flags": [
-        "NEGATIVE_OCF_REQUIRES_WORKING_CAPITAL_BRIDGE_NOT_AUTOMATIC_FAIL",
-        "PEER_PE_NOT_CERTIFIED",
-        "2027_COMPANY_OPERATING_BRIDGE_UNVERIFIED",
-        "LATEST_MONTH_REVENUE_FELL_AT_LEAST_10PCT_YOY_WHILE_YTD_POSITIVE"
-      ],
-      "forward_growth_assumption_pct": 0.0,
-      "latest_month_revenue_yoy_pct": -26.880188686049785,
-      "ytd_revenue_yoy_pct": 6.116493617730361,
-      "latest_month_reversal_warning": true,
-      "one_month_reversal_is_certified_trend": false,
-      "reversal_warning_changes_base_eps_or_pe": false,
-      "reported_ytd_abs_nonoperating_gap_share_pretax_pct": 10.270925759253211,
-      "reported_ytd_material_nonoperating_gap": false,
-      "reported_ytd_nonoperating_gap_exceeds_pretax": false,
-      "eps_runrate_near_zero_denominator": false,
-      "target_eps_minus_ytd_annualized_reference_ntd_per_share": 0.6622994551950772,
-      "reported_ytd_nonoperating_figure_not_recurring_earnings_claim": true,
-      "ytd_parent_eps_linear_annualized_reference": 6.052134272648185,
-      "target_eps_vs_unseasonalized_ytd_run_rate_pct": 10.943237961329633,
-      "requires_2027_eps_stepup_bridge": false,
-      "ytd_annualized_reference_not_profit_forecast": true,
-      "earnings_quality_flags_do_not_change_base_or_priority": true,
-      "latest_standalone_quarter_gm_pct": 20.624780038276043,
-      "prior_standalone_quarter_gm_pct": 21.744379454853323,
-      "latest_quarter_gm_qoq_change_pp": -1.1195994165772798,
-      "latest_standalone_quarter_margin_compression_warning": false,
-      "standalone_quarter_margin_source_not_full_original_notes_verified": true,
-      "quarterly_margin_warning_changes_base_or_rank": false,
-      "recent_quarter_gm_flat_2027_sensitivity": {
-        "status": "MECHANICAL_2027_LAST_STANDALONE_GM_FLAT_ONLY",
-        "base_gross_margin_pct": 21.88314444406313,
-        "latest_standalone_gross_margin_pct": 20.624780038276043,
-        "difference_from_base_gm_pp": -1.258364405787085,
-        "eps_change_from_base": -0.6738914594456564,
-        "scenario_eps": 6.040542268397605,
-        "original_base_eps_unchanged": 6.714433727843262,
-        "other_operating_assumptions_held_fixed": true,
-        "not_a_margin_2027_forecast": true,
-        "not_a_return_probability": true,
-        "no_issuer_original_notes_signoff": true,
-        "changes_in_cash_flow_not_modeled": true,
-        "scenario_target_price": 120.96185892466202,
-        "scenario_price_upside_pct": 85.80930710393552
-      },
-      "operating_cashflow_quarter_bridge": {
-        "period": "2026-Q2",
-        "source": "DATED_NORMALIZED_MOPS_YTD_CASHFLOW_NOT_ORIGINAL_NOTES_ATTESTED",
-        "original_cash_notes_reconciled": false,
-        "working_capital_component_bridge_certified": false,
-        "one_quarter_improvement_is_not_sustained_cash_conversion": true,
-        "no_certification_or_forecast_changed": true,
-        "status": "DATED_NORMALIZED_YTD_BRIDGE",
-        "previous_period": "2026-Q1",
-        "previous_ytd_ocf_k": 81456.0,
-        "latest_ytd_ocf_k": -118623.0,
-        "latest_standalone_ocf_k": -200079.0,
-        "earlier_standalone_ocf_k": 81456.0,
-        "latest_standalone_ocf_positive": false,
-        "h1_or_current_ytd_ocf_still_negative": true,
-        "changed_sign_after_q1": false,
-        "observation_label": "LATEST_STANDALONE_NONPOSITIVE",
-        "current_quarter_positive_does_not_override_negative_ytd_review": true
-      },
-      "latest_q2_standalone_ocf_recovered_after_q1": false,
-      "quarterly_ocf_observation_not_certified": true,
-      "mechanical_margin_sensitivity_changes_base_or_rank": false,
-      "original_working_capital_subcheck": null,
-      "original_working_capital_three_line_tieout_completed": false,
-      "original_working_capital_subcheck_is_not_formal_gate": true,
-      "original_ir_inventory_turnover_subcheck": null,
-      "original_ir_inventory_turnover_partial_review": false,
-      "inventory_source_does_not_certify_working_capital": true,
-      "auditor_scope_original_observation": null,
-      "qualified_auditor_review_needs_subsidiary_scope_reconciliation": false,
-      "research_decision": "REVIEW_ONLY_NOT_BUY"
-    },
-    {
-      "review_rank": 4,
       "code": "8383",
       "market": "TPEX",
       "name": "千附",
@@ -6351,7 +6033,109 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 5,
+      "review_rank": 3,
+      "code": "6143",
+      "market": "TPEX",
+      "name": "振曜",
+      "source_lane": "ORIGINAL_CURRENT_RECONCILED",
+      "reference_close": 65.1,
+      "base_upside_pct": 92.22496115129357,
+      "base_eps": 6.249111096603851,
+      "base_target_price": 125.13844970949211,
+      "eps_pe_each_minus20_upside_pct": 23.02397513682788,
+      "bear_upside_pct": 16.8614525349847,
+      "original_current_numeric_reconciled": true,
+      "all_eight_quarters_and_notes_verified": false,
+      "pending_offering": false,
+      "cb_terms_or_shares_unresolved": false,
+      "pending_gates": [
+        "original_eight_quarter_statements",
+        "cash_and_working_capital",
+        "nonoperating_components",
+        "fully_diluted_shares",
+        "matched_peers_and_cycle",
+        "management_promises",
+        "auditor_scope",
+        "tradability",
+        "forecast_bridge",
+        "insider_claims",
+        "dividend_window",
+        "point_in_time",
+        "out_of_sample_validation"
+      ],
+      "formal_Aplus": false,
+      "recommendation_blocked": false,
+      "warning_flags": [
+        "NEGATIVE_OCF_REQUIRES_WORKING_CAPITAL_BRIDGE_NOT_AUTOMATIC_FAIL",
+        "PEER_PE_NOT_CERTIFIED",
+        "2027_COMPANY_OPERATING_BRIDGE_UNVERIFIED",
+        "LATEST_MONTH_REVENUE_FELL_AT_LEAST_10PCT_YOY_WHILE_YTD_POSITIVE"
+      ],
+      "forward_growth_assumption_pct": 0.0,
+      "latest_month_revenue_yoy_pct": -26.880188686049785,
+      "ytd_revenue_yoy_pct": 6.116493617730361,
+      "latest_month_reversal_warning": true,
+      "one_month_reversal_is_certified_trend": false,
+      "reversal_warning_changes_base_eps_or_pe": false,
+      "reported_ytd_abs_nonoperating_gap_share_pretax_pct": 9.265671641791045,
+      "reported_ytd_material_nonoperating_gap": false,
+      "reported_ytd_nonoperating_gap_exceeds_pretax": false,
+      "eps_runrate_near_zero_denominator": false,
+      "target_eps_minus_ytd_annualized_reference_ntd_per_share": 0.29734219737351797,
+      "reported_ytd_nonoperating_figure_not_recurring_earnings_claim": true,
+      "ytd_parent_eps_linear_annualized_reference": 5.951768899230333,
+      "target_eps_vs_unseasonalized_ytd_run_rate_pct": 4.995862615095303,
+      "requires_2027_eps_stepup_bridge": false,
+      "ytd_annualized_reference_not_profit_forecast": true,
+      "earnings_quality_flags_do_not_change_base_or_priority": true,
+      "latest_standalone_quarter_gm_pct": null,
+      "prior_standalone_quarter_gm_pct": null,
+      "latest_quarter_gm_qoq_change_pp": null,
+      "latest_standalone_quarter_margin_compression_warning": false,
+      "standalone_quarter_margin_source_not_full_original_notes_verified": true,
+      "quarterly_margin_warning_changes_base_or_rank": false,
+      "recent_quarter_gm_flat_2027_sensitivity": {
+        "status": "NOT_COMPARABLE_INCOMPLETE_OR_NON_PE_BASE",
+        "difference_from_base_gm_pp": null,
+        "scenario_eps": null,
+        "scenario_target_price": null,
+        "scenario_price_upside_pct": null,
+        "eps_change_from_base": null
+      },
+      "operating_cashflow_quarter_bridge": {
+        "period": "2026-Q2",
+        "source": "DATED_NORMALIZED_MOPS_YTD_CASHFLOW_NOT_ORIGINAL_NOTES_ATTESTED",
+        "original_cash_notes_reconciled": false,
+        "working_capital_component_bridge_certified": false,
+        "one_quarter_improvement_is_not_sustained_cash_conversion": true,
+        "no_certification_or_forecast_changed": true,
+        "status": "DATED_NORMALIZED_YTD_BRIDGE",
+        "previous_period": "2026-Q1",
+        "previous_ytd_ocf_k": 81456.0,
+        "latest_ytd_ocf_k": -118623.0,
+        "latest_standalone_ocf_k": -200079.0,
+        "earlier_standalone_ocf_k": 81456.0,
+        "latest_standalone_ocf_positive": false,
+        "h1_or_current_ytd_ocf_still_negative": true,
+        "changed_sign_after_q1": false,
+        "observation_label": "LATEST_STANDALONE_NONPOSITIVE",
+        "current_quarter_positive_does_not_override_negative_ytd_review": true
+      },
+      "latest_q2_standalone_ocf_recovered_after_q1": false,
+      "quarterly_ocf_observation_not_certified": true,
+      "mechanical_margin_sensitivity_changes_base_or_rank": false,
+      "original_working_capital_subcheck": null,
+      "original_working_capital_three_line_tieout_completed": false,
+      "original_working_capital_subcheck_is_not_formal_gate": true,
+      "original_ir_inventory_turnover_subcheck": null,
+      "original_ir_inventory_turnover_partial_review": false,
+      "inventory_source_does_not_certify_working_capital": true,
+      "auditor_scope_original_observation": null,
+      "qualified_auditor_review_needs_subsidiary_scope_reconciliation": false,
+      "research_decision": "REVIEW_ONLY_NOT_BUY"
+    },
+    {
+      "review_rank": 4,
       "code": "4953",
       "market": "TPEX",
       "name": "緯致",
@@ -6462,7 +6246,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 6,
+      "review_rank": 5,
       "code": "2027",
       "market": "TWSE",
       "name": "大成鋼",
@@ -6570,7 +6354,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 7,
+      "review_rank": 6,
       "code": "2103",
       "market": "TWSE",
       "name": "台橡",
@@ -6672,7 +6456,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 8,
+      "review_rank": 7,
       "code": "3088",
       "market": "TPEX",
       "name": "艾訊",
@@ -6782,7 +6566,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 9,
+      "review_rank": 8,
       "code": "2330",
       "market": "TWSE",
       "name": "台積電",
@@ -6876,7 +6660,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 10,
+      "review_rank": 9,
       "code": "6206",
       "market": "TWSE",
       "name": "飛捷",
@@ -7031,7 +6815,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 11,
+      "review_rank": 10,
       "code": "1736",
       "market": "TWSE",
       "name": "喬山",
@@ -7141,7 +6925,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 12,
+      "review_rank": 11,
       "code": "2471",
       "market": "TWSE",
       "name": "資通",
@@ -7251,7 +7035,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 13,
+      "review_rank": 12,
       "code": "4746",
       "market": "TWSE",
       "name": "台耀",
@@ -7364,7 +7148,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 14,
+      "review_rank": 13,
       "code": "4771",
       "market": "TWSE",
       "name": "望隼",
@@ -7472,7 +7256,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 15,
+      "review_rank": 14,
       "code": "8436",
       "market": "TPEX",
       "name": "大江",
@@ -7580,7 +7364,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 16,
+      "review_rank": 15,
       "code": "3217",
       "market": "TPEX",
       "name": "優群",
@@ -7688,7 +7472,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 17,
+      "review_rank": 16,
       "code": "3130",
       "market": "TWSE",
       "name": "一零四",
@@ -7796,7 +7580,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 18,
+      "review_rank": 17,
       "code": "3537",
       "market": "TPEX",
       "name": "堡達",
@@ -7904,7 +7688,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 19,
+      "review_rank": 18,
       "code": "1795",
       "market": "TWSE",
       "name": "美時",
@@ -8017,7 +7801,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 20,
+      "review_rank": 19,
       "code": "2374",
       "market": "TWSE",
       "name": "佳能",
@@ -8121,7 +7905,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 21,
+      "review_rank": 20,
       "code": "1256",
       "market": "TWSE",
       "name": "鮮活果汁-KY",
@@ -8230,7 +8014,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 22,
+      "review_rank": 21,
       "code": "2376",
       "market": "TWSE",
       "name": "技嘉",
@@ -8341,7 +8125,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 23,
+      "review_rank": 22,
       "code": "2382",
       "market": "TWSE",
       "name": "廣達",
@@ -8453,7 +8237,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 24,
+      "review_rank": 23,
       "code": "6165",
       "market": "TWSE",
       "name": "浪凡",
@@ -8562,7 +8346,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 25,
+      "review_rank": 24,
       "code": "3706",
       "market": "TWSE",
       "name": "神達",
@@ -8675,7 +8459,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 26,
+      "review_rank": 25,
       "code": "4137",
       "market": "TWSE",
       "name": "麗豐-KY",
@@ -8785,7 +8569,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 27,
+      "review_rank": 26,
       "code": "9941",
       "market": "TWSE",
       "name": "裕融",
@@ -8894,7 +8678,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 28,
+      "review_rank": 27,
       "code": "3617",
       "market": "TWSE",
       "name": "碩天",
@@ -9003,7 +8787,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 29,
+      "review_rank": 28,
       "code": "6670",
       "market": "TWSE",
       "name": "復盛應用",
@@ -9112,7 +8896,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 30,
+      "review_rank": 29,
       "code": "8390",
       "market": "TPEX",
       "name": "金益鼎",
@@ -9215,7 +8999,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 31,
+      "review_rank": 30,
       "code": "6741",
       "market": "TPEX",
       "name": "91APP*-KY",
@@ -9324,7 +9108,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 32,
+      "review_rank": 31,
       "code": "4912",
       "market": "TWSE",
       "name": "聯德控股-KY",
@@ -9434,7 +9218,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 33,
+      "review_rank": 32,
       "code": "3285",
       "market": "TPEX",
       "name": "微端",
@@ -9546,7 +9330,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 34,
+      "review_rank": 33,
       "code": "8473",
       "market": "TWSE",
       "name": "山林水",
@@ -9657,117 +9441,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 35,
-      "code": "6763",
-      "market": "TPEX",
-      "name": "綠界科技*",
-      "source_lane": "OFFICIAL_SUMMARY_UNVERIFIED_ORIGINALS",
-      "reference_close": 36.05,
-      "base_upside_pct": 112.2948295797428,
-      "base_eps": 3.856502195187567,
-      "base_target_price": 76.53228606349727,
-      "eps_pe_each_minus20_upside_pct": 35.868690931035374,
-      "bear_upside_pct": 26.278876890582815,
-      "original_current_numeric_reconciled": false,
-      "all_eight_quarters_and_notes_verified": false,
-      "pending_offering": false,
-      "cb_terms_or_shares_unresolved": false,
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ],
-      "formal_Aplus": false,
-      "recommendation_blocked": false,
-      "warning_flags": [
-        "HISTORICAL_OR_ORIGINAL_ISSUER_DETAILS_UNVERIFIED",
-        "PEER_PE_NOT_CERTIFIED",
-        "2027_COMPANY_OPERATING_BRIDGE_UNVERIFIED",
-        "2027_EPS_GE30PCT_ABOVE_UNSEASONALIZED_CURRENT_YTD_RUN_RATE"
-      ],
-      "forward_growth_assumption_pct": 5.591478515802789,
-      "latest_month_revenue_yoy_pct": -1.155393010019286,
-      "ytd_revenue_yoy_pct": 11.182957031605579,
-      "latest_month_reversal_warning": false,
-      "one_month_reversal_is_certified_trend": false,
-      "reversal_warning_changes_base_eps_or_pe": false,
-      "reported_ytd_abs_nonoperating_gap_share_pretax_pct": 11.064978850266128,
-      "reported_ytd_material_nonoperating_gap": false,
-      "reported_ytd_nonoperating_gap_exceeds_pretax": false,
-      "eps_runrate_near_zero_denominator": false,
-      "target_eps_minus_ytd_annualized_reference_ntd_per_share": 1.687213522718837,
-      "reported_ytd_nonoperating_figure_not_recurring_earnings_claim": true,
-      "ytd_parent_eps_linear_annualized_reference": 2.16928867246873,
-      "target_eps_vs_unseasonalized_ytd_run_rate_pct": 77.77727068471371,
-      "requires_2027_eps_stepup_bridge": true,
-      "ytd_annualized_reference_not_profit_forecast": true,
-      "earnings_quality_flags_do_not_change_base_or_priority": true,
-      "latest_standalone_quarter_gm_pct": 41.17421841165431,
-      "prior_standalone_quarter_gm_pct": 41.93508841827822,
-      "latest_quarter_gm_qoq_change_pp": -0.7608700066239094,
-      "latest_standalone_quarter_margin_compression_warning": false,
-      "standalone_quarter_margin_source_not_full_original_notes_verified": true,
-      "quarterly_margin_warning_changes_base_or_rank": false,
-      "recent_quarter_gm_flat_2027_sensitivity": {
-        "status": "MECHANICAL_2027_LAST_STANDALONE_GM_FLAT_ONLY",
-        "base_gross_margin_pct": 41.07866912568227,
-        "latest_standalone_gross_margin_pct": 41.17421841165431,
-        "difference_from_base_gm_pp": 0.09554928597204082,
-        "eps_change_from_base": 0.008170335823724194,
-        "scenario_eps": 3.864672531011291,
-        "original_base_eps_unchanged": 3.856502195187567,
-        "other_operating_assumptions_held_fixed": true,
-        "not_a_margin_2027_forecast": true,
-        "not_a_return_probability": true,
-        "no_issuer_original_notes_signoff": true,
-        "changes_in_cash_flow_not_modeled": true,
-        "scenario_target_price": 76.69442637791907,
-        "scenario_price_upside_pct": 112.7445946682915
-      },
-      "operating_cashflow_quarter_bridge": {
-        "period": "2026-Q2",
-        "source": "DATED_NORMALIZED_MOPS_YTD_CASHFLOW_NOT_ORIGINAL_NOTES_ATTESTED",
-        "original_cash_notes_reconciled": false,
-        "working_capital_component_bridge_certified": false,
-        "one_quarter_improvement_is_not_sustained_cash_conversion": true,
-        "no_certification_or_forecast_changed": true,
-        "status": "DATED_NORMALIZED_YTD_BRIDGE",
-        "previous_period": "2026-Q1",
-        "previous_ytd_ocf_k": 60748.0,
-        "latest_ytd_ocf_k": 191282.0,
-        "latest_standalone_ocf_k": 130534.0,
-        "earlier_standalone_ocf_k": 60748.0,
-        "latest_standalone_ocf_positive": true,
-        "h1_or_current_ytd_ocf_still_negative": false,
-        "changed_sign_after_q1": false,
-        "observation_label": "LATEST_STANDALONE_POSITIVE",
-        "current_quarter_positive_does_not_override_negative_ytd_review": true
-      },
-      "latest_q2_standalone_ocf_recovered_after_q1": false,
-      "quarterly_ocf_observation_not_certified": true,
-      "mechanical_margin_sensitivity_changes_base_or_rank": false,
-      "original_working_capital_subcheck": null,
-      "original_working_capital_three_line_tieout_completed": false,
-      "original_working_capital_subcheck_is_not_formal_gate": true,
-      "original_ir_inventory_turnover_subcheck": null,
-      "original_ir_inventory_turnover_partial_review": false,
-      "inventory_source_does_not_certify_working_capital": true,
-      "auditor_scope_original_observation": null,
-      "qualified_auditor_review_needs_subsidiary_scope_reconciliation": false,
-      "research_decision": "REVIEW_ONLY_NOT_BUY"
-    },
-    {
-      "review_rank": 36,
+      "review_rank": 34,
       "code": "6625",
       "market": "TWSE",
       "name": "必應",
@@ -9878,121 +9552,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 37,
-      "code": "2432",
-      "market": "TWSE",
-      "name": "倚天酷碁-創",
-      "source_lane": "OFFICIAL_SUMMARY_UNVERIFIED_ORIGINALS",
-      "reference_close": 27.55,
-      "base_upside_pct": 105.45793486614379,
-      "base_eps": 3.5245118963650435,
-      "base_target_price": 56.60366105562261,
-      "eps_pe_each_minus20_upside_pct": 31.493078314332013,
-      "bear_upside_pct": -6.8005479119676355,
-      "original_current_numeric_reconciled": false,
-      "all_eight_quarters_and_notes_verified": false,
-      "pending_offering": false,
-      "cb_terms_or_shares_unresolved": false,
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ],
-      "formal_Aplus": false,
-      "recommendation_blocked": false,
-      "warning_flags": [
-        "HISTORICAL_OR_ORIGINAL_ISSUER_DETAILS_UNVERIFIED",
-        "NEGATIVE_OCF_REQUIRES_WORKING_CAPITAL_BRIDGE_NOT_AUTOMATIC_FAIL",
-        "Q2_OCF_POSITIVE_WHILE_PRIOR_Q1_NEGATIVE_NOT_SUSTAINED_PROOF",
-        "PEER_PE_NOT_CERTIFIED",
-        "2027_COMPANY_OPERATING_BRIDGE_UNVERIFIED",
-        "REPORTED_YTD_NONOPERATING_GAP_GE20PCT_PRETAX_COMPONENTS_UNCERTIFIED",
-        "2027_EPS_GE30PCT_ABOVE_UNSEASONALIZED_CURRENT_YTD_RUN_RATE",
-        "HIGH_ASSUMED_GROWTH_UNVERIFIED_2027_EXTRAPOLATION"
-      ],
-      "forward_growth_assumption_pct": 33.13413172103293,
-      "latest_month_revenue_yoy_pct": 98.87686452859533,
-      "ytd_revenue_yoy_pct": 66.26826344206586,
-      "latest_month_reversal_warning": false,
-      "one_month_reversal_is_certified_trend": false,
-      "reversal_warning_changes_base_eps_or_pe": false,
-      "reported_ytd_abs_nonoperating_gap_share_pretax_pct": 36.856695584110625,
-      "reported_ytd_material_nonoperating_gap": true,
-      "reported_ytd_nonoperating_gap_exceeds_pretax": false,
-      "eps_runrate_near_zero_denominator": false,
-      "target_eps_minus_ytd_annualized_reference_ntd_per_share": 1.8793777224238861,
-      "reported_ytd_nonoperating_figure_not_recurring_earnings_claim": true,
-      "ytd_parent_eps_linear_annualized_reference": 1.6451341739411574,
-      "target_eps_vs_unseasonalized_ytd_run_rate_pct": 114.23856802643427,
-      "requires_2027_eps_stepup_bridge": true,
-      "ytd_annualized_reference_not_profit_forecast": true,
-      "earnings_quality_flags_do_not_change_base_or_priority": true,
-      "latest_standalone_quarter_gm_pct": 10.395482580430071,
-      "prior_standalone_quarter_gm_pct": 10.921912281052274,
-      "latest_quarter_gm_qoq_change_pp": -0.5264297006222024,
-      "latest_standalone_quarter_margin_compression_warning": false,
-      "standalone_quarter_margin_source_not_full_original_notes_verified": true,
-      "quarterly_margin_warning_changes_base_or_rank": false,
-      "recent_quarter_gm_flat_2027_sensitivity": {
-        "status": "MECHANICAL_2027_LAST_STANDALONE_GM_FLAT_ONLY",
-        "base_gross_margin_pct": 11.787999700667791,
-        "latest_standalone_gross_margin_pct": 10.395482580430071,
-        "difference_from_base_gm_pp": -1.3925171202377198,
-        "eps_change_from_base": -1.2747265260219403,
-        "scenario_eps": 2.249785370343103,
-        "original_base_eps_unchanged": 3.5245118963650435,
-        "other_operating_assumptions_held_fixed": true,
-        "not_a_margin_2027_forecast": true,
-        "not_a_return_probability": true,
-        "no_issuer_original_notes_signoff": true,
-        "changes_in_cash_flow_not_modeled": true,
-        "scenario_target_price": 36.13155304771024,
-        "scenario_price_upside_pct": 31.149012877351147
-      },
-      "operating_cashflow_quarter_bridge": {
-        "period": "2026-Q2",
-        "source": "DATED_NORMALIZED_MOPS_YTD_CASHFLOW_NOT_ORIGINAL_NOTES_ATTESTED",
-        "original_cash_notes_reconciled": false,
-        "working_capital_component_bridge_certified": false,
-        "one_quarter_improvement_is_not_sustained_cash_conversion": true,
-        "no_certification_or_forecast_changed": true,
-        "status": "DATED_NORMALIZED_YTD_BRIDGE",
-        "previous_period": "2026-Q1",
-        "previous_ytd_ocf_k": -70149.0,
-        "latest_ytd_ocf_k": -42706.0,
-        "latest_standalone_ocf_k": 27443.0,
-        "earlier_standalone_ocf_k": -70149.0,
-        "latest_standalone_ocf_positive": true,
-        "h1_or_current_ytd_ocf_still_negative": true,
-        "changed_sign_after_q1": true,
-        "observation_label": "PREVIOUS_STANDALONE_NEGATIVE_CURRENT_POSITIVE",
-        "current_quarter_positive_does_not_override_negative_ytd_review": true
-      },
-      "latest_q2_standalone_ocf_recovered_after_q1": true,
-      "quarterly_ocf_observation_not_certified": true,
-      "mechanical_margin_sensitivity_changes_base_or_rank": false,
-      "original_working_capital_subcheck": null,
-      "original_working_capital_three_line_tieout_completed": false,
-      "original_working_capital_subcheck_is_not_formal_gate": true,
-      "original_ir_inventory_turnover_subcheck": null,
-      "original_ir_inventory_turnover_partial_review": false,
-      "inventory_source_does_not_certify_working_capital": true,
-      "auditor_scope_original_observation": null,
-      "qualified_auditor_review_needs_subsidiary_scope_reconciliation": false,
-      "research_decision": "REVIEW_ONLY_NOT_BUY"
-    },
-    {
-      "review_rank": 38,
+      "review_rank": 35,
       "code": "4721",
       "market": "TPEX",
       "name": "美琪瑪",
@@ -10102,7 +9662,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 39,
+      "review_rank": 36,
       "code": "8091",
       "market": "TPEX",
       "name": "翔名",
@@ -10214,7 +9774,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 40,
+      "review_rank": 37,
       "code": "6781",
       "market": "TWSE",
       "name": "AES-KY",
@@ -10323,7 +9883,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 41,
+      "review_rank": 38,
       "code": "3171",
       "market": "TPEX",
       "name": "炎洲流通",
@@ -10434,7 +9994,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 42,
+      "review_rank": 39,
       "code": "3357",
       "market": "TPEX",
       "name": "臺慶科",
@@ -10544,7 +10104,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 43,
+      "review_rank": 40,
       "code": "2364",
       "market": "TWSE",
       "name": "倫飛",
@@ -10653,7 +10213,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 44,
+      "review_rank": 41,
       "code": "4303",
       "market": "TPEX",
       "name": "信立",
@@ -10764,7 +10324,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 45,
+      "review_rank": 42,
       "code": "8114",
       "market": "TWSE",
       "name": "振樺電",
@@ -10875,7 +10435,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 46,
+      "review_rank": 43,
       "code": "6613",
       "market": "TPEX",
       "name": "朋億*",
@@ -10989,7 +10549,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 47,
+      "review_rank": 44,
       "code": "6505",
       "market": "TWSE",
       "name": "台塑化",
@@ -11098,7 +10658,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 48,
+      "review_rank": 45,
       "code": "3689",
       "market": "TPEX",
       "name": "湧德",
@@ -11209,7 +10769,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 49,
+      "review_rank": 46,
       "code": "5538",
       "market": "TWSE",
       "name": "東明-KY",
@@ -11319,7 +10879,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 50,
+      "review_rank": 47,
       "code": "2404",
       "market": "TWSE",
       "name": "漢唐",
@@ -11430,7 +10990,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 51,
+      "review_rank": 48,
       "code": "6215",
       "market": "TWSE",
       "name": "和椿",
@@ -11542,7 +11102,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 52,
+      "review_rank": 49,
       "code": "3546",
       "market": "TPEX",
       "name": "宇峻",
@@ -11653,7 +11213,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 53,
+      "review_rank": 50,
       "code": "6739",
       "market": "TPEX",
       "name": "竹陞科技",
@@ -11764,7 +11324,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 54,
+      "review_rank": 51,
       "code": "2059",
       "market": "TWSE",
       "name": "川湖",
@@ -11875,7 +11435,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 55,
+      "review_rank": 52,
       "code": "6151",
       "market": "TPEX",
       "name": "晉倫",
@@ -11984,7 +11544,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 56,
+      "review_rank": 53,
       "code": "3704",
       "market": "TWSE",
       "name": "合勤控",
@@ -12095,7 +11655,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 57,
+      "review_rank": 54,
       "code": "3147",
       "market": "TPEX",
       "name": "大綜",
@@ -12207,7 +11767,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 58,
+      "review_rank": 55,
       "code": "3669",
       "market": "TWSE",
       "name": "圓展",
@@ -12317,7 +11877,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 59,
+      "review_rank": 56,
       "code": "2739",
       "market": "TWSE",
       "name": "寒舍",
@@ -12426,7 +11986,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 60,
+      "review_rank": 57,
       "code": "4560",
       "market": "TWSE",
       "name": "強信-KY",
@@ -12537,7 +12097,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 61,
+      "review_rank": 58,
       "code": "3025",
       "market": "TWSE",
       "name": "星通",
@@ -12651,7 +12211,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 62,
+      "review_rank": 59,
       "code": "6133",
       "market": "TWSE",
       "name": "金橋",
@@ -12762,7 +12322,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 63,
+      "review_rank": 60,
       "code": "6811",
       "market": "TPEX",
       "name": "宏碁資訊",
@@ -12872,7 +12432,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 64,
+      "review_rank": 61,
       "code": "3694",
       "market": "TWSE",
       "name": "海華",
@@ -12982,7 +12542,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 65,
+      "review_rank": 62,
       "code": "2368",
       "market": "TWSE",
       "name": "金像電",
@@ -13093,7 +12653,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 66,
+      "review_rank": 63,
       "code": "3030",
       "market": "TWSE",
       "name": "德律",
@@ -13203,7 +12763,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 67,
+      "review_rank": 64,
       "code": "2377",
       "market": "TWSE",
       "name": "微星",
@@ -13313,7 +12873,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 68,
+      "review_rank": 65,
       "code": "2421",
       "market": "TWSE",
       "name": "建準",
@@ -13422,7 +12982,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 69,
+      "review_rank": 66,
       "code": "9945",
       "market": "TWSE",
       "name": "潤泰新",
@@ -13532,7 +13092,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 70,
+      "review_rank": 67,
       "code": "5243",
       "market": "TWSE",
       "name": "乙盛-KY",
@@ -13641,7 +13201,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 71,
+      "review_rank": 68,
       "code": "8103",
       "market": "TWSE",
       "name": "瀚荃",
@@ -13751,7 +13311,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 72,
+      "review_rank": 69,
       "code": "3021",
       "market": "TWSE",
       "name": "鴻名",
@@ -13861,7 +13421,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 73,
+      "review_rank": 70,
       "code": "6924",
       "market": "TWSE",
       "name": "榮惠-KY創",
@@ -13973,7 +13533,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 74,
+      "review_rank": 71,
       "code": "4148",
       "market": "TWSE",
       "name": "全宇生技-KY",
@@ -14083,7 +13643,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 75,
+      "review_rank": 72,
       "code": "4155",
       "market": "TWSE",
       "name": "訊映",
@@ -14192,7 +13752,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 76,
+      "review_rank": 73,
       "code": "1618",
       "market": "TWSE",
       "name": "合機",
@@ -14302,7 +13862,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 77,
+      "review_rank": 74,
       "code": "2360",
       "market": "TWSE",
       "name": "致茂",
@@ -14413,7 +13973,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 78,
+      "review_rank": 75,
       "code": "3019",
       "market": "TWSE",
       "name": "亞光",
@@ -14523,7 +14083,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 79,
+      "review_rank": 76,
       "code": "6799",
       "market": "TWSE",
       "name": "來頡",
@@ -14633,7 +14193,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 80,
+      "review_rank": 77,
       "code": "6642",
       "market": "TPEX",
       "name": "富致",
@@ -14742,7 +14302,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 81,
+      "review_rank": 78,
       "code": "5215",
       "market": "TWSE",
       "name": "科嘉-KY",
@@ -14856,7 +14416,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 82,
+      "review_rank": 79,
       "code": "6953",
       "market": "TPEX",
       "name": "家碩",
@@ -14967,7 +14527,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 83,
+      "review_rank": 80,
       "code": "2323",
       "market": "TWSE",
       "name": "中環",
@@ -15078,7 +14638,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 84,
+      "review_rank": 81,
       "code": "5285",
       "market": "TWSE",
       "name": "界霖",
@@ -15189,7 +14749,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 85,
+      "review_rank": 82,
       "code": "3046",
       "market": "TWSE",
       "name": "建碁",
@@ -15298,7 +14858,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 86,
+      "review_rank": 83,
       "code": "3388",
       "market": "TPEX",
       "name": "崇越電",
@@ -15408,7 +14968,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 87,
+      "review_rank": 84,
       "code": "2348",
       "market": "TWSE",
       "name": "海悅",
@@ -15523,7 +15083,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 88,
+      "review_rank": 85,
       "code": "6414",
       "market": "TWSE",
       "name": "樺漢",
@@ -15634,7 +15194,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 89,
+      "review_rank": 86,
       "code": "8069",
       "market": "TPEX",
       "name": "元太",
@@ -15743,7 +15303,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 90,
+      "review_rank": 87,
       "code": "8043",
       "market": "TPEX",
       "name": "蜜望實",
@@ -15857,7 +15417,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 91,
+      "review_rank": 88,
       "code": "4966",
       "market": "TPEX",
       "name": "譜瑞-KY",
@@ -15966,7 +15526,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 92,
+      "review_rank": 89,
       "code": "6417",
       "market": "TPEX",
       "name": "韋僑",
@@ -16075,7 +15635,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 93,
+      "review_rank": 90,
       "code": "6703",
       "market": "TPEX",
       "name": "軒郁",
@@ -16187,7 +15747,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 94,
+      "review_rank": 91,
       "code": "8432",
       "market": "TPEX",
       "name": "東生華",
@@ -16297,7 +15857,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 95,
+      "review_rank": 92,
       "code": "4106",
       "market": "TWSE",
       "name": "雃博",
@@ -16406,7 +15966,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 96,
+      "review_rank": 93,
       "code": "8416",
       "market": "TPEX",
       "name": "實威",
@@ -16516,7 +16076,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 97,
+      "review_rank": 94,
       "code": "2459",
       "market": "TWSE",
       "name": "敦吉",
@@ -16625,7 +16185,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 98,
+      "review_rank": 95,
       "code": "1776",
       "market": "TWSE",
       "name": "展宇",
@@ -16734,7 +16294,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 99,
+      "review_rank": 96,
       "code": "3218",
       "market": "TPEX",
       "name": "大學光",
@@ -16843,7 +16403,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 100,
+      "review_rank": 97,
       "code": "6606",
       "market": "TWSE",
       "name": "建德工業",
@@ -16953,7 +16513,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 101,
+      "review_rank": 98,
       "code": "6138",
       "market": "TPEX",
       "name": "茂達",
@@ -17062,7 +16622,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 102,
+      "review_rank": 99,
       "code": "3402",
       "market": "TPEX",
       "name": "漢科",
@@ -17173,7 +16733,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 103,
+      "review_rank": 100,
       "code": "1783",
       "market": "TWSE",
       "name": "和康生",
@@ -17282,7 +16842,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 104,
+      "review_rank": 101,
       "code": "6666",
       "market": "TWSE",
       "name": "羅麗芬-KY",
@@ -17393,7 +16953,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 105,
+      "review_rank": 102,
       "code": "6166",
       "market": "TWSE",
       "name": "凌華",
@@ -17505,7 +17065,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 106,
+      "review_rank": 103,
       "code": "6196",
       "market": "TWSE",
       "name": "帆宣",
@@ -17616,7 +17176,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 107,
+      "review_rank": 104,
       "code": "5478",
       "market": "TPEX",
       "name": "智冠",
@@ -17725,7 +17285,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 108,
+      "review_rank": 105,
       "code": "1294",
       "market": "TPEX",
       "name": "漢田生技",
@@ -17834,7 +17394,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 109,
+      "review_rank": 106,
       "code": "4527",
       "market": "TPEX",
       "name": "方方土霖",
@@ -17945,7 +17505,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 110,
+      "review_rank": 107,
       "code": "7712",
       "market": "TPEX",
       "name": "博盛半導體",
@@ -18055,7 +17615,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 111,
+      "review_rank": 108,
       "code": "8048",
       "market": "TPEX",
       "name": "德勝",
@@ -18165,7 +17725,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 112,
+      "review_rank": 109,
       "code": "5410",
       "market": "TPEX",
       "name": "國眾",
@@ -18277,7 +17837,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 113,
+      "review_rank": 110,
       "code": "6449",
       "market": "TWSE",
       "name": "鈺邦",
@@ -18386,7 +17946,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 114,
+      "review_rank": 111,
       "code": "3556",
       "market": "TPEX",
       "name": "禾瑞亞",
@@ -18497,7 +18057,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 115,
+      "review_rank": 112,
       "code": "8446",
       "market": "TPEX",
       "name": "華研",
@@ -18609,7 +18169,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 116,
+      "review_rank": 113,
       "code": "3071",
       "market": "TPEX",
       "name": "協禧",
@@ -18720,7 +18280,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 117,
+      "review_rank": 114,
       "code": "7704",
       "market": "TPEX",
       "name": "明遠精密",
@@ -18829,7 +18389,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 118,
+      "review_rank": 115,
       "code": "6788",
       "market": "TPEX",
       "name": "華景電",
@@ -18938,7 +18498,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 119,
+      "review_rank": 116,
       "code": "8341",
       "market": "TWSE",
       "name": "日友",
@@ -19048,7 +18608,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 120,
+      "review_rank": 117,
       "code": "8415",
       "market": "TPEX",
       "name": "大國鋼",
@@ -19157,7 +18717,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 121,
+      "review_rank": 118,
       "code": "2423",
       "market": "TWSE",
       "name": "固緯",
@@ -19266,7 +18826,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 122,
+      "review_rank": 119,
       "code": "1264",
       "market": "TPEX",
       "name": "德麥",
@@ -19375,7 +18935,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 123,
+      "review_rank": 120,
       "code": "5287",
       "market": "TPEX",
       "name": "數字",
@@ -19485,7 +19045,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 124,
+      "review_rank": 121,
       "code": "8016",
       "market": "TWSE",
       "name": "矽創",
@@ -19595,7 +19155,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 125,
+      "review_rank": 122,
       "code": "3515",
       "market": "TWSE",
       "name": "華擎",
@@ -19705,7 +19265,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 126,
+      "review_rank": 123,
       "code": "8463",
       "market": "TWSE",
       "name": "潤泰材",
@@ -19814,7 +19374,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 127,
+      "review_rank": 124,
       "code": "6525",
       "market": "TWSE",
       "name": "捷敏-KY",
@@ -19923,7 +19483,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 128,
+      "review_rank": 125,
       "code": "6967",
       "market": "TPEX",
       "name": "汎瑋材料",
@@ -20032,7 +19592,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 129,
+      "review_rank": 126,
       "code": "8284",
       "market": "TPEX",
       "name": "三竹",
@@ -20142,7 +19702,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 130,
+      "review_rank": 127,
       "code": "6679",
       "market": "TPEX",
       "name": "鈺太",
@@ -20252,7 +19812,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 131,
+      "review_rank": 128,
       "code": "6532",
       "market": "TPEX",
       "name": "瑞耘",
@@ -20362,7 +19922,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 132,
+      "review_rank": 129,
       "code": "1451",
       "market": "TWSE",
       "name": "年興",
@@ -20475,7 +20035,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 133,
+      "review_rank": 130,
       "code": "6951",
       "market": "TWSE",
       "name": "青新-創",
@@ -20585,7 +20145,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 134,
+      "review_rank": 131,
       "code": "6922",
       "market": "TPEX",
       "name": "宸曜",
@@ -20695,7 +20255,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 135,
+      "review_rank": 132,
       "code": "1773",
       "market": "TWSE",
       "name": "勝一",
@@ -20804,7 +20364,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 136,
+      "review_rank": 133,
       "code": "3628",
       "market": "TPEX",
       "name": "盈正",
@@ -20916,7 +20476,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 137,
+      "review_rank": 134,
       "code": "2605",
       "market": "TWSE",
       "name": "新興",
@@ -21028,7 +20588,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 138,
+      "review_rank": 135,
       "code": "1590",
       "market": "TWSE",
       "name": "亞德客-KY",
@@ -21138,7 +20698,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 139,
+      "review_rank": 136,
       "code": "6556",
       "market": "TPEX",
       "name": "勝品",
@@ -21247,7 +20807,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 140,
+      "review_rank": 137,
       "code": "4417",
       "market": "TPEX",
       "name": "金洲",
@@ -21357,7 +20917,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 141,
+      "review_rank": 138,
       "code": "1904",
       "market": "TWSE",
       "name": "正隆",
@@ -21467,7 +21027,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 142,
+      "review_rank": 139,
       "code": "1459",
       "market": "TWSE",
       "name": "聯發",
@@ -21577,7 +21137,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 143,
+      "review_rank": 140,
       "code": "2478",
       "market": "TWSE",
       "name": "大毅",
@@ -21686,7 +21246,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 144,
+      "review_rank": 141,
       "code": "3596",
       "market": "TWSE",
       "name": "智易",
@@ -21796,7 +21356,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 145,
+      "review_rank": 142,
       "code": "3044",
       "market": "TWSE",
       "name": "健鼎",
@@ -21907,7 +21467,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 146,
+      "review_rank": 143,
       "code": "4952",
       "market": "TWSE",
       "name": "凌通",
@@ -22017,7 +21577,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 147,
+      "review_rank": 144,
       "code": "6170",
       "market": "TPEX",
       "name": "統振",
@@ -22128,7 +21688,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 148,
+      "review_rank": 145,
       "code": "5493",
       "market": "TPEX",
       "name": "三聯",
@@ -22239,7 +21799,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 149,
+      "review_rank": 146,
       "code": "2762",
       "market": "TWSE",
       "name": "世界健身-KY",
@@ -22348,7 +21908,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 150,
+      "review_rank": 147,
       "code": "6592",
       "market": "TWSE",
       "name": "和潤企業",
@@ -22457,7 +22017,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 151,
+      "review_rank": 148,
       "code": "2363",
       "market": "TWSE",
       "name": "矽統",
@@ -22571,7 +22131,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 152,
+      "review_rank": 149,
       "code": "5288",
       "market": "TWSE",
       "name": "豐祥-KY",
@@ -22682,7 +22242,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 153,
+      "review_rank": 150,
       "code": "6581",
       "market": "TWSE",
       "name": "鋼聯",
@@ -22791,7 +22351,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 154,
+      "review_rank": 151,
       "code": "9951",
       "market": "TPEX",
       "name": "皇田",
@@ -22901,7 +22461,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 155,
+      "review_rank": 152,
       "code": "6752",
       "market": "TPEX",
       "name": "叡揚",
@@ -23012,7 +22572,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 156,
+      "review_rank": 153,
       "code": "6531",
       "market": "TWSE",
       "name": "愛普*",
@@ -23124,7 +22684,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 157,
+      "review_rank": 154,
       "code": "4543",
       "market": "TPEX",
       "name": "萬在",
@@ -23235,7 +22795,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 158,
+      "review_rank": 155,
       "code": "2420",
       "market": "TWSE",
       "name": "新巨",
@@ -23344,7 +22904,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 159,
+      "review_rank": 156,
       "code": "2752",
       "market": "TPEX",
       "name": "豆府",
@@ -23453,7 +23013,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 160,
+      "review_rank": 157,
       "code": "6761",
       "market": "TPEX",
       "name": "穩得",
@@ -23563,7 +23123,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 161,
+      "review_rank": 158,
       "code": "4107",
       "market": "TPEX",
       "name": "邦特",
@@ -23672,7 +23232,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 162,
+      "review_rank": 159,
       "code": "2637",
       "market": "TWSE",
       "name": "慧洋-KY",
@@ -23782,7 +23342,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 163,
+      "review_rank": 160,
       "code": "6115",
       "market": "TWSE",
       "name": "鎰勝",
@@ -23892,7 +23452,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 164,
+      "review_rank": 161,
       "code": "6416",
       "market": "TWSE",
       "name": "瑞祺電通",
@@ -24002,7 +23562,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 165,
+      "review_rank": 162,
       "code": "7708",
       "market": "TPEX",
       "name": "全家餐飲",
@@ -24111,7 +23671,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 166,
+      "review_rank": 163,
       "code": "3652",
       "market": "TWSE",
       "name": "精聯",
@@ -24221,7 +23781,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 167,
+      "review_rank": 164,
       "code": "2640",
       "market": "TPEX",
       "name": "大車隊",
@@ -24330,7 +23890,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 168,
+      "review_rank": 165,
       "code": "2070",
       "market": "TPEX",
       "name": "精湛",
@@ -24441,7 +24001,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 169,
+      "review_rank": 166,
       "code": "2108",
       "market": "TWSE",
       "name": "南帝",
@@ -24550,7 +24110,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 170,
+      "review_rank": 167,
       "code": "8150",
       "market": "TWSE",
       "name": "南茂",
@@ -24660,7 +24220,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 171,
+      "review_rank": 168,
       "code": "3168",
       "market": "TWSE",
       "name": "眾福科",
@@ -24770,7 +24330,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 172,
+      "review_rank": 169,
       "code": "6291",
       "market": "TPEX",
       "name": "沛亨",
@@ -24881,7 +24441,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 173,
+      "review_rank": 170,
       "code": "3661",
       "market": "TWSE",
       "name": "世芯-KY",
@@ -24996,7 +24556,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 174,
+      "review_rank": 171,
       "code": "6667",
       "market": "TPEX",
       "name": "信紘科",
@@ -25106,7 +24666,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 175,
+      "review_rank": 172,
       "code": "1513",
       "market": "TWSE",
       "name": "中興電",
@@ -25215,7 +24775,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 176,
+      "review_rank": 173,
       "code": "6690",
       "market": "TPEX",
       "name": "安碁資訊",
@@ -25324,7 +24884,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 177,
+      "review_rank": 174,
       "code": "9934",
       "market": "TWSE",
       "name": "成霖",
@@ -25434,7 +24994,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 178,
+      "review_rank": 175,
       "code": "3611",
       "market": "TPEX",
       "name": "鼎翰",
@@ -25544,7 +25104,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 179,
+      "review_rank": 176,
       "code": "2496",
       "market": "TWSE",
       "name": "卓越",
@@ -25655,7 +25215,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 180,
+      "review_rank": 177,
       "code": "4571",
       "market": "TWSE",
       "name": "鈞興-KY",
@@ -25765,7 +25325,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 181,
+      "review_rank": 178,
       "code": "2356",
       "market": "TWSE",
       "name": "英業達",
@@ -25876,7 +25436,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 182,
+      "review_rank": 179,
       "code": "6112",
       "market": "TWSE",
       "name": "邁達特",
@@ -25986,7 +25546,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 183,
+      "review_rank": 180,
       "code": "3051",
       "market": "TWSE",
       "name": "力特",
@@ -26095,7 +25655,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 184,
+      "review_rank": 181,
       "code": "4506",
       "market": "TPEX",
       "name": "崇友",
@@ -26204,7 +25764,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 185,
+      "review_rank": 182,
       "code": "2415",
       "market": "TWSE",
       "name": "錩新",
@@ -26317,7 +25877,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 186,
+      "review_rank": 183,
       "code": "4175",
       "market": "TPEX",
       "name": "杏一",
@@ -26427,7 +25987,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 187,
+      "review_rank": 184,
       "code": "3570",
       "market": "TPEX",
       "name": "大塚",
@@ -26538,7 +26098,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 188,
+      "review_rank": 185,
       "code": "5269",
       "market": "TWSE",
       "name": "祥碩",
@@ -26648,7 +26208,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 189,
+      "review_rank": 186,
       "code": "9905",
       "market": "TWSE",
       "name": "大華",
@@ -26759,7 +26319,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 190,
+      "review_rank": 187,
       "code": "6277",
       "market": "TWSE",
       "name": "宏正",
@@ -26868,7 +26428,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 191,
+      "review_rank": 188,
       "code": "1726",
       "market": "TWSE",
       "name": "永記",
@@ -26977,7 +26537,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 192,
+      "review_rank": 189,
       "code": "6161",
       "market": "TPEX",
       "name": "捷波",
@@ -27088,7 +26648,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 193,
+      "review_rank": 190,
       "code": "8261",
       "market": "TWSE",
       "name": "富鼎",
@@ -27198,7 +26758,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 194,
+      "review_rank": 191,
       "code": "3622",
       "market": "TWSE",
       "name": "洋華",
@@ -27310,7 +26870,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 195,
+      "review_rank": 192,
       "code": "3310",
       "market": "TPEX",
       "name": "佳穎",
@@ -27419,7 +26979,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 196,
+      "review_rank": 193,
       "code": "3577",
       "market": "TPEX",
       "name": "泓格",
@@ -27528,7 +27088,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 197,
+      "review_rank": 194,
       "code": "8279",
       "market": "TPEX",
       "name": "生展",
@@ -27637,7 +27197,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 198,
+      "review_rank": 195,
       "code": "6596",
       "market": "TPEX",
       "name": "寬宏藝術",
@@ -27747,7 +27307,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 199,
+      "review_rank": 196,
       "code": "6568",
       "market": "TPEX",
       "name": "宏觀",
@@ -27857,7 +27417,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 200,
+      "review_rank": 197,
       "code": "1580",
       "market": "TPEX",
       "name": "新麥",
@@ -27968,7 +27528,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 201,
+      "review_rank": 198,
       "code": "6239",
       "market": "TWSE",
       "name": "力成",
@@ -28078,7 +27638,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 202,
+      "review_rank": 199,
       "code": "6585",
       "market": "TWSE",
       "name": "鼎基",
@@ -28187,7 +27747,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 203,
+      "review_rank": 200,
       "code": "8155",
       "market": "TPEX",
       "name": "博智",
@@ -28299,7 +27859,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 204,
+      "review_rank": 201,
       "code": "2317",
       "market": "TWSE",
       "name": "鴻海",
@@ -28412,7 +27972,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 205,
+      "review_rank": 202,
       "code": "2476",
       "market": "TWSE",
       "name": "鉅祥",
@@ -28524,7 +28084,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 206,
+      "review_rank": 203,
       "code": "5536",
       "market": "TPEX",
       "name": "聖暉*",
@@ -28636,7 +28196,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 207,
+      "review_rank": 204,
       "code": "6669",
       "market": "TWSE",
       "name": "緯穎",
@@ -28749,7 +28309,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 208,
+      "review_rank": 205,
       "code": "3013",
       "market": "TWSE",
       "name": "晟銘電",
@@ -28860,7 +28420,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 209,
+      "review_rank": 206,
       "code": "8210",
       "market": "TWSE",
       "name": "勤誠",
@@ -28971,7 +28531,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 210,
+      "review_rank": 207,
       "code": "3324",
       "market": "TPEX",
       "name": "雙鴻",
@@ -29083,7 +28643,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 211,
+      "review_rank": 208,
       "code": "6913",
       "market": "TPEX",
       "name": "鴻呈",
@@ -29193,7 +28753,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 212,
+      "review_rank": 209,
       "code": "6629",
       "market": "TPEX",
       "name": "泰金-KY",
@@ -29306,7 +28866,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 213,
+      "review_rank": 210,
       "code": "3587",
       "market": "TPEX",
       "name": "閎康",
@@ -29417,7 +28977,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 214,
+      "review_rank": 211,
       "code": "2467",
       "market": "TWSE",
       "name": "志聖",
@@ -29528,7 +29088,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 215,
+      "review_rank": 212,
       "code": "2329",
       "market": "TWSE",
       "name": "華泰",
@@ -29638,7 +29198,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 216,
+      "review_rank": 213,
       "code": "4442",
       "market": "TPEX",
       "name": "竣邦-KY",
@@ -29749,7 +29309,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 217,
+      "review_rank": 214,
       "code": "6584",
       "market": "TPEX",
       "name": "南俊國際",
@@ -29861,7 +29421,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 218,
+      "review_rank": 215,
       "code": "5212",
       "market": "TPEX",
       "name": "凌網",
@@ -29973,7 +29533,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 219,
+      "review_rank": 216,
       "code": "4439",
       "market": "TWSE",
       "name": "冠星-KY",
@@ -30085,7 +29645,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 220,
+      "review_rank": 217,
       "code": "3526",
       "market": "TPEX",
       "name": "凡甲",
@@ -30195,7 +29755,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 221,
+      "review_rank": 218,
       "code": "8438",
       "market": "TWSE",
       "name": "昶昕",
@@ -30305,7 +29865,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 222,
+      "review_rank": 219,
       "code": "8936",
       "market": "TPEX",
       "name": "國統",
@@ -30416,7 +29976,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 223,
+      "review_rank": 220,
       "code": "6546",
       "market": "TPEX",
       "name": "正基",
@@ -30527,7 +30087,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 224,
+      "review_rank": 221,
       "code": "8074",
       "market": "TPEX",
       "name": "鉅橡",
@@ -30637,7 +30197,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 225,
+      "review_rank": 222,
       "code": "2745",
       "market": "TPEX",
       "name": "五福",
@@ -30748,7 +30308,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 226,
+      "review_rank": 223,
       "code": "6285",
       "market": "TWSE",
       "name": "啟碁",
@@ -30859,7 +30419,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 227,
+      "review_rank": 224,
       "code": "6894",
       "market": "TPEX",
       "name": "衛司特",
@@ -30971,7 +30531,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 228,
+      "review_rank": 225,
       "code": "3665",
       "market": "TWSE",
       "name": "貿聯-KY",
@@ -31083,7 +30643,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 229,
+      "review_rank": 226,
       "code": "9935",
       "market": "TWSE",
       "name": "慶豐富",
@@ -31193,7 +30753,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 230,
+      "review_rank": 227,
       "code": "8478",
       "market": "TWSE",
       "name": "東哥遊艇",
@@ -31305,7 +30865,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 231,
+      "review_rank": 228,
       "code": "3684",
       "market": "TPEX",
       "name": "榮昌",
@@ -31416,7 +30976,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 232,
+      "review_rank": 229,
       "code": "6197",
       "market": "TWSE",
       "name": "佳必琪",
@@ -31526,7 +31086,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 233,
+      "review_rank": 230,
       "code": "9939",
       "market": "TWSE",
       "name": "宏全",
@@ -31636,7 +31196,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 234,
+      "review_rank": 231,
       "code": "3303",
       "market": "TPEX",
       "name": "岱稜",
@@ -31746,7 +31306,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 235,
+      "review_rank": 232,
       "code": "6509",
       "market": "TPEX",
       "name": "聚和",
@@ -31856,7 +31416,7 @@
       "research_decision": "REVIEW_ONLY_NOT_BUY"
     },
     {
-      "review_rank": 236,
+      "review_rank": 233,
       "code": "6570",
       "market": "TPEX",
       "name": "維田",

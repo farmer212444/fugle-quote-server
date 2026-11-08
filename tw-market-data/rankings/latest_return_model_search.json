@@ -1,11 +1,11 @@
 {
   "schema": "RETURN_MODEL_SEARCH_STATUS_V1",
-  "observed_at": "2026-11-08T21:49:06.265495+00:00",
+  "observed_at": "2026-11-08T22:36:51.787109+00:00",
   "model": "V8.10.8",
-  "estimate_vintage": "2026-11-09T05:48:25.290564+08:00",
+  "estimate_vintage": "2026-11-09T06:36:16.199146+08:00",
   "asof_price_date": "2026-11-06",
-  "experiment_id": "search-26be2238827e1a1053cac4be",
-  "registered_at": "2026-11-08T14:37:15.264667+00:00",
+  "experiment_id": "search-49d43ba006f339cd5beb73c7",
+  "registered_at": "2026-11-08T22:36:46.250669+00:00",
   "policy_sha256": "a8caafb110e3214eedafcb0dc02e63e9b98e5699d6dece7eb82e92d587e3d43b",
   "parameter_count": 240,
   "parameters": [
@@ -2976,12 +2976,12 @@
       "trade_orders_created": 0,
       "holding_sessions": 21,
       "parameter_count": 80,
-      "current_cohort": "e23043c4ff11ae4c9e2a6a6e",
+      "current_cohort": "6d611847040678184c42db3b",
       "current_ready_parameter_count": 48,
       "verified_return_periods": 0,
       "pending_cohorts": [
         {
-          "cohort_id": "e23043c4ff11ae4c9e2a6a6e",
+          "cohort_id": "6d611847040678184c42db3b",
           "status": "AWAITING_FUTURE_HOLDING_SESSIONS_OR_CALENDAR"
         }
       ],
@@ -3789,7 +3789,7 @@
           "inputs_ready": true
         }
       ],
-      "newly_frozen": false
+      "newly_frozen": true
     },
     {
       "latest_training_pick": {
@@ -3808,12 +3808,12 @@
       "trade_orders_created": 0,
       "holding_sessions": 63,
       "parameter_count": 80,
-      "current_cohort": "cc1aa1c7f5f04168f4ffb4db",
+      "current_cohort": "92664b048ddc72eee156b0d3",
       "current_ready_parameter_count": 48,
       "verified_return_periods": 0,
       "pending_cohorts": [
         {
-          "cohort_id": "cc1aa1c7f5f04168f4ffb4db",
+          "cohort_id": "92664b048ddc72eee156b0d3",
           "status": "AWAITING_FUTURE_HOLDING_SESSIONS_OR_CALENDAR"
         }
       ],
@@ -4621,7 +4621,7 @@
           "inputs_ready": true
         }
       ],
-      "newly_frozen": false
+      "newly_frozen": true
     },
     {
       "latest_training_pick": {
@@ -4640,12 +4640,12 @@
       "trade_orders_created": 0,
       "holding_sessions": 126,
       "parameter_count": 80,
-      "current_cohort": "fbe890b6955c4cff13af3de0",
+      "current_cohort": "7451c1bddd68c1ea337c70a8",
       "current_ready_parameter_count": 48,
       "verified_return_periods": 0,
       "pending_cohorts": [
         {
-          "cohort_id": "fbe890b6955c4cff13af3de0",
+          "cohort_id": "7451c1bddd68c1ea337c70a8",
           "status": "AWAITING_FUTURE_HOLDING_SESSIONS_OR_CALENDAR"
         }
       ],
@@ -5453,7 +5453,7 @@
           "inputs_ready": true
         }
       ],
-      "newly_frozen": false
+      "newly_frozen": true
     }
   ],
   "feature_source_errors": [],
@@ -5966,6 +5966,10 @@
     },
     {
       "market": "TPEX",
+      "code": "3217"
+    },
+    {
+      "market": "TPEX",
       "code": "3537"
     },
     {
@@ -5983,10 +5987,6 @@
     {
       "market": "TPEX",
       "code": "5439"
-    },
-    {
-      "market": "TPEX",
-      "code": "3217"
     },
     {
       "market": "TPEX",
@@ -15099,14 +15099,14 @@
     "OFFICIAL_64_SESSION_MOMENTUM_AND_ACTION_REVIEW": 859
   },
   "input_repair_queue_is_not_certified_source_data": true,
-  "all_registered_search_trials": 7680,
+  "all_registered_search_trials": 7920,
   "current_research_screens": {
     "schema": "CURRENT_REGISTERED_RESEARCH_SCREENS_V1",
     "model": "V8.10.8",
-    "estimate_vintage": "2026-11-09T05:48:25.290564+08:00",
+    "estimate_vintage": "2026-11-09T06:36:16.199146+08:00",
     "asof_price_date": "2026-11-06",
-    "features_checked_at": "2026-11-08T21:49:04.476773+00:00",
-    "experiment_id": "search-26be2238827e1a1053cac4be",
+    "features_checked_at": "2026-11-08T22:36:49.970748+00:00",
+    "experiment_id": "search-49d43ba006f339cd5beb73c7",
     "screens": [
       {
         "family": "balanced",
@@ -16190,59 +16190,11 @@
             "calibrated_win_probability": null
           },
           {
-            "code": "2483",
-            "market": "TWSE",
-            "industry": "電子零組件業",
-            "weight": 0.1,
-            "score": 0.9949494949494949,
-            "name": "百容",
-            "reference_close": 29.25,
-            "price_date": "2026-11-06",
-            "financial_period": "2026-Q3",
-            "source_tier": "MOPS_ISSUER_EARNINGS_ANNOUNCEMENT_RESEARCH",
-            "base_price_upside_pct": 141.84902364889527,
-            "bear_price_upside_pct": 20.631829236595234,
-            "eps_pe_each_minus20_price_upside_pct": 54.783375135292964,
-            "adv20_ntd": 33751220.5,
-            "features": {
-              "forward_upside_pct": 141.84902364889527,
-              "revenue_acceleration_pp": 4.754393425023862,
-              "gross_margin_delta_pp": 5.789968101557294,
-              "ocf_to_sales": 0.038915066156950805,
-              "momentum_63_21_pct": null
-            },
-            "warning_flags": [
-              "LATEST_MOPS_ISSUER_ANNOUNCEMENT_NOT_COMPLETE_FINANCIAL_STATEMENTS",
-              "CURRENT_NONOPERATING_GAINS_NOT_EXTRAPOLATED_COMPONENT_REVIEW_REQUIRED",
-              "CASHFLOW_AND_NOTES_STILL_REFER_TO_PRIOR_REVIEWED_PERIOD",
-              "BASE_PROFIT_MAJORITY_FROM_NONOPERATING_ASSUMPTION_COMPONENT_REVIEW_REQUIRED"
-            ],
-            "pending_gates": [
-              "original_eight_quarter_statements",
-              "cash_and_working_capital",
-              "nonoperating_components",
-              "fully_diluted_shares",
-              "matched_peers_and_cycle",
-              "management_promises",
-              "auditor_scope",
-              "tradability",
-              "forecast_bridge",
-              "insider_claims",
-              "dividend_window",
-              "point_in_time",
-              "out_of_sample_validation"
-            ],
-            "failed_gates": [],
-            "formal_Aplus": false,
-            "expected_net_return": null,
-            "calibrated_win_probability": null
-          },
-          {
             "code": "4912",
             "market": "TWSE",
             "industry": "電子零組件業",
             "weight": 0.1,
-            "score": 0.98989898989899,
+            "score": 0.9949494949494949,
             "name": "聯德控股-KY",
             "reference_close": 79.6,
             "price_date": "2026-11-06",
@@ -16287,7 +16239,7 @@
             "market": "TPEX",
             "industry": "綠能環保",
             "weight": 0.1,
-            "score": 0.9848484848484849,
+            "score": 0.98989898989899,
             "name": "金益鼎",
             "reference_close": 76.2,
             "price_date": "2026-11-06",
@@ -16335,7 +16287,7 @@
             "market": "TWSE",
             "industry": "光電業",
             "weight": 0.1,
-            "score": 0.9797979797979798,
+            "score": 0.9848484848484849,
             "name": "佳能",
             "reference_close": 53.4,
             "price_date": "2026-11-06",
@@ -16385,7 +16337,7 @@
             "market": "TWSE",
             "industry": "綠能環保",
             "weight": 0.1,
-            "score": 0.9747474747474747,
+            "score": 0.9797979797979798,
             "name": "山林水",
             "reference_close": 33.85,
             "price_date": "2026-11-06",
@@ -16428,84 +16380,30 @@
             "calibrated_win_probability": null
           },
           {
-            "code": "2331",
-            "market": "TWSE",
-            "industry": "電腦及週邊設備業",
-            "weight": 0.1,
-            "score": 0.9696969696969697,
-            "name": "精英",
-            "reference_close": 15.7,
-            "price_date": "2026-11-06",
-            "financial_period": "2026-Q3",
-            "source_tier": "MOPS_ISSUER_EARNINGS_ANNOUNCEMENT_RESEARCH",
-            "base_price_upside_pct": 108.46899512659931,
-            "bear_price_upside_pct": 9.959329782799408,
-            "eps_pe_each_minus20_price_upside_pct": 33.42015688102356,
-            "adv20_ntd": 18903347.5,
-            "features": {
-              "forward_upside_pct": 108.46899512659931,
-              "revenue_acceleration_pp": -35.932407276248185,
-              "gross_margin_delta_pp": -2.7346164459490634,
-              "ocf_to_sales": -0.0376742542258597,
-              "momentum_63_21_pct": null
-            },
-            "warning_flags": [
-              "LATEST_MOPS_ISSUER_ANNOUNCEMENT_NOT_COMPLETE_FINANCIAL_STATEMENTS",
-              "MARGIN_NORMALIZATION_NEEDS_ISSUER_DRIVER_REVIEW",
-              "CURRENT_NONOPERATING_GAINS_NOT_EXTRAPOLATED_COMPONENT_REVIEW_REQUIRED",
-              "CASHFLOW_AND_NOTES_STILL_REFER_TO_PRIOR_REVIEWED_PERIOD",
-              "NEGATIVE_OCF_CYCLE_AND_COLLECTION_REVIEW",
-              "YTD_GROSS_MARGIN_DECLINED",
-              "MONTHLY_OR_YTD_REVENUE_GROWTH_NONPOSITIVE",
-              "BASE_PROFIT_MAJORITY_FROM_NONOPERATING_ASSUMPTION_COMPONENT_REVIEW_REQUIRED"
-            ],
-            "pending_gates": [
-              "original_eight_quarter_statements",
-              "cash_and_working_capital",
-              "nonoperating_components",
-              "fully_diluted_shares",
-              "matched_peers_and_cycle",
-              "management_promises",
-              "auditor_scope",
-              "tradability",
-              "forecast_bridge",
-              "insider_claims",
-              "dividend_window",
-              "point_in_time",
-              "out_of_sample_validation"
-            ],
-            "failed_gates": [],
-            "formal_Aplus": false,
-            "expected_net_return": null,
-            "calibrated_win_probability": null
-          },
-          {
-            "code": "6143",
+            "code": "8155",
             "market": "TPEX",
-            "industry": "通信網路業",
+            "industry": "電子零組件業",
             "weight": 0.1,
-            "score": 0.9646464646464646,
-            "name": "振曜",
-            "reference_close": 65.1,
+            "score": 0.9747474747474747,
+            "name": "博智",
+            "reference_close": 220.5,
             "price_date": "2026-11-06",
             "financial_period": "2026-Q2",
-            "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
-            "base_price_upside_pct": 106.53845683573167,
-            "bear_price_upside_pct": 26.541434776881843,
-            "eps_pe_each_minus20_price_upside_pct": 32.18461237486827,
-            "adv20_ntd": 20954145.5,
+            "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
+            "base_price_upside_pct": 106.11943549197633,
+            "bear_price_upside_pct": 12.20868572920233,
+            "eps_pe_each_minus20_price_upside_pct": 31.916438714864846,
+            "adv20_ntd": 163691187.5,
             "features": {
-              "forward_upside_pct": 106.53845683573167,
-              "revenue_acceleration_pp": -32.99668230378015,
-              "gross_margin_delta_pp": -0.3623559319565539,
-              "ocf_to_sales": -0.027509391615343926,
+              "forward_upside_pct": 106.11943549197633,
+              "revenue_acceleration_pp": -4.387659740752525,
+              "gross_margin_delta_pp": 12.725048251526939,
+              "ocf_to_sales": 0.1465631709436663,
               "momentum_63_21_pct": null
             },
             "warning_flags": [
-              "NEGATIVE_OCF_CYCLE_AND_COLLECTION_REVIEW",
-              "YTD_GROSS_MARGIN_DECLINED",
-              "MONTHLY_OR_YTD_REVENUE_GROWTH_NONPOSITIVE",
-              "QUALIFIED_REVIEW_MATERIALITY_PENDING"
+              "CURRENT_DETAIL_IS_OFFICIAL_BATCH_SUMMARY_NOT_ORIGINAL_ISSUER_NOTES",
+              "POST_SNAPSHOT_CB_TERMS_UNVERIFIED"
             ],
             "pending_gates": [
               "original_eight_quarter_statements",
@@ -16532,7 +16430,7 @@
             "market": "TPEX",
             "industry": "化學工業",
             "weight": 0.1,
-            "score": 0.9545454545454546,
+            "score": 0.9696969696969697,
             "name": "美琪瑪",
             "reference_close": 65.7,
             "price_date": "2026-11-06",
@@ -16579,7 +16477,7 @@
             "market": "TWSE",
             "industry": "電腦及週邊設備業",
             "weight": 0.1,
-            "score": 0.9494949494949495,
+            "score": 0.9646464646464646,
             "name": "技嘉",
             "reference_close": 298.0,
             "price_date": "2026-11-06",
@@ -16600,6 +16498,99 @@
               "POST_SNAPSHOT_CB_TERMS_UNVERIFIED",
               "NEGATIVE_OCF_CYCLE_AND_COLLECTION_REVIEW",
               "YTD_GROSS_MARGIN_DECLINED",
+              "QUALIFIED_REVIEW_MATERIALITY_PENDING"
+            ],
+            "pending_gates": [
+              "original_eight_quarter_statements",
+              "cash_and_working_capital",
+              "nonoperating_components",
+              "fully_diluted_shares",
+              "matched_peers_and_cycle",
+              "management_promises",
+              "auditor_scope",
+              "tradability",
+              "forecast_bridge",
+              "insider_claims",
+              "dividend_window",
+              "point_in_time",
+              "out_of_sample_validation"
+            ],
+            "failed_gates": [],
+            "formal_Aplus": false,
+            "expected_net_return": null,
+            "calibrated_win_probability": null
+          },
+          {
+            "code": "8091",
+            "market": "TPEX",
+            "industry": "半導體業",
+            "weight": 0.1,
+            "score": 0.9595959595959596,
+            "name": "翔名",
+            "reference_close": 157.5,
+            "price_date": "2026-11-06",
+            "financial_period": "2026-Q2",
+            "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
+            "base_price_upside_pct": 102.21309918038712,
+            "bear_price_upside_pct": 14.097324918919263,
+            "eps_pe_each_minus20_price_upside_pct": 29.416383475447773,
+            "adv20_ntd": 79380428.0,
+            "features": {
+              "forward_upside_pct": 102.21309918038712,
+              "revenue_acceleration_pp": -27.330612926230835,
+              "gross_margin_delta_pp": 3.3862542106513183,
+              "ocf_to_sales": 0.06102266290973569,
+              "momentum_63_21_pct": null
+            },
+            "warning_flags": [
+              "CURRENT_DETAIL_IS_OFFICIAL_BATCH_SUMMARY_NOT_ORIGINAL_ISSUER_NOTES"
+            ],
+            "pending_gates": [
+              "original_eight_quarter_statements",
+              "cash_and_working_capital",
+              "nonoperating_components",
+              "fully_diluted_shares",
+              "matched_peers_and_cycle",
+              "management_promises",
+              "auditor_scope",
+              "tradability",
+              "forecast_bridge",
+              "insider_claims",
+              "dividend_window",
+              "point_in_time",
+              "out_of_sample_validation"
+            ],
+            "failed_gates": [],
+            "formal_Aplus": false,
+            "expected_net_return": null,
+            "calibrated_win_probability": null
+          },
+          {
+            "code": "8383",
+            "market": "TPEX",
+            "industry": "半導體業",
+            "weight": 0.1,
+            "score": 0.9545454545454546,
+            "name": "千附",
+            "reference_close": 57.0,
+            "price_date": "2026-11-06",
+            "financial_period": "2026-Q2",
+            "source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
+            "base_price_upside_pct": 101.79211657546236,
+            "bear_price_upside_pct": 35.85867828631037,
+            "eps_pe_each_minus20_price_upside_pct": 29.14695460829593,
+            "adv20_ntd": 54600542.5,
+            "features": {
+              "forward_upside_pct": 101.79211657546236,
+              "revenue_acceleration_pp": 20.69780499695597,
+              "gross_margin_delta_pp": -3.676487078922958,
+              "ocf_to_sales": 0.04519873234786952,
+              "momentum_63_21_pct": null
+            },
+            "warning_flags": [
+              "YTD_GROSS_MARGIN_DECLINED",
+              "ORIGINAL_CONTRACT_ASSETS_AR_AP_AR_ECL_SUBCHECK_NOT_FULL_CASH_GATE",
+              "ISSUER_ORIGINAL_PDF_QUALIFIED_AUDITOR_SCOPE_NOT_FORMAL_PASS",
               "QUALIFIED_REVIEW_MATERIALITY_PENDING"
             ],
             "pending_gates": [
