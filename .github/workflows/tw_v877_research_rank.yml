@@ -241,7 +241,7 @@ jobs:
       - name: Validate model controls and independent 6206 triage
         run: |
           python scripts/tw_v880_run.py --self-test
-          python -m unittest -v tests.test_readiness_lanes tests.test_aplus_work_queue_repair tests.test_2330_2317_dual_lane tests.test_research_pipeline
+          python -m unittest -v tests.test_readiness_lanes tests.test_aplus_work_queue_repair tests.test_2330_2317_dual_lane tests.test_dual_focus_publication tests.test_research_pipeline
           python -m unittest -v tests.test_tsmc_original_statements
           python -m unittest -v tests.test_tsmc_sec_filing_archive
           python -m unittest -v tests.test_footwear_review
@@ -277,6 +277,8 @@ jobs:
         run: python scripts/v891_gate_certification.py --issue-only
       - name: Produce dated scenarios and evidence decisions
         run: python scripts/run_research_pipeline.py --phase core
+      - name: Verify 2330/2317 generated report matches its evidence ledger
+        run: python scripts/verify_dual_focus_publication.py
       - name: Verify 0056 constituent 2027 EPS/PE stresses from exact archived model
         run: |
           python -m unittest discover -s tests -p test_v8b5_0056_stress.py
@@ -322,6 +324,7 @@ jobs:
             python scripts/v8b5_0056_stress_audit.py --root tw-market-data --out tw-market-data/rankings/0056_2027_stress_latest.json
             python scripts/v8b6_0056_financial_pb_hurdle.py --root tw-market-data --out tw-market-data/rankings/0056_financial_pb_hurdle_latest.json
             python scripts/v8b7_0056_financial_hurdle_sensitivity.py --root tw-market-data --out tw-market-data/rankings/0056_financial_pb_sensitivity_latest.json
+            python scripts/verify_dual_focus_publication.py
             git add tw-market-data/evidence/v880 tw-market-data/rankings tw-market-data/pit_vintages tw-market-data/experiments tw-market-data/benchmarks
             if git diff --cached --quiet; then exit 0; fi
             git commit -m 'data: refresh institutional research, earnings revisions and evidence status'
