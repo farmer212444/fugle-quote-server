@@ -71,7 +71,7 @@ def pdf_identity(raw,period):
         raise ValueError("HONHAI_INVALID_COMPLETE_PDF")
     year=int(period[:4]);quarter=int(period[-1]);roc=year-1911
     expected=(f"民國{roc}年度及{roc-1}年度" if quarter==4
-              else f"民國{roc}年及{roc-1}年第{quarter}季")
+              else f"民國{roc}年及{roc-1}年第{(chr(0x4e00),chr(0x4e8c),chr(0x4e09))[quarter-1]}季")
     with fitz.open(stream=raw,filetype="pdf") as doc:
         if not 20<=len(doc)<=300:raise ValueError("HONHAI_FULL_STATEMENT_PAGE_COUNT_INVALID")
         cover=re.sub(r"\s+","",doc[0].get_text())
