@@ -297,6 +297,10 @@ def main():
     last=a.last_quarter or json.loads((root/'fundamentals/latest_scan.json').read_text())['last_eligible_quarter']
     result=collect(root,last)
     report={k:result[k] for k in ('issuer','records','coverage','fetch_errors','formal_pass_count')}
+    # A deferred HTTP 403 is not a fresh fetch failure. Publish the bounded
+    # retry state explicitly so downstream triage can distinguish the two.
+    report['http403_retry_deferred_quarters']=result.get('http403_retry_deferred_quarters',[])
+    report['http403_retry_due_at_utc']=result.get('http403_retry_due_at_utc')
     report['source_window_end']=last
     report['checked_at_utc']=dt.datetime.now(dt.timezone.utc).isoformat()
     report['documents']=[{k:d[k] for k in ('period','title','source_url','archive_path','sha256','bytes','captured_at_utc','pdf_identity')} for d in result['documents']]
@@ -315,7 +319,12 @@ def main():
     if result['coverage']['missing_quarters']:
         lines+=['','缺少原件：'+', '.join(result['coverage']['missing_quarters'])]
     if result['fetch_errors']:
-        lines+=['','本輪來源錯誤：']+[f"- {e['period']}：{e['error']}" for e in result['fetch_errors']]
+        lines+=['','本輪來源錯誤（包含保留的上一輪403）：']+[f"- {e['period']}：{e['error']}" for e in result['fetch_errors']]
+    if report['http403_retry_deferred_quarters']:
+        lines += ['','本次 HTTP 403 有界重試保護：暫停重試 '+
+                  ', '.join(report['http403_retry_deferred_quarters'])+
+                  '；下一次允許重新嘗試時間 '+str(report['http403_retry_due_at_utc'])+
+                  '。未進行網路重試，不代表檔案已下載或財報已核閱。']
     from scripts.tw_v880_run import atomic
     atomic(root/'rankings/tsmc_original_statements_intake.md','\n'.join(lines)+'\n')
     print(json.dumps({k:result[k] for k in ('issuer','records','coverage','fetch_errors','formal_pass_count')},ensure_ascii=False))
