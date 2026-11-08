@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Archive only exact verified Foxconn issuer PDF originals; never issue a PASS.
 
-Initial allowlist is three independently located full consolidated statements.
+Initial allowlist contains independently located full consolidated statements.
 Missing quarters and inaccessible bytes remain PENDING, never zero evidence or PASS.
 """
 import argparse
@@ -26,10 +26,15 @@ MANIFEST=FOLDER+"/manifest.json"
 MAX_PDF_BYTES=30_000_000
 HTTP403_RETRY=dt.timedelta(hours=24)
 KNOWN={
+ "2024-Q3":"https://image.honhai.com/financy_by_quarterly/2024Q3_consolidared_report%28c%29.pdf",
+ "2024-Q4":"https://image.honhai.com/financy_by_quarterly/2024Q4_consolidared_report%28c%29.pdf",
+ "2025-Q1":"https://image.honhai.com/financy_by_quarterly/2025Q1_consolidared_report%28c%29_1747304642.pdf",
+ "2025-Q3":"https://image.honhai.com/upload/202511/financy_by_quarterly/2025Q3_consolidared_report%28c%29_20251114_4728.pdf",
  "2025-Q2":"https://image.honhai.com/upload/202508/financy_by_quarterly/2025Q2_consolidared_report%28c%29_20250814_9796.pdf",
  "2025-Q4":"https://image.honhai.com/upload/202603/financy_by_quarterly/2025Q4_consolidared_report%28c%29_20260316_8056.pdf",
  "2026-Q1":"https://image.honhai.com/upload/202605/financy_by_quarterly/2026Q1_consolidared_report%28c%29_20260515_2694.pdf",
 }
+CHINESE_QUARTERS=("一","二","三")
 SECTIONS=("會計師","合併資產負債表","合併綜合損益表",
           "合併權益變動表","合併現金流量表","合併財務報表附註")
 
@@ -71,7 +76,7 @@ def pdf_identity(raw,period):
         raise ValueError("HONHAI_INVALID_COMPLETE_PDF")
     year=int(period[:4]);quarter=int(period[-1]);roc=year-1911
     expected=(f"民國{roc}年度及{roc-1}年度" if quarter==4
-              else f"民國{roc}年及{roc-1}年第{quarter}季")
+              else f"民國{roc}年及{roc-1}年第{CHINESE_QUARTERS[quarter-1]}季")
     with fitz.open(stream=raw,filetype="pdf") as doc:
         if not 20<=len(doc)<=300:raise ValueError("HONHAI_FULL_STATEMENT_PAGE_COUNT_INVALID")
         cover=re.sub(r"\s+","",doc[0].get_text())
