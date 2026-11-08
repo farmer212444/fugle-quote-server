@@ -66,6 +66,8 @@ on:
       - 'scripts/v8a9_8383_original_archive.py'
       - 'scripts/tsmc_original_statements.py'
       - 'scripts/honhai_original_statements.py'
+      - 'scripts/honhai_twse_q2_source.py'
+      - 'tests/test_2317_twse_q2_source.py'
       - 'scripts/tsmc_sec_filing_archive.py'
       - 'tw-market-data/evidence/v880/auditor_scope_watch/**'
       - 'scripts/v8a8_forward_top30_0050.py'
@@ -155,6 +157,8 @@ on:
       - 'scripts/v8a9_8383_original_archive.py'
       - 'scripts/tsmc_original_statements.py'
       - 'scripts/honhai_original_statements.py'
+      - 'scripts/honhai_twse_q2_source.py'
+      - 'tests/test_2317_twse_q2_source.py'
       - 'scripts/tsmc_sec_filing_archive.py'
       - 'tw-market-data/evidence/v880/auditor_scope_watch/**'
       - 'scripts/v8a8_forward_top30_0050.py'
@@ -251,6 +255,7 @@ jobs:
           python -m unittest -v tests.test_readiness_lanes tests.test_aplus_work_queue_repair tests.test_2330_2317_dual_lane tests.test_dual_focus_publication tests.test_research_pipeline
           python -m unittest -v tests.test_tsmc_original_statements
           python -m unittest -v tests.test_2317_original_statements
+          python -m unittest -v tests.test_2317_twse_q2_source
           python -m unittest -v tests.test_tsmc_sec_filing_archive
           python -m unittest -v tests.test_footwear_review
           python -m unittest -v tests.test_earnings_version_review

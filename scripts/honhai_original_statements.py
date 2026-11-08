@@ -19,6 +19,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from scripts.run_research_pipeline import atomic_json
+from scripts import honhai_twse_q2_source as twse_q2
 
 SCHEMA="HONHAI_2317_FULL_ISSUER_PDF_ARCHIVE_V1"
 FOLDER="evidence/v880/originals/2317/full_statements"
@@ -33,6 +34,7 @@ KNOWN={
  "2025-Q2":"https://image.honhai.com/upload/202508/financy_by_quarterly/2025Q2_consolidared_report%28c%29_20250814_9796.pdf",
  "2025-Q4":"https://image.honhai.com/upload/202603/financy_by_quarterly/2025Q4_consolidared_report%28c%29_20260316_8056.pdf",
  "2026-Q1":"https://image.honhai.com/upload/202605/financy_by_quarterly/2026Q1_consolidared_report%28c%29_20260515_2694.pdf",
+ "2026-Q2":twse_q2.INDEX_URL,
 }
 CHINESE_QUARTERS=("一","二","三")
 SECTIONS=("會計師","合併資產負債表","合併綜合損益表",
@@ -60,6 +62,7 @@ def safe(root,relative):
 
 def fetch(url):
     if url not in KNOWN.values():raise ValueError("HONHAI_URL_NOT_VERIFIED_ALLOWLIST")
+    if url==twse_q2.INDEX_URL:return twse_q2.download()
     req=urllib.request.Request(url,headers={
         "User-Agent":"Mozilla/5.0 (issuer financial original preservation)",
         "Accept":"application/pdf"})
@@ -96,6 +99,58 @@ def pdf_identity(raw,period):
                     filing_release_PIT_verified=False,
                     formal_gate_pass=False)
 
+def store_source_bytes(root,rel,raw):
+    target=safe(root,rel)
+    target.parent.mkdir(parents=True,exist_ok=True)
+    if target.exists():
+        if target.read_bytes()!=raw:
+            raise ValueError("HONHAI_IMMUTABLE_SOURCE_CONFLICT")
+    else:
+        with target.open("xb") as output:
+            output.write(raw)
+
+def archive_twse_provenance(root,proof):
+    if not isinstance(proof,dict) or set(proof)!={
+            "index_bytes","resolution_bytes","resolved_pdf_url"}:
+        raise ValueError("HONHAI_TWSE_OFFICIAL_PROVENANCE_REQUIRED")
+    index=proof["index_bytes"];resolver=proof["resolution_bytes"]
+    base=twse_q2.provenance_from_bytes(
+        index,resolver,proof["resolved_pdf_url"])
+    for kind,raw in (("index",index),("resolution",resolver)):
+        digest=sha(raw)
+        rel=f"{FOLDER}/twse_{kind}_{digest[:20]}.html"
+        store_source_bytes(root,rel,raw)
+        base[kind+"_sha256"]=digest
+        base[kind+"_archive_path"]=rel
+    return base
+
+def validate_twse_provenance(root,entry):
+    proof=entry.get("twse_provenance")
+    if not isinstance(proof,dict) or set(proof)!={
+            "official_index_url","official_filename","expected_bytes",
+            "resolved_pdf_url","index_sha256","index_archive_path",
+            "resolution_sha256","resolution_archive_path"}:
+        raise ValueError("HONHAI_TWSE_PROVENANCE_SCHEMA_MISSING")
+    if entry["bytes"]!=twse_q2.EXPECTED_BYTES:
+        raise ValueError("HONHAI_TWSE_OFFICIAL_PDF_SIZE_MISMATCH")
+    raw={}
+    for kind in ("index","resolution"):
+        digest=proof[kind+"_sha256"]
+        if not isinstance(digest,str) or not re.fullmatch("[0-9a-f]{64}",digest):
+            raise ValueError("HONHAI_TWSE_PROVENANCE_HASH_INVALID")
+        rel=f"{FOLDER}/twse_{kind}_{digest[:20]}.html"
+        if proof[kind+"_archive_path"]!=rel:
+            raise ValueError("HONHAI_TWSE_PROVENANCE_PATH_INVALID")
+        body=safe(root,rel).read_bytes()
+        if sha(body)!=digest:
+            raise ValueError("HONHAI_TWSE_PROVENANCE_REHASH_FAILED")
+        raw[kind]=body
+    recomputed=twse_q2.provenance_from_bytes(
+        raw["index"],raw["resolution"],proof["resolved_pdf_url"])
+    for key in ("official_index_url","official_filename","expected_bytes","resolved_pdf_url"):
+        if proof[key]!=recomputed[key]:
+            raise ValueError("HONHAI_TWSE_PROVENANCE_ORIGINAL_IDENTITY_MISMATCH")
+
 def validate_archive(root,last,asof):
     root=Path(root).resolve();required=window(last);cut=aware(asof)
     manifest=safe(root,MANIFEST)
@@ -127,6 +182,9 @@ def validate_archive(root,last,asof):
             raise ValueError("HONHAI_PDF_REHASH_OR_SIZE_FAILED")
         if pdf_identity(raw,period)!=entry["pdf_identity"]:
             raise ValueError("HONHAI_ORIGINAL_IDENTITY_CHANGED")
+        if period=="2026-Q2":validate_twse_provenance(root,entry)
+        elif entry.get("twse_provenance") is not None:
+            raise ValueError("HONHAI_UNEXPECTED_TWSE_PROVENANCE")
         docs.append(entry)
     found=sorted(set(required)&seen)
     cover=dict(required_quarters=required,found_quarters=found,
@@ -163,18 +221,32 @@ def collect(root,last,*,fetcher=fetch,clock=lambda:dt.datetime.now(dt.timezone.u
     for period,url in due:
         attempted=True
         try:
-            raw=fetcher(url)
+            download=fetcher(url)
+            if period=="2026-Q2":
+                if not isinstance(download,tuple) or len(download)!=2:
+                    raise ValueError("HONHAI_TWSE_DOWNLOAD_PROVENANCE_REQUIRED")
+                raw,twse_proof=download
+            else:
+                if isinstance(download,tuple):
+                    raise ValueError("HONHAI_UNEXPECTED_SOURCE_PROVENANCE")
+                raw=download;twse_proof=None
             identity=pdf_identity(raw,period)
+            if period=="2026-Q2" and len(raw)!=twse_q2.EXPECTED_BYTES:
+                raise ValueError("HONHAI_TWSE_OFFICIAL_PDF_SIZE_MISMATCH")
+            provenance=(archive_twse_provenance(root,twse_proof)
+                        if twse_proof is not None else None)
             digest=sha(raw);rel=f"{FOLDER}/{period}_{digest[:20]}.pdf"
             target=safe(root,rel);target.parent.mkdir(parents=True,exist_ok=True)
             if target.exists():
                 if target.read_bytes()!=raw:raise ValueError("HONHAI_IMMUTABLE_SOURCE_CONFLICT")
             else:
                 with target.open("xb") as f:f.write(raw)
-            manifest["documents"].append(dict(period=period,source_url=url,
+            entry=dict(period=period,source_url=url,
                 sha256=digest,bytes=len(raw),archive_path=rel,
                 captured_at_utc=clock().isoformat(),pdf_identity=identity,
-                formal_gate_pass=False))
+                formal_gate_pass=False)
+            if provenance is not None:entry["twse_provenance"]=provenance
+            manifest["documents"].append(entry)
         except (OSError,ValueError,RuntimeError,EOFError) as e:
             errors.append(dict(period=period,error=type(e).__name__+":"+str(e)))
     # Keep genuine HTTP403 failures during deferred retry; other errors are
