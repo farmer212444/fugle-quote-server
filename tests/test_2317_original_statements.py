@@ -46,27 +46,27 @@ class HonhaiOriginalIntakeTests(unittest.TestCase):
     def fetcher(self,url):
         return self.raw[self.urls[url]]
 
-    def test_three_sha_archived_without_certificate_or_fake_eight_quarter_coverage(self):
+    def test_official_allowlisted_pdfs_archive_without_certificate_or_fake_eight_quarter_coverage(self):
         report=h.collect(self.root,"2026-Q2",fetcher=self.fetcher,clock=lambda:STAMP)
-        self.assertEqual(report["records"],3)
+        self.assertEqual(report["records"],len(h.KNOWN))
         self.assertEqual(report["coverage"]["required_quarters"],h.window("2026-Q2"))
         self.assertEqual(report["coverage"]["found_quarters"],sorted(h.KNOWN))
-        self.assertEqual(len(report["coverage"]["missing_quarters"]),5)
+        self.assertEqual(len(report["coverage"]["missing_quarters"]),8-len(h.KNOWN))
         self.assertFalse(report["coverage"]["formal_gate_pass"])
         self.assertEqual(report["formal_pass_count"],0)
         self.assertTrue(report["original_archive_hashes_verified"])
         self.assertTrue(all(x["pdf_identity"]["contents_four_statements_notes_and_auditor_listed"]
                             for x in report["documents"]))
         self.assertTrue(all(x["formal_gate_pass"] is False for x in report["documents"]))
-        self.assertEqual(h.validate_archive(self.root,"2026-Q2",STAMP.isoformat())["records"],3)
+        self.assertEqual(h.validate_archive(self.root,"2026-Q2",STAMP.isoformat())["records"],len(h.KNOWN))
         again=h.collect(self.root,"2026-Q2",fetcher=lambda url: self.fail("should use existing receipts"),
                         clock=lambda:STAMP+dt.timedelta(hours=1))
-        self.assertEqual(again["records"],3)
+        self.assertEqual(again["records"],len(h.KNOWN))
 
     def test_real_official_cover_wording_for_q1_and_q2_is_accepted(self):
         # Actual 2025-Q2 and 2026-Q1 official covers use 第一季/第二季,
         # not 第1季/第2季. These synthetic PDFs reproduce that exact wording.
-        for period in ("2025-Q2", "2026-Q1"):
+        for period in ("2025-Q1", "2025-Q2", "2025-Q3", "2026-Q1"):
             raw=fixture(period)
             identity=h.pdf_identity(raw,period)
             self.assertTrue(identity["native_cover_issuer_and_period_verified"])
@@ -109,11 +109,11 @@ class HonhaiOriginalIntakeTests(unittest.TestCase):
             raise OSError("HTTP Error 403: Forbidden")
         result=h.collect(self.root,"2026-Q2",fetcher=rejected,clock=lambda:STAMP)
         self.assertEqual(result["records"],0)
-        self.assertEqual(len(result["source_errors"]),3)
+        self.assertEqual(len(result["source_errors"]),len(h.KNOWN))
         later=h.collect(self.root,"2026-Q2",fetcher=lambda url: self.fail("403 must cool down"),
                         clock=lambda:STAMP+dt.timedelta(minutes=5))
         self.assertEqual(later["records"],0)
-        self.assertEqual(len(calls),3)
+        self.assertEqual(len(calls),len(h.KNOWN))
         self.assertEqual(later["formal_pass_count"],0)
         self.assertFalse(later["original_archive_hashes_verified"])
 
