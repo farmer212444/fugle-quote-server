@@ -9,6 +9,8 @@ from html import unescape
 import re
 from pathlib import Path
 import sys
+import time
+import urllib.error
 import urllib.request
 import urllib.parse
 
@@ -21,12 +23,37 @@ from tw_model_v880.early_bulk import (FOLDER, SCHEMA, URLS, MOPS, ANNOUNCEMENT_K
 from tw_model_v880.evidence import timestamp
 
 
+def fetch_bytes(request, limit, timeout, *, expected_url=None):
+    """Retry only transport failures; source identity and content still fail closed."""
+    for attempt in range(3):
+        delay = 2 ** attempt
+        try:
+            with urllib.request.urlopen(request, timeout=timeout) as response:
+                if response.status != 200 or (expected_url and response.geturl() != expected_url):
+                    raise ValueError('EARLY_BULK_SOURCE_HTTP_OR_REDIRECT_INVALID')
+                return response.read(limit)
+        except urllib.error.HTTPError as exc:
+            if exc.code not in {429, 500, 502, 503, 504} or attempt == 2:
+                raise
+            retry_after = (exc.headers.get('Retry-After', '') if exc.headers else '').strip()
+            if retry_after.isdecimal():
+                if len(retry_after) > 6 or int(retry_after) > 5:
+                    raise  # Do not retry earlier than a longer server cooldown.
+                delay = max(delay, int(retry_after))
+            reason = 'HTTP_' + str(exc.code)
+        except (urllib.error.URLError, TimeoutError, ConnectionError) as exc:
+            if attempt == 2:
+                raise
+            reason = type(exc).__name__
+        print(json.dumps(dict(status='EARLY_SOURCE_TRANSPORT_RETRY', attempt=attempt + 1,
+                              reason=reason, delay_seconds=delay,
+                              source_url=request.full_url)))
+        time.sleep(delay)
+
+
 def capture(root, market):
     request = urllib.request.Request(URLS[market], headers={'User-Agent': 'Mozilla/5.0 (dated financial research archive)'})
-    with urllib.request.urlopen(request, timeout=25) as response:
-        if response.status != 200 or response.geturl() != URLS[market]:
-            raise ValueError('EARLY_BULK_SOURCE_HTTP_OR_REDIRECT_INVALID')
-        raw = response.read(8_000_001)
+    raw = fetch_bytes(request, 8_000_001, 25, expected_url=URLS[market])
     rows = parse(raw)
     digest = sha(raw)
     folder = root / FOLDER / market
@@ -55,8 +82,7 @@ def capture_notices(root, issuer):
     params = dict(encodeURIComponent=1, step=1, firstin=1, off=1, isQuery='Y',
                   co_id=code, TYPEK='all', year=now.year-1911, month=now.month)
     url = MOPS + '?' + urllib.parse.urlencode(params)
-    with urllib.request.urlopen(urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'}), timeout=20) as response:
-        raw = response.read(2_000_001)
+    raw = fetch_bytes(urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'}), 2_000_001, 20)
     if len(raw) > 2_000_000:
         raise ValueError('EARLY_ANNOUNCEMENT_LIST_TOO_LARGE')
     text = raw.decode('utf-8-sig')
@@ -91,8 +117,7 @@ def capture_notices(root, issuer):
                 and re.fullmatch(r'\d{1,3}', values['seq_no'])):
             raise ValueError('EARLY_ANNOUNCEMENT_DETAIL_LINK_CLOCK_INVALID')
         detail_url = MOPS + '?' + urllib.parse.urlencode(dict(firstin='true', step=2, off=1, **values))
-        with urllib.request.urlopen(urllib.request.Request(detail_url, headers={'User-Agent': 'Mozilla/5.0'}), timeout=20) as response:
-            body = response.read(2_000_001)
+        body = fetch_bytes(urllib.request.Request(detail_url, headers={'User-Agent': 'Mozilla/5.0'}), 2_000_001, 20)
         if len(body) > 2_000_000:
             raise ValueError('EARLY_ANNOUNCEMENT_DETAIL_TOO_LARGE')
         digest = sha(body)
