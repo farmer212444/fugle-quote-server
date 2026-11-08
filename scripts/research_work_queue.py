@@ -112,6 +112,17 @@ def build_queue(progress,research,sec_archive=None):
                 return (0,GATES.index(task['gate']),0)
             if task['next_action']=='CAPTURE_MISSING_QUARTER_ORIGINALS':
                 return (1,0,GATES.index(task['gate']))
+            # 2317 has eight periods of summary mirrors, but no certified
+            # complete original-statement window.  Prioritize recovery of the
+            # actual issuer PDFs and notes over the captured turnover summary.
+            # This changes only clerical order, never any formal gate result.
+            if (row['code']=='2317'
+                    and task['gate']=='original_eight_quarter_statements'
+                    and task['decision']=='PENDING'
+                    and task['stage'] in ('MIRROR_CAPTURED','SOURCE_MISSING','NOT_PROBED')
+                    and (original_coverage is None
+                         or original_coverage['archived']<original_coverage['required'])):
+                return (1,0,GATES.index(task['gate']))
             return ({
                 'SOURCE_CAPTURED':1,
                 'MIRROR_CAPTURED':2,
