@@ -47,6 +47,8 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
     announcement_event=bool(event and event['source_kind']==ANNOUNCEMENT_KIND)
     valuation_period=event['financial_period'] if event else data.period
     def unavailable(reason):return dict(code=code,name=latest.get('name'),market=market,status=reason,rankable=False,exclusion_reasons=[reason])
+    if getattr(data,'oneoff_review_states',{}).get(code,{}).get('blocks_current_decision'):
+        return unavailable('ORIGINAL_ONEOFF_REVIEW_INVALID_OLD_BASELINE_NOT_REUSED')
     if not p:return unavailable('REFERENCE_PRICE_MISSING')
     if not rev:return unavailable('MONTHLY_REVENUE_MISSING')
     if not master:return unavailable('ISSUED_SHARE_MASTER_MISSING')
@@ -96,6 +98,8 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
     r=current['revenue_k'];rfy=fyvals['revenue_k'];prior_r=number(pr['revenue_ytd_k'])
     if min(r,rfy,prior_r)<=0:return dict(code=code,name=latest.get('name'),status='NONPOSITIVE_REVENUE_SPECIAL_MODEL_REQUIRED',rankable=False)
     warnings=[]
+    if current.get('optional_reconciliation_gaps'):
+        warnings.append('OFFICIAL_OPTIONAL_NONCONTROLLING_DISCLOSURE_MISSING_NOT_ASSUMED_ZERO')
     if thin:warnings.append('LOW_LIQUIDITY_OR_PRICE_SHADOW_ONLY_NO_PRIMARY_RANKING')
     elif low_turnover_review:warnings.append('BELOW_12M_SINGLE_DAY_TURNOVER_RESEARCH_ONLY_REQUIRES_EXIT_CAPACITY_REVIEW')
     if primary:
@@ -155,17 +159,40 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
         nonop_status='PRIOR_FULL_YEAR_BASELINE_UNCHANGED_PENDING_COMPONENT_REVIEW'
         warnings.append('CURRENT_NONOPERATING_GAINS_NOT_EXTRAPOLATED_COMPONENT_REVIEW_REQUIRED')
         if (bulk_event or announcement_event) and old_primary:
-            components=[old_primary.get(k,{}).get('sensitivity_gap_ex_volatile_k')
+            components=[(old_primary.get(k) or {}).get('sensitivity_gap_ex_volatile_k')
                         for k in ('nonop_prior_fy','nonop_current','nonop_prior_ytd')]
             if None not in components:
                 # A newer summary must not undo already-observed FX/disposal
                 # normalization merely because it lacks the updated notes.
                 nonop=components[0]+components[1]-components[2]
                 nonop_status='PRIOR_COMPONENT_BASELINE_HELD_PENDING_NEW_QUARTER_COMPONENT_REVIEW'
+            elif components[1] is not None:
+                nonop=components[1]*4/old_q
+                nonop_status='PRIOR_YTD_COMPONENT_ANNUALIZED_BASELINE_HELD_PENDING_NEW_QUARTER_REVIEW'
+                warnings.append('PRIOR_COMPONENT_ANNUALIZATION_SEASONALITY_STILL_UNVERIFIED')
     elif event and fyvals.get('pretax_profit_k') is not None:
         nonop=(fyvals['pretax_profit_k']-fyvals['operating_profit_k']+event['current']['nonoperating_k']-event['prior']['nonoperating_k'])
         nonop_status='ISSUER_SELF_REPORT_YTD_NONOPERATING_DELTA_WITH_PRIOR_FY_COMPONENTS_UNRESOLVED'
     elif fyvals.get('pretax_profit_k') is not None:nonop=fyvals['pretax_profit_k']-fyvals['operating_profit_k']
+    oneoff_adjustment=None
+    review=getattr(data,'oneoff_reviews',{}).get(code)
+    if review:
+        oneoff_adjustment=dict(review,applied=False,reason='BASELINE_NOT_RAW_PRIOR_FY_SINGLE_GAIN_DEDUCTION_NOT_APPLIED')
+        if (not primary and review['anchor_period']==fy_period and nonop_status in (
+                'REPORTED_GAP_COMPOSITION_UNRESOLVED','PRIOR_FULL_YEAR_BASELINE_UNCHANGED_PENDING_COMPONENT_REVIEW')
+                and fyvals.get('pretax_profit_k') is not None):
+            raw_fy_gap=fyvals['pretax_profit_k']-fyvals['operating_profit_k']
+            if abs(raw_fy_gap-review['reported_fy_nonoperating_k'])>1:
+                raise ValueError('ORIGINAL_ONEOFF_FY_BASELINE_RESTATEMENT_NOT_RECONCILED')
+            if abs(nonop-raw_fy_gap)>1:
+                raise ValueError('ORIGINAL_ONEOFF_CANNOT_ADJUST_NON_FY_BASELINE')
+            before=nonop
+            nonop-=review['excluded_positive_gain_k']
+            oneoff_adjustment.update(applied=True,reason='SELECTED_ORIGINAL_NONRECURRING_GAIN_REMOVED_FROM_REUSED_FY',
+                                     before_nonoperating_k=before,after_nonoperating_k=nonop,
+                                     actual_historical_eps_restatement=False,all_other_forecast_inputs_unchanged=True)
+            nonop_status='PRIOR_FY_EXCLUDING_SELECTED_ORIGINAL_NONRECURRING_GAIN_RESEARCH_ONLY'
+            warnings.append('SOURCE_VERIFIED_ONEOFF_REMOVED_OTHER_NONOPERATING_COMPONENTS_STILL_UNCERTIFIED')
     tax=(current['pretax_profit_k']-current['net_income_k'])/current['pretax_profit_k'] if current['pretax_profit_k']>0 else None
     if tax is None or not 0<=tax<=.5:tax=.2;warnings.append('TAX_RATE_20PCT_SENSITIVITY_NOT_VERIFIED')
     fraction=current['parent_net_income_k']/current['net_income_k'] if current['net_income_k']>0 else None
@@ -234,6 +261,8 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
     gates=research_gates(primary,code,valuation_period,flow,coverage.get('eight_quarter_key_income_cash_values_reconciled'))
     for name,value in e.get('certificates',{}).get(code,{}).items():
         if name in GATES:gates[name]=value
+    if oneoff_adjustment and oneoff_adjustment['applied'] and gates['nonoperating_components'].get('status')!='FAIL':
+        gates['nonoperating_components']=gate('PENDING','SELECTED_ORIGINAL_ONEOFF_ONLY_REMAINING_COMPONENTS_UNREVIEWED')
     wc_watch=getattr(data,'working_capital_watch',{}).get(code)
     if wc_watch and wc_watch.get('period')==cashflow_period:
         if wc_watch.get('code')=='9802':
@@ -303,6 +332,13 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
     equity_offering=equity_offering_overlay(data.root,code,asof,target_date,base,master['issued_shares']) if getattr(data,'root',None) is not None else None
     nonop_zero=None
     if all(k in base for k in ('revenue_k','gross_margin','opex_ratio','nonoperating_k','tax_rate','parent_fraction','shares','pe','pretax_k')):
+        if oneoff_adjustment and oneoff_adjustment['applied']:
+            if abs(base['nonoperating_k']-oneoff_adjustment['after_nonoperating_k'])>1:
+                raise ValueError('ONEOFF_ADJUSTMENT_NOT_PRESERVED_BY_FINAL_FORECAST')
+            before_case=operating_scenario(base['revenue_k'],base['gross_margin'],base['opex_ratio'],
+                oneoff_adjustment['before_nonoperating_k'],base['tax_rate'],base['parent_fraction'],base['shares'],base['pe'])
+            oneoff_adjustment['before_target_price_counterfactual']=before_case['target_price']
+            oneoff_adjustment['after_target_price']=base['target_price']
         nonop_zero=operating_scenario(base['revenue_k'],base['gross_margin'],base['opex_ratio'],0,
                                       base['tax_rate'],base['parent_fraction'],base['shares'],base['pe'])
         nonop_zero.update(returns(nonop_zero['target_price'],close,None,asof[:10],target_date))
@@ -355,6 +391,7 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
       margin_bridge=dict(prior_full_year_gm=gm_fy,current_ytd_gm=gm_now,prior_ytd_gm=gm_prior,unadjusted_base_gm=raw_base_gm,base_gm=base['gross_margin'],base_opex_ratio=cost,
         quarter_margin_velocity=quarter_margin_velocity),margin_recovery=recovery,
       nonoperating_bridge=dict(base_k=nonop,method=nonop_status,component_assumptions_certified=False,
+        oneoff_original_adjustment=oneoff_adjustment,
         base_positive_nonoperating_share_pretax_pct=100*base['nonoperating_k']/base['pretax_k'] if base.get('pretax_k',0)>0 and base.get('nonoperating_k',0)>0 else None,
         zero_nonoperating_sensitivity=nonop_zero,
         reported_ytd_gap_k=current['pretax_profit_k']-current['operating_profit_k'],

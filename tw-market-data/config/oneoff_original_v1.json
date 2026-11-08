@@ -1,0 +1,142 @@
+{
+  "schema": "SELECTED_ONEOFF_ORIGINAL_REVIEW_V1",
+  "formal_quality_pass": false,
+  "review_scope": "AI_SELECTED_IMMUTABLE_PDF_ITEMS_NOT_COMPLETE_FINANCIAL_OR_NONOPERATING_CERTIFICATION",
+  "cases": [
+    {
+      "code": "2483",
+      "anchor_period": "2025-Q4",
+      "source_url": "https://www.ece.com.tw/uploads/invest/financial_report/2025/114Q4-IFRS.pdf",
+      "pdf_sha256": "b1f7b209ce8c64690866f3cfc4b0143ee338a6545a1dd64b43985281f0bb60d6",
+      "pdf_pages": 66,
+      "units": "TWD_THOUSANDS",
+      "reviewed_at": "2026-11-08T21:51:09.775964+00:00",
+      "selected_page_visual_review": true,
+      "issuer_identity_mode": "NATIVE_COVER_CODE_AND_SELECTED_PAGE_REVIEW",
+      "selected_gain_label": "土地使用權徵收及拆遷補償利益",
+      "profit_effect_multiplier": 1,
+      "facts": {
+        "fiscal_year_roc": {
+          "pdf_page": 9,
+          "bbox": [
+            312.51,
+            224.104,
+            356.51,
+            240.564
+          ],
+          "expected_value": 114
+        },
+        "reported_fy_nonoperating_k": {
+          "pdf_page": 9,
+          "bbox": [
+            303.01,
+            690.744,
+            344.01,
+            707.204
+          ],
+          "expected_value": 275015.0
+        },
+        "selected_gain_amount": {
+          "pdf_page": 45,
+          "bbox": [
+            351.39,
+            575.034,
+            392.39,
+            591.494
+          ],
+          "expected_value": 278602.0
+        }
+      }
+    },
+    {
+      "code": "6763",
+      "anchor_period": "2025-Q4",
+      "source_url": "https://corp.ecpay.com.tw/wp-content/uploads/2026/03/%E8%B2%A1%E5%8B%99%E5%A0%B1%E8%A1%A8%E5%90%88%E4%BD%B5.pdf",
+      "pdf_sha256": "2173a3de21a17abf54b59ffd400339b3efd5fa8fe96c643dfec67294deef6c44",
+      "pdf_pages": 68,
+      "units": "TWD_THOUSANDS",
+      "reviewed_at": "2026-11-08T21:51:09.826803+00:00",
+      "selected_page_visual_review": true,
+      "issuer_identity_mode": "NATIVE_COVER_CODE_AND_SELECTED_PAGE_REVIEW",
+      "selected_gain_label": "處分投資利益",
+      "profit_effect_multiplier": 1,
+      "facts": {
+        "fiscal_year_roc": {
+          "pdf_page": 9,
+          "bbox": [
+            312.54,
+            208.444,
+            356.54,
+            224.904
+          ],
+          "expected_value": 114
+        },
+        "reported_fy_nonoperating_k": {
+          "pdf_page": 9,
+          "bbox": [
+            300.24,
+            643.904,
+            341.24,
+            660.364
+          ],
+          "expected_value": 462151.0
+        },
+        "selected_gain_amount": {
+          "pdf_page": 48,
+          "bbox": [
+            344.16,
+            266.284,
+            385.16,
+            282.744
+          ],
+          "expected_value": 422047.0
+        }
+      }
+    },
+    {
+      "code": "2331",
+      "anchor_period": "2025-Q4",
+      "source_url": "https://campaign.ecs.com.tw/document/investor/doc/115_procedure_TC.pdf",
+      "pdf_sha256": "15b9d997114045e7fbe9c8e525ce848011ebab6ac4226ea033897ac6547070d9",
+      "pdf_pages": 64,
+      "units": "TWD_THOUSANDS",
+      "reviewed_at": "2026-11-08T21:51:09.889500+00:00",
+      "selected_page_visual_review": true,
+      "issuer_identity_mode": "ECS_GLYPH_MAPPING_VISUAL_REVIEW",
+      "selected_gain_label": "待出售非流動資產處分利益（現金流調節符號反轉）",
+      "profit_effect_multiplier": -1,
+      "facts": {
+        "fiscal_year_roc": {
+          "pdf_page": 17,
+          "bbox": [
+            395.237,
+            174.496,
+            430.734,
+            186.965
+          ],
+          "expected_value": 114
+        },
+        "reported_fy_nonoperating_k": {
+          "pdf_page": 17,
+          "bbox": [
+            387.487,
+            355.21,
+            427.709,
+            367.679
+          ],
+          "expected_value": 1120766.0
+        },
+        "selected_gain_amount": {
+          "pdf_page": 19,
+          "bbox": [
+            429.32,
+            343.763,
+            466.667,
+            355.731
+          ],
+          "expected_value": -737961.0
+        }
+      }
+    }
+  ]
+}
