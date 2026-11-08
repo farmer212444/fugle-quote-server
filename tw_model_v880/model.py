@@ -13,6 +13,7 @@ from .contracts import forecast_binding,matches_forecast
 from .peers import matched_multiples
 from .governance import issuer_review,reopen_quality_reviews
 from .offering import equity_offering_overlay
+from .early_bulk import SOURCE_KIND as EARLY_BULK_SOURCE, ANNOUNCEMENT_KIND
 
 # A low-turnover issuer can be researched without passing the execution gate.
 RESEARCH_MIN_TURNOVER_NTD = 1_000_000
@@ -42,6 +43,8 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
     rev=data.revenue.get(code);e=data.evidence;master=e.get('master',{}).get(code)
     event=getattr(data,'earnings_events',{}).get(code)
     condensed=bool(event and event['source_kind']=='ISSUER_CONDENSED_FINANCIAL_STATEMENTS_UNAUDITED')
+    bulk_event=bool(event and event['source_kind']==EARLY_BULK_SOURCE)
+    announcement_event=bool(event and event['source_kind']==ANNOUNCEMENT_KIND)
     valuation_period=event['financial_period'] if event else data.period
     def unavailable(reason):return dict(code=code,name=latest.get('name'),market=market,status=reason,rankable=False,exclusion_reasons=[reason])
     if not p:return unavailable('REFERENCE_PRICE_MISSING')
@@ -98,11 +101,13 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
     if primary:
         for a,b in [('revenue_k','revenue_ytd_k'),('gross_profit_k','gross_profit_ytd_k'),('operating_profit_k','operating_profit_ytd_k')]:
             if abs(current[a]-number(latest[b]))>1:raise ValueError('PRIMARY_MIRROR_'+a+'_MISMATCH')
-    elif event:warnings.append('LATEST_CONDENSED_STATEMENTS_NOT_FULL_NOTES_OR_AUDITOR_REVIEW' if condensed else 'LATEST_EARNINGS_IS_ISSUER_SELF_REPORT_NOT_REVIEWED_FULL_STATEMENTS')
+    elif event:warnings.append('LATEST_MOPS_ISSUER_ANNOUNCEMENT_NOT_COMPLETE_FINANCIAL_STATEMENTS' if announcement_event else 'LATEST_OFFICIAL_PARTIAL_INCOME_TABLE_NOT_FULL_ISSUER_STATEMENTS' if bulk_event else 'LATEST_CONDENSED_STATEMENTS_NOT_FULL_NOTES_OR_AUDITOR_REVIEW' if condensed else 'LATEST_EARNINGS_IS_ISSUER_SELF_REPORT_NOT_REVIEWED_FULL_STATEMENTS')
     else:warnings.append('CURRENT_DETAIL_IS_OFFICIAL_BATCH_SUMMARY_NOT_ORIGINAL_ISSUER_NOTES')
     if not event:
         for a,b in [('revenue_k','revenue_ytd_k'),('gross_profit_k','gross_profit_ytd_k'),('operating_profit_k','operating_profit_ytd_k')]:
             if abs(current[a]-number(latest[b]))>1:return unavailable('CURRENT_OFFICIAL_AND_HISTORY_BASIS_MISMATCH')
+    if event and number(event['current'].get('other_operating_gains_k')):
+        warnings.append('REPORTED_OTHER_OPERATING_GAINS_COMPONENT_REVIEW_REQUIRED_NET_COST_IS_NOT_REPORTED_OPEX')
     month_year,month=map(int,data.revenue_month.split('-'))
     if month_year<y or month_year>y+1:return dict(code=code,name=latest.get('name'),status='MONTHLY_FINANCIAL_YEAR_BRIDGE_NOT_ALIGNED',rankable=False)
     if event and (month_year,month)<(y,q*3):return unavailable('EARNINGS_EVENT_AHEAD_OF_MONTHLY_REVENUE_BASIS')
@@ -143,12 +148,20 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
             nonop=nofy['sensitivity_gap_ex_volatile_k']+no['sensitivity_gap_ex_volatile_k']-nopr['sensitivity_gap_ex_volatile_k'];nonop_status='OBSERVED_COMPONENT_ZERO_FX_FV_DISPOSAL_SENSITIVITY_IMPAIRMENT_RETAINED'
         elif no['sensitivity_gap_ex_volatile_k'] is not None:
             nonop=no['sensitivity_gap_ex_volatile_k']*4/q;nonop_status='YTD_COMPONENT_SENSITIVITY_ANNUAL_SEASONALITY_UNVERIFIED'
-    elif condensed and fyvals.get('pretax_profit_k') is not None:
+    elif (condensed or bulk_event or announcement_event) and fyvals.get('pretax_profit_k') is not None:
         # The condensed "other gains" line is not a recurring-profit bridge.
         # Preserve the prior model's FY baseline instead of adding its YTD jump.
         nonop=fyvals['pretax_profit_k']-fyvals['operating_profit_k']
         nonop_status='PRIOR_FULL_YEAR_BASELINE_UNCHANGED_PENDING_COMPONENT_REVIEW'
         warnings.append('CURRENT_NONOPERATING_GAINS_NOT_EXTRAPOLATED_COMPONENT_REVIEW_REQUIRED')
+        if (bulk_event or announcement_event) and old_primary:
+            components=[old_primary.get(k,{}).get('sensitivity_gap_ex_volatile_k')
+                        for k in ('nonop_prior_fy','nonop_current','nonop_prior_ytd')]
+            if None not in components:
+                # A newer summary must not undo already-observed FX/disposal
+                # normalization merely because it lacks the updated notes.
+                nonop=components[0]+components[1]-components[2]
+                nonop_status='PRIOR_COMPONENT_BASELINE_HELD_PENDING_NEW_QUARTER_COMPONENT_REVIEW'
     elif event and fyvals.get('pretax_profit_k') is not None:
         nonop=(fyvals['pretax_profit_k']-fyvals['operating_profit_k']+event['current']['nonoperating_k']-event['prior']['nonoperating_k'])
         nonop_status='ISSUER_SELF_REPORT_YTD_NONOPERATING_DELTA_WITH_PRIOR_FY_COMPONENTS_UNRESOLVED'
@@ -246,7 +259,7 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
             gates['auditor_scope']=gate(
                 'PENDING','ISSUER_ORIGINAL_PDF_QUALIFIED_SCOPE_UNREVIEWED_SUBSIDIARIES_INCOMPLETE_RECONCILIATION')
     if event:
-        gates['original_eight_quarter_statements']=gate('PENDING','LATEST_CONDENSED_STATEMENTS_ARE_NOT_FULL_NOTES_REVIEW' if condensed else 'LATEST_SELF_REPORT_IS_NOT_REVIEWED_QUARTERLY_STATEMENTS')
+        gates['original_eight_quarter_statements']=gate('PENDING','LATEST_MOPS_ANNOUNCEMENT_NOT_COMPLETE_FINANCIAL_STATEMENTS' if announcement_event else 'LATEST_OFFICIAL_PARTIAL_TABLE_NOT_COMPLETE_FINANCIAL_STATEMENTS' if bulk_event else 'LATEST_CONDENSED_STATEMENTS_ARE_NOT_FULL_NOTES_REVIEW' if condensed else 'LATEST_SELF_REPORT_IS_NOT_REVIEWED_QUARTERLY_STATEMENTS')
         gates['forecast_bridge']=gate('PENDING','LATEST_EARNINGS_EVENT_REBASED_ISSUER_2027_OPERATING_BRIDGE_REQUIRED')
     # A provisional normalized Base cannot inherit a generic forecast PASS:
     # the issuer-specific recovery mechanism needs a documented signoff.
@@ -288,6 +301,15 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
         specialist=[];stress=(base['target_price']*.81*dilution_stress_factor/close-1)*100 if base['target_price'] is not None and dilution_stress_factor is not None and base.get('valuation_method')=='PE' else None
     elif specialist and gates['forecast_bridge'].get('status')=='PASS':gates['forecast_bridge']=gate('PENDING','SPECIALIST_OPERATING_INPUTS_REQUIRED')
     equity_offering=equity_offering_overlay(data.root,code,asof,target_date,base,master['issued_shares']) if getattr(data,'root',None) is not None else None
+    nonop_zero=None
+    if all(k in base for k in ('revenue_k','gross_margin','opex_ratio','nonoperating_k','tax_rate','parent_fraction','shares','pe','pretax_k')):
+        nonop_zero=operating_scenario(base['revenue_k'],base['gross_margin'],base['opex_ratio'],0,
+                                      base['tax_rate'],base['parent_fraction'],base['shares'],base['pe'])
+        nonop_zero.update(returns(nonop_zero['target_price'],close,None,asof[:10],target_date))
+        nonop_zero['is_mechanical_sensitivity_not_forecast']=True
+        nonop_zero['all_other_inputs_unchanged']=True
+        if base['pretax_k']>0 and base['nonoperating_k']/base['pretax_k']>.5:
+            warnings.append('BASE_PROFIT_MAJORITY_FROM_NONOPERATING_ASSUMPTION_COMPONENT_REVIEW_REQUIRED')
     if equity_offering:
         warnings.append('DISCLOSED_EQUITY_OFFERING_REQUIRES_UNISSUED_SHARE_RECONCILIATION')
         gates['fully_diluted_shares']=gate('PENDING','ANNOUNCED_EQUITY_OFFERING_SHARE_PROCEEDS_AND_FUTURE_RETURNS_NOT_VERIFIED')
@@ -323,8 +345,8 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
       single_day_turnover_basis='ARCHIVED_REPORTED_TRADING_VALUE_NOT_CLOSE_TIMES_VOLUME',
       liquidity_research_band=('SHADOW_BELOW_1M_OR_PRICE_FLOOR' if thin else 'RESEARCH_1M_TO_12M_PENDING_EXECUTION' if low_turnover_review else 'RESEARCH_AT_LEAST_12M_PENDING_EVIDENCE'),
       price_date=data.price_date,revenue_month=data.revenue_month,estimate_vintage=asof,target_date=target_date,
-      source_tier='ISSUER_CONDENSED_ORIGINAL_STATEMENTS' if condensed else 'ISSUER_SELF_REPORTED_ORIGINAL_TABLE' if event else 'ORIGINAL_CURRENT_ISSUER_NUMERICS' if primary else 'OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL',rankable=rankable,point_valuation_available=point,
-      original_current_issuer_numeric_checked=primary is not None or bool(event),exclusion_reasons=exclusions,
+      source_tier='MOPS_ISSUER_EARNINGS_ANNOUNCEMENT_RESEARCH' if announcement_event else 'OFFICIAL_EARLY_QUARTER_BULK_INCOME_RESEARCH' if bulk_event else 'ISSUER_CONDENSED_ORIGINAL_STATEMENTS' if condensed else 'ISSUER_SELF_REPORTED_ORIGINAL_TABLE' if event else 'ORIGINAL_CURRENT_ISSUER_NUMERICS' if primary else 'OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL',rankable=rankable,point_valuation_available=point,
+      original_current_issuer_numeric_checked=primary is not None or bool(event and not bulk_event),exclusion_reasons=exclusions,
       base=base,bear=bear,bull=bull,share_bridge=share,equity_offering_overlay=equity_offering,liquidity=flow,primary_ttm_cash=coverage or None,
       revenue_bridge=dict(actual_ytd_k=ytd,prior_year_annual_revenue_k=monthly_prior_annual,prior_year_remaining_k=monthly_prior_annual-oldytd,annual_current_year_estimate_k=r_current_year,assumed_annual_growth=g,observed_growth=observed,
         trend_inputs=dict(financial_ytd_yoy=gh,monthly_ytd_yoy=yy/100,latest_month_yoy=my/100),
@@ -333,6 +355,8 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
       margin_bridge=dict(prior_full_year_gm=gm_fy,current_ytd_gm=gm_now,prior_ytd_gm=gm_prior,unadjusted_base_gm=raw_base_gm,base_gm=base['gross_margin'],base_opex_ratio=cost,
         quarter_margin_velocity=quarter_margin_velocity),margin_recovery=recovery,
       nonoperating_bridge=dict(base_k=nonop,method=nonop_status,component_assumptions_certified=False,
+        base_positive_nonoperating_share_pretax_pct=100*base['nonoperating_k']/base['pretax_k'] if base.get('pretax_k',0)>0 and base.get('nonoperating_k',0)>0 else None,
+        zero_nonoperating_sensitivity=nonop_zero,
         reported_ytd_gap_k=current['pretax_profit_k']-current['operating_profit_k'],
         reported_ytd_pretax_k=current['pretax_profit_k'],
         reported_ytd_abs_gap_share_pretax_pct=100*abs(current['pretax_profit_k']-current['operating_profit_k'])/current['pretax_profit_k'] if current['pretax_profit_k']>0 else None,

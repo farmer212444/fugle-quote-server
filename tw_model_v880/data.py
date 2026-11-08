@@ -11,6 +11,7 @@ SOURCE_JSON_PATTERNS=('evidence/v880/certificates/*.json','evidence/v880/issuer_
     'evidence/v880/working_capital_watch/*.json',
     'evidence/v880/inventory_original_watch/*.json',
     'evidence/v880/earnings_version_reviews/*.json',
+    'evidence/v880/early_bulk/manifest.json',
     'evidence/v880/originals/*/manifest.json',
     'evidence/v880/originals/2330/full_statements/manifest.json')
 
@@ -149,6 +150,22 @@ class MarketData:
         apply_capital_terms(self,asof)
         from .events import load_earnings_events
         self.earnings_events,self.earnings_event_states=load_earnings_events(self.root,asof,self.period)
+        from .early_bulk import load as load_early_bulk
+        bulk_events,bulk_states=load_early_bulk(self,asof)
+        for code,state in bulk_states.items():
+            if code not in self.earnings_events:
+                self.earnings_event_states[code]=state
+        for code,event in bulk_events.items():
+            existing=self.earnings_events.get(code)
+            if existing:
+                tolerance=1000 if existing['source_kind']=='ISSUER_CONDENSED_FINANCIAL_STATEMENTS_UNAUDITED' else 1
+                if existing['financial_period']==event['financial_period'] and any(
+                    abs(existing['current'][k]-event['current'][k])>tolerance for k in
+                    ('revenue_k','gross_profit_k','operating_profit_k','pretax_profit_k','net_income_k','parent_net_income_k')):
+                    self.earnings_events.pop(code)
+                    self.earnings_event_states[code]=dict(status='CONFLICTING_OFFICIAL_AND_ISSUER_EARNINGS',blocks_current_decision=True)
+                continue
+            self.earnings_events[code]=event
         for code,state in self.earnings_event_states.items():
             if state.get('blocks_current_decision'):
                 self.errors.append(dict(source='issuer_earnings_event:'+code,error=state.get('reason',state['status'])))

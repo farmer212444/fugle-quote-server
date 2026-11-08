@@ -30,7 +30,7 @@ def public_row(r):
       'target_year_eps_scenario','research_2027_price_scenario','eps_2027_base_scenario','research_pe_assumption','research_lane','rating','score',
       'specialist_model_requirements','base_scenario_role','early_recovery_watch','cycle_research','stress_eps90_pe90_upside_pct','original_current_issuer_numeric_checked','exclusion_reasons','margin_recovery','margin_bridge',
       'reviewed_financial_period','cashflow_financial_period','fresh_earnings_update','forecast_binding',
-      'governance_review','recommendation_blocked','equity_offering_overlay','insider_sell_overlay']
+      'governance_review','recommendation_blocked','equity_offering_overlay','insider_sell_overlay','nonoperating_bridge']
     out={k:r[k] for k in keys if k in r}
     for name in ('base','bear','bull'):
         if name in out:out[name]={k:r[name][k] for k in ('eps','pe','target_price','price_upside_pct','total_return_pct') if k in r[name]}
@@ -152,11 +152,19 @@ def run(data_dir,asof,target_date,out_dir=None,variant='current-information'):
     else:
         report[3:3]=["目前的參考日未發現潛在平日缺口，但仍非盤中即時報價。",""]
     for i,r in enumerate(broad[:10],1):
-        b=r['base'];tier='公司簡明財報' if r.get('source_tier')=='ISSUER_CONDENSED_ORIGINAL_STATEMENTS' else '公司自結暫估' if r.get('fresh_earnings_update',{}).get('applied') else '原始核對' if r['original_current_issuer_numeric_checked'] else '官方彙總'
+        b=r['base'];tier='MOPS原始公告' if r.get('source_tier')=='MOPS_ISSUER_EARNINGS_ANNOUNCEMENT_RESEARCH' else '官方早期彙總' if r.get('source_tier')=='OFFICIAL_EARLY_QUARTER_BULK_INCOME_RESEARCH' else '公司簡明財報' if r.get('source_tier')=='ISSUER_CONDENSED_ORIGINAL_STATEMENTS' else '公司自結暫估' if r.get('fresh_earnings_update',{}).get('applied') else '原始核對' if r['original_current_issuer_numeric_checked'] else '官方彙總'
         governance_label='**重大治理待查**' if r['recommendation_blocked'] else '未全面核查'
         if r.get('insider_sell_overlay',{}).get('needs_manual_review'):
             governance_label+='；**內部人賣出待查**'
         report.append(f"|{i}|{r['code']} {r['name']}|{fmt(r['reference_close'])}|{fmt(b['eps'])}|{fmt(b['pe'])}|{fmt(b['target_price'])}|{b['price_upside_pct']:+.1f}%|{fmt(r['bear']['target_price'])}|{fmt(r['bull']['target_price'])}|{tier}|{governance_label}|")
+    nonop_risks=[r for r in broad[:10] if 'BASE_PROFIT_MAJORITY_FROM_NONOPERATING_ASSUMPTION_COMPONENT_REVIEW_REQUIRED' in r.get('warning_flags',[])]
+    if nonop_risks:
+        report+=['','## 前十檔業外收益敏感度','',
+          '只將模型業外收益設為零，其餘營運、稅率、歸母比例、股數及PE維持原假設。這是機械敏感度，並非預測業外必定消失，不改Base排名或核發品質PASS。','',
+          '|公司|Base業外占稅前獲利|Base情境價|業外歸零情境價|','|---|---:|---:|---:|']
+        for r in nonop_risks:
+            n=r['nonoperating_bridge'];s=n['zero_nonoperating_sensitivity']
+            report.append(f"|{r['code']} {r['name']}|{n['base_positive_nonoperating_share_pretax_pct']:.1f}%|{fmt(r['base']['target_price'])}|{fmt(s['target_price'])}|")
     offering_rows=[r for r in rows if r.get('equity_offering_overlay')]
     if offering_rows:
         report+=['','## 已公告、尚未發行的股本事件：獨立壓力測試','',

@@ -15,6 +15,7 @@ on:
       - '.github/workflows/tw_v877_research_rank.yml'
       - 'tw_model_v880/**'
       - 'scripts/tw_v880_run.py'
+      - 'scripts/early_bulk_earnings.py'
       - 'scripts/v881_history_diagnostic.py'
       - 'scripts/build_universe_verification_queue.py'
       - 'scripts/diagnose_unmodeled_universe.py'
@@ -259,6 +260,9 @@ jobs:
       - name: Refresh static official sources
         if: github.event_name != 'pull_request'
         run: python scripts/refresh_v880_public.py
+      - name: Archive partial-quarter official results and issuer announcements for current Top10
+        if: github.event_name != 'pull_request'
+        run: python scripts/early_bulk_earnings.py
       - name: Archive official total-return benchmark and recent regime history
         if: github.event_name != 'pull_request'
         run: python scripts/benchmark_sources.py
@@ -311,6 +315,7 @@ jobs:
               git reset --hard origin/main
               python -m pip install -r requirements-model.txt
               python scripts/refresh_v880_public.py
+              python scripts/early_bulk_earnings.py
               python scripts/benchmark_sources.py
               python scripts/v8a9_8383_original_archive.py
               python scripts/tsmc_original_statements.py
