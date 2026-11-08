@@ -104,6 +104,7 @@ on:
       - '.github/workflows/tw_v877_research_rank.yml'
       - 'tw_model_v880/**'
       - 'scripts/tw_v880_run.py'
+      - 'scripts/early_bulk_earnings.py'
       - 'scripts/v881_history_diagnostic.py'
       - 'scripts/build_universe_verification_queue.py'
       - 'scripts/diagnose_unmodeled_universe.py'
@@ -233,7 +234,9 @@ jobs:
     needs: price_update_check
     if: ${{ always() && (github.event_name != 'workflow_run' || (github.event.workflow_run.conclusion == 'success' && needs.price_update_check.outputs.refresh == 'true')) }}
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    # Up to three main-publication attempts can each rebuild sources and audits.
+    # The former 15-minute cap cancelled a valid third attempt after two writers.
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -244,6 +247,7 @@ jobs:
       - name: Validate model controls and independent 6206 triage
         run: |
           python scripts/tw_v880_run.py --self-test
+          python -m unittest -v tests.test_early_bulk_earnings tests.test_early_bulk_transport
           python -m unittest -v tests.test_readiness_lanes tests.test_aplus_work_queue_repair tests.test_2330_2317_dual_lane tests.test_dual_focus_publication tests.test_research_pipeline
           python -m unittest -v tests.test_tsmc_original_statements
           python -m unittest -v tests.test_2317_original_statements

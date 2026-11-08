@@ -9,9 +9,14 @@ import datetime as dt
 import hashlib
 import json
 import re
+import sys
 import urllib.error
 import urllib.request
 from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
 from scripts.run_research_pipeline import atomic_json
 

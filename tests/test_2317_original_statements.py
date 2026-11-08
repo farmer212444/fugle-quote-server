@@ -1,6 +1,9 @@
 """Synthetic controls for 2317 official PDF ingestion; fixtures are not evidence."""
 import datetime as dt
 import json
+import os
+import subprocess
+import sys
 import tempfile
 import unittest
 from pathlib import Path
@@ -9,6 +12,17 @@ import fitz
 from scripts import honhai_original_statements as h
 
 STAMP=dt.datetime(2026,11,8,14,0,tzinfo=dt.timezone.utc)
+
+class HonhaiCommandTests(unittest.TestCase):
+    def test_direct_cli_launch_without_pythonpath_or_project_working_directory(self):
+        env = dict(os.environ)
+        env.pop('PYTHONPATH', None)
+        script = Path(h.__file__).resolve()
+        with tempfile.TemporaryDirectory() as folder:
+            result = subprocess.run([sys.executable, str(script), '--help'], cwd=folder,
+                                    env=env, capture_output=True, text=True, timeout=15)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn('--data-root', result.stdout)
 
 def fixture(period,*,code="2317",include_notes=True):
     roc=int(period[:4])-1911;q=int(period[-1])
