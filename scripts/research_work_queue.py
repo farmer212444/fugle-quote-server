@@ -214,10 +214,34 @@ def build_queue(progress,research,sec_archive=None):
             source_only_is_not_signed_certification=True)
     independent_lanes=[x['independent_decision_lanes'] for x in jobs]
     lanes_summary=summarize_lanes(independent_lanes)
+    # Detailed issuer diagnostics are intentionally sampled, while the 13-gate
+    # model has already evaluated a larger universe. Do not label the detail
+    # sample as the full-market certification population.
+    coverage=None
+    scope_keys=('tracked_issuer_count','model_evaluated_issuer_count',
+                'not_evaluated_issuer_count','high_upside_research_candidates',
+                'formally_certified_Aplus_in_report')
+    if any(key in progress for key in scope_keys):
+        if not all(type(progress.get(key)) is int for key in scope_keys):
+            raise ValueError('WORK_QUEUE_UNIVERSE_COVERAGE_INCOMPLETE')
+        total,evaluated,unevaluated,high,formal=(progress[k] for k in scope_keys)
+        if (min(total,evaluated,unevaluated,high,formal)<0
+            or total != evaluated+unevaluated or len(jobs)>total
+            or high!=lanes_summary['price_research_candidates']
+            or formal!=lanes_summary['formal_aplus_count']):
+            raise ValueError('WORK_QUEUE_UNIVERSE_COVERAGE_RECONCILIATION_FAILED')
+        coverage=dict(total_tracked=total,
+                      full_model_evaluated=evaluated,
+                      full_model_not_evaluated=unevaluated,
+                      detailed_issuer_diagnostics=len(jobs),
+                      remaining_without_detailed_diagnostic=total-len(jobs),
+                      formal_aplus_marketwide=formal,
+                      count_scope='DETAIL_ONLY_NOT_FULL_MARKET')
     if lanes_summary['formal_aplus_count']!=sum(bool(x['formal_Aplus']) for x in jobs):
         raise ValueError('READINESS_FORMAL_COUNT_RECONCILIATION_FAILED')
     return dict(schema='RESEARCH_EVIDENCE_WORK_QUEUE_V1',
                 decision_lanes_summary=lanes_summary,
+                universe_coverage=coverage,
                 model=research['model'],estimate_vintage=research['estimate_vintage'],
                 asof_price_date=research['asof_price_date'],
                 source_model_sha256=research['model_code_sha256'],
@@ -348,6 +372,7 @@ def main():
         asof_price_date=report['asof_price_date'],
         source_progress_sha256=report['source_progress_sha256'],
         counts=report['decision_lanes_summary'],
+        universe_coverage=report['universe_coverage'],
         issuers=[job['independent_decision_lanes'] for job in report['issuer_jobs']],
         all_13_formal_gate_decisions_preserved=True,
         formal_certificates_issued_by_this_report=0)
