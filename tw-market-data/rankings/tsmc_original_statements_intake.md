@@ -1,6 +1,6 @@
 # 2330 台積電完整財報原件收集進度
 
-原件視窗：2024-Q3 至 2026-Q2；檢查時間：2026-11-08T13:26:14.087293+00:00。
+原件視窗：2024-Q3 至 2026-Q2；檢查時間：2026-11-08T13:39:06.949882+00:00。
 
 官方目錄連結及雜湊已覆核：4/8 季；原生文字封面與目錄辨識：4/8 季。
 
@@ -15,6 +15,17 @@
 |2025-Q3|61|已辨識；全文待核|be9580ea88d61c887de5ae8eb4e97de1eae0459429a45a0ce5f66564c52a8b4d|
 
 缺少原件：2024-Q3, 2025-Q4, 2026-Q1, 2026-Q2
+
+## 官方已列出的缺件來源（尚未取得 PDF 原件）
+
+|季度|已核實目錄指向的官方下載連結|原件SHA／正式PASS|
+|---|---|---|
+|2024-Q3|https://investor.tsmc.com/sites/ir/financial-report/2024/TSMC%202024Q3%20Consolidated%20Financial%20Statements_C.pdf|未封存／不得認證|
+|2025-Q4|https://investor.tsmc.com/sites/ir/financial-report/2025/TSMC%202025Q4%20Consolidated%20Financial%20Statements_C.pdf|未封存／不得認證|
+|2026-Q1|https://investor.tsmc.com/sites/ir/financial-report/2026/TSMC%202026Q1%20Consolidated%20Financial%20Statements_C.pdf|未封存／不得認證|
+|2026-Q2|https://investor.tsmc.com/sites/ir/financial-report/2026/TSMC%202026Q2%20Consolidated%20Financial%20Statements_C.pdf|未封存／不得認證|
+
+目錄連結由已封存且SHA核對的發行人網站目錄重建；它只證明下載路徑，不代表本倉庫已取得PDF原始位元、驗證其內容或核發PASS。
 
 本輪來源錯誤（包含保留的上一輪403）：
 - DIRECTORY：HTTPError:HTTP Error 403: Forbidden
