@@ -1,5 +1,7 @@
 """SEC corroboration fixtures are synthetic, never real issuer evidence."""
 import copy
+import datetime as dt
+import json
 import tempfile
 import unittest
 from pathlib import Path
@@ -65,6 +67,70 @@ class SECIntakeTests(unittest.TestCase):
         self.assertEqual(out['sec_translated_exhibits_verified'],0)
         self.assertEqual(len(out['source_errors']),7)
         self.assertFalse(out['formal_gate_pass'])
+
+    def test_403_cooldown_skips_repeated_requests_and_retries_after_one_day(self):
+        start=dt.datetime(2026,11,8,12,0,tzinfo=dt.timezone.utc)
+        calls=[]
+        def denied(url):
+            calls.append(url)
+            raise OSError('HTTP 403 Forbidden')
+        def attempt(when):
+            return mod.collect(self.root,fetcher=denied,clock=lambda:when,pause=lambda n:None)
+        first=attempt(start)
+        self.assertEqual(len(calls),7)
+        self.assertEqual(len(first['source_errors']),7)
+        self.assertEqual(first['http403_retry_deferred_quarters'],[])
+        calls.clear()
+        repeat=attempt(start+dt.timedelta(hours=3))
+        self.assertEqual(calls,[])
+        self.assertEqual(len(repeat['source_errors']),7)
+        self.assertEqual(repeat['http403_retry_deferred_quarters'],
+                         sorted(mod.FILING_URLS))
+        self.assertFalse(repeat['formal_gate_pass'])
+        calls.clear()
+        attempt(start+dt.timedelta(hours=23))
+        self.assertEqual(calls,[])
+        after=attempt(start+dt.timedelta(hours=24,minutes=1))
+        self.assertEqual(len(calls),7)
+        self.assertEqual(len(after['source_errors']),7)
+        self.assertEqual(after['http403_retry_deferred_quarters'],[])
+
+    def test_legacy_403_manifest_cooldown_does_not_extend_on_poll(self):
+        start=dt.datetime(2026,11,8,12,0,tzinfo=dt.timezone.utc)
+        def denied(url):
+            raise OSError('HTTP 403 Forbidden')
+        mod.collect(self.root,fetcher=denied,clock=lambda:start,pause=lambda n:None)
+        manifest=self.root/mod.FOLDER/'manifest.json'
+        data=json.loads(manifest.read_text())
+        del data['last_network_attempt_at_utc']
+        manifest.write_text(json.dumps(data))
+        calls=[]
+        def track(url):
+            calls.append(url)
+            return self.fixture(self.url_to_quarter[url])
+        mod.collect(self.root,fetcher=track,
+                    clock=lambda:start+dt.timedelta(hours=7),pause=lambda n:None)
+        mod.collect(self.root,fetcher=track,
+                    clock=lambda:start+dt.timedelta(hours=18),pause=lambda n:None)
+        self.assertEqual(calls,[])
+        recovered=mod.collect(self.root,fetcher=track,
+                    clock=lambda:start+dt.timedelta(hours=25),pause=lambda n:None)
+        self.assertEqual(len(calls),7)
+        self.assertEqual(recovered['sec_translated_exhibits_verified'],7)
+        self.assertFalse(recovered['formal_gate_pass'])
+
+    def test_non403_source_error_is_retryable_without_cooldown(self):
+        start=dt.datetime(2026,11,8,12,0,tzinfo=dt.timezone.utc)
+        attempts=[]
+        def down(url):
+            attempts.append(url)
+            raise OSError('HTTP Error 503: Service Unavailable')
+        mod.collect(self.root,fetcher=down,clock=lambda:start,pause=lambda n:None)
+        second=mod.collect(self.root,fetcher=down,
+                    clock=lambda:start+dt.timedelta(minutes=2),pause=lambda n:None)
+        self.assertEqual(len(attempts),14)
+        self.assertEqual(second['http403_retry_deferred_quarters'],[])
+        self.assertEqual(second['sec_translated_exhibits_verified'],0)
 
     def test_mutated_sha_archive_is_rejected(self):
         out=self.collect()
