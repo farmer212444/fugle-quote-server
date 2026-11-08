@@ -16,7 +16,7 @@
     "no_fabricated_historical_returns": true
   },
   "model": "V8.10.8",
-  "estimate_vintage": "2026-11-07T22:48:53.881219+08:00",
+  "estimate_vintage": "2026-11-08T09:41:21.538701+08:00",
   "asof_price_date": "2026-11-06",
   "source_model_sha256": "4cac188f3d3edf57a447bcade8ecf0132c2b8036882a497c8d82054166ebf86f",
   "issuer_job_count": 205,
@@ -32,10 +32,9 @@
       "research_upside_pct": 58.06,
       "original_quarter_coverage": {
         "required": 8,
-        "archived": 3,
+        "archived": 4,
         "missing_quarters": [
           "2024-Q3",
-          "2025-Q2",
           "2025-Q4",
           "2026-Q1",
           "2026-Q2"
@@ -76,7 +75,7 @@
           "next_action": "CAPTURE_MISSING_QUARTER_ORIGINALS",
           "scope": "ISSUER",
           "required_evidence": "逐季原始四表、附註、重編及完整性核對",
-          "reason": "3/8 issuer-directory-linked original PDFs SHA-archived through 2026-Q2; native cover/contents identified for 3/8; scanned pages, full financial contents, auditor scope and MOPS publication PIT remain unreviewed",
+          "reason": "4/8 issuer-directory-linked original PDFs SHA-archived through 2026-Q2; native cover/contents identified for 4/8; scanned pages, full financial contents, auditor scope and MOPS publication PIT remain unreviewed",
           "model_reason": "LATEST_CONDENSED_STATEMENTS_ARE_NOT_FULL_NOTES_REVIEW",
           "invalidates_on": "財報／重編更新"
         },
@@ -41357,10 +41356,9 @@
     "reviewed_financial_period": "2026-Q2",
     "original_quarter_coverage": {
       "required": 8,
-      "archived": 3,
+      "archived": 4,
       "missing_quarters": [
         "2024-Q3",
-        "2025-Q2",
         "2025-Q4",
         "2026-Q1",
         "2026-Q2"
@@ -42815,5 +42813,5 @@
   },
   "formal_gate_decisions_changed": 0,
   "certificates_issued": 0,
-  "source_progress_sha256": "f81c3c5b4c54b96eece90c70a160716124db1e530d55fdd0c48c08c661c02706"
+  "source_progress_sha256": "bb65c797f1fd2fd2e104cce4ee8deb910766227122940aa5d9a92097f4271724"
 }
