@@ -1,0 +1,307 @@
+{
+  "schema": "OFFICIAL_EARLY_QUARTER_INCOME_INTAKE_V1",
+  "requested_issuers": [
+    {
+      "code": "2331",
+      "market": "TWSE"
+    },
+    {
+      "code": "2374",
+      "market": "TWSE"
+    },
+    {
+      "code": "2483",
+      "market": "TWSE"
+    },
+    {
+      "code": "3285",
+      "market": "TPEX"
+    },
+    {
+      "code": "4912",
+      "market": "TWSE"
+    },
+    {
+      "code": "6625",
+      "market": "TWSE"
+    },
+    {
+      "code": "6741",
+      "market": "TPEX"
+    },
+    {
+      "code": "6763",
+      "market": "TPEX"
+    },
+    {
+      "code": "8390",
+      "market": "TPEX"
+    },
+    {
+      "code": "8473",
+      "market": "TWSE"
+    },
+    {
+      "code": "2103",
+      "market": "TWSE"
+    }
+  ],
+  "captures": [
+    {
+      "market": "TPEX",
+      "source_url": "https://mopsfin.twse.com.tw/opendata/t187ap06_O_ci.csv",
+      "archive_path": "evidence/v880/early_bulk/TPEX/a2394c4d332122b2ab1a096b63c2664b3c12f1cd5db86d7f96c21d4d35ad8e3d.raw.gz",
+      "raw_sha256": "a2394c4d332122b2ab1a096b63c2664b3c12f1cd5db86d7f96c21d4d35ad8e3d",
+      "gzip_sha256": "554c2ccb9be6ae9bbd860b84d9ef47a659f7bf287f1e2a3264a5b98161406204",
+      "bytes": 45747,
+      "captured_at": "2026-11-08T12:56:17.246047+00:00",
+      "observed_rows": 171,
+      "observed_periods": [
+        "2026-Q3"
+      ],
+      "partial_table_not_complete_universe": true,
+      "formal_quality_pass": false
+    },
+    {
+      "market": "TWSE",
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap06_L_ci",
+      "archive_path": "evidence/v880/early_bulk/TWSE/1054c43d2966f669b579f643da173a79a6b3c99f5d205c4c8e67bd970a68d04a.raw.gz",
+      "raw_sha256": "1054c43d2966f669b579f643da173a79a6b3c99f5d205c4c8e67bd970a68d04a",
+      "gzip_sha256": "38055573856b1e4dc45a86bfb4a90252fd277a7fee1b3a906593bf489b4a48c9",
+      "bytes": 311967,
+      "captured_at": "2026-11-08T12:56:24.383926+00:00",
+      "observed_rows": 230,
+      "observed_periods": [
+        "2026-Q3"
+      ],
+      "partial_table_not_complete_universe": true,
+      "formal_quality_pass": false
+    }
+  ],
+  "announcements": [
+    {
+      "code": "2331",
+      "market": "TWSE",
+      "source_kind": "MOPS_ISSUER_EARNINGS_ANNOUNCEMENT_RESEARCH",
+      "source_url": "https://mopsov.twse.com.tw/mops/web/ajax_t05st01?firstin=true&step=2&off=1&seq_no=1&spoke_time=191740&spoke_date=20261105&co_id=2331&TYPEK=sii",
+      "archive_path": "evidence/v880/early_bulk/TWSE/52ee21769e2248636f8d8774061253932700a012b2b398b1f72162a8acb1c804.notice.html.gz",
+      "raw_sha256": "52ee21769e2248636f8d8774061253932700a012b2b398b1f72162a8acb1c804",
+      "gzip_sha256": "564c3ad3f915e8081ed0e29d6f78928ba964fedc61ae00175814a7a9bb135ca4",
+      "bytes": 6417,
+      "captured_at": "2026-11-08T13:04:34.354815+00:00",
+      "original_company_announcement_not_complete_financial_statement": true,
+      "formal_quality_pass": false
+    },
+    {
+      "code": "2374",
+      "market": "TWSE",
+      "source_kind": "MOPS_ISSUER_EARNINGS_ANNOUNCEMENT_RESEARCH",
+      "source_url": "https://mopsov.twse.com.tw/mops/web/ajax_t05st01?firstin=true&step=2&off=1&seq_no=3&spoke_time=171414&spoke_date=20261106&co_id=2374&TYPEK=sii",
+      "archive_path": "evidence/v880/early_bulk/TWSE/408f37d48172edf9aab8713de91778173d2e37badbaf340f5f015a3b884f213d.notice.html.gz",
+      "raw_sha256": "408f37d48172edf9aab8713de91778173d2e37badbaf340f5f015a3b884f213d",
+      "gzip_sha256": "acf696d2a40a0ff8c3c7a4fbba572bf7a966a0b1650c433e8a5c7b961b5c6056",
+      "bytes": 6420,
+      "captured_at": "2026-11-08T13:04:34.002234+00:00",
+      "original_company_announcement_not_complete_financial_statement": true,
+      "formal_quality_pass": false
+    },
+    {
+      "code": "2483",
+      "market": "TWSE",
+      "source_kind": "MOPS_ISSUER_EARNINGS_ANNOUNCEMENT_RESEARCH",
+      "source_url": "https://mopsov.twse.com.tw/mops/web/ajax_t05st01?firstin=true&step=2&off=1&seq_no=2&spoke_time=133410&spoke_date=20261106&co_id=2483&TYPEK=sii",
+      "archive_path": "evidence/v880/early_bulk/TWSE/2451a9988cd189b68305950154c5fd1934d076966182139b461272d46d6cc3ce.notice.html.gz",
+      "raw_sha256": "2451a9988cd189b68305950154c5fd1934d076966182139b461272d46d6cc3ce",
+      "gzip_sha256": "5a0b9ef959217ef0551772e23dd4b1ec42272ab0f657a04e28fd9fbb24c03c3a",
+      "bytes": 6371,
+      "captured_at": "2026-11-08T13:04:33.886467+00:00",
+      "original_company_announcement_not_complete_financial_statement": true,
+      "formal_quality_pass": false
+    },
+    {
+      "code": "8390",
+      "market": "TPEX",
+      "source_kind": "MOPS_ISSUER_EARNINGS_ANNOUNCEMENT_RESEARCH",
+      "source_url": "https://mopsov.twse.com.tw/mops/web/ajax_t05st01?firstin=true&step=2&off=1&seq_no=4&spoke_time=173310&spoke_date=20261106&co_id=8390&TYPEK=otc",
+      "archive_path": "evidence/v880/early_bulk/TPEX/68a0ce4f4411afcbc172806b0cedc1bec71d914ef4e878a4ee315d04ba889726.notice.html.gz",
+      "raw_sha256": "68a0ce4f4411afcbc172806b0cedc1bec71d914ef4e878a4ee315d04ba889726",
+      "gzip_sha256": "617035f1d1a4a4c169dd5677079734c0517767d54aed0dfbde7de512502bd128",
+      "bytes": 6394,
+      "captured_at": "2026-11-08T13:04:52.124348+00:00",
+      "original_company_announcement_not_complete_financial_statement": true,
+      "formal_quality_pass": false
+    },
+    {
+      "code": "2103",
+      "market": "TWSE",
+      "source_kind": "MOPS_ISSUER_EARNINGS_ANNOUNCEMENT_RESEARCH",
+      "source_url": "https://mopsov.twse.com.tw/mops/web/ajax_t05st01?firstin=true&step=2&off=1&seq_no=1&spoke_time=141345&spoke_date=20261105&co_id=2103&TYPEK=sii",
+      "archive_path": "evidence/v880/early_bulk/TWSE/8d51ea97aead975f7d506710b3efc6125f9a4d7b8abc186f4e162b1083cd1844.notice.html.gz",
+      "raw_sha256": "8d51ea97aead975f7d506710b3efc6125f9a4d7b8abc186f4e162b1083cd1844",
+      "gzip_sha256": "c8506d1631058b52aacbf1b855c69d277f4468cc1026dcac79df6918d2b52eb9",
+      "bytes": 6386,
+      "captured_at": "2026-11-08T13:12:51.486650+00:00",
+      "original_company_announcement_not_complete_financial_statement": true,
+      "formal_quality_pass": false
+    }
+  ],
+  "announcement_probes": [
+    {
+      "code": "2331",
+      "market": "TWSE",
+      "source_url": "https://mopsov.twse.com.tw/mops/web/ajax_t05st01?encodeURIComponent=1&step=1&firstin=1&off=1&isQuery=Y&co_id=2331&TYPEK=all&year=115&month=11",
+      "archive_path": "evidence/v880/early_bulk/TWSE/19fadf7b309ec5fe519603884b5fb11babf5866ac2fdd9f3fa808fd3931c3fbc.listing.html.gz",
+      "raw_sha256": "19fadf7b309ec5fe519603884b5fb11babf5866ac2fdd9f3fa808fd3931c3fbc",
+      "gzip_sha256": "76739c4586cc3b1c5bddd30b667561acd2ce2b2829a7dfa67a1bff05276c7cdc",
+      "bytes": 5337,
+      "captured_at": "2026-11-08T13:04:28.269903+00:00",
+      "searched_year": 2026,
+      "searched_month": 11,
+      "no_match_does_not_prove_no_announcement": true,
+      "observed_quarterly_earnings_announcements": 1
+    },
+    {
+      "code": "2374",
+      "market": "TWSE",
+      "source_url": "https://mopsov.twse.com.tw/mops/web/ajax_t05st01?encodeURIComponent=1&step=1&firstin=1&off=1&isQuery=Y&co_id=2374&TYPEK=all&year=115&month=11",
+      "archive_path": "evidence/v880/early_bulk/TWSE/a29c957120e92439a52b4a6431462b4fd088ec26c151848d4f692a092c27b324.listing.html.gz",
+      "raw_sha256": "a29c957120e92439a52b4a6431462b4fd088ec26c151848d4f692a092c27b324",
+      "gzip_sha256": "3299b28889193c0d8f61aea2be775c690e13c90ff949808af97733253c7fdd62",
+      "bytes": 6145,
+      "captured_at": "2026-11-08T13:04:28.659652+00:00",
+      "searched_year": 2026,
+      "searched_month": 11,
+      "no_match_does_not_prove_no_announcement": true,
+      "observed_quarterly_earnings_announcements": 1
+    },
+    {
+      "code": "2483",
+      "market": "TWSE",
+      "source_url": "https://mopsov.twse.com.tw/mops/web/ajax_t05st01?encodeURIComponent=1&step=1&firstin=1&off=1&isQuery=Y&co_id=2483&TYPEK=all&year=115&month=11",
+      "archive_path": "evidence/v880/early_bulk/TWSE/f8e5434382794705ec4558de0a41e665d2db238b0019e2cd5978cfbf79d419c1.listing.html.gz",
+      "raw_sha256": "f8e5434382794705ec4558de0a41e665d2db238b0019e2cd5978cfbf79d419c1",
+      "gzip_sha256": "5b5f50f81bca9a24bc656f730bfc97c40b00a42c5919bd8168b549a4d363bec0",
+      "bytes": 6081,
+      "captured_at": "2026-11-08T13:04:28.355061+00:00",
+      "searched_year": 2026,
+      "searched_month": 11,
+      "no_match_does_not_prove_no_announcement": true,
+      "observed_quarterly_earnings_announcements": 1
+    },
+    {
+      "code": "3285",
+      "market": "TPEX",
+      "source_url": "https://mopsov.twse.com.tw/mops/web/ajax_t05st01?encodeURIComponent=1&step=1&firstin=1&off=1&isQuery=Y&co_id=3285&TYPEK=all&year=115&month=11",
+      "archive_path": "evidence/v880/early_bulk/TPEX/0f6be80844c4018095b8a45f70030cc39bfa8218af3146595daa76f7ae89c491.listing.html.gz",
+      "raw_sha256": "0f6be80844c4018095b8a45f70030cc39bfa8218af3146595daa76f7ae89c491",
+      "gzip_sha256": "cf96003c6614e91a873e7217ac6aa71f2f6a85e95b7673380c7addfa40a469b4",
+      "bytes": 2514,
+      "captured_at": "2026-11-08T13:04:39.644723+00:00",
+      "searched_year": 2026,
+      "searched_month": 11,
+      "no_match_does_not_prove_no_announcement": true,
+      "observed_quarterly_earnings_announcements": 0
+    },
+    {
+      "code": "4912",
+      "market": "TWSE",
+      "source_url": "https://mopsov.twse.com.tw/mops/web/ajax_t05st01?encodeURIComponent=1&step=1&firstin=1&off=1&isQuery=Y&co_id=4912&TYPEK=all&year=115&month=11",
+      "archive_path": "evidence/v880/early_bulk/TWSE/6b7242a121abd817285b3f83a03f53a32abc69a7d9737a8c368056cbd7d4e198.listing.html.gz",
+      "raw_sha256": "6b7242a121abd817285b3f83a03f53a32abc69a7d9737a8c368056cbd7d4e198",
+      "gzip_sha256": "8f9f94ead0fd979ff44cc214e291310dd6d1b535f1e7bed49f3662410cc5e42b",
+      "bytes": 5338,
+      "captured_at": "2026-11-08T13:04:39.314044+00:00",
+      "searched_year": 2026,
+      "searched_month": 11,
+      "no_match_does_not_prove_no_announcement": true,
+      "observed_quarterly_earnings_announcements": 0
+    },
+    {
+      "code": "6625",
+      "market": "TWSE",
+      "source_url": "https://mopsov.twse.com.tw/mops/web/ajax_t05st01?encodeURIComponent=1&step=1&firstin=1&off=1&isQuery=Y&co_id=6625&TYPEK=all&year=115&month=11",
+      "archive_path": "evidence/v880/early_bulk/TWSE/0f6be80844c4018095b8a45f70030cc39bfa8218af3146595daa76f7ae89c491.listing.html.gz",
+      "raw_sha256": "0f6be80844c4018095b8a45f70030cc39bfa8218af3146595daa76f7ae89c491",
+      "gzip_sha256": "cf96003c6614e91a873e7217ac6aa71f2f6a85e95b7673380c7addfa40a469b4",
+      "bytes": 2514,
+      "captured_at": "2026-11-08T13:04:39.296306+00:00",
+      "searched_year": 2026,
+      "searched_month": 11,
+      "no_match_does_not_prove_no_announcement": true,
+      "observed_quarterly_earnings_announcements": 0
+    },
+    {
+      "code": "6741",
+      "market": "TPEX",
+      "source_url": "https://mopsov.twse.com.tw/mops/web/ajax_t05st01?encodeURIComponent=1&step=1&firstin=1&off=1&isQuery=Y&co_id=6741&TYPEK=all&year=115&month=11",
+      "archive_path": "evidence/v880/early_bulk/TPEX/0f6be80844c4018095b8a45f70030cc39bfa8218af3146595daa76f7ae89c491.listing.html.gz",
+      "raw_sha256": "0f6be80844c4018095b8a45f70030cc39bfa8218af3146595daa76f7ae89c491",
+      "gzip_sha256": "cf96003c6614e91a873e7217ac6aa71f2f6a85e95b7673380c7addfa40a469b4",
+      "bytes": 2514,
+      "captured_at": "2026-11-08T13:04:46.477439+00:00",
+      "searched_year": 2026,
+      "searched_month": 11,
+      "no_match_does_not_prove_no_announcement": true,
+      "observed_quarterly_earnings_announcements": 0
+    },
+    {
+      "code": "6763",
+      "market": "TPEX",
+      "source_url": "https://mopsov.twse.com.tw/mops/web/ajax_t05st01?encodeURIComponent=1&step=1&firstin=1&off=1&isQuery=Y&co_id=6763&TYPEK=all&year=115&month=11",
+      "archive_path": "evidence/v880/early_bulk/TPEX/0f6be80844c4018095b8a45f70030cc39bfa8218af3146595daa76f7ae89c491.listing.html.gz",
+      "raw_sha256": "0f6be80844c4018095b8a45f70030cc39bfa8218af3146595daa76f7ae89c491",
+      "gzip_sha256": "cf96003c6614e91a873e7217ac6aa71f2f6a85e95b7673380c7addfa40a469b4",
+      "bytes": 2514,
+      "captured_at": "2026-11-08T13:04:46.601095+00:00",
+      "searched_year": 2026,
+      "searched_month": 11,
+      "no_match_does_not_prove_no_announcement": true,
+      "observed_quarterly_earnings_announcements": 0
+    },
+    {
+      "code": "8390",
+      "market": "TPEX",
+      "source_url": "https://mopsov.twse.com.tw/mops/web/ajax_t05st01?encodeURIComponent=1&step=1&firstin=1&off=1&isQuery=Y&co_id=8390&TYPEK=all&year=115&month=11",
+      "archive_path": "evidence/v880/early_bulk/TPEX/cede1c003394e2409805a524cb3c7c2620418da55668b94b74424e069fd1a896.listing.html.gz",
+      "raw_sha256": "cede1c003394e2409805a524cb3c7c2620418da55668b94b74424e069fd1a896",
+      "gzip_sha256": "2ebc7d7d3d692b45f853f1a8197180a6590cffc2b5b28ff5bd6a9b326a2ef79c",
+      "bytes": 7852,
+      "captured_at": "2026-11-08T13:04:46.232384+00:00",
+      "searched_year": 2026,
+      "searched_month": 11,
+      "no_match_does_not_prove_no_announcement": true,
+      "observed_quarterly_earnings_announcements": 1
+    },
+    {
+      "code": "8473",
+      "market": "TWSE",
+      "source_url": "https://mopsov.twse.com.tw/mops/web/ajax_t05st01?encodeURIComponent=1&step=1&firstin=1&off=1&isQuery=Y&co_id=8473&TYPEK=all&year=115&month=11",
+      "archive_path": "evidence/v880/early_bulk/TWSE/cb8755ae034bc021a278f92b38371c8ab5c3544fec935d6ddaf1100505119428.listing.html.gz",
+      "raw_sha256": "cb8755ae034bc021a278f92b38371c8ab5c3544fec935d6ddaf1100505119428",
+      "gzip_sha256": "3d9eb3ccafabda41dc02f6c5aba357d883e1e02fecca6976e123f7a2417bbfaf",
+      "bytes": 5331,
+      "captured_at": "2026-11-08T13:04:52.407837+00:00",
+      "searched_year": 2026,
+      "searched_month": 11,
+      "no_match_does_not_prove_no_announcement": true,
+      "observed_quarterly_earnings_announcements": 0
+    },
+    {
+      "code": "2103",
+      "market": "TWSE",
+      "source_url": "https://mopsov.twse.com.tw/mops/web/ajax_t05st01?encodeURIComponent=1&step=1&firstin=1&off=1&isQuery=Y&co_id=2103&TYPEK=all&year=115&month=11",
+      "archive_path": "evidence/v880/early_bulk/TWSE/1cf3d637b25395d3e9705c55966dbf6f4c817839ba99d9773a0a5a9eb65f9d84.listing.html.gz",
+      "raw_sha256": "1cf3d637b25395d3e9705c55966dbf6f4c817839ba99d9773a0a5a9eb65f9d84",
+      "gzip_sha256": "70652c94ec53127c2aea4defacaf073a0937681d9b85937eb110a161a996d5c5",
+      "bytes": 9282,
+      "captured_at": "2026-11-08T13:12:43.349289+00:00",
+      "searched_year": 2026,
+      "searched_month": 11,
+      "no_match_does_not_prove_no_announcement": true,
+      "observed_quarterly_earnings_announcements": 1
+    }
+  ],
+  "full_market_eligible_period_unchanged": true,
+  "formal_quality_pass": false,
+  "retrospective_PIT_verified": false
+}
