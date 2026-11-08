@@ -40,28 +40,29 @@ class HonhaiOriginalIntakeTests(unittest.TestCase):
     def setUp(self):
         tmp=tempfile.TemporaryDirectory();self.addCleanup(tmp.cleanup)
         self.root=Path(tmp.name)
-        self.raw={p:fixture(p) for p in h.KNOWN}
+        self.raw={p:fixture(p) for p in h.KNOWN if p!="2026-Q2"}
         self.urls={url:p for p,url in h.KNOWN.items()}
 
     def fetcher(self,url):
+        if url==h.twse_q2.INDEX_URL:raise OSError("Q2 official resolver unavailable in synthetic fixture")
         return self.raw[self.urls[url]]
 
     def test_official_allowlisted_pdfs_archive_without_certificate_or_fake_eight_quarter_coverage(self):
         report=h.collect(self.root,"2026-Q2",fetcher=self.fetcher,clock=lambda:STAMP)
-        self.assertEqual(report["records"],len(h.KNOWN))
+        self.assertEqual(report["records"],len(h.KNOWN)-1)
         self.assertEqual(report["coverage"]["required_quarters"],h.window("2026-Q2"))
-        self.assertEqual(report["coverage"]["found_quarters"],sorted(h.KNOWN))
-        self.assertEqual(len(report["coverage"]["missing_quarters"]),8-len(h.KNOWN))
+        self.assertEqual(report["coverage"]["found_quarters"],sorted(self.raw))
+        self.assertEqual(report["coverage"]["missing_quarters"],["2026-Q2"])
         self.assertFalse(report["coverage"]["formal_gate_pass"])
         self.assertEqual(report["formal_pass_count"],0)
         self.assertTrue(report["original_archive_hashes_verified"])
         self.assertTrue(all(x["pdf_identity"]["contents_four_statements_notes_and_auditor_listed"]
                             for x in report["documents"]))
         self.assertTrue(all(x["formal_gate_pass"] is False for x in report["documents"]))
-        self.assertEqual(h.validate_archive(self.root,"2026-Q2",STAMP.isoformat())["records"],len(h.KNOWN))
-        again=h.collect(self.root,"2026-Q2",fetcher=lambda url: self.fail("should use existing receipts"),
+        self.assertEqual(h.validate_archive(self.root,"2026-Q2",STAMP.isoformat())["records"],len(h.KNOWN)-1)
+        again=h.collect(self.root,"2026-Q2",fetcher=lambda url: self.fetcher(url) if url==h.twse_q2.INDEX_URL else self.fail("archived original must not be fetched again"),
                         clock=lambda:STAMP+dt.timedelta(hours=1))
-        self.assertEqual(again["records"],len(h.KNOWN))
+        self.assertEqual(again["records"],len(h.KNOWN)-1)
 
     def test_real_official_cover_wording_for_q1_and_q2_is_accepted(self):
         # Actual 2025-Q2 and 2026-Q1 official covers use 第一季/第二季,
