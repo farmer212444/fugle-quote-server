@@ -38,6 +38,8 @@ FILING_URLS={
 }
 MONTHS={1:'MARCH',2:'JUNE',3:'SEPTEMBER',4:'DECEMBER'}
 DAYS={1:'31',2:'30',3:'30',4:'31'}
+# Repeated GitHub pushes must not hammer SEC endpoints once access is denied.
+HTTP403_RETRY_DELAY=dt.timedelta(hours=24)
 
 
 class Text(HTMLParser):
@@ -99,6 +101,33 @@ def safe(root,rel):
     return target
 
 
+def cooldown_for_http403(meta,now):
+    """Use only a recorded, time-bounded HTTP 403 as retry suppression.
+
+    Never infer the document was archived from a skip, and never suppress
+    other transient errors or defer retries indefinitely. A no-network run
+    must not reset the 24h clock.
+    """
+    if now.tzinfo is None:
+        raise ValueError('TSMC_SEC_CAPTURE_TIMEZONE_REQUIRED')
+    last=meta.get('last_network_attempt_at_utc') or meta.get('last_checked_at_utc')
+    if not last:return set(),None
+    try:
+        when=dt.datetime.fromisoformat(last.replace('Z','+00:00'))
+    except (TypeError,ValueError,AttributeError):
+        raise ValueError('TSMC_SEC_LAST_NETWORK_ATTEMPT_INVALID')
+    if when.tzinfo is None or when>now:
+        raise ValueError('TSMC_SEC_LAST_NETWORK_ATTEMPT_INVALID')
+    due=when+HTTP403_RETRY_DELAY
+    if now>=due:return set(),None
+    blocked={e['period'] for e in meta.get('last_errors',[])
+             if isinstance(e,dict)
+             and e.get('period') in FILING_URLS
+             and isinstance(e.get('error'),str)
+             and ('HTTP Error 403' in e['error'] or 'HTTP 403 Forbidden' in e['error'])}
+    return blocked,due.isoformat() if blocked else None
+
+
 def collect(root,*,fetcher=fetch,clock=lambda:dt.datetime.now(dt.timezone.utc),
             pause=lambda n:time.sleep(n)):
     root=Path(root).resolve();manifest=root/FOLDER/'manifest.json'
@@ -123,9 +152,18 @@ def collect(root,*,fetcher=fetch,clock=lambda:dt.datetime.now(dt.timezone.utc),
             raise ValueError('TSMC_SEC_ARCHIVE_HASH_MISMATCH')
         if identity(raw,quarter)!=row['identity']:
             raise ValueError('TSMC_SEC_ARCHIVE_IDENTITY_RECHECK_MISMATCH')
-    failures=[]
+    now=clock()
+    blocked,retry_after=cooldown_for_http403(meta,now)
+    failures=[dict(e) for e in meta.get('last_errors',[])
+              if isinstance(e,dict) and e.get('period') in blocked]
+    skipped=[]
+    attempted=False
     for quarter,url in FILING_URLS.items():
         if quarter in seen:continue
+        if quarter in blocked:
+            skipped.append(quarter)
+            continue
+        attempted=True
         try:
             raw=fetcher(url);kind=identity(raw,quarter);sha=digest(raw)
             rel=f'{FOLDER}/{quarter}_{sha[:20]}.html'
@@ -141,6 +179,8 @@ def collect(root,*,fetcher=fetch,clock=lambda:dt.datetime.now(dt.timezone.utc),
             failures.append(dict(period=quarter,error=type(exc).__name__+':'+str(exc)))
         pause(1)
     meta.update(last_checked_at_utc=clock().isoformat(),last_errors=failures)
+    if attempted:
+        meta['last_network_attempt_at_utc']=clock().isoformat()
     atomic_json(manifest,meta)
     return dict(schema=meta['schema'],issuer=ISSUER,
                 sec_translated_exhibits_verified=len(seen),
@@ -148,6 +188,8 @@ def collect(root,*,fetcher=fetch,clock=lambda:dt.datetime.now(dt.timezone.utc),
                 archived_quarters=sorted(seen),
                 missing_quarters=sorted(set(FILING_URLS)-seen),
                 source_errors=failures,documents=rows,
+                http403_retry_deferred_quarters=sorted(skipped),
+                http403_retry_due_at_utc=retry_after if skipped else None,
                 chinese_original_pdf_gate_unmodified=True,
                 original_full_content_review_complete=False,
                 original_MOPS_PIT_verified=False,formal_gate_pass=False)
@@ -167,6 +209,11 @@ def main():
         lines.append(f"|{q}|{url}|{'SEC原件SHA封存待核' if q in result['archived_quarters'] else '取得失敗待補'}|")
     for item in result['source_errors']:
         lines.append(f"- {item['period']}：{item['error']}")
+    if result['http403_retry_deferred_quarters']:
+        lines.append('HTTP 403 有界重試保護：本次未重抓 '+
+            ', '.join(result['http403_retry_deferred_quarters'])+
+            '；下一次允許重試起點 '+str(result['http403_retry_due_at_utc'])+
+            '。此狀態不代表財報取得成功。')
     (root/'rankings/tsmc_sec_filing_archive.md').write_text('\n'.join(lines)+'\n',encoding='utf-8')
     print(json.dumps(dict(archived=result['sec_translated_exhibits_verified'],
         expected=result['expected_sec_exhibits'],errors=len(result['source_errors']),
