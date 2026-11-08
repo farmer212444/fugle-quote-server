@@ -65,6 +65,7 @@ on:
       - 'scripts/v897_freeze_model_vintage.py'
       - 'scripts/v8a9_8383_original_archive.py'
       - 'scripts/tsmc_original_statements.py'
+      - 'scripts/honhai_original_statements.py'
       - 'scripts/tsmc_sec_filing_archive.py'
       - 'tw-market-data/evidence/v880/auditor_scope_watch/**'
       - 'scripts/v8a8_forward_top30_0050.py'
@@ -152,6 +153,7 @@ on:
       - 'scripts/v897_freeze_model_vintage.py'
       - 'scripts/v8a9_8383_original_archive.py'
       - 'scripts/tsmc_original_statements.py'
+      - 'scripts/honhai_original_statements.py'
       - 'scripts/tsmc_sec_filing_archive.py'
       - 'tw-market-data/evidence/v880/auditor_scope_watch/**'
       - 'scripts/v8a8_forward_top30_0050.py'
@@ -244,6 +246,7 @@ jobs:
           python scripts/tw_v880_run.py --self-test
           python -m unittest -v tests.test_readiness_lanes tests.test_aplus_work_queue_repair tests.test_2330_2317_dual_lane tests.test_dual_focus_publication tests.test_research_pipeline
           python -m unittest -v tests.test_tsmc_original_statements
+          python -m unittest -v tests.test_2317_original_statements
           python -m unittest -v tests.test_tsmc_sec_filing_archive
           python -m unittest -v tests.test_footwear_review
           python -m unittest -v tests.test_earnings_version_review
@@ -277,6 +280,9 @@ jobs:
       - name: Archive SEC filed 2330 full English translations when issuer PDF access is blocked
         if: github.event_name != 'pull_request'
         run: python scripts/tsmc_sec_filing_archive.py
+      - name: Archive official 2317 quarterly original PDFs with SHA, not formal PASS
+        if: github.event_name != 'pull_request'
+        run: python scripts/honhai_original_statements.py
       - name: Admit verified original-source review packs before valuation
         run: python scripts/v891_gate_certification.py --issue-only
       - name: Produce dated scenarios and evidence decisions
@@ -320,6 +326,7 @@ jobs:
               python scripts/v8a9_8383_original_archive.py
               python scripts/tsmc_original_statements.py
               python scripts/tsmc_sec_filing_archive.py
+              python scripts/honhai_original_statements.py
               python scripts/v891_gate_certification.py --issue-only
               python scripts/run_research_pipeline.py --phase core
             fi
