@@ -239,6 +239,31 @@ def build_queue(progress,research,sec_archive=None):
                       count_scope='DETAIL_ONLY_NOT_FULL_MARKET')
     if lanes_summary['formal_aplus_count']!=sum(bool(x['formal_Aplus']) for x in jobs):
         raise ValueError('READINESS_FORMAL_COUNT_RECONCILIATION_FAILED')
+    # Publication audit is a read-only view of the existing formal gate ledger.
+    # No receipt, missing manifest, or price estimate can be promoted to PASS.
+    dual_focus=[]
+    for code in ('2330','2317'):
+        focus=next((item for item in jobs if item['code']==code),None)
+        if focus is None:
+            dual_focus.append(dict(code=code,diagnostic_status='NOT_IN_CURRENT_DIAGNOSTIC',
+                                   formal_Aplus=False,original_quarter_coverage=None))
+            continue
+        unresolved={item['gate']:item for item in focus['work']}
+        company=[unresolved.get(g) for g in GATES if g!='out_of_sample_validation']
+        oos=unresolved.get('out_of_sample_validation')
+        dual_focus.append(dict(
+            code=code,name=focus['name'],diagnostic_status='IN_CURRENT_DIAGNOSTIC',
+            research_upside_pct=focus['research_upside_pct'],
+            price_lane=focus['price_lane'],
+            company_gates_passed=sum(g is None for g in company),
+            company_gates_pending=sum(g is not None and g['decision'] in ('PENDING','NOT_EVALUATED') for g in company),
+            company_gates_failed=sum(g is not None and g['decision']=='FAIL' for g in company),
+            strategy_oos_gate_decision=oos['decision'] if oos else 'PASS',
+            original_quarter_coverage=focus['original_quarter_coverage'],
+            next_issuer_gate=focus['next_issuer_gate'],
+            next_issuer_action=focus['next_issuer_action'],
+            formal_Aplus=focus['formal_Aplus'],
+            no_auto_certification=True))
     return dict(schema='RESEARCH_EVIDENCE_WORK_QUEUE_V1',
                 decision_lanes_summary=lanes_summary,
                 universe_coverage=coverage,
@@ -249,6 +274,7 @@ def build_queue(progress,research,sec_archive=None):
                 scope='ISSUERS_INCLUDED_IN_CURRENT_GATE_DIAGNOSTICS_NOT_ALL_TRACKED_COMPANIES',
                 issuer_jobs=jobs,
                 tsmc_aplus_research_status=tsmc_lane,
+                dual_focus_status=dual_focus,
                 aplus_repair=dict(
                     price_qualified_research_issuers=len(high_upside),
                     strategy_level_gate='out_of_sample_validation',
@@ -294,6 +320,35 @@ def render(report):
            f"模型：{report['model']}；估計：{report['estimate_vintage']}。",
            '僅涵蓋當次認證診斷名單。優先關注股，再按已完成門檻排序；潛在漲幅僅作同順位排序。',
            '同公司原始財報集中蒐集，各項仍須獨立查核；策略證據集中蒐集後仍須核對個股與子群適用性。','']
+    dual_focus=report.get('dual_focus_status',[])
+    if dual_focus:
+        lines+=['## 2330 台積電／2317 鴻海：雙軌正式證據追蹤（非發證）','',
+                '|公司|研究價差|公司12項正式PASS|第13項|完整財報原件|正式A+|',
+                '|---|---:|---:|---|---|---|']
+        for focus in dual_focus:
+            if focus['diagnostic_status']!='IN_CURRENT_DIAGNOSTIC':
+                lines.append(f"|{focus['code']}|—|不在本次診斷名單|未核|未知|否|")
+                continue
+            up=focus['research_upside_pct']
+            upside=f"{up:+.1f}%" if isinstance(up,(int,float)) else '未核'
+            original=focus['original_quarter_coverage']
+            if original:
+                source=f"{original['archived']}/{original['required']}季；缺："+('、'.join(original['missing_quarters']) or '無')
+            else:
+                source='未核實封存覆蓋；不可視為0季'
+            lines.append(f"|{focus['code']} {focus.get('name') or ''}|{upside}（研究）|"
+                         f"{focus['company_gates_passed']}/12；待核{focus['company_gates_pending']}、FAIL {focus['company_gates_failed']}|"
+                         f"{focus['strategy_oos_gate_decision']}|{source}|"
+                         f"{'是' if focus['formal_Aplus'] else '否'}|")
+        lines+=['','雙軌待辦（公司別原件及共同策略回測分離）：']
+        for focus in dual_focus:
+            if focus['diagnostic_status']=='IN_CURRENT_DIAGNOSTIC':
+                label=focus['next_issuer_gate'] or '僅剩策略驗證'
+                action=ACTION_ZH.get(focus['next_issuer_action'],'逐項核對原始證據')
+                lines.append(f"- {focus['code']}：{label} — {action}")
+            else:
+                lines.append(f"- {focus['code']}：先補齊正式診斷資料，不推定品質結果")
+        lines+=['','未取得原件SHA、全文核閱或策略PIT扣成本回測證據，不得提升品質PASS、A+或A++。','']
     if tsmc:
         name='A+價格候選（研究限定）' if tsmc['price_lane']=='A_PLUS_PRICE_ONLY' else tsmc['price_lane']
         coverage=tsmc['original_quarter_coverage']
