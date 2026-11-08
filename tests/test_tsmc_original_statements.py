@@ -206,6 +206,37 @@ class OriginalIntakeTests(unittest.TestCase):
         self.assertIn('未進行網路重試',readable)
         self.assertIn('2026-11-09T12:00:00+00:00',readable)
 
+    def test_missing_official_pdf_lead_requires_sha_verified_issuer_index(self):
+        blocked=self.specs['2025-Q4'][0]
+        def partial(url,limit):
+            if url==blocked:raise OSError('HTTP 403 Forbidden')
+            return self.fetch(url,limit)
+        result=self.collect(fetcher=partial)
+        self.assertEqual(result['coverage']['missing_quarters'],['2025-Q4'])
+        leads=mod.discover_missing_original_leads(
+            self.root,'2026-Q2',STAMP+dt.timedelta(minutes=1))
+        self.assertEqual(len(leads),1)
+        lead=leads[0]
+        self.assertEqual(lead['period'],'2025-Q4')
+        self.assertEqual(lead['source_url'],blocked)
+        self.assertIsNone(lead['original_pdf_sha256'])
+        self.assertFalse(lead['original_pdf_archived'])
+        self.assertFalse(lead['formal_gate_pass'])
+        self.assertTrue(lead['source_link_is_not_formal_evidence'])
+        self.assertEqual(len(lead['directory_index_sha256']),64)
+        manifest=self.manifest()
+        path=self.root/manifest['index_versions'][0]['archive_path']
+        raw=path.read_bytes();path.write_bytes(raw+b'TAMPERED')
+        with self.assertRaisesRegex(ValueError,'HASH_MISMATCH'):
+            mod.discover_missing_original_leads(
+                self.root,'2026-Q2',STAMP+dt.timedelta(minutes=1))
+
+    def test_source_leads_empty_when_originals_complete(self):
+        result=self.collect()
+        self.assertFalse(result['coverage']['missing_quarters'])
+        self.assertEqual(mod.discover_missing_original_leads(
+            self.root,'2026-Q2',STAMP+dt.timedelta(minutes=1)),[])
+
     def test_403_without_prior_issuer_index_cannot_fabricate_urls(self):
         def blocked_index(url,limit):
             raise OSError('HTTP 403 Forbidden')
