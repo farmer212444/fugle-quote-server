@@ -116,10 +116,10 @@ def render_readiness_report(report):
         "這是依原始13項證據帳本產生的研究決策分層，不是變更認證門檻。",
         "A+價格研究候選不是正式A+，雙降20%是機械壓測而非期望報酬。",
         "",
-        f"已診斷 {stats['total_diagnosed_issuers']} 家；A+價格候選 "
+        f"已列出逐股詳細診斷 {stats['total_diagnosed_issuers']} 家；其中A+價格候選 "
         f"{stats['price_research_candidates']} 家；公司12項全正式通過 "
         f"{stats['company_quality_12_gate_passed']} 家；策略樣本外正式通過 "
-        f"{stats['strategy_pit_oos_formal_passed']} 家；正式A+ "
+        f"{stats['strategy_pit_oos_formal_passed']} 家；詳細名單中的正式A+ "
         f"{stats['formal_aplus_count']} 家。",
         "",
         "## 分層說明",
@@ -134,6 +134,22 @@ def render_readiness_report(report):
         "## 台積電驗收樣本",
         "",
     ]
+    coverage=report.get("universe_coverage")
+    if coverage:
+        if (coverage["count_scope"]!="DETAIL_ONLY_NOT_FULL_MARKET"
+            or coverage["detailed_issuer_diagnostics"]!=len(rows)):
+            raise ValueError("READINESS_UNIVERSE_SCOPE_MISMATCH")
+        lines[8:8] = [
+            f"模型全市場追蹤 {coverage['total_tracked']} 家，其中正式證據帳本已評估 "
+            f"{coverage['full_model_evaluated']} 家、未評估 "
+            f"{coverage['full_model_not_evaluated']} 家；"
+            f"本表僅逐股詳細列出 {coverage['detailed_issuer_diagnostics']} 家，"
+            f"其餘 {coverage['remaining_without_detailed_diagnostic']} 家未在本表逐股展示。",
+            f"**全市場正式A+ {coverage['formal_aplus_marketwide']} 家**；詳細名單的數量不代表全市場認證覆蓋率。",
+            ""
+        ]
+    else:
+        lines.insert(8,"原始全市場母體數量未提供；目前僅統計本次逐股詳細診斷樣本。")
     tsmc = next((r for r in rows if r["code"] == "2330"), None)
     if tsmc:
         lines += ["|項目|判定|", "|---|---|",
