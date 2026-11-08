@@ -25,7 +25,7 @@
     "count_scope": "DETAIL_ONLY_NOT_FULL_MARKET"
   },
   "model": "V8.10.8",
-  "estimate_vintage": "2026-11-08T20:49:20.156924+08:00",
+  "estimate_vintage": "2026-11-08T21:26:14.460462+08:00",
   "asof_price_date": "2026-11-06",
   "source_model_sha256": "819c6863e7d85caa21b4e884754a4ca56e1f0735e38b35486c4921e237d99e0f",
   "issuer_job_count": 205,
@@ -41384,6 +41384,50 @@
     "next_issuer_action": "CAPTURE_MISSING_QUARTER_ORIGINALS",
     "source_only_is_not_signed_certification": true
   },
+  "dual_focus_status": [
+    {
+      "code": "2330",
+      "name": "台積電",
+      "diagnostic_status": "IN_CURRENT_DIAGNOSTIC",
+      "research_upside_pct": 58.06,
+      "price_lane": "A_PLUS_PRICE_ONLY",
+      "company_gates_passed": 0,
+      "company_gates_pending": 12,
+      "company_gates_failed": 0,
+      "strategy_oos_gate_decision": "PENDING",
+      "original_quarter_coverage": {
+        "required": 8,
+        "archived": 4,
+        "missing_quarters": [
+          "2024-Q3",
+          "2025-Q4",
+          "2026-Q1",
+          "2026-Q2"
+        ],
+        "content_review_complete": false
+      },
+      "next_issuer_gate": "original_eight_quarter_statements",
+      "next_issuer_action": "CAPTURE_MISSING_QUARTER_ORIGINALS",
+      "formal_Aplus": false,
+      "no_auto_certification": true
+    },
+    {
+      "code": "2317",
+      "name": "鴻海",
+      "diagnostic_status": "IN_CURRENT_DIAGNOSTIC",
+      "research_upside_pct": 95.01,
+      "price_lane": "A_PLUS_PRICE_ONLY",
+      "company_gates_passed": 0,
+      "company_gates_pending": 12,
+      "company_gates_failed": 0,
+      "strategy_oos_gate_decision": "PENDING",
+      "original_quarter_coverage": null,
+      "next_issuer_gate": "tradability",
+      "next_issuer_action": "VERIFY_MARKET_SPREAD_EXIT_CAPACITY",
+      "formal_Aplus": false,
+      "no_auto_certification": true
+    }
+  ],
   "aplus_repair": {
     "price_qualified_research_issuers": 204,
     "strategy_level_gate": "out_of_sample_validation",
@@ -42822,5 +42866,5 @@
   },
   "formal_gate_decisions_changed": 0,
   "certificates_issued": 0,
-  "source_progress_sha256": "076de5cd728a36ae63a172b8726cd1af8eb30ad9c199e21c5572fdbac5f1e3c1"
+  "source_progress_sha256": "ea51da3899f3fa632cd395fe659bbfec5a088ef6e7acceb4256ace23f7b96936"
 }
