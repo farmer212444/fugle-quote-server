@@ -25,7 +25,7 @@
     "count_scope": "DETAIL_ONLY_NOT_FULL_MARKET"
   },
   "model": "V8.10.8",
-  "estimate_vintage": "2026-11-08T22:36:43.805243+08:00",
+  "estimate_vintage": "2026-11-08T23:47:13.996603+08:00",
   "asof_price_date": "2026-11-06",
   "source_model_sha256": "957665ba8d64938cfad2911a593392f8140a2d9db2039ff4638892256bcc44bb",
   "issuer_job_count": 205,
@@ -41,14 +41,8 @@
       "research_upside_pct": 95.01,
       "original_quarter_coverage": {
         "required": 8,
-        "archived": 1,
+        "archived": 7,
         "missing_quarters": [
-          "2024-Q3",
-          "2024-Q4",
-          "2025-Q1",
-          "2025-Q2",
-          "2025-Q3",
-          "2026-Q1",
           "2026-Q2"
         ],
         "content_review_complete": false
@@ -87,7 +81,7 @@
           "next_action": "CAPTURE_MISSING_QUARTER_ORIGINALS",
           "scope": "ISSUER",
           "required_evidence": "逐季原始四表、附註、重編及完整性核對",
-          "reason": "1/8 period-specific original PDFs SHA-archived, missing 2024-Q3,2024-Q4,2025-Q1,2025-Q2,2025-Q3,2026-Q1,2026-Q2; issuer PDF internal identity, full notes, auditor scope and MOPS publication PIT unreviewed",
+          "reason": "7/8 period-specific original PDFs SHA-archived, missing 2026-Q2; issuer PDF internal identity, full notes, auditor scope and MOPS publication PIT unreviewed",
           "model_reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
           "invalidates_on": "財報／重編更新"
         },
@@ -41437,14 +41431,8 @@
       "strategy_oos_gate_decision": "PENDING",
       "original_quarter_coverage": {
         "required": 8,
-        "archived": 1,
+        "archived": 7,
         "missing_quarters": [
-          "2024-Q3",
-          "2024-Q4",
-          "2025-Q1",
-          "2025-Q2",
-          "2025-Q3",
-          "2026-Q1",
           "2026-Q2"
         ],
         "content_review_complete": false
@@ -42893,5 +42881,5 @@
   },
   "formal_gate_decisions_changed": 0,
   "certificates_issued": 0,
-  "source_progress_sha256": "40517bd195b2bc0be38a211c17c7d8614777e36ceca538cb6c0c496525cc8924"
+  "source_progress_sha256": "a1ca9fa3d130898d7a502c2270983359d6563b42f064ba11ce75a0678f6375b9"
 }
