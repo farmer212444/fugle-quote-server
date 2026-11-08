@@ -171,7 +171,7 @@ class EvidenceQueue(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'CONTEXT_MISMATCH'):
             build_queue(dict(progress,estimate_vintage='OLD'),research)
         del progress['issuer_diagnostics'][0]['gate_stage'][GATES[0]]
-        with self.assertRaisesRegex(ValueError,'INCOMPLETE_GATE'):
+        with self.assertRaisesRegex(ValueError,'INCOMPLETE_13_GATE_LEDGER'):
             build_queue(progress,research)
         progress,research=self.inputs()
         progress['issuer_diagnostics'][1]['gate_stage'][GATES[0]]['formal_pass']=True
