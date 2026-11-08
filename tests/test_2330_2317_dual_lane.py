@@ -1,6 +1,6 @@
 """Regression: 2330/2317 share a prioritized research lane, not a certificate."""
 import unittest
-from scripts.research_work_queue import WATCHLIST, build_queue
+from scripts.research_work_queue import WATCHLIST, build_queue, render
 from tw_model_v880.evidence import GATES
 
 class DualLaneTests(unittest.TestCase):
@@ -27,6 +27,21 @@ class DualLaneTests(unittest.TestCase):
             self.assertFalse(jobs[code]['formal_Aplus'])
         self.assertEqual([r['code'] for r in report['issuer_jobs'][:2]],['2317','2330'])
         self.assertEqual(report['certificates_issued'],0)
+        # The published dual summary must not silently label a missing
+        # original archive manifest as 0/8 or upgrade a pending gate.
+        focus={r['code']:r for r in report['dual_focus_status']}
+        self.assertEqual(set(focus),{'2330','2317'})
+        for code in ('2330','2317'):
+            self.assertEqual(focus[code]['company_gates_passed'],0)
+            self.assertEqual(focus[code]['company_gates_pending'],12)
+            self.assertEqual(focus[code]['strategy_oos_gate_decision'],'PENDING')
+            self.assertIsNone(focus[code]['original_quarter_coverage'])
+            self.assertFalse(focus[code]['formal_Aplus'])
+        markdown=render(report)
+        self.assertIn('2330 台積電／2317 鴻海',markdown)
+        self.assertIn('未核實封存覆蓋；不可視為0季',markdown)
+        self.assertIn('共同策略回測',markdown)
+
 
 if __name__=='__main__':
     unittest.main()
