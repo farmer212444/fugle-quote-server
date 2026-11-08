@@ -291,6 +291,40 @@ def collect(root,last_quarter,*,fetcher=fetch,clock=lambda:dt.datetime.now(dt.ti
     return result
 
 
+
+def discover_missing_original_leads(root,last_quarter,asof):
+    """Read-only source URLs from previously SHA-verified issuer index bytes.
+
+    A source lead is NOT a captured original, not its SHA, and cannot earn PASS.
+    The same validated index that was used for existing original receipts is
+    used here.  No guessed paths, alternate domains or network requests.
+    """
+    root=Path(root).resolve()
+    archive=validate_archive(root,last_quarter,asof)
+    missing=set(archive['coverage']['missing_quarters'])
+    if not missing:return []
+    path=root/MANIFEST
+    if not path.exists():return []
+    manifest=json.loads(path.read_text(encoding='utf-8'))
+    leads={}
+    for entry in sorted(manifest.get('index_versions',[]),
+                        key=lambda e:(e['captured_at_utc'],e['sha256'])):
+        if aware(entry['captured_at_utc'])>aware(asof):continue
+        expected=f"{FOLDER}/index_{entry['sha256']}.html"
+        if entry['archive_path']!=expected or entry['source_url']!=DIRECTORY:
+            raise ValueError('TSMC_SOURCE_LEAD_UNTRUSTED_INDEX')
+        raw=safe(root,expected).read_bytes()
+        if digest(raw)!=entry['sha256']:
+            raise ValueError('TSMC_SOURCE_LEAD_INDEX_HASH_MISMATCH')
+        for quarter,spec in discover(raw,missing).items():
+            leads[quarter]=dict(period=quarter,source_url=spec['source_url'],
+                                original_pdf_sha256=None,
+                                original_pdf_archived=False,
+                                directory_index_sha256=entry['sha256'],
+                                source_link_is_not_formal_evidence=True,
+                                formal_gate_pass=False)
+    return [leads[p] for p in sorted(leads)]
+
 def main():
     p=argparse.ArgumentParser();p.add_argument('--data-root',default='tw-market-data');p.add_argument('--last-quarter')
     a=p.parse_args();root=Path(a.data_root)
@@ -303,6 +337,8 @@ def main():
     report['http403_retry_due_at_utc']=result.get('http403_retry_due_at_utc')
     report['source_window_end']=last
     report['checked_at_utc']=dt.datetime.now(dt.timezone.utc).isoformat()
+    report['missing_official_source_leads_not_originals']=discover_missing_original_leads(
+        root,last,report['checked_at_utc'])
     report['documents']=[{k:d[k] for k in ('period','title','source_url','archive_path','sha256','bytes','captured_at_utc','pdf_identity')} for d in result['documents']]
     report['all_13_formal_gates_unchanged']=True
     atomic_json(root/'rankings/tsmc_original_statements_intake.json',report)
@@ -318,6 +354,14 @@ def main():
         lines.append(f"|{d['period']}|{d['pdf_identity']['page_count']}|{state}|{d['sha256']}|")
     if result['coverage']['missing_quarters']:
         lines+=['','缺少原件：'+', '.join(result['coverage']['missing_quarters'])]
+    if report['missing_official_source_leads_not_originals']:
+        lines += ['','## 官方已列出的缺件來源（尚未取得 PDF 原件）','',
+                  '|季度|已核實目錄指向的官方下載連結|原件SHA／正式PASS|',
+                  '|---|---|---|']
+        for lead in report['missing_official_source_leads_not_originals']:
+            lines.append(f"|{lead['period']}|{lead['source_url']}|未封存／不得認證|")
+        lines += ['','目錄連結由已封存且SHA核對的發行人網站目錄重建；'
+                  '它只證明下載路徑，不代表本倉庫已取得PDF原始位元、驗證其內容或核發PASS。']
     if result['fetch_errors']:
         lines+=['','本輪來源錯誤（包含保留的上一輪403）：']+[f"- {e['period']}：{e['error']}" for e in result['fetch_errors']]
     if report['http403_retry_deferred_quarters']:
