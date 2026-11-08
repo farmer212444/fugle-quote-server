@@ -1,6 +1,6 @@
 # V8.10.8 台股 2027 營運情境與證據分級
 
-估計形成：2026-11-08T09:41:21.538701+08:00；參考收盤：2026-11-06；目標：2027-12-31。
+估計形成：2026-11-08T20:49:20.156924+08:00；參考收盤：2026-11-06；目標：2027-12-31。
 目前的參考日未發現潛在平日缺口，但仍非盤中即時報價。
 
 正式 A+ 0 檔，A++ 0 檔。未決證據不等於市場沒有機會。
@@ -182,7 +182,7 @@ A++ 壓測採EPS/PE各下修10%、CB轉換價下修10%增加稀釋股數，並�
 
 ## 內部人集中市場賣出：模型研究風險註記（非正式交易訊號）
 
-來源狀態：ASOF_VALID_RESEARCH_ONLY_UNCERTIFIED_HOLDER_IDENTITY；已觀察賣壓需人工覆核 178 檔。
+來源狀態：ASOF_VALID_RESEARCH_ONLY_UNCERTIFIED_HOLDER_IDENTITY；已觀察賣壓需人工覆核 180 檔。
 僅使用在估值 as-of 之前產生的官方原件核對彙總；未核月份不當零。持有人正式歸戶、歷史 PIT 及閾值回測尚未完成。
 這些警示不自動改變 EPS、PE、A+/A++、正式退出、期望報酬率或原先的估值排序。
 
@@ -191,7 +191,7 @@ A++ 壓測採EPS/PE各下修10%、CB轉換價下修10%增加稀釋股數，並�
 |---|---:|---:|---:|---:|---:|---|---|
 |6994 富威電力|25.873%|25.873%|6/9|6|6|HIGH_REVIEW|LATEST_REVENUE_YOY_NEGATIVE、YTD_GROSS_MARGIN_BELOW_SAME_PERIOD_PRIOR_YEAR|
 |5347 世界|8.092%|8.092%|6/9|2|2|HIGH_REVIEW|未觀察到指定轉弱訊號／資料待核|
-|8444 綠河-KY|7.993%|7.434%|5/9|1|1|HIGH_REVIEW|未觀察到指定轉弱訊號／資料待核|
+|8444 綠河-KY|7.993%|7.434%|6/9|1|1|HIGH_REVIEW|未觀察到指定轉弱訊號／資料待核|
 |6165 浪凡|8.283%|5.710%|6/9|3|2|HIGH_REVIEW|未觀察到指定轉弱訊號／資料待核|
 |6240 松崗|5.694%|5.694%|6/9|2|2|HIGH_REVIEW|LATEST_REVENUE_YOY_NEGATIVE|
 |2073 雄順|5.676%|5.484%|6/9|3|3|HIGH_REVIEW|未觀察到指定轉弱訊號／資料待核|
@@ -209,10 +209,10 @@ A++ 壓測採EPS/PE各下修10%、CB轉換價下修10%增加稀釋股數，並�
 |6823 濾能|3.099%|3.099%|6/9|6|6|HIGH_REVIEW|YTD_GROSS_MARGIN_BELOW_SAME_PERIOD_PRIOR_YEAR|
 |3339 泰谷|2.887%|2.887%|6/9|6|6|HIGH_REVIEW|LATEST_REVENUE_YOY_NEGATIVE、YTD_GROSS_MARGIN_BELOW_SAME_PERIOD_PRIOR_YEAR|
 |4764 雙鍵|2.752%|2.752%|6/9|5|4|HIGH_REVIEW|LATEST_REVENUE_YOY_NEGATIVE|
+|8110 華東|2.694%|2.694%|6/9|6|6|HIGH_REVIEW|未觀察到指定轉弱訊號／資料待核|
 |3532 台勝科|2.671%|2.671%|6/9|1|1|HIGH_REVIEW|YTD_GROSS_MARGIN_BELOW_SAME_PERIOD_PRIOR_YEAR|
 |3219 倚強科|2.657%|2.646%|6/9|6|6|HIGH_REVIEW|未觀察到指定轉弱訊號／資料待核|
 |4720 德淵|2.547%|2.541%|6/9|4|4|HIGH_REVIEW|YTD_GROSS_MARGIN_BELOW_SAME_PERIOD_PRIOR_YEAR|
-|8110 華東|2.529%|2.529%|5/9|5|5|HIGH_REVIEW|未觀察到指定轉弱訊號／資料待核|
 |7610 聯友金屬-創|2.436%|2.436%|6/9|6|6|HIGH_REVIEW|未觀察到指定轉弱訊號／資料待核|
 |3189 景碩|2.423%|2.423%|9/9|8|8|HIGH_REVIEW|未觀察到指定轉弱訊號／資料待核|
 |6588 東典光電|2.383%|2.383%|6/9|3|2|HIGH_REVIEW|未觀察到指定轉弱訊號／資料待核|

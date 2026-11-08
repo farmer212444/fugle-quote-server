@@ -1,6 +1,6 @@
 # A+ 原始證據修復佇列
 
-模型：V8.10.8；估計：2026-11-08T09:41:21.538701+08:00。
+模型：V8.10.8；估計：2026-11-08T20:49:20.156924+08:00。
 僅涵蓋當次認證診斷名單。優先關注股，再按已完成門檻排序；潛在漲幅僅作同順位排序。
 同公司原始財報集中蒐集，各項仍須獨立查核；策略證據集中蒐集後仍須核對個股與子群適用性。
 
@@ -62,6 +62,7 @@
 
 |股票|A+價格狀態|正式通過|明確未通過|未結案|下一步|
 |---|---|---:|---:|---:|---|
+|2317 鴻海|A_PLUS_PRICE_ONLY|0/13|0|13|tradability：已有成交額；補價差、滑價及清倉能力驗證|
 |2330 台積電|A_PLUS_PRICE_ONLY|0/13|0|13|original_eight_quarter_statements：補齊缺少季度的完整財報原件、來源收據與SHA；已封存部分仍待全文審核|
 |6206 飛捷|A_PLUS_PRICE_ONLY|0/13|0|13|management_promises：核對已封存法說承諾與後續實績|
 |9802 鈺齊-KY|PRICE_GATE_NOT_MET|0/13|0|13|original_eight_quarter_statements：核閱已封存原件並補齊附註後再具名覆核|
@@ -90,7 +91,6 @@
 |2364 倫飛|A_PLUS_PRICE_ONLY|0/13|0|13|fully_diluted_shares：已取得股數摘要；補可轉債、員工認股及稀釋分母原件|
 |4303 信立|A_PLUS_PRICE_ONLY|0/13|0|13|fully_diluted_shares：已取得股數摘要；補可轉債、員工認股及稀釋分母原件|
 |8114 振樺電|A_PLUS_PRICE_ONLY|0/13|0|13|fully_diluted_shares：已取得股數摘要；補可轉債、員工認股及稀釋分母原件|
-|2317 鴻海|A_PLUS_PRICE_ONLY|0/13|0|13|tradability：已有成交額；補價差、滑價及清倉能力驗證|
 |6613 朋億*|A_PLUS_PRICE_ONLY|0/13|0|13|fully_diluted_shares：已取得股數摘要；補可轉債、員工認股及稀釋分母原件|
 |6505 台塑化|A_PLUS_PRICE_ONLY|0/13|0|13|fully_diluted_shares：已取得股數摘要；補可轉債、員工認股及稀釋分母原件|
 |3689 湧德|A_PLUS_PRICE_ONLY|0/13|0|13|fully_diluted_shares：已取得股數摘要；補可轉債、員工認股及稀釋分母原件|
