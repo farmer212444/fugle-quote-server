@@ -15,7 +15,7 @@ from scripts.run_research_pipeline import atomic_json
 
 FILING_GATES=frozenset(('original_eight_quarter_statements','cash_and_working_capital',
                        'nonoperating_components','auditor_scope','point_in_time'))
-WATCHLIST=frozenset(('2330','6206','9802'))
+WATCHLIST=frozenset(('2330','2317','6206','9802'))
 # Prioritize work that can actually advance with already archived issuer originals.
 # A review-pending label or share/turnover mirror does not establish a
 # complete issuer original, let alone permission to issue a formal PASS.
