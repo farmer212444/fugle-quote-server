@@ -7,7 +7,7 @@ class DualLaneTests(unittest.TestCase):
     def test_both_priority_and_no_automatic_pass(self):
         self.assertTrue({'2330','2317'}.issubset(WATCHLIST))
         base=dict(model='TEST',estimate_vintage='2026-11-08T00:00:00+08:00',
-                  asof_price_date='2026-11-06')
+                  asof_price_date='2026-11-06', model_code_sha256='a'*64, target_date='2027-12-31')
         def issuer(code):
             stages={g:dict(stage='MIRROR_CAPTURED',decision='PENDING',
                            formal_pass=False,scope='TEST',
