@@ -134,6 +134,7 @@ def facts(row):
         require(value is not None and math.isfinite(value), 'EARLY_BULK_FIELD_MISSING_' + key)
         result[key] = value
     require(result['revenue_k'] > 0, 'EARLY_BULK_REVENUE_NONPOSITIVE')
+    optional_gaps=[]
     other_operating = number(row.get('其他收益及費損淨額'))
     for label, expected in (
         ('營業費用', result['gross_profit_k'] - result['operating_profit_k'] + (other_operating if other_operating is not None else 0)),
@@ -141,9 +142,14 @@ def facts(row):
         ('所得稅費用（利益）', result['pretax_profit_k'] - result['net_income_k']),
         ('淨利（淨損）歸屬於非控制權益', result['net_income_k'] - result['parent_net_income_k']),
     ):
-        value = number(row.get(label))
+        raw = row.get(label)
+        value = None if isinstance(raw, bool) else number(raw)
+        if label=='淨利（淨損）歸屬於非控制權益' and (raw is None or str(raw).strip()==''):
+            optional_gaps.append('NONCONTROLLING_COMPONENT_UNREPORTED_NOT_VERIFIED_ZERO')
+            continue
         require(value is not None and abs(value - expected) <= 1,
                 'EARLY_BULK_ACCOUNTING_RECONCILIATION_' + label)
+    result['optional_reconciliation_gaps']=optional_gaps
     result['opex_k'] = result['gross_profit_k'] - result['operating_profit_k']
     result['reported_opex_k'] = number(row.get('營業費用'))
     result['other_operating_gains_k'] = other_operating
@@ -257,6 +263,7 @@ def load(data, asof):
             current = facts(row)
             if corroborating_bulk:
                 current.update({k:corroborating_bulk[k] for k in ('reported_opex_k','other_operating_gains_k')})
+                current['optional_reconciliation_gaps']=corroborating_bulk['optional_reconciliation_gaps']
             previous = data.detailed_values((market, code), data.period)
             prior = data.detailed_values((market, code), f'{y-1}-Q{q}')
             for name, values in (('PREVIOUS', previous), ('PRIOR_YEAR', prior)):

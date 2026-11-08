@@ -16,6 +16,9 @@ on:
       - 'tw_model_v880/**'
       - 'scripts/tw_v880_run.py'
       - 'scripts/early_bulk_earnings.py'
+      - 'scripts/oneoff_original_review.py'
+      - 'scripts/refresh_top10_sources.py'
+      - 'tw-market-data/config/oneoff_original_v1.json'
       - 'scripts/v881_history_diagnostic.py'
       - 'scripts/build_universe_verification_queue.py'
       - 'scripts/diagnose_unmodeled_universe.py'
@@ -107,6 +110,9 @@ on:
       - 'tw_model_v880/**'
       - 'scripts/tw_v880_run.py'
       - 'scripts/early_bulk_earnings.py'
+      - 'scripts/oneoff_original_review.py'
+      - 'scripts/refresh_top10_sources.py'
+      - 'tw-market-data/config/oneoff_original_v1.json'
       - 'scripts/v881_history_diagnostic.py'
       - 'scripts/build_universe_verification_queue.py'
       - 'scripts/diagnose_unmodeled_universe.py'
@@ -252,6 +258,8 @@ jobs:
         run: |
           python scripts/tw_v880_run.py --self-test
           python -m unittest -v tests.test_early_bulk_earnings tests.test_early_bulk_transport
+          python -m unittest -v tests.test_oneoff_original
+          python -m unittest -v tests.test_top10_source_refresh
           python -m unittest -v tests.test_readiness_lanes tests.test_aplus_work_queue_repair tests.test_2330_2317_dual_lane tests.test_dual_focus_publication tests.test_research_pipeline
           python -m unittest -v tests.test_tsmc_original_statements
           python -m unittest -v tests.test_2317_original_statements
@@ -275,6 +283,9 @@ jobs:
       - name: Archive partial-quarter official results and issuer announcements for current Top10
         if: github.event_name != 'pull_request'
         run: python scripts/early_bulk_earnings.py
+      - name: Archive source-pinned selected one-off gains without issuing quality PASS
+        if: github.event_name != 'pull_request'
+        run: python scripts/oneoff_original_review.py
       - name: Archive official total-return benchmark and recent regime history
         if: github.event_name != 'pull_request'
         run: python scripts/benchmark_sources.py
@@ -296,6 +307,9 @@ jobs:
         run: python scripts/v891_gate_certification.py --issue-only
       - name: Produce dated scenarios and evidence decisions
         run: python scripts/run_research_pipeline.py --phase core
+      - name: Recheck current Top10 issuers after ranking changes before publication
+        if: github.event_name != 'pull_request'
+        run: python scripts/refresh_top10_sources.py
       - name: Verify 2330/2317 generated report matches its evidence ledger
         run: python scripts/verify_dual_focus_publication.py
       - name: Verify 0056 constituent 2027 EPS/PE stresses from exact archived model
@@ -331,6 +345,7 @@ jobs:
               python -m pip install -r requirements-model.txt
               python scripts/refresh_v880_public.py
               python scripts/early_bulk_earnings.py
+              python scripts/oneoff_original_review.py
               python scripts/benchmark_sources.py
               python scripts/v8a9_8383_original_archive.py
               python scripts/tsmc_original_statements.py
@@ -338,6 +353,7 @@ jobs:
               python scripts/honhai_original_statements.py
               python scripts/v891_gate_certification.py --issue-only
               python scripts/run_research_pipeline.py --phase core
+              python scripts/refresh_top10_sources.py
             fi
             python scripts/v897_freeze_model_vintage.py --git-source-sha "$(git rev-parse HEAD)" --register-benchmark
             python scripts/run_research_pipeline.py --phase observation

@@ -11,6 +11,8 @@ SOURCE_JSON_PATTERNS=('evidence/v880/certificates/*.json','evidence/v880/issuer_
     'evidence/v880/working_capital_watch/*.json',
     'evidence/v880/inventory_original_watch/*.json',
     'evidence/v880/earnings_version_reviews/*.json',
+    'config/oneoff_original_v1.json',
+    'evidence/v880/oneoff_original/manifest.json',
     'evidence/v880/early_bulk/manifest.json',
     'evidence/v880/originals/*/manifest.json',
     'evidence/v880/originals/2330/full_statements/manifest.json')
@@ -203,6 +205,14 @@ class MarketData:
         for code in self.inventory_original_watch:
             self.receipt(self.root/'evidence/v880/inventory_original_watch'/f'{code}.json',
                          'SHA_VERIFIED_ISSUER_IR_INVENTORY_AND_MOPS_REVENUE_NOT_CASH_GATE')
+        from .oneoff_original import load as load_oneoff_original, CONFIG as ONEOFF_CONFIG, FOLDER as ONEOFF_FOLDER
+        self.oneoff_reviews,self.oneoff_review_states,oneoff_errors=load_oneoff_original(self.root,asof)
+        self.errors.extend(oneoff_errors)
+        if self.oneoff_reviews:
+            self.receipt(self.root/ONEOFF_CONFIG,'SELECTED_HISTORICAL_ONEOFF_REVIEW_NOT_FULL_NONOPERATING_SIGNOFF')
+            self.receipt(self.root/ONEOFF_FOLDER/'manifest.json','EXACT_ISSUER_PDF_SOURCE_CAPTURE_MANIFEST')
+        for review in self.oneoff_reviews.values():
+            self.receipt(self.path(review['archive_path']),'REHASHED_SELECTED_ORIGINAL_ONEOFF_ITEM_NOT_FULL_QUALITY_PASS')
         self.model_source_state=model_source_state(self.root)
     def path(self,s):
         p=pathlib.Path(s)

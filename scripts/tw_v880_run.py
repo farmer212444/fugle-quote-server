@@ -157,6 +157,19 @@ def run(data_dir,asof,target_date,out_dir=None,variant='current-information'):
         if r.get('insider_sell_overlay',{}).get('needs_manual_review'):
             governance_label+='；**內部人賣出待查**'
         report.append(f"|{i}|{r['code']} {r['name']}|{fmt(r['reference_close'])}|{fmt(b['eps'])}|{fmt(b['pe'])}|{fmt(b['target_price'])}|{b['price_upside_pct']:+.1f}%|{fmt(r['bear']['target_price'])}|{fmt(r['bull']['target_price'])}|{tier}|{governance_label}|")
+    oneoff_rows=[r for r in rows if r.get('nonoperating_bridge',{}).get('oneoff_original_adjustment',{} )
+                and r['nonoperating_bridge']['oneoff_original_adjustment'].get('applied')]
+    if oneoff_rows:
+        report+=['','## 原件已確認的一次性利益：Base調整對照','',
+          '只移除原件已核對、被沿用至未來年度的一次性利益，其餘營運、稅率、歸母比例、股數及PE維持相同假設。'
+          '這不是重編歷史EPS，剩餘業外收益的經常性仍待查，亦不核發品質PASS。','',
+          '|公司|一次性利益（億元）|保留該筆的對照價|剔除後Base價|','|---|---:|---:|---:|']
+        for r in oneoff_rows:
+            a=r['nonoperating_bridge']['oneoff_original_adjustment']
+            report.append(f"|{r['code']} {r['name']}|{a['excluded_positive_gain_k']/100000:.4f}|{fmt(a['before_target_price_counterfactual'])}|{fmt(a['after_target_price'])}|")
+        for r in oneoff_rows:
+            a=r['nonoperating_bridge']['oneoff_original_adjustment']
+            report.append(f"- {r['code']}：{a['label']}；{a['anchor_period']}；PDF第{a['selected_pdf_page']}頁；原件：{a['source_url']}。")
     nonop_risks=[r for r in broad[:10] if 'BASE_PROFIT_MAJORITY_FROM_NONOPERATING_ASSUMPTION_COMPONENT_REVIEW_REQUIRED' in r.get('warning_flags',[])]
     if nonop_risks:
         report+=['','## 前十檔業外收益敏感度','',

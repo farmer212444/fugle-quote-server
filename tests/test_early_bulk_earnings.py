@@ -46,6 +46,17 @@ def notice_receipt():
 
 
 class EarlyQuarterSources(unittest.TestCase):
+    def test_optional_nci_blank_stays_unknown_without_discarding_reconciled_core_numbers(self):
+        original=row();original['淨利（淨損）歸屬於非控制權益']=''
+        result=facts(original)
+        self.assertEqual(result['parent_net_income_k'],88)
+        self.assertIn('NONCONTROLLING_COMPONENT_UNREPORTED_NOT_VERIFIED_ZERO',result['optional_reconciliation_gaps'])
+        original['淨利（淨損）歸屬於非控制權益']='1'
+        self.assertFalse(facts(original)['optional_reconciliation_gaps'])
+        original['淨利（淨損）歸屬於非控制權益']='10'
+        with self.assertRaisesRegex(ValueError,'ACCOUNTING_RECONCILIATION'):
+            facts(original)
+
     def test_partial_table_is_usable_without_claiming_full_market_coverage(self):
         result = parse(json.dumps([row()]).encode())
         self.assertEqual(facts(result['1234'])['parent_net_income_k'], 88)
@@ -164,6 +175,19 @@ class EarlyQuarterSources(unittest.TestCase):
 
 
 class ForecastAdmission(unittest.TestCase):
+    def test_null_prior_fy_components_preserve_old_ytd_baseline_without_crashing(self):
+        for kind in (SOURCE_KIND, ANNOUNCEMENT_KIND):
+            with self.subTest(kind=kind):
+                data,event=fixtures.EarningsForecastIntegration().data()
+                primary=data.evidence['primary']['SYNTHETIC_A']
+                primary['nonop_prior_fy']=None
+                primary['nonop_current']['sensitivity_gap_ex_volatile_k']=3
+                event['source_kind']=kind;data.earnings_events={'SYNTHETIC_A':event}
+                row=estimate(data,('TEST','SYNTHETIC_A'),fixtures.CAL,fixtures.ASOF,'2027-12-31')
+                self.assertEqual(row['base']['nonoperating_k'],6)
+                self.assertIn('PRIOR_YTD_COMPONENT_ANNUALIZED_BASELINE_HELD',row['nonoperating_bridge']['method'])
+                self.assertFalse(row['formal_Aplus'])
+
     def test_new_summary_cannot_restore_previously_removed_volatile_gains(self):
         data,event=fixtures.EarningsForecastIntegration().data()
         primary=data.evidence['primary']['SYNTHETIC_A']
