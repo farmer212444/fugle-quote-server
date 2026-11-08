@@ -148,6 +148,35 @@ class OriginalIntakeTests(unittest.TestCase):
         self.assertFalse(after['coverage']['formal_gate_pass'])
         self.assertFalse(after['coverage']['full_original_pdf_content_reviewed'])
 
+    def test_repeated_full_403_denial_is_bounded_and_originals_remain_pending(self):
+        def pdfs_blocked(url,limit):
+            if url==mod.DIRECTORY:return self.directory
+            raise OSError('HTTP 403 Forbidden')
+        first=self.collect(fetcher=pdfs_blocked)
+        self.assertEqual(len(first['coverage']['missing_quarters']),8)
+        def everything_blocked(url,limit):
+            raise OSError('HTTP 403 Forbidden')
+        second=self.collect(fetcher=everything_blocked,
+                            clock=lambda:STAMP+dt.timedelta(minutes=5))
+        self.assertEqual(len(second['coverage']['missing_quarters']),8)
+        calls=[]
+        def later(url,limit):
+            calls.append(url)
+            return self.fetch(url,limit)
+        skipped=self.collect(fetcher=later,
+                             clock=lambda:STAMP+dt.timedelta(minutes=15))
+        self.assertEqual(calls,[])
+        self.assertEqual(skipped['http403_retry_deferred_quarters'],self.periods)
+        self.assertFalse(skipped['coverage']['formal_gate_pass'])
+        self.assertEqual(len(skipped['coverage']['missing_quarters']),8)
+        self.assertEqual(len(self.manifest()['documents']),0)
+        recovered=self.collect(fetcher=later,
+                               clock=lambda:STAMP+dt.timedelta(hours=25,minutes=10))
+        self.assertEqual(recovered['coverage']['missing_quarters'],[])
+        self.assertTrue(recovered['coverage']['source_title_coverage_complete'])
+        self.assertFalse(recovered['coverage']['formal_gate_pass'])
+        self.assertFalse(recovered['coverage']['full_original_pdf_content_reviewed'])
+
     def test_403_without_prior_issuer_index_cannot_fabricate_urls(self):
         def blocked_index(url,limit):
             raise OSError('HTTP 403 Forbidden')
