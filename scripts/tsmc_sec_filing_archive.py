@@ -178,6 +178,10 @@ def collect(root,*,fetcher=fetch,clock=lambda:dt.datetime.now(dt.timezone.utc),
         except (OSError,ValueError,UnicodeError) as exc:
             failures.append(dict(period=quarter,error=type(exc).__name__+':'+str(exc)))
         pause(1)
+    # Upgrade legacy manifests without making each skipped run push the
+    # original 403 event forward forever.
+    if skipped and not attempted and not meta.get('last_network_attempt_at_utc'):
+        meta['last_network_attempt_at_utc']=meta['last_checked_at_utc']
     meta.update(last_checked_at_utc=clock().isoformat(),last_errors=failures)
     if attempted:
         meta['last_network_attempt_at_utc']=clock().isoformat()
