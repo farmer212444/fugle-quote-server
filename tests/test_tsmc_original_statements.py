@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+from unittest import mock
 
 import fitz
 
@@ -176,6 +177,34 @@ class OriginalIntakeTests(unittest.TestCase):
         self.assertTrue(recovered['coverage']['source_title_coverage_complete'])
         self.assertFalse(recovered['coverage']['formal_gate_pass'])
         self.assertFalse(recovered['coverage']['full_original_pdf_content_reviewed'])
+
+    def test_published_403_deferred_state_does_not_fake_new_fetch_or_pass(self):
+        deferred=dict(issuer='2330',records=0,
+            coverage=dict(required_quarters=self.periods,
+                          found_quarters=[],missing_quarters=self.periods,
+                          native_cover_identity_verified_quarters=[]),
+            fetch_errors=[dict(period='DIRECTORY',
+                               error='HTTPError:HTTP Error 403: Forbidden')],
+            formal_pass_count=0,documents=[],
+            http403_retry_deferred_quarters=['2024-Q3','2026-Q2'],
+            http403_retry_due_at_utc='2026-11-09T12:00:00+00:00')
+        (self.root/'rankings').mkdir(exist_ok=True)
+        with mock.patch.object(mod,'collect',return_value=deferred), mock.patch(
+            'sys.argv',['tsmc_original_statements.py','--data-root',
+                        str(self.root),'--last-quarter','2026-Q2']):
+            mod.main()
+        published=json.loads(
+            (self.root/'rankings/tsmc_original_statements_intake.json').read_text())
+        self.assertEqual(published['http403_retry_deferred_quarters'],
+                         ['2024-Q3','2026-Q2'])
+        self.assertEqual(published['http403_retry_due_at_utc'],
+                         '2026-11-09T12:00:00+00:00')
+        self.assertEqual(published['formal_pass_count'],0)
+        self.assertEqual(published['coverage']['found_quarters'],[])
+        readable=(self.root/'rankings/tsmc_original_statements_intake.md').read_text()
+        self.assertIn('有界重試保護',readable)
+        self.assertIn('未進行網路重試',readable)
+        self.assertIn('2026-11-09T12:00:00+00:00',readable)
 
     def test_403_without_prior_issuer_index_cannot_fabricate_urls(self):
         def blocked_index(url,limit):
