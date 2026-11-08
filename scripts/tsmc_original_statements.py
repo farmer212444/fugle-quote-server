@@ -31,6 +31,7 @@ MAX_BATCH=175_000_000
 TAIPEI=dt.timezone(dt.timedelta(hours=8))
 SECTIONS=('合併資產負債表','合併綜合損益表','合併權益變動表',
           '合併現金流量表','合併財務報告附註')
+HTTP403_RETRY_DELAY=dt.timedelta(hours=24)
 
 
 def digest(raw):return hashlib.sha256(raw).hexdigest()
@@ -211,11 +212,30 @@ def collect(root,last_quarter,*,fetcher=fetch,clock=lambda:dt.datetime.now(dt.ti
     year,q=int(last_quarter[:4]),int(last_quarter[-1])
     end=dt.date(year+(q==4),1 if q==4 else q*3+1,1)-dt.timedelta(days=1)
     if end>now.astimezone(TAIPEI).date():raise ValueError('TSMC_FUTURE_STATEMENT_PERIOD')
-    validate_archive(root,last_quarter,now.isoformat())
+    existing=validate_archive(root,last_quarter,now.isoformat())
     path=root/MANIFEST
     m=json.loads(path.read_text(encoding='utf-8')) if path.exists() else dict(
         schema=SCHEMA,issuer='2330',formal_gate_pass=False,original_MOPS_PIT_verified=False,
         full_content_review_complete=False,index_versions=[],documents=[])
+    # Do not repeat a full set of HTTP 403s every time GitHub pushes a new
+    # commit. The prior immutable receipts remain authoritative, never a PASS.
+    missing=existing['coverage']['missing_quarters']
+    denied={item.get('period') for item in m.get('last_fetch_errors',[])
+            if isinstance(item,dict)
+            and isinstance(item.get('error'),str)
+            and ('HTTP Error 403' in item['error'] or 'HTTP 403 Forbidden' in item['error'])}
+    if missing and 'DIRECTORY' in denied and set(missing).issubset(denied):
+        when=m.get('last_network_attempt_at_utc') or m.get('last_intake_at_utc')
+        if when:
+            prior=aware(when)
+            if prior>now:raise ValueError('TSMC_LAST_NETWORK_ATTEMPT_IN_FUTURE')
+            retry_at=prior+HTTP403_RETRY_DELAY
+            if now<retry_at:
+                result=existing
+                result['fetch_errors']=m['last_fetch_errors']
+                result['http403_retry_deferred_quarters']=list(missing)
+                result['http403_retry_due_at_utc']=retry_at.isoformat()
+                return result
     directory_errors=[]
     try:
         raw=fetcher(DIRECTORY,3_000_000);specs=discover(raw,required);index_hash=digest(raw)
@@ -239,6 +259,7 @@ def collect(root,last_quarter,*,fetcher=fetch,clock=lambda:dt.datetime.now(dt.ti
             directory_errors.append(error)
         else:
             m['last_intake_at_utc']=clock().isoformat();m['last_requested_window_end']=last_quarter
+            m['last_network_attempt_at_utc']=clock().isoformat()
             m['last_fetch_errors']=[error]
             atomic_json(path,m)
             result=validate_archive(root,last_quarter,clock().isoformat());result['fetch_errors']=m['last_fetch_errors']
@@ -262,6 +283,7 @@ def collect(root,last_quarter,*,fetcher=fetch,clock=lambda:dt.datetime.now(dt.ti
             except (OSError,ValueError,RuntimeError,EOFError,http.client.IncompleteRead) as exc:
                 errors.append(dict(period=spec['period'],error=type(exc).__name__+':'+str(exc)))
     m['last_intake_at_utc']=clock().isoformat();m['last_requested_window_end']=last_quarter
+    m['last_network_attempt_at_utc']=clock().isoformat()
     m['last_fetch_errors']=errors
     atomic_json(path,m)
     result=validate_archive(root,last_quarter,clock().isoformat())
