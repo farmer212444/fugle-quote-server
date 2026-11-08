@@ -27,6 +27,7 @@ from tw_model_v880.evidence import GATES, certify, timestamp, verify_certificate
 from tw_model_v880.contracts import OBLIGATIONS
 from scripts.v896_original_archive import validate_bundle, original_quarter_coverage
 from scripts.tsmc_original_statements import validate_archive as validate_tsmc_originals
+from scripts.honhai_original_statements import validate_archive as validate_honhai_originals
 from scripts.ensure_research_current import full_result_reasons
 
 MANUAL_REVIEW_GATES = frozenset((
@@ -311,6 +312,18 @@ def build_progress(root):
             statuses=['ORIGINAL_SOURCE_REJECTED'],reason=str(exc),
             original_archive_hashes_verified=False,formal_pass_count=0)
         source_rejections.append(dict(code='2330',source='original_bundle',reason=str(exc)))
+    # 2317: source bytes are counted only after rehash, internal period/issuer
+    # validation, and SHA-backed manifest validation. A manifest containing only
+    # 403 failures is not eight empty original statements and remains unknown.
+    honhai_manifest=root/"evidence/v880/originals/2317/full_statements/manifest.json"
+    if honhai_manifest.exists():
+        try:
+            honhai_originals=validate_honhai_originals(root,period,asof)
+            if honhai_originals["records"]:
+                original_bundles["2317"]=honhai_originals
+                original_quarter_windows["2317"]=honhai_originals["coverage"]
+        except (ValueError,KeyError,TypeError,OSError,AttributeError,RuntimeError) as exc:
+            source_rejections.append(dict(code="2317",source="original_bundle",reason=str(exc)))
     jobs=dispatch.get("all_issuer_jobs",[])
     if len(jobs)!=dispatch.get("tracked_issuer_count") or len(jobs)!=research["data_scope"]["model_rows"]:
         raise ValueError("GATE_CERTIFICATION_LEDGER_INCOMPLETE")
