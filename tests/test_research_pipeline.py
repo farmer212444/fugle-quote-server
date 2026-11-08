@@ -175,7 +175,7 @@ class EvidenceQueue(unittest.TestCase):
             build_queue(progress,research)
         progress,research=self.inputs()
         progress['issuer_diagnostics'][1]['gate_stage'][GATES[0]]['formal_pass']=True
-        with self.assertRaisesRegex(ValueError,'INCONSISTENT_FORMAL_PASS'):
+        with self.assertRaisesRegex(ValueError,'INVALID_FORMAL_GATE_DECISION'):
             build_queue(progress,research)
 
 
