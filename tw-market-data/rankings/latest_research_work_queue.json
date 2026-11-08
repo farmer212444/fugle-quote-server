@@ -25,7 +25,7 @@
     "count_scope": "DETAIL_ONLY_NOT_FULL_MARKET"
   },
   "model": "V8.10.8",
-  "estimate_vintage": "2026-11-09T02:26:56.181292+08:00",
+  "estimate_vintage": "2026-11-09T05:48:25.290564+08:00",
   "asof_price_date": "2026-11-06",
   "source_model_sha256": "957665ba8d64938cfad2911a593392f8140a2d9db2039ff4638892256bcc44bb",
   "issuer_job_count": 205,
@@ -41,10 +41,8 @@
       "research_upside_pct": 95.01,
       "original_quarter_coverage": {
         "required": 8,
-        "archived": 7,
-        "missing_quarters": [
-          "2026-Q2"
-        ],
+        "archived": 8,
+        "missing_quarters": [],
         "content_review_complete": false
       },
       "independent_decision_lanes": {
@@ -78,10 +76,10 @@
           "gate": "original_eight_quarter_statements",
           "decision": "PENDING",
           "stage": "SOURCE_CAPTURED",
-          "next_action": "CAPTURE_MISSING_QUARTER_ORIGINALS",
+          "next_action": "REVIEW_ARCHIVED_SOURCE_AND_COMPLETE_SIGNOFF",
           "scope": "ISSUER",
           "required_evidence": "逐季原始四表、附註、重編及完整性核對",
-          "reason": "7/8 period-specific original PDFs SHA-archived, missing 2026-Q2; issuer PDF internal identity, full notes, auditor scope and MOPS publication PIT unreviewed",
+          "reason": "8/8 period-specific original PDFs SHA-archived, missing none; issuer PDF internal identity, full notes, auditor scope and MOPS publication PIT unreviewed",
           "model_reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
           "invalidates_on": "財報／重編更新"
         },
@@ -224,10 +222,12 @@
         "original_eight_quarter_statements",
         "tradability"
       ],
-      "review_ready_original_gate_count": 0,
-      "review_ready_original_gates": [],
+      "review_ready_original_gate_count": 1,
+      "review_ready_original_gates": [
+        "original_eight_quarter_statements"
+      ],
       "next_issuer_gate": "original_eight_quarter_statements",
-      "next_issuer_action": "CAPTURE_MISSING_QUARTER_ORIGINALS",
+      "next_issuer_action": "REVIEW_ARCHIVED_SOURCE_AND_COMPLETE_SIGNOFF",
       "next_issuer_stage": "SOURCE_CAPTURED",
       "filing_collection_packet": {
         "gates": [
@@ -41431,14 +41431,12 @@
       "strategy_oos_gate_decision": "PENDING",
       "original_quarter_coverage": {
         "required": 8,
-        "archived": 7,
-        "missing_quarters": [
-          "2026-Q2"
-        ],
+        "archived": 8,
+        "missing_quarters": [],
         "content_review_complete": false
       },
       "next_issuer_gate": "original_eight_quarter_statements",
-      "next_issuer_action": "CAPTURE_MISSING_QUARTER_ORIGINALS",
+      "next_issuer_action": "REVIEW_ARCHIVED_SOURCE_AND_COMPLETE_SIGNOFF",
       "formal_Aplus": false,
       "no_auto_certification": true
     }
@@ -41462,11 +41460,23 @@
       "point_in_time": 204,
       "out_of_sample_validation": 204
     },
-    "original_captured_review_pending_issuers": 1,
-    "review_ready_gate_issues": 1,
+    "original_captured_review_pending_issuers": 2,
+    "review_ready_gate_issues": 2,
     "source_advanced_issuers": 191,
     "source_advanced_gate_issues": 315,
     "verification_priority": [
+      {
+        "code": "2317",
+        "name": "鴻海",
+        "upside_pct": 95.01,
+        "pass_count": 0,
+        "review_ready_original_gates": [
+          "original_eight_quarter_statements"
+        ],
+        "next_issuer_gate": "original_eight_quarter_statements",
+        "next_issuer_action": "REVIEW_ARCHIVED_SOURCE_AND_COMPLETE_SIGNOFF",
+        "next_issuer_stage": "SOURCE_CAPTURED"
+      },
       {
         "code": "6206",
         "name": "飛捷",
@@ -41717,16 +41727,6 @@
         "review_ready_original_gates": [],
         "next_issuer_gate": "fully_diluted_shares",
         "next_issuer_action": "VERIFY_CAPITAL_DILUTION_TERMS",
-        "next_issuer_stage": "SOURCE_CAPTURED"
-      },
-      {
-        "code": "2317",
-        "name": "鴻海",
-        "upside_pct": 95.01,
-        "pass_count": 0,
-        "review_ready_original_gates": [],
-        "next_issuer_gate": "original_eight_quarter_statements",
-        "next_issuer_action": "CAPTURE_MISSING_QUARTER_ORIGINALS",
         "next_issuer_stage": "SOURCE_CAPTURED"
       },
       {
@@ -42881,5 +42881,5 @@
   },
   "formal_gate_decisions_changed": 0,
   "certificates_issued": 0,
-  "source_progress_sha256": "e943b60870ccc4f90e7f64f42111bd48d903b4495508f25fbc8bc7f976a717d9"
+  "source_progress_sha256": "03c65c8b61c79fa80df652fc1cc7a9a3afcf087074eb927a6c38292ed11a97fd"
 }
