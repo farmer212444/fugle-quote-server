@@ -30,7 +30,7 @@ def fixture(period,*,code="2317",include_notes=True):
             else f"民國{roc}年及{roc-1}年第{h.CHINESE_QUARTERS[q-1]}季")
     doc=fitz.open()
     for _ in range(25):doc.new_page()
-    doc[0].insert_text((45,55),"鴻海精密工業股份有限公司及子公司\n合併財務報告暨會計師核閱報告\n"+season+"\n股票代碼"+code,fontname="china-t",fontsize=10)
+    doc[0].insert_text((45,55),"鴻海精密工業股份有限公司及子公司\n合併財務報告暨會計師"+("查核" if q==4 else "核閱")+"報告\n"+season+"\n股票代碼"+code,fontname="china-t",fontsize=10)
     sections=h.SECTIONS if include_notes else h.SECTIONS[:-1]
     doc[1].insert_text((40,55),"\n".join(sections),fontname="china-t",fontsize=10)
     raw=doc.tobytes();doc.close()
@@ -66,7 +66,7 @@ class HonhaiOriginalIntakeTests(unittest.TestCase):
     def test_real_official_cover_wording_for_q1_and_q2_is_accepted(self):
         # Actual 2025-Q2 and 2026-Q1 official covers use 第一季/第二季,
         # not 第1季/第2季. These synthetic PDFs reproduce that exact wording.
-        for period in ("2025-Q1", "2025-Q2", "2025-Q3", "2026-Q1"):
+        for period in ("2024-Q3", "2025-Q1", "2025-Q2", "2025-Q3", "2026-Q1"):
             raw=fixture(period)
             identity=h.pdf_identity(raw,period)
             self.assertTrue(identity["native_cover_issuer_and_period_verified"])
