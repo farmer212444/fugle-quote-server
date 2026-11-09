@@ -1,6 +1,6 @@
 # A+ 原始證據修復佇列
 
-模型：V8.10.8；估計：2026-11-10T05:01:59.579164+08:00。
+模型：V8.10.8；估計：2026-11-10T07:07:47.185321+08:00。
 僅涵蓋當次認證診斷名單。優先關注股，再按已完成門檻排序；潛在漲幅僅作同順位排序。
 同公司原始財報集中蒐集，各項仍須獨立查核；策略證據集中蒐集後仍須核對個股與子群適用性。
 
@@ -170,6 +170,7 @@
 |8043 蜜望實|A_PLUS_PRICE_ONLY|0/13|0|13|fully_diluted_shares：已取得股數摘要；補可轉債、員工認股及稀釋分母原件|
 |3088 艾訊|A_PLUS_PRICE_ONLY|0/13|0|13|fully_diluted_shares：已取得股數摘要；補可轉債、員工認股及稀釋分母原件|
 |6924 榮惠-KY創|A_PLUS_PRICE_ONLY|0/13|0|13|fully_diluted_shares：已取得股數摘要；補可轉債、員工認股及稀釋分母原件|
+|1459 聯發|A_PLUS_PRICE_ONLY|0/13|0|13|fully_diluted_shares：已取得股數摘要；補可轉債、員工認股及稀釋分母原件|
 |4966 譜瑞-KY|A_PLUS_PRICE_ONLY|0/13|0|13|fully_diluted_shares：已取得股數摘要；補可轉債、員工認股及稀釋分母原件|
 |3706 神達|A_PLUS_PRICE_ONLY|0/13|0|13|tradability：已有成交額；補價差、滑價及清倉能力驗證|
 |6799 來頡|A_PLUS_PRICE_ONLY|0/13|0|13|fully_diluted_shares：已取得股數摘要；補可轉債、員工認股及稀釋分母原件|
@@ -197,7 +198,6 @@
 |3071 協禧|A_PLUS_PRICE_ONLY|0/13|0|13|fully_diluted_shares：已取得股數摘要；補可轉債、員工認股及稀釋分母原件|
 |4746 台耀|A_PLUS_PRICE_ONLY|0/13|0|13|fully_diluted_shares：已取得股數摘要；補可轉債、員工認股及稀釋分母原件|
 |3526 凡甲|A_PLUS_PRICE_ONLY|0/13|0|13|tradability：已有成交額；補價差、滑價及清倉能力驗證|
-|1459 聯發|A_PLUS_PRICE_ONLY|0/13|0|13|fully_diluted_shares：已取得股數摘要；補可轉債、員工認股及稀釋分母原件|
 |8341 日友|A_PLUS_PRICE_ONLY|0/13|0|13|fully_diluted_shares：已取得股數摘要；補可轉債、員工認股及稀釋分母原件|
 |1904 正隆|A_PLUS_PRICE_ONLY|0/13|0|13|fully_diluted_shares：已取得股數摘要；補可轉債、員工認股及稀釋分母原件|
 |2329 華泰|A_PLUS_PRICE_ONLY|0/13|0|13|original_eight_quarter_statements：蒐集並驗證原始資料及SHA|
