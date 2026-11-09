@@ -35,6 +35,7 @@ on:
       - 'scripts/v892_top20_quality_audit.py'
       - 'scripts/v894_revenue_lead_discovery.py'
       - 'scripts/v8a5_quality_decision_lane.py'
+      - 'scripts/v8b8_buy_decision_shadow.py'
       - 'scripts/institutional_review.py'
       - 'scripts/benchmark_sources.py'
       - 'scripts/benchmark_validation.py'
@@ -64,6 +65,7 @@ on:
       - 'scripts/v8a7_2069_independent_valuation.py'
       - 'tw-market-data/evidence/v880/etf_index_constituent_events.json'
       - 'tests/test_v8a5_quality_decision_lane.py'
+      - 'tests/test_v8b8_buy_decision_shadow.py'
       - 'tests/test_v8a6_etf_rotation_watch.py'
       - 'scripts/v897_freeze_model_vintage.py'
       - 'scripts/v8a9_8383_original_archive.py'
@@ -129,6 +131,7 @@ on:
       - 'scripts/v892_top20_quality_audit.py'
       - 'scripts/v894_revenue_lead_discovery.py'
       - 'scripts/v8a5_quality_decision_lane.py'
+      - 'scripts/v8b8_buy_decision_shadow.py'
       - 'scripts/institutional_review.py'
       - 'scripts/benchmark_sources.py'
       - 'scripts/benchmark_validation.py'
@@ -158,6 +161,7 @@ on:
       - 'scripts/v8a7_2069_independent_valuation.py'
       - 'tw-market-data/evidence/v880/etf_index_constituent_events.json'
       - 'tests/test_v8a5_quality_decision_lane.py'
+      - 'tests/test_v8b8_buy_decision_shadow.py'
       - 'tests/test_v8a6_etf_rotation_watch.py'
       - 'scripts/v897_freeze_model_vintage.py'
       - 'scripts/v8a9_8383_original_archive.py'
@@ -270,6 +274,7 @@ jobs:
           python -m unittest -v tests.test_9802_cash_review
           python -m unittest -v tests.test_superforecast_ledger
           python -m unittest -v tests.test_expected_returns tests.test_expected_return_readiness
+          python -m unittest -v tests.test_v8b8_buy_decision_shadow
           python -m unittest -v tests.test_current_research_screens tests.test_tpex_research_liquidity tests.test_return_model_search
           python -m unittest -v tests.test_historical_pit_admission tests.test_historical_pit_readiness
           python -m unittest -v tests.test_sec_pit_intake tests.test_sec_api_intake tests.test_issuer_earnings_intake tests.test_issuer_pdf_originals
