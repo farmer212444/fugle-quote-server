@@ -14,31 +14,62 @@ from scripts.honhai_original_statements import MANIFEST, safe, validate_archive,
 from scripts.v891_gate_certification import write_if_changed
 
 SCHEMA="HONHAI_2317_AUDITOR_REVIEW_PREP_V1"
-KEYWORDS=("保留結論","保留意見","強調事項","其他事項",
-          "未經會計師核閱","未經會計師查核","非重要子公司","權益法")
+PRIORITY_TERMS=("保留結論","保留意見","強調事項","其他事項",
+                "未經會計師核閱","未經會計師查核","非重要子公司")
+CONTEXT_TERMS=("權益法",)
+KEYWORDS=PRIORITY_TERMS+CONTEXT_TERMS
 MAX_PAGES=20
 MAX_HITS=18
+PRIORITY_MIN_CAPACITY=14
 
 def auditor_leads(pdf_path):
-    """Find citation pages only; words are NOT auditor opinion findings."""
+    """Locate review leads; NEVER infer formal auditor opinion or a gate PASS.
+
+    Separate auditor/scope wording from generic equity-method references,
+    so many repetitive 權益法 matches cannot consume the 18-lead budget.
+    """
     import fitz
-    hits=[]
-    readable=0
+    priority=[]
+    context=[]
+    priority_total=0
+    context_total=0
+    opinion_pages=set()
+    unreadable_pages=[]
     with fitz.open(pdf_path) as doc:
         scanned=min(len(doc),MAX_PAGES)
         for index in range(scanned):
             body=re.sub(r"\s+","",doc[index].get_text())
-            if len(body)>=30:
-                readable+=1
-            for word in KEYWORDS:
+            if len(body)<30:
+                unreadable_pages.append(index+1)
+            if index<6 and any(w in body for w in ("保留結論","保留意見")):
+                opinion_pages.add(index+1)
+            for word in PRIORITY_TERMS:
                 for found in re.finditer(re.escape(word),body):
-                    if len(hits)<MAX_HITS:
-                        hits.append(dict(pdf_page_1based=index+1,keyword=word,
+                    priority_total+=1
+                    if len(priority)<PRIORITY_MIN_CAPACITY:
+                        priority.append(dict(pdf_page_1based=index+1,keyword=word,
                             text_lead=body[max(0,found.start()-25):min(len(body),found.end()+45)],
                             formal_scope_conclusion=None))
-    return dict(pages_scanned=scanned,pages_with_readable_text=readable,
-                keyword_leads=hits,keyword_leads_may_be_truncated=len(hits)>=MAX_HITS,
-                complete_notes_reviewed=False,formal_auditor_opinion_reviewed=False)
+            for word in CONTEXT_TERMS:
+                for found in re.finditer(re.escape(word),body):
+                    context_total+=1
+                    if len(context)<MAX_HITS:
+                        context.append(dict(pdf_page_1based=index+1,keyword=word,
+                            text_lead=body[max(0,found.start()-25):min(len(body),found.end()+45)],
+                            formal_scope_conclusion=None))
+    hits=priority+context[:MAX_HITS-len(priority)]
+    return dict(pages_scanned=scanned,
+                pages_with_readable_text=scanned-len(unreadable_pages),
+                first_20_page_unreadable_page_numbers=unreadable_pages,
+                keyword_leads=hits,
+                auditor_scope_priority_hits_retained=len(priority),
+                auditor_scope_priority_hits_total=priority_total,
+                contextual_keyword_hits_total=context_total,
+                keyword_leads_may_be_truncated=priority_total+context_total>len(hits),
+                opinion_wording_first_six_pdf_pages=sorted(opinion_pages),
+                auditor_opinion_wording_is_not_certified_opinion_type=True,
+                complete_notes_reviewed=False,
+                formal_auditor_opinion_reviewed=False)
 
 def build_packet(root,last_quarter,asof):
     root=Path(root).resolve()
@@ -66,6 +97,18 @@ def build_packet(root,last_quarter,asof):
                          pdf_page_count=doc["pdf_identity"]["page_count"],
                          auditor_leads=clues,publication_PIT_verified=False,
                          formal_gate_pass=False))
+    opinion_priority=[]
+    for entry in rows:
+        if entry["archive_state"]!="SHA_REHASHED":
+            continue
+        pages=entry["auditor_leads"]["opinion_wording_first_six_pdf_pages"]
+        if pages:
+            opinion_priority.append(dict(
+                period=entry["period"],pdf_pages=pages,
+                risk_review_state="ELEVATED_AUDITOR_OPINION_WORDING_REVIEW",
+                qualified_opinion_formally_determined=False,
+                accounting_materiality_reviewed=False,
+                gate_pass_or_fail_issued=False))
     if archive["coverage"] is None:
         coverage=dict(status="UNKNOWN_NO_MANIFEST",archived_count=None,required_count=8)
     else:
@@ -78,6 +121,8 @@ def build_packet(root,last_quarter,asof):
     return dict(schema=SCHEMA,issuer="2317",financial_period=last_quarter,
                 research_cutoff=asof,source_manifest_sha256=sha,coverage=coverage,
                 original_documents=rows,
+                auditor_opinion_wording_priority=opinion_priority,
+                opinion_wording_priority_is_not_formal_qualification=True,
                 original_eight_quarter_statements_gate="PENDING_REVIEW_SIGNOFF",
                 auditor_scope_gate="PENDING_MATERIALITY_HUMAN_REVIEW",
                 point_in_time_gate="PENDING_PUBLICATION_VERSION_TIMESTAMPS",
@@ -102,6 +147,16 @@ def render(packet):
            "清冊SHA256："+str(packet["source_manifest_sha256"]),"",
            "|季度|原件SHA|PDF頁數|前20頁會計師字詞線索|",
            "|---|---|---:|---|"]
+    lines+=["","## 優先核對：會計師結論原文（非正式會計師意見判定）","",
+            "此處僅表示原件前六頁含有保留結論／保留意見字詞；需要人工確認會計師實際結論、涉及範圍及重要性。",
+            "|優先季度|PDF頁次|狀態|","|---|---|---|"]
+    for item in packet["auditor_opinion_wording_priority"]:
+        lines.append("|"+item["period"]+"|"+
+                     "、".join(str(p) for p in item["pdf_pages"])+"|"+
+                     "結論原文／未經核閱範圍待人工確認，不是正式FAIL|")
+    if not packet["auditor_opinion_wording_priority"]:
+        lines.append("|無機器字詞命中|—|仍須核閱全部八季原件|")
+    lines+=["","## 原件逐季核對（顯示前20頁文字線索）",""]
     for row in packet["original_documents"]:
         if row["archive_state"]!="SHA_REHASHED":
             lines.append("|"+row["period"]+"|未經SHA重驗|—|不可判定|")
