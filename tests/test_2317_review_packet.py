@@ -89,6 +89,43 @@ class ReviewerPrepTests(unittest.TestCase):
         self.assertIn("第3頁",markdown)
         self.assertIn("不產生任何正式PASS",markdown)
 
+    def test_opinion_warning_is_high_priority_but_never_formal_fail(self):
+        self.insert_original()
+        report=p.build_packet(self.root,"2026-Q2",ASOF)
+        priorities=report["auditor_opinion_wording_priority"]
+        self.assertEqual(len(priorities),1)
+        self.assertEqual(priorities[0]["period"],"2025-Q4")
+        self.assertEqual(priorities[0]["pdf_pages"],[3])
+        self.assertFalse(priorities[0]["qualified_opinion_formally_determined"])
+        self.assertFalse(priorities[0]["gate_pass_or_fail_issued"])
+        self.assertEqual(report["formal_gate_pass_count_created"],0)
+        self.assertFalse(report["formal_Aplus"])
+        rendered=p.render(report)
+        self.assertIn("優先核對：會計師結論原文",rendered)
+        self.assertIn("不是正式FAIL",rendered)
+        self.assertLess(rendered.index("|2025-Q4|"),rendered.index("## 優先核對"))
+
+    def test_equity_method_keyword_flood_cannot_hide_auditor_opinion(self):
+        doc=fitz.open()
+        for _ in range(25):doc.new_page()
+        doc[0].insert_text((40,55),"\n".join(["權益法"]*42),
+                           fontname="china-t",fontsize=10)
+        doc[3].insert_text((40,55),
+                           "會計師核閱報告：保留結論之基礎，部分未經會計師核閱。",
+                           fontname="china-t",fontsize=10)
+        with tempfile.TemporaryDirectory() as temp:
+            path=Path(temp)/"fixture.pdf"
+            doc.save(path)
+            doc.close()
+            lead=p.auditor_leads(path)
+        self.assertIn(4,lead["opinion_wording_first_six_pdf_pages"])
+        self.assertTrue(any(x["keyword"]=="保留結論"
+                            and x["pdf_page_1based"]==4
+                            for x in lead["keyword_leads"]))
+        self.assertTrue(lead["keyword_leads_may_be_truncated"])
+        self.assertLessEqual(len(lead["keyword_leads"]),p.MAX_HITS)
+        self.assertFalse(lead["formal_auditor_opinion_reviewed"])
+
     def test_tamper_stops_report_before_exposing_unverified_evidence(self):
         path=self.insert_original()
         path.write_bytes(path.read_bytes()+b"malicious change")
