@@ -1,6 +1,6 @@
 {
   "schema": "v879-quarterly-seed-v1",
-  "captured_utc": "2026-11-05T19:03:11.589353+00:00",
+  "captured_utc": "2026-11-09T21:39:42.612864+00:00",
   "source_count_ok": 4,
   "source_count_expected": 4,
   "completeness_status": "SINGLE_PERIOD_SNAPSHOT",
@@ -12,57 +12,57 @@
       "kind": "TWSE_income",
       "period": "2026Q3",
       "url": "https://openapi.twse.com.tw/v1/opendata/t187ap06_L_ci",
-      "sha256_original": "bdaa1d8536da365e765f5dcf0b72f052fdcd404f64686e1cd5c61ce954eb712b",
-      "original_bytes": 146647,
-      "raw_rows": 108,
-      "issuer_rows": 108,
+      "sha256_original": "fc89a0e67955ffeea74b06bedd79685b06decfa5900d77dd9c815588625accc3",
+      "original_bytes": 398624,
+      "raw_rows": 294,
+      "issuer_rows": 294,
       "batch_date_values": [
-        "1151105"
+        "1151110"
       ],
       "path": "tw-market-data/financial/2026Q3/TWSE_income.json",
-      "normalized_sha256": "9f1d31f8fd98833fd4826edc7bdec5732912d828906d2a09f3502ec5ff45e872"
+      "normalized_sha256": "901fab741a0bc32a63ff393df409f2c968994e902531d56184cdb82bc59d9416"
     },
     {
       "kind": "TWSE_balance",
       "period": "2026Q3",
       "url": "https://openapi.twse.com.tw/v1/opendata/t187ap07_L_ci",
-      "sha256_original": "1bab181eb3ea1287b1e396dfc0f0d3e4004ffb2d726545d612d84379ba5cda46",
-      "original_bytes": 92133,
-      "raw_rows": 108,
-      "issuer_rows": 108,
+      "sha256_original": "0acc21a51ad3737787b05a240d938396703b53e7e4853db349a6058b72a1076b",
+      "original_bytes": 196377,
+      "raw_rows": 230,
+      "issuer_rows": 230,
       "batch_date_values": [
-        "1151105"
+        "1151109"
       ],
       "path": "tw-market-data/financial/2026Q3/TWSE_balance.json",
-      "normalized_sha256": "beb19e94a799cf7c476d9d986625a7ce571ff691a6e4c599c4a23f654ae721c1"
+      "normalized_sha256": "a1c5d3dd306ed42420972a41f1cddf3bf46f277e3b04e6b55073f57b20d6a302"
     },
     {
       "kind": "TPEX_income",
       "period": "2026Q3",
       "url": "https://mopsfin.twse.com.tw/opendata/t187ap06_O_ci.csv",
-      "sha256_original": "6f955a96040aafa9570794d97304de113b692f8314d267ac42d6360bf5b81d45",
-      "original_bytes": 33193,
-      "raw_rows": 123,
-      "issuer_rows": 123,
+      "sha256_original": "d26d2dea2db988963ab6bce88b04171ef6582f6191f1b0f8acabfdb97eea435d",
+      "original_bytes": 56674,
+      "raw_rows": 213,
+      "issuer_rows": 213,
       "batch_date_values": [
-        "1151106"
+        "1151110"
       ],
       "path": "tw-market-data/financial/2026Q3/TPEX_income.json",
-      "normalized_sha256": "34eba16ee5b5d6ee8c36d122f32a3d805f66931a9d237a9dc7a70b54a8b5bded"
+      "normalized_sha256": "124fd7ab5d816cf1b0c4c7a4831c4e73d5dfb7382562db8c9b83f67e90850fa1"
     },
     {
       "kind": "TPEX_balance",
       "period": "2026Q3",
       "url": "https://mopsfin.twse.com.tw/opendata/t187ap07_O_ci.csv",
-      "sha256_original": "5b44cd711d94c0d215969f29699e1132678d50c48246a96cac833a5353f96310",
-      "original_bytes": 29195,
-      "raw_rows": 123,
-      "issuer_rows": 123,
+      "sha256_original": "cffc9a434cd519ca736c76b1da40b8931cb0e4a535b7fd5a6eace66e3124d596",
+      "original_bytes": 50163,
+      "raw_rows": 213,
+      "issuer_rows": 213,
       "batch_date_values": [
-        "1151106"
+        "1151110"
       ],
       "path": "tw-market-data/financial/2026Q3/TPEX_balance.json",
-      "normalized_sha256": "37c9521afedd3b97f96a6bda30430250e894ed9f67399b7689cb43cd5a0d16a7"
+      "normalized_sha256": "84af1df455d87146a16977c220c1fafb31666d3c3ab9f95d804f599947f53537"
     }
   ],
   "failures": [],
