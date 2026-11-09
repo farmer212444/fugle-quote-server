@@ -12,6 +12,7 @@ SOURCE_JSON_PATTERNS=('evidence/v880/certificates/*.json','evidence/v880/issuer_
     'evidence/v880/inventory_original_watch/*.json',
     'evidence/v880/earnings_version_reviews/*.json',
     'config/oneoff_original_v1.json',
+    'config/oneoff_original_legacy_v1.json',
     'evidence/v880/oneoff_original/manifest.json',
     'evidence/v880/early_bulk/manifest.json',
     'evidence/v880/originals/*/manifest.json',
