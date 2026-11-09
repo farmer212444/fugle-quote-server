@@ -8,6 +8,9 @@ on:
         type: string
   schedule:
     - cron: '25 2,8 * * *'
+concurrency:
+  group: shoe-revenue-monitor-main
+  cancel-in-progress: false
 permissions:
   contents: write
 jobs:
@@ -34,4 +37,5 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git commit -m 'data: refresh shoe revenue observation'
-          git push
+          git pull --rebase origin main
+          git push origin HEAD:main
