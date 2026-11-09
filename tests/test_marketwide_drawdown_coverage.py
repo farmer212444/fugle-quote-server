@@ -80,6 +80,24 @@ class MarketwideTests(unittest.TestCase):
             self.assertEqual(pub["marketwide_current_quotes"],2)
             self.assertTrue((root/"rankings/latest_marketwide_drawdown_coverage.md").exists())
 
+    def test_null_close_kept_in_full_universe_as_pending(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp)
+            setup(root)
+            path=root/"prices/2026-11-09.json"
+            rows=json.loads(path.read_text())
+            rows.append(dict(date=ASOF,market="TPEX",code="2724",close=None))
+            put(path,rows)
+            doc=build(root)
+            self.assertEqual(doc["marketwide_snapshot_rows"],3)
+            self.assertEqual(doc["marketwide_current_quotes"],2)
+            self.assertEqual(doc["snapshot_rows_accounted_for"],3)
+            self.assertEqual(doc["missing_or_invalid_current_close_count"],1)
+            null=next(x for x in doc["issuers"] if x["code"]=="2724")
+            self.assertEqual(null["status"],"PENDING_MISSING_CURRENT_CLOSE")
+            self.assertFalse(null["provisional_pause"])
+            self.assertFalse(null["session_coverage"]["20"])
+
     def test_no_history_is_not_inferred_safe_from_sparse_prices(self):
         with tempfile.TemporaryDirectory() as tmp:
             root=Path(tmp)
