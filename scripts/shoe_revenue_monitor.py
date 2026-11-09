@@ -39,7 +39,7 @@ def normalize(rows, month):
         code = field(row, "公司代號", "公司代碼", "股票代號")
         if code not in WATCH:
             continue
-        raw_year = field(row, "出表日期", "資料年月", "年月", "營收年月")
+        raw_year = field(row, "資料年月", "年月", "營收年月")
         if raw_year:
             digits = "".join(c for c in raw_year if c.isdigit())
             if len(digits) >= 5:
@@ -51,7 +51,7 @@ def normalize(rows, month):
         sales = field(row, "當月營收", "當月營業收入", "本月營收")
         yoy = field(row, "去年同月增減(%)", "去年同月增減％", "去年同月增減百分比", "去年同月增減")
         mom = field(row, "上月比較增減(%)", "上月比較增減％", "上月比較增減百分比", "上月比較增減")
-        if not sales or not yoy:
+        if not raw_year or not sales or not yoy:
             continue
         output[code] = {"code": code, "name": WATCH[code], "month": month, "revenue_thousand_twd": number(sales), "yoy_pct": number(yoy), "mom_pct": number(mom) if mom else None}
     return output
