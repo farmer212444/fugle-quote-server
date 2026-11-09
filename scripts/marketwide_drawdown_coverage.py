@@ -184,7 +184,7 @@ def build(root):
                  history_issue=history_issues.get(key),
                  price_conflict=conflicting,
                  current_company_actions_verified=False,
-                 ersion_PIT_at_entry_verified=False,
+                 historical_PIT_at_entry_verified=False,
                  reference_calendar_is_not_individual_trading_calendar=True,
                  session_coverage=complete,missing_reference_sessions=gaps,
                  windows=windows)
