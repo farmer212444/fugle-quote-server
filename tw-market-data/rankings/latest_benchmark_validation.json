@@ -1,6 +1,6 @@
 {
   "schema": "TOP30_VS_TAIEX_TR_V1",
-  "observed_at": "2026-11-09T10:30:05.538017+00:00",
+  "observed_at": "2026-11-09T10:56:33.360014+00:00",
   "benchmark_id": "TAIEX_TR",
   "trials": [
     {
@@ -1408,6 +1408,60 @@
       "formal_out_of_sample_pass": false
     },
     {
+      "trial_id": "taiex-tr-d4aeab2b3add841c270bca2b",
+      "registered_at": "2026-11-09T10:56:26.211628+00:00",
+      "spec": {
+        "protocol": "TOP30_VS_TAIEX_TR_V1",
+        "strategy_variant_sha256": "df35668c312b5a39b795cb9ee17381cbb69f144939397821604cb874bf327a73",
+        "model_code_sha256": "90396d21b1d2d0e6a8806836d0805f2c8974bd920825f3db95dc3a4ea3ca92b8",
+        "model_target_date": "2027-12-31",
+        "cost_policy": {
+          "buy_fee_rate": 0.001425,
+          "sell_fee_rate": 0.001425,
+          "sell_tax_rate": 0.003,
+          "buy_slippage_rate": 0.001,
+          "sell_slippage_rate": 0.001,
+          "half_spread_rate": 0.0005,
+          "minimum_fee_ntd": 20
+        },
+        "benchmark_policy": {
+          "benchmark_id": "TAIEX_TR",
+          "selection_rule": "RESEARCH_TOP30_EQUAL_WEIGHT_NEXT_SESSION_CLOSE",
+          "selection_source": "top30_provisional",
+          "holding_intervals": 21,
+          "number_of_stocks": 30,
+          "dividend_policy": "GROSS_DIVIDENDS_RETAINED_AS_CASH_OR_RECEIVABLE_NO_REINVESTMENT",
+          "benchmark_cost_policy": "COSTLESS_OFFICIAL_GROSS_TOTAL_RETURN_INDEX",
+          "fractional_shares_are_research_assumption": true,
+          "minimum_nonoverlapping_oos_periods": 60,
+          "minimum_market_regimes": 2,
+          "bootstrap_draws": 10000,
+          "bootstrap_block_size": 21,
+          "stress_cost_multiplier_excluding_tax": 2,
+          "regime_lookback_sessions": 63,
+          "regime_return_threshold": 0.03,
+          "automatic_deployment": false
+        },
+        "reference_capital_ntd": 10000000,
+        "max_daily_participation": 0.05
+      },
+      "outcomes": [
+        {
+          "status": "AWAITING_FUTURE_HOLDING_SESSIONS",
+          "cohort_id": "85a74b393bb9dfb1492b99b1"
+        }
+      ],
+      "rejected_outcomes": [],
+      "matured_unusable_periods": 0,
+      "status": "NO_VERIFIED_OUTCOMES",
+      "verified_nonoverlapping_periods": 0,
+      "model_total_return": null,
+      "benchmark_total_return": null,
+      "excess_return_pp": null,
+      "evidence_supports_benchmark_edge": false,
+      "formal_out_of_sample_pass": false
+    },
+    {
       "trial_id": "taiex-tr-d6b088ce87b91ded71b2c348",
       "registered_at": "2026-10-23T01:29:39.491600+00:00",
       "spec": {
@@ -1894,8 +1948,8 @@
       "formal_out_of_sample_pass": false
     }
   ],
-  "registered_benchmark_trials": 35,
-  "all_registered_designs": 8241,
+  "registered_benchmark_trials": 36,
+  "all_registered_designs": 8483,
   "verified_outcomes": 0,
   "benchmark_sessions": 149,
   "benchmark_months": [
@@ -1940,6 +1994,7 @@
         "1026dfe2e4a4044146f6a951",
         "bc18b433e0974c5098aaafae",
         "d3c36ce10b0faa5d1ed1cff1",
+        "85a74b393bb9dfb1492b99b1",
         "7d58f358a29fa4abfb649f26",
         "356dc927ab3303650f60e18b",
         "a9fe308e76a9d90661102e2e",
@@ -1981,6 +2036,7 @@
         "1026dfe2e4a4044146f6a951",
         "bc18b433e0974c5098aaafae",
         "d3c36ce10b0faa5d1ed1cff1",
+        "85a74b393bb9dfb1492b99b1",
         "7d58f358a29fa4abfb649f26",
         "356dc927ab3303650f60e18b",
         "a9fe308e76a9d90661102e2e",
@@ -2022,6 +2078,7 @@
         "1026dfe2e4a4044146f6a951",
         "bc18b433e0974c5098aaafae",
         "d3c36ce10b0faa5d1ed1cff1",
+        "85a74b393bb9dfb1492b99b1",
         "7d58f358a29fa4abfb649f26",
         "356dc927ab3303650f60e18b",
         "a9fe308e76a9d90661102e2e",
@@ -2063,6 +2120,7 @@
         "1026dfe2e4a4044146f6a951",
         "bc18b433e0974c5098aaafae",
         "d3c36ce10b0faa5d1ed1cff1",
+        "85a74b393bb9dfb1492b99b1",
         "7d58f358a29fa4abfb649f26",
         "356dc927ab3303650f60e18b",
         "a9fe308e76a9d90661102e2e",
@@ -2104,6 +2162,7 @@
         "1026dfe2e4a4044146f6a951",
         "bc18b433e0974c5098aaafae",
         "d3c36ce10b0faa5d1ed1cff1",
+        "85a74b393bb9dfb1492b99b1",
         "7d58f358a29fa4abfb649f26",
         "356dc927ab3303650f60e18b",
         "a9fe308e76a9d90661102e2e",
@@ -2145,6 +2204,7 @@
         "1026dfe2e4a4044146f6a951",
         "bc18b433e0974c5098aaafae",
         "d3c36ce10b0faa5d1ed1cff1",
+        "85a74b393bb9dfb1492b99b1",
         "7d58f358a29fa4abfb649f26",
         "356dc927ab3303650f60e18b",
         "a9fe308e76a9d90661102e2e",
@@ -2186,6 +2246,7 @@
         "1026dfe2e4a4044146f6a951",
         "bc18b433e0974c5098aaafae",
         "d3c36ce10b0faa5d1ed1cff1",
+        "85a74b393bb9dfb1492b99b1",
         "7d58f358a29fa4abfb649f26",
         "356dc927ab3303650f60e18b",
         "a9fe308e76a9d90661102e2e",
@@ -2227,6 +2288,7 @@
         "1026dfe2e4a4044146f6a951",
         "bc18b433e0974c5098aaafae",
         "d3c36ce10b0faa5d1ed1cff1",
+        "85a74b393bb9dfb1492b99b1",
         "7d58f358a29fa4abfb649f26",
         "356dc927ab3303650f60e18b",
         "a9fe308e76a9d90661102e2e",
@@ -2252,6 +2314,7 @@
         "51183eb3af3026942064b32c",
         "95dd27c5938979d4762464fa",
         "d3c36ce10b0faa5d1ed1cff1",
+        "85a74b393bb9dfb1492b99b1",
         "51637b5cd67613e23b961493",
         "a789f1733f1318630cca9f87"
       ]
@@ -2286,6 +2349,7 @@
         "1026dfe2e4a4044146f6a951",
         "bc18b433e0974c5098aaafae",
         "d3c36ce10b0faa5d1ed1cff1",
+        "85a74b393bb9dfb1492b99b1",
         "7d58f358a29fa4abfb649f26",
         "356dc927ab3303650f60e18b",
         "a9fe308e76a9d90661102e2e",
@@ -2327,6 +2391,7 @@
         "1026dfe2e4a4044146f6a951",
         "bc18b433e0974c5098aaafae",
         "d3c36ce10b0faa5d1ed1cff1",
+        "85a74b393bb9dfb1492b99b1",
         "7d58f358a29fa4abfb649f26",
         "356dc927ab3303650f60e18b",
         "a9fe308e76a9d90661102e2e",
@@ -2352,6 +2417,7 @@
         "51183eb3af3026942064b32c",
         "95dd27c5938979d4762464fa",
         "d3c36ce10b0faa5d1ed1cff1",
+        "85a74b393bb9dfb1492b99b1",
         "51637b5cd67613e23b961493",
         "a789f1733f1318630cca9f87"
       ]
@@ -2387,6 +2453,7 @@
         "51183eb3af3026942064b32c",
         "95dd27c5938979d4762464fa",
         "d3c36ce10b0faa5d1ed1cff1",
+        "85a74b393bb9dfb1492b99b1",
         "51637b5cd67613e23b961493",
         "a789f1733f1318630cca9f87"
       ]
@@ -2405,6 +2472,7 @@
         "51183eb3af3026942064b32c",
         "95dd27c5938979d4762464fa",
         "d3c36ce10b0faa5d1ed1cff1",
+        "85a74b393bb9dfb1492b99b1",
         "51637b5cd67613e23b961493",
         "a789f1733f1318630cca9f87"
       ]
@@ -2439,6 +2507,7 @@
         "51183eb3af3026942064b32c",
         "95dd27c5938979d4762464fa",
         "d3c36ce10b0faa5d1ed1cff1",
+        "85a74b393bb9dfb1492b99b1",
         "51637b5cd67613e23b961493",
         "a789f1733f1318630cca9f87"
       ]
@@ -2457,6 +2526,7 @@
         "51183eb3af3026942064b32c",
         "95dd27c5938979d4762464fa",
         "d3c36ce10b0faa5d1ed1cff1",
+        "85a74b393bb9dfb1492b99b1",
         "51637b5cd67613e23b961493",
         "a789f1733f1318630cca9f87"
       ]
@@ -2490,6 +2560,7 @@
         "1026dfe2e4a4044146f6a951",
         "bc18b433e0974c5098aaafae",
         "d3c36ce10b0faa5d1ed1cff1",
+        "85a74b393bb9dfb1492b99b1",
         "7d58f358a29fa4abfb649f26",
         "356dc927ab3303650f60e18b",
         "a9fe308e76a9d90661102e2e",
@@ -2515,6 +2586,7 @@
         "51183eb3af3026942064b32c",
         "95dd27c5938979d4762464fa",
         "d3c36ce10b0faa5d1ed1cff1",
+        "85a74b393bb9dfb1492b99b1",
         "51637b5cd67613e23b961493",
         "a789f1733f1318630cca9f87"
       ]
@@ -2549,6 +2621,7 @@
         "1026dfe2e4a4044146f6a951",
         "bc18b433e0974c5098aaafae",
         "d3c36ce10b0faa5d1ed1cff1",
+        "85a74b393bb9dfb1492b99b1",
         "7d58f358a29fa4abfb649f26",
         "356dc927ab3303650f60e18b",
         "a9fe308e76a9d90661102e2e",
@@ -2574,6 +2647,7 @@
         "51183eb3af3026942064b32c",
         "95dd27c5938979d4762464fa",
         "d3c36ce10b0faa5d1ed1cff1",
+        "85a74b393bb9dfb1492b99b1",
         "51637b5cd67613e23b961493"
       ]
     },
@@ -2607,6 +2681,7 @@
         "1026dfe2e4a4044146f6a951",
         "bc18b433e0974c5098aaafae",
         "d3c36ce10b0faa5d1ed1cff1",
+        "85a74b393bb9dfb1492b99b1",
         "7d58f358a29fa4abfb649f26",
         "356dc927ab3303650f60e18b",
         "a9fe308e76a9d90661102e2e",
@@ -2632,6 +2707,7 @@
         "51183eb3af3026942064b32c",
         "95dd27c5938979d4762464fa",
         "d3c36ce10b0faa5d1ed1cff1",
+        "85a74b393bb9dfb1492b99b1",
         "51637b5cd67613e23b961493",
         "a789f1733f1318630cca9f87"
       ]
@@ -2650,6 +2726,7 @@
         "51183eb3af3026942064b32c",
         "95dd27c5938979d4762464fa",
         "d3c36ce10b0faa5d1ed1cff1",
+        "85a74b393bb9dfb1492b99b1",
         "51637b5cd67613e23b961493"
       ]
     },
@@ -2683,6 +2760,7 @@
         "1026dfe2e4a4044146f6a951",
         "bc18b433e0974c5098aaafae",
         "d3c36ce10b0faa5d1ed1cff1",
+        "85a74b393bb9dfb1492b99b1",
         "7d58f358a29fa4abfb649f26",
         "356dc927ab3303650f60e18b",
         "a9fe308e76a9d90661102e2e",
@@ -2700,7 +2778,8 @@
       "cohort_ids": [
         "1c5f15914c7efbdebf038c1e",
         "6af0eae1205e988236d460eb",
-        "51183eb3af3026942064b32c"
+        "51183eb3af3026942064b32c",
+        "85a74b393bb9dfb1492b99b1"
       ]
     },
     {
@@ -2715,7 +2794,8 @@
       "code": "2382",
       "cohort_ids": [
         "1c5f15914c7efbdebf038c1e",
-        "51183eb3af3026942064b32c"
+        "51183eb3af3026942064b32c",
+        "85a74b393bb9dfb1492b99b1"
       ]
     },
     {
@@ -2739,6 +2819,7 @@
         "45244cac836df2b0f27d9276",
         "1026dfe2e4a4044146f6a951",
         "bc18b433e0974c5098aaafae",
+        "85a74b393bb9dfb1492b99b1",
         "7d58f358a29fa4abfb649f26",
         "356dc927ab3303650f60e18b",
         "a9fe308e76a9d90661102e2e",
@@ -3011,6 +3092,7 @@
         "45244cac836df2b0f27d9276",
         "1026dfe2e4a4044146f6a951",
         "bc18b433e0974c5098aaafae",
+        "85a74b393bb9dfb1492b99b1",
         "7d58f358a29fa4abfb649f26",
         "356dc927ab3303650f60e18b",
         "a9fe308e76a9d90661102e2e",
@@ -3071,6 +3153,7 @@
         "45244cac836df2b0f27d9276",
         "1026dfe2e4a4044146f6a951",
         "bc18b433e0974c5098aaafae",
+        "85a74b393bb9dfb1492b99b1",
         "7d58f358a29fa4abfb649f26",
         "356dc927ab3303650f60e18b",
         "a9fe308e76a9d90661102e2e",
@@ -3251,7 +3334,8 @@
       "market": "TWSE",
       "code": "2739",
       "cohort_ids": [
-        "51183eb3af3026942064b32c"
+        "51183eb3af3026942064b32c",
+        "85a74b393bb9dfb1492b99b1"
       ]
     }
   ],

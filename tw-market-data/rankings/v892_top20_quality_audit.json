@@ -1,7 +1,7 @@
 {
   "status": "TOP20_EVIDENCE_TRIAGE_NOT_CERTIFIED",
   "model": "V8.10.8",
-  "estimate_vintage": "2026-11-09T18:29:26.603076+08:00",
+  "estimate_vintage": "2026-11-09T18:55:31.050002+08:00",
   "asof_price_date": "2026-11-09",
   "financial_last_quarter": "2026-Q2",
   "top20_count": 20,
@@ -359,124 +359,6 @@
     },
     {
       "rank": 4,
-      "code": "8110",
-      "name": "華東",
-      "market": "TWSE",
-      "price_date": "2026-11-09",
-      "source_tier": "MOPS_ISSUER_EARNINGS_ANNOUNCEMENT_RESEARCH",
-      "reference_close": 37.2,
-      "base_2027_eps": 3.239,
-      "base_2027_pe": 26.025,
-      "base_2027_target": 84.29,
-      "base_2027_upside_pct": 126.58,
-      "stress_double10_upside_pct": 83.53,
-      "stress_double20_upside_pct": 45.01,
-      "cb_reset_double10_upside_pct": 83.53,
-      "cb_reset_terms_verified": false,
-      "cb_unverified_issues": [],
-      "modeled_CB_share_included": 0,
-      "q3_revenue_yoy_pct": 20.88,
-      "q3_revenue_extrapolation_not_earnings": true,
-      "analysis": {
-        "code": "8110",
-        "name": "華東",
-        "rank": null,
-        "market": "TWSE",
-        "prior_fy_basic_eps": 2.48,
-        "prior_ytd_basic_eps": -0.44,
-        "latest_ytd_basic_eps": 2.59,
-        "ytd_annualized_basic_eps": 5.18,
-        "2027_model_diluted_eps": 3.239,
-        "2027_eps_over_ytd_runrate": 0.625,
-        "latest_ytd_revenue_k": 3913114.0,
-        "revenue_yoy_pct": 13.32,
-        "gross_margin_prior_pct": -0.31,
-        "gross_margin_latest_pct": 9.57,
-        "gross_margin_delta_pp": 9.88,
-        "operating_margin_prior_pct": -6.06,
-        "operating_margin_latest_pct": 2.74,
-        "operating_margin_delta_pp": 8.8,
-        "operating_profit_ytd_k": 107247.0,
-        "net_income_total_ytd_k": 1322988.0,
-        "operating_cashflow_ytd_k": 311251.0,
-        "operating_cashflow_to_total_net_income_pct": 23.53,
-        "forward_PE": 26.025,
-        "reference_price": 37.2,
-        "model_base_target_price": 84.29,
-        "model_base_upside_pct": 126.58,
-        "double_10pct_stress_price": 68.27,
-        "double_10pct_stress_upside_pct": 83.53,
-        "double_20pct_stress_price": 53.94,
-        "double_20pct_stress_upside_pct": 45.01,
-        "unverified_listed_CB_count": 0,
-        "formal_Aplus": false,
-        "status": "EVIDENCE_TRIAGE_ONLY_NOT_CERTIFIED",
-        "flags": [
-          "LOW_OCF_RELATIVE_TO_TOTAL_NET_INCOME",
-          "FORWARD_PE_AT_LEAST_20_REQUIRES_MATCHED_PEERS",
-          "MANUAL_FILING_NOTES_AND_PIT_UNVERIFIED"
-        ]
-      },
-      "cash_quality": {
-        "cash_k": null,
-        "ocf_k": 311251.0,
-        "ppe_purchase_cash_signed_k": null,
-        "fcf_after_ppe_k": null,
-        "equipment_prepaid_cash_signed_k": null,
-        "cash_after_separately_reported_prepaid_k": null,
-        "indicative_dividend_k": null,
-        "full_cb_put_sensitivity_k": null,
-        "old_cash_less_dividend_and_full_put_k": null,
-        "static_cash_sensitivity_is_actual_funding_gap": false,
-        "review_working_capital": false,
-        "negative_ocf_automatic_failure": false,
-        "operating_cashflow_quarter_bridge": {
-          "period": "2026-Q2",
-          "source": "DATED_NORMALIZED_MOPS_YTD_CASHFLOW_NOT_ORIGINAL_NOTES_ATTESTED",
-          "original_cash_notes_reconciled": false,
-          "working_capital_component_bridge_certified": false,
-          "one_quarter_improvement_is_not_sustained_cash_conversion": true,
-          "no_certification_or_forecast_changed": true,
-          "status": "DATED_NORMALIZED_YTD_BRIDGE",
-          "previous_period": "2026-Q1",
-          "previous_ytd_ocf_k": 186954.0,
-          "latest_ytd_ocf_k": 311251.0,
-          "latest_standalone_ocf_k": 124297.0,
-          "earlier_standalone_ocf_k": 186954.0,
-          "latest_standalone_ocf_positive": true,
-          "h1_or_current_ytd_ocf_still_negative": false,
-          "changed_sign_after_q1": false,
-          "observation_label": "LATEST_STANDALONE_POSITIVE",
-          "current_quarter_positive_does_not_override_negative_ytd_review": true
-        }
-      },
-      "source_flags": [
-        "LATEST_MOPS_ISSUER_ANNOUNCEMENT_NOT_COMPLETE_FINANCIAL_STATEMENTS",
-        "CURRENT_NONOPERATING_GAINS_NOT_EXTRAPOLATED_COMPONENT_REVIEW_REQUIRED",
-        "CASHFLOW_AND_NOTES_STILL_REFER_TO_PRIOR_REVIEWED_PERIOD",
-        "BASE_PROFIT_MAJORITY_FROM_NONOPERATING_ASSUMPTION_COMPONENT_REVIEW_REQUIRED",
-        "INSIDER_SELL_RESEARCH_REVIEW_REQUIRED"
-      ],
-      "formal_Aplus": false,
-      "governance_review": {
-        "status": "NO_EVENT_LEDGER_NOT_LEGAL_CLEARANCE",
-        "coverage": "REGISTERED_EVENTS_ONLY_NOT_FULL_MARKET_LEGAL_CLEARANCE",
-        "blocks_recommendation": false,
-        "material_open_event_ids": [],
-        "events": []
-      },
-      "recommendation_blocked": false,
-      "valuation_revised": false,
-      "verification_priority_score": 7,
-      "critical_evidence_gaps": [
-        "ISSUER_ORIGINAL_NUMERICS_NOT_CROSSCHECKED",
-        "HIGH_FORWARD_PE_UNVERIFIED_PEERS",
-        "FORWARD_PE_25X_OR_HIGHER_REQUIRES_STRONGER_JUSTIFICATION"
-      ],
-      "high_quality_Aplus_certified": false
-    },
-    {
-      "rank": 5,
       "code": "4912",
       "name": "聯德控股-KY",
       "market": "TWSE",
@@ -591,7 +473,7 @@
       "high_quality_Aplus_certified": false
     },
     {
-      "rank": 6,
+      "rank": 5,
       "code": "8390",
       "name": "金益鼎",
       "market": "TPEX",
@@ -708,7 +590,7 @@
       "high_quality_Aplus_certified": false
     },
     {
-      "rank": 7,
+      "rank": 6,
       "code": "6625",
       "name": "必應",
       "market": "TWSE",
@@ -823,7 +705,7 @@
       "high_quality_Aplus_certified": false
     },
     {
-      "rank": 8,
+      "rank": 7,
       "code": "2374",
       "name": "佳能",
       "market": "TWSE",
@@ -951,7 +833,7 @@
       "high_quality_Aplus_certified": false
     },
     {
-      "rank": 9,
+      "rank": 8,
       "code": "8473",
       "name": "山林水",
       "market": "TWSE",
@@ -1068,7 +950,7 @@
       "high_quality_Aplus_certified": false
     },
     {
-      "rank": 10,
+      "rank": 9,
       "code": "3285",
       "name": "微端",
       "market": "TPEX",
@@ -1186,7 +1068,7 @@
       "high_quality_Aplus_certified": false
     },
     {
-      "rank": 11,
+      "rank": 10,
       "code": "2376",
       "name": "技嘉",
       "market": "TWSE",
@@ -1307,7 +1189,7 @@
       "high_quality_Aplus_certified": false
     },
     {
-      "rank": 12,
+      "rank": 11,
       "code": "1256",
       "name": "鮮活果汁-KY",
       "market": "TWSE",
@@ -1426,7 +1308,7 @@
       "high_quality_Aplus_certified": false
     },
     {
-      "rank": 13,
+      "rank": 12,
       "code": "8114",
       "name": "振樺電",
       "market": "TWSE",
@@ -1547,7 +1429,7 @@
       "high_quality_Aplus_certified": false
     },
     {
-      "rank": 14,
+      "rank": 13,
       "code": "2364",
       "name": "倫飛",
       "market": "TWSE",
@@ -1660,7 +1542,7 @@
       "high_quality_Aplus_certified": false
     },
     {
-      "rank": 15,
+      "rank": 14,
       "code": "8155",
       "name": "博智",
       "market": "TPEX",
@@ -1782,7 +1664,7 @@
       "high_quality_Aplus_certified": false
     },
     {
-      "rank": 16,
+      "rank": 15,
       "code": "4303",
       "name": "信立",
       "market": "TPEX",
@@ -1902,7 +1784,7 @@
       "high_quality_Aplus_certified": false
     },
     {
-      "rank": 17,
+      "rank": 16,
       "code": "6781",
       "name": "AES-KY",
       "market": "TWSE",
@@ -2018,7 +1900,7 @@
       "high_quality_Aplus_certified": false
     },
     {
-      "rank": 18,
+      "rank": 17,
       "code": "4721",
       "name": "美琪瑪",
       "market": "TPEX",
@@ -2136,7 +2018,7 @@
       "high_quality_Aplus_certified": false
     },
     {
-      "rank": 19,
+      "rank": 18,
       "code": "8091",
       "name": "翔名",
       "market": "TPEX",
@@ -2252,7 +2134,7 @@
       "high_quality_Aplus_certified": false
     },
     {
-      "rank": 20,
+      "rank": 19,
       "code": "8383",
       "name": "千附",
       "market": "TPEX",
@@ -2365,6 +2247,119 @@
       "critical_evidence_gaps": [
         "FORWARD_EPS_ABOVE_1_3X_H1_ANNUALIZED_OR_UNAVAILABLE",
         "GROSS_MARGIN_DECLINED_AT_LEAST_3PP",
+        "EPS_PE_DOUBLE20_LOSES_30PCT_NUMERICAL_THRESHOLD"
+      ],
+      "high_quality_Aplus_certified": false
+    },
+    {
+      "rank": 20,
+      "code": "6505",
+      "name": "台塑化",
+      "market": "TWSE",
+      "price_date": "2026-11-09",
+      "source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
+      "reference_close": 88.4,
+      "base_2027_eps": 9.138,
+      "base_2027_pe": 17.99,
+      "base_2027_target": 164.39,
+      "base_2027_upside_pct": 85.97,
+      "stress_double10_upside_pct": 50.63,
+      "stress_double20_upside_pct": 19.02,
+      "cb_reset_double10_upside_pct": 50.63,
+      "cb_reset_terms_verified": false,
+      "cb_unverified_issues": [],
+      "modeled_CB_share_included": 0,
+      "q3_revenue_yoy_pct": 49.0,
+      "q3_revenue_extrapolation_not_earnings": true,
+      "analysis": {
+        "code": "6505",
+        "name": "台塑化",
+        "rank": null,
+        "market": "TWSE",
+        "prior_fy_basic_eps": 1.04,
+        "prior_ytd_basic_eps": -0.4,
+        "latest_ytd_basic_eps": 4.32,
+        "ytd_annualized_basic_eps": 8.64,
+        "2027_model_diluted_eps": 9.138,
+        "2027_eps_over_ytd_runrate": 1.058,
+        "latest_ytd_revenue_k": 344972366.0,
+        "revenue_yoy_pct": 8.2,
+        "gross_margin_prior_pct": 0.61,
+        "gross_margin_latest_pct": 15.25,
+        "gross_margin_delta_pp": 14.64,
+        "operating_margin_prior_pct": -1.15,
+        "operating_margin_latest_pct": 13.74,
+        "operating_margin_delta_pp": 14.89,
+        "operating_profit_ytd_k": 47397227.0,
+        "net_income_total_ytd_k": 41181868.0,
+        "operating_cashflow_ytd_k": 5435396.0,
+        "operating_cashflow_to_total_net_income_pct": 13.2,
+        "forward_PE": 17.99,
+        "reference_price": 88.4,
+        "model_base_target_price": 164.39,
+        "model_base_upside_pct": 85.97,
+        "double_10pct_stress_price": 133.16,
+        "double_10pct_stress_upside_pct": 50.63,
+        "double_20pct_stress_price": 105.21,
+        "double_20pct_stress_upside_pct": 19.02,
+        "unverified_listed_CB_count": 0,
+        "formal_Aplus": false,
+        "status": "EVIDENCE_TRIAGE_ONLY_NOT_CERTIFIED",
+        "flags": [
+          "LOW_OCF_RELATIVE_TO_TOTAL_NET_INCOME",
+          "CURRENT_NUMERICS_BULK_ONLY_NOT_ORIGINAL_CHECKED",
+          "MANUAL_FILING_NOTES_AND_PIT_UNVERIFIED"
+        ]
+      },
+      "cash_quality": {
+        "cash_k": null,
+        "ocf_k": 5435396.0,
+        "ppe_purchase_cash_signed_k": null,
+        "fcf_after_ppe_k": null,
+        "equipment_prepaid_cash_signed_k": null,
+        "cash_after_separately_reported_prepaid_k": null,
+        "indicative_dividend_k": null,
+        "full_cb_put_sensitivity_k": null,
+        "old_cash_less_dividend_and_full_put_k": null,
+        "static_cash_sensitivity_is_actual_funding_gap": false,
+        "review_working_capital": false,
+        "negative_ocf_automatic_failure": false,
+        "operating_cashflow_quarter_bridge": {
+          "period": "2026-Q2",
+          "source": "DATED_NORMALIZED_MOPS_YTD_CASHFLOW_NOT_ORIGINAL_NOTES_ATTESTED",
+          "original_cash_notes_reconciled": false,
+          "working_capital_component_bridge_certified": false,
+          "one_quarter_improvement_is_not_sustained_cash_conversion": true,
+          "no_certification_or_forecast_changed": true,
+          "status": "DATED_NORMALIZED_YTD_BRIDGE",
+          "previous_period": "2026-Q1",
+          "previous_ytd_ocf_k": 18575956.0,
+          "latest_ytd_ocf_k": 5435396.0,
+          "latest_standalone_ocf_k": -13140560.0,
+          "earlier_standalone_ocf_k": 18575956.0,
+          "latest_standalone_ocf_positive": false,
+          "h1_or_current_ytd_ocf_still_negative": false,
+          "changed_sign_after_q1": false,
+          "observation_label": "LATEST_STANDALONE_NONPOSITIVE",
+          "current_quarter_positive_does_not_override_negative_ytd_review": true
+        }
+      },
+      "source_flags": [
+        "CURRENT_DETAIL_IS_OFFICIAL_BATCH_SUMMARY_NOT_ORIGINAL_ISSUER_NOTES"
+      ],
+      "formal_Aplus": false,
+      "governance_review": {
+        "status": "NO_EVENT_LEDGER_NOT_LEGAL_CLEARANCE",
+        "coverage": "REGISTERED_EVENTS_ONLY_NOT_FULL_MARKET_LEGAL_CLEARANCE",
+        "blocks_recommendation": false,
+        "material_open_event_ids": [],
+        "events": []
+      },
+      "recommendation_blocked": false,
+      "valuation_revised": false,
+      "verification_priority_score": 7,
+      "critical_evidence_gaps": [
+        "ISSUER_ORIGINAL_NUMERICS_NOT_CROSSCHECKED",
         "EPS_PE_DOUBLE20_LOSES_30PCT_NUMERICAL_THRESHOLD"
       ],
       "high_quality_Aplus_certified": false
@@ -2490,21 +2485,7 @@
       ]
     },
     {
-      "rank": 4,
-      "code": "8110",
-      "name": "華東",
-      "verification_priority_score": 7,
-      "base_upside_pct": 126.58,
-      "stress_double20_upside_pct": 45.01,
-      "recommendation_blocked": false,
-      "critical_evidence_gaps": [
-        "ISSUER_ORIGINAL_NUMERICS_NOT_CROSSCHECKED",
-        "HIGH_FORWARD_PE_UNVERIFIED_PEERS",
-        "FORWARD_PE_25X_OR_HIGHER_REQUIRES_STRONGER_JUSTIFICATION"
-      ]
-    },
-    {
-      "rank": 7,
+      "rank": 6,
       "code": "6625",
       "name": "必應",
       "verification_priority_score": 7,
@@ -2518,7 +2499,7 @@
       ]
     },
     {
-      "rank": 14,
+      "rank": 13,
       "code": "2364",
       "name": "倫飛",
       "verification_priority_score": 7,
@@ -2531,7 +2512,20 @@
       ]
     },
     {
-      "rank": 5,
+      "rank": 20,
+      "code": "6505",
+      "name": "台塑化",
+      "verification_priority_score": 7,
+      "base_upside_pct": 85.97,
+      "stress_double20_upside_pct": 19.02,
+      "recommendation_blocked": false,
+      "critical_evidence_gaps": [
+        "ISSUER_ORIGINAL_NUMERICS_NOT_CROSSCHECKED",
+        "EPS_PE_DOUBLE20_LOSES_30PCT_NUMERICAL_THRESHOLD"
+      ]
+    },
+    {
+      "rank": 4,
       "code": "4912",
       "name": "聯德控股-KY",
       "verification_priority_score": 6,
@@ -2545,7 +2539,7 @@
       ]
     },
     {
-      "rank": 11,
+      "rank": 10,
       "code": "2376",
       "name": "技嘉",
       "verification_priority_score": 6,
@@ -2559,7 +2553,7 @@
       ]
     },
     {
-      "rank": 9,
+      "rank": 8,
       "code": "8473",
       "name": "山林水",
       "verification_priority_score": 5,
@@ -2574,7 +2568,7 @@
       ]
     },
     {
-      "rank": 12,
+      "rank": 11,
       "code": "1256",
       "name": "鮮活果汁-KY",
       "verification_priority_score": 5,
@@ -2589,7 +2583,7 @@
       ]
     },
     {
-      "rank": 17,
+      "rank": 16,
       "code": "6781",
       "name": "AES-KY",
       "verification_priority_score": 5,
@@ -2604,7 +2598,7 @@
       ]
     },
     {
-      "rank": 20,
+      "rank": 19,
       "code": "8383",
       "name": "千附",
       "verification_priority_score": 5,
@@ -2633,7 +2627,7 @@
       ]
     },
     {
-      "rank": 6,
+      "rank": 5,
       "code": "8390",
       "name": "金益鼎",
       "verification_priority_score": 4,
@@ -2648,7 +2642,7 @@
       ]
     },
     {
-      "rank": 15,
+      "rank": 14,
       "code": "8155",
       "name": "博智",
       "verification_priority_score": 4,
@@ -2664,7 +2658,7 @@
       ]
     },
     {
-      "rank": 18,
+      "rank": 17,
       "code": "4721",
       "name": "美琪瑪",
       "verification_priority_score": 4,
@@ -2679,7 +2673,7 @@
       ]
     },
     {
-      "rank": 19,
+      "rank": 18,
       "code": "8091",
       "name": "翔名",
       "verification_priority_score": 4,
@@ -2694,7 +2688,7 @@
       ]
     },
     {
-      "rank": 10,
+      "rank": 9,
       "code": "3285",
       "name": "微端",
       "verification_priority_score": 3,
@@ -2710,7 +2704,7 @@
       ]
     },
     {
-      "rank": 13,
+      "rank": 12,
       "code": "8114",
       "name": "振樺電",
       "verification_priority_score": 2,
@@ -2726,7 +2720,7 @@
       ]
     },
     {
-      "rank": 16,
+      "rank": 15,
       "code": "4303",
       "name": "信立",
       "verification_priority_score": 2,
@@ -2741,7 +2735,7 @@
       ]
     },
     {
-      "rank": 8,
+      "rank": 7,
       "code": "2374",
       "name": "佳能",
       "verification_priority_score": 0,

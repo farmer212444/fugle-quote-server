@@ -1,10 +1,10 @@
 {
   "schema": "V810_INSTITUTIONAL_RESEARCH_CONTROLS",
   "model": "V8.10.8",
-  "estimate_vintage": "2026-11-09T18:29:26.603076+08:00",
-  "report_observed_at": "2026-11-09T10:30:16.997975+00:00",
+  "estimate_vintage": "2026-11-09T18:55:31.050002+08:00",
+  "report_observed_at": "2026-11-09T10:56:52.125812+00:00",
   "asof_price_date": "2026-11-09",
-  "source_model_sha256": "15d8fdce1c5b513e1413f37c92e34a6e2519e855cbc4209a12ca65580ecac046",
+  "source_model_sha256": "90396d21b1d2d0e6a8806836d0805f2c8974bd920825f3db95dc3a4ea3ca92b8",
   "policy_sha256": "3f378fb673213f6178983a4698ed80c7e5a8c5b62e82192a85eea1c6a3b0b493",
   "universe": {
     "normalized_issuers": 1982,
@@ -196,7 +196,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "3cbdeae3cba739c70fb7f58fc6e9008221bfbd6c64d47efe02fa5a9e540b0eb1",
-        "forecast_method_sha256": "292498a8bb176cacde9e22ff3b7ba06d58a54cc56b95e83f4e84fb56e4a72dd8",
+        "forecast_method_sha256": "c44d2b22fd76bf09e53d1876871ec4edc3d81bc7e6c36a485b9b245dd14d71f8",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -418,7 +418,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "59696bfc4a41f49b1156f9c55d6330888b26c1d2d5c0cfe38a7fe3aa869d0898",
-        "forecast_method_sha256": "292498a8bb176cacde9e22ff3b7ba06d58a54cc56b95e83f4e84fb56e4a72dd8",
+        "forecast_method_sha256": "c44d2b22fd76bf09e53d1876871ec4edc3d81bc7e6c36a485b9b245dd14d71f8",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -640,7 +640,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "17818f668bf576e58402f693e7b2db0534a3942c142ef272a78bfb507b0df03b",
-        "forecast_method_sha256": "292498a8bb176cacde9e22ff3b7ba06d58a54cc56b95e83f4e84fb56e4a72dd8",
+        "forecast_method_sha256": "c44d2b22fd76bf09e53d1876871ec4edc3d81bc7e6c36a485b9b245dd14d71f8",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -685,283 +685,6 @@
         "first_date": "2026-10-08",
         "last_date": "2026-11-09",
         "median20_turnover_ntd": 168653658.5,
-        "spread_and_exit_verified": false
-      }
-    },
-    {
-      "code": "8110",
-      "market": "TWSE",
-      "name": "華東",
-      "industry": "半導體業",
-      "base_upside_pct": 126.57561860893733,
-      "base": {
-        "revenue_k": 9411822.381810268,
-        "gross_margin": 0.10051455191206338,
-        "gross_profit_k": 946025.1093835882,
-        "opex_ratio": 0.0751020941328372,
-        "opex_k": 706847.5704802588,
-        "operating_profit_k": 239177.5389033294,
-        "nonoperating_k": 1620311.0,
-        "pretax_k": 1859488.5389033295,
-        "tax_rate": 0.10429375753089355,
-        "parent_fraction": 1.006741298521891,
-        "parent_profit_k": 1676783.498872461,
-        "shares": 517739876.0,
-        "eps": 3.2386601391940326,
-        "pe": 26.025,
-        "target_price": 84.2861301225247,
-        "price_upside_pct": 126.57561860893733,
-        "future_dividends_per_share": null,
-        "total_return_pct": null
-      },
-      "financial_period": "2026-Q3",
-      "cashflow_financial_period": "2026-Q2",
-      "valuation_diagnostics": {
-        "status": "RESEARCH_ASSUMPTION_SENSITIVITY_NOT_A_PROBABILITY",
-        "market_implied_eps_at_model_pe": 1.4293948126801155,
-        "market_implied_gross_margin": -0.00985687758026045,
-        "gross_margin_required_for_30pct_upside": 0.01630252753392416,
-        "eps_gain_per_1pp_gross_margin": 0.1639251511768948,
-        "eps_pe_each_minus20_upside_pct": 45.0083959097199,
-        "bear_price_upside_pct": 15.317687444595363,
-        "pe_is_matched_peer_certified": false,
-        "forward_annual_profit_bridge_verified": false
-      },
-      "review_work": [
-        {
-          "gate": "original_eight_quarter_statements",
-          "scope": "ISSUER",
-          "decision": "PENDING",
-          "reason": "LATEST_MOPS_ANNOUNCEMENT_NOT_COMPLETE_FINANCIAL_STATEMENTS",
-          "required_evidence": "逐季原始四表、附註、重編及完整性核對",
-          "invalidates_on": "財報／重編更新",
-          "strategy_evidence_reusable_by_version": false,
-          "formal_pass": false
-        },
-        {
-          "gate": "cash_and_working_capital",
-          "scope": "ISSUER",
-          "decision": "PENDING",
-          "reason": "MULTI_PERIOD_WORKING_CAPITAL_AND_LIQUIDITY_REVIEW_REQUIRED",
-          "required_evidence": "應收、存貨、應付、CAPEX與資金來源橋接",
-          "invalidates_on": "新財報／資金事件",
-          "strategy_evidence_reusable_by_version": false,
-          "formal_pass": false
-        },
-        {
-          "gate": "nonoperating_components",
-          "scope": "ISSUER",
-          "decision": "PENDING",
-          "reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
-          "required_evidence": "經常性、匯兌、處分、評價與減損分解",
-          "invalidates_on": "業外組成更新",
-          "strategy_evidence_reusable_by_version": false,
-          "formal_pass": false
-        },
-        {
-          "gate": "fully_diluted_shares",
-          "scope": "ISSUER",
-          "decision": "PENDING",
-          "reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
-          "required_evidence": "現有股數、CB最新條款、員工股份與分母勾稽",
-          "invalidates_on": "增減資／CB條款更新",
-          "strategy_evidence_reusable_by_version": false,
-          "formal_pass": false
-        },
-        {
-          "gate": "matched_peers_and_cycle",
-          "scope": "ISSUER",
-          "decision": "PENDING",
-          "reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
-          "required_evidence": "商業模式相符同業、循環位置與倍數依據",
-          "invalidates_on": "營運模式／循環假設改變",
-          "strategy_evidence_reusable_by_version": false,
-          "formal_pass": false
-        },
-        {
-          "gate": "management_promises",
-          "scope": "ISSUER",
-          "decision": "PENDING",
-          "reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
-          "required_evidence": "原始承諾、可驗證指標、時程與後續交付紀錄",
-          "invalidates_on": "新承諾／驗證到期",
-          "strategy_evidence_reusable_by_version": false,
-          "formal_pass": false
-        },
-        {
-          "gate": "auditor_scope",
-          "scope": "ISSUER",
-          "decision": "PENDING",
-          "reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
-          "required_evidence": "完整核閱意見、保留範圍及重要性判斷",
-          "invalidates_on": "新核閱／重大事項",
-          "strategy_evidence_reusable_by_version": false,
-          "formal_pass": false
-        },
-        {
-          "gate": "tradability",
-          "scope": "EXECUTION",
-          "decision": "PENDING",
-          "reason": "SINGLE_DAY_QUOTE_IS_NOT_CONTINUOUS_TRADABILITY_CERTIFICATION",
-          "required_evidence": "多日成交、價差、參與率與清倉能力",
-          "invalidates_on": "股價／成交條件改變",
-          "strategy_evidence_reusable_by_version": false,
-          "formal_pass": false
-        },
-        {
-          "gate": "forecast_bridge",
-          "scope": "ISSUER",
-          "decision": "PENDING",
-          "reason": "LATEST_EARNINGS_EVENT_REBASED_ISSUER_2027_OPERATING_BRIDGE_REQUIRED",
-          "required_evidence": "量價、產能、稼動、成本、折舊及2027EPS推導",
-          "invalidates_on": "經濟輸入／預測方法改變",
-          "strategy_evidence_reusable_by_version": false,
-          "formal_pass": false
-        },
-        {
-          "gate": "insider_claims",
-          "scope": "ISSUER",
-          "decision": "PENDING",
-          "reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
-          "required_evidence": "原始申報、身份、實際增減與公告可得時間",
-          "invalidates_on": "新申報／說法變更",
-          "strategy_evidence_reusable_by_version": false,
-          "formal_pass": false
-        },
-        {
-          "gate": "dividend_window",
-          "scope": "CORPORATE_ACTION",
-          "decision": "PENDING",
-          "reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
-          "required_evidence": "除權息、支付、股數與估值適用期間",
-          "invalidates_on": "公司行動公告／修正",
-          "strategy_evidence_reusable_by_version": false,
-          "formal_pass": false
-        },
-        {
-          "gate": "point_in_time",
-          "scope": "SOURCE",
-          "decision": "PENDING",
-          "reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
-          "required_evidence": "原始公告、修訂與首次可得時間",
-          "invalidates_on": "來源修訂／可得時間更正",
-          "strategy_evidence_reusable_by_version": false,
-          "formal_pass": false
-        },
-        {
-          "gate": "out_of_sample_validation",
-          "scope": "STRATEGY",
-          "decision": "PENDING",
-          "reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
-          "required_evidence": "固定策略版本與適用子群的扣成本樣本外驗證",
-          "invalidates_on": "策略／母體／交易規則改變",
-          "strategy_evidence_reusable_by_version": true,
-          "formal_pass": false
-        }
-      ],
-      "forecast_binding": {
-        "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
-        "forecast_input_sha256": "7a160495060360285ee0987c0575112a075f9ca1d37efe5b6b66fee7edc9f7a9",
-        "forecast_method_sha256": "292498a8bb176cacde9e22ff3b7ba06d58a54cc56b95e83f4e84fb56e4a72dd8",
-        "target_date": "2027-12-31",
-        "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
-      },
-      "fresh_earnings_update": {
-        "applied": true,
-        "source_kind": "MOPS_ISSUER_EARNINGS_ANNOUNCEMENT_RESEARCH",
-        "event": {
-          "code": "8110",
-          "financial_period": "2026-Q3",
-          "prior_period": "2025-Q3",
-          "current": {
-            "revenue_k": 6176402.0,
-            "gross_profit_k": 627674.0,
-            "operating_profit_k": 256638.0,
-            "pretax_profit_k": 1480568.0,
-            "net_income_k": 1326154.0,
-            "parent_net_income_k": 1335094.0,
-            "optional_reconciliation_gaps": [],
-            "opex_k": 371036.0,
-            "reported_opex_k": 371036.0,
-            "other_operating_gains_k": null,
-            "nonoperating_k": 1223930.0,
-            "basic_eps": 2.6
-          },
-          "prior": {
-            "revenue_k": 5325555.0,
-            "gross_profit_k": 58803.0,
-            "operating_profit_k": -241484.0,
-            "pretax_profit_k": 629317.0,
-            "net_income_k": 533728.0,
-            "parent_net_income_k": 650073.0,
-            "nonoperating_k": 870801.0
-          },
-          "single_quarter": {
-            "revenue_k": 2263288.0,
-            "gross_profit_k": 253156.0,
-            "operating_profit_k": 149391.0,
-            "pretax_profit_k": 70020.0,
-            "net_income_k": 3166.0,
-            "parent_net_income_k": 6159.0,
-            "nonoperating_k": -79371.0
-          },
-          "source_kind": "MOPS_ISSUER_EARNINGS_ANNOUNCEMENT_RESEARCH",
-          "source_url": "https://mopsov.twse.com.tw/mops/web/ajax_t05st01?firstin=true&step=2&off=1&seq_no=1&spoke_time=174224&spoke_date=20261104&co_id=8110&TYPEK=sii",
-          "archive_path": "evidence/v880/early_bulk/TWSE/b7d375fdaee7dd1dddf5354534ad1333ba47ce756acf01a1e522010d296b33c3.notice.html.gz",
-          "source_sha256": "b7d375fdaee7dd1dddf5354534ad1333ba47ce756acf01a1e522010d296b33c3",
-          "available_at": "2026-11-09T08:57:21.085173+00:00",
-          "extraction_recipe": "OFFICIAL_EARLY_QUARTER_INCOME_INTAKE_V1",
-          "standalone_quarter_derived_by_ytd_difference": true,
-          "prior_year_detail_is_not_original_certified": true,
-          "original_numeric_table_reconciled": false,
-          "historical_issuer_publication_PIT_verified": false,
-          "formal_quality_pass": false,
-          "event_sha256": "16fc972133b70048e8d5405405627ed639ce0fca401e834f03f942fde2e5fbf8"
-        },
-        "method": "EXISTING_CALIBRATED_ACCOUNTING_EQUATIONS_WITH_NEW_RECONCILED_YTD_FACTS",
-        "annual_forecast_still_requires_issuer_operating_bridge": true,
-        "event_state": {
-          "status": "MOPS_ISSUER_ANNOUNCEMENT_RESEARCH_ADMITTED",
-          "period": "2026-Q3",
-          "blocks_current_decision": false
-        },
-        "baseline_without_new_event": {
-          "eps": 3.368309483200124,
-          "pe": 26.025,
-          "target_price": 87.66025430028321,
-          "price_upside_pct": 135.64584489323443
-        },
-        "baseline_same_model_price_and_vintage": true
-      },
-      "liquidity": {
-        "status": "TWENTY_SESSION_TURNOVER_PROXY_NOT_EXECUTION_REVIEW",
-        "sessions": 20,
-        "first_date": "2026-10-08",
-        "last_date": "2026-11-09",
-        "median20_turnover_ntd": 119218803.5,
-        "spread_and_exit_verified": false
-      },
-      "capacity_weight_at_reference_capital": 1.0,
-      "formal_Aplus": false,
-      "risk_profile": {
-        "status": "REVIEWED_COMMON_RISK_AND_STRESS_PROFILE_MISSING"
-      },
-      "governance_review": {
-        "status": "NO_EVENT_LEDGER_NOT_LEGAL_CLEARANCE",
-        "coverage": "REGISTERED_EVENTS_ONLY_NOT_FULL_MARKET_LEGAL_CLEARANCE",
-        "blocks_recommendation": false,
-        "material_open_event_ids": [],
-        "events": []
-      },
-      "recommendation_blocked": false,
-      "common_risk_tags": null,
-      "reviewed_stress_loss_fraction": null,
-      "execution_review": {
-        "status": "TWENTY_SESSION_TURNOVER_PROXY_NOT_EXECUTION_REVIEW",
-        "sessions": 20,
-        "first_date": "2026-10-08",
-        "last_date": "2026-11-09",
-        "median20_turnover_ntd": 119218803.5,
         "spread_and_exit_verified": false
       }
     },
@@ -1139,7 +862,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "945d49c8d336294bc29bcfebb98b121b09d542f6fb90d7621589ff3eb25345c7",
-        "forecast_method_sha256": "292498a8bb176cacde9e22ff3b7ba06d58a54cc56b95e83f4e84fb56e4a72dd8",
+        "forecast_method_sha256": "c44d2b22fd76bf09e53d1876871ec4edc3d81bc7e6c36a485b9b245dd14d71f8",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -1361,7 +1084,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "445429f0298bffac19237b180ddfd49705230b5d10f63cc912ed0214b07985e6",
-        "forecast_method_sha256": "292498a8bb176cacde9e22ff3b7ba06d58a54cc56b95e83f4e84fb56e4a72dd8",
+        "forecast_method_sha256": "c44d2b22fd76bf09e53d1876871ec4edc3d81bc7e6c36a485b9b245dd14d71f8",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -1638,7 +1361,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "591cd78d1ddf06492e1144b4a29e35c97699318ab9229923e486b60fe3f88bf0",
-        "forecast_method_sha256": "292498a8bb176cacde9e22ff3b7ba06d58a54cc56b95e83f4e84fb56e4a72dd8",
+        "forecast_method_sha256": "c44d2b22fd76bf09e53d1876871ec4edc3d81bc7e6c36a485b9b245dd14d71f8",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -1860,7 +1583,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "1153dcfb7110f2eb00d240f4c48394c625e06b2c8b9517e77fddf1a63bfd5cf7",
-        "forecast_method_sha256": "292498a8bb176cacde9e22ff3b7ba06d58a54cc56b95e83f4e84fb56e4a72dd8",
+        "forecast_method_sha256": "c44d2b22fd76bf09e53d1876871ec4edc3d81bc7e6c36a485b9b245dd14d71f8",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -2137,7 +1860,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "3c407302155f6ef109862667c27ab658f9b7f217a3e76f0da7742e35219ea376",
-        "forecast_method_sha256": "292498a8bb176cacde9e22ff3b7ba06d58a54cc56b95e83f4e84fb56e4a72dd8",
+        "forecast_method_sha256": "c44d2b22fd76bf09e53d1876871ec4edc3d81bc7e6c36a485b9b245dd14d71f8",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -2359,7 +2082,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "ebcbe7decfa67f4c970ac1949bb91f6eeeaeb2b4f3c83e9d3d1a86f5bf4688a0",
-        "forecast_method_sha256": "292498a8bb176cacde9e22ff3b7ba06d58a54cc56b95e83f4e84fb56e4a72dd8",
+        "forecast_method_sha256": "c44d2b22fd76bf09e53d1876871ec4edc3d81bc7e6c36a485b9b245dd14d71f8",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -2581,7 +2304,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "73d4ff6f5e28fd84dca6e1db5fa26be325014deb8b48c3e6a16dc7fbf3d8debc",
-        "forecast_method_sha256": "292498a8bb176cacde9e22ff3b7ba06d58a54cc56b95e83f4e84fb56e4a72dd8",
+        "forecast_method_sha256": "c44d2b22fd76bf09e53d1876871ec4edc3d81bc7e6c36a485b9b245dd14d71f8",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -2591,7 +2314,11 @@
         "event": null,
         "method": null,
         "annual_forecast_still_requires_issuer_operating_bridge": true,
-        "event_state": null
+        "event_state": {
+          "status": "NOT_OBSERVED_IN_PARTIAL_OFFICIAL_TABLE",
+          "blocks_current_decision": false,
+          "absence_is_not_zero_or_proof_unannounced": true
+        }
       },
       "liquidity": {
         "status": "TWENTY_SESSION_TURNOVER_PROXY_NOT_EXECUTION_REVIEW",
@@ -2799,7 +2526,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "093dbb6cee9b184509e1d18cba731340becefbdfa77206e33c75905bd50580a2",
-        "forecast_method_sha256": "292498a8bb176cacde9e22ff3b7ba06d58a54cc56b95e83f4e84fb56e4a72dd8",
+        "forecast_method_sha256": "c44d2b22fd76bf09e53d1876871ec4edc3d81bc7e6c36a485b9b245dd14d71f8",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -3076,7 +2803,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "1c127805f5b7d7a1c43a3debd2ac41666920b0c72b340a332951bfe4ecd3af27",
-        "forecast_method_sha256": "292498a8bb176cacde9e22ff3b7ba06d58a54cc56b95e83f4e84fb56e4a72dd8",
+        "forecast_method_sha256": "c44d2b22fd76bf09e53d1876871ec4edc3d81bc7e6c36a485b9b245dd14d71f8",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -3294,7 +3021,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "f3018f37f710d30eb47dc41902b292d7f8a9eebb5b13892e2d168ec67fd80a31",
-        "forecast_method_sha256": "292498a8bb176cacde9e22ff3b7ba06d58a54cc56b95e83f4e84fb56e4a72dd8",
+        "forecast_method_sha256": "c44d2b22fd76bf09e53d1876871ec4edc3d81bc7e6c36a485b9b245dd14d71f8",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -3512,7 +3239,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "1a6a24f3cfd097eb23dc8c71402e549c0c93fd2873003c77bc1122e122a9346c",
-        "forecast_method_sha256": "292498a8bb176cacde9e22ff3b7ba06d58a54cc56b95e83f4e84fb56e4a72dd8",
+        "forecast_method_sha256": "c44d2b22fd76bf09e53d1876871ec4edc3d81bc7e6c36a485b9b245dd14d71f8",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -3734,7 +3461,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "2275f3a3e2edd0eef1dcc79ca203d27a45e5c8bb32a64ee01e7568821755502d",
-        "forecast_method_sha256": "292498a8bb176cacde9e22ff3b7ba06d58a54cc56b95e83f4e84fb56e4a72dd8",
+        "forecast_method_sha256": "c44d2b22fd76bf09e53d1876871ec4edc3d81bc7e6c36a485b9b245dd14d71f8",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -3952,7 +3679,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "e1198e3321a5d5e3e591e40139d70c02ba45777abf1447dd5a4aa98aa6547fbc",
-        "forecast_method_sha256": "292498a8bb176cacde9e22ff3b7ba06d58a54cc56b95e83f4e84fb56e4a72dd8",
+        "forecast_method_sha256": "c44d2b22fd76bf09e53d1876871ec4edc3d81bc7e6c36a485b9b245dd14d71f8",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -4170,7 +3897,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "f23cb919924d3d1016671045375ee23e1728d76ea209d64928fa02137e28d9d7",
-        "forecast_method_sha256": "292498a8bb176cacde9e22ff3b7ba06d58a54cc56b95e83f4e84fb56e4a72dd8",
+        "forecast_method_sha256": "c44d2b22fd76bf09e53d1876871ec4edc3d81bc7e6c36a485b9b245dd14d71f8",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -4392,7 +4119,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "a4c547655b54f6c74f44289961d266154003ce50c4f5c90e16821aa71b51cc3b",
-        "forecast_method_sha256": "292498a8bb176cacde9e22ff3b7ba06d58a54cc56b95e83f4e84fb56e4a72dd8",
+        "forecast_method_sha256": "c44d2b22fd76bf09e53d1876871ec4edc3d81bc7e6c36a485b9b245dd14d71f8",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -4610,7 +4337,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "57bc7090644b2804a9d4d3344b1b1bd348c9d855e8db59bae6c0333366f11b65",
-        "forecast_method_sha256": "292498a8bb176cacde9e22ff3b7ba06d58a54cc56b95e83f4e84fb56e4a72dd8",
+        "forecast_method_sha256": "c44d2b22fd76bf09e53d1876871ec4edc3d81bc7e6c36a485b9b245dd14d71f8",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -4651,6 +4378,224 @@
         "first_date": "2026-10-08",
         "last_date": "2026-11-09",
         "median20_turnover_ntd": 53753896.0,
+        "spread_and_exit_verified": false
+      }
+    },
+    {
+      "code": "6505",
+      "market": "TWSE",
+      "name": "台塑化",
+      "industry": "油電燃氣業",
+      "base_upside_pct": 85.9663581840137,
+      "base": {
+        "revenue_k": 830727662.9245521,
+        "gross_margin": 0.14504127974506772,
+        "gross_profit_k": 120489803.35020629,
+        "opex_ratio": 0.01600243020491892,
+        "opex_k": 13293661.445245557,
+        "operating_profit_k": 107196141.90496072,
+        "nonoperating_k": 1833274.0,
+        "pretax_k": 109029415.90496072,
+        "tax_rate": 0.2016728672818663,
+        "parent_fraction": 1.0000913023178064,
+        "parent_profit_k": 87049088.03925627,
+        "shares": 9525959652.0,
+        "eps": 9.13809119703547,
+        "pe": 17.990000000000002,
+        "target_price": 164.39426063466811,
+        "price_upside_pct": 85.9663581840137,
+        "future_dividends_per_share": null,
+        "total_return_pct": null
+      },
+      "financial_period": "2026-Q2",
+      "cashflow_financial_period": "2026-Q2",
+      "valuation_diagnostics": {
+        "status": "RESEARCH_ASSUMPTION_SENSITIVITY_NOT_A_PROBABILITY",
+        "market_implied_eps_at_model_pe": 4.9138410227904386,
+        "market_implied_gross_margin": 0.08437055880255065,
+        "gross_margin_required_for_30pct_upside": 0.10554304611880388,
+        "eps_gain_per_1pp_gross_margin": 0.6962584437141156,
+        "eps_pe_each_minus20_upside_pct": 19.018469237768755,
+        "bear_price_upside_pct": 10.734941112237607,
+        "pe_is_matched_peer_certified": false,
+        "forward_annual_profit_bridge_verified": false
+      },
+      "review_work": [
+        {
+          "gate": "original_eight_quarter_statements",
+          "scope": "ISSUER",
+          "decision": "PENDING",
+          "reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
+          "required_evidence": "逐季原始四表、附註、重編及完整性核對",
+          "invalidates_on": "財報／重編更新",
+          "strategy_evidence_reusable_by_version": false,
+          "formal_pass": false
+        },
+        {
+          "gate": "cash_and_working_capital",
+          "scope": "ISSUER",
+          "decision": "PENDING",
+          "reason": "MULTI_PERIOD_WORKING_CAPITAL_AND_LIQUIDITY_REVIEW_REQUIRED",
+          "required_evidence": "應收、存貨、應付、CAPEX與資金來源橋接",
+          "invalidates_on": "新財報／資金事件",
+          "strategy_evidence_reusable_by_version": false,
+          "formal_pass": false
+        },
+        {
+          "gate": "nonoperating_components",
+          "scope": "ISSUER",
+          "decision": "PENDING",
+          "reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
+          "required_evidence": "經常性、匯兌、處分、評價與減損分解",
+          "invalidates_on": "業外組成更新",
+          "strategy_evidence_reusable_by_version": false,
+          "formal_pass": false
+        },
+        {
+          "gate": "fully_diluted_shares",
+          "scope": "ISSUER",
+          "decision": "PENDING",
+          "reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
+          "required_evidence": "現有股數、CB最新條款、員工股份與分母勾稽",
+          "invalidates_on": "增減資／CB條款更新",
+          "strategy_evidence_reusable_by_version": false,
+          "formal_pass": false
+        },
+        {
+          "gate": "matched_peers_and_cycle",
+          "scope": "ISSUER",
+          "decision": "PENDING",
+          "reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
+          "required_evidence": "商業模式相符同業、循環位置與倍數依據",
+          "invalidates_on": "營運模式／循環假設改變",
+          "strategy_evidence_reusable_by_version": false,
+          "formal_pass": false
+        },
+        {
+          "gate": "management_promises",
+          "scope": "ISSUER",
+          "decision": "PENDING",
+          "reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
+          "required_evidence": "原始承諾、可驗證指標、時程與後續交付紀錄",
+          "invalidates_on": "新承諾／驗證到期",
+          "strategy_evidence_reusable_by_version": false,
+          "formal_pass": false
+        },
+        {
+          "gate": "auditor_scope",
+          "scope": "ISSUER",
+          "decision": "PENDING",
+          "reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
+          "required_evidence": "完整核閱意見、保留範圍及重要性判斷",
+          "invalidates_on": "新核閱／重大事項",
+          "strategy_evidence_reusable_by_version": false,
+          "formal_pass": false
+        },
+        {
+          "gate": "tradability",
+          "scope": "EXECUTION",
+          "decision": "PENDING",
+          "reason": "SINGLE_DAY_QUOTE_IS_NOT_CONTINUOUS_TRADABILITY_CERTIFICATION",
+          "required_evidence": "多日成交、價差、參與率與清倉能力",
+          "invalidates_on": "股價／成交條件改變",
+          "strategy_evidence_reusable_by_version": false,
+          "formal_pass": false
+        },
+        {
+          "gate": "forecast_bridge",
+          "scope": "ISSUER",
+          "decision": "PENDING",
+          "reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
+          "required_evidence": "量價、產能、稼動、成本、折舊及2027EPS推導",
+          "invalidates_on": "經濟輸入／預測方法改變",
+          "strategy_evidence_reusable_by_version": false,
+          "formal_pass": false
+        },
+        {
+          "gate": "insider_claims",
+          "scope": "ISSUER",
+          "decision": "PENDING",
+          "reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
+          "required_evidence": "原始申報、身份、實際增減與公告可得時間",
+          "invalidates_on": "新申報／說法變更",
+          "strategy_evidence_reusable_by_version": false,
+          "formal_pass": false
+        },
+        {
+          "gate": "dividend_window",
+          "scope": "CORPORATE_ACTION",
+          "decision": "PENDING",
+          "reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
+          "required_evidence": "除權息、支付、股數與估值適用期間",
+          "invalidates_on": "公司行動公告／修正",
+          "strategy_evidence_reusable_by_version": false,
+          "formal_pass": false
+        },
+        {
+          "gate": "point_in_time",
+          "scope": "SOURCE",
+          "decision": "PENDING",
+          "reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
+          "required_evidence": "原始公告、修訂與首次可得時間",
+          "invalidates_on": "來源修訂／可得時間更正",
+          "strategy_evidence_reusable_by_version": false,
+          "formal_pass": false
+        },
+        {
+          "gate": "out_of_sample_validation",
+          "scope": "STRATEGY",
+          "decision": "PENDING",
+          "reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
+          "required_evidence": "固定策略版本與適用子群的扣成本樣本外驗證",
+          "invalidates_on": "策略／母體／交易規則改變",
+          "strategy_evidence_reusable_by_version": true,
+          "formal_pass": false
+        }
+      ],
+      "forecast_binding": {
+        "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
+        "forecast_input_sha256": "3d104c4118b6ec5e76242ad5221c2f3bb9d5bf1285a6abc7f947801fd26ecd78",
+        "forecast_method_sha256": "c44d2b22fd76bf09e53d1876871ec4edc3d81bc7e6c36a485b9b245dd14d71f8",
+        "target_date": "2027-12-31",
+        "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
+      },
+      "fresh_earnings_update": {
+        "applied": false,
+        "source_kind": null,
+        "event": null,
+        "method": null,
+        "annual_forecast_still_requires_issuer_operating_bridge": true,
+        "event_state": null
+      },
+      "liquidity": {
+        "status": "TWENTY_SESSION_TURNOVER_PROXY_NOT_EXECUTION_REVIEW",
+        "sessions": 20,
+        "first_date": "2026-10-08",
+        "last_date": "2026-11-09",
+        "median20_turnover_ntd": 3930166378.5,
+        "spread_and_exit_verified": false
+      },
+      "capacity_weight_at_reference_capital": 1.0,
+      "formal_Aplus": false,
+      "risk_profile": {
+        "status": "REVIEWED_COMMON_RISK_AND_STRESS_PROFILE_MISSING"
+      },
+      "governance_review": {
+        "status": "NO_EVENT_LEDGER_NOT_LEGAL_CLEARANCE",
+        "coverage": "REGISTERED_EVENTS_ONLY_NOT_FULL_MARKET_LEGAL_CLEARANCE",
+        "blocks_recommendation": false,
+        "material_open_event_ids": [],
+        "events": []
+      },
+      "recommendation_blocked": false,
+      "common_risk_tags": null,
+      "reviewed_stress_loss_fraction": null,
+      "execution_review": {
+        "status": "TWENTY_SESSION_TURNOVER_PROXY_NOT_EXECUTION_REVIEW",
+        "sessions": 20,
+        "first_date": "2026-10-08",
+        "last_date": "2026-11-09",
+        "median20_turnover_ntd": 3930166378.5,
         "spread_and_exit_verified": false
       }
     },
@@ -4828,7 +4773,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "ceb1bc498c99d2b6fee7ab0923494d4d4373ddc22978fb9aa9efe68211c5be2c",
-        "forecast_method_sha256": "292498a8bb176cacde9e22ff3b7ba06d58a54cc56b95e83f4e84fb56e4a72dd8",
+        "forecast_method_sha256": "c44d2b22fd76bf09e53d1876871ec4edc3d81bc7e6c36a485b9b245dd14d71f8",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -5046,7 +4991,7 @@
       "forecast_binding": {
         "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
         "forecast_input_sha256": "f018ddcffb3c15241563a283362116b17666b284645ad5d2f33e904dc686a275",
-        "forecast_method_sha256": "292498a8bb176cacde9e22ff3b7ba06d58a54cc56b95e83f4e84fb56e4a72dd8",
+        "forecast_method_sha256": "c44d2b22fd76bf09e53d1876871ec4edc3d81bc7e6c36a485b9b245dd14d71f8",
         "target_date": "2027-12-31",
         "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
       },
@@ -5209,15 +5154,6 @@
         ]
       },
       {
-        "code": "8110",
-        "reasons": [
-          "FORMAL_QUALITY_NOT_COMPLETE",
-          "EXECUTION_REVIEW_MISSING",
-          "COMMON_RISK_EXPOSURES_UNREVIEWED",
-          "POSITIVE_REVIEWED_STRESS_LOSS_REQUIRED"
-        ]
-      },
-      {
         "code": "4912",
         "reasons": [
           "FORMAL_QUALITY_NOT_COMPLETE",
@@ -5362,6 +5298,15 @@
         ]
       },
       {
+        "code": "6505",
+        "reasons": [
+          "FORMAL_QUALITY_NOT_COMPLETE",
+          "EXECUTION_REVIEW_MISSING",
+          "COMMON_RISK_EXPOSURES_UNREVIEWED",
+          "POSITIVE_REVIEWED_STRESS_LOSS_REQUIRED"
+        ]
+      },
+      {
         "code": "6206",
         "reasons": [
           "FORMAL_QUALITY_NOT_COMPLETE",
@@ -5393,7 +5338,7 @@
   "forward_observations": {
     "status": "PROSPECTIVE_OBSERVATION_NOT_CERTIFIED_INVESTMENT_PERFORMANCE",
     "distinct_signal_days": 9,
-    "strategy_date_cohorts": 98,
+    "strategy_date_cohorts": 100,
     "cohorts": [
       {
         "model": "V8.8.2",
@@ -7538,6 +7483,46 @@
           "Dividends/splits/rights/delistings coverage for full holding period",
           "Matched benchmark total returns and predeclared evaluation horizon"
         ]
+      },
+      {
+        "model": "V8.10.8",
+        "model_code_sha256": "90396d21b1d2d0e6a8806836d0805f2c8974bd920825f3db95dc3a4ea3ca92b8",
+        "strategy_variant_sha256": "df35668c312b5a39b795cb9ee17381cbb69f144939397821604cb874bf327a73",
+        "strategy_variant": "current-information",
+        "estimate_vintage": "2026-11-09T18:55:31.050002+08:00",
+        "archived_at_utc": "2026-11-09T10:56:25.059376+00:00",
+        "prospective_signal_at": "2026-11-09T10:56:25.059376+00:00",
+        "prospective_signal_clock": "LATER_OF_ESTIMATE_AND_REAL_ARCHIVE",
+        "reference_price_date": "2026-11-09",
+        "receipt_path": "pit_vintages/2026-11-09/10af6873ef5a750c4a0f/receipt.json",
+        "status": "AWAITING_SUBSEQUENT_SESSION",
+        "formal_out_of_sample_pass": false,
+        "missing_for_certified_return": [
+          "Verified next-session open and fillability",
+          "Explicit spread/slippage/fees/tax policy fixed before outcome",
+          "Dividends/splits/rights/delistings coverage for full holding period",
+          "Matched benchmark total returns and predeclared evaluation horizon"
+        ]
+      },
+      {
+        "model": "V8.10.8",
+        "model_code_sha256": "90396d21b1d2d0e6a8806836d0805f2c8974bd920825f3db95dc3a4ea3ca92b8",
+        "strategy_variant_sha256": "9a0cff57d88aad0f158b674adb85371bbbfb034bff19943406cbd8d3d6883b3e",
+        "strategy_variant": "without-earnings-events",
+        "estimate_vintage": "2026-11-09T18:55:31.050002+08:00",
+        "archived_at_utc": "2026-11-09T10:56:31.128285+00:00",
+        "prospective_signal_at": "2026-11-09T10:56:31.128285+00:00",
+        "prospective_signal_clock": "LATER_OF_ESTIMATE_AND_REAL_ARCHIVE",
+        "reference_price_date": "2026-11-09",
+        "receipt_path": "pit_vintages/2026-11-09/b07bb2c9d9d151cabf39/receipt.json",
+        "status": "AWAITING_SUBSEQUENT_SESSION",
+        "formal_out_of_sample_pass": false,
+        "missing_for_certified_return": [
+          "Verified next-session open and fillability",
+          "Explicit spread/slippage/fees/tax policy fixed before outcome",
+          "Dividends/splits/rights/delistings coverage for full holding period",
+          "Matched benchmark total returns and predeclared evaluation horizon"
+        ]
       }
     ],
     "archive_errors": [],
@@ -7708,6 +7693,11 @@
     },
     {
       "trial_id": "earnings-events-affd8c7030c5ec60f6b7",
+      "status": "INSUFFICIENT_BOOTSTRAP_DRAWS_FOR_TRIAL_CORRECTION",
+      "promotion_eligible": false
+    },
+    {
+      "trial_id": "earnings-events-b52dae6003b92a6753da",
       "status": "INSUFFICIENT_BOOTSTRAP_DRAWS_FOR_TRIAL_CORRECTION",
       "promotion_eligible": false
     },
@@ -7958,6 +7948,12 @@
         "promotion_eligible": false
       },
       {
+        "trial_id": "earnings-events-b52dae6003b92a6753da",
+        "status": "AWAITING_FUTURE_OUTCOME_INPUTS",
+        "pairs": [],
+        "promotion_eligible": false
+      },
+      {
         "trial_id": "earnings-events-b927f52d6897ef33cabe",
         "status": "AWAITING_FUTURE_OUTCOME_INPUTS",
         "pairs": [],
@@ -8014,13 +8010,13 @@
     ],
     "errors": [],
     "probability_records": [],
-    "registered_trial_count": 42,
+    "registered_trial_count": 43,
     "validated_trade_observations": 0,
     "formal_out_of_sample_pass": false
   },
   "benchmark_validation": {
     "schema": "TOP30_VS_TAIEX_TR_V1",
-    "observed_at": "2026-11-09T10:30:16.997975+00:00",
+    "observed_at": "2026-11-09T10:56:52.125812+00:00",
     "benchmark_id": "TAIEX_TR",
     "trials": [
       {
@@ -9428,6 +9424,60 @@
         "formal_out_of_sample_pass": false
       },
       {
+        "trial_id": "taiex-tr-d4aeab2b3add841c270bca2b",
+        "registered_at": "2026-11-09T10:56:26.211628+00:00",
+        "spec": {
+          "protocol": "TOP30_VS_TAIEX_TR_V1",
+          "strategy_variant_sha256": "df35668c312b5a39b795cb9ee17381cbb69f144939397821604cb874bf327a73",
+          "model_code_sha256": "90396d21b1d2d0e6a8806836d0805f2c8974bd920825f3db95dc3a4ea3ca92b8",
+          "model_target_date": "2027-12-31",
+          "cost_policy": {
+            "buy_fee_rate": 0.001425,
+            "sell_fee_rate": 0.001425,
+            "sell_tax_rate": 0.003,
+            "buy_slippage_rate": 0.001,
+            "sell_slippage_rate": 0.001,
+            "half_spread_rate": 0.0005,
+            "minimum_fee_ntd": 20
+          },
+          "benchmark_policy": {
+            "benchmark_id": "TAIEX_TR",
+            "selection_rule": "RESEARCH_TOP30_EQUAL_WEIGHT_NEXT_SESSION_CLOSE",
+            "selection_source": "top30_provisional",
+            "holding_intervals": 21,
+            "number_of_stocks": 30,
+            "dividend_policy": "GROSS_DIVIDENDS_RETAINED_AS_CASH_OR_RECEIVABLE_NO_REINVESTMENT",
+            "benchmark_cost_policy": "COSTLESS_OFFICIAL_GROSS_TOTAL_RETURN_INDEX",
+            "fractional_shares_are_research_assumption": true,
+            "minimum_nonoverlapping_oos_periods": 60,
+            "minimum_market_regimes": 2,
+            "bootstrap_draws": 10000,
+            "bootstrap_block_size": 21,
+            "stress_cost_multiplier_excluding_tax": 2,
+            "regime_lookback_sessions": 63,
+            "regime_return_threshold": 0.03,
+            "automatic_deployment": false
+          },
+          "reference_capital_ntd": 10000000,
+          "max_daily_participation": 0.05
+        },
+        "outcomes": [
+          {
+            "status": "AWAITING_FUTURE_HOLDING_SESSIONS",
+            "cohort_id": "85a74b393bb9dfb1492b99b1"
+          }
+        ],
+        "rejected_outcomes": [],
+        "matured_unusable_periods": 0,
+        "status": "NO_VERIFIED_OUTCOMES",
+        "verified_nonoverlapping_periods": 0,
+        "model_total_return": null,
+        "benchmark_total_return": null,
+        "excess_return_pp": null,
+        "evidence_supports_benchmark_edge": false,
+        "formal_out_of_sample_pass": false
+      },
+      {
         "trial_id": "taiex-tr-d6b088ce87b91ded71b2c348",
         "registered_at": "2026-10-23T01:29:39.491600+00:00",
         "spec": {
@@ -9914,8 +9964,8 @@
         "formal_out_of_sample_pass": false
       }
     ],
-    "registered_benchmark_trials": 35,
-    "all_registered_designs": 8241,
+    "registered_benchmark_trials": 36,
+    "all_registered_designs": 8483,
     "verified_outcomes": 0,
     "benchmark_sessions": 149,
     "benchmark_months": [
@@ -9960,6 +10010,7 @@
           "1026dfe2e4a4044146f6a951",
           "bc18b433e0974c5098aaafae",
           "d3c36ce10b0faa5d1ed1cff1",
+          "85a74b393bb9dfb1492b99b1",
           "7d58f358a29fa4abfb649f26",
           "356dc927ab3303650f60e18b",
           "a9fe308e76a9d90661102e2e",
@@ -10001,6 +10052,7 @@
           "1026dfe2e4a4044146f6a951",
           "bc18b433e0974c5098aaafae",
           "d3c36ce10b0faa5d1ed1cff1",
+          "85a74b393bb9dfb1492b99b1",
           "7d58f358a29fa4abfb649f26",
           "356dc927ab3303650f60e18b",
           "a9fe308e76a9d90661102e2e",
@@ -10042,6 +10094,7 @@
           "1026dfe2e4a4044146f6a951",
           "bc18b433e0974c5098aaafae",
           "d3c36ce10b0faa5d1ed1cff1",
+          "85a74b393bb9dfb1492b99b1",
           "7d58f358a29fa4abfb649f26",
           "356dc927ab3303650f60e18b",
           "a9fe308e76a9d90661102e2e",
@@ -10083,6 +10136,7 @@
           "1026dfe2e4a4044146f6a951",
           "bc18b433e0974c5098aaafae",
           "d3c36ce10b0faa5d1ed1cff1",
+          "85a74b393bb9dfb1492b99b1",
           "7d58f358a29fa4abfb649f26",
           "356dc927ab3303650f60e18b",
           "a9fe308e76a9d90661102e2e",
@@ -10124,6 +10178,7 @@
           "1026dfe2e4a4044146f6a951",
           "bc18b433e0974c5098aaafae",
           "d3c36ce10b0faa5d1ed1cff1",
+          "85a74b393bb9dfb1492b99b1",
           "7d58f358a29fa4abfb649f26",
           "356dc927ab3303650f60e18b",
           "a9fe308e76a9d90661102e2e",
@@ -10165,6 +10220,7 @@
           "1026dfe2e4a4044146f6a951",
           "bc18b433e0974c5098aaafae",
           "d3c36ce10b0faa5d1ed1cff1",
+          "85a74b393bb9dfb1492b99b1",
           "7d58f358a29fa4abfb649f26",
           "356dc927ab3303650f60e18b",
           "a9fe308e76a9d90661102e2e",
@@ -10206,6 +10262,7 @@
           "1026dfe2e4a4044146f6a951",
           "bc18b433e0974c5098aaafae",
           "d3c36ce10b0faa5d1ed1cff1",
+          "85a74b393bb9dfb1492b99b1",
           "7d58f358a29fa4abfb649f26",
           "356dc927ab3303650f60e18b",
           "a9fe308e76a9d90661102e2e",
@@ -10247,6 +10304,7 @@
           "1026dfe2e4a4044146f6a951",
           "bc18b433e0974c5098aaafae",
           "d3c36ce10b0faa5d1ed1cff1",
+          "85a74b393bb9dfb1492b99b1",
           "7d58f358a29fa4abfb649f26",
           "356dc927ab3303650f60e18b",
           "a9fe308e76a9d90661102e2e",
@@ -10272,6 +10330,7 @@
           "51183eb3af3026942064b32c",
           "95dd27c5938979d4762464fa",
           "d3c36ce10b0faa5d1ed1cff1",
+          "85a74b393bb9dfb1492b99b1",
           "51637b5cd67613e23b961493",
           "a789f1733f1318630cca9f87"
         ]
@@ -10306,6 +10365,7 @@
           "1026dfe2e4a4044146f6a951",
           "bc18b433e0974c5098aaafae",
           "d3c36ce10b0faa5d1ed1cff1",
+          "85a74b393bb9dfb1492b99b1",
           "7d58f358a29fa4abfb649f26",
           "356dc927ab3303650f60e18b",
           "a9fe308e76a9d90661102e2e",
@@ -10347,6 +10407,7 @@
           "1026dfe2e4a4044146f6a951",
           "bc18b433e0974c5098aaafae",
           "d3c36ce10b0faa5d1ed1cff1",
+          "85a74b393bb9dfb1492b99b1",
           "7d58f358a29fa4abfb649f26",
           "356dc927ab3303650f60e18b",
           "a9fe308e76a9d90661102e2e",
@@ -10372,6 +10433,7 @@
           "51183eb3af3026942064b32c",
           "95dd27c5938979d4762464fa",
           "d3c36ce10b0faa5d1ed1cff1",
+          "85a74b393bb9dfb1492b99b1",
           "51637b5cd67613e23b961493",
           "a789f1733f1318630cca9f87"
         ]
@@ -10407,6 +10469,7 @@
           "51183eb3af3026942064b32c",
           "95dd27c5938979d4762464fa",
           "d3c36ce10b0faa5d1ed1cff1",
+          "85a74b393bb9dfb1492b99b1",
           "51637b5cd67613e23b961493",
           "a789f1733f1318630cca9f87"
         ]
@@ -10425,6 +10488,7 @@
           "51183eb3af3026942064b32c",
           "95dd27c5938979d4762464fa",
           "d3c36ce10b0faa5d1ed1cff1",
+          "85a74b393bb9dfb1492b99b1",
           "51637b5cd67613e23b961493",
           "a789f1733f1318630cca9f87"
         ]
@@ -10459,6 +10523,7 @@
           "51183eb3af3026942064b32c",
           "95dd27c5938979d4762464fa",
           "d3c36ce10b0faa5d1ed1cff1",
+          "85a74b393bb9dfb1492b99b1",
           "51637b5cd67613e23b961493",
           "a789f1733f1318630cca9f87"
         ]
@@ -10477,6 +10542,7 @@
           "51183eb3af3026942064b32c",
           "95dd27c5938979d4762464fa",
           "d3c36ce10b0faa5d1ed1cff1",
+          "85a74b393bb9dfb1492b99b1",
           "51637b5cd67613e23b961493",
           "a789f1733f1318630cca9f87"
         ]
@@ -10510,6 +10576,7 @@
           "1026dfe2e4a4044146f6a951",
           "bc18b433e0974c5098aaafae",
           "d3c36ce10b0faa5d1ed1cff1",
+          "85a74b393bb9dfb1492b99b1",
           "7d58f358a29fa4abfb649f26",
           "356dc927ab3303650f60e18b",
           "a9fe308e76a9d90661102e2e",
@@ -10535,6 +10602,7 @@
           "51183eb3af3026942064b32c",
           "95dd27c5938979d4762464fa",
           "d3c36ce10b0faa5d1ed1cff1",
+          "85a74b393bb9dfb1492b99b1",
           "51637b5cd67613e23b961493",
           "a789f1733f1318630cca9f87"
         ]
@@ -10569,6 +10637,7 @@
           "1026dfe2e4a4044146f6a951",
           "bc18b433e0974c5098aaafae",
           "d3c36ce10b0faa5d1ed1cff1",
+          "85a74b393bb9dfb1492b99b1",
           "7d58f358a29fa4abfb649f26",
           "356dc927ab3303650f60e18b",
           "a9fe308e76a9d90661102e2e",
@@ -10594,6 +10663,7 @@
           "51183eb3af3026942064b32c",
           "95dd27c5938979d4762464fa",
           "d3c36ce10b0faa5d1ed1cff1",
+          "85a74b393bb9dfb1492b99b1",
           "51637b5cd67613e23b961493"
         ]
       },
@@ -10627,6 +10697,7 @@
           "1026dfe2e4a4044146f6a951",
           "bc18b433e0974c5098aaafae",
           "d3c36ce10b0faa5d1ed1cff1",
+          "85a74b393bb9dfb1492b99b1",
           "7d58f358a29fa4abfb649f26",
           "356dc927ab3303650f60e18b",
           "a9fe308e76a9d90661102e2e",
@@ -10652,6 +10723,7 @@
           "51183eb3af3026942064b32c",
           "95dd27c5938979d4762464fa",
           "d3c36ce10b0faa5d1ed1cff1",
+          "85a74b393bb9dfb1492b99b1",
           "51637b5cd67613e23b961493",
           "a789f1733f1318630cca9f87"
         ]
@@ -10670,6 +10742,7 @@
           "51183eb3af3026942064b32c",
           "95dd27c5938979d4762464fa",
           "d3c36ce10b0faa5d1ed1cff1",
+          "85a74b393bb9dfb1492b99b1",
           "51637b5cd67613e23b961493"
         ]
       },
@@ -10703,6 +10776,7 @@
           "1026dfe2e4a4044146f6a951",
           "bc18b433e0974c5098aaafae",
           "d3c36ce10b0faa5d1ed1cff1",
+          "85a74b393bb9dfb1492b99b1",
           "7d58f358a29fa4abfb649f26",
           "356dc927ab3303650f60e18b",
           "a9fe308e76a9d90661102e2e",
@@ -10720,7 +10794,8 @@
         "cohort_ids": [
           "1c5f15914c7efbdebf038c1e",
           "6af0eae1205e988236d460eb",
-          "51183eb3af3026942064b32c"
+          "51183eb3af3026942064b32c",
+          "85a74b393bb9dfb1492b99b1"
         ]
       },
       {
@@ -10735,7 +10810,8 @@
         "code": "2382",
         "cohort_ids": [
           "1c5f15914c7efbdebf038c1e",
-          "51183eb3af3026942064b32c"
+          "51183eb3af3026942064b32c",
+          "85a74b393bb9dfb1492b99b1"
         ]
       },
       {
@@ -10759,6 +10835,7 @@
           "45244cac836df2b0f27d9276",
           "1026dfe2e4a4044146f6a951",
           "bc18b433e0974c5098aaafae",
+          "85a74b393bb9dfb1492b99b1",
           "7d58f358a29fa4abfb649f26",
           "356dc927ab3303650f60e18b",
           "a9fe308e76a9d90661102e2e",
@@ -11031,6 +11108,7 @@
           "45244cac836df2b0f27d9276",
           "1026dfe2e4a4044146f6a951",
           "bc18b433e0974c5098aaafae",
+          "85a74b393bb9dfb1492b99b1",
           "7d58f358a29fa4abfb649f26",
           "356dc927ab3303650f60e18b",
           "a9fe308e76a9d90661102e2e",
@@ -11091,6 +11169,7 @@
           "45244cac836df2b0f27d9276",
           "1026dfe2e4a4044146f6a951",
           "bc18b433e0974c5098aaafae",
+          "85a74b393bb9dfb1492b99b1",
           "7d58f358a29fa4abfb649f26",
           "356dc927ab3303650f60e18b",
           "a9fe308e76a9d90661102e2e",
@@ -11271,7 +11350,8 @@
         "market": "TWSE",
         "code": "2739",
         "cohort_ids": [
-          "51183eb3af3026942064b32c"
+          "51183eb3af3026942064b32c",
+          "85a74b393bb9dfb1492b99b1"
         ]
       }
     ],

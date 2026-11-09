@@ -1,7 +1,7 @@
 {
   "model": "V8.10.8",
   "asof_price_date": "2026-11-09",
-  "source_estimate_vintage": "2026-11-09T18:29:26.603076+08:00",
+  "source_estimate_vintage": "2026-11-09T18:55:31.050002+08:00",
   "universe_priced": 1994,
   "normalized_financial_issuers": 1982,
   "model_issuer_rows": 2004,
@@ -234,32 +234,6 @@
       "name": "昇貿",
       "lane": "HIGH_UPSIDE_EVIDENCE_REVIEW",
       "research_upside_pct": 137.74647224697088,
-      "certification": "NOT_CERTIFIED",
-      "required_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ],
-      "review_state": "PENDING_SOURCE_VERIFICATION",
-      "source_status": "CERTIFICATION_PENDING",
-      "exclusion_reasons": []
-    },
-    {
-      "code": "8110",
-      "market": "TWSE",
-      "name": "華東",
-      "lane": "HIGH_UPSIDE_EVIDENCE_REVIEW",
-      "research_upside_pct": 126.57561860893733,
       "certification": "NOT_CERTIFIED",
       "required_gates": [
         "original_eight_quarter_statements",
@@ -11518,6 +11492,32 @@
       "name": "大台北",
       "lane": "OTHER_VALUED_EVIDENCE_REVIEW",
       "research_upside_pct": -7.871510875520704,
+      "certification": "NOT_CERTIFIED",
+      "required_gates": [
+        "original_eight_quarter_statements",
+        "cash_and_working_capital",
+        "nonoperating_components",
+        "fully_diluted_shares",
+        "matched_peers_and_cycle",
+        "management_promises",
+        "auditor_scope",
+        "tradability",
+        "forecast_bridge",
+        "insider_claims",
+        "dividend_window",
+        "point_in_time",
+        "out_of_sample_validation"
+      ],
+      "review_state": "PENDING_SOURCE_VERIFICATION",
+      "source_status": "CERTIFICATION_PENDING",
+      "exclusion_reasons": []
+    },
+    {
+      "code": "8110",
+      "market": "TWSE",
+      "name": "華東",
+      "lane": "OTHER_VALUED_EVIDENCE_REVIEW",
+      "research_upside_pct": -7.93546054701687,
       "certification": "NOT_CERTIFIED",
       "required_gates": [
         "original_eight_quarter_statements",
@@ -54891,8 +54891,8 @@
     }
   ],
   "counts": {
-    "HIGH_UPSIDE_EVIDENCE_REVIEW": 178,
-    "OTHER_VALUED_EVIDENCE_REVIEW": 658,
+    "HIGH_UPSIDE_EVIDENCE_REVIEW": 177,
+    "OTHER_VALUED_EVIDENCE_REVIEW": 659,
     "UNVALUED_INPUT_REPAIR": 1168
   },
   "blocking_rules": [

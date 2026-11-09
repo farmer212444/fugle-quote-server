@@ -1,12 +1,12 @@
 # 台股研究與正式A+分離之決策分層
 
-模型：V8.10.8；估值：2026-11-09T18:29:26.603076+08:00；收盤：2026-11-09。
+模型：V8.10.8；估值：2026-11-09T18:55:31.050002+08:00；收盤：2026-11-09。
 
 這是依原始13項證據帳本產生的研究決策分層，不是變更認證門檻。
 A+價格研究候選不是正式A+，雙降20%是機械壓測而非期望報酬。
 
-已列出逐股詳細診斷 179 家；其中A+價格候選 178 家；公司12項全正式通過 0 家；策略樣本外正式通過 0 家；詳細名單中的正式A+ 0 家。
-模型全市場追蹤 2004 家，其中正式證據帳本已評估 1410 家、未評估 594 家；本表僅逐股詳細列出 179 家，其餘 1825 家未在本表逐股展示。
+已列出逐股詳細診斷 178 家；其中A+價格候選 177 家；公司12項全正式通過 0 家；策略樣本外正式通過 0 家；詳細名單中的正式A+ 0 家。
+模型全市場追蹤 2004 家，其中正式證據帳本已評估 1410 家、未評估 594 家；本表僅逐股詳細列出 178 家，其餘 1826 家未在本表逐股展示。
 **全市場正式A+ 0 家**；詳細名單的數量不代表全市場認證覆蓋率。
 
 
@@ -36,7 +36,6 @@ A+價格研究候選不是正式A+，雙降20%是機械壓測而非期望報酬�
 |6741 91APP*-KY|+146.9%|+58.02%|QUALITY_REVIEW_PENDING|STRATEGY_PIT_OOS_PENDING|
 |6574 霈方|+144.0%|+56.18%|QUALITY_REVIEW_PENDING|STRATEGY_PIT_OOS_PENDING|
 |3305 昇貿|+137.8%|+52.16%|QUALITY_REVIEW_PENDING|STRATEGY_PIT_OOS_PENDING|
-|8110 華東|+126.6%|+45.01%|QUALITY_REVIEW_PENDING|STRATEGY_PIT_OOS_PENDING|
 |4912 聯德控股-KY|+126.0%|+44.65%|QUALITY_REVIEW_PENDING|STRATEGY_PIT_OOS_PENDING|
 |8390 金益鼎|+125.4%|+44.25%|QUALITY_REVIEW_PENDING|STRATEGY_PIT_OOS_PENDING|
 |6625 必應|+107.5%|+32.77%|QUALITY_REVIEW_PENDING|STRATEGY_PIT_OOS_PENDING|
@@ -53,5 +52,6 @@ A+價格研究候選不是正式A+，雙降20%是機械壓測而非期望報酬�
 |4721 美琪瑪|+90.6%|+21.98%|QUALITY_REVIEW_PENDING|STRATEGY_PIT_OOS_PENDING|
 |8091 翔名|+89.0%|+20.97%|QUALITY_REVIEW_PENDING|STRATEGY_PIT_OOS_PENDING|
 |8383 千附|+87.0%|+19.70%|QUALITY_REVIEW_PENDING|STRATEGY_PIT_OOS_PENDING|
+|6505 台塑化|+86.0%|+19.02%|QUALITY_REVIEW_PENDING|STRATEGY_PIT_OOS_PENDING|
 
 未經公司別原件核閱或策略樣本外校準，不得由本表直接發出重押、期望報酬或交易訊號。
