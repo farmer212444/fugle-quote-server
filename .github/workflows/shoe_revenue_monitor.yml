@@ -1,5 +1,10 @@
 name: Shoe industry monthly revenue monitor
 on:
+  pull_request:
+    paths:
+      - 'scripts/shoe_revenue_monitor.py'
+      - 'tests/test_shoe_revenue_monitor.py'
+      - '.github/workflows/shoe_revenue_monitor.yml'
   workflow_dispatch:
     inputs:
       month:
@@ -25,12 +30,14 @@ jobs:
       - name: Offline unit tests
         run: python -m unittest discover -s tests -p 'test_shoe_revenue_monitor.py' -v
       - name: Fetch official revenue data
+        if: github.event_name != 'pull_request'
         env:
           MONTH_INPUT: ${{ inputs.month }}
         run: |
           MONTH="${MONTH_INPUT:-$(date -u -d 'last month' +%Y-%m)}"
           python scripts/shoe_revenue_monitor.py --month "$MONTH"
       - name: Commit changed snapshot only
+        if: github.event_name != 'pull_request'
         run: |
           git add tw-market-data/revenue/shoe_revenue_latest.json
           if git diff --cached --quiet; then echo 'No change'; exit 0; fi
