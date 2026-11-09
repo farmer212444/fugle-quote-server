@@ -21,7 +21,10 @@ def field(row, *names):
     return ""
 
 def number(raw):
-    return float(raw.replace(",", "").replace("%", "").replace("＋", "+"))
+    value = raw.replace(",", "").replace("%", "").replace("＋", "+").strip()
+    if value in {"", "-", "--", "N/A", "不適用"}:
+        raise ValueError("Missing numeric value")
+    return float(value)
 
 def fetch(url):
     req = urllib.request.Request(url, headers={"User-Agent": "TaiwanRevenueMonitor/1.0", "Accept": "application/json"})
@@ -52,7 +55,17 @@ def normalize(rows, month):
         mom = field(row, "營業收入-上月比較增減(%)", "上月比較增減(%)", "上月比較增減％", "上月比較增減百分比", "上月比較增減")
         if not raw_year or not sales or not yoy:
             continue
-        output[code] = {"code": code, "name": WATCH[code], "month": month, "revenue_thousand_twd": number(sales), "yoy_pct": number(yoy), "mom_pct": number(mom) if mom else None}
+        try:
+            sales_value = number(sales)
+            yoy_value = number(yoy)
+            mom_value = number(mom) if mom else None
+        except ValueError:
+            continue
+        if sales_value < 0:
+            continue
+        if code in output:
+            raise ValueError(f"Duplicate official revenue row for {code}")
+        output[code] = {"code": code, "name": WATCH[code], "month": month, "revenue_thousand_twd": sales_value, "yoy_pct": yoy_value, "mom_pct": mom_value}
     return output
 
 def main():
