@@ -1,8 +1,8 @@
 {
   "schema": "V810_INSTITUTIONAL_RESEARCH_CONTROLS",
   "model": "V8.10.8",
-  "estimate_vintage": "2026-11-09T06:36:16.199146+08:00",
-  "report_observed_at": "2026-11-08T22:37:22.146749+00:00",
+  "estimate_vintage": "2026-11-09T15:35:21.149150+08:00",
+  "report_observed_at": "2026-11-09T07:36:39.178732+00:00",
   "asof_price_date": "2026-11-06",
   "source_model_sha256": "46ceaa87a10582f7037a278b64f7e50cf4a79555d9f3de69e37ecfda1e42f498",
   "policy_sha256": "3f378fb673213f6178983a4698ed80c7e5a8c5b62e82192a85eea1c6a3b0b493",
@@ -7348,14 +7348,14 @@
       {
         "model": "V8.10.8",
         "model_code_sha256": "46ceaa87a10582f7037a278b64f7e50cf4a79555d9f3de69e37ecfda1e42f498",
-        "strategy_variant_sha256": "3c3ac32a0a7560ec93872a577764d6e40610ec0dc1bbe1b486820ce829d66b9e",
-        "strategy_variant": "current-information",
+        "strategy_variant_sha256": "66027a4ab18d7596202f7e00da28aaaa11904cde6a988147abf93fa836115fd7",
+        "strategy_variant": "without-earnings-events",
         "estimate_vintage": "2026-11-09T06:36:16.199146+08:00",
-        "archived_at_utc": "2026-11-08T22:37:01.056602+00:00",
-        "prospective_signal_at": "2026-11-08T22:37:01.056602+00:00",
+        "archived_at_utc": "2026-11-08T22:37:05.978610+00:00",
+        "prospective_signal_at": "2026-11-08T22:37:05.978610+00:00",
         "prospective_signal_clock": "LATER_OF_ESTIMATE_AND_REAL_ARCHIVE",
         "reference_price_date": "2026-11-06",
-        "receipt_path": "pit_vintages/2026-11-09/3a418a937bfe90567e25/receipt.json",
+        "receipt_path": "pit_vintages/2026-11-09/a6cbf7f957ff604da0b6/receipt.json",
         "status": "AWAITING_SUBSEQUENT_SESSION",
         "formal_out_of_sample_pass": false,
         "missing_for_certified_return": [
@@ -7368,14 +7368,14 @@
       {
         "model": "V8.10.8",
         "model_code_sha256": "46ceaa87a10582f7037a278b64f7e50cf4a79555d9f3de69e37ecfda1e42f498",
-        "strategy_variant_sha256": "66027a4ab18d7596202f7e00da28aaaa11904cde6a988147abf93fa836115fd7",
-        "strategy_variant": "without-earnings-events",
+        "strategy_variant_sha256": "3c3ac32a0a7560ec93872a577764d6e40610ec0dc1bbe1b486820ce829d66b9e",
+        "strategy_variant": "current-information",
         "estimate_vintage": "2026-11-09T06:36:16.199146+08:00",
-        "archived_at_utc": "2026-11-08T22:37:05.978610+00:00",
-        "prospective_signal_at": "2026-11-08T22:37:05.978610+00:00",
+        "archived_at_utc": "2026-11-08T22:37:01.056602+00:00",
+        "prospective_signal_at": "2026-11-08T22:37:01.056602+00:00",
         "prospective_signal_clock": "LATER_OF_ESTIMATE_AND_REAL_ARCHIVE",
         "reference_price_date": "2026-11-06",
-        "receipt_path": "pit_vintages/2026-11-09/a6cbf7f957ff604da0b6/receipt.json",
+        "receipt_path": "pit_vintages/2026-11-09/3a418a937bfe90567e25/receipt.json",
         "status": "AWAITING_SUBSEQUENT_SESSION",
         "formal_out_of_sample_pass": false,
         "missing_for_certified_return": [
@@ -7855,7 +7855,7 @@
   },
   "benchmark_validation": {
     "schema": "TOP30_VS_TAIEX_TR_V1",
-    "observed_at": "2026-11-08T22:37:22.146749+00:00",
+    "observed_at": "2026-11-09T07:36:39.178732+00:00",
     "benchmark_id": "TAIEX_TR",
     "trials": [
       {
@@ -9698,7 +9698,7 @@
     "registered_benchmark_trials": 34,
     "all_registered_designs": 7999,
     "verified_outcomes": 0,
-    "benchmark_sessions": 148,
+    "benchmark_sessions": 149,
     "benchmark_months": [
       "2026-04",
       "2026-05",
