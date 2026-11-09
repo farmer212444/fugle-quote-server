@@ -47,9 +47,9 @@ def normalize(rows, month):
                 m = int(digits[4:6]) if y == int(digits[:4]) else int(digits[3:5])
                 if (y, m) != (year, mon):
                     continue
-        sales = field(row, "當月營收", "當月營業收入", "本月營收")
-        yoy = field(row, "去年同月增減(%)", "去年同月增減％", "去年同月增減百分比", "去年同月增減")
-        mom = field(row, "上月比較增減(%)", "上月比較增減％", "上月比較增減百分比", "上月比較增減")
+        sales = field(row, "營業收入-當月營收", "當月營收", "當月營業收入", "本月營收")
+        yoy = field(row, "營業收入-去年同月增減(%)", "去年同月增減(%)", "去年同月增減％", "去年同月增減百分比", "去年同月增減")
+        mom = field(row, "營業收入-上月比較增減(%)", "上月比較增減(%)", "上月比較增減％", "上月比較增減百分比", "上月比較增減")
         if not raw_year or not sales or not yoy:
             continue
         output[code] = {"code": code, "name": WATCH[code], "month": month, "revenue_thousand_twd": number(sales), "yoy_pct": number(yoy), "mom_pct": number(mom) if mom else None}
