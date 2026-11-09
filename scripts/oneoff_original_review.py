@@ -16,15 +16,19 @@ if str(ROOT) not in sys.path:
 from scripts.early_bulk_earnings import fetch_bytes
 from scripts.run_research_pipeline import atomic_json
 from tw_model_v880.oneoff_original import (FOLDER, MAX_BYTES, SCHEMA, config,
-                                           inspect_pdf, sha, verify_receipt)
+                                           case_sha, inspect_pdf, load, sha, verify_receipt)
 
 
 def capture(root, case, previous):
     old = next((x for x in previous if x['code'] == case['code'] and x['pdf_sha256'] == case['pdf_sha256']), None)
     if old:
-        verify_receipt(root, case, old)
-        return old
-    request = urllib.request.Request(case['source_url'], headers={'User-Agent': 'Mozilla/5.0 (selected financial original review)'})
+        # Reparse the pinned original before upgrading a legacy receipt. A
+        # review amendment may change the case hash, never the capture clock.
+        existing = dict(old)
+        existing.pop('review_case_sha256', None)
+        verify_receipt(root, case, existing)
+        return dict(existing, review_case_sha256=case_sha(case))
+    request = urllib.request.Request(case['source_url'], headers={'User-Agent': 'Mozilla/5.0 (financial original review)'})
     raw = fetch_bytes(request, MAX_BYTES + 1, 25, expected_url=case['source_url'])
     inspect_pdf(raw, case)
     packed = gzip.compress(raw, mtime=0)
@@ -34,8 +38,17 @@ def capture(root, case, previous):
     receipt = dict(code=case['code'], source_url=case['source_url'], pdf_sha256=sha(raw),
                    gzip_sha256=sha(packed), bytes=len(raw), archive_path=path.relative_to(root).as_posix(),
                    captured_at=dt.datetime.now(dt.timezone.utc).isoformat())
+    receipt['review_case_sha256'] = case_sha(case)
     verify_receipt(root, case, receipt)
     return receipt
+
+
+def verify_offline(root, asof):
+    reviews, states, errors = load(root, asof)
+    incomplete = bool(errors or any(x.get('blocks_current_decision') for x in states.values()))
+    return dict(status='SELECTED_ONEOFF_ORIGINALS_INCOMPLETE' if incomplete else 'SELECTED_ONEOFF_ORIGINALS_CHECKED_NO_CERTIFICATES_ISSUED',
+                verified_issuers=sorted(reviews), states=states, errors=errors,
+                formal_quality_pass=False), int(incomplete)
 
 
 def main():
@@ -51,14 +64,9 @@ def main():
     path = root / FOLDER / 'manifest.json'
     old = json.loads(path.read_bytes()) if path.is_file() else {}
     if args.offline:
-        for case in doc['cases']:
-            rows = [x for x in old.get('captures', []) if x['code'] == case['code']]
-            if rows:
-                if len(rows) != 1:
-                    raise ValueError('ONEOFF_DUPLICATE_CAPTURE')
-                verify_receipt(root, case, rows[0])
-        print('SELECTED_ONEOFF_ORIGINALS_CHECKED_NO_CERTIFICATES_ISSUED')
-        return 0
+        report, status = verify_offline(root, dt.datetime.now(dt.timezone.utc).isoformat())
+        print(json.dumps(report))
+        return status
     captures, errors = [], []
     with concurrent.futures.ThreadPoolExecutor(max_workers=3) as pool:
         jobs = {pool.submit(capture, root, c, old.get('captures', [])): c for c in doc['cases']}

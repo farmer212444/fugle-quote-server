@@ -11,17 +11,73 @@ from .evidence import timestamp
 
 SCHEMA = 'SELECTED_ONEOFF_ORIGINAL_REVIEW_V1'
 CONFIG = 'config/oneoff_original_v1.json'
+LEGACY_CONFIG = 'config/oneoff_original_legacy_v1.json'
 FOLDER = 'evidence/v880/oneoff_original'
 URLS = {
     '2483': 'https://www.ece.com.tw/uploads/invest/financial_report/2025/114Q4-IFRS.pdf',
     '6763': 'https://corp.ecpay.com.tw/wp-content/uploads/2026/03/%E8%B2%A1%E5%8B%99%E5%A0%B1%E8%A1%A8%E5%90%88%E4%BD%B5.pdf',
     '2331': 'https://campaign.ecs.com.tw/document/investor/doc/115_procedure_TC.pdf',
+    '8110': 'https://www.walton.com.tw/files/investors/files/%E8%B2%A1%E5%8B%99%E5%A0%B1%E8%A1%A8/%E5%90%88%E4%BD%B5/ZH/8110%E8%8F%AF%E6%9D%B1-114%20Q4.pdf',
 }
 MAX_BYTES = 10_000_000
 
 
 def sha(raw):
     return hashlib.sha256(raw).hexdigest()
+
+
+def case_sha(case):
+    return sha(json.dumps(case, sort_keys=True, ensure_ascii=False, separators=(',', ':')).encode())
+
+
+def selected_items(case):
+    if 'gain_items' not in case:
+        return [dict(id='selected_gain_amount', label=case['selected_gain_label'],
+                     fact_key='selected_gain_amount', profit_effect_multiplier=case['profit_effect_multiplier'])]
+    if 'profit_effect_multiplier' in case or 'selected_gain_amount' in case['facts']:
+        raise ValueError('ONEOFF_AMBIGUOUS_SINGLE_AND_MULTI_ITEM_REVIEW')
+    return case['gain_items']
+
+
+def validate_items(case):
+    applied = selected_items(case)
+    remaining = case.get('remaining_volatile_items', [])
+    if not isinstance(applied, list) or not isinstance(remaining, list) or not applied:
+        raise ValueError('ONEOFF_SELECTED_ITEM_COUNT_INVALID')
+    items = applied + remaining
+    if not 1 <= len(items) <= 8:
+        raise ValueError('ONEOFF_SELECTED_ITEM_COUNT_INVALID')
+    ids, keys, geometry = set(), set(), set()
+    for item in items:
+        key = item['fact_key']
+        if not item.get('label') or not item.get('id') or key not in case['facts']:
+            raise ValueError('ONEOFF_SELECTED_ITEM_IDENTITY_OR_FACT_MISSING')
+        field = case['facts'][key]
+        box = (field['pdf_page'], tuple(field['bbox']))
+        overlaps = any(box[0] == old[0] and
+                       max(box[1][0], old[1][0]) < min(box[1][2], old[1][2]) and
+                       max(box[1][1], old[1][1]) < min(box[1][3], old[1][3]) for old in geometry)
+        if item['id'] in ids or key in keys or overlaps:
+            raise ValueError('ONEOFF_DUPLICATE_SELECTED_COMPONENT')
+        ids.add(item['id']); keys.add(key); geometry.add(box)
+        if item.get('corroborating_fact_key') == key:
+            raise ValueError('ONEOFF_CORROBORATION_MUST_BE_SEPARATE_FACT')
+    corroborating = [x['corroborating_fact_key'] for x in items if x.get('corroborating_fact_key')]
+    if len(set(corroborating)) != len(corroborating) or set(corroborating) & keys:
+        raise ValueError('ONEOFF_CORROBORATION_REUSED_AS_SELECTED_COMPONENT')
+
+
+def receipt_review_matches(root, case, receipt, manifest, digest):
+    if 'review_case_sha256' in receipt:
+        return receipt['review_case_sha256'] == case_sha(case)
+    if manifest['config_sha256'] == digest:
+        return True  # Original whole-book receipts remain valid for that book.
+    legacy = Path(root) / LEGACY_CONFIG
+    if not legacy.is_file() or sha(legacy.read_bytes()) != manifest['config_sha256']:
+        return False
+    previous = json.loads(legacy.read_bytes())
+    matches = [x for x in previous['cases'] if x['code'] == case['code']]
+    return len(matches) == 1 and case_sha(matches[0]) == case_sha(case)
 
 
 def config(root):
@@ -44,6 +100,7 @@ def config(root):
         if case.get('selected_page_visual_review') is not True:
             raise ValueError('ONEOFF_SELECTED_PAGE_REVIEW_REQUIRED')
         timestamp(case['reviewed_at'])
+        validate_items(case)
         seen.add(code)
     return obj, sha(raw)
 
@@ -75,7 +132,9 @@ def number_in_box(page, field):
 
 def inspect_pdf(raw, case):
     import fitz
-    if len(raw) > MAX_BYTES or not raw.startswith(b'%PDF-') or sha(raw) != case['pdf_sha256']:
+    if not raw.startswith(b'%PDF-'):
+        raise ValueError('ONEOFF_SOURCE_NOT_PDF_RESPONSE')
+    if len(raw) > MAX_BYTES or sha(raw) != case['pdf_sha256']:
         raise ValueError('ONEOFF_ORIGINAL_PDF_SHA_OR_SIZE_MISMATCH')
     with fitz.open(stream=raw, filetype='pdf') as doc:
         if len(doc) != case['pdf_pages']:
@@ -97,14 +156,32 @@ def inspect_pdf(raw, case):
             values[name] = number_in_box(doc[page - 1], field)
         if values['fiscal_year_roc'] != int(case['anchor_period'][:4]) - 1911:
             raise ValueError('ONEOFF_REVIEW_FISCAL_COLUMN_MISMATCH')
-        sign = case['profit_effect_multiplier']
-        if sign not in (-1, 1) or isinstance(sign, bool):
-            raise ValueError('ONEOFF_CASHFLOW_SIGN_INVALID')
-        gain = values['selected_gain_amount'] * sign
-        if gain <= 0:
-            raise ValueError('ONEOFF_POSITIVE_GAIN_REQUIRED_NO_LOSS_ADDBACK')
+        validate_items(case)
+        def amounts(items):
+            result = []
+            for item in items:
+                sign = item['profit_effect_multiplier']
+                if sign not in (-1, 1) or isinstance(sign, bool):
+                    raise ValueError('ONEOFF_CASHFLOW_SIGN_INVALID')
+                gain = values[item['fact_key']] * sign
+                if gain <= 0:
+                    raise ValueError('ONEOFF_POSITIVE_GAIN_REQUIRED_NO_LOSS_ADDBACK')
+                other = item.get('corroborating_fact_key')
+                if other:
+                    multiplier = item['corroborating_multiplier']
+                    if multiplier not in (-1, 1) or isinstance(multiplier, bool) or values[other] * multiplier != gain:
+                        raise ValueError('ONEOFF_CASHFLOW_CORROBORATION_MISMATCH')
+                result.append(dict(id=item['id'], label=item['label'], amount_k=gain,
+                                   pdf_page=case['facts'][item['fact_key']]['pdf_page']))
+            return result
+        components = amounts(selected_items(case))
+        remaining = amounts(case.get('remaining_volatile_items', []))
+        gain = sum(x['amount_k'] for x in components)
         return dict(reported_fy_nonoperating_k=values['reported_fy_nonoperating_k'],
-                    excluded_positive_gain_k=gain, selected_raw_amount=values['selected_gain_amount'])
+                    excluded_positive_gain_k=gain,
+                    selected_raw_amount=values.get('selected_gain_amount', gain),
+                    excluded_gain_components=components, remaining_volatile_items=remaining,
+                    remaining_volatile_positive_gain_k=sum(x['amount_k'] for x in remaining))
 
 
 def verify_receipt(root, case, receipt, cut=None):
@@ -112,6 +189,8 @@ def verify_receipt(root, case, receipt, cut=None):
     if (receipt['code'] != case['code'] or receipt['source_url'] != case['source_url']
             or receipt['pdf_sha256'] != case['pdf_sha256']):
         raise ValueError('ONEOFF_RECEIPT_IDENTITY_MISMATCH')
+    if receipt.get('review_case_sha256', case_sha(case)) != case_sha(case):
+        raise ValueError('ONEOFF_CAPTURE_OR_REVIEW_VERSION_MISMATCH')
     captured = timestamp(receipt['captured_at'])
     available = max(captured, timestamp(case['reviewed_at']))
     if cut is not None and available > timestamp(cut):
@@ -129,7 +208,7 @@ def verify_receipt(root, case, receipt, cut=None):
     return dict(values, code=case['code'], anchor_period=case['anchor_period'],
                 label=case['selected_gain_label'], source_url=case['source_url'],
                 pdf_sha256=case['pdf_sha256'], archive_path=receipt['archive_path'],
-                selected_pdf_page=case['facts']['selected_gain_amount']['pdf_page'],
+                selected_pdf_page=case['facts'][selected_items(case)[0]['fact_key']]['pdf_page'],
                 available_at=available.isoformat(), formal_quality_pass=False,
                 remaining_components_verified=False)
 
@@ -141,7 +220,8 @@ def load(root, asof):
         return {}, {}, []
     path = root / FOLDER / 'manifest.json'
     if not path.is_file():
-        return {}, {x['code']: dict(status='ORIGINAL_CAPTURE_PENDING', blocks_current_decision=False)
+        return {}, {x['code']: dict(status='SOURCE_AVAILABLE_AFTER_ESTIMATE' if timestamp(x['reviewed_at']) > timestamp(asof) else 'ORIGINAL_CAPTURE_PENDING',
+                                  blocks_current_decision=timestamp(x['reviewed_at']) <= timestamp(asof))
                     for x in doc['cases']}, []
     manifest = json.loads(path.read_bytes())
     if manifest.get('schema') != SCHEMA or manifest.get('formal_quality_pass') is not False:
@@ -149,14 +229,25 @@ def load(root, asof):
     reviews, states, errors = {}, {}, []
     for case in doc['cases']:
         code = case['code']
+        if timestamp(case['reviewed_at']) > timestamp(asof):
+            states[code] = dict(status='SOURCE_AVAILABLE_AFTER_ESTIMATE', blocks_current_decision=False)
+            continue
         try:
             rows = [x for x in manifest['captures'] if x['code'] == code]
-            if len(rows) != 1 or manifest['config_sha256'] != digest:
+            if not rows:
+                states[code] = dict(status='ORIGINAL_CAPTURE_PENDING', blocks_current_decision=True)
+                continue
+            if len(rows) != 1:
                 raise ValueError('ONEOFF_CAPTURE_OR_REVIEW_VERSION_MISMATCH')
             receipt = rows[0]
-            if max(timestamp(receipt['captured_at']), timestamp(case['reviewed_at'])) > timestamp(asof):
-                states[code] = dict(status='SOURCE_AVAILABLE_AFTER_ESTIMATE', blocks_current_decision=False)
+            if timestamp(receipt['captured_at']) > timestamp(asof):
+                # The review is already known at this point. A later archive
+                # must behave like a missing archive, never revive the old
+                # inflated baseline merely because future bytes now exist.
+                states[code] = dict(status='ORIGINAL_CAPTURE_PENDING', blocks_current_decision=True)
                 continue
+            if not receipt_review_matches(root, case, receipt, manifest, digest):
+                raise ValueError('ONEOFF_CAPTURE_OR_REVIEW_VERSION_MISMATCH')
             reviews[code] = verify_receipt(root, case, receipt, asof)
         except (ValueError, KeyError, TypeError, OSError, RuntimeError, EOFError) as exc:
             states[code] = dict(status='ORIGINAL_ONEOFF_REVIEW_INVALID', blocks_current_decision=True)

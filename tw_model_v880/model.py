@@ -47,8 +47,10 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
     announcement_event=bool(event and event['source_kind']==ANNOUNCEMENT_KIND)
     valuation_period=event['financial_period'] if event else data.period
     def unavailable(reason):return dict(code=code,name=latest.get('name'),market=market,status=reason,rankable=False,exclusion_reasons=[reason])
-    if getattr(data,'oneoff_review_states',{}).get(code,{}).get('blocks_current_decision'):
-        return unavailable('ORIGINAL_ONEOFF_REVIEW_INVALID_OLD_BASELINE_NOT_REUSED')
+    oneoff_state=getattr(data,'oneoff_review_states',{}).get(code,{})
+    if oneoff_state.get('blocks_current_decision'):
+        return unavailable('ORIGINAL_ONEOFF_SOURCE_PENDING_OLD_BASELINE_NOT_REUSED' if oneoff_state.get('status')=='ORIGINAL_CAPTURE_PENDING'
+                           else 'ORIGINAL_ONEOFF_REVIEW_INVALID_OLD_BASELINE_NOT_REUSED')
     if not p:return unavailable('REFERENCE_PRICE_MISSING')
     if not rev:return unavailable('MONTHLY_REVENUE_MISSING')
     if not master:return unavailable('ISSUED_SHARE_MASTER_MISSING')
@@ -193,6 +195,8 @@ def estimate(data,key,calibration,asof,target_date,shadow_thin=False):
                                      actual_historical_eps_restatement=False,all_other_forecast_inputs_unchanged=True)
             nonop_status='PRIOR_FY_EXCLUDING_SELECTED_ORIGINAL_NONRECURRING_GAIN_RESEARCH_ONLY'
             warnings.append('SOURCE_VERIFIED_ONEOFF_REMOVED_OTHER_NONOPERATING_COMPONENTS_STILL_UNCERTIFIED')
+            if review.get('remaining_volatile_positive_gain_k',0)>0:
+                warnings.append('REVIEWED_FAIR_VALUE_GAIN_REMAINS_IN_BASELINE_RECURRENCE_UNCERTIFIED')
     tax=(current['pretax_profit_k']-current['net_income_k'])/current['pretax_profit_k'] if current['pretax_profit_k']>0 else None
     if tax is None or not 0<=tax<=.5:tax=.2;warnings.append('TAX_RATE_20PCT_SENSITIVITY_NOT_VERIFIED')
     fraction=current['parent_net_income_k']/current['net_income_k'] if current['net_income_k']>0 else None

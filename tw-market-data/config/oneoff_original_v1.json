@@ -137,6 +137,128 @@
           "expected_value": -737961.0
         }
       }
+    },
+    {
+      "code": "8110",
+      "anchor_period": "2025-Q4",
+      "source_url": "https://www.walton.com.tw/files/investors/files/%E8%B2%A1%E5%8B%99%E5%A0%B1%E8%A1%A8/%E5%90%88%E4%BD%B5/ZH/8110%E8%8F%AF%E6%9D%B1-114%20Q4.pdf",
+      "pdf_sha256": "d0dab04d6d1849742e87e1363ea92fe5e4851571ce6f9428c13b66fbb1c98a22",
+      "pdf_pages": 81,
+      "units": "TWD_THOUSANDS",
+      "reviewed_at": "2026-11-09T10:18:20.797242+00:00",
+      "selected_page_visual_review": true,
+      "issuer_identity_mode": "NATIVE_COVER_CODE_AND_SELECTED_PAGE_REVIEW",
+      "selected_gain_label": "處分採用權益法之投資及處分不動產、廠房設備利益（兩項合計）",
+      "gain_items": [
+        {
+          "id": "equity_method_disposal",
+          "label": "處分採用權益法之投資利益",
+          "fact_key": "gain_equity_method_disposal",
+          "profit_effect_multiplier": 1,
+          "corroborating_fact_key": "cf_equity_method_disposal",
+          "corroborating_multiplier": -1
+        },
+        {
+          "id": "ppe_disposal",
+          "label": "處分不動產、廠房及設備利益",
+          "fact_key": "gain_ppe_disposal",
+          "profit_effect_multiplier": 1,
+          "corroborating_fact_key": "cf_ppe_disposal",
+          "corroborating_multiplier": -1
+        }
+      ],
+      "remaining_volatile_items": [
+        {
+          "id": "fair_value_gain",
+          "label": "金融資產按公允價值衡量損益（保留原基準，未認證可重複性）",
+          "fact_key": "remaining_fair_value_gain",
+          "profit_effect_multiplier": 1,
+          "corroborating_fact_key": "cf_fair_value_gain",
+          "corroborating_multiplier": -1
+        }
+      ],
+      "facts": {
+        "fiscal_year_roc": {
+          "pdf_page": 51,
+          "bbox": [
+            337.8299865722656,
+            643.4639892578125,
+            357.8299865722656,
+            659.9239501953125
+          ],
+          "expected_value": 114
+        },
+        "reported_fy_nonoperating_k": {
+          "pdf_page": 9,
+          "bbox": [
+            289.8299865722656,
+            613.073974609375,
+            339.8299865722656,
+            629.533935546875
+          ],
+          "expected_value": 1620311
+        },
+        "gain_equity_method_disposal": {
+          "pdf_page": 51,
+          "bbox": [
+            348.3900146484375,
+            691.823974609375,
+            389.4200134277344,
+            708.283935546875
+          ],
+          "expected_value": 844971
+        },
+        "gain_ppe_disposal": {
+          "pdf_page": 51,
+          "bbox": [
+            348.3900146484375,
+            723.1439819335938,
+            389.3900146484375,
+            739.6039428710938
+          ],
+          "expected_value": 258951
+        },
+        "cf_equity_method_disposal": {
+          "pdf_page": 12,
+          "bbox": [
+            367.5,
+            451.7939758300781,
+            436.5,
+            468.25396728515625
+          ],
+          "expected_value": -844971
+        },
+        "cf_ppe_disposal": {
+          "pdf_page": 12,
+          "bbox": [
+            367.5,
+            436.1739807128906,
+            436.5,
+            452.63397216796875
+          ],
+          "expected_value": -258951
+        },
+        "remaining_fair_value_gain": {
+          "pdf_page": 52,
+          "bbox": [
+            348.3900146484375,
+            148.5039520263672,
+            389.3900146484375,
+            164.96395874023438
+          ],
+          "expected_value": 644978
+        },
+        "cf_fair_value_gain": {
+          "pdf_page": 12,
+          "bbox": [
+            367.5,
+            326.85400390625,
+            436.5,
+            343.3139953613281
+          ],
+          "expected_value": -644978
+        }
+      }
     }
   ]
 }

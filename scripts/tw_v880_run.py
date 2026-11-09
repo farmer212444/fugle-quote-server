@@ -170,6 +170,10 @@ def run(data_dir,asof,target_date,out_dir=None,variant='current-information'):
         for r in oneoff_rows:
             a=r['nonoperating_bridge']['oneoff_original_adjustment']
             report.append(f"- {r['code']}：{a['label']}；{a['anchor_period']}；PDF第{a['selected_pdf_page']}頁；原件：{a['source_url']}。")
+            if len(a.get('excluded_gain_components',[]))>1:
+                report.append('  核對項目：'+'；'.join(f"{x['label']} {x['amount_k']/100000:.5f}億元（PDF第{x['pdf_page']}頁）" for x in a['excluded_gain_components'])+'。')
+            if a.get('remaining_volatile_positive_gain_k',0)>0:
+                report.append(f"  剔除後Base仍沿用已核對的評價利益{a['remaining_volatile_positive_gain_k']/100000:.5f}億元；未認證其未來可重複性，亦未核發合理價或品質認證。")
     nonop_risks=[r for r in broad[:10] if 'BASE_PROFIT_MAJORITY_FROM_NONOPERATING_ASSUMPTION_COMPONENT_REVIEW_REQUIRED' in r.get('warning_flags',[])]
     if nonop_risks:
         report+=['','## 前十檔業外收益敏感度','',

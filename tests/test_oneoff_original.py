@@ -60,6 +60,36 @@ def fixture(root, *, code='2483', amount='125'):
     return raw, case, receipt, path, config, manifest
 
 
+def multiple_fixture(root):
+    raw, case, receipt, path, config, manifest = fixture(root)
+    doc = fitz.open(stream=raw, filetype='pdf')
+    page = doc[1]
+    for y, value in [(100, '50'), (130, '(125)'), (160, '(50)'), (190, '25'), (220, '(25)')]:
+        page.insert_text((40, y), value)
+    def field(token, expected):
+        w = next(w for w in page.get_text('words') if w[4] == token)
+        return dict(pdf_page=2, bbox=[w[0]-1, w[1]-1, w[2]+1, w[3]+1], expected_value=expected)
+    case['facts']['first'] = case['facts'].pop('selected_gain_amount')
+    case['facts'].update(second=field('50', 50), first_cf=field('(125)', -125),
+                         second_cf=field('(50)', -50), volatile=field('25', 25), volatile_cf=field('(25)', -25))
+    case.pop('profit_effect_multiplier')
+    case['gain_items'] = [dict(id='first', label='SYNTHETIC FIRST', fact_key='first', profit_effect_multiplier=1,
+                               corroborating_fact_key='first_cf', corroborating_multiplier=-1),
+                          dict(id='second', label='SYNTHETIC SECOND', fact_key='second', profit_effect_multiplier=1,
+                               corroborating_fact_key='second_cf', corroborating_multiplier=-1)]
+    case['remaining_volatile_items'] = [dict(id='volatile', label='SYNTHETIC UNRESOLVED RECURRENCE', fact_key='volatile',
+                                            profit_effect_multiplier=1, corroborating_fact_key='volatile_cf', corroborating_multiplier=-1)]
+    raw = doc.tobytes(); doc.close()
+    case['pdf_sha256'] = source.sha(raw)
+    packed = gzip.compress(raw, mtime=0); path.write_bytes(packed)
+    receipt.update(pdf_sha256=source.sha(raw), gzip_sha256=source.sha(packed), review_case_sha256=source.case_sha(case))
+    config['cases'] = [case]
+    cp = root / source.CONFIG; cp.write_text(json.dumps(config))
+    manifest.update(config_sha256=source.sha(cp.read_bytes()), captures=[receipt])
+    (root / source.FOLDER / 'manifest.json').write_text(json.dumps(manifest))
+    return raw, case, receipt, path, config, manifest
+
+
 class OneoffOriginalSources(unittest.TestCase):
     def setUp(self):
         tmp = tempfile.TemporaryDirectory()
@@ -123,8 +153,16 @@ class OneoffOriginalSources(unittest.TestCase):
         reviews, states, errors = source.load(self.root, '2026-11-09T05:30:00+08:00')
         self.assertFalse(reviews)
         self.assertFalse(errors)
-        self.assertEqual(states['2483']['status'], 'SOURCE_AVAILABLE_AFTER_ESTIMATE')
-        self.assertFalse(states['2483']['blocks_current_decision'])
+        self.assertEqual(states['2483']['status'], 'ORIGINAL_CAPTURE_PENDING')
+        self.assertTrue(states['2483']['blocks_current_decision'])
+
+    def test_future_capture_and_absent_capture_have_the_same_historical_admission(self):
+        cut='2026-11-09T05:30:00+08:00'
+        before=source.load(self.root,cut)
+        self.manifest['captures']=[]
+        (self.root/source.FOLDER/'manifest.json').write_text(json.dumps(self.manifest))
+        after=source.load(self.root,cut)
+        self.assertEqual(before,after)
 
     def test_review_time_is_a_separate_availability_barrier(self):
         self.config['cases'][0]['reviewed_at'] = '2026-11-09T08:00:00+08:00'
@@ -154,6 +192,7 @@ class OneoffOriginalSources(unittest.TestCase):
         self.assertFalse(reviews)
         self.assertFalse(errors)
         self.assertEqual(states['2483']['status'], 'ORIGINAL_CAPTURE_PENDING')
+        self.assertTrue(states['2483']['blocks_current_decision'])
         self.manifest['captures'] *= 2
         mp.write_text(json.dumps(self.manifest))
         reviews, states, errors = source.load(self.root, CUT)
@@ -180,6 +219,24 @@ class OneoffOriginalSources(unittest.TestCase):
             self.assertEqual(collector.main(), 1)
         self.assertEqual(mp.read_bytes(), before)
 
+    def test_html_error_body_cannot_be_archived_as_the_reviewed_pdf(self):
+        before = set((self.root / source.FOLDER).rglob('*'))
+        with patch.object(collector, 'fetch_bytes', return_value=b'<HTML>blocked</HTML>'):
+            with self.assertRaisesRegex(ValueError, 'NOT_PDF_RESPONSE'):
+                collector.capture(self.root, self.case, [])
+        self.assertEqual(before, set((self.root / source.FOLDER).rglob('*')))
+
+    def test_offline_verification_reports_missing_capture_and_review_binding_failure(self):
+        report, status = collector.verify_offline(self.root, CUT)
+        self.assertEqual(status, 0); self.assertEqual(report['verified_issuers'], ['2483'])
+        mp = self.root / source.FOLDER / 'manifest.json'
+        mp.unlink()
+        report, status = collector.verify_offline(self.root, CUT)
+        self.assertEqual(status, 1); self.assertEqual(report['states']['2483']['status'], 'ORIGINAL_CAPTURE_PENDING')
+        self.manifest['config_sha256'] = '0'*64; mp.write_text(json.dumps(self.manifest))
+        report, status = collector.verify_offline(self.root, CUT)
+        self.assertEqual(status, 1); self.assertIn('VERSION_MISMATCH', report['errors'][0]['error'])
+
     def test_linked_archives_and_review_config_invalidate_model_cache(self):
         for name in ('prices/latest_manifest.json', 'fundamentals/latest_scan.json',
                      'latest_manifest.json', 'evidence/v880/manifest.json'):
@@ -196,6 +253,117 @@ class OneoffOriginalSources(unittest.TestCase):
         result = subprocess.run([sys.executable, str(Path(collector.__file__).resolve()), '--help'],
                                 cwd=self.root, env=env, capture_output=True, text=True, timeout=15)
         self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_distinct_disposals_are_added_once_and_remaining_valuation_gain_is_only_disclosed(self):
+        multiple_fixture(self.root)
+        reviews, states, errors = source.load(self.root, CUT)
+        self.assertFalse(errors); self.assertFalse(states)
+        review = reviews['2483']
+        self.assertEqual(review['excluded_positive_gain_k'], 175)
+        self.assertEqual([x['amount_k'] for x in review['excluded_gain_components']], [125, 50])
+        self.assertEqual(review['remaining_volatile_positive_gain_k'], 25)
+        self.assertFalse(review['remaining_components_verified'])
+
+    def test_duplicate_ids_facts_or_numeric_rectangles_cannot_count_a_gain_twice(self):
+        raw, original, *_ = multiple_fixture(self.root)
+        for duplicate in ('id', 'fact_key', 'geometry', 'shifted_geometry', 'remaining_overlap'):
+            case = copy.deepcopy(original)
+            if duplicate == 'geometry':
+                case['facts']['second'] = copy.deepcopy(case['facts']['first'])
+            elif duplicate == 'shifted_geometry':
+                case['facts']['second'] = copy.deepcopy(case['facts']['first'])
+                case['facts']['second']['bbox'][0] -= .1
+            elif duplicate == 'remaining_overlap':
+                case['remaining_volatile_items'][0]['fact_key'] = 'first'
+            else:
+                case['gain_items'][1][duplicate] = case['gain_items'][0][duplicate]
+            with self.subTest(duplicate=duplicate), self.assertRaisesRegex(ValueError, 'DUPLICATE_SELECTED_COMPONENT'):
+                source.inspect_pdf(raw, case)
+
+    def test_no_selected_gain_and_reused_cashflow_evidence_are_rejected(self):
+        raw, original, *_ = multiple_fixture(self.root)
+        case = copy.deepcopy(original); case['gain_items'] = []
+        with self.assertRaisesRegex(ValueError, 'ITEM_COUNT_INVALID'):
+            source.inspect_pdf(raw, case)
+        case = copy.deepcopy(original); case['gain_items'][1]['corroborating_fact_key'] = 'first_cf'
+        with self.assertRaisesRegex(ValueError, 'CORROBORATION_REUSED'):
+            source.inspect_pdf(raw, case)
+
+    def test_each_gain_requires_matching_cashflow_sign_and_losses_are_not_added_back(self):
+        raw, original, *_ = multiple_fixture(self.root)
+        case = copy.deepcopy(original)
+        case['gain_items'][0]['corroborating_multiplier'] = 1
+        with self.assertRaisesRegex(ValueError, 'CORROBORATION_MISMATCH'):
+            source.inspect_pdf(raw, case)
+        case = copy.deepcopy(original); case['gain_items'][1]['profit_effect_multiplier'] = -1
+        with self.assertRaisesRegex(ValueError, 'NO_LOSS_ADDBACK'):
+            source.inspect_pdf(raw, case)
+
+    def write_book(self, config, manifest):
+        (self.root / source.CONFIG).write_text(json.dumps(config))
+        (self.root / source.FOLDER / 'manifest.json').write_text(json.dumps(manifest))
+
+    def future_case(self):
+        case = copy.deepcopy(self.case)
+        case.update(code='8110', source_url=source.URLS['8110'], reviewed_at='2026-11-09T08:00:00+08:00')
+        return case
+
+    def test_future_new_issuer_with_no_capture_never_invalidates_current_review(self):
+        self.receipt['review_case_sha256'] = source.case_sha(self.case)
+        self.manifest['captures'] = [self.receipt]
+        self.config['cases'].append(self.future_case())
+        self.write_book(self.config, self.manifest)
+        reviews, states, errors = source.load(self.root, CUT)
+        self.assertIn('2483', reviews); self.assertFalse(errors)
+        self.assertEqual(states['8110']['status'], 'SOURCE_AVAILABLE_AFTER_ESTIMATE')
+        self.assertFalse(states['8110']['blocks_current_decision'])
+        reviews, states, errors = source.load(self.root, '2026-11-09T09:00:00+08:00')
+        self.assertIn('2483', reviews); self.assertFalse(errors)
+        self.assertTrue(states['8110']['blocks_current_decision'])
+
+    def test_legacy_book_migration_accepts_only_exact_unchanged_cases(self):
+        (self.root / source.LEGACY_CONFIG).write_bytes((self.root / source.CONFIG).read_bytes())
+        self.config['cases'].append(self.future_case())
+        self.write_book(self.config, self.manifest)
+        reviews, _, errors = source.load(self.root, CUT)
+        self.assertIn('2483', reviews); self.assertFalse(errors)
+        self.config['cases'][0]['selected_gain_label'] = 'AMENDED REVIEW'
+        self.write_book(self.config, self.manifest)
+        reviews, states, errors = source.load(self.root, CUT)
+        self.assertNotIn('2483', reviews); self.assertTrue(states['2483']['blocks_current_decision'])
+        self.assertIn('VERSION_MISMATCH', errors[0]['error'])
+
+    def test_tampered_legacy_book_cannot_grant_compatibility(self):
+        (self.root / source.LEGACY_CONFIG).write_bytes((self.root / source.CONFIG).read_bytes() + b' ')
+        self.config['cases'].append(self.future_case()); self.write_book(self.config, self.manifest)
+        _, states, errors = source.load(self.root, CUT)
+        self.assertTrue(states['2483']['blocks_current_decision'])
+        self.assertIn('VERSION_MISMATCH', errors[0]['error'])
+
+    def test_collector_reparses_before_binding_review_and_keeps_original_capture_clock(self):
+        previous = dict(self.receipt, review_case_sha256='0'*64)
+        with patch.object(collector, 'fetch_bytes', side_effect=AssertionError('original is already archived')):
+            upgraded = collector.capture(self.root, self.case, [previous])
+        self.assertEqual(upgraded['captured_at'], previous['captured_at'])
+        self.assertEqual(upgraded['review_case_sha256'], source.case_sha(self.case))
+        self.assertEqual(upgraded['gzip_sha256'], previous['gzip_sha256'])
+
+    def test_one_changed_case_blocks_only_itself_and_legacy_config_participates_in_cache(self):
+        first = copy.deepcopy(self.case); first_receipt = dict(self.receipt, review_case_sha256=source.case_sha(first))
+        _, second, second_receipt, *_ = fixture(self.root, code='6763')
+        second_receipt['review_case_sha256'] = source.case_sha(second)
+        config = dict(schema=source.SCHEMA, formal_quality_pass=False, cases=[first, second])
+        first['selected_gain_label'] = 'AMENDED REVIEW'
+        manifest = dict(self.manifest, captures=[first_receipt, second_receipt])
+        self.write_book(config, manifest)
+        reviews, states, errors = source.load(self.root, CUT)
+        self.assertIn('6763', reviews); self.assertNotIn('2483', reviews)
+        self.assertEqual(len(errors), 1); self.assertTrue(states['2483']['blocks_current_decision'])
+        for name in ('prices/latest_manifest.json', 'fundamentals/latest_scan.json', 'latest_manifest.json', 'evidence/v880/manifest.json'):
+            p = self.root / name; p.parent.mkdir(parents=True, exist_ok=True); p.write_text('{}')
+        before = model_source_state(self.root)
+        (self.root / source.LEGACY_CONFIG).write_text('{}')
+        self.assertNotEqual(before, model_source_state(self.root))
 
 
 class OneoffForecastAdmission(unittest.TestCase):
@@ -256,3 +424,17 @@ class OneoffForecastAdmission(unittest.TestCase):
         data.oneoff_reviews['SYNTHETIC_A']['excluded_positive_gain_k'] = 25
         result = estimate(data, ('TEST', 'SYNTHETIC_A'), CAL, ASOF, '2027-12-31')
         self.assertEqual(result['base']['nonoperating_k'], -5)
+
+    def test_pending_original_blocks_the_inflated_baseline_until_capture(self):
+        data = self.data(); data.oneoff_reviews = {}
+        data.oneoff_review_states = {'SYNTHETIC_A': dict(status='ORIGINAL_CAPTURE_PENDING', blocks_current_decision=True)}
+        result = estimate(data, ('TEST', 'SYNTHETIC_A'), CAL, ASOF, '2027-12-31')
+        self.assertFalse(result['rankable']); self.assertNotIn('base', result)
+        self.assertIn('PENDING', result['status'])
+
+    def test_remaining_volatile_gain_is_not_silently_deducted_or_certified(self):
+        data = self.data(); data.oneoff_reviews['SYNTHETIC_A']['remaining_volatile_positive_gain_k'] = 3
+        result = estimate(data, ('TEST', 'SYNTHETIC_A'), CAL, ASOF, '2027-12-31')
+        self.assertEqual(result['base']['nonoperating_k'], 15)
+        self.assertIn('REVIEWED_FAIR_VALUE_GAIN_REMAINS_IN_BASELINE_RECURRENCE_UNCERTIFIED', result['warning_flags'])
+        self.assertFalse(result['formal_Aplus'])
