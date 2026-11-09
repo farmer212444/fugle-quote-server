@@ -1,0 +1,49 @@
+name: V8.10.8 marketwide price history coverage CI
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/marketwide-drawdown-coverage.yml'
+      - 'scripts/marketwide_drawdown_coverage.py'
+      - 'scripts/recent_drawdown_guard.py'
+      - 'scripts/run_research_pipeline.py'
+      - 'tests/test_marketwide_drawdown_coverage.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  marketwide-risk:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Syntax and no lookahead regression
+        env:
+          PYTHONPATH: '.'
+        run: |
+          python -m py_compile scripts/marketwide_drawdown_coverage.py tests/test_marketwide_drawdown_coverage.py
+          python -m unittest discover -s tests -p 'test_marketwide_drawdown_coverage.py' -v
+      - name: Full archived exchange snapshots smoke test
+        env:
+          PYTHONPATH: '.'
+        run: |
+          python scripts/marketwide_drawdown_coverage.py --data-root tw-market-data
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('tw-market-data/rankings/latest_marketwide_drawdown_coverage.json')
+          report=json.loads(p.read_text())
+          source=json.loads(Path('tw-market-data/prices/'+report['price_date']+'.json').read_text())
+          valid={(r['market'],r['code']) for r in source
+                 if isinstance(r.get('close'),(int,float)) and r['close']>0}
+          assert report['marketwide_current_quotes']==len(valid)
+          assert report['marketwide_snapshot_rows']==len(source)
+          assert report['snapshot_rows_accounted_for']==len(report['issuers'])==len(source)
+          assert report['missing_or_invalid_current_close_count']==len(source)-len(valid)
+          assert report['formal_Aplus_added']==0 and report['trade_signals_created']==0
+          assert report['calibrated_oos_strategy_improvement'] is False
+          for k,n in report['coverage_counts'].items():
+              assert 0<=n<=report['marketwide_current_quotes']
+          print('COVERAGE',report['coverage_counts'],'STATUSES',report['status_counts'])
+          PY

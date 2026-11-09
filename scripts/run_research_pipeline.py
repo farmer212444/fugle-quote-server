@@ -46,6 +46,7 @@ def research_stages(phase='full'):
         ('expected_returns', ['expected_returns.py']),
         ('expected_return_readiness', ['expected_return_readiness.py']),
         ('recent_drawdown_shadow', ['recent_drawdown_guard.py']),
+        ('marketwide_drawdown_coverage', ['marketwide_drawdown_coverage.py']),
         ('buy_decision_shadow', ['v8b8_buy_decision_shadow.py']),
         ('expected_return_blocker_triage', ['expected_return_blocker_triage.py']),
         ('shadow_comparison', ['institutional_shadow.py']),
