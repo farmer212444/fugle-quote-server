@@ -21,6 +21,16 @@ class RevenueTests(unittest.TestCase):
         del row["資料年月"]
         self.assertEqual(normalize([row], "2026-10"), {})
 
+    def test_invalid_numeric_rejected(self):
+        self.assertEqual(normalize([self.row(revenue="--")], "2026-10"), {})
+
+    def test_duplicate_rejected(self):
+        with self.assertRaises(ValueError):
+            normalize([self.row(), self.row()], "2026-10")
+
+    def test_negative_revenue_rejected(self):
+        self.assertEqual(normalize([self.row(revenue="-1")], "2026-10"), {})
+
     def test_nonwatch_rejected(self):
         self.assertEqual(normalize([self.row(code="9999")], "2026-10"), {})
 
