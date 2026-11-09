@@ -155,8 +155,8 @@ def assess(quality_report,readiness,work_queue,config,drawdown=None):
         price_risk = risk_index.get(code, dict(
             status="PENDING_DRAWDOWN_SOURCE_UNAVAILABLE",risk_blocked=False,
             relative_weakness_watch=False))
-        require(price_risk.get("risk_blocked") in (True,False)
-                and price_risk.get("relative_weakness_watch",False) in (True,False),
+        require(type(price_risk.get("risk_blocked")) is bool
+                and type(price_risk.get("relative_weakness_watch",False)) is bool,
                 "DRAWDOWN_INVALID_DECISION_FLAG")
         if quality["governance_blocked"]:
             state="PAUSE_GOVERNANCE_REVIEW"
@@ -296,6 +296,10 @@ def publish(data_root):
     drawdown_path=root/"rankings/latest_recent_drawdown_shadow.json"
     risk_bytes=drawdown_path.read_bytes() if drawdown_path.exists() else None
     drawdown=json.loads(risk_bytes) if risk_bytes is not None else None
+    if drawdown is not None:
+        require((drawdown.get("source_sha256") or {}).get("quality") ==
+                hashlib.sha256(originals["quality"]).hexdigest(),
+                "DRAWDOWN_QUALITY_BYTES_HASH_MISMATCH")
     report=assess(docs["quality"],docs["readiness"],docs["work_queue"],docs["config"],drawdown)
     report["source_sha256"]={k:hashlib.sha256(b).hexdigest() for k,b in originals.items()}
     if risk_bytes is not None:
