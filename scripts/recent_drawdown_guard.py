@@ -11,8 +11,12 @@ import hashlib
 import json
 import math
 import re
+import sys
 from pathlib import Path
 
+PROJECT = Path(__file__).resolve().parents[1]
+if str(PROJECT) not in sys.path:
+    sys.path.insert(0, str(PROJECT))
 from scripts.run_research_pipeline import atomic_json
 
 SCHEMA = "V8108_RECENT_DRAWDOWN_RESEARCH_SHADOW_V1"
@@ -69,10 +73,9 @@ def load_benchmark(root, asof, vintage):
     if not months.is_dir():
         return obs, receipts
     for path in sorted(months.glob("*.json")):
-        if not DAY_FILE.fullmatch(path.name.replace("-01.json", ".json")):
-            # Monthly filenames have format YYYY-MM.json, not YYYY-MM-DD.json.
-            if not re.fullmatch(r"\d{4}-\d{2}\.json", path.name):
-                continue
+        # Source manifests for the total-return benchmark use YYYY-MM.json.
+        if not re.fullmatch(r"\d{4}-\d{2}\.json", path.name):
+            continue
         if path.stem > asof[:7]:
             continue
         ref = read_json(path)
