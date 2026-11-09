@@ -164,6 +164,47 @@ class BuyShadowTests(unittest.TestCase):
             self.assertIn("2317", (root/"rankings/latest_buy_decision_shadow.md").read_text())
             self.assertEqual(archived["formal_Aplus_added"],0)
 
+    def test_drawdown_risk_precedes_upside_and_does_not_promote_a_plus(self):
+        q,r,w,p=fixture()
+        risk=dict(schema="V8108_RECENT_DRAWDOWN_RESEARCH_SHADOW_V1",
+                  asof_price_date=DATE,estimate_vintage=VINTAGE,
+                  issuer_count=2,formal_Aplus_added=0,trade_signals_issued=0,
+                  outputs=[dict(code="6741",risk_blocked=True,
+                                relative_weakness_watch=False,
+                                status="PAUSE_RECENT_SELL_OFF_REVIEW"),
+                           dict(code="2376",risk_blocked=False,
+                                relative_weakness_watch=True,
+                                status="WATCH_MARKET_RELATIVE_WEAKNESS")])
+        report=assess(q,r,w,p,risk)
+        self.assertEqual(report["outputs"][0]["action_review_state"],
+                         "PAUSE_RECENT_DRAWDOWN_REVIEW")
+        self.assertEqual(report["outputs"][1]["action_review_state"],
+                         "WATCH_MARKET_RELATIVE_WEAKNESS")
+        self.assertEqual(report["formal_Aplus_added"],0)
+        self.assertEqual(report["buy_ready_count"],0)
+        self.assertEqual(report["issuer_buy_orders_created"],0)
+        self.assertTrue(report["provisional_drawdown_shadow_present"])
+        self.assertIn("近期急跌",markdown(report))
+
+    def test_drawdown_must_match_same_source_vintage_and_issuer_universe(self):
+        q,r,w,p=fixture()
+        risk=dict(schema="V8108_RECENT_DRAWDOWN_RESEARCH_SHADOW_V1",
+                  asof_price_date=DATE,estimate_vintage="2026-11-08T18:00:00+08:00",
+                  issuer_count=1,formal_Aplus_added=0,trade_signals_issued=0,
+                  outputs=[dict(code="6741",risk_blocked=True,
+                                status="PAUSE_RECENT_SELL_OFF_REVIEW")])
+        with self.assertRaisesRegex(ValueError,"DRAWDOWN_SOURCE_VINTAGE"):
+            assess(q,r,w,p,risk)
+        risk["estimate_vintage"]=VINTAGE
+        with self.assertRaisesRegex(ValueError,"DRAWDOWN_ISSUER_UNIVERSE"):
+            assess(q,r,w,p,risk)
+        risk["issuer_count"]=2
+        risk["outputs"].append(dict(code="2376",risk_blocked=False,
+                                    status="NO_THRESHOLD_TRIGGER"))
+        risk["trade_signals_issued"]=1
+        with self.assertRaisesRegex(ValueError,"DRAWDOWN_FALSE_TRADE"):
+            assess(q,r,w,p,risk)
+
     def test_direct_cli_supports_help_from_nonproject_cwd(self):
         import scripts.v8b8_buy_decision_shadow as cli
         env=dict(os.environ);env.pop("PYTHONPATH",None)

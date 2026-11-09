@@ -1,0 +1,43 @@
+name: V8.10.8 recent drawdown shadow regression
+on:
+  pull_request:
+    paths:
+      - 'scripts/recent_drawdown_guard.py'
+      - 'scripts/v8b8_buy_decision_shadow.py'
+      - 'scripts/run_research_pipeline.py'
+      - 'tests/test_recent_drawdown_guard.py'
+      - 'tests/test_v8b8_buy_decision_shadow.py'
+      - '.github/workflows/recent-drawdown-shadow.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  asof-risk-shadow:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Compile all affected Python modules
+        run: python -m py_compile scripts/recent_drawdown_guard.py scripts/v8b8_buy_decision_shadow.py scripts/run_research_pipeline.py tests/test_recent_drawdown_guard.py
+      - name: Focused as-of and decision shadow regressions
+        env:
+          PYTHONPATH: '.'
+        run: |
+          python -m unittest discover -s tests -p 'test_recent_drawdown_guard.py' -v
+          python -m unittest discover -s tests -p 'test_v8b8_buy_decision_shadow.py' -v
+      - name: Read-only current snapshot smoke test
+        env:
+          PYTHONPATH: '.'
+        run: |
+          mkdir -p /tmp/drawdown-check/rankings /tmp/drawdown-check/prices /tmp/drawdown-check/benchmarks
+          python scripts/recent_drawdown_guard.py --data-root tw-market-data
+          python - <<'PY'
+          import json
+          p='tw-market-data/rankings/latest_recent_drawdown_shadow.json'
+          j=json.load(open(p,encoding='utf-8'))
+          assert j['formal_Aplus_added']==0 and j['trade_signals_issued']==0
+          assert j['issuer_count']==len(j['outputs'])
+          assert all(r['status'] for r in j['outputs'])
+          PY
