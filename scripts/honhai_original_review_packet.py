@@ -4,7 +4,11 @@ import argparse
 import hashlib
 import json
 import re
+import sys
 from pathlib import Path
+
+ROOT=Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:sys.path.insert(0,str(ROOT))
 
 from scripts.honhai_original_statements import MANIFEST, safe, validate_archive, window
 from scripts.v891_gate_certification import write_if_changed
