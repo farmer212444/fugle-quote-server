@@ -147,6 +147,14 @@ def render(packet):
            "清冊SHA256："+str(packet["source_manifest_sha256"]),"",
            "|季度|原件SHA|PDF頁數|前20頁會計師字詞線索|",
            "|---|---|---:|---|"]
+    for row in packet["original_documents"]:
+        if row["archive_state"]!="SHA_REHASHED":
+            lines.append("|"+row["period"]+"|未經SHA重驗|—|不可判定|")
+            continue
+        lead=row["auditor_leads"]
+        terms="、".join(sorted(set(x["keyword"] for x in lead["keyword_leads"]))) or "無命中"
+        lines.append("|"+row["period"]+"|"+row["sha256"][:16]+"…|"+
+                     str(row["pdf_page_count"])+"|"+terms+"（掃描"+str(lead["pages_scanned"])+"頁）|")
     lines+=["","## 優先核對：會計師結論原文（非正式會計師意見判定）","",
             "此處僅表示原件前六頁含有保留結論／保留意見字詞；需要人工確認會計師實際結論、涉及範圍及重要性。",
             "|優先季度|PDF頁次|狀態|","|---|---|---|"]
@@ -157,14 +165,6 @@ def render(packet):
     if not packet["auditor_opinion_wording_priority"]:
         lines.append("|無機器字詞命中|—|仍須核閱全部八季原件|")
     lines+=["","## 原件逐季核對（顯示前20頁文字線索）",""]
-    for row in packet["original_documents"]:
-        if row["archive_state"]!="SHA_REHASHED":
-            lines.append("|"+row["period"]+"|未經SHA重驗|—|不可判定|")
-            continue
-        lead=row["auditor_leads"]
-        terms="、".join(sorted(set(x["keyword"] for x in lead["keyword_leads"]))) or "無命中"
-        lines.append("|"+row["period"]+"|"+row["sha256"][:16]+"…|"+
-                     str(row["pdf_page_count"])+"|"+terms+"（掃描"+str(lead["pages_scanned"])+"頁）|")
     lines+=["","## 注意",
             "字詞命中是人工查核頁碼線索，不等於有保留結論，也不代表重要性已經審查。",
             "掃描前20頁不等於完整四表及全部附註已核閱。",
