@@ -91,7 +91,7 @@ def _valuation(row):
                     else "NUMERICS_LOCATED_BUT_FORECAST_VALIDATION_PENDING"))
 
 
-def assess(quality_report,readiness,work_queue,config):
+def assess(quality_report,readiness,work_queue,config,drawdown=None):
     require(quality_report.get("schema")=="V8A5_QUALITY_DECISION_RESEARCH_SHADOW",
             "QUALITY_INPUT_SCHEMA_MISMATCH")
     require(work_queue.get("schema")=="RESEARCH_EVIDENCE_WORK_QUEUE_V1",
@@ -134,22 +134,45 @@ def assess(quality_report,readiness,work_queue,config):
     work_index=_unique(work_queue.get("issuer_jobs"))
     require(quality_report.get("issuer_count")==len(quality_index),
             "QUALITY_ISSUER_COUNT_MISMATCH")
+    risk_index = {}
+    if drawdown is not None:
+        require(drawdown.get("schema")=="V8108_RECENT_DRAWDOWN_RESEARCH_SHADOW_V1"
+                and drawdown.get("asof_price_date")==date
+                and drawdown.get("estimate_vintage")==vintage,
+                "DRAWDOWN_SOURCE_VINTAGE_OR_SCHEMA_MISMATCH")
+        require(drawdown.get("formal_Aplus_added")==0
+                and drawdown.get("trade_signals_issued")==0,
+                "DRAWDOWN_FALSE_TRADE_OR_CERTIFICATION")
+        risk_index = _unique(drawdown.get("outputs"))
+        require(len(risk_index)==drawdown.get("issuer_count")
+                and set(risk_index)==set(quality_index),
+                "DRAWDOWN_ISSUER_UNIVERSE_MISMATCH")
     outputs=[]
     for row in quality_rows:
         code=row["code"]
         quality=_quality(row)
         valuation=_valuation(row)
+        price_risk = risk_index.get(code, dict(
+            status="PENDING_DRAWDOWN_SOURCE_UNAVAILABLE",risk_blocked=False,
+            relative_weakness_watch=False))
+        require(price_risk.get("risk_blocked") in (True,False)
+                and price_risk.get("relative_weakness_watch",False) in (True,False),
+                "DRAWDOWN_INVALID_DECISION_FLAG")
         if quality["governance_blocked"]:
             state="PAUSE_GOVERNANCE_REVIEW"
         elif quality["failed"]:
             state="PAUSE_FORMAL_QUALITY_FAIL_REVIEW"
+        elif price_risk["risk_blocked"]:
+            state="PAUSE_RECENT_DRAWDOWN_REVIEW"
+        elif price_risk["relative_weakness_watch"]:
+            state="WATCH_MARKET_RELATIVE_WEAKNESS"
         elif quality["red_flags"] or quality["etf_convergence_watch"]:
             state="REVIEW_OPERATING_VALUATION_OR_CAPITAL_RISKS"
         else:
             state="WAIT_FOR_VERIFIED_ENTRY_AND_RISK_RETURN"
         outputs.append(dict(code=code,name=row.get("name"),source_lane="TOP20_SHADOW",
             source_base_rank=row.get("prior_base_rank"),
-            valuation=valuation,quality=quality,
+            valuation=valuation,quality=quality,price_risk=price_risk,
             earnings_revision=NO_REVISION,insider_buy_sell=NO_INSIDER,
             entry_timing=NO_ENTRY,asymmetric_risk_reward=NO_RETURN,
             actual_portfolio_capacity=NO_HOLDINGS,
@@ -187,6 +210,8 @@ def assess(quality_report,readiness,work_queue,config):
     return dict(schema=SCHEMA,model="V8.10.8",asof_price_date=date,
         estimate_vintage=vintage,issuer_count=len(outputs),
         source_top20_order_preserved=True,formal_13_gates_unchanged=True,
+        provisional_drawdown_shadow_present=drawdown is not None,
+        drawdown_research_does_not_create_fourteenth_formal_gate=True,
         formal_Aplus_added=0,issuer_buy_orders_created=0,
         insider_missing_is_not_zero_net_buy_sell=True,
         historical_PIT_and_probability_calibration_still_missing=True,
@@ -244,7 +269,13 @@ def markdown(report):
         lines.append("|"+str(row["source_base_rank"])+"|"+row["code"]+" "+
                      str(row.get("name") or "")+"|"+base+"|"+stress+
                      "|"+note+"|不得發出買進指令|")
-    lines+=["","## 缺少的決策證據",""]
+    lines+=["","## 近期急跌與相對弱勢研究（不構成買賣訊號）","",
+      "|股票|近期風險狀態|決策分流|","|---|---|---|"]
+    for item in report["outputs"]:
+        lines.append("|"+item["code"]+" "+str(item.get("name") or "")+"|"+
+                     item["price_risk"]["status"]+"|"+item["action_review_state"]+"|")
+    lines+=["","未調整除權息、完整交易日歷及事前PIT未認證；缺件不可視為風險為零。",
+            "","## 缺少的決策證據",""]
     for field,status in report["missing_data_requirements"].items():
         lines.append("- "+field+"："+status)
     lines+=["",
@@ -262,8 +293,13 @@ def publish(data_root):
         config=root/"config/institutional_research.json")
     originals={k:p.read_bytes() for k,p in targets.items()}
     docs={k:json.loads(v) for k,v in originals.items()}
-    report=assess(docs["quality"],docs["readiness"],docs["work_queue"],docs["config"])
+    drawdown_path=root/"rankings/latest_recent_drawdown_shadow.json"
+    risk_bytes=drawdown_path.read_bytes() if drawdown_path.exists() else None
+    drawdown=json.loads(risk_bytes) if risk_bytes is not None else None
+    report=assess(docs["quality"],docs["readiness"],docs["work_queue"],docs["config"],drawdown)
     report["source_sha256"]={k:hashlib.sha256(b).hexdigest() for k,b in originals.items()}
+    if risk_bytes is not None:
+        report["source_sha256"]["drawdown"]=hashlib.sha256(risk_bytes).hexdigest()
     path=root/"rankings"
     atomic_json(path/"latest_buy_decision_shadow.json",report)
     content=markdown(report)
