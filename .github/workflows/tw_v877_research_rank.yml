@@ -71,8 +71,10 @@ on:
       - 'scripts/v8a9_8383_original_archive.py'
       - 'scripts/tsmc_original_statements.py'
       - 'scripts/honhai_original_statements.py'
+      - 'scripts/honhai_original_review_packet.py'
       - 'scripts/honhai_twse_q2_source.py'
       - 'tests/test_2317_twse_q2_source.py'
+      - 'tests/test_2317_review_packet.py'
       - 'scripts/tsmc_sec_filing_archive.py'
       - 'tw-market-data/evidence/v880/auditor_scope_watch/**'
       - 'scripts/v8a8_forward_top30_0050.py'
@@ -167,8 +169,10 @@ on:
       - 'scripts/v8a9_8383_original_archive.py'
       - 'scripts/tsmc_original_statements.py'
       - 'scripts/honhai_original_statements.py'
+      - 'scripts/honhai_original_review_packet.py'
       - 'scripts/honhai_twse_q2_source.py'
       - 'tests/test_2317_twse_q2_source.py'
+      - 'tests/test_2317_review_packet.py'
       - 'scripts/tsmc_sec_filing_archive.py'
       - 'tw-market-data/evidence/v880/auditor_scope_watch/**'
       - 'scripts/v8a8_forward_top30_0050.py'
@@ -268,6 +272,7 @@ jobs:
           python -m unittest -v tests.test_tsmc_original_statements
           python -m unittest -v tests.test_2317_original_statements
           python -m unittest -v tests.test_2317_twse_q2_source
+          python -m unittest -v tests.test_2317_review_packet
           python -m unittest -v tests.test_tsmc_sec_filing_archive
           python -m unittest -v tests.test_footwear_review
           python -m unittest -v tests.test_earnings_version_review
@@ -312,6 +317,8 @@ jobs:
         run: python scripts/v891_gate_certification.py --issue-only
       - name: Produce dated scenarios and evidence decisions
         run: python scripts/run_research_pipeline.py --phase core
+      - name: Prepare SHA-verified 2317 eight-quarter auditor review locations without a PASS
+        run: python scripts/honhai_original_review_packet.py
       - name: Recheck current Top10 issuers after ranking changes before publication
         if: github.event_name != 'pull_request'
         run: python scripts/refresh_top10_sources.py
@@ -358,6 +365,7 @@ jobs:
               python scripts/honhai_original_statements.py
               python scripts/v891_gate_certification.py --issue-only
               python scripts/run_research_pipeline.py --phase core
+              python scripts/honhai_original_review_packet.py
               python scripts/refresh_top10_sources.py
             fi
             python scripts/v897_freeze_model_vintage.py --git-source-sha "$(git rev-parse HEAD)" --register-benchmark
