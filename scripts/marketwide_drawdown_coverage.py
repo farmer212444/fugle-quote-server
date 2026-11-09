@@ -134,6 +134,11 @@ def build(root):
     # from a ranked subset or the existence of optional history.
     current = {k:values[-1][1] for k,values in snap.items()
                if values and values[-1][0] == asof}
+    raw_current = json.loads((root/"prices"/(asof+".json")).read_text(encoding="utf-8"))
+    # All original snapshot members must survive; absence of a positive close
+    # is pending evidence, NOT zero return or disappearance from the universe.
+    missing_quotes = [r for r in raw_current
+                      if (r["market"],r["code"]) not in current]
     history, history_issues, history_receipts = history_closes(root, asof, set(current))
     benchmark, benchmark_receipts = load_benchmark(root, asof, vintage)
     days = reference_windows(benchmark, asof)
@@ -190,13 +195,32 @@ def build(root):
                  windows=windows)
         row.update(index.get(code,{}))
         all_rows.append(row)
+    for missing in missing_quotes:
+        code,market=missing["code"],missing["market"]
+        all_rows.append(dict(
+            code=code,market=market,name=index.get(code,{}).get("research_name"),
+            latest_close=None,status="PENDING_MISSING_CURRENT_CLOSE",
+            provisional_pause=False,risk_evidence_is_not_formal_trade_permission=True,
+            has_issuer_history_file=False,history_issue=None,price_conflict=False,
+            current_company_actions_verified=False,
+            historical_PIT_at_entry_verified=False,
+            reference_calendar_is_not_individual_trading_calendar=True,
+            session_coverage={str(n):False for n in WINDOWS},
+            missing_reference_sessions={str(n):None for n in WINDOWS},
+            windows={str(n):None for n in WINDOWS},
+            **index.get(code,{})))
+    all_rows.sort(key=lambda r:(r["market"],r["code"]))
+    ensure(len(all_rows)==len(raw_current), "SNAPSHOT_UNIVERSE_NOT_ACCOUNTED_FOR")
     counts=collections.Counter(r["status"] for r in all_rows)
     markets=collections.Counter(r["market"] for r in all_rows)
     coverage={str(n):sum(r["session_coverage"][str(n)] for r in all_rows)
               for n in WINDOWS}
     return dict(schema=SCHEMA,model="V8.10.8",
         price_date=asof,estimate_vintage=vintage_label,
-        marketwide_current_quotes=len(all_rows),
+        marketwide_snapshot_rows=len(raw_current),
+        marketwide_current_quotes=len(current),
+        missing_or_invalid_current_close_count=len(missing_quotes),
+        snapshot_rows_accounted_for=len(all_rows),
         by_market=dict(markets),issuer_history_available=len(history),
         reference_calendar_sessions=len(days or []),
         reference_calendar_taiex_tr_not_issuer_exchange_calendar=True,
@@ -221,7 +245,9 @@ def markdown(report):
       "", "價格："+report["price_date"]+"；估值形成："+report["estimate_vintage"],
       "此為未經除權息調整之價格研究，不能推定完整 PIT 回測、下單可行性或 A+。",
       "", "|指標|數量|","|---|---:|",
-      "|本日有收盤價公司筆數|"+str(report["marketwide_current_quotes"])+"|",
+      "|本日上市櫃收盤快照筆數|"+str(report["marketwide_snapshot_rows"])+"|",
+      "|有效正數收盤價筆數|"+str(report["marketwide_current_quotes"])+"|",
+      "|空值或無效收盤價、仍保留待查|"+str(report["missing_or_invalid_current_close_count"])+"|",
       "|有個股歷史資料檔|"+str(report["issuer_history_available"])+"|"]
     for n,count in report["coverage_counts"].items():
         lines.append("|完整 "+n+" 個基準交易日區間的價差可計算|"+str(count)+"|")
@@ -256,7 +282,9 @@ def main():
     p.add_argument("--data-root",default="tw-market-data")
     args=p.parse_args()
     doc=publish(args.data_root)
-    print(json.dumps(dict(total=doc["marketwide_current_quotes"],
+    print(json.dumps(dict(snapshot_records=doc["marketwide_snapshot_rows"],
+              valid_closes=doc["marketwide_current_quotes"],
+              missing_closes=doc["missing_or_invalid_current_close_count"],
               coverage=doc["coverage_counts"],
               paused=doc["status_counts"].get("PAUSE_SHARP_DRAWDOWN_RESEARCH",0),
               official_Aplus=0,trades=0),ensure_ascii=False))
