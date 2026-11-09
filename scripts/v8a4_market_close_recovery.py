@@ -14,6 +14,7 @@ import time
 import urllib.parse
 import urllib.request
 from pathlib import Path
+from tw_model_v880.freshness import PUBLISHABLE_CLOSE_TIME
 
 DATE=re.compile(r"20[0-9]{2}-[0-9]{2}-[0-9]{2}\Z")
 ORDINARY=re.compile(r"[0-9]{4}\Z")
@@ -162,7 +163,7 @@ def reconcile_sessions(gathered,source_urls,rawdir,now,closed_sessions=(),recove
     closed={r["date"] for r in closed_sessions
             if dt.datetime.fromisoformat(r["observed_public_at"])<=now}
     expected=local.date()
-    if (local.hour,local.minute)<(14,20):
+    if (local.hour,local.minute)<PUBLISHABLE_CLOSE_TIME:
         expected-=dt.timedelta(days=1)
     while expected.weekday()>=5 or expected.isoformat() in closed:
         expected-=dt.timedelta(days=1)

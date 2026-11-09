@@ -7,6 +7,9 @@ on:
       - '.github/workflows/tw_daily_prices.yml'
       - 'scripts/v8a4_market_close_recovery.py'
       - 'scripts/execution_quote_archive.py'
+      - 'scripts/collect_official_prices.py'
+      - 'tw_model_v880/freshness.py'
+      - 'tests/test_collect_official_prices.py'
       - 'tests/test_v8a4_market_close_recovery.py'
   schedule:
     # Taiwan market close: schedule uses UTC, notes use Asia/Taipei (UTC+8).
@@ -32,157 +35,17 @@ jobs:
         with:
           fetch-depth: 0
       - name: Verify strictly dated bulk-market exchange fallback
-        run: python -m unittest -v tests.test_v8a4_market_close_recovery
+        run: python -m unittest -v tests.test_v8a4_market_close_recovery tests.test_collect_official_prices tests.test_v8a3_price_freshness
       - name: Capture and validate latest TWSE TPEx prices
         shell: bash
         env:
           PROBE_ONLY: ${{ github.event_name == 'schedule' && github.event.schedule == '40 5 * * 1-5' }}
         run: |
-          python3 - <<'PY'
-          import datetime as dt
-          import hashlib
-          import json
-          import os
-          import pathlib
-          import re
-          import urllib.request
-          from scripts.execution_quote_archive import add_execution_fields, persist_price_originals
-
-          OUTPUT = pathlib.Path('tw-market-data/prices')
-          RAW = pathlib.Path('market-raw-daily')
-          RAW.mkdir(exist_ok=True)
-          TAIPEI = dt.timezone(dt.timedelta(hours=8))
-          today = dt.datetime.now(TAIPEI).date().isoformat()
-          urls = {
-              'TWSE': 'https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL',
-              'TPEX': 'https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_close_quotes',
-          }
-
-          def date_iso(raw):
-              s = str(raw or '').strip().replace('/', '').replace('-', '')
-              if not re.fullmatch(r'\d{7}|\d{8}', s):
-                  raise ValueError('Invalid exchange trade date: ' + repr(raw))
-              if len(s) == 7:
-                  s = f'{int(s[:3]) + 1911:04d}' + s[3:]
-              value = dt.date(int(s[:4]), int(s[4:6]), int(s[6:8]))
-              return value.isoformat()
-
-          def price(raw):
-              s = str(raw or '').strip().replace(',', '')
-              if s in ('', '--', '-', '---', 'N/A', 'nan'):
-                  return None
-              try:
-                  v = float(s)
-              except ValueError:
-                  return None
-              return v if 0 < v < 1000000 else None
-
-          def integer(raw):
-              s = str(raw or '').strip().replace(',', '')
-              return int(s) if re.fullmatch(r'\d+', s) else None
-
-          def fetch(market, url):
-              print('FETCH', market, url, flush=True)
-              req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0 (research archival collector)'})
-              with urllib.request.urlopen(req, timeout=65) as response:
-                  data = response.read(20000001)
-              if not 1000 < len(data) <= 20000000 or b'<html' in data[:200].lower():
-                  raise ValueError(market + ' did not return plausible JSON')
-              (RAW / (market.lower() + '.json')).write_bytes(data)
-              rows = json.loads(data.decode('utf-8-sig'))
-              if not isinstance(rows, list) or len(rows) < 300:
-                  raise ValueError(market + ' fewer than 300 raw rows')
-              parsed = []
-              all_dates = set()
-              for record in rows:
-                  if not isinstance(record, dict):
-                      continue
-                  d = date_iso(record.get('Date'))
-                  all_dates.add(d)
-                  code = str(record.get('Code' if market == 'TWSE' else 'SecuritiesCompanyCode', '')).strip()
-                  if not re.fullmatch(r'\d{4}', code):
-                      continue  # Provisional ordinary-share universe; exclude warrants/ETFs/foreign identifiers.
-                  raw_close = record.get('ClosingPrice' if market == 'TWSE' else 'Close')
-                  close = price(raw_close)
-                  name = str(record.get('Name' if market == 'TWSE' else 'SecuritiesCompanyName', record.get('Name', ''))).strip()
-                  volume = integer(record.get('TradeVolume' if market == 'TWSE' else 'TradingShares'))
-                  amount = integer(record.get('TradeValue' if market == 'TWSE' else 'TransactionAmount'))
-                  parsed.append({'market': market, 'date': d, 'code': code, 'name': name,
-                                 'close': close, 'volume_shares': volume, 'turnover_ntd': amount})
-                  parsed[-1] = add_execution_fields(parsed[-1], record, market)
-              if len(all_dates) != 1 or not parsed or len({x['code'] for x in parsed}) != len(parsed):
-                  raise ValueError(market + ' inconsistent trade dates, tickers or no 4-digit stocks')
-              if sum(x['close'] is not None for x in parsed) < 250:
-                  raise ValueError(market + ' insufficient valid closing prices')
-              return parsed, next(iter(all_dates)), hashlib.sha256(data).hexdigest()
-
-          from scripts.v8a4_market_close_recovery import collect_openapi_sources
-          gathered, primary_errors = collect_openapi_sources(urls, fetch)
-          for market, error in primary_errors.items():
-              print(f'::warning::OFFICIAL_{market}_OPENAPI_UNAVAILABLE {error}; trying strictly dated official source.', flush=True)
-          if os.environ.get('PROBE_ONLY', '').lower() == 'true':
-              dates = {market: value[1] if value is not None else 'UNAVAILABLE'
-                       for market, value in gathered.items()}
-              print(f'::notice::EARLY_PROBE_ONLY exchange_sessions={dates}; no price files or ranking will be published.')
-              raise SystemExit(0)
-          # Both feeds can lag together. Comparing only their two dates misses
-          # that case and leaves a successful collector publishing yesterday.
-          from scripts.v8a4_market_close_recovery import reconcile_sessions
-          from tw_model_v880.freshness import load_dated_exchange_closures
-          gathered, source_routes, repaired = reconcile_sessions(
-              gathered, urls, RAW, dt.datetime.now(TAIPEI),
-              load_dated_exchange_closures('tw-market-data'))
-          twse, tdate, thash = gathered['TWSE']
-          tpex, pdate, phash = gathered['TPEX']
-          for market in repaired:
-              print(f'::notice::OFFICIAL_{market}_DATED_FALLBACK_USED asof={tdate}', flush=True)
-          if tdate != pdate:
-              raise ValueError(f'Exchange dates differ even after official dated recovery TWSE={tdate}, TPEx={pdate}')
-          latest = OUTPUT / 'latest_manifest.json'
-          prior_date = json.loads(latest.read_text(encoding='utf-8'))['date'] if latest.exists() else None
-          if prior_date and tdate < prior_date:
-              raise ValueError(f'EXCHANGE_DATE_REGRESSION: incoming={tdate} published={prior_date}')
-          lag_days = (dt.date.fromisoformat(today) - dt.date.fromisoformat(tdate)).days
-          if not 0 <= lag_days <= 4:
-              print(f'::warning::NO_PUBLISHABLE_SESSION today={today} exchange={tdate}: waiting for verified exchange data')
-          else:
-              if lag_days > 0:
-                  print(f'::notice::EXCHANGE_LATEST_SESSION {tdate}; current Taipei date {today}. Holiday, morning, or delayed publication may apply.')
-              all_rows = sorted(twse + tpex, key=lambda x: (x['market'], x['code']))
-              if len({(x['market'], x['code']) for x in all_rows}) != len(all_rows):
-                  raise ValueError('Duplicate market ticker')
-              OUTPUT.mkdir(parents=True, exist_ok=True)
-              payload = (json.dumps(all_rows, ensure_ascii=False, sort_keys=True, separators=(',', ':')) + '\n').encode('utf-8')
-              checksum = hashlib.sha256(payload).hexdigest()
-              dest = OUTPUT / (tdate + '.json')
-              if dest.exists() and hashlib.sha256(dest.read_bytes()).hexdigest() == checksum:
-                  print('UNCHANGED_PRICE_DATA', tdate, len(all_rows))
-              else:
-                  # Preserve a dated correction history. Never overwrite with a stale API session.
-                  if dest.exists():
-                      prior = dest.read_bytes()
-                      original = hashlib.sha256(prior).hexdigest()
-                      revision = OUTPUT / 'revisions' / tdate / (original + '.json')
-                      revision.parent.mkdir(parents=True, exist_ok=True)
-                      if not revision.exists():
-                          revision.write_bytes(prior)
-                  dest.write_bytes(payload)
-              persist_price_originals(OUTPUT, RAW, tdate, checksum, {'TWSE': thash, 'TPEX': phash}, source_routes)
-              manifest = json.dumps({
-                  'date': tdate, 'TWSE_rows': len(twse), 'TPEX_rows': len(tpex),
-                  'total': len(all_rows), 'path': dest.as_posix(),
-                  'normalized_sha256': checksum,
-                  'raw_source_sha256': {'TWSE': thash, 'TPEX': phash},
-                  'sources': source_routes, 'unadjusted_quotes': True,
-                  'security_master_verified': False,
-                  'note': 'Latest daily unadjusted close; not adjusted for cash dividends, splits or corporate actions.'
-              }, ensure_ascii=False, indent=2) + '\n'
-              if not latest.exists() or latest.read_text(encoding='utf-8') != manifest:
-                  latest.write_text(manifest, encoding='utf-8')
-                  print('PUBLISHED', tdate, len(all_rows), checksum)
-              else:
-                  print('LATEST_REFERENCE_UNCHANGED', tdate, len(all_rows))
-          PY
+          options=()
+          if [ "$PROBE_ONLY" = 'true' ]; then
+            options+=(--probe-only)
+          fi
+          python scripts/collect_official_prices.py "${options[@]}"
       - name: Save raw official price snapshot
         if: always()
         uses: actions/upload-artifact@v4
