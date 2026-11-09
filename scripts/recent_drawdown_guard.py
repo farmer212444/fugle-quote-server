@@ -156,6 +156,12 @@ def build(root):
             if start in market_index and end in market_index:
                 relative = (current / sampled[0][1] -
                             market_index[end] / market_index[start]) * 100
+        # Floating arithmetic may produce -9.999999999999998 for an exact -10%.
+        # Stabilize threshold decisions at micro-percentage-point precision.
+        ret5 = round(ret5, 6) if ret5 is not None else None
+        ret10 = round(ret10, 6) if ret10 is not None else None
+        from_peak = round(from_peak, 6)
+        relative = round(relative, 6) if relative is not None else None
         blocked = ((ret5 is not None and ret5 <= -15)
                    or (ret10 is not None and ret10 <= -20)
                    or (count >= 6 and from_peak <= -20))
