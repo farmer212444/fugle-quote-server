@@ -2,7 +2,7 @@
   "schema": "V889_OFFICIAL_TWSE_ISSUER_MONTHLY",
   "issuer": "4912",
   "market": "TWSE",
-  "price_reference_asof": "2026-11-06",
+  "price_reference_asof": "2026-11-09",
   "source_type": "OFFICIAL_TWSE_MONTHLY_STOCK_DAY",
   "original_raw_responses_preserved_in_actions_artifact_not_repository": false,
   "durable_original_months": 25,
@@ -7766,22 +7766,22 @@
     },
     "2026-11": {
       "source_url": "https://www.twse.com.tw/rwd/zh/afterTrading/STOCK_DAY?date=20261101&stockNo=4912&response=json",
-      "original_response_sha256": "c71a9286e8fbac77912daa8787792cf6b01c8400dff256fa581016f228e54bd3",
-      "captured_at_utc": "2026-11-06T13:57:39.828195+00:00",
+      "original_response_sha256": "10cd9ba7752116b205e2a9fb547a72dd89d000e1ca9a1aa1a5449e709c1f26cb",
+      "captured_at_utc": "2026-11-09T20:38:38.415695+00:00",
       "original_archive": {
         "schema": "HISTORICAL_EXCHANGE_ORIGINAL_V1",
         "market": "TWSE",
         "identity": "4912-2026-11",
         "source_url": "https://www.twse.com.tw/rwd/zh/afterTrading/STOCK_DAY?date=20261101&stockNo=4912&response=json",
-        "captured_at_utc": "2026-11-06T13:57:39.828195+00:00",
-        "archive_path": "prices/originals/history/TWSE/4912-2026-11/c71a9286e8fbac77912daa8787792cf6b01c8400dff256fa581016f228e54bd3.json.gz",
-        "original_response_sha256": "c71a9286e8fbac77912daa8787792cf6b01c8400dff256fa581016f228e54bd3",
-        "parsed_rows_sha256": "4f4aac7bc1ed84c852dbb4e435a3bf9fd582e688b62f2e3c9adf8c162fccd060",
-        "bytes": 1319,
+        "captured_at_utc": "2026-11-09T20:38:38.415695+00:00",
+        "archive_path": "prices/originals/history/TWSE/4912-2026-11/10cd9ba7752116b205e2a9fb547a72dd89d000e1ca9a1aa1a5449e709c1f26cb.json.gz",
+        "original_response_sha256": "10cd9ba7752116b205e2a9fb547a72dd89d000e1ca9a1aa1a5449e709c1f26cb",
+        "parsed_rows_sha256": "720abaf5262dc056d4cfd875b8308b4aeb2cdab886e3403b937b7d009a621df5",
+        "bytes": 1405,
         "issuer_publication_pit_verified": false,
         "contemporaneous_universe_verified": false,
         "fillability_verified": false,
-        "receipt_path": "prices/originals/history/TWSE/4912-2026-11/89f741bd835eb889308429de1edb4e021d771addbcf0aff1f7afad96eb12fcd5.json"
+        "receipt_path": "prices/originals/history/TWSE/4912-2026-11/699f0e41aa59f339b84eaa7cb04fb2f84ca6fcf79bfc7b671df718530ea0ea14.json"
       },
       "original_exchange_signature_verified": false,
       "rows": [
@@ -7859,11 +7859,41 @@
           "close_at": "2026-11-06T13:30:00+08:00",
           "fillability_verified": false,
           "session_times_are_scheduled_not_broker_fills": true
+        },
+        {
+          "date": "2026-11-09",
+          "code": "4912",
+          "market": "TWSE",
+          "volume_shares": 954586,
+          "turnover_ntd": 79445548,
+          "close": 84.2,
+          "high": 86.2,
+          "low": 78.4,
+          "open": 80.9,
+          "open_at": "2026-11-09T09:00:00+08:00",
+          "close_at": "2026-11-09T13:30:00+08:00",
+          "fillability_verified": false,
+          "session_times_are_scheduled_not_broker_fills": true
         }
       ]
     }
   },
   "sessions": [
+    {
+      "date": "2026-11-09",
+      "code": "4912",
+      "market": "TWSE",
+      "volume_shares": 954586,
+      "turnover_ntd": 79445548,
+      "close": 84.2,
+      "high": 86.2,
+      "low": 78.4,
+      "open": 80.9,
+      "open_at": "2026-11-09T09:00:00+08:00",
+      "close_at": "2026-11-09T13:30:00+08:00",
+      "fillability_verified": false,
+      "session_times_are_scheduled_not_broker_fills": true
+    },
     {
       "date": "2026-11-06",
       "code": "4912",
@@ -15143,17 +15173,17 @@
   "liquidity": {
     "5": {
       "sessions": 5,
-      "first": "2026-11-02",
-      "last": "2026-11-06",
-      "median_turnover_ntd": 121322355,
-      "min_turnover_ntd": 118300159,
+      "first": "2026-11-03",
+      "last": "2026-11-09",
+      "median_turnover_ntd": 119599696,
+      "min_turnover_ntd": 79445548,
       "zero_turnover_sessions": 0,
       "idealized_5m_exit_sessions_at_20pct": 0.21
     },
     "20": {
       "sessions": 20,
-      "first": "2026-10-01",
-      "last": "2026-11-06",
+      "first": "2026-10-02",
+      "last": "2026-11-09",
       "median_turnover_ntd": 65020767.5,
       "min_turnover_ntd": 19416748,
       "zero_turnover_sessions": 0,
@@ -15161,9 +15191,9 @@
     },
     "60": {
       "sessions": 60,
-      "first": "2026-08-04",
-      "last": "2026-11-06",
-      "median_turnover_ntd": 50013367.5,
+      "first": "2026-08-05",
+      "last": "2026-11-09",
+      "median_turnover_ntd": 50434500.0,
       "min_turnover_ntd": 13943012,
       "zero_turnover_sessions": 0,
       "idealized_5m_exit_sessions_at_20pct": 0.5
