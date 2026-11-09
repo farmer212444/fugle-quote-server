@@ -2,6 +2,9 @@
 import datetime as dt
 import hashlib
 import json
+import os
+import subprocess
+import sys
 import tempfile
 import unittest
 from pathlib import Path
@@ -48,6 +51,16 @@ class ReviewerPrepTests(unittest.TestCase):
                                formal_gate_pass=False)])
         (self.root/h.MANIFEST).write_text(json.dumps(m,ensure_ascii=False),encoding="utf-8")
         return path
+
+    def test_direct_cli_import_from_outside_project(self):
+        env=dict(os.environ)
+        env.pop("PYTHONPATH",None)
+        script=Path(p.__file__).resolve()
+        with tempfile.TemporaryDirectory() as cwd:
+            proc=subprocess.run([sys.executable,str(script),"--help"],
+                                cwd=cwd,env=env,capture_output=True,text=True,timeout=20)
+        self.assertEqual(proc.returncode,0,proc.stderr)
+        self.assertIn("--data-root",proc.stdout)
 
     def test_no_manifest_is_unknown_not_formal_missing_or_pass(self):
         report=p.build_packet(self.root,"2026-Q2",ASOF)
