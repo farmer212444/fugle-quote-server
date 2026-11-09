@@ -38,7 +38,9 @@ jobs:
           valid={(r['market'],r['code']) for r in source
                  if isinstance(r.get('close'),(int,float)) and r['close']>0}
           assert report['marketwide_current_quotes']==len(valid)
-          assert report['marketwide_current_quotes']==len(report['issuers'])
+          assert report['marketwide_snapshot_rows']==len(source)
+          assert report['snapshot_rows_accounted_for']==len(report['issuers'])==len(source)
+          assert report['missing_or_invalid_current_close_count']==len(source)-len(valid)
           assert report['formal_Aplus_added']==0 and report['trade_signals_created']==0
           assert report['calibrated_oos_strategy_improvement'] is False
           for k,n in report['coverage_counts'].items():
