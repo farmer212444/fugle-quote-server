@@ -2,9 +2,9 @@
   "schema": "EXPECTED_RETURN_READINESS_V1",
   "status": "NOT_ESTIMABLE_WITH_CURRENT_EVIDENCE",
   "source_model": "V8.10.8",
-  "source_estimate_vintage": "2026-11-09T16:16:37.671488+08:00",
-  "research_price_date": "2026-11-06",
-  "latest_archived_official_price_date": "2026-11-06",
+  "source_estimate_vintage": "2026-11-09T16:57:25.926774+08:00",
+  "research_price_date": "2026-11-09",
+  "latest_archived_official_price_date": "2026-11-09",
   "horizon_evidence": [
     {
       "holding_sessions": 21,
@@ -24,14 +24,14 @@
   ],
   "annual_calibration_feasibility": {
     "status": "HISTORICAL_REPLAY_PROTOCOL_REQUIRED",
-    "holding_calendar_days": 420,
+    "holding_calendar_days": 417,
     "minimum_train_cohorts": 12,
     "minimum_oos_cohorts": 12,
     "minimum_total_nonoverlapping_cohorts": 24,
     "maximum_nonoverlapping_cohorts_with_same_terminal_date": 1,
     "fixed_target_only_can_satisfy_policy": false,
-    "minimum_history_span_days_ignoring_embargo": 10080,
-    "minimum_history_span_years_ignoring_embargo": 27.6,
+    "minimum_history_span_days_ignoring_embargo": 10008,
+    "minimum_history_span_years_ignoring_embargo": 27.4,
     "waiting_until_target_date_alone_resolves_calibration": false,
     "exact_horizon_industry_method_matches_still_required": true,
     "historical_replay_is_a_separate_protocol_not_backdated_prospective_forecasts": true
@@ -49,10 +49,10 @@
   "trading_orders_created": false,
   "annual_engine_context_matches": true,
   "annual_engine_status": "BLOCKED_ANNUAL_CALIBRATION_DESIGN_REQUIRES_HISTORICAL_REPLAY",
-  "annual_engine_report_sha256": "38fe706ae057b140ee60b866736860ba0faf0dd414b35cfc0febac75130b877f",
+  "annual_engine_report_sha256": "df9051acac1665cd787ed68f745e1c94af009fb6890fb8b9c0f24e3e06d12994",
   "source_sha256": {
-    "research": "6589fee36f22ee8be8b7a6049d342787523f8c15ee34f87930d6a2abc691dccd",
-    "return_search": "7d19cfe201b4d0bcea96f099dccc0b212b431105cd22b4fdbfa755cd04bf57ff",
-    "prices": "b70c03e12c766902e8463377ba3f060de80f16d72194ec3f64de80cb1a017032"
+    "research": "4dd80e889b6c2dae68a5d3d851c60b163d95e8afdb2c9093aa21dec357b7f614",
+    "return_search": "ff80e7f70110d589acaa1d5aec0f92ce667e34cadb1c7a16c43fc5d153858ffe",
+    "prices": "f11717eadf98702ac2f8535ad3f34ef1772ccb6ca53aa714cc9151cd10ff6933"
   }
 }

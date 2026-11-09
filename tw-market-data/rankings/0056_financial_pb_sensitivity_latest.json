@@ -1,10 +1,10 @@
 {
   "schema": "V8B7_0056_FINANCIAL_ROE_PB_CONDITIONAL_HURDLE_SENSITIVITY_NOT_PRICE_VALUATION",
   "source_hurdle_file": "rankings/0056_financial_pb_hurdle_latest.json",
-  "source_hurdle_sha256": "b0e791ea4875099d53d12b57744b1196dc529d71f6245906228b0535b818c04b",
-  "source_model_vintage": "2026-11-09T16:16:37.671488+08:00",
+  "source_hurdle_sha256": "3506320e329a07d050500adaa8304292808f14d2d10edd1ed2e46b6d9f88e43f",
+  "source_model_vintage": "2026-11-09T16:57:25.926774+08:00",
   "holdings_date": "2026-10-22",
-  "official_close_date": "2026-11-06",
+  "official_close_date": "2026-11-09",
   "assumed_cost_of_equity_pct": [
     8,
     10,
@@ -30,13 +30,13 @@
       "code": "2883",
       "name": "凱基金",
       "BVPS_2026q2_ntd": 25.28,
-      "official_close_ntd": 33.65,
-      "P_B": 1.3310917721518987,
+      "official_close_ntd": 34.55,
+      "P_B": 1.3666930379746833,
       "H1_EPS_2026": 1.64,
       "annualized_H1_EPS_over_ending_BVPS_pct": 12.974683544303797,
-      "base_assumption_gap_pp": -0.6570411392405051,
-      "min_conditional_hurdle_gap_pp": -3.9814082278481013,
-      "max_conditional_hurdle_gap_pp": 2.9984177215189867,
+      "base_assumption_gap_pp": -0.4078322784810129,
+      "min_conditional_hurdle_gap_pp": -3.8746044303797476,
+      "max_conditional_hurdle_gap_pp": 3.425632911392402,
       "positive_gap_scenario_count": 4,
       "negative_gap_scenario_count": 5,
       "zero_gap_scenario_count": 0,
@@ -45,64 +45,64 @@
         {
           "Ke_pct": 8,
           "g_pct": 0,
-          "required_roe_pct": 10.64873417721519,
-          "gap_vs_h1_proxy_pp": -2.325949367088608,
+          "required_roe_pct": 10.933544303797467,
+          "gap_vs_h1_proxy_pp": -2.0411392405063307,
           "h1_proxy_above_required": true
         },
         {
           "Ke_pct": 8,
           "g_pct": 3,
-          "required_roe_pct": 9.655458860759493,
-          "gap_vs_h1_proxy_pp": -3.319224683544304,
+          "required_roe_pct": 9.833465189873417,
+          "gap_vs_h1_proxy_pp": -3.1412183544303804,
           "h1_proxy_above_required": true
         },
         {
           "Ke_pct": 8,
           "g_pct": 5,
-          "required_roe_pct": 8.993275316455696,
-          "gap_vs_h1_proxy_pp": -3.9814082278481013,
+          "required_roe_pct": 9.10007911392405,
+          "gap_vs_h1_proxy_pp": -3.8746044303797476,
           "h1_proxy_above_required": true
         },
         {
           "Ke_pct": 10,
           "g_pct": 0,
-          "required_roe_pct": 13.310917721518987,
-          "gap_vs_h1_proxy_pp": 0.33623417721518933,
+          "required_roe_pct": 13.666930379746834,
+          "gap_vs_h1_proxy_pp": 0.6922468354430364,
           "h1_proxy_above_required": false
         },
         {
           "Ke_pct": 10,
           "g_pct": 3,
-          "required_roe_pct": 12.31764240506329,
-          "gap_vs_h1_proxy_pp": -0.6570411392405067,
+          "required_roe_pct": 12.566851265822784,
+          "gap_vs_h1_proxy_pp": -0.40783227848101333,
           "h1_proxy_above_required": true
         },
         {
           "Ke_pct": 10,
           "g_pct": 5,
-          "required_roe_pct": 11.655458860759493,
-          "gap_vs_h1_proxy_pp": -1.319224683544304,
+          "required_roe_pct": 11.833465189873417,
+          "gap_vs_h1_proxy_pp": -1.1412183544303804,
           "h1_proxy_above_required": true
         },
         {
           "Ke_pct": 12,
           "g_pct": 0,
-          "required_roe_pct": 15.973101265822784,
-          "gap_vs_h1_proxy_pp": 2.9984177215189867,
+          "required_roe_pct": 16.4003164556962,
+          "gap_vs_h1_proxy_pp": 3.425632911392402,
           "h1_proxy_above_required": false
         },
         {
           "Ke_pct": 12,
           "g_pct": 3,
-          "required_roe_pct": 14.979825949367088,
-          "gap_vs_h1_proxy_pp": 2.0051424050632907,
+          "required_roe_pct": 15.30023734177215,
+          "gap_vs_h1_proxy_pp": 2.325553797468352,
           "h1_proxy_above_required": false
         },
         {
           "Ke_pct": 12,
           "g_pct": 5,
-          "required_roe_pct": 14.31764240506329,
-          "gap_vs_h1_proxy_pp": 1.3429588607594933,
+          "required_roe_pct": 14.566851265822784,
+          "gap_vs_h1_proxy_pp": 1.5921677215189867,
           "h1_proxy_above_required": false
         }
       ],
@@ -115,13 +115,13 @@
       "code": "2887",
       "name": "台新新光金",
       "BVPS_2026q2_ntd": 27.16,
-      "official_close_ntd": 38.45,
-      "P_B": 1.4156848306332843,
+      "official_close_ntd": 39.95,
+      "P_B": 1.4709131075110458,
       "H1_EPS_2026": 1.69,
       "annualized_H1_EPS_over_ending_BVPS_pct": 12.444771723122239,
-      "base_assumption_gap_pp": 0.4650220913107517,
-      "min_conditional_hurdle_gap_pp": -3.197717231222386,
-      "max_conditional_hurdle_gap_pp": 4.543446244477172,
+      "base_assumption_gap_pp": 0.851620029455083,
+      "min_conditional_hurdle_gap_pp": -3.0320324005891006,
+      "max_conditional_hurdle_gap_pp": 5.20618556701031,
       "positive_gap_scenario_count": 5,
       "negative_gap_scenario_count": 4,
       "zero_gap_scenario_count": 0,
@@ -130,64 +130,64 @@
         {
           "Ke_pct": 8,
           "g_pct": 0,
-          "required_roe_pct": 11.325478645066275,
-          "gap_vs_h1_proxy_pp": -1.1192930780559642,
+          "required_roe_pct": 11.767304860088366,
+          "gap_vs_h1_proxy_pp": -0.6774668630338727,
           "h1_proxy_above_required": true
         },
         {
           "Ke_pct": 8,
           "g_pct": 3,
-          "required_roe_pct": 10.078424153166422,
-          "gap_vs_h1_proxy_pp": -2.366347569955817,
+          "required_roe_pct": 10.354565537555228,
+          "gap_vs_h1_proxy_pp": -2.090206185567011,
           "h1_proxy_above_required": true
         },
         {
           "Ke_pct": 8,
           "g_pct": 5,
-          "required_roe_pct": 9.247054491899853,
-          "gap_vs_h1_proxy_pp": -3.197717231222386,
+          "required_roe_pct": 9.412739322533138,
+          "gap_vs_h1_proxy_pp": -3.0320324005891006,
           "h1_proxy_above_required": true
         },
         {
           "Ke_pct": 10,
           "g_pct": 0,
-          "required_roe_pct": 14.156848306332844,
-          "gap_vs_h1_proxy_pp": 1.7120765832106049,
+          "required_roe_pct": 14.709131075110458,
+          "gap_vs_h1_proxy_pp": 2.264359351988219,
           "h1_proxy_above_required": false
         },
         {
           "Ke_pct": 10,
           "g_pct": 3,
-          "required_roe_pct": 12.909793814432991,
-          "gap_vs_h1_proxy_pp": 0.4650220913107521,
+          "required_roe_pct": 13.296391752577321,
+          "gap_vs_h1_proxy_pp": 0.8516200294550824,
           "h1_proxy_above_required": false
         },
         {
           "Ke_pct": 10,
           "g_pct": 5,
-          "required_roe_pct": 12.078424153166422,
-          "gap_vs_h1_proxy_pp": -0.36634756995581697,
+          "required_roe_pct": 12.354565537555228,
+          "gap_vs_h1_proxy_pp": -0.09020618556701088,
           "h1_proxy_above_required": true
         },
         {
           "Ke_pct": 12,
           "g_pct": 0,
-          "required_roe_pct": 16.98821796759941,
-          "gap_vs_h1_proxy_pp": 4.543446244477172,
+          "required_roe_pct": 17.65095729013255,
+          "gap_vs_h1_proxy_pp": 5.20618556701031,
           "h1_proxy_above_required": false
         },
         {
           "Ke_pct": 12,
           "g_pct": 3,
-          "required_roe_pct": 15.741163475699558,
-          "gap_vs_h1_proxy_pp": 3.2963917525773194,
+          "required_roe_pct": 16.23821796759941,
+          "gap_vs_h1_proxy_pp": 3.793446244477172,
           "h1_proxy_above_required": false
         },
         {
           "Ke_pct": 12,
           "g_pct": 5,
-          "required_roe_pct": 14.909793814432991,
-          "gap_vs_h1_proxy_pp": 2.465022091310752,
+          "required_roe_pct": 15.296391752577321,
+          "gap_vs_h1_proxy_pp": 2.8516200294550824,
           "h1_proxy_above_required": false
         }
       ],
@@ -200,13 +200,13 @@
       "code": "2890",
       "name": "永豐金",
       "BVPS_2026q2_ntd": 18.29,
-      "official_close_ntd": 41.7,
-      "P_B": 2.2799343903772558,
+      "official_close_ntd": 42.1,
+      "P_B": 2.3018042646254786,
       "H1_EPS_2026": 1.66,
       "annualized_H1_EPS_over_ending_BVPS_pct": 18.15199562602515,
-      "base_assumption_gap_pp": 0.8075451066156425,
-      "min_conditional_hurdle_gap_pp": -6.312192454893385,
-      "max_conditional_hurdle_gap_pp": 9.207217058501918,
+      "base_assumption_gap_pp": 0.960634226353202,
+      "min_conditional_hurdle_gap_pp": -6.2465828321487145,
+      "max_conditional_hurdle_gap_pp": 9.469655549480592,
       "positive_gap_scenario_count": 6,
       "negative_gap_scenario_count": 3,
       "zero_gap_scenario_count": 0,
@@ -215,64 +215,64 @@
         {
           "Ke_pct": 8,
           "g_pct": 0,
-          "required_roe_pct": 18.239475123018046,
-          "gap_vs_h1_proxy_pp": 0.08747949699289492,
+          "required_roe_pct": 18.41443411700383,
+          "gap_vs_h1_proxy_pp": 0.26243849097867766,
           "h1_proxy_above_required": false
         },
         {
           "Ke_pct": 8,
           "g_pct": 3,
-          "required_roe_pct": 14.39967195188628,
-          "gap_vs_h1_proxy_pp": -3.7523236741388715,
+          "required_roe_pct": 14.509021323127392,
+          "gap_vs_h1_proxy_pp": -3.642974302897759,
           "h1_proxy_above_required": true
         },
         {
           "Ke_pct": 8,
           "g_pct": 5,
-          "required_roe_pct": 11.839803171131766,
-          "gap_vs_h1_proxy_pp": -6.312192454893385,
+          "required_roe_pct": 11.905412793876437,
+          "gap_vs_h1_proxy_pp": -6.2465828321487145,
           "h1_proxy_above_required": true
         },
         {
           "Ke_pct": 10,
           "g_pct": 0,
-          "required_roe_pct": 22.79934390377256,
-          "gap_vs_h1_proxy_pp": 4.647348277747408,
+          "required_roe_pct": 23.018042646254784,
+          "gap_vs_h1_proxy_pp": 4.866047020229633,
           "h1_proxy_above_required": false
         },
         {
           "Ke_pct": 10,
           "g_pct": 3,
-          "required_roe_pct": 18.95954073264079,
-          "gap_vs_h1_proxy_pp": 0.8075451066156383,
+          "required_roe_pct": 19.11262985237835,
+          "gap_vs_h1_proxy_pp": 0.9606342263532,
           "h1_proxy_above_required": false
         },
         {
           "Ke_pct": 10,
           "g_pct": 5,
-          "required_roe_pct": 16.39967195188628,
-          "gap_vs_h1_proxy_pp": -1.7523236741388715,
+          "required_roe_pct": 16.509021323127392,
+          "gap_vs_h1_proxy_pp": -1.642974302897759,
           "h1_proxy_above_required": true
         },
         {
           "Ke_pct": 12,
           "g_pct": 0,
-          "required_roe_pct": 27.35921268452707,
-          "gap_vs_h1_proxy_pp": 9.207217058501918,
+          "required_roe_pct": 27.621651175505743,
+          "gap_vs_h1_proxy_pp": 9.469655549480592,
           "h1_proxy_above_required": false
         },
         {
           "Ke_pct": 12,
           "g_pct": 3,
-          "required_roe_pct": 23.519409513395303,
-          "gap_vs_h1_proxy_pp": 5.367413887370152,
+          "required_roe_pct": 23.716238381629307,
+          "gap_vs_h1_proxy_pp": 5.564242755604155,
           "h1_proxy_above_required": false
         },
         {
           "Ke_pct": 12,
           "g_pct": 5,
-          "required_roe_pct": 20.95954073264079,
-          "gap_vs_h1_proxy_pp": 2.8075451066156383,
+          "required_roe_pct": 21.11262985237835,
+          "gap_vs_h1_proxy_pp": 2.9606342263532,
           "h1_proxy_above_required": false
         }
       ],
@@ -285,13 +285,13 @@
       "code": "2885",
       "name": "元大金",
       "BVPS_2026q2_ntd": 28.73,
-      "official_close_ntd": 66.9,
-      "P_B": 2.3285764009745913,
+      "official_close_ntd": 69.4,
+      "P_B": 2.4155934563174384,
       "H1_EPS_2026": 2.64,
       "annualized_H1_EPS_over_ending_BVPS_pct": 18.37800208840933,
-      "base_assumption_gap_pp": 0.922032718412813,
-      "min_conditional_hurdle_gap_pp": -6.3922728854855535,
-      "max_conditional_hurdle_gap_pp": 9.564914723285767,
+      "base_assumption_gap_pp": 1.5311521058127413,
+      "min_conditional_hurdle_gap_pp": -6.131221719457013,
+      "max_conditional_hurdle_gap_pp": 10.609119387399932,
       "positive_gap_scenario_count": 6,
       "negative_gap_scenario_count": 3,
       "zero_gap_scenario_count": 0,
@@ -300,64 +300,64 @@
         {
           "Ke_pct": 8,
           "g_pct": 0,
-          "required_roe_pct": 18.62861120779673,
-          "gap_vs_h1_proxy_pp": 0.25060911938740205,
+          "required_roe_pct": 19.324747650539507,
+          "gap_vs_h1_proxy_pp": 0.9467455621301788,
           "h1_proxy_above_required": false
         },
         {
           "Ke_pct": 8,
           "g_pct": 3,
-          "required_roe_pct": 14.642882004872956,
-          "gap_vs_h1_proxy_pp": -3.7351200835363727,
+          "required_roe_pct": 15.077967281587192,
+          "gap_vs_h1_proxy_pp": -3.3000348068221363,
           "h1_proxy_above_required": true
         },
         {
           "Ke_pct": 8,
           "g_pct": 5,
-          "required_roe_pct": 11.985729202923775,
-          "gap_vs_h1_proxy_pp": -6.3922728854855535,
+          "required_roe_pct": 12.246780368952315,
+          "gap_vs_h1_proxy_pp": -6.131221719457013,
           "h1_proxy_above_required": true
         },
         {
           "Ke_pct": 10,
           "g_pct": 0,
-          "required_roe_pct": 23.28576400974591,
-          "gap_vs_h1_proxy_pp": 4.907761921336583,
+          "required_roe_pct": 24.155934563174384,
+          "gap_vs_h1_proxy_pp": 5.777932474765056,
           "h1_proxy_above_required": false
         },
         {
           "Ke_pct": 10,
           "g_pct": 3,
-          "required_roe_pct": 19.30003480682214,
-          "gap_vs_h1_proxy_pp": 0.9220327184128116,
+          "required_roe_pct": 19.90915419422207,
+          "gap_vs_h1_proxy_pp": 1.5311521058127404,
           "h1_proxy_above_required": false
         },
         {
           "Ke_pct": 10,
           "g_pct": 5,
-          "required_roe_pct": 16.642882004872956,
-          "gap_vs_h1_proxy_pp": -1.7351200835363727,
+          "required_roe_pct": 17.077967281587192,
+          "gap_vs_h1_proxy_pp": -1.3000348068221363,
           "h1_proxy_above_required": true
         },
         {
           "Ke_pct": 12,
           "g_pct": 0,
-          "required_roe_pct": 27.942916811695095,
-          "gap_vs_h1_proxy_pp": 9.564914723285767,
+          "required_roe_pct": 28.98712147580926,
+          "gap_vs_h1_proxy_pp": 10.609119387399932,
           "h1_proxy_above_required": false
         },
         {
           "Ke_pct": 12,
           "g_pct": 3,
-          "required_roe_pct": 23.95718760877132,
-          "gap_vs_h1_proxy_pp": 5.5791855203619924,
+          "required_roe_pct": 24.740341106856945,
+          "gap_vs_h1_proxy_pp": 6.362339018447617,
           "h1_proxy_above_required": false
         },
         {
           "Ke_pct": 12,
           "g_pct": 5,
-          "required_roe_pct": 21.30003480682214,
-          "gap_vs_h1_proxy_pp": 2.9220327184128116,
+          "required_roe_pct": 21.90915419422207,
+          "gap_vs_h1_proxy_pp": 3.5311521058127404,
           "h1_proxy_above_required": false
         }
       ],
@@ -370,13 +370,13 @@
       "code": "5876",
       "name": "上海商銀",
       "BVPS_2026q2_ntd": 44.14,
-      "official_close_ntd": 51.0,
-      "P_B": 1.1554145899410966,
+      "official_close_ntd": 51.4,
+      "P_B": 1.1644766651563208,
       "H1_EPS_2026": 2.08,
       "annualized_H1_EPS_over_ending_BVPS_pct": 9.424558223833259,
-      "base_assumption_gap_pp": 1.6633439057544177,
-      "min_conditional_hurdle_gap_pp": -0.9583144540099688,
-      "max_conditional_hurdle_gap_pp": 4.440416855459901,
+      "base_assumption_gap_pp": 1.7267784322609878,
+      "min_conditional_hurdle_gap_pp": -0.9311282283642974,
+      "max_conditional_hurdle_gap_pp": 4.54916175804259,
       "positive_gap_scenario_count": 6,
       "negative_gap_scenario_count": 3,
       "zero_gap_scenario_count": 0,
@@ -385,64 +385,64 @@
         {
           "Ke_pct": 8,
           "g_pct": 0,
-          "required_roe_pct": 9.243316719528773,
-          "gap_vs_h1_proxy_pp": -0.18124150430448616,
+          "required_roe_pct": 9.315813321250566,
+          "gap_vs_h1_proxy_pp": -0.10874490258269276,
           "h1_proxy_above_required": true
         },
         {
           "Ke_pct": 8,
           "g_pct": 3,
-          "required_roe_pct": 8.777072949705483,
-          "gap_vs_h1_proxy_pp": -0.6474852741277761,
+          "required_roe_pct": 8.822383325781605,
+          "gap_vs_h1_proxy_pp": -0.6021748980516541,
           "h1_proxy_above_required": true
         },
         {
           "Ke_pct": 8,
           "g_pct": 5,
-          "required_roe_pct": 8.46624376982329,
-          "gap_vs_h1_proxy_pp": -0.9583144540099688,
+          "required_roe_pct": 8.493429995468961,
+          "gap_vs_h1_proxy_pp": -0.9311282283642974,
           "h1_proxy_above_required": true
         },
         {
           "Ke_pct": 10,
           "g_pct": 0,
-          "required_roe_pct": 11.554145899410965,
-          "gap_vs_h1_proxy_pp": 2.1295876755777066,
+          "required_roe_pct": 11.644766651563208,
+          "gap_vs_h1_proxy_pp": 2.2202084277299488,
           "h1_proxy_above_required": false
         },
         {
           "Ke_pct": 10,
           "g_pct": 3,
-          "required_roe_pct": 11.087902129587675,
-          "gap_vs_h1_proxy_pp": 1.6633439057544166,
+          "required_roe_pct": 11.151336656094244,
+          "gap_vs_h1_proxy_pp": 1.7267784322609856,
           "h1_proxy_above_required": false
         },
         {
           "Ke_pct": 10,
           "g_pct": 5,
-          "required_roe_pct": 10.777072949705483,
-          "gap_vs_h1_proxy_pp": 1.3525147258722239,
+          "required_roe_pct": 10.822383325781605,
+          "gap_vs_h1_proxy_pp": 1.3978251019483459,
           "h1_proxy_above_required": false
         },
         {
           "Ke_pct": 12,
           "g_pct": 0,
-          "required_roe_pct": 13.86497507929316,
-          "gap_vs_h1_proxy_pp": 4.440416855459901,
+          "required_roe_pct": 13.973719981875849,
+          "gap_vs_h1_proxy_pp": 4.54916175804259,
           "h1_proxy_above_required": false
         },
         {
           "Ke_pct": 12,
           "g_pct": 3,
-          "required_roe_pct": 13.39873130946987,
-          "gap_vs_h1_proxy_pp": 3.974173085636611,
+          "required_roe_pct": 13.480289986406888,
+          "gap_vs_h1_proxy_pp": 4.055731762573629,
           "h1_proxy_above_required": false
         },
         {
           "Ke_pct": 12,
           "g_pct": 5,
-          "required_roe_pct": 13.087902129587675,
-          "gap_vs_h1_proxy_pp": 3.6633439057544166,
+          "required_roe_pct": 13.151336656094244,
+          "gap_vs_h1_proxy_pp": 3.7267784322609856,
           "h1_proxy_above_required": false
         }
       ],
@@ -455,13 +455,13 @@
       "code": "2886",
       "name": "兆豐金",
       "BVPS_2026q2_ntd": 27.13,
-      "official_close_ntd": 53.5,
-      "P_B": 1.9719867305565795,
+      "official_close_ntd": 52.8,
+      "P_B": 1.9461850350165868,
       "H1_EPS_2026": 1.44,
       "annualized_H1_EPS_over_ending_BVPS_pct": 10.61555473645411,
-      "base_assumption_gap_pp": 6.188352377441948,
-      "min_conditional_hurdle_gap_pp": 0.30040545521562834,
-      "max_conditional_hurdle_gap_pp": 13.048286030224842,
+      "base_assumption_gap_pp": 6.007740508662001,
+      "min_conditional_hurdle_gap_pp": 0.22300036859565076,
+      "max_conditional_hurdle_gap_pp": 12.738665683744932,
       "positive_gap_scenario_count": 9,
       "negative_gap_scenario_count": 0,
       "zero_gap_scenario_count": 0,
@@ -470,149 +470,64 @@
         {
           "Ke_pct": 8,
           "g_pct": 0,
-          "required_roe_pct": 15.775893844452636,
-          "gap_vs_h1_proxy_pp": 5.160339107998526,
+          "required_roe_pct": 15.569480280132694,
+          "gap_vs_h1_proxy_pp": 4.953925543678585,
           "h1_proxy_above_required": false
         },
         {
           "Ke_pct": 8,
           "g_pct": 3,
-          "required_roe_pct": 12.859933652782898,
-          "gap_vs_h1_proxy_pp": 2.244378916328788,
+          "required_roe_pct": 12.730925175082934,
+          "gap_vs_h1_proxy_pp": 2.1153704386288243,
           "h1_proxy_above_required": false
         },
         {
           "Ke_pct": 8,
           "g_pct": 5,
-          "required_roe_pct": 10.915960191669738,
-          "gap_vs_h1_proxy_pp": 0.30040545521562834,
+          "required_roe_pct": 10.83855510504976,
+          "gap_vs_h1_proxy_pp": 0.22300036859565076,
           "h1_proxy_above_required": false
         },
         {
           "Ke_pct": 10,
           "g_pct": 0,
-          "required_roe_pct": 19.719867305565796,
-          "gap_vs_h1_proxy_pp": 9.104312569111686,
+          "required_roe_pct": 19.461850350165868,
+          "gap_vs_h1_proxy_pp": 8.846295613711758,
           "h1_proxy_above_required": false
         },
         {
           "Ke_pct": 10,
           "g_pct": 3,
-          "required_roe_pct": 16.803907113896056,
-          "gap_vs_h1_proxy_pp": 6.188352377441946,
+          "required_roe_pct": 16.623295245116108,
+          "gap_vs_h1_proxy_pp": 6.007740508661998,
           "h1_proxy_above_required": false
         },
         {
           "Ke_pct": 10,
           "g_pct": 5,
-          "required_roe_pct": 14.859933652782898,
-          "gap_vs_h1_proxy_pp": 4.244378916328788,
+          "required_roe_pct": 14.730925175082934,
+          "gap_vs_h1_proxy_pp": 4.115370438628824,
           "h1_proxy_above_required": false
         },
         {
           "Ke_pct": 12,
           "g_pct": 0,
-          "required_roe_pct": 23.663840766678952,
-          "gap_vs_h1_proxy_pp": 13.048286030224842,
+          "required_roe_pct": 23.35422042019904,
+          "gap_vs_h1_proxy_pp": 12.738665683744932,
           "h1_proxy_above_required": false
         },
         {
           "Ke_pct": 12,
           "g_pct": 3,
-          "required_roe_pct": 20.747880575009216,
-          "gap_vs_h1_proxy_pp": 10.132325838555106,
+          "required_roe_pct": 20.51566531514928,
+          "gap_vs_h1_proxy_pp": 9.900110578695172,
           "h1_proxy_above_required": false
         },
         {
           "Ke_pct": 12,
           "g_pct": 5,
-          "required_roe_pct": 18.803907113896056,
-          "gap_vs_h1_proxy_pp": 8.188352377441946,
-          "h1_proxy_above_required": false
-        }
-      ],
-      "issuer_original_BVPS_not_yet_verified": true,
-      "hypothetical_ke_g_cells_not_calibrated_probabilities": true,
-      "original_2027_price_target_available": false,
-      "formal_Aplus": false
-    },
-    {
-      "code": "2891",
-      "name": "中信金",
-      "BVPS_2026q2_ntd": 34.99,
-      "official_close_ntd": 73.4,
-      "P_B": 2.097742212060589,
-      "H1_EPS_2026": 1.96,
-      "annualized_H1_EPS_over_ending_BVPS_pct": 11.203200914547013,
-      "base_assumption_gap_pp": 6.480994569877111,
-      "min_conditional_hurdle_gap_pp": 0.09002572163475442,
-      "max_conditional_hurdle_gap_pp": 13.969705630180053,
-      "positive_gap_scenario_count": 9,
-      "negative_gap_scenario_count": 0,
-      "zero_gap_scenario_count": 0,
-      "sign_invariant_positive_across_grid": true,
-      "stress_cases": [
-        {
-          "Ke_pct": 8,
-          "g_pct": 0,
-          "required_roe_pct": 16.78193769648471,
-          "gap_vs_h1_proxy_pp": 5.578736781937698,
-          "h1_proxy_above_required": false
-        },
-        {
-          "Ke_pct": 8,
-          "g_pct": 3,
-          "required_roe_pct": 13.488711060302943,
-          "gap_vs_h1_proxy_pp": 2.2855101457559304,
-          "h1_proxy_above_required": false
-        },
-        {
-          "Ke_pct": 8,
-          "g_pct": 5,
-          "required_roe_pct": 11.293226636181767,
-          "gap_vs_h1_proxy_pp": 0.09002572163475442,
-          "h1_proxy_above_required": false
-        },
-        {
-          "Ke_pct": 10,
-          "g_pct": 0,
-          "required_roe_pct": 20.977422120605887,
-          "gap_vs_h1_proxy_pp": 9.774221206058874,
-          "h1_proxy_above_required": false
-        },
-        {
-          "Ke_pct": 10,
-          "g_pct": 3,
-          "required_roe_pct": 17.684195484424123,
-          "gap_vs_h1_proxy_pp": 6.48099456987711,
-          "h1_proxy_above_required": false
-        },
-        {
-          "Ke_pct": 10,
-          "g_pct": 5,
-          "required_roe_pct": 15.488711060302943,
-          "gap_vs_h1_proxy_pp": 4.28551014575593,
-          "h1_proxy_above_required": false
-        },
-        {
-          "Ke_pct": 12,
-          "g_pct": 0,
-          "required_roe_pct": 25.172906544727066,
-          "gap_vs_h1_proxy_pp": 13.969705630180053,
-          "h1_proxy_above_required": false
-        },
-        {
-          "Ke_pct": 12,
-          "g_pct": 3,
-          "required_roe_pct": 21.8796799085453,
-          "gap_vs_h1_proxy_pp": 10.676478993998286,
-          "h1_proxy_above_required": false
-        },
-        {
-          "Ke_pct": 12,
-          "g_pct": 5,
-          "required_roe_pct": 19.684195484424123,
-          "gap_vs_h1_proxy_pp": 8.48099456987711,
+          "required_roe_pct": 18.623295245116108,
+          "gap_vs_h1_proxy_pp": 8.007740508661998,
           "h1_proxy_above_required": false
         }
       ],
@@ -625,13 +540,13 @@
       "code": "2884",
       "name": "玉山金",
       "BVPS_2026q2_ntd": 17.4,
-      "official_close_ntd": 47.0,
-      "P_B": 2.7011494252873565,
+      "official_close_ntd": 47.3,
+      "P_B": 2.718390804597701,
       "H1_EPS_2026": 1.32,
       "annualized_H1_EPS_over_ending_BVPS_pct": 15.17241379310345,
-      "base_assumption_gap_pp": 6.735632183908047,
-      "min_conditional_hurdle_gap_pp": -2.068965517241381,
-      "max_conditional_hurdle_gap_pp": 17.241379310344826,
+      "base_assumption_gap_pp": 6.85632183908046,
+      "min_conditional_hurdle_gap_pp": -2.017241379310347,
+      "max_conditional_hurdle_gap_pp": 17.44827586206896,
       "positive_gap_scenario_count": 8,
       "negative_gap_scenario_count": 1,
       "zero_gap_scenario_count": 0,
@@ -640,64 +555,149 @@
         {
           "Ke_pct": 8,
           "g_pct": 0,
-          "required_roe_pct": 21.60919540229885,
-          "gap_vs_h1_proxy_pp": 6.4367816091954015,
+          "required_roe_pct": 21.74712643678161,
+          "gap_vs_h1_proxy_pp": 6.5747126436781596,
           "h1_proxy_above_required": false
         },
         {
           "Ke_pct": 8,
           "g_pct": 3,
-          "required_roe_pct": 16.50574712643678,
-          "gap_vs_h1_proxy_pp": 1.3333333333333304,
+          "required_roe_pct": 16.591954022988507,
+          "gap_vs_h1_proxy_pp": 1.4195402298850563,
           "h1_proxy_above_required": false
         },
         {
           "Ke_pct": 8,
           "g_pct": 5,
-          "required_roe_pct": 13.10344827586207,
-          "gap_vs_h1_proxy_pp": -2.068965517241381,
+          "required_roe_pct": 13.155172413793103,
+          "gap_vs_h1_proxy_pp": -2.017241379310347,
           "h1_proxy_above_required": true
         },
         {
           "Ke_pct": 10,
           "g_pct": 0,
-          "required_roe_pct": 27.011494252873565,
-          "gap_vs_h1_proxy_pp": 11.839080459770114,
+          "required_roe_pct": 27.183908045977013,
+          "gap_vs_h1_proxy_pp": 12.011494252873563,
           "h1_proxy_above_required": false
         },
         {
           "Ke_pct": 10,
           "g_pct": 3,
-          "required_roe_pct": 21.908045977011497,
-          "gap_vs_h1_proxy_pp": 6.735632183908047,
+          "required_roe_pct": 22.02873563218391,
+          "gap_vs_h1_proxy_pp": 6.85632183908046,
           "h1_proxy_above_required": false
         },
         {
           "Ke_pct": 10,
           "g_pct": 5,
-          "required_roe_pct": 18.50574712643678,
-          "gap_vs_h1_proxy_pp": 3.3333333333333304,
+          "required_roe_pct": 18.591954022988507,
+          "gap_vs_h1_proxy_pp": 3.4195402298850563,
           "h1_proxy_above_required": false
         },
         {
           "Ke_pct": 12,
           "g_pct": 0,
-          "required_roe_pct": 32.41379310344828,
-          "gap_vs_h1_proxy_pp": 17.241379310344826,
+          "required_roe_pct": 32.62068965517241,
+          "gap_vs_h1_proxy_pp": 17.44827586206896,
           "h1_proxy_above_required": false
         },
         {
           "Ke_pct": 12,
           "g_pct": 3,
-          "required_roe_pct": 27.310344827586206,
-          "gap_vs_h1_proxy_pp": 12.137931034482756,
+          "required_roe_pct": 27.46551724137931,
+          "gap_vs_h1_proxy_pp": 12.29310344827586,
           "h1_proxy_above_required": false
         },
         {
           "Ke_pct": 12,
           "g_pct": 5,
-          "required_roe_pct": 23.908045977011497,
-          "gap_vs_h1_proxy_pp": 8.735632183908047,
+          "required_roe_pct": 24.02873563218391,
+          "gap_vs_h1_proxy_pp": 8.85632183908046,
+          "h1_proxy_above_required": false
+        }
+      ],
+      "issuer_original_BVPS_not_yet_verified": true,
+      "hypothetical_ke_g_cells_not_calibrated_probabilities": true,
+      "original_2027_price_target_available": false,
+      "formal_Aplus": false
+    },
+    {
+      "code": "2891",
+      "name": "中信金",
+      "BVPS_2026q2_ntd": 34.99,
+      "official_close_ntd": 75.9,
+      "P_B": 2.1691911974849956,
+      "H1_EPS_2026": 1.96,
+      "annualized_H1_EPS_over_ending_BVPS_pct": 11.203200914547013,
+      "base_assumption_gap_pp": 6.981137467847959,
+      "min_conditional_hurdle_gap_pp": 0.30437267790797407,
+      "max_conditional_hurdle_gap_pp": 14.827093455272935,
+      "positive_gap_scenario_count": 9,
+      "negative_gap_scenario_count": 0,
+      "zero_gap_scenario_count": 0,
+      "sign_invariant_positive_across_grid": true,
+      "stress_cases": [
+        {
+          "Ke_pct": 8,
+          "g_pct": 0,
+          "required_roe_pct": 17.353529579879964,
+          "gap_vs_h1_proxy_pp": 6.150328665332951,
+          "h1_proxy_above_required": false
+        },
+        {
+          "Ke_pct": 8,
+          "g_pct": 3,
+          "required_roe_pct": 13.845955987424977,
+          "gap_vs_h1_proxy_pp": 2.6427550728779643,
+          "h1_proxy_above_required": false
+        },
+        {
+          "Ke_pct": 8,
+          "g_pct": 5,
+          "required_roe_pct": 11.507573592454987,
+          "gap_vs_h1_proxy_pp": 0.30437267790797407,
+          "h1_proxy_above_required": false
+        },
+        {
+          "Ke_pct": 10,
+          "g_pct": 0,
+          "required_roe_pct": 21.691911974849955,
+          "gap_vs_h1_proxy_pp": 10.488711060302942,
+          "h1_proxy_above_required": false
+        },
+        {
+          "Ke_pct": 10,
+          "g_pct": 3,
+          "required_roe_pct": 18.18433838239497,
+          "gap_vs_h1_proxy_pp": 6.981137467847956,
+          "h1_proxy_above_required": false
+        },
+        {
+          "Ke_pct": 10,
+          "g_pct": 5,
+          "required_roe_pct": 15.845955987424977,
+          "gap_vs_h1_proxy_pp": 4.642755072877964,
+          "h1_proxy_above_required": false
+        },
+        {
+          "Ke_pct": 12,
+          "g_pct": 0,
+          "required_roe_pct": 26.03029436981995,
+          "gap_vs_h1_proxy_pp": 14.827093455272935,
+          "h1_proxy_above_required": false
+        },
+        {
+          "Ke_pct": 12,
+          "g_pct": 3,
+          "required_roe_pct": 22.52272077736496,
+          "gap_vs_h1_proxy_pp": 11.319519862817947,
+          "h1_proxy_above_required": false
+        },
+        {
+          "Ke_pct": 12,
+          "g_pct": 5,
+          "required_roe_pct": 20.18433838239497,
+          "gap_vs_h1_proxy_pp": 8.981137467847956,
           "h1_proxy_above_required": false
         }
       ],
@@ -710,13 +710,13 @@
       "code": "2880",
       "name": "華南金",
       "BVPS_2026q2_ntd": 17.37,
-      "official_close_ntd": 48.95,
-      "P_B": 2.818077144502015,
+      "official_close_ntd": 49.6,
+      "P_B": 2.8554979850316635,
       "H1_EPS_2026": 1.24,
       "annualized_H1_EPS_over_ending_BVPS_pct": 14.277489925158319,
-      "base_assumption_gap_pp": 8.449050086355788,
-      "min_conditional_hurdle_gap_pp": -0.8232584916522736,
-      "max_conditional_hurdle_gap_pp": 19.53943580886586,
+      "base_assumption_gap_pp": 8.71099597006333,
+      "min_conditional_hurdle_gap_pp": -0.7109959700633279,
+      "max_conditional_hurdle_gap_pp": 19.988485895221643,
       "positive_gap_scenario_count": 8,
       "negative_gap_scenario_count": 1,
       "zero_gap_scenario_count": 0,
@@ -725,64 +725,64 @@
         {
           "Ke_pct": 8,
           "g_pct": 0,
-          "required_roe_pct": 22.54461715601612,
-          "gap_vs_h1_proxy_pp": 8.2671272308578,
+          "required_roe_pct": 22.843983880253308,
+          "gap_vs_h1_proxy_pp": 8.56649395509499,
           "h1_proxy_above_required": false
         },
         {
           "Ke_pct": 8,
           "g_pct": 3,
-          "required_roe_pct": 17.090385722510074,
-          "gap_vs_h1_proxy_pp": 2.8128957973517554,
+          "required_roe_pct": 17.277489925158317,
+          "gap_vs_h1_proxy_pp": 2.9999999999999982,
           "h1_proxy_above_required": false
         },
         {
           "Ke_pct": 8,
           "g_pct": 5,
-          "required_roe_pct": 13.454231433506045,
-          "gap_vs_h1_proxy_pp": -0.8232584916522736,
+          "required_roe_pct": 13.566493955094991,
+          "gap_vs_h1_proxy_pp": -0.7109959700633279,
           "h1_proxy_above_required": true
         },
         {
           "Ke_pct": 10,
           "g_pct": 0,
-          "required_roe_pct": 28.18077144502015,
-          "gap_vs_h1_proxy_pp": 13.90328151986183,
+          "required_roe_pct": 28.554979850316634,
+          "gap_vs_h1_proxy_pp": 14.277489925158315,
           "h1_proxy_above_required": false
         },
         {
           "Ke_pct": 10,
           "g_pct": 3,
-          "required_roe_pct": 22.726540011514103,
-          "gap_vs_h1_proxy_pp": 8.449050086355784,
+          "required_roe_pct": 22.988485895221643,
+          "gap_vs_h1_proxy_pp": 8.710995970063324,
           "h1_proxy_above_required": false
         },
         {
           "Ke_pct": 10,
           "g_pct": 5,
-          "required_roe_pct": 19.090385722510074,
-          "gap_vs_h1_proxy_pp": 4.812895797351755,
+          "required_roe_pct": 19.277489925158317,
+          "gap_vs_h1_proxy_pp": 4.999999999999998,
           "h1_proxy_above_required": false
         },
         {
           "Ke_pct": 12,
           "g_pct": 0,
-          "required_roe_pct": 33.81692573402418,
-          "gap_vs_h1_proxy_pp": 19.53943580886586,
+          "required_roe_pct": 34.265975820379964,
+          "gap_vs_h1_proxy_pp": 19.988485895221643,
           "h1_proxy_above_required": false
         },
         {
           "Ke_pct": 12,
           "g_pct": 3,
-          "required_roe_pct": 28.362694300518136,
-          "gap_vs_h1_proxy_pp": 14.085204375359817,
+          "required_roe_pct": 28.699481865284973,
+          "gap_vs_h1_proxy_pp": 14.421991940126654,
           "h1_proxy_above_required": false
         },
         {
           "Ke_pct": 12,
           "g_pct": 5,
-          "required_roe_pct": 24.726540011514103,
-          "gap_vs_h1_proxy_pp": 10.449050086355784,
+          "required_roe_pct": 24.988485895221643,
+          "gap_vs_h1_proxy_pp": 10.710995970063324,
           "h1_proxy_above_required": false
         }
       ],

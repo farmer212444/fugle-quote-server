@@ -1,52 +1,52 @@
 {
   "status": "V890_CURRENT_TOP30_SUBSET_AUDIT_NOT_CERTIFIED",
   "model": "V8.10.8",
-  "estimate_vintage": "2026-11-09T16:16:37.671488+08:00",
-  "asof_price_date": "2026-11-06",
+  "estimate_vintage": "2026-11-09T16:57:25.926774+08:00",
+  "asof_price_date": "2026-11-09",
   "latest_available_quarter": "2026-Q2",
-  "issuer_count": 1,
+  "issuer_count": 2,
   "securities": [
     {
       "code": "8390",
       "name": "金益鼎",
       "market": "TPEX",
-      "base_close": 76.2,
-      "price_date": "2026-11-06",
+      "base_close": 80.4,
+      "price_date": "2026-11-09",
       "research_rank_within_all_786": null,
       "base_2027_eps": 13.708,
       "base_2027_pe": 13.22,
       "base_2027_target_price": 181.22,
-      "base_2027_upside_pct": 137.82,
+      "base_2027_upside_pct": 125.39,
       "valuation_stress": {
         "base": {
           "eps": 13.708,
           "pe": 13.22,
           "target_price": 181.22,
-          "upside_pct": 137.82
+          "upside_pct": 125.39
         },
         "double10": {
           "eps": 12.337,
           "pe": 11.898,
           "target_price": 146.79,
-          "upside_pct": 92.63
+          "upside_pct": 82.57
         },
         "double20": {
           "eps": 10.966,
           "pe": 10.576,
           "target_price": 115.98,
-          "upside_pct": 52.2
+          "upside_pct": 44.25
         },
         "double30": {
           "eps": 9.595,
           "pe": 9.254,
           "target_price": 88.8,
-          "upside_pct": 16.53
+          "upside_pct": 10.44
         },
         "double10_plus_CB_reset_sensitivity": {
           "additional_shares_over_baseline": 0,
           "dilution_from_additional_reset_pct": 0.0,
           "target_price": 146.79,
-          "upside_pct": 92.63,
+          "upside_pct": 82.57,
           "current_legal_terms_verified": true
         }
       },
@@ -135,12 +135,138 @@
         "expected_effectiveness_date": "2026-10-21",
         "formal_certified": false
       }
+    },
+    {
+      "code": "3305",
+      "name": "昇貿",
+      "market": "TWSE",
+      "base_close": 99.7,
+      "price_date": "2026-11-09",
+      "research_rank_within_all_786": null,
+      "base_2027_eps": 10.587,
+      "base_2027_pe": 22.39,
+      "base_2027_target_price": 237.03,
+      "base_2027_upside_pct": 137.75,
+      "valuation_stress": {
+        "base": {
+          "eps": 10.587,
+          "pe": 22.39,
+          "target_price": 237.03,
+          "upside_pct": 137.75
+        },
+        "double10": {
+          "eps": 9.528,
+          "pe": 20.151,
+          "target_price": 192.0,
+          "upside_pct": 92.57
+        },
+        "double20": {
+          "eps": 8.469,
+          "pe": 17.912,
+          "target_price": 151.7,
+          "upside_pct": 52.16
+        },
+        "double30": {
+          "eps": 7.411,
+          "pe": 15.673,
+          "target_price": 116.15,
+          "upside_pct": 16.5
+        },
+        "double10_plus_CB_reset_sensitivity": {
+          "additional_shares_over_baseline": 0,
+          "dilution_from_additional_reset_pct": 0.0,
+          "target_price": 192.0,
+          "upside_pct": 92.57,
+          "current_legal_terms_verified": true
+        }
+      },
+      "observed_2025FY_eps": 3.16,
+      "observed_H1_eps": 3.84,
+      "observed_H1_ocf_ntd_100m": -12.045,
+      "observed_H1_gm_pct": 18.55,
+      "q3_revenue_yoy": {
+        "code": "3305",
+        "name": "昇貿",
+        "market": "TWSE",
+        "latest_monthly_report": "2026-09",
+        "three_month_revenue_k": 4254230,
+        "prior_three_month_revenue_k": 2837952,
+        "current_financial_H1_yoy_pct": 65.18,
+        "next_quarter_revenue_yoy_pct": 49.9,
+        "yoy_deceleration_pp": -15.28,
+        "growth_decelerated_over_20pp": false,
+        "monthly_revenue_individual_PIT_verified": false,
+        "gross_margin_for_next_quarter_verified": false
+      },
+      "cashflow_H1": {
+        "cash_k": null,
+        "ocf_k": -1204516.0,
+        "ppe_purchase_cash_signed_k": null,
+        "fcf_after_ppe_k": null,
+        "equipment_prepaid_cash_signed_k": null,
+        "cash_after_separately_reported_prepaid_k": null,
+        "indicative_dividend_k": null,
+        "full_cb_put_sensitivity_k": null,
+        "old_cash_less_dividend_and_full_put_k": null,
+        "static_cash_sensitivity_is_actual_funding_gap": false,
+        "review_working_capital": true,
+        "negative_ocf_automatic_failure": false,
+        "operating_cashflow_quarter_bridge": {
+          "period": "2026-Q2",
+          "source": "DATED_NORMALIZED_MOPS_YTD_CASHFLOW_NOT_ORIGINAL_NOTES_ATTESTED",
+          "original_cash_notes_reconciled": false,
+          "working_capital_component_bridge_certified": false,
+          "one_quarter_improvement_is_not_sustained_cash_conversion": true,
+          "no_certification_or_forecast_changed": true,
+          "status": "DATED_NORMALIZED_YTD_BRIDGE",
+          "previous_period": "2026-Q1",
+          "previous_ytd_ocf_k": -988883.0,
+          "latest_ytd_ocf_k": -1204516.0,
+          "latest_standalone_ocf_k": -215633.0,
+          "earlier_standalone_ocf_k": -988883.0,
+          "latest_standalone_ocf_positive": false,
+          "h1_or_current_ytd_ocf_still_negative": true,
+          "changed_sign_after_q1": false,
+          "observation_label": "LATEST_STANDALONE_NONPOSITIVE",
+          "current_quarter_positive_does_not_override_negative_ytd_review": true
+        }
+      },
+      "cb_current_legal_terms_verified": false,
+      "existing_model_cb_shares_count": 0,
+      "CB_bond_issues": [],
+      "remaining_unverified_gates": [
+        "original_eight_quarter_statements",
+        "cash_and_working_capital",
+        "nonoperating_components",
+        "fully_diluted_shares",
+        "matched_peers_and_cycle",
+        "management_promises",
+        "auditor_scope",
+        "tradability",
+        "forecast_bridge",
+        "insider_claims",
+        "dividend_window",
+        "point_in_time",
+        "out_of_sample_validation"
+      ],
+      "flags": [
+        "NEGATIVE_YTD_OPERATING_CASHFLOW_CHECK_WORKING_CAPITAL",
+        "FORWARD_EPS_AT_LEAST_30PCT_ABOVE_NONSEASONAL_YTD_RUNRATE",
+        "FORWARD_PE_AT_LEAST_20_REQUIRES_MATCHED_PEERS",
+        "CURRENT_NUMERICS_BULK_ONLY_NOT_ORIGINAL_CHECKED",
+        "MANUAL_FILING_NOTES_AND_PIT_UNVERIFIED",
+        "NEGATIVE_OCF_IS_CYCLE_OR_WORKING_CAPITAL_REVIEW_NOT_AUTO_EXIT"
+      ],
+      "forward_peer_PE_verified": false,
+      "actual_Q3_gm_and_eps_verified": false,
+      "issuer_specific_original_notes_and_PIT_verified": false,
+      "internal_Aplus_upgrade": false,
+      "proof_status": "RESEARCH_ONLY_NOT_A_FORMAL_Aplus"
     }
   ],
   "legacy_focus_not_in_current_top30": [
     "4739",
     "5439",
-    "3305",
     "5388"
   ],
   "official_mirror_receipts": [
