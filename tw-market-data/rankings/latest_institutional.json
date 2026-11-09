@@ -1,8 +1,8 @@
 {
   "schema": "V810_INSTITUTIONAL_RESEARCH_CONTROLS",
   "model": "V8.10.8",
-  "estimate_vintage": "2026-11-09T15:35:21.149150+08:00",
-  "report_observed_at": "2026-11-09T07:36:39.178732+00:00",
+  "estimate_vintage": "2026-11-09T15:57:13.523329+08:00",
+  "report_observed_at": "2026-11-09T07:58:25.661250+00:00",
   "asof_price_date": "2026-11-06",
   "source_model_sha256": "46ceaa87a10582f7037a278b64f7e50cf4a79555d9f3de69e37ecfda1e42f498",
   "policy_sha256": "3f378fb673213f6178983a4698ed80c7e5a8c5b62e82192a85eea1c6a3b0b493",
@@ -3036,11 +3036,14 @@
         "baseline_same_model_price_and_vintage": true
       },
       "liquidity": {
-        "status": "MULTI_SESSION_TURNOVER_SOURCE_MISSING",
-        "median20_turnover_ntd": null,
+        "status": "TWENTY_SESSION_TURNOVER_PROXY_NOT_EXECUTION_REVIEW",
+        "sessions": 20,
+        "first_date": "2026-10-07",
+        "last_date": "2026-11-06",
+        "median20_turnover_ntd": 517751.0,
         "spread_and_exit_verified": false
       },
-      "capacity_weight_at_reference_capital": null,
+      "capacity_weight_at_reference_capital": 0.012943775000000001,
       "formal_Aplus": false,
       "risk_profile": {
         "status": "REVIEWED_COMMON_RISK_AND_STRESS_PROFILE_MISSING"
@@ -3056,8 +3059,11 @@
       "common_risk_tags": null,
       "reviewed_stress_loss_fraction": null,
       "execution_review": {
-        "status": "MULTI_SESSION_TURNOVER_SOURCE_MISSING",
-        "median20_turnover_ntd": null,
+        "status": "TWENTY_SESSION_TURNOVER_PROXY_NOT_EXECUTION_REVIEW",
+        "sessions": 20,
+        "first_date": "2026-10-07",
+        "last_date": "2026-11-06",
+        "median20_turnover_ntd": 517751.0,
         "spread_and_exit_verified": false
       }
     },
@@ -5227,7 +5233,6 @@
         "reasons": [
           "FORMAL_QUALITY_NOT_COMPLETE",
           "EXECUTION_REVIEW_MISSING",
-          "MEDIAN20_TURNOVER_MISSING",
           "COMMON_RISK_EXPOSURES_UNREVIEWED",
           "POSITIVE_REVIEWED_STRESS_LOSS_REQUIRED"
         ]
@@ -7855,7 +7860,7 @@
   },
   "benchmark_validation": {
     "schema": "TOP30_VS_TAIEX_TR_V1",
-    "observed_at": "2026-11-09T07:36:39.178732+00:00",
+    "observed_at": "2026-11-09T07:58:25.661250+00:00",
     "benchmark_id": "TAIEX_TR",
     "trials": [
       {

@@ -25,7 +25,7 @@
     "count_scope": "DETAIL_ONLY_NOT_FULL_MARKET"
   },
   "model": "V8.10.8",
-  "estimate_vintage": "2026-11-09T15:35:21.149150+08:00",
+  "estimate_vintage": "2026-11-09T15:57:13.523329+08:00",
   "asof_price_date": "2026-11-06",
   "source_model_sha256": "46ceaa87a10582f7037a278b64f7e50cf4a79555d9f3de69e37ecfda1e42f498",
   "issuer_job_count": 202,
@@ -3398,11 +3398,11 @@
         {
           "gate": "tradability",
           "decision": "PENDING",
-          "stage": "SOURCE_MISSING",
-          "next_action": "CAPTURE_AND_VERIFY_ORIGINAL_SOURCE",
+          "stage": "SOURCE_CAPTURED",
+          "next_action": "VERIFY_MARKET_SPREAD_EXIT_CAPACITY",
           "scope": "EXECUTION",
           "required_evidence": "多日成交、價差、參與率與清倉能力",
-          "reason": "20 daily market sessions unavailable for this issuer",
+          "reason": "20 daily turnovers archived; bid/ask spread and actual executable exit not verified",
           "model_reason": "BELOW_12M_DAILY_TURNOVER_REQUIRES_MULTI_SESSION_SPREAD_AND_EXIT_CAPACITY_REVIEW",
           "invalidates_on": "股價／成交條件改變"
         },
@@ -3463,9 +3463,10 @@
         }
       ],
       "price_lane": "A_PLUS_PRICE_ONLY",
-      "source_advanced_gate_count": 1,
+      "source_advanced_gate_count": 2,
       "source_advanced_gates": [
-        "fully_diluted_shares"
+        "fully_diluted_shares",
+        "tradability"
       ],
       "review_ready_original_gate_count": 0,
       "review_ready_original_gates": [],
@@ -40857,7 +40858,7 @@
     "original_captured_review_pending_issuers": 2,
     "review_ready_gate_issues": 2,
     "source_advanced_issuers": 188,
-    "source_advanced_gate_issues": 309,
+    "source_advanced_gate_issues": 310,
     "verification_priority": [
       {
         "code": "2317",
@@ -42260,5 +42261,5 @@
   },
   "formal_gate_decisions_changed": 0,
   "certificates_issued": 0,
-  "source_progress_sha256": "0314204c16305c8e953133f1298df5704383c70dc61b55a6fb2e86cf22d89ed9"
+  "source_progress_sha256": "58d43f54581d029295e210be4c8cab3ca71433cc34e117726040043b998f8bff"
 }
