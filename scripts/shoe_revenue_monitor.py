@@ -6,7 +6,6 @@ Fail closed: missing issuers or malformed data must not be interpreted as zero.
 import argparse
 import datetime as dt
 import json
-import os
 import urllib.request
 from pathlib import Path
 
@@ -78,7 +77,7 @@ def main():
     result = {"schema": "SHOE_REVENUE_OBSERVED_V1", "month": args.month, "source": DEFAULT_FEEDS, "records": [records[k] for k in sorted(records)], "missing_codes": sorted(set(WATCH)-set(records)), "partial": len(records) != len(WATCH), "note": "Unreported or missing data is NOT zero. Verify MOPS original filing before formal certification."}
     path = Path(args.output)
     path.parent.mkdir(parents=True, exist_ok=True)
-    old = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
+    old = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}\n    if old.get("month", "") > args.month:\n        raise SystemExit("Refusing to replace a newer monthly snapshot with an older month")
     if old.get("month") == args.month and old.get("records") == result["records"]:
         print("NO_CHANGE")
         return
