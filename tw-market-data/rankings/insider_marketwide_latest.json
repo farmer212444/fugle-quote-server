@@ -73333,7 +73333,7 @@
     }
   ],
   "footwear_supply_chain_category": "footwear_manufacturing_and_direct_materials",
-  "attempted_at_utc": "2026-11-09T08:54:44.337268+00:00",
+  "attempted_at_utc": "2026-11-09T08:54:55.437589+00:00",
   "collection": {
     "requested": 265,
     "succeeded": 253,
@@ -73400,7 +73400,9 @@
       }
     ],
     "deferred_identity_conflicts": 199,
-    "stopped": "TIME_BUDGET_GRACEFUL_PARTIAL_COMMIT"
+    "stopped": "TIME_BUDGET_GRACEFUL_PARTIAL_COMMIT",
+    "offline_reconciled_after_rebase": true,
+    "conflicting_receipt_policy": "UPSTREAM_POINTER_PREFERRED"
   },
   "monthly_master_failures": []
 }
