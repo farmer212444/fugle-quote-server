@@ -20,11 +20,11 @@
 |缺件類型|公司數|
 |---|---:|
 |OFFICIAL_64_SESSION_MOMENTUM_AND_ACTION_REVIEW|836|
-|OFFICIAL_20_SESSION_TURNOVER_HISTORY|493|
+|OFFICIAL_20_SESSION_TURNOVER_HISTORY|488|
 
 |市場|研究母體|有效20日成交額|
 |---|---:|---:|
-|TPEX|311|282|
+|TPEX|311|287|
 |TWSE|525|61|
 
 |持有交易日|參數數|當期可生成候選|已驗證報酬期數|滾動測試期數|

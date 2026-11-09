@@ -25,7 +25,7 @@
     "count_scope": "DETAIL_ONLY_NOT_FULL_MARKET"
   },
   "model": "V8.10.8",
-  "estimate_vintage": "2026-11-09T23:44:42.032007+08:00",
+  "estimate_vintage": "2026-11-10T04:50:52.505707+08:00",
   "asof_price_date": "2026-11-09",
   "source_model_sha256": "90396d21b1d2d0e6a8806836d0805f2c8974bd920825f3db95dc3a4ea3ca92b8",
   "issuer_job_count": 178,
@@ -25971,11 +25971,11 @@
         {
           "gate": "tradability",
           "decision": "PENDING",
-          "stage": "SOURCE_MISSING",
-          "next_action": "CAPTURE_AND_VERIFY_ORIGINAL_SOURCE",
+          "stage": "SOURCE_CAPTURED",
+          "next_action": "VERIFY_MARKET_SPREAD_EXIT_CAPACITY",
           "scope": "EXECUTION",
           "required_evidence": "多日成交、價差、參與率與清倉能力",
-          "reason": "20 daily market sessions unavailable for this issuer",
+          "reason": "20 daily turnovers archived; bid/ask spread and actual executable exit not verified",
           "model_reason": "BELOW_12M_DAILY_TURNOVER_REQUIRES_MULTI_SESSION_SPREAD_AND_EXIT_CAPACITY_REVIEW",
           "invalidates_on": "股價／成交條件改變"
         },
@@ -26036,9 +26036,10 @@
         }
       ],
       "price_lane": "A_PLUS_PRICE_ONLY",
-      "source_advanced_gate_count": 1,
+      "source_advanced_gate_count": 2,
       "source_advanced_gates": [
-        "fully_diluted_shares"
+        "fully_diluted_shares",
+        "tradability"
       ],
       "review_ready_original_gate_count": 0,
       "review_ready_original_gates": [],
@@ -36028,7 +36029,7 @@
     "original_captured_review_pending_issuers": 2,
     "review_ready_gate_issues": 2,
     "source_advanced_issuers": 168,
-    "source_advanced_gate_issues": 282,
+    "source_advanced_gate_issues": 283,
     "verification_priority": [
       {
         "code": "2317",
@@ -37311,5 +37312,5 @@
   },
   "formal_gate_decisions_changed": 0,
   "certificates_issued": 0,
-  "source_progress_sha256": "bcc58b2df19a41af67d8c228165142ef945dec6b9b79bfdd073a0e063d8151a5"
+  "source_progress_sha256": "d2800188999b7d33d9d0da6051417eeb7597a1c12d499982e4aa34f4de2fc44b"
 }
