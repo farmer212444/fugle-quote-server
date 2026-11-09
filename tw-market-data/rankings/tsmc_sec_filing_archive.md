@@ -20,3 +20,4 @@ SEC Exhibits 為台積電英文譯本及官方申報資料，不是原始中文�
 - 2025-Q4：HTTPError:HTTP Error 403: Forbidden
 - 2026-Q1：HTTPError:HTTP Error 403: Forbidden
 - 2026-Q2：HTTPError:HTTP Error 403: Forbidden
+HTTP 403 有界重試保護：本次未重抓 2024-Q3, 2025-Q1, 2025-Q2, 2025-Q3, 2025-Q4, 2026-Q1, 2026-Q2；下一次允許重試起點 2026-11-10T15:19:30.296733+00:00。此狀態不代表財報取得成功。

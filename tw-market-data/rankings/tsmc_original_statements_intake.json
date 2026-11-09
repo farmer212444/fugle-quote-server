@@ -44,6 +44,11 @@
   },
   "fetch_errors": [
     {
+      "period": "DIRECTORY",
+      "error": "HTTPError:HTTP Error 403: Forbidden",
+      "recovery": "SHA_VERIFIED_ARCHIVED_ISSUER_INDEX"
+    },
+    {
       "period": "2026-Q2",
       "error": "HTTPError:HTTP Error 403: Forbidden"
     },
@@ -56,7 +61,7 @@
   "http403_retry_deferred_quarters": [],
   "http403_retry_due_at_utc": null,
   "source_window_end": "2026-Q2",
-  "checked_at_utc": "2026-11-09T15:19:22.116164+00:00",
+  "checked_at_utc": "2026-11-09T15:44:39.578828+00:00",
   "missing_official_source_leads_not_originals": [
     {
       "period": "2024-Q3",
