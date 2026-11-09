@@ -190,20 +190,23 @@ class PublicationRace(unittest.TestCase):
             self.git(root,'clone',str(remote),str(writer))
             self.git(writer,'config','user.name','Test');self.git(writer,'config','user.email','test@example.invalid')
             data=writer/'tw-market-data'
-            for folder in ('evidence/v880','rankings','pit_vintages','experiments','benchmarks'):
+            for folder in ('prices','evidence/v880','rankings','pit_vintages','experiments','benchmarks'):
                 path=data/folder;path.mkdir(parents=True,exist_ok=True);(path/'seed').write_text('seed')
             (writer/'source.txt').write_text('original')
             self.git(writer,'add','.');self.git(writer,'commit','-m','seed');self.git(writer,'push','origin','main')
             self.git(root,'clone',str(remote),str(worker))
             output=worker/'tw-market-data/rankings/output.txt';output.write_text('validated initial result')
+            price_output=worker/'tw-market-data/prices/output.txt';price_output.write_text('validated initial result')
             if remote_moved:
                 (writer/'source.txt').write_text('new source')
                 self.git(writer,'add','.');self.git(writer,'commit','-m','concurrent data');self.git(writer,'push','origin','main')
             fakebin=root/'bin';fakebin.mkdir();log=root/'calls.txt'
             python=fakebin/'python'
             python.write_text('#!/bin/sh\n'+'printf "%s\\n" "$*" >> "$PIPELINE_TEST_LOG"\n'+
+                              'if [ "$1" = "scripts/collect_official_prices.py" ]; then\n'+
+                              '  cp source.txt tw-market-data/prices/output.txt\nfi\n'+
                               'if [ "$1" = "scripts/run_research_pipeline.py" ] && [ "$3" = "core" ]; then\n'+
-                              '  cp source.txt tw-market-data/rankings/output.txt\nfi\n')
+                              '  cp tw-market-data/prices/output.txt tw-market-data/rankings/output.txt\nfi\n')
             python.chmod(0o755)
             workflow=(ROOT/'.github/workflows/tw_v877_research_rank.yml').read_text()
             body=workflow.split('      - name: Save current results on main only',1)[1].split('        run: |\n',1)[1]
@@ -213,8 +216,11 @@ class PublicationRace(unittest.TestCase):
                            capture_output=True,text=True,check=True)
             calls=log.read_text()
             self.assertEqual(calls.count('scripts/run_research_pipeline.py --phase core'),int(remote_moved))
+            self.assertEqual(calls.count('scripts/collect_official_prices.py'),int(remote_moved))
             self.assertEqual(calls.count('scripts/run_research_pipeline.py --phase observation'),1)
             self.assertEqual(output.read_text(),'new source' if remote_moved else 'validated initial result')
+            self.assertEqual(price_output.read_text(),output.read_text())
+            self.assertEqual(self.git(remote,'show','main:tw-market-data/prices/output.txt'),output.read_text())
             self.assertEqual(self.git(worker,'rev-parse','HEAD'),self.git(remote,'rev-parse','main'))
 
     def test_unchanged_main_publishes_existing_outputs_without_second_pipeline(self):

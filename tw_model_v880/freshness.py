@@ -11,6 +11,7 @@ from urllib.parse import urlsplit
 from zoneinfo import ZoneInfo
 
 TAIPEI=ZoneInfo("Asia/Taipei")
+PUBLISHABLE_CLOSE_TIME=(14,20)
 SCHEMA="DATED_PARTIAL_TW_EQUITY_EXCHANGE_CLOSURES_V1"
 ALLOWED_NEWS_HOSTS={"www.cna.com.tw","wwwc.twse.com.tw","www.pocket.tw"}
 
@@ -59,8 +60,9 @@ def possible_completed_weekday_sessions(estimate_vintage,reference_close_day):
     ref=dt.date.fromisoformat(str(reference_close_day))
     if ref>today.date():
         raise ValueError("FUTURE_REFERENCE_PRICE")
-    # Before 16:00 do not assume an exchange session was completed.
-    end=(today.date() if today.weekday()<5 and today.hour>=16
+    # Match the collector's eligible publication boundary. This is a request
+    # heuristic, never evidence that a holiday or an individual stock traded.
+    end=(today.date() if today.weekday()<5 and (today.hour,today.minute)>=PUBLISHABLE_CLOSE_TIME
          else today.date()-dt.timedelta(days=1))
     day=ref+dt.timedelta(days=1)
     result=[]
@@ -96,6 +98,7 @@ def assess_price_freshness(estimate_vintage,reference_close_day,closed_sessions=
         "status":status,
         "reference_close_date":reference_close_day,
         "estimate_vintage":estimate_vintage,
+        "eligible_close_check_after_taipei":"14:20",
         "potentially_missing_weekdays":missing,
         "possible_completed_weekday_gap_count":len(missing),
         "known_confirmed_closed_weekdays":sorted(observed),

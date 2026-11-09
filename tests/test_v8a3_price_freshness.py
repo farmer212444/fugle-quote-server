@@ -9,6 +9,16 @@ from tw_model_v880.freshness import (
 
 
 class PriceFreshnessTests(unittest.TestCase):
+    def test_publication_boundary_matches_the_1420_collector_not_1600(self):
+        before=assess_price_freshness('2026-11-09T14:19:59+08:00','2026-11-06')
+        after=assess_price_freshness('2026-11-09T14:20:00+08:00','2026-11-06')
+        self.assertEqual(before['potentially_missing_weekdays'],[])
+        self.assertEqual(after['potentially_missing_weekdays'],['2026-11-09'])
+        self.assertTrue(after['equity_source_may_be_stale'])
+        self.assertFalse(after['quote_is_confirmed_latest_session'])
+        utc=assess_price_freshness('2026-11-09T06:20:00+00:00','2026-11-06')
+        self.assertEqual(utc['potentially_missing_weekdays'],after['potentially_missing_weekdays'])
+
     def test_live_oct21_morning_detects_oct20_potential_missing_session(self):
         r=assess_price_freshness("2026-10-21T10:30:00+08:00","2026-10-19")
         self.assertEqual(r["status"],"POSSIBLY_STALE_CONFIRM_EXCHANGE_SESSION")
