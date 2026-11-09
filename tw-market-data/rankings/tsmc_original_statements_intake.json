@@ -1,6 +1,6 @@
 {
   "issuer": "2330",
-  "records": 4,
+  "records": 6,
   "coverage": {
     "required_quarters": [
       "2024-Q3",
@@ -16,23 +16,26 @@
       "2024-Q4",
       "2025-Q1",
       "2025-Q2",
-      "2025-Q3"
+      "2025-Q3",
+      "2025-Q4",
+      "2026-Q1"
     ],
     "missing_quarters": [
       "2024-Q3",
-      "2025-Q4",
-      "2026-Q1",
       "2026-Q2"
     ],
     "source_title_coverage_complete": false,
-    "pdf_accounting_period_internal_identity_verified": true,
+    "pdf_accounting_period_internal_identity_verified": false,
     "native_cover_identity_verified_quarters": [
       "2024-Q4",
       "2025-Q1",
       "2025-Q2",
-      "2025-Q3"
+      "2025-Q3",
+      "2026-Q1"
     ],
-    "native_cover_identity_pending_quarters": [],
+    "native_cover_identity_pending_quarters": [
+      "2025-Q4"
+    ],
     "full_original_pdf_content_reviewed": false,
     "eight_full_report_notes_and_auditor_scope_reviewed": false,
     "original_MOPS_PIT_verified": false,
@@ -41,20 +44,7 @@
   },
   "fetch_errors": [
     {
-      "period": "DIRECTORY",
-      "error": "HTTPError:HTTP Error 403: Forbidden",
-      "recovery": "SHA_VERIFIED_ARCHIVED_ISSUER_INDEX"
-    },
-    {
-      "period": "2026-Q1",
-      "error": "HTTPError:HTTP Error 403: Forbidden"
-    },
-    {
       "period": "2026-Q2",
-      "error": "HTTPError:HTTP Error 403: Forbidden"
-    },
-    {
-      "period": "2025-Q4",
       "error": "HTTPError:HTTP Error 403: Forbidden"
     },
     {
@@ -63,37 +53,14 @@
     }
   ],
   "formal_pass_count": 0,
-  "http403_retry_deferred_quarters": [
-    "2024-Q3",
-    "2025-Q4",
-    "2026-Q1",
-    "2026-Q2"
-  ],
-  "http403_retry_due_at_utc": "2026-11-09T12:49:11.904686+00:00",
+  "http403_retry_deferred_quarters": [],
+  "http403_retry_due_at_utc": null,
   "source_window_end": "2026-Q2",
-  "checked_at_utc": "2026-11-09T10:53:43.696427+00:00",
+  "checked_at_utc": "2026-11-09T15:19:22.116164+00:00",
   "missing_official_source_leads_not_originals": [
     {
       "period": "2024-Q3",
       "source_url": "https://investor.tsmc.com/sites/ir/financial-report/2024/TSMC%202024Q3%20Consolidated%20Financial%20Statements_C.pdf",
-      "original_pdf_sha256": null,
-      "original_pdf_archived": false,
-      "directory_index_sha256": "4531fd57b7eea3a5056630cbad24c706be972b4e41e245102d31bcbef9c324ba",
-      "source_link_is_not_formal_evidence": true,
-      "formal_gate_pass": false
-    },
-    {
-      "period": "2025-Q4",
-      "source_url": "https://investor.tsmc.com/sites/ir/financial-report/2025/TSMC%202025Q4%20Consolidated%20Financial%20Statements_C.pdf",
-      "original_pdf_sha256": null,
-      "original_pdf_archived": false,
-      "directory_index_sha256": "4531fd57b7eea3a5056630cbad24c706be972b4e41e245102d31bcbef9c324ba",
-      "source_link_is_not_formal_evidence": true,
-      "formal_gate_pass": false
-    },
-    {
-      "period": "2026-Q1",
-      "source_url": "https://investor.tsmc.com/sites/ir/financial-report/2026/TSMC%202026Q1%20Consolidated%20Financial%20Statements_C.pdf",
       "original_pdf_sha256": null,
       "original_pdf_archived": false,
       "directory_index_sha256": "4531fd57b7eea3a5056630cbad24c706be972b4e41e245102d31bcbef9c324ba",
@@ -214,6 +181,62 @@
           8,
           9,
           10
+        ],
+        "financial_statement_and_note_content_review_complete": false,
+        "auditor_opinion_formally_reviewed": false
+      }
+    },
+    {
+      "period": "2026-Q1",
+      "title": "2026年度第一季",
+      "source_url": "https://investor.tsmc.com/sites/ir/financial-report/2026/TSMC%202026Q1%20Consolidated%20Financial%20Statements_C.pdf",
+      "archive_path": "evidence/v880/originals/2330/full_statements/2026-Q1_5abab0787d5885d3929c.pdf",
+      "sha256": "5abab0787d5885d3929c99eddf1dbf2ae7cf72f04367a8ed2ba04048a2db6723",
+      "bytes": 5271067,
+      "captured_at_utc": "2026-11-09T15:19:21.154608+00:00",
+      "pdf_identity": {
+        "page_count": 57,
+        "pdf_cover_issuer_and_period_verified": true,
+        "four_statements_and_notes_listed_in_contents": true,
+        "identity_status": "NATIVE_COVER_AND_CONTENTS_CHECKED",
+        "raster_or_unextractable_core_pages_1based": [
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "financial_statement_and_note_content_review_complete": false,
+        "auditor_opinion_formally_reviewed": false
+      }
+    },
+    {
+      "period": "2025-Q4",
+      "title": "2025年",
+      "source_url": "https://investor.tsmc.com/sites/ir/financial-report/2025/TSMC%202025Q4%20Consolidated%20Financial%20Statements_C.pdf",
+      "archive_path": "evidence/v880/originals/2330/full_statements/2025-Q4_68daa6d9ba02d71efe08.pdf",
+      "sha256": "68daa6d9ba02d71efe0838f2a9b0e135af26a2d1bddbaa62a06d3eb3501dacb2",
+      "bytes": 10175740,
+      "captured_at_utc": "2026-11-09T15:19:21.612913+00:00",
+      "pdf_identity": {
+        "page_count": 85,
+        "pdf_cover_issuer_and_period_verified": false,
+        "four_statements_and_notes_listed_in_contents": false,
+        "identity_status": "RASTER_COVER_AND_CONTENTS_OCR_OR_VISUAL_REVIEW_REQUIRED",
+        "raster_or_unextractable_core_pages_1based": [
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12
         ],
         "financial_statement_and_note_content_review_complete": false,
         "auditor_opinion_formally_reviewed": false

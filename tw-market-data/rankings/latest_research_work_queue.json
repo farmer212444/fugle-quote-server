@@ -25,7 +25,7 @@
     "count_scope": "DETAIL_ONLY_NOT_FULL_MARKET"
   },
   "model": "V8.10.8",
-  "estimate_vintage": "2026-11-09T18:55:31.050002+08:00",
+  "estimate_vintage": "2026-11-09T23:19:31.281816+08:00",
   "asof_price_date": "2026-11-09",
   "source_model_sha256": "90396d21b1d2d0e6a8806836d0805f2c8974bd920825f3db95dc3a4ea3ca92b8",
   "issuer_job_count": 178,
@@ -455,11 +455,9 @@
       "research_upside_pct": 50.99,
       "original_quarter_coverage": {
         "required": 8,
-        "archived": 4,
+        "archived": 6,
         "missing_quarters": [
           "2024-Q3",
-          "2025-Q4",
-          "2026-Q1",
           "2026-Q2"
         ],
         "content_review_complete": false
@@ -498,7 +496,7 @@
           "next_action": "CAPTURE_MISSING_QUARTER_ORIGINALS",
           "scope": "ISSUER",
           "required_evidence": "逐季原始四表、附註、重編及完整性核對",
-          "reason": "4/8 issuer-directory-linked original PDFs SHA-archived through 2026-Q2; native cover/contents identified for 4/8; scanned pages, full financial contents, auditor scope and MOPS publication PIT remain unreviewed",
+          "reason": "6/8 issuer-directory-linked original PDFs SHA-archived through 2026-Q2; native cover/contents identified for 5/8; scanned pages, full financial contents, auditor scope and MOPS publication PIT remain unreviewed",
           "model_reason": "LATEST_CONDENSED_STATEMENTS_ARE_NOT_FULL_NOTES_REVIEW",
           "invalidates_on": "財報／重編更新"
         },
@@ -35944,11 +35942,9 @@
     "reviewed_financial_period": "2026-Q2",
     "original_quarter_coverage": {
       "required": 8,
-      "archived": 4,
+      "archived": 6,
       "missing_quarters": [
         "2024-Q3",
-        "2025-Q4",
-        "2026-Q1",
         "2026-Q2"
       ],
       "content_review_complete": false
@@ -35976,11 +35972,9 @@
       "strategy_oos_gate_decision": "PENDING",
       "original_quarter_coverage": {
         "required": 8,
-        "archived": 4,
+        "archived": 6,
         "missing_quarters": [
           "2024-Q3",
-          "2025-Q4",
-          "2026-Q1",
           "2026-Q2"
         ],
         "content_review_complete": false
@@ -37317,5 +37311,5 @@
   },
   "formal_gate_decisions_changed": 0,
   "certificates_issued": 0,
-  "source_progress_sha256": "75f5716821ed029ffd99e712ee23ac28fce9b41a0908be977149f201721cfac4"
+  "source_progress_sha256": "be2c9df49dfb50f9af7d57e0a070a6ed8fb38e272bfd7277875a36a8d17af940"
 }
