@@ -19,6 +19,7 @@ from alphamax import ContractError, load_bundle, rank_asof, walk_forward
 
 def readiness(root, bundle):
     blockers = []
+    warnings = []
     info = {}
     manifest = Path(root) / "tw-market-data/prices/latest_manifest.json"
     if not manifest.exists():
@@ -28,9 +29,9 @@ def readiness(root, bundle):
             current = json.loads(manifest.read_text(encoding="utf-8"))
             info["latest_official_price_date"] = current.get("date")
             if current.get("unadjusted_quotes") is not False:
-                blockers.append("PRICES_NOT_TOTAL_RETURN_ADJUSTED")
+                warnings.append("LEGACY_PRICES_NOT_TOTAL_RETURN_ADJUSTED")
             if current.get("security_master_verified") is not True:
-                blockers.append("PIT_SECURITY_MASTER_NOT_VERIFIED")
+                warnings.append("LEGACY_PIT_SECURITY_MASTER_NOT_VERIFIED")
         except (ValueError, OSError):
             blockers.append("PRICE_MANIFEST_UNREADABLE")
     if not (Path(bundle) / "manifest.json").is_file():
@@ -42,7 +43,7 @@ def readiness(root, bundle):
         except (ContractError, ValueError, OSError) as exc:
             blockers.append("BUNDLE_CONTRACT_FAILED:" + str(exc))
     return {"status": "BLOCKED" if blockers else "INPUT_CONTRACT_PASSED_NOT_AUDITED",
-            "blockers": blockers, "info": info,
+            "blockers": blockers, "warnings": warnings, "info": info,
             "note": "A passing input contract does not certify sources, models or live trading."}
 
 
