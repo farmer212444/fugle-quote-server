@@ -17,6 +17,7 @@ if str(PROJECT) not in sys.path:
     sys.path.insert(0,str(PROJECT))
 from tw_model_v880.evidence import GATES
 from scripts.run_research_pipeline import atomic_json
+from scripts.flytech_full_original_statements import prior_manifest, verify_archive, quarter_window
 
 SCHEMA="V8108_FOCUS_CERTIFICATION_REPAIR_V1"
 PRIORITY=("original_eight_quarter_statements","cash_and_working_capital",
@@ -71,6 +72,20 @@ def full_6206_starter(root,triage,lanes,manifest):
                               formal_gate_pass=False))
     require(originals and triage.get("issuer")=="6206",
             "ORIGINALS_OR_TRIAGE_MISSING")
+    # Quarterly FULL statements are a separate source class from presentations.
+    # A signed eight-quarter gate must never be inferred from the three IR decks.
+    archived=verify_archive(root,prior_manifest(root),
+                            quarter_window(lanes["reviewed_period"]))
+    full_documents=[]
+    for period,item in sorted(archived.items()):
+        full_documents.append(dict(
+            period=period,url=item["source_url"],sha256=item["sha256"],
+            archive_path=item["archive_path"],
+            captured_at_utc=item["captured_at_utc"],
+            origin_authenticated=False,available_at=None,
+            source_contents_reviewed=False,filing_PIT_verified=False,
+            formal_gate_pass=False))
+    require(len(full_documents)<=8,"TOO_MANY_ORIGINAL_QUARTERS")
     require(len(triage.get("gates",[]))==len(GATES),
             "TRIAGE_13_GATES_REQUIRED")
     bygate={g["gate"]:g for g in triage["gates"]}
@@ -89,8 +104,13 @@ def full_6206_starter(root,triage,lanes,manifest):
                     "PENDING","NOT_PENDING_IN_MODEL_CHECK_CERTIFICATE")
                 and tri.get("automatically_certified") is False,
                 "FORGED_TRIAGE_CERTIFICATION")
-        relevant=originals if gate in (
-            "management_promises","forecast_bridge","dividend_window") else []
+        relevant=(full_documents if gate in (
+            "original_eight_quarter_statements","cash_and_working_capital",
+            "nonoperating_components","fully_diluted_shares",
+            "auditor_scope","forecast_bridge","dividend_window",
+            "point_in_time") else [])
+        if gate in ("management_promises","forecast_bridge","dividend_window"):
+            relevant=[*relevant,*originals]
         starter[gate]=dict(
             issuer="6206",financial_period=lanes["valuation_period"],
             status=("PENDING" if tri["formal_status"]=="PENDING"
@@ -107,8 +127,11 @@ def full_6206_starter(root,triage,lanes,manifest):
         reviewed_financial_period=lanes["reviewed_period"],
         estimate_vintage=triage["estimate_vintage"],
         originals_sha256_checked=len(originals),presentations=originals,
+        official_full_statement_originals=full_documents,
         gate_review_starter=starter,
-        original_eight_quarter_full_pdf_count_verified=0,
+        original_eight_quarter_full_pdf_count_verified=len(full_documents),
+        original_quarters_missing=[p for p in quarter_window(lanes["reviewed_period"])
+                                   if p not in archived],
         original_pdf_presentations_are_not_quarterly_statements=True,
         issuer_publication_PIT_verified=False,
         named_reviewer_complete=False,review_packs_written=False,
@@ -248,6 +271,8 @@ def build(root):
             current_h1_ocf_reconciliation_still_pending=True,
             all_13_original_gates_preserved=True,
             verified_presentation_pdf_count=starter["originals_sha256_checked"],
+            verified_full_statement_pdf_count=starter["original_eight_quarter_full_pdf_count_verified"],
+            missing_full_statement_quarters=starter["original_quarters_missing"],
             review_priority=priority_list),
         review_starter=starter,
         second_focus=dict(code="9802",name="鈺齊-KY",
@@ -272,7 +297,9 @@ def markdown(doc):
        "", "## 6206 飛捷：先完成12項公司品質＋獨立第13項",
        "", "2027 Base研究潛在漲幅：%+.2f%%；三份公司法說PDF已重新核對原檔SHA256：%d份。"%
        (a["research_upside_pct"],a["verified_presentation_pdf_count"]),
-       "注意：法說PDF不是八季完整四表，發行時間與閱卷簽認也未取得正式認證。",
+       "八季完整財報原件已重驗：%d/8份；仍缺：%s。"%
+       (a["verified_full_statement_pdf_count"],", ".join(a["missing_full_statement_quarters"]) or "無"),
+       "注意：法說PDF不是八季完整四表；即使取得完整財報，全文核閱、發行時間與具名簽認仍須另外完成。",
        "", "|優先|原始品質關卡|來源觀察|下一步|",
        "|---:|---|---|---|"]
     for row in a["review_priority"]:
