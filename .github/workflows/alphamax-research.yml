@@ -5,7 +5,9 @@ on:
     paths:
       - 'alphamax/**'
       - 'scripts/alphamax_run.py'
+      - 'scripts/alphamax_concentration.py'
       - 'tests/test_alphamax.py'
+      - 'tests/test_alphamax_concentration.py'
       - '.github/workflows/alphamax-research.yml'
   push:
     branches:
@@ -33,15 +35,19 @@ jobs:
         with:
           python-version: '3.12'
       - name: Run independent no-leakage and contract tests
-        run: python -m unittest -v tests.test_alphamax
+        run: python -m unittest -v tests.test_alphamax tests.test_alphamax_concentration
       - name: Audit official source readiness; never fabricate returns
         run: |
           python scripts/alphamax_run.py readiness --output alphamax-research-readiness.json
+      - name: Audit concentration readiness; never create an unverified buy signal
+        run: python scripts/alphamax_concentration.py --output alphamax-concentration-readiness.json
       - name: Publish readiness as artifact
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: alphamax-readiness
-          path: alphamax-research-readiness.json
+          path: |
+            alphamax-research-readiness.json
+            alphamax-concentration-readiness.json
           if-no-files-found: warn
           retention-days: 30
