@@ -284,7 +284,7 @@ def verify_archive(root,manifest,window):
 
 def collect(root,last="2026-Q2",now=None,max_new=3,fetcher=fetch,ajaxer=fetch_season,twse_fetcher=twse_fetch,twse_max_probes=3):
     root=Path(root);window=quarter_window(last)
-    require(type(max_new)==int and 0<=max_new<=4,"UNBOUNDED_FETCH_REQUEST")
+    require(type(max_new)==int and 0<=max_new<=5,"UNBOUNDED_FETCH_REQUEST")
     require(type(twse_max_probes)==int and 0<=twse_max_probes<=8,
             "TWSE_UNBOUNDED_INDEX_PROBES")
     now=now or dt.datetime.now(dt.timezone.utc)
