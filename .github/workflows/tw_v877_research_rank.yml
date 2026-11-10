@@ -45,6 +45,8 @@ on:
       - 'scripts/historical_pit_readiness.py'
       - 'scripts/history_archive.py'
       - 'scripts/run_research_pipeline.py'
+      - 'scripts/prospective_drawdown_challenge.py'
+      - 'tests/test_prospective_drawdown_challenge.py'
       - 'scripts/return_model_search.py'
       - 'scripts/expected_returns.py'
       - 'README_EXPECTED_RETURNS.md'
@@ -145,6 +147,8 @@ on:
       - 'scripts/historical_pit_readiness.py'
       - 'scripts/history_archive.py'
       - 'scripts/run_research_pipeline.py'
+      - 'scripts/prospective_drawdown_challenge.py'
+      - 'tests/test_prospective_drawdown_challenge.py'
       - 'scripts/return_model_search.py'
       - 'scripts/expected_returns.py'
       - 'README_EXPECTED_RETURNS.md'
@@ -284,6 +288,7 @@ jobs:
           python -m unittest -v tests.test_9802_cash_review
           python -m unittest -v tests.test_superforecast_ledger
           python -m unittest -v tests.test_expected_returns tests.test_expected_return_readiness
+          python -m unittest -v tests.test_prospective_drawdown_challenge
           python -m unittest -v tests.test_v8b8_buy_decision_shadow
           python -m unittest -v tests.test_current_research_screens tests.test_tpex_research_liquidity tests.test_return_model_search
           python -m unittest -v tests.test_historical_pit_admission tests.test_historical_pit_readiness
@@ -379,6 +384,7 @@ jobs:
             fi
             python scripts/v897_freeze_model_vintage.py --git-source-sha "$(git rev-parse HEAD)" --register-benchmark
             python scripts/run_research_pipeline.py --phase observation
+            python scripts/prospective_drawdown_challenge.py --source-git-sha "$(git rev-parse HEAD)" issue
             python scripts/v8a8_forward_top30_0050.py
             python scripts/v8b5_0056_stress_audit.py --root tw-market-data --out tw-market-data/rankings/0056_2027_stress_latest.json
             python scripts/v8b6_0056_financial_pb_hurdle.py --root tw-market-data --out tw-market-data/rankings/0056_financial_pb_hurdle_latest.json
