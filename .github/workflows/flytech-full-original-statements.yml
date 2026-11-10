@@ -28,6 +28,7 @@ jobs:
           python -m py_compile scripts/flytech_full_original_statements.py
           python -m unittest -v tests.test_flytech_full_original_statements
       - name: Live issuer directory smoke, never registered as a quality PASS
+        if: github.event_name == 'workflow_dispatch'
         env:
           PYTHONPATH: '.'
         run: |
