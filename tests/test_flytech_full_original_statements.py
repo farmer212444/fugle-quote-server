@@ -9,7 +9,7 @@ from unittest.mock import patch
 
 from scripts.flytech_full_original_statements import (
   DIRECTORY,discover,official_url,quarter_window,collect,verify_archive,
-  identity,fetch,season_options)
+  identity,fetch,season_options,twse_index_url,twse_filename,twse_resolve)
 
 def table(period_code,token):
     return ('<tr><td>第'+period_code+'季</td><td><a href="/data/investor_season/attached/'+
@@ -22,6 +22,18 @@ def ident(raw,period):
        cover_issuer_and_quarter_match=True,full_notes_content_reviewed=False,
        auditor_opinion_certified=False,filing_publication_PIT_verified=False,
        formal_gate_pass=False)
+
+def unavailable_twse(*args,**kwargs):
+    raise ValueError("MOCK_TWSE_IS_UNAVAILABLE")
+
+def mock_twse(url,cap,post=None):
+    if post is not None:
+        return b'<html><a href="/pdf/202602_6206_AI1_20260807_171921.pdf">202602_6206_AI1.pdf</a></html>'
+    if '?step=1' in url and 'year=115' in url and 'seamon=2' in url:
+        return b'<html>6206 IFRSs\xe5\x90\x88\xe4\xbd\xb5\xe8\xb2\xa1\xe5\xa0\xb1 202602_6206_AI1.pdf</html>'
+    if url.startswith("https://doc.twse.com.tw/pdf/"):
+        return b"%PDF-1.4 test pdf with signed synthetic hash %%EOF"
+    raise ValueError("MOCK_TWSE_QUARTER_UNAVAILABLE")
 
 def fake_fetch(url,cap):
     if url.endswith("&year=2026"):
@@ -69,12 +81,40 @@ class FlytechOriginalsTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp,patch(
             "scripts.flytech_full_original_statements.identity",side_effect=ident):
             root=Path(tmp)
-            info=collect(root,max_new=3,fetcher=with_selector,ajaxer=ajaxer)
+            info=collect(root,max_new=3,fetcher=with_selector,ajaxer=ajaxer,twse_fetcher=unavailable_twse)
             self.assertEqual(info["source_period_links_discovered"],2)
             self.assertEqual(info["original_full_statements_archived"],2)
             m=json.loads((root/FOLDER/"manifest.json").read_text())
             self.assertEqual(len(m["ajax_receipts"]),3)
             self.assertTrue(all(len(x["sha256"])==64 for x in m["ajax_receipts"]))
+
+    def test_only_verified_twse_filing_index_may_resolve_original_pdf(self):
+        self.assertIn("co_id=6206",twse_index_url("2026-Q2"))
+        html=b"<html>6206 IFRSs&#21512;&#20341;&#36001;&#22577; 202602_6206_AI1.pdf</html>"
+        self.assertEqual(twse_filename(html,"2026-Q2"),"202602_6206_AI1.pdf")
+        resolved=twse_resolve(
+            b'<a href="/pdf/202602_6206_AI1_20260807_171921.pdf">202602_6206_AI1.pdf</a>',
+            "202602_6206_AI1.pdf")
+        self.assertTrue(resolved.startswith("https://doc.twse.com.tw/pdf/"))
+        with self.assertRaisesRegex(ValueError,"TWSE_OFFICIAL_INDEX"):
+            twse_filename(html.replace(b"6206",b"2330"),"2026-Q2")
+        with self.assertRaisesRegex(ValueError,"TWSE_NO_UNIQUE"):
+            twse_resolve(b'<a href="/pdf/202601_6206_AI1.pdf">other</a>',
+                         "202602_6206_AI1.pdf")
+        with tempfile.TemporaryDirectory() as tmp,patch(
+            "scripts.flytech_full_original_statements.identity",side_effect=ident):
+            def empty_index(url,cap):
+                return b"<html>No quarterly PDF at this issuer static page</html>"
+            results=collect(Path(tmp),max_new=1,
+                fetcher=empty_index,twse_fetcher=mock_twse)
+            self.assertEqual(results["original_full_statements_archived"],1)
+            self.assertEqual(results["archived_quarters"],["2026-Q2"])
+            manifest=json.loads((Path(tmp)/"evidence/v880/originals/6206/full_statements/manifest.json").read_text())
+            row=manifest["documents"][0]
+            self.assertEqual(row["source_url"],resolved)
+            self.assertTrue(row["twse_source_receipt"]["response_link_checked"])
+            self.assertFalse(row["first_publication_timestamp_verified"])
+            self.assertEqual(results["formal_gate_passes_issued"],0)
 
     def test_ambiguous_html_link_never_archived(self):
         source=(b'<tr><td>First Second</td><td><a href="/data/investor_season/attached/'
@@ -93,7 +133,7 @@ class FlytechOriginalsTest(unittest.TestCase):
             "scripts.flytech_full_original_statements.identity",side_effect=ident):
             root=Path(tmp)
             now=dt.datetime(2026,11,10,2,0,tzinfo=dt.timezone.utc)
-            r=collect(root,now=now,max_new=3,fetcher=fake_fetch)
+            r=collect(root,now=now,max_new=3,fetcher=fake_fetch,twse_fetcher=unavailable_twse)
             self.assertEqual(r["original_full_statements_archived"],2)
             self.assertEqual(r["newly_downloaded_quarters"],2)
             self.assertIn("2025-Q3",r["archived_quarters"])
@@ -103,20 +143,20 @@ class FlytechOriginalsTest(unittest.TestCase):
             self.assertEqual(len(manifest["documents"]),2)
             self.assertTrue(all(x["formal_gate_pass"] is False and
                x["first_publication_timestamp_verified"] is False for x in manifest["documents"]))
-            rerun=collect(root,now=now+dt.timedelta(hours=1),max_new=3,fetcher=fake_fetch)
+            rerun=collect(root,now=now+dt.timedelta(hours=1),max_new=3,fetcher=fake_fetch,twse_fetcher=unavailable_twse)
             self.assertEqual(rerun["newly_downloaded_quarters"],0)
             self.assertEqual(rerun["original_full_statements_archived"],2)
             src=root/manifest["documents"][0]["archive_path"]
             src.write_bytes(b"tampered issuer PDF")
             with self.assertRaisesRegex(ValueError,"PDF_ARCHIVE_HASH_MISMATCH"):
-                collect(root,now=now,fetcher=fake_fetch)
+                collect(root,now=now,fetcher=fake_fetch,twse_fetcher=unavailable_twse)
 
     def test_fake_period_pdf_not_saved_or_certified(self):
         def always_wrong(raw,period):
             raise ValueError("FLYTECH_FULL_REPORT_PDF_COMPANY_OR_QUARTER_MISMATCH")
         with tempfile.TemporaryDirectory() as tmp,patch(
             "scripts.flytech_full_original_statements.identity",side_effect=always_wrong):
-            r=collect(Path(tmp),max_new=3,fetcher=fake_fetch)
+            r=collect(Path(tmp),max_new=3,fetcher=fake_fetch,twse_fetcher=unavailable_twse)
             self.assertEqual(r["original_full_statements_archived"],0)
             self.assertEqual(r["formal_gate_passes_issued"],0)
             self.assertTrue(any(x["reason"].startswith("PDF_") for x in r["collection_errors"]))
@@ -125,7 +165,7 @@ class FlytechOriginalsTest(unittest.TestCase):
         def empty_index(url,cap):
             return b"<html>Year 2026, records not reachable in static HTML</html>"
         with tempfile.TemporaryDirectory() as tmp:
-            r=collect(Path(tmp),max_new=2,fetcher=empty_index)
+            r=collect(Path(tmp),max_new=2,fetcher=empty_index,twse_fetcher=unavailable_twse)
             self.assertEqual(len(r["original_quarters_missing"]),8)
             self.assertEqual(r["formal_gate_passes_issued"],0)
             self.assertFalse(r["original_publication_PIT_certified"])
