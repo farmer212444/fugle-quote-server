@@ -117,12 +117,12 @@ def fetch(url,cap):
 def season_options(raw):
     """Derive server-assigned season IDs from the issuer's own year selector."""
     text=raw.decode("utf-8","replace")
-    match=re.search(r'<select\\b[^>]*\\bname\\s*=\\s*["\\\']season["\\\'][^>]*>(.*?)</select>',
+    match=re.search(r"""<select\b[^>]*\bname\s*=\s*['"]season['"][^>]*>(.*?)</select>""",
                     text,re.I|re.S)
     if not match:return {}
     opts={}
     for val,year in re.findall(
-        r'<option\\b[^>]*\\bvalue\\s*=\\s*["\\\'](\\d+)["\\\'][^>]*>\\s*(20\\d{2})\\s*</option>',
+        r"""<option\b[^>]*\bvalue\s*=\s*['"](\d+)['"][^>]*>\s*(20\d{2})\s*</option>""",
         match.group(1),re.I|re.S):
         if int(year) in opts and opts[int(year)]!=int(val):
             raise ValueError("FLYTECH_FULL_REPORT_DUPLICATE_SEASON_ID")
