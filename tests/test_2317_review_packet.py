@@ -89,6 +89,44 @@ class ReviewerPrepTests(unittest.TestCase):
         self.assertIn("第3頁",markdown)
         self.assertIn("不產生任何正式PASS",markdown)
 
+    def test_formal_review_starter_has_every_gate_but_can_never_self_certify(self):
+        self.insert_original()
+        packet=p.build_packet(self.root,"2026-Q2",ASOF)
+        starter=p.build_formal_review_starter(packet)
+        from tw_model_v880.evidence import GATES
+        from scripts.v891_gate_certification import validate_review_pack, timestamp
+        self.assertEqual(set(starter["gates"]),set(GATES))
+        self.assertEqual(starter["formal_pass_created"],0)
+        self.assertTrue(starter["draft_only"])
+        self.assertFalse(starter["can_admit_to_certificates"])
+        self.assertFalse(starter["publication_PIT_verified"])
+        self.assertEqual(starter["original_pdf_coverage"]["archived_count"],1)
+        for gate in starter["gates"].values():
+            self.assertEqual(gate["status"],"PENDING")
+            self.assertFalse(gate["review_completed"])
+            self.assertFalse(gate["source_identity_reviewed"])
+            self.assertIsNone(gate["reviewer_id"])
+            self.assertIsNone(gate["available_at"])
+            self.assertIsNone(gate["checked_at"])
+        originals=starter["gates"]["original_eight_quarter_statements"]["sources"]
+        self.assertEqual(len(originals),1)
+        self.assertEqual(originals[0]["sha256"],packet["original_documents"][3]["sha256"])
+        self.assertFalse(originals[0]["origin_authenticated"])
+        self.assertIsNone(originals[0]["available_at"])
+        self.assertEqual(starter["gates"]["insider_claims"]["sources"],[])
+        with self.assertRaisesRegex(ValueError,"REVIEW_PACK_NOT_AN_EXPLICIT_DECISION"):
+            validate_review_pack(starter,Path("2317.json"),self.root,
+                                 timestamp(ASOF),"2026-Q2")
+
+    def test_missing_manifest_starter_is_empty_and_does_not_invent_coverage(self):
+        packet=p.build_packet(self.root,"2026-Q2",ASOF)
+        starter=p.build_formal_review_starter(packet)
+        self.assertIsNone(starter["original_pdf_coverage"]["archived_count"])
+        self.assertEqual(starter["source_originals"],[])
+        self.assertTrue(all(gate["status"]=="PENDING" and not gate["sources"]
+                            for gate in starter["gates"].values()))
+
+
     def test_opinion_warning_is_high_priority_but_never_formal_fail(self):
         self.insert_original()
         report=p.build_packet(self.root,"2026-Q2",ASOF)
