@@ -73,6 +73,32 @@ jobs:
               except Exception as e:
                   print('PUBLIC_PACKER_DECODE_PENDING',type(e).__name__,str(e)[:140])
           PY
+      - name: Diagnose public AJAX HTTP method and JSON transport without source execution
+        run: |
+          python - <<'PY'
+          import urllib.request,urllib.parse,http.cookiejar
+          from scripts.flytech_full_original_statements import DIRECTORY
+          base="https://www.flytech.com.tw/investor.php"
+          for mode in ("GET","POST","POST_WITH_COOKIE"):
+              try:
+                  jar=http.cookiejar.CookieJar()
+                  opener=urllib.request.build_opener(urllib.request.HTTPCookieProcessor(jar))
+                  if mode=="POST_WITH_COOKIE":
+                      opener.open(urllib.request.Request(DIRECTORY),timeout=12).read(200)
+                  data=urllib.parse.urlencode(dict(act="get_season",season=17)).encode("ascii")
+                  url=base+"?act=get_season&season=17" if mode=="GET" else base
+                  req=urllib.request.Request(url,data=None if mode=="GET" else data,
+                      headers=dict(Referer=DIRECTORY,
+                          **{"X-Requested-With":"XMLHttpRequest",
+                             "Content-Type":"application/x-www-form-urlencoded",
+                             "Accept":"application/json,text/javascript,*/*"}))
+                  with opener.open(req,timeout=15) as resp:
+                      raw=resp.read(400)
+                      print('PUBLIC_AJAX_HTTP_DIAGNOSTIC',mode,resp.status,
+                            resp.headers.get('Content-Type'),repr(raw[:240]))
+              except Exception as e:
+                  print('PUBLIC_AJAX_HTTP_DIAGNOSTIC',mode,type(e).__name__,str(e)[:100])
+          PY
       - name: Diagnose public quarter-link loader when static directory is incomplete
         env:
           PYTHONPATH: '.'
