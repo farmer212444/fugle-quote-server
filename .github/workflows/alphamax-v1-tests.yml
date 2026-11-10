@@ -1,0 +1,20 @@
+name: AlphaMax V1 independent MVP
+on:
+  pull_request:
+    paths: ['alphamax/**', '.github/workflows/alphamax-v1-tests.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  independent-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: alphamax
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m unittest discover -s alphamax/tests -v
+      - run: python -m alphamax.engine alphamax/examples/synthetic.json --output /tmp/alphamax-report.json
+      - run: diff alphamax/examples/synthetic-report.json /tmp/alphamax-report.json
