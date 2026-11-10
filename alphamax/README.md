@@ -181,3 +181,34 @@ GitHub Actions raw artifacts currently expire in 90 days. They are not a
 permanent audited as-of vintage archive. A dated, immutable source archive
 and full historical delisting event ledger must be implemented and
 independently reviewed before this data can be admitted to real backtests.
+
+
+## TWSE historical delisting event evidence (retrospective)
+
+AlphaMax now ingests the TWSE official "terminated listing" historical table:
+https://www.twse.com.tw/company/suspendListingCsvAndHtml?lang=zh&type=html
+
+- The independent event collector in alphamax/delist_ledger.py tries official
+  CSV first, falling back to the official HTML table.
+- It stores the raw response with a SHA-256 byte digest, capture timestamp,
+  event effective date, market/code/name and an explicit 4-digit/6-digit split.
+- It rejects duplicate market/code/effective-date events, invalid issuer codes,
+  impossible future dates and unrecognized dated rows. Its CI output is a
+  research artifact only, not a trading engine.
+- The effective date of termination is NOT the first public announcement date,
+  last executable trading day, merger consideration or realized investment
+  loss. These require separate independently dated exchange disclosures.
+- TPEx historical delisting is NOT included in this collector. Until both
+  markets, past listed issuers, original announcement timestamps and investor
+  total-return paths are reconstructed, historical/PIT stock universes and
+  production expected-return rankings remain BLOCKED.
+- An event appearing in a retrospective 2026 download may be used to mark
+  historical missing/delisted observations for reconstruction, but cannot be
+  used as a preannouncement predictive input in a 2024, 2025 or 2026 backtest.
+
+Run (online GitHub Actions environment):
+    python -m unittest -v tests.test_alphamax_delist
+    python scripts/alphamax_delist.py --output-dir alphamax-delist-capture
+
+CI reports are immutable per run but the artifact retention is 90 days;
+it is not a permanent independent original-source archive.
