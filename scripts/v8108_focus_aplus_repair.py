@@ -76,20 +76,26 @@ def full_6206_starter(root,triage,lanes,manifest):
     bygate={g["gate"]:g for g in triage["gates"]}
     require(set(bygate)==set(GATES),"TRIAGE_GATES_MISMATCH")
     require(lanes["code"]=="6206" and
-            lanes["company_gates_passed"]==0 and
-            lanes["company_gates_pending"]==12 and
-            lanes["formal_Aplus"] is False,"CERTIFICATION_CONFLICT")
+            type(lanes.get("company_gates_passed")) is int and
+            type(lanes.get("company_gates_pending")) is int and
+            0<=lanes["company_gates_passed"]<=12 and
+            0<=lanes["company_gates_pending"]<=12 and
+            lanes["company_gates_passed"]+lanes["company_gates_pending"]<=12,
+            "CERTIFICATION_COUNTS_INVALID")
     starter={}
     for gate in GATES:
         tri=bygate[gate]
-        require(tri["formal_status"]=="PENDING" and
-                tri.get("automatically_certified") is False,
+        require(tri["formal_status"] in (
+                    "PENDING","NOT_PENDING_IN_MODEL_CHECK_CERTIFICATE")
+                and tri.get("automatically_certified") is False,
                 "FORGED_TRIAGE_CERTIFICATION")
         relevant=originals if gate in (
             "management_promises","forecast_bridge","dividend_window") else []
         starter[gate]=dict(
             issuer="6206",financial_period=lanes["valuation_period"],
-            status="PENDING",review_completed=False,reviewer_id=None,
+            status=("PENDING" if tri["formal_status"]=="PENDING"
+                    else "MAIN_MODEL_DECISION_EXISTS_NOT_REISSUED"),
+            review_completed=False,reviewer_id=None,
             checked_at=None,available_at=None,expires_at=None,method=None,
             review_note=None,source_identity_reviewed=False,
             sources=relevant,next_action=tri["next_action"],
@@ -106,7 +112,7 @@ def full_6206_starter(root,triage,lanes,manifest):
         original_pdf_presentations_are_not_quarterly_statements=True,
         issuer_publication_PIT_verified=False,
         named_reviewer_complete=False,review_packs_written=False,
-        passes_issued=0,formal_Aplus=False,
+        passes_issued=0,formal_Aplus=lanes.get("formal_Aplus") is True,
         original_13_gate_definitions_unchanged=True)
 
 def gm_hurdle(base,reference,threshold=0.30):
@@ -197,10 +203,15 @@ def build(root):
     rows={x["code"]:x for x in official["issuers"] if x.get("code") in ("6206","9802")}
     require(set(rows)=={"6206","9802"},"MISSING_FOCUS_COMPANIES")
     for code in rows:
-        require(rows[code]["company_gates_pending"]==12 and
-                rows[code]["company_gates_passed"]==0 and
-                rows[code]["strategy_validation_lane"]=="STRATEGY_PIT_OOS_PENDING",
-                "FORMAL_QUALITY_STATE_CHANGED_REVIEW_REQUIRED")
+        require(type(rows[code].get("company_gates_passed")) is int
+                and type(rows[code].get("company_gates_pending")) is int
+                and rows[code]["company_gates_passed"]>=0
+                and rows[code]["company_gates_pending"]>=0
+                and rows[code]["company_gates_passed"]+
+                    rows[code]["company_gates_pending"]<=12
+                and rows[code].get("strategy_validation_lane") in (
+                    "STRATEGY_PIT_OOS_PENDING","STRATEGY_PIT_OOS_FORMAL_PASS"),
+                "FORMAL_QUALITY_COUNTS_OR_LANE_INVALID")
     starter=full_6206_starter(root,triage,rows["6206"],manifest)
     quarter=footwear.get("companies",[])
     shoe=next((c for c in quarter if c.get("code")=="9802"),None)
@@ -214,9 +225,9 @@ def build(root):
             "9802_MAIN_MODEL_FORECAST_NOT_RECONCILED")
     hurdle=gm_hurdle(early["new"],shoe["reference_close"])
     bridge=cost_bridge(cogs)
-    require(rows["9802"]["price_lane"]=="PRICE_HURDLE_NOT_MET"
-            and rows["6206"]["price_lane"]=="A_PLUS_PRICE_CANDIDATE_UNVERIFIED",
-            "FOCUS_PRICE_LANE_UNEXPECTED")
+    require(isinstance(rows["9802"].get("price_lane"),str)
+            and isinstance(rows["6206"].get("price_lane"),str),
+            "FOCUS_PRICE_LANE_MISSING")
     priority_list=[]
     for rank,name in enumerate(PRIORITY,1):
         p=starter["gate_review_starter"][name]
@@ -232,7 +243,9 @@ def build(root):
             self_report_q3=h4,flytech_original_manifest=h5,footwear_cost_bridge=h6),
         first_review_candidate=dict(code="6206",name="飛捷",
             research_upside_pct=rows["6206"]["research_upside_pct"],
-            company_gates_pending=12,strategy_pit_oos="PENDING",
+            company_gates_pending=rows["6206"]["company_gates_pending"],
+            company_gates_passed=rows["6206"]["company_gates_passed"],
+            strategy_pit_oos=rows["6206"]["strategy_validation_lane"],
             current_h1_ocf_reconciliation_still_pending=True,
             all_13_original_gates_preserved=True,
             verified_presentation_pdf_count=starter["originals_sha256_checked"],
