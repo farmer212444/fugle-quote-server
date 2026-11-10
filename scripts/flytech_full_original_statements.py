@@ -33,7 +33,7 @@ REGEX_URL=re.compile(r"(?:https?://(?:www\.)?flytech\.com\.tw)?/?data/investor_s
 QUARTER_WORDS={"一":1,"二":2,"三":3,"四":4}
 SECTION_WORDS=("資產負債表","綜合損益表","權益變動表","現金流量表","財務報告附註")
 TWSE_INDEX="https://doc.twse.com.tw/server-java/t57sb01"
-TWSE_PDF_REGEX=re.compile(r"/pdf/[0-9A-Za-z_.-]+\\.pdf")
+TWSE_PDF_REGEX=re.compile(r"/pdf/[0-9A-Za-z_.-]+\.pdf")
 
 def require(ok,why):
     if not ok:
@@ -103,10 +103,10 @@ def twse_fetch(url,cap,post=None):
 
 def twse_resolve(raw,filename):
     require(type(raw) is bytes and len(raw)<=MAX_INDEX and
-            re.fullmatch(r"20[0-9]{2}[0-4][0-9]_6206_AI1\\.pdf",filename) is not None,
+            re.fullmatch(r"20[0-9]{2}[0-4][0-9]_6206_AI1\.pdf",filename) is not None,
             "TWSE_INVALID_RESOLUTION")
     t=raw.decode("utf-8","replace")
-    links=re.findall(r'(?i)href\\s*=\\s*["\\\'](/pdf/[0-9A-Za-z_.-]+\\.pdf)["\\\']',t)
+    links=re.findall(r"""(?i)href\s*=\s*['"](/pdf/[0-9A-Za-z_.-]+\.pdf)['"]""",t)
     links=[v for v in links if filename.rsplit(".pdf",1)[0] in v]
     require(len(set(links))==1,"TWSE_NO_UNIQUE_OFFICIAL_PDF_LINK")
     actual=urllib.parse.urljoin(TWSE_INDEX,links[0])
