@@ -24,7 +24,8 @@ def _validate_sessions(content, market, code, current_date):
     if not isinstance(sessions, list):
         raise ContractError("MISSING_HISTORICAL_SESSIONS")
     seen = set()
-    verified = []
+    priced = []
+    unpriced = 0
     for entry in sessions:
         if not isinstance(entry, dict):
             raise ContractError("NON_OBJECT_HISTORICAL_SESSION")
@@ -38,15 +39,23 @@ def _validate_sessions(content, market, code, current_date):
             raise ContractError("HISTORY_CODE_MISMATCH")
         if entry.get("market") not in (None, market):
             raise ContractError("HISTORY_MARKET_MISMATCH")
-        if not _positive_price(entry.get("close")):
-            raise ContractError("HISTORY_CLOSE_INVALID")
         turnover = entry.get("turnover_ntd")
         if type(turnover) not in (int, float) or not isfinite(turnover) or turnover < 0:
             raise ContractError("HISTORY_TURNOVER_INVALID")
-        verified.append(stamp)
-    if not verified:
+        if not _positive_price(entry.get("close")):
+            # A null close is a missing investor price, not an invalid security
+            # record or a zero-return day. Retain as an explicit pricing gap.
+            unpriced += 1
+            continue
+        priced.append(stamp)
+    if not seen:
         raise ContractError("EMPTY_HISTORICAL_SESSIONS")
-    return len(verified), min(verified).isoformat(), max(verified).isoformat()
+    return (
+        len(priced),
+        min(priced).isoformat() if priced else None,
+        max(priced).isoformat() if priced else None,
+        unpriced,
+    )
 
 
 def audit_history(root, *, min_sessions=756, max_examples=25):
@@ -108,6 +117,9 @@ def audit_history(root, *, min_sessions=756, max_examples=25):
         "history_files_with_independent_issuer_pit": 0,
         "history_files_with_verified_tradability": 0,
         "history_files_with_durable_original_receipt": 0,
+        "unpriced_historical_sessions": 0,
+        "history_files_with_unpriced_sessions": 0,
+        "history_files_without_any_positive_close": 0,
     }
     missing = set(current_keys)
     invalid = []
@@ -126,14 +138,20 @@ def audit_history(root, *, min_sessions=756, max_examples=25):
                 raise ContractError("HISTORY_PACKET_NOT_OBJECT")
             if packet.get("issuer") != code or packet.get("market") != market:
                 raise ContractError("HISTORY_SECURITY_IDENTITY_MISMATCH")
-            n, first, last = _validate_sessions(packet, market, code, asof)
+            n, first, last, unpriced = _validate_sessions(packet, market, code, asof)
         except (ValueError, TypeError, OSError) as exc:
             counts["invalid_history_files"] += 1
             invalid.append({"security": f"{market}:{code}", "reason": str(exc)})
             continue
         counts["well_formed_history_files"] += 1
-        earliest = min(first, earliest) if earliest else first
-        latest = max(last, latest) if latest else last
+        counts["unpriced_historical_sessions"] += unpriced
+        if unpriced:
+            counts["history_files_with_unpriced_sessions"] += 1
+        if n == 0:
+            counts["history_files_without_any_positive_close"] += 1
+        else:
+            earliest = min(first, earliest) if earliest else first
+            latest = max(last, latest) if latest else last
         if n >= 252:
             counts["history_files_ge_252_sessions"] += 1
         if n >= min_sessions:
@@ -141,8 +159,9 @@ def audit_history(root, *, min_sessions=756, max_examples=25):
         else:
             short.append({"security": f"{market}:{code}", "sessions": n, "first": first, "last": last})
         if (market, code) in current_keys:
-            counts["present_in_snapshot_with_history"] += 1
-            missing.discard((market, code))
+            if n > 0:
+                counts["present_in_snapshot_with_history"] += 1
+                missing.discard((market, code))
         else:
             counts["history_files_not_in_snapshot"] += 1
             unlisted.append(f"{market}:{code}")
@@ -187,6 +206,6 @@ def audit_history(root, *, min_sessions=756, max_examples=25):
         "notice": (
             "History observations are evidence of observed prices only, never listing/delisting dates. "
             "Coverage counts are not issuer PIT or investor total-return certification. "
-            "Snapshot presence is not a tradable fill guarantee; null closes remain non-executable."
+            "Snapshot presence is not a tradable fill guarantee; null closes are explicit priced-session gaps, not zero-price fills."
         ),
     }
