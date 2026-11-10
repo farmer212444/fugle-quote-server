@@ -51,7 +51,7 @@ jobs:
           import ast,re
           from scripts.flytech_full_original_statements import fetch,DIRECTORY
           html=fetch(DIRECTORY+'&year=2026',2000000).decode('utf-8','replace')
-          regex=r"return p\\}\\('((?:\\\\.|[^'])*)',(\\d+),(\\d+),'((?:\\\\.|[^'])*)'\\.split\\('\\|'\\),0,\\{\\}\\)\\)"
+          regex=r"return p\}\('((?:\\.|[^'])*)',(\d+),(\d+),'((?:\\.|[^'])*)'\.split\('\|'\),0,\{\}\)\)"
           hits=list(re.finditer(regex,html,re.S))
           print('PACKER_BODIES_FOUND',len(hits))
           digits='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
@@ -65,7 +65,7 @@ jobs:
                   if base!=62 or count>200:continue
                   for i in range(count-1,-1,-1):
                       if i<len(tokens) and tokens[i]:
-                          payload=re.sub(r'\\b'+re.escape(enc(i))+r'\\b',lambda _:tokens[i],payload)
+                          payload=re.sub(r'\b'+re.escape(enc(i))+r'\b',lambda _:tokens[i],payload)
                   for term in ('get_season','seasonId','GR_BLOCK_SEASON','ajax','get_monthly','investor_season'):
                       for a in list(re.finditer(re.escape(term),payload,re.I))[:3]:
                           print('UNPACKED_PUBLIC_AJAX_ROUTE',term,
