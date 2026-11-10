@@ -9,7 +9,7 @@ from unittest.mock import patch
 
 from scripts.flytech_full_original_statements import (
   DIRECTORY,discover,official_url,quarter_window,collect,verify_archive,
-  identity,fetch)
+  identity,fetch,season_options)
 
 def table(period_code,token):
     return ('<tr><td>第'+period_code+'季</td><td><a href="/data/investor_season/attached/'+
@@ -44,6 +44,37 @@ class FlytechOriginalsTest(unittest.TestCase):
         self.assertTrue(official_url(next(iter(candidates.values()))))
         self.assertFalse(official_url("http://www.flytech.com.tw/data/investor_season/attached/1234567890123456789.pdf"))
         self.assertFalse(official_url("https://www.flytech.com.tw/data/investor_law/attached/1234567890123456789.pdf"))
+
+    def test_official_dynamic_season_selector_and_posted_pdf_list(self):
+        from scripts.flytech_full_original_statements import FOLDER
+        selector=(b'<select name="season" id="season">'
+                  b'<option value="17" selected>2026</option>'
+                  b'<option value="16">2025</option>'
+                  b'<option value="15">2024</option></select>')
+        self.assertEqual(season_options(selector),{2026:17,2025:16,2024:15})
+        def with_selector(url,cap):
+            if "year=" in url:
+                return b"<html><body>"+selector+b"</body></html>"
+            return fake_fetch(url,cap)
+        def ajaxer(season):
+            if season==17:
+                fragment=(b'<li><a href="data/investor_season/attached/'
+                          b'1234567890123456789.pdf">\xe7\xac\xac\xe4\xba\x8c\xe5\xad\xa3</a></li>')
+            elif season==16:
+                fragment=(b'<li>\xe7\xac\xac\xe4\xb8\x89\xe5\xad\xa3<a href="/data/investor_season/attached/'
+                          b'1234567890123456790.pdf">PDF</a></li>')
+            else:fragment=b"<ul>No quarter available</ul>"
+            raw=json.dumps({"error_code":0,"html":{"season_list":fragment.decode()}}).encode()
+            return fragment,raw
+        with tempfile.TemporaryDirectory() as tmp,patch(
+            "scripts.flytech_full_original_statements.identity",side_effect=ident):
+            root=Path(tmp)
+            info=collect(root,max_new=3,fetcher=with_selector,ajaxer=ajaxer)
+            self.assertEqual(info["source_period_links_discovered"],2)
+            self.assertEqual(info["original_full_statements_archived"],2)
+            m=json.loads((root/FOLDER/"manifest.json").read_text())
+            self.assertEqual(len(m["ajax_receipts"]),3)
+            self.assertTrue(all(len(x["sha256"])==64 for x in m["ajax_receipts"]))
 
     def test_ambiguous_html_link_never_archived(self):
         source=(b'<tr><td>First Second</td><td><a href="/data/investor_season/attached/'
