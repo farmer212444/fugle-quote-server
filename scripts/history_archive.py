@@ -18,6 +18,35 @@ HOST_PREFIXES = {'TWSE': 'https://www.twse.com.tw/rwd/zh/afterTrading/STOCK_DAY?
                  'TPEX': 'https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes?'}
 
 
+def collection_priority_context(progress, reference_date, now=None):
+    """A past research order can prioritize captures, never create a new signal.
+
+    Quote archives remain bound to their own reference date and original bytes.
+    Requiring the priority report to update first deadlocks both backfill jobs
+    when publication fails. Older reports need an explicit, non-future clock.
+    """
+    reference = dt.date.fromisoformat(reference_date)
+    quoted = dt.date.fromisoformat(progress['asof_price_date'])
+    vintage = progress.get('estimate_vintage')
+    if quoted > reference or (quoted < reference and not vintage):
+        raise ValueError('COLLECTION_PRIORITY_PRICE_DATE_MISMATCH')
+    if vintage:
+        if not isinstance(vintage, str):
+            raise ValueError('COLLECTION_PRIORITY_VINTAGE_INVALID')
+        observed = dt.datetime.fromisoformat(vintage.replace('Z', '+00:00'))
+        clock = now or dt.datetime.now(dt.timezone.utc)
+        if observed.tzinfo is None or clock.tzinfo is None:
+            raise ValueError('COLLECTION_PRIORITY_TIMEZONE_MISSING')
+        if observed > clock:
+            raise ValueError('COLLECTION_PRIORITY_VINTAGE_FROM_FUTURE')
+        if quoted > observed.astimezone(dt.timezone(dt.timedelta(hours=8))).date():
+            raise ValueError('COLLECTION_PRIORITY_PRICE_AFTER_ESTIMATE')
+    return dict(research_snapshot_price_date=quoted.isoformat(),
+                research_snapshot_estimate_vintage=vintage,
+                priority_snapshot_precedes_quotes=quoted < reference,
+                collection_priority_is_not_a_new_investment_signal=True)
+
+
 def outstanding_benchmark_codes(root,market):
     """Collection priority only; never substitute it for a PIT selection universe."""
     path=Path(root)/'rankings/latest_benchmark_validation.json'

@@ -113,6 +113,23 @@ class HistoricalTWSETests(unittest.TestCase):
         rows={"2026-10":[dict(date="2026-10-18",turnover_ntd=3,close=12)]}
         self.assertEqual(combine(rows,"2026-10-16","6206"),[])
 
+    def test_dated_older_priority_keeps_archive_collection_running(self):
+        raw=json.dumps([dict(code='3305',market='TWSE'),dict(code='6206',market='TWSE')]).encode()
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp);(root/'rankings').mkdir()
+            path=root/'rankings/v891_gate_progress.json'
+            doc=dict(asof_price_date='2026-10-16',estimate_vintage='2026-10-16T15:00:00+08:00',
+                     issuer_diagnostics=[dict(code='3305',market='TWSE',research_upside_pct=100)])
+            path.write_text(json.dumps(doc))
+            clock=dt.datetime.fromisoformat('2026-10-19T16:00:00+08:00')
+            self.assertEqual(prioritized_candidates(raw,'2026-10-19',1,root,now=clock),['3305'])
+            doc['estimate_vintage']='2026-10-20T15:00:00+08:00';path.write_text(json.dumps(doc))
+            with self.assertRaisesRegex(ValueError,'VINTAGE_FROM_FUTURE'):
+                prioritized_candidates(raw,'2026-10-19',1,root,now=clock)
+            doc['asof_price_date']='2026-10-20';path.write_text(json.dumps(doc))
+            with self.assertRaisesRegex(ValueError,'PRICE_DATE_MISMATCH'):
+                prioritized_candidates(raw,'2026-10-19',1,root,now=clock)
+
     def test_legacy_month_is_upgraded_to_durable_ohlc_and_bounded_backfill_advances(self):
         from scripts.history_archive import verify_original
         with tempfile.TemporaryDirectory() as tmp:

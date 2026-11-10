@@ -37,6 +37,24 @@ class ModernTpexTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,"DATE_MISMATCH"):
             parse_daily(b,"2026-10-15")
         self.assertIn("date=115%2F10%2F16",daily_url("2026-10-16"))
+
+    def test_older_dated_priority_backfills_new_quotes_without_creating_a_signal(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp);day='2026-10-19'
+            self.seed_reference(root,day)
+            path=root/'rankings/v891_gate_progress.json'
+            doc=json.loads(path.read_text())
+            doc.update(asof_price_date='2026-10-16',estimate_vintage='2026-10-16T15:00:00+08:00')
+            path.write_text(json.dumps(doc))
+            clock=dt.datetime.fromisoformat('2026-10-19T16:00:00+08:00')
+            result=run(1,65,lambda _:payload(day),root,root/'raw',target_sessions=1,now=clock)
+            self.assertEqual(result['successful_session_dates'],[day])
+            self.assertEqual(result['formal_Aplus_added'],0)
+            self.assertTrue(result['collection_priority']['priority_snapshot_precedes_quotes'])
+            self.assertTrue(result['collection_priority']['collection_priority_is_not_a_new_investment_signal'])
+            doc['estimate_vintage']='2026-10-20T15:00:00+08:00';path.write_text(json.dumps(doc))
+            with self.assertRaisesRegex(ValueError,'VINTAGE_FROM_FUTURE'):
+                run(1,65,lambda _:payload(day),root,root/'raw',target_sessions=1,now=clock)
     def test_20_day_issuer_never_becomes_formal_pass(self):
         samples={}
         for n in range(26):

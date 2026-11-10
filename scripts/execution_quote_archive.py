@@ -4,6 +4,7 @@ import gzip
 import hashlib
 import json
 import math
+import zlib
 from pathlib import Path
 
 
@@ -56,9 +57,16 @@ def persist_price_originals(output,raw_dir,day,normalized_sha256,raw_hashes,sour
     archives={}
     for market,raw in payloads.items():
         digest=raw_hashes[market];path=folder/(market+'_'+digest+'.json.gz')
-        packed=gzip.compress(raw,mtime=0)
-        if path.exists() and path.read_bytes()!=packed:raise ValueError('PRICE_ORIGINAL_IMMUTABILITY_CONFLICT')
-        path.write_bytes(packed)
+        if path.exists():
+            # Python/zlib versions and gzip headers can encode the same source
+            # bytes differently. Verify the original payload and retain the
+            # existing container unchanged; never recompress archived evidence.
+            try:archived=gzip.decompress(path.read_bytes())
+            except (OSError,EOFError,zlib.error) as exc:
+                raise ValueError('PRICE_ORIGINAL_IMMUTABILITY_CONFLICT') from exc
+            if archived!=raw:raise ValueError('PRICE_ORIGINAL_IMMUTABILITY_CONFLICT')
+        else:
+            path.write_bytes(gzip.compress(raw,mtime=0))
         archives[market]=dict(path=path.relative_to(output).as_posix(),original_sha256=digest,bytes=len(raw))
     receipt=dict(schema='V810_DURABLE_ORIGINAL_EXCHANGE_QUOTES_NOT_EXECUTION_CERTIFICATE',
                  captured_at=dt.datetime.now(dt.timezone.utc).isoformat(),identity=identity,
