@@ -21,6 +21,7 @@ import urllib.request
 PACKAGE_ROOT=Path(__file__).resolve().parents[1]
 if str(PACKAGE_ROOT) not in sys.path:sys.path.insert(0,str(PACKAGE_ROOT))
 from scripts.history_archive import archive_original, observed_ohlc, quote_source_ready,outstanding_benchmark_codes
+from scripts.marketwide_history_priority import marketwide_uncovered
 
 ROOT=Path("tw-market-data")
 OUT=ROOT/"prices/issuer_history/TWSE"
@@ -128,7 +129,10 @@ def prioritized_candidates(raw_price,asof,cap=16,root=ROOT,*,execution_archive=F
     pinned=outstanding_benchmark_codes(root,'TWSE')
     order=list(dict.fromkeys(pinned+pending+list(PREFERRED)))
     order=[c for c in order if c in twse or c in pinned]
-    # Existing fully covered archives do not monopolize the same daily fetch budget.
+    # Legacy priority had an unintended starvation loop: price_reference_asof
+    # changes every session, causing the same recently completed issuers to
+    # consume all 8 slots again. Required history depth and durable-source
+    # verification, not a rolling metadata timestamp, now determine readiness.
     backlog=[]
     for code in order:
         loc=Path(root)/"prices/issuer_history/TWSE"/(code+".json")
@@ -138,12 +142,32 @@ def prioritized_candidates(raw_price,asof,cap=16,root=ROOT,*,execution_archive=F
         doc=json.loads(loc.read_text(encoding="utf-8"))
         if doc.get("issuer")!=code or doc.get("market")!="TWSE":
             raise ValueError("PRIORITY_ISSUER_ARCHIVE_IDENTITY_MISMATCH")
-        depth_ready=(not execution_archive or all(
-            quote_source_ready(root,doc.get("by_month",{}).get(month,{}))
-            for month in recent_months(dt.date.fromisoformat(asof),months)))
-        if doc.get("price_reference_asof")!=asof or not doc.get("liquidity",{}).get("20") or not depth_ready:
-            backlog.append(code)
-    return backlog[:cap]
+        if doc.get("price_reference_asof","")>asof:
+            raise ValueError("PRIORITY_FUTURE_ISSUER_ARCHIVE_NOT_ADMISSIBLE")
+        if not execution_archive:
+            ready=bool(doc.get("liquidity",{}).get("20"))
+        else:
+            # n=60 requires at least 61 distinct historical close sessions.
+            # The main marketwide report still controls whether those sessions
+            # align with the independently verified exchange benchmark calendar.
+            sessions=doc.get("sessions") or []
+            dated={r.get("date") for r in sessions
+                   if isinstance(r,dict) and r.get("date","")<=asof
+                   and isinstance(r.get("close"),(int,float)) and r.get("close")>0}
+            recent=recent_months(dt.date.fromisoformat(asof),min(4,months))
+            ready=len(dated)>=61 and all(
+                quote_source_ready(root,doc.get("by_month",{}).get(month,{}))
+                for month in recent)
+        if not ready:backlog.append(code)
+    # Preserve high-upside, frozen cohort and user focus first, while
+    # allocating a guaranteed bounded lane to not-yet-archived TWSE issuers.
+    broad_slots=max(1,cap//3) if cap>=6 else 0
+    focus_slots=cap-broad_slots
+    focus=backlog[:focus_slots]
+    broad=marketwide_uncovered(root,raw_price,"TWSE",asof,
+                               excluded=set(order)|set(focus),
+                               cap=broad_slots)
+    return focus+broad
 
 def combine(records,asof,code):
     dates={}
@@ -246,7 +270,7 @@ def run(max_issuers=6,months=4,fetch=request,sleep=0.4,max_new_months=3):
         rr.append(process(code,asof,window,fetch=fetch,sleep=sleep,
                           reference_close=close_by_code.get(code),root=ROOT,max_new_months=max_new_months))
     result=dict(reference_date=asof,issuer_probes=rr,
-        issuer_priority="HIGH_UPSIDE_GE30_MISSING_DURABLE_OHLC_OR_REQUESTED_HISTORY",selected_codes=ids,
+        issuer_priority="FOCUS_AND_BOUNDED_MARKETWIDE_UNARCHIVED_TWSE_HISTORY",selected_codes=ids,
         requested_months_per_issuer=months,max_requests_per_issuer=max_new_months,
         dynamic_priority_and_existing_completed_skip=True,
         source_scope="TWSE_ISSUERS_ONLY_TPEX_NOT_YET_INCLUDED",
