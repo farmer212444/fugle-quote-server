@@ -87,6 +87,7 @@ def parse_profiles(raw, market, url, captured_at_utc, *, min_rows=1):
     if not isinstance(rows, list) or len(rows) < min_rows:
         raise ContractError("PROFILE_SOURCE_TOO_FEW_ROWS")
     mapping, seen, batches, out = FIELDS[market], set(), set(), []
+    unsupported_codes = []
     for r in rows:
         if not isinstance(r, dict):
             raise ContractError("NON_OBJECT_PROFILE")
@@ -95,7 +96,7 @@ def parse_profiles(raw, market, url, captured_at_utc, *, min_rows=1):
         industry, _ = _get(r, mapping["industry"])
         batch_raw, _ = _get(r, mapping["date"])
         listed_raw, listed_key = _get(r, mapping["listed"])
-        if not code or not re.fullmatch(r"\d{4}", code) or not name:
+        if not code or not re.fullmatch(r"\d{4,6}", code) or not name:
             raise ContractError("PROFILE_IDENTITY_MISSING")
         if code in seen:
             raise ContractError("DUPLICATE_PROFILE_CODE")
@@ -107,6 +108,15 @@ def parse_profiles(raw, market, url, captured_at_utc, *, min_rows=1):
         if date.fromisoformat(batch) > local_day or (listed and date.fromisoformat(listed) > local_day):
             raise ContractError("PROFILE_DATE_IN_FUTURE")
         batches.add(batch)
+        if len(code) != 4:
+            # Official company profiles include 6-digit DRs. Retain provenance
+            # and code in an exclusion ledger; do not force them into 4-digit
+            # common-equity price/tradability or issuer score coverage.
+            unsupported_codes.append({
+                "market": market, "code": code,
+                "reason": "NON_FOUR_DIGIT_ISSUER_CODE_SEPARATE_SECURITY_CLASS_REVIEW",
+            })
+            continue
         out.append({
             "market": market, "code": code, "name": name,
             "industry": industry, "profile_batch_date": batch,
@@ -124,6 +134,9 @@ def parse_profiles(raw, market, url, captured_at_utc, *, min_rows=1):
             "raw_bytes": len(raw), "encoding": enc,
             "captured_at_utc": captured.astimezone(timezone.utc).isoformat(),
             "batch_date": batch, "count": len(out),
+            "source_row_count": len(rows),
+            "excluded_source_rows": len(unsupported_codes),
+            "excluded_unsupported_code_sample": unsupported_codes[:25],
             "missing_reported_listing_dates": sum(x["reported_listing_date"] is None for x in out),
             "rows": out}
 
