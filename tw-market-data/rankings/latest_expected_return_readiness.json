@@ -2,9 +2,9 @@
   "schema": "EXPECTED_RETURN_READINESS_V1",
   "status": "NOT_ESTIMABLE_WITH_CURRENT_EVIDENCE",
   "source_model": "V8.10.8",
-  "source_estimate_vintage": "2026-11-10T13:52:26.316080+08:00",
-  "research_price_date": "2026-11-09",
-  "latest_archived_official_price_date": "2026-11-09",
+  "source_estimate_vintage": "2026-11-10T15:19:14.411688+08:00",
+  "research_price_date": "2026-11-10",
+  "latest_archived_official_price_date": "2026-11-10",
   "horizon_evidence": [
     {
       "holding_sessions": 21,
@@ -24,14 +24,14 @@
   ],
   "annual_calibration_feasibility": {
     "status": "HISTORICAL_REPLAY_PROTOCOL_REQUIRED",
-    "holding_calendar_days": 417,
+    "holding_calendar_days": 416,
     "minimum_train_cohorts": 12,
     "minimum_oos_cohorts": 12,
     "minimum_total_nonoverlapping_cohorts": 24,
     "maximum_nonoverlapping_cohorts_with_same_terminal_date": 1,
     "fixed_target_only_can_satisfy_policy": false,
-    "minimum_history_span_days_ignoring_embargo": 10008,
-    "minimum_history_span_years_ignoring_embargo": 27.4,
+    "minimum_history_span_days_ignoring_embargo": 9984,
+    "minimum_history_span_years_ignoring_embargo": 27.33,
     "waiting_until_target_date_alone_resolves_calibration": false,
     "exact_horizon_industry_method_matches_still_required": true,
     "historical_replay_is_a_separate_protocol_not_backdated_prospective_forecasts": true
@@ -49,10 +49,10 @@
   "trading_orders_created": false,
   "annual_engine_context_matches": true,
   "annual_engine_status": "BLOCKED_ANNUAL_CALIBRATION_DESIGN_REQUIRES_HISTORICAL_REPLAY",
-  "annual_engine_report_sha256": "b299fbad0b30b92e468f7ba3f657fcfe95f520e203f11e4d4cf0d3943db64fdc",
+  "annual_engine_report_sha256": "14dfe2f40f20bd4460607eab2a60b3dddbba0a61e51c8d23ad8cb33949139ee2",
   "source_sha256": {
-    "research": "106fac33b924b5e1ea75114559eff517edded7313ce8767818f298c24e1629d7",
-    "return_search": "7f76744897a5db9a64f9be48d9cbee486f322d5e3b344d41c184e61dceef5bc6",
-    "prices": "45e6d7fa9f1ab6b721cccf033ed1cd00147542949cd64307a50314d952168371"
+    "research": "9e09d3815fb31366f321222ba0878cfd2874930a4b07c223a8f525efb3eaa8b8",
+    "return_search": "cea14f03574f2dd59d776038526543e49d0ca28a95e3463574422f776524a53d",
+    "prices": "274f690ae154e3ed1dd8d30e359e69b52f872d08cb8e7b03bc056a67b13e3217"
   }
 }

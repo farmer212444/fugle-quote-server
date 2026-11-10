@@ -1,12 +1,26 @@
 {
   "model": "V8.10.8",
-  "asof": "2026-11-10T13:52:26.316080+08:00",
+  "asof": "2026-11-10T15:19:14.411688+08:00",
   "rows": [
     {
       "code": "1240",
       "name": "茂生農經",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
-      "pending_gates": []
+      "status": "CERTIFICATION_PENDING",
+      "pending_gates": [
+        "original_eight_quarter_statements",
+        "cash_and_working_capital",
+        "nonoperating_components",
+        "fully_diluted_shares",
+        "matched_peers_and_cycle",
+        "management_promises",
+        "auditor_scope",
+        "tradability",
+        "forecast_bridge",
+        "insider_claims",
+        "dividend_window",
+        "point_in_time",
+        "out_of_sample_validation"
+      ]
     },
     {
       "code": "1259",
@@ -71,6 +85,12 @@
     {
       "code": "1294",
       "name": "漢田生技",
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
+    },
+    {
+      "code": "1295",
+      "name": "生合",
       "status": "CERTIFICATION_PENDING",
       "pending_gates": [
         "original_eight_quarter_statements",
@@ -87,12 +107,6 @@
         "point_in_time",
         "out_of_sample_validation"
       ]
-    },
-    {
-      "code": "1295",
-      "name": "生合",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
-      "pending_gates": []
     },
     {
       "code": "1336",
@@ -157,22 +171,8 @@
     {
       "code": "1570",
       "name": "力肯",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "1580",
@@ -315,7 +315,7 @@
     {
       "code": "1780",
       "name": "立弘",
-      "status": "MISSING_NORMALIZED_EIGHT_QUARTERS",
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
       "pending_gates": []
     },
     {
@@ -413,7 +413,7 @@
     {
       "code": "1813",
       "name": "寶利徠",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "status": "REFERENCE_PRICE_OR_VOLUME_INVALID",
       "pending_gates": []
     },
     {
@@ -439,7 +439,7 @@
     {
       "code": "2035",
       "name": "唐榮公司",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "status": "REFERENCE_PRICE_OR_VOLUME_INVALID",
       "pending_gates": []
     },
     {
@@ -571,7 +571,7 @@
     {
       "code": "2073",
       "name": "雄順",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "status": "REFERENCE_PRICE_OR_VOLUME_INVALID",
       "pending_gates": []
     },
     {
@@ -629,22 +629,8 @@
     {
       "code": "2596",
       "name": "綠意",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "2640",
@@ -709,22 +695,8 @@
     {
       "code": "2718",
       "name": "全心投控",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "2719",
@@ -735,7 +707,7 @@
     {
       "code": "2724",
       "name": "藝舍-KY",
-      "status": "REFERENCE_PRICE_OR_VOLUME_INVALID",
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
       "pending_gates": []
     },
     {
@@ -767,8 +739,22 @@
     {
       "code": "2732",
       "name": "六角",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
-      "pending_gates": []
+      "status": "CERTIFICATION_PENDING",
+      "pending_gates": [
+        "original_eight_quarter_statements",
+        "cash_and_working_capital",
+        "nonoperating_components",
+        "fully_diluted_shares",
+        "matched_peers_and_cycle",
+        "management_promises",
+        "auditor_scope",
+        "tradability",
+        "forecast_bridge",
+        "insider_claims",
+        "dividend_window",
+        "point_in_time",
+        "out_of_sample_validation"
+      ]
     },
     {
       "code": "2734",
@@ -837,12 +823,6 @@
     {
       "code": "2752",
       "name": "豆府",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
-      "pending_gates": []
-    },
-    {
-      "code": "2754",
-      "name": "亞洲藏壽司",
       "status": "CERTIFICATION_PENDING",
       "pending_gates": [
         "original_eight_quarter_statements",
@@ -859,6 +839,12 @@
         "point_in_time",
         "out_of_sample_validation"
       ]
+    },
+    {
+      "code": "2754",
+      "name": "亞洲藏壽司",
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "2755",
@@ -903,7 +889,7 @@
     {
       "code": "2916",
       "name": "滿心",
-      "status": "TAX_PARENT_EARNINGS_COMPONENTS_MISSING",
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
       "pending_gates": []
     },
     {
@@ -933,7 +919,7 @@
     {
       "code": "2941",
       "name": "米斯特",
-      "status": "TAX_PARENT_EARNINGS_COMPONENTS_MISSING",
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
       "pending_gates": []
     },
     {
@@ -983,7 +969,7 @@
     {
       "code": "3067",
       "name": "全域",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "status": "REFERENCE_PRICE_OR_VOLUME_INVALID",
       "pending_gates": []
     },
     {
@@ -1041,22 +1027,8 @@
     {
       "code": "3083",
       "name": "網龍",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "3085",
@@ -1449,22 +1421,8 @@
     {
       "code": "3206",
       "name": "志豐",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "3207",
@@ -1615,7 +1573,7 @@
     {
       "code": "3226",
       "name": "龍鋒",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "status": "REFERENCE_PRICE_OR_VOLUME_INVALID",
       "pending_gates": []
     },
     {
@@ -1785,8 +1743,22 @@
     {
       "code": "3268",
       "name": "海德威",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
-      "pending_gates": []
+      "status": "CERTIFICATION_PENDING",
+      "pending_gates": [
+        "original_eight_quarter_statements",
+        "cash_and_working_capital",
+        "nonoperating_components",
+        "fully_diluted_shares",
+        "matched_peers_and_cycle",
+        "management_promises",
+        "auditor_scope",
+        "tradability",
+        "forecast_bridge",
+        "insider_claims",
+        "dividend_window",
+        "point_in_time",
+        "out_of_sample_validation"
+      ]
     },
     {
       "code": "3272",
@@ -1981,8 +1953,22 @@
     {
       "code": "3310",
       "name": "佳穎",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
-      "pending_gates": []
+      "status": "CERTIFICATION_PENDING",
+      "pending_gates": [
+        "original_eight_quarter_statements",
+        "cash_and_working_capital",
+        "nonoperating_components",
+        "fully_diluted_shares",
+        "matched_peers_and_cycle",
+        "management_promises",
+        "auditor_scope",
+        "tradability",
+        "forecast_bridge",
+        "insider_claims",
+        "dividend_window",
+        "point_in_time",
+        "out_of_sample_validation"
+      ]
     },
     {
       "code": "3313",
@@ -2615,22 +2601,8 @@
     {
       "code": "3492",
       "name": "長盛",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "3498",
@@ -2713,6 +2685,18 @@
     {
       "code": "3520",
       "name": "華盈",
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
+    },
+    {
+      "code": "3521",
+      "name": "台鋼建設",
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
+    },
+    {
+      "code": "3522",
+      "name": "御嵿",
       "status": "CERTIFICATION_PENDING",
       "pending_gates": [
         "original_eight_quarter_statements",
@@ -2731,21 +2715,9 @@
       ]
     },
     {
-      "code": "3521",
-      "name": "台鋼建設",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
-      "pending_gates": []
-    },
-    {
-      "code": "3522",
-      "name": "御嵿",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
-      "pending_gates": []
-    },
-    {
       "code": "3523",
       "name": "迎輝",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "status": "REFERENCE_PRICE_OR_VOLUME_INVALID",
       "pending_gates": []
     },
     {
@@ -2771,8 +2743,22 @@
     {
       "code": "3527",
       "name": "聚積",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
-      "pending_gates": []
+      "status": "CERTIFICATION_PENDING",
+      "pending_gates": [
+        "original_eight_quarter_statements",
+        "cash_and_working_capital",
+        "nonoperating_components",
+        "fully_diluted_shares",
+        "matched_peers_and_cycle",
+        "management_promises",
+        "auditor_scope",
+        "tradability",
+        "forecast_bridge",
+        "insider_claims",
+        "dividend_window",
+        "point_in_time",
+        "out_of_sample_validation"
+      ]
     },
     {
       "code": "3529",
@@ -2843,22 +2829,8 @@
     {
       "code": "3541",
       "name": "西柏",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "3546",
@@ -3023,7 +2995,7 @@
     {
       "code": "3567",
       "name": "逸昌",
-      "status": "TAX_PARENT_EARNINGS_COMPONENTS_MISSING",
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
       "pending_gates": []
     },
     {
@@ -3255,22 +3227,8 @@
     {
       "code": "3625",
       "name": "西勝",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "3628",
@@ -3341,7 +3299,7 @@
     {
       "code": "3632",
       "name": "研勤",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "status": "REFERENCE_PRICE_OR_VOLUME_INVALID",
       "pending_gates": []
     },
     {
@@ -3373,7 +3331,7 @@
     {
       "code": "3664",
       "name": "安瑞-KY",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "status": "REFERENCE_PRICE_OR_VOLUME_INVALID",
       "pending_gates": []
     },
     {
@@ -3445,8 +3403,22 @@
     {
       "code": "3684",
       "name": "榮昌",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
-      "pending_gates": []
+      "status": "CERTIFICATION_PENDING",
+      "pending_gates": [
+        "original_eight_quarter_statements",
+        "cash_and_working_capital",
+        "nonoperating_components",
+        "fully_diluted_shares",
+        "matched_peers_and_cycle",
+        "management_promises",
+        "auditor_scope",
+        "tradability",
+        "forecast_bridge",
+        "insider_claims",
+        "dividend_window",
+        "point_in_time",
+        "out_of_sample_validation"
+      ]
     },
     {
       "code": "3685",
@@ -3597,8 +3569,22 @@
     {
       "code": "3713",
       "name": "新晶投控",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
-      "pending_gates": []
+      "status": "CERTIFICATION_PENDING",
+      "pending_gates": [
+        "original_eight_quarter_statements",
+        "cash_and_working_capital",
+        "nonoperating_components",
+        "fully_diluted_shares",
+        "matched_peers_and_cycle",
+        "management_promises",
+        "auditor_scope",
+        "tradability",
+        "forecast_bridge",
+        "insider_claims",
+        "dividend_window",
+        "point_in_time",
+        "out_of_sample_validation"
+      ]
     },
     {
       "code": "3718",
@@ -3681,7 +3667,7 @@
     {
       "code": "4113",
       "name": "聯上",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "status": "TAX_PARENT_EARNINGS_COMPONENTS_MISSING",
       "pending_gates": []
     },
     {
@@ -3831,8 +3817,22 @@
     {
       "code": "4138",
       "name": "曜亞",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
-      "pending_gates": []
+      "status": "CERTIFICATION_PENDING",
+      "pending_gates": [
+        "original_eight_quarter_statements",
+        "cash_and_working_capital",
+        "nonoperating_components",
+        "fully_diluted_shares",
+        "matched_peers_and_cycle",
+        "management_promises",
+        "auditor_scope",
+        "tradability",
+        "forecast_bridge",
+        "insider_claims",
+        "dividend_window",
+        "point_in_time",
+        "out_of_sample_validation"
+      ]
     },
     {
       "code": "4139",
@@ -3863,22 +3863,8 @@
     {
       "code": "4153",
       "name": "鈺緯",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "4154",
@@ -4059,7 +4045,7 @@
     {
       "code": "4183",
       "name": "福永生技",
-      "status": "REFERENCE_PRICE_OR_VOLUME_INVALID",
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
       "pending_gates": []
     },
     {
@@ -4155,22 +4141,8 @@
     {
       "code": "4401",
       "name": "東隆興",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "4402",
@@ -4263,8 +4235,22 @@
     {
       "code": "4442",
       "name": "竣邦-KY",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
-      "pending_gates": []
+      "status": "CERTIFICATION_PENDING",
+      "pending_gates": [
+        "original_eight_quarter_statements",
+        "cash_and_working_capital",
+        "nonoperating_components",
+        "fully_diluted_shares",
+        "matched_peers_and_cycle",
+        "management_promises",
+        "auditor_scope",
+        "tradability",
+        "forecast_bridge",
+        "insider_claims",
+        "dividend_window",
+        "point_in_time",
+        "out_of_sample_validation"
+      ]
     },
     {
       "code": "4502",
@@ -4355,14 +4341,42 @@
     {
       "code": "4523",
       "name": "永彰",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
-      "pending_gates": []
+      "status": "CERTIFICATION_PENDING",
+      "pending_gates": [
+        "original_eight_quarter_statements",
+        "cash_and_working_capital",
+        "nonoperating_components",
+        "fully_diluted_shares",
+        "matched_peers_and_cycle",
+        "management_promises",
+        "auditor_scope",
+        "tradability",
+        "forecast_bridge",
+        "insider_claims",
+        "dividend_window",
+        "point_in_time",
+        "out_of_sample_validation"
+      ]
     },
     {
       "code": "4527",
       "name": "方方土霖",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
-      "pending_gates": []
+      "status": "CERTIFICATION_PENDING",
+      "pending_gates": [
+        "original_eight_quarter_statements",
+        "cash_and_working_capital",
+        "nonoperating_components",
+        "fully_diluted_shares",
+        "matched_peers_and_cycle",
+        "management_promises",
+        "auditor_scope",
+        "tradability",
+        "forecast_bridge",
+        "insider_claims",
+        "dividend_window",
+        "point_in_time",
+        "out_of_sample_validation"
+      ]
     },
     {
       "code": "4528",
@@ -4379,7 +4393,7 @@
     {
       "code": "4530",
       "name": "天意能創",
-      "status": "REFERENCE_PRICE_OR_VOLUME_INVALID",
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
       "pending_gates": []
     },
     {
@@ -4633,7 +4647,7 @@
     {
       "code": "4609",
       "name": "唐鋒",
-      "status": "PRICE_FILTER_BELOW_8_TWD",
+      "status": "REFERENCE_PRICE_OR_VOLUME_INVALID",
       "pending_gates": []
     },
     {
@@ -4871,22 +4885,8 @@
     {
       "code": "4744",
       "name": "皇將",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "4745",
@@ -5305,22 +5305,8 @@
     {
       "code": "4972",
       "name": "湯石照明",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "4973",
@@ -5405,22 +5391,8 @@
     {
       "code": "4995",
       "name": "晶達",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "5009",
@@ -5557,22 +5529,8 @@
     {
       "code": "5205",
       "name": "中茂",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "5206",
@@ -5623,6 +5581,12 @@
     {
       "code": "5211",
       "name": "蒙恬",
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
+    },
+    {
+      "code": "5212",
+      "name": "凌網",
       "status": "CERTIFICATION_PENDING",
       "pending_gates": [
         "original_eight_quarter_statements",
@@ -5639,12 +5603,6 @@
         "point_in_time",
         "out_of_sample_validation"
       ]
-    },
-    {
-      "code": "5212",
-      "name": "凌網",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
-      "pending_gates": []
     },
     {
       "code": "5213",
@@ -5747,22 +5705,8 @@
     {
       "code": "5251",
       "name": "天鉞電",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "5263",
@@ -5813,7 +5757,7 @@
     {
       "code": "5276",
       "name": "達輝-KY",
-      "status": "REFERENCE_PRICE_OR_VOLUME_INVALID",
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
       "pending_gates": []
     },
     {
@@ -5925,22 +5869,8 @@
     {
       "code": "5302",
       "name": "太欣",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "5309",
@@ -6155,53 +6085,39 @@
     {
       "code": "5353",
       "name": "台林",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
-      "pending_gates": []
+      "status": "CERTIFICATION_PENDING",
+      "pending_gates": [
+        "original_eight_quarter_statements",
+        "cash_and_working_capital",
+        "nonoperating_components",
+        "fully_diluted_shares",
+        "matched_peers_and_cycle",
+        "management_promises",
+        "auditor_scope",
+        "tradability",
+        "forecast_bridge",
+        "insider_claims",
+        "dividend_window",
+        "point_in_time",
+        "out_of_sample_validation"
+      ]
     },
     {
       "code": "5355",
       "name": "佳總",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "5356",
       "name": "協益",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "5364",
       "name": "力麗店",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "status": "PRICE_FILTER_BELOW_8_TWD",
       "pending_gates": []
     },
     {
@@ -6405,8 +6321,22 @@
     {
       "code": "5450",
       "name": "南良",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
-      "pending_gates": []
+      "status": "CERTIFICATION_PENDING",
+      "pending_gates": [
+        "original_eight_quarter_statements",
+        "cash_and_working_capital",
+        "nonoperating_components",
+        "fully_diluted_shares",
+        "matched_peers_and_cycle",
+        "management_promises",
+        "auditor_scope",
+        "tradability",
+        "forecast_bridge",
+        "insider_claims",
+        "dividend_window",
+        "point_in_time",
+        "out_of_sample_validation"
+      ]
     },
     {
       "code": "5452",
@@ -6431,7 +6361,7 @@
     {
       "code": "5455",
       "name": "昇益",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "status": "REFERENCE_PRICE_OR_VOLUME_INVALID",
       "pending_gates": []
     },
     {
@@ -6583,8 +6513,22 @@
     {
       "code": "5481",
       "name": "新華",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
-      "pending_gates": []
+      "status": "CERTIFICATION_PENDING",
+      "pending_gates": [
+        "original_eight_quarter_statements",
+        "cash_and_working_capital",
+        "nonoperating_components",
+        "fully_diluted_shares",
+        "matched_peers_and_cycle",
+        "management_promises",
+        "auditor_scope",
+        "tradability",
+        "forecast_bridge",
+        "insider_claims",
+        "dividend_window",
+        "point_in_time",
+        "out_of_sample_validation"
+      ]
     },
     {
       "code": "5483",
@@ -6649,22 +6593,8 @@
     {
       "code": "5489",
       "name": "彩富",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "5490",
@@ -6793,6 +6723,12 @@
     {
       "code": "5523",
       "name": "豐謙",
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
+    },
+    {
+      "code": "5529",
+      "name": "鉅陞",
       "status": "CERTIFICATION_PENDING",
       "pending_gates": [
         "original_eight_quarter_statements",
@@ -6809,12 +6745,6 @@
         "point_in_time",
         "out_of_sample_validation"
       ]
-    },
-    {
-      "code": "5529",
-      "name": "鉅陞",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
-      "pending_gates": []
     },
     {
       "code": "5530",
@@ -6883,42 +6813,14 @@
     {
       "code": "5603",
       "name": "陸海",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "5604",
       "name": "中連",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "5609",
@@ -6949,7 +6851,7 @@
     {
       "code": "5703",
       "name": "亞都麗緻",
-      "status": "REFERENCE_PRICE_OR_VOLUME_INVALID",
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
       "pending_gates": []
     },
     {
@@ -7159,6 +7061,12 @@
     {
       "code": "6114",
       "name": "久威",
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
+    },
+    {
+      "code": "6118",
+      "name": "建達",
       "status": "CERTIFICATION_PENDING",
       "pending_gates": [
         "original_eight_quarter_statements",
@@ -7175,12 +7083,6 @@
         "point_in_time",
         "out_of_sample_validation"
       ]
-    },
-    {
-      "code": "6118",
-      "name": "建達",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
-      "pending_gates": []
     },
     {
       "code": "6121",
@@ -7569,22 +7471,8 @@
     {
       "code": "6160",
       "name": "欣技",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "6161",
@@ -7675,7 +7563,7 @@
     {
       "code": "6171",
       "name": "大城地產",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "status": "TAX_PARENT_EARNINGS_COMPONENTS_MISSING",
       "pending_gates": []
     },
     {
@@ -7887,22 +7775,8 @@
     {
       "code": "6194",
       "name": "育富",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "6195",
@@ -8025,7 +7899,7 @@
     {
       "code": "6212",
       "name": "理銘",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "status": "REFERENCE_PRICE_OR_VOLUME_INVALID",
       "pending_gates": []
     },
     {
@@ -8071,22 +7945,8 @@
     {
       "code": "6219",
       "name": "富旺",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "6220",
@@ -8131,7 +7991,7 @@
     {
       "code": "6222",
       "name": "立軒",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "status": "REFERENCE_PRICE_OR_VOLUME_INVALID",
       "pending_gates": []
     },
     {
@@ -8263,7 +8123,7 @@
     {
       "code": "6236",
       "name": "中湛",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "status": "REFERENCE_PRICE_OR_VOLUME_INVALID",
       "pending_gates": []
     },
     {
@@ -8361,22 +8221,8 @@
     {
       "code": "6246",
       "name": "臺龍",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "6248",
@@ -8659,8 +8505,22 @@
     {
       "code": "6294",
       "name": "智基",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
-      "pending_gates": []
+      "status": "CERTIFICATION_PENDING",
+      "pending_gates": [
+        "original_eight_quarter_statements",
+        "cash_and_working_capital",
+        "nonoperating_components",
+        "fully_diluted_shares",
+        "matched_peers_and_cycle",
+        "management_promises",
+        "auditor_scope",
+        "tradability",
+        "forecast_bridge",
+        "insider_claims",
+        "dividend_window",
+        "point_in_time",
+        "out_of_sample_validation"
+      ]
     },
     {
       "code": "6411",
@@ -8797,8 +8657,22 @@
     {
       "code": "6441",
       "name": "廣錠",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
-      "pending_gates": []
+      "status": "CERTIFICATION_PENDING",
+      "pending_gates": [
+        "original_eight_quarter_statements",
+        "cash_and_working_capital",
+        "nonoperating_components",
+        "fully_diluted_shares",
+        "matched_peers_and_cycle",
+        "management_promises",
+        "auditor_scope",
+        "tradability",
+        "forecast_bridge",
+        "insider_claims",
+        "dividend_window",
+        "point_in_time",
+        "out_of_sample_validation"
+      ]
     },
     {
       "code": "6461",
@@ -9067,8 +8941,22 @@
     {
       "code": "6508",
       "name": "惠光",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
-      "pending_gates": []
+      "status": "CERTIFICATION_PENDING",
+      "pending_gates": [
+        "original_eight_quarter_statements",
+        "cash_and_working_capital",
+        "nonoperating_components",
+        "fully_diluted_shares",
+        "matched_peers_and_cycle",
+        "management_promises",
+        "auditor_scope",
+        "tradability",
+        "forecast_bridge",
+        "insider_claims",
+        "dividend_window",
+        "point_in_time",
+        "out_of_sample_validation"
+      ]
     },
     {
       "code": "6509",
@@ -9113,7 +9001,7 @@
     {
       "code": "6512",
       "name": "啟發電",
-      "status": "REFERENCE_PRICE_OR_VOLUME_INVALID",
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
       "pending_gates": []
     },
     {
@@ -9165,8 +9053,22 @@
     {
       "code": "6527",
       "name": "明達醫",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
-      "pending_gates": []
+      "status": "CERTIFICATION_PENDING",
+      "pending_gates": [
+        "original_eight_quarter_statements",
+        "cash_and_working_capital",
+        "nonoperating_components",
+        "fully_diluted_shares",
+        "matched_peers_and_cycle",
+        "management_promises",
+        "auditor_scope",
+        "tradability",
+        "forecast_bridge",
+        "insider_claims",
+        "dividend_window",
+        "point_in_time",
+        "out_of_sample_validation"
+      ]
     },
     {
       "code": "6530",
@@ -9389,22 +9291,8 @@
     {
       "code": "6570",
       "name": "維田",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "6574",
@@ -9535,7 +9423,7 @@
     {
       "code": "6593",
       "name": "台灣銘板",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "status": "REFERENCE_PRICE_OR_VOLUME_INVALID",
       "pending_gates": []
     },
     {
@@ -9613,22 +9501,8 @@
     {
       "code": "6612",
       "name": "奈米醫材",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "6613",
@@ -9697,22 +9571,8 @@
     {
       "code": "6629",
       "name": "泰金-KY",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "6637",
@@ -9797,7 +9657,7 @@
     {
       "code": "6649",
       "name": "台生材",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "status": "REFERENCE_PRICE_OR_VOLUME_INVALID",
       "pending_gates": []
     },
     {
@@ -9829,7 +9689,7 @@
     {
       "code": "6661",
       "name": "威健生技",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "status": "REFERENCE_PRICE_OR_VOLUME_INVALID",
       "pending_gates": []
     },
     {
@@ -10113,22 +9973,8 @@
     {
       "code": "6721",
       "name": "信實",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "6725",
@@ -10389,7 +10235,7 @@
     {
       "code": "6791",
       "name": "虎門科技",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "status": "REFERENCE_PRICE_OR_VOLUME_INVALID",
       "pending_gates": []
     },
     {
@@ -10545,13 +10391,27 @@
     {
       "code": "6846",
       "name": "綠茵",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
-      "pending_gates": []
+      "status": "CERTIFICATION_PENDING",
+      "pending_gates": [
+        "original_eight_quarter_statements",
+        "cash_and_working_capital",
+        "nonoperating_components",
+        "fully_diluted_shares",
+        "matched_peers_and_cycle",
+        "management_promises",
+        "auditor_scope",
+        "tradability",
+        "forecast_bridge",
+        "insider_claims",
+        "dividend_window",
+        "point_in_time",
+        "out_of_sample_validation"
+      ]
     },
     {
       "code": "6855",
       "name": "數泓科",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "status": "TAX_PARENT_EARNINGS_COMPONENTS_MISSING",
       "pending_gates": []
     },
     {
@@ -10609,8 +10469,22 @@
     {
       "code": "6872",
       "name": "浩宇生醫",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
-      "pending_gates": []
+      "status": "CERTIFICATION_PENDING",
+      "pending_gates": [
+        "original_eight_quarter_statements",
+        "cash_and_working_capital",
+        "nonoperating_components",
+        "fully_diluted_shares",
+        "matched_peers_and_cycle",
+        "management_promises",
+        "auditor_scope",
+        "tradability",
+        "forecast_bridge",
+        "insider_claims",
+        "dividend_window",
+        "point_in_time",
+        "out_of_sample_validation"
+      ]
     },
     {
       "code": "6874",
@@ -10621,7 +10495,7 @@
     {
       "code": "6875",
       "name": "國邑*",
-      "status": "MONTHLY_FINANCIAL_REVENUE_BASIS_RECONCILIATION_PENDING",
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
       "pending_gates": []
     },
     {
@@ -10647,7 +10521,7 @@
     {
       "code": "6881",
       "name": "潤德",
-      "status": "TAX_PARENT_EARNINGS_COMPONENTS_MISSING",
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
       "pending_gates": []
     },
     {
@@ -10691,22 +10565,8 @@
     {
       "code": "6899",
       "name": "創為精密",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "6903",
@@ -10819,7 +10679,7 @@
     {
       "code": "6961",
       "name": "旅天下",
-      "status": "MISSING_NORMALIZED_EIGHT_QUARTERS",
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
       "pending_gates": []
     },
     {
@@ -10845,27 +10705,13 @@
     {
       "code": "6968",
       "name": "萬達寵物",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "6971",
       "name": "惠民實業",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "status": "MISSING_NORMALIZED_EIGHT_QUARTERS",
       "pending_gates": []
     },
     {
@@ -11059,7 +10905,7 @@
     {
       "code": "7713",
       "name": "威力德生醫",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "status": "REFERENCE_PRICE_OR_VOLUME_INVALID",
       "pending_gates": []
     },
     {
@@ -11085,27 +10931,13 @@
     {
       "code": "7715",
       "name": "裕山",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "7716",
       "name": "昱臺國際",
-      "status": "REFERENCE_PRICE_OR_VOLUME_INVALID",
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
       "pending_gates": []
     },
     {
@@ -11227,7 +11059,7 @@
     {
       "code": "7753",
       "name": "星亞",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "status": "MISSING_NORMALIZED_EIGHT_QUARTERS",
       "pending_gates": []
     },
     {
@@ -11245,7 +11077,7 @@
     {
       "code": "7770",
       "name": "君曜",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "status": "REFERENCE_PRICE_OR_VOLUME_INVALID",
       "pending_gates": []
     },
     {
@@ -11275,7 +11107,7 @@
     {
       "code": "7794",
       "name": "宏碁智新",
-      "status": "MISSING_NORMALIZED_EIGHT_QUARTERS",
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
       "pending_gates": []
     },
     {
@@ -11299,7 +11131,7 @@
     {
       "code": "7811",
       "name": "民盛",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "status": "MISSING_NORMALIZED_EIGHT_QUARTERS",
       "pending_gates": []
     },
     {
@@ -11379,12 +11211,6 @@
     {
       "code": "8032",
       "name": "光菱",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
-      "pending_gates": []
-    },
-    {
-      "code": "8034",
-      "name": "榮群",
       "status": "CERTIFICATION_PENDING",
       "pending_gates": [
         "original_eight_quarter_statements",
@@ -11401,6 +11227,12 @@
         "point_in_time",
         "out_of_sample_validation"
       ]
+    },
+    {
+      "code": "8034",
+      "name": "榮群",
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "8038",
@@ -11491,7 +11323,7 @@
     {
       "code": "8047",
       "name": "星雲",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "status": "REFERENCE_PRICE_OR_VOLUME_INVALID",
       "pending_gates": []
     },
     {
@@ -11577,22 +11409,8 @@
     {
       "code": "8059",
       "name": "凱碩",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "8064",
@@ -11729,13 +11547,13 @@
     {
       "code": "8077",
       "name": "洛碁",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "status": "REFERENCE_PRICE_OR_VOLUME_INVALID",
       "pending_gates": []
     },
     {
       "code": "8080",
       "name": "泰霖",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "status": "REFERENCE_PRICE_OR_VOLUME_INVALID",
       "pending_gates": []
     },
     {
@@ -11747,8 +11565,22 @@
     {
       "code": "8084",
       "name": "巨虹",
-      "status": "PRICE_FILTER_BELOW_8_TWD",
-      "pending_gates": []
+      "status": "CERTIFICATION_PENDING",
+      "pending_gates": [
+        "original_eight_quarter_statements",
+        "cash_and_working_capital",
+        "nonoperating_components",
+        "fully_diluted_shares",
+        "matched_peers_and_cycle",
+        "management_promises",
+        "auditor_scope",
+        "tradability",
+        "forecast_bridge",
+        "insider_claims",
+        "dividend_window",
+        "point_in_time",
+        "out_of_sample_validation"
+      ]
     },
     {
       "code": "8085",
@@ -11863,22 +11695,8 @@
     {
       "code": "8097",
       "name": "常珵",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "8099",
@@ -11903,7 +11721,7 @@
     {
       "code": "8102",
       "name": "傑霖科技",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "status": "REFERENCE_PRICE_OR_VOLUME_INVALID",
       "pending_gates": []
     },
     {
@@ -12035,22 +11853,8 @@
     {
       "code": "8176",
       "name": "智捷",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "8182",
@@ -12167,6 +11971,12 @@
     {
       "code": "8279",
       "name": "生展",
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
+    },
+    {
+      "code": "8284",
+      "name": "三竹",
       "status": "CERTIFICATION_PENDING",
       "pending_gates": [
         "original_eight_quarter_statements",
@@ -12183,12 +11993,6 @@
         "point_in_time",
         "out_of_sample_validation"
       ]
-    },
-    {
-      "code": "8284",
-      "name": "三竹",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
-      "pending_gates": []
     },
     {
       "code": "8289",
@@ -12213,7 +12017,7 @@
     {
       "code": "8291",
       "name": "尚茂",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "status": "TAX_PARENT_EARNINGS_COMPONENTS_MISSING",
       "pending_gates": []
     },
     {
@@ -12331,7 +12135,7 @@
     {
       "code": "8401",
       "name": "白紗科",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "status": "TAX_PARENT_EARNINGS_COMPONENTS_MISSING",
       "pending_gates": []
     },
     {
@@ -12363,7 +12167,7 @@
     {
       "code": "8410",
       "name": "森田",
-      "status": "TAX_PARENT_EARNINGS_COMPONENTS_MISSING",
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
       "pending_gates": []
     },
     {
@@ -12389,24 +12193,6 @@
     {
       "code": "8416",
       "name": "實威",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
-      "pending_gates": []
-    },
-    {
-      "code": "8421",
-      "name": "旭源",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
-      "pending_gates": []
-    },
-    {
-      "code": "8423",
-      "name": "保綠-KY",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
-      "pending_gates": []
-    },
-    {
-      "code": "8424",
-      "name": "惠普",
       "status": "CERTIFICATION_PENDING",
       "pending_gates": [
         "original_eight_quarter_statements",
@@ -12423,6 +12209,24 @@
         "point_in_time",
         "out_of_sample_validation"
       ]
+    },
+    {
+      "code": "8421",
+      "name": "旭源",
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
+    },
+    {
+      "code": "8423",
+      "name": "保綠-KY",
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
+    },
+    {
+      "code": "8424",
+      "name": "惠普",
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "8426",
@@ -12597,8 +12401,22 @@
     {
       "code": "8472",
       "name": "納維康",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
-      "pending_gates": []
+      "status": "CERTIFICATION_PENDING",
+      "pending_gates": [
+        "original_eight_quarter_statements",
+        "cash_and_working_capital",
+        "nonoperating_components",
+        "fully_diluted_shares",
+        "matched_peers_and_cycle",
+        "management_promises",
+        "auditor_scope",
+        "tradability",
+        "forecast_bridge",
+        "insider_claims",
+        "dividend_window",
+        "point_in_time",
+        "out_of_sample_validation"
+      ]
     },
     {
       "code": "8477",
@@ -12673,7 +12491,7 @@
     {
       "code": "8923",
       "name": "時報",
-      "status": "REFERENCE_PRICE_OR_VOLUME_INVALID",
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
       "pending_gates": []
     },
     {
@@ -12737,7 +12555,7 @@
     {
       "code": "8931",
       "name": "大汽電",
-      "status": "TAX_PARENT_EARNINGS_COMPONENTS_MISSING",
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
       "pending_gates": []
     },
     {
@@ -13379,22 +13197,8 @@
     {
       "code": "1233",
       "name": "天仁",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "1234",
@@ -13993,22 +13797,8 @@
     {
       "code": "1418",
       "name": "東華",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "1419",
@@ -14125,14 +13915,28 @@
     {
       "code": "1438",
       "name": "三地開發",
-      "status": "TAX_PARENT_EARNINGS_COMPONENTS_MISSING",
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
       "pending_gates": []
     },
     {
       "code": "1439",
       "name": "雋揚",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
-      "pending_gates": []
+      "status": "CERTIFICATION_PENDING",
+      "pending_gates": [
+        "original_eight_quarter_statements",
+        "cash_and_working_capital",
+        "nonoperating_components",
+        "fully_diluted_shares",
+        "matched_peers_and_cycle",
+        "management_promises",
+        "auditor_scope",
+        "tradability",
+        "forecast_bridge",
+        "insider_claims",
+        "dividend_window",
+        "point_in_time",
+        "out_of_sample_validation"
+      ]
     },
     {
       "code": "1440",
@@ -14157,22 +13961,8 @@
     {
       "code": "1441",
       "name": "大東",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "1442",
@@ -14281,8 +14071,22 @@
     {
       "code": "1452",
       "name": "宏益",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
-      "pending_gates": []
+      "status": "CERTIFICATION_PENDING",
+      "pending_gates": [
+        "original_eight_quarter_statements",
+        "cash_and_working_capital",
+        "nonoperating_components",
+        "fully_diluted_shares",
+        "matched_peers_and_cycle",
+        "management_promises",
+        "auditor_scope",
+        "tradability",
+        "forecast_bridge",
+        "insider_claims",
+        "dividend_window",
+        "point_in_time",
+        "out_of_sample_validation"
+      ]
     },
     {
       "code": "1453",
@@ -14771,22 +14575,8 @@
     {
       "code": "1525",
       "name": "江申",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "1526",
@@ -14997,28 +14787,14 @@
     {
       "code": "1538",
       "name": "正峰",
-      "status": "PRICE_FILTER_BELOW_8_TWD",
+      "status": "REFERENCE_PRICE_OR_VOLUME_INVALID",
       "pending_gates": []
     },
     {
       "code": "1539",
       "name": "巨庭",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "1540",
@@ -15135,22 +14911,8 @@
     {
       "code": "1583",
       "name": "程泰",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "1587",
@@ -15487,22 +15249,8 @@
     {
       "code": "1626",
       "name": "艾美特-KY",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "1702",
@@ -16185,22 +15933,8 @@
     {
       "code": "1805",
       "name": "寶徠",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "1806",
@@ -16351,7 +16085,7 @@
     {
       "code": "1906",
       "name": "寶隆",
-      "status": "TAX_PARENT_EARNINGS_COMPONENTS_MISSING",
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
       "pending_gates": []
     },
     {
@@ -16443,7 +16177,7 @@
     {
       "code": "2008",
       "name": "高興昌",
-      "status": "TAX_PARENT_EARNINGS_COMPONENTS_MISSING",
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
       "pending_gates": []
     },
     {
@@ -16475,22 +16209,8 @@
     {
       "code": "2012",
       "name": "春雨",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "2013",
@@ -16555,8 +16275,22 @@
     {
       "code": "2017",
       "name": "官田鋼",
-      "status": "PRICE_FILTER_BELOW_8_TWD",
-      "pending_gates": []
+      "status": "CERTIFICATION_PENDING",
+      "pending_gates": [
+        "original_eight_quarter_statements",
+        "cash_and_working_capital",
+        "nonoperating_components",
+        "fully_diluted_shares",
+        "matched_peers_and_cycle",
+        "management_promises",
+        "auditor_scope",
+        "tradability",
+        "forecast_bridge",
+        "insider_claims",
+        "dividend_window",
+        "point_in_time",
+        "out_of_sample_validation"
+      ]
     },
     {
       "code": "2020",
@@ -17003,22 +16737,8 @@
     {
       "code": "2109",
       "name": "華豐",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "2114",
@@ -17261,22 +16981,8 @@
     {
       "code": "2239",
       "name": "英利-KY",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "2241",
@@ -17561,7 +17267,7 @@
     {
       "code": "2314",
       "name": "台揚",
-      "status": "PRICE_FILTER_BELOW_8_TWD",
+      "status": "REFERENCE_PRICE_OR_VOLUME_INVALID",
       "pending_gates": []
     },
     {
@@ -18413,22 +18119,8 @@
     {
       "code": "2380",
       "name": "虹光",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "2382",
@@ -19065,22 +18757,8 @@
     {
       "code": "2430",
       "name": "燦坤",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "2431",
@@ -20807,22 +20485,8 @@
     {
       "code": "2616",
       "name": "山隆",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "2617",
@@ -20991,22 +20655,8 @@
     {
       "code": "2702",
       "name": "華園",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "2704",
@@ -21083,22 +20733,8 @@
     {
       "code": "2722",
       "name": "夏都",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "2723",
@@ -21405,7 +21041,7 @@
     {
       "code": "2901",
       "name": "欣欣",
-      "status": "TAX_PARENT_EARNINGS_COMPONENTS_MISSING",
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
       "pending_gates": []
     },
     {
@@ -21431,22 +21067,8 @@
     {
       "code": "2904",
       "name": "匯僑",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "2905",
@@ -21581,42 +21203,14 @@
     {
       "code": "2939",
       "name": "永邑-KY",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "2945",
       "name": "三商家購",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "3002",
@@ -22327,22 +21921,8 @@
     {
       "code": "3043",
       "name": "科風",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "3044",
@@ -23209,22 +22789,8 @@
     {
       "code": "3419",
       "name": "譁裕",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "3432",
@@ -23567,22 +23133,8 @@
     {
       "code": "3557",
       "name": "嘉威",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "3563",
@@ -24385,22 +23937,8 @@
     {
       "code": "4148",
       "name": "全宇生技-KY",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "4155",
@@ -24477,7 +24015,7 @@
     {
       "code": "4195",
       "name": "基米-創",
-      "status": "MISSING_NORMALIZED_EIGHT_QUARTERS",
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
       "pending_gates": []
     },
     {
@@ -24701,8 +24239,22 @@
     {
       "code": "4552",
       "name": "力達-KY",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
-      "pending_gates": []
+      "status": "CERTIFICATION_PENDING",
+      "pending_gates": [
+        "original_eight_quarter_statements",
+        "cash_and_working_capital",
+        "nonoperating_components",
+        "fully_diluted_shares",
+        "matched_peers_and_cycle",
+        "management_promises",
+        "auditor_scope",
+        "tradability",
+        "forecast_bridge",
+        "insider_claims",
+        "dividend_window",
+        "point_in_time",
+        "out_of_sample_validation"
+      ]
     },
     {
       "code": "4555",
@@ -24907,8 +24459,22 @@
     {
       "code": "4581",
       "name": "光隆精密-KY",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
-      "pending_gates": []
+      "status": "CERTIFICATION_PENDING",
+      "pending_gates": [
+        "original_eight_quarter_statements",
+        "cash_and_working_capital",
+        "nonoperating_components",
+        "fully_diluted_shares",
+        "matched_peers_and_cycle",
+        "management_promises",
+        "auditor_scope",
+        "tradability",
+        "forecast_bridge",
+        "insider_claims",
+        "dividend_window",
+        "point_in_time",
+        "out_of_sample_validation"
+      ]
     },
     {
       "code": "4582",
@@ -25675,22 +25241,8 @@
     {
       "code": "4999",
       "name": "鑫禾",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "5007",
@@ -26273,22 +25825,8 @@
     {
       "code": "5546",
       "name": "永固-KY",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "5607",
@@ -26529,22 +26067,8 @@
     {
       "code": "6128",
       "name": "上福",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "6133",
@@ -27559,22 +27083,8 @@
     {
       "code": "6431",
       "name": "光麗-KY",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "6438",
@@ -28277,22 +27787,8 @@
     {
       "code": "6641",
       "name": "基士德-KY",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "6645",
@@ -28363,22 +27859,8 @@
     {
       "code": "6666",
       "name": "羅麗芬-KY",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "6668",
@@ -28443,22 +27925,8 @@
     {
       "code": "6671",
       "name": "三能-KY",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "6672",
@@ -28483,22 +27951,8 @@
     {
       "code": "6674",
       "name": "鋐寶科技",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "6689",
@@ -28767,8 +28221,22 @@
     {
       "code": "6771",
       "name": "平和環保-創",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
-      "pending_gates": []
+      "status": "CERTIFICATION_PENDING",
+      "pending_gates": [
+        "original_eight_quarter_statements",
+        "cash_and_working_capital",
+        "nonoperating_components",
+        "fully_diluted_shares",
+        "matched_peers_and_cycle",
+        "management_promises",
+        "auditor_scope",
+        "tradability",
+        "forecast_bridge",
+        "insider_claims",
+        "dividend_window",
+        "point_in_time",
+        "out_of_sample_validation"
+      ]
     },
     {
       "code": "6776",
@@ -28945,8 +28413,22 @@
     {
       "code": "6807",
       "name": "峰源-KY",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
-      "pending_gates": []
+      "status": "CERTIFICATION_PENDING",
+      "pending_gates": [
+        "original_eight_quarter_statements",
+        "cash_and_working_capital",
+        "nonoperating_components",
+        "fully_diluted_shares",
+        "matched_peers_and_cycle",
+        "management_promises",
+        "auditor_scope",
+        "tradability",
+        "forecast_bridge",
+        "insider_claims",
+        "dividend_window",
+        "point_in_time",
+        "out_of_sample_validation"
+      ]
     },
     {
       "code": "6830",
@@ -28997,22 +28479,8 @@
     {
       "code": "6835",
       "name": "圓裕",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "6838",
@@ -29341,7 +28809,7 @@
     {
       "code": "6921",
       "name": "嘉雨思-創",
-      "status": "MISSING_NORMALIZED_EIGHT_QUARTERS",
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
       "pending_gates": []
     },
     {
@@ -30853,22 +30321,8 @@
     {
       "code": "8481",
       "name": "政伸",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "8482",
@@ -30879,7 +30333,7 @@
     {
       "code": "8487",
       "name": "愛爾達-創",
-      "status": "TAX_PARENT_EARNINGS_COMPONENTS_MISSING",
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
       "pending_gates": []
     },
     {
@@ -30951,22 +30405,8 @@
     {
       "code": "8940",
       "name": "新天地",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "8996",
@@ -31291,8 +30731,22 @@
     {
       "code": "9918",
       "name": "欣天然",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
-      "pending_gates": []
+      "status": "CERTIFICATION_PENDING",
+      "pending_gates": [
+        "original_eight_quarter_statements",
+        "cash_and_working_capital",
+        "nonoperating_components",
+        "fully_diluted_shares",
+        "matched_peers_and_cycle",
+        "management_promises",
+        "auditor_scope",
+        "tradability",
+        "forecast_bridge",
+        "insider_claims",
+        "dividend_window",
+        "point_in_time",
+        "out_of_sample_validation"
+      ]
     },
     {
       "code": "9919",
@@ -31377,22 +30831,8 @@
     {
       "code": "9926",
       "name": "新海",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "9927",
@@ -31417,12 +30857,6 @@
     {
       "code": "9928",
       "name": "中視",
-      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
-      "pending_gates": []
-    },
-    {
-      "code": "9929",
-      "name": "秋雨",
       "status": "CERTIFICATION_PENDING",
       "pending_gates": [
         "original_eight_quarter_statements",
@@ -31439,6 +30873,12 @@
         "point_in_time",
         "out_of_sample_validation"
       ]
+    },
+    {
+      "code": "9929",
+      "name": "秋雨",
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "9930",
@@ -31463,22 +30903,8 @@
     {
       "code": "9931",
       "name": "欣高",
-      "status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ]
+      "status": "TURNOVER_FILTER_BELOW_1M_TWD",
+      "pending_gates": []
     },
     {
       "code": "9933",

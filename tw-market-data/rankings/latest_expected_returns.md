@@ -1,8 +1,8 @@
 # 2027 機率加權期望報酬率驗證
 
-模型：V8.10.8；來源收盤：2026-11-09；目標：2027-12-31。
+模型：V8.10.8；來源收盤：2026-11-10；目標：2027-12-31。
 
-狀態：`BLOCKED_ANNUAL_CALIBRATION_DESIGN_REQUIRES_HISTORICAL_REPLAY`；全體 2004 筆，研究可估值 836 筆。
+狀態：`BLOCKED_ANNUAL_CALIBRATION_DESIGN_REQUIRES_HISTORICAL_REPLAY`；全體 2004 筆，研究可估值 818 筆。
 同期限成熟原件樣本：0；可列研究期望報酬率：0 檔。
 
 期間為參考收盤至目標日，不是 2027 單一曆年績效，也不宣稱已成交。
@@ -11,9 +11,9 @@
 
 |待補狀態|公司筆數|
 |---|---:|
-|NO_COMPARABLE_FORECAST|1168|
-|EXPECTED_RETURN_SCENARIOS_INVALID|53|
-|AWAITING_MATCHED_MATURE_OOS_COHORTS|783|
+|NO_COMPARABLE_FORECAST|1186|
+|EXPECTED_RETURN_SCENARIOS_INVALID|48|
+|AWAITING_MATCHED_MATURE_OOS_COHORTS|770|
 
 封存佇列：12 批；不回填歷史預測。
 同方法、同產業及完全相同日數才可校準；不足資料維持空值。
@@ -22,5 +22,5 @@
 
 
 校準可行性：固定同一目標日期最多只有1個不重疊持有窗；目前政策要求24個。
-原政策的歷史長度下限約 27.4 年；此為該研究政策的要求，不是金融學通用門檻。
+原政策的歷史長度下限約 27.33 年；此為該研究政策的要求，不是金融學通用門檻。
 只等2027年底到期不能解決；須補歷史PIT重建與獨立時間外驗證協定，不能直接降低門檻湊出數字。

@@ -1,20 +1,20 @@
 {
   "schema": "EXPECTED_RETURN_BLOCKER_TRIAGE_V1",
   "model": "V8.10.8",
-  "asof_price_date": "2026-11-09",
+  "asof_price_date": "2026-11-10",
   "source_sha256": {
-    "research": "106fac33b924b5e1ea75114559eff517edded7313ce8767818f298c24e1629d7",
-    "returns": "b299fbad0b30b92e468f7ba3f657fcfe95f520e203f11e4d4cf0d3943db64fdc",
-    "history": "f75784f734c5fec8405a5382216a7b8d27ebe4da01a02cb4dd33524928f4a0ea",
-    "full_results_gzip": "d2bc3c6ebff62d8dfe23cbd2fe7380a415899d962992421d99f7f96fc1c23e6a"
+    "research": "9e09d3815fb31366f321222ba0878cfd2874930a4b07c223a8f525efb3eaa8b8",
+    "returns": "14dfe2f40f20bd4460607eab2a60b3dddbba0a61e51c8d23ad8cb33949139ee2",
+    "history": "b26994a5ae2d7932d44ba9b8e2257a99782d459ce36935dbcd79dc3ef7273ed7",
+    "full_results_gzip": "b66ce132976fab387bd3c166134d003d17cc493cd3fa3408c96159889d56d0bf"
   },
   "issuer_count": 2004,
   "issuer_status_counts": {
-    "NO_COMPARABLE_FORECAST": 1168,
-    "EXPECTED_RETURN_SCENARIOS_INVALID": 53,
-    "AWAITING_MATCHED_MATURE_OOS_COHORTS": 783
+    "NO_COMPARABLE_FORECAST": 1186,
+    "EXPECTED_RETURN_SCENARIOS_INVALID": 48,
+    "AWAITING_MATCHED_MATURE_OOS_COHORTS": 770
   },
-  "invalid_scenario_count": 53,
+  "invalid_scenario_count": 48,
   "invalid_scenario_issuers": [
     {
       "market": "TPEX",
@@ -38,20 +38,6 @@
         "bear": null,
         "base": 2.012368455539422,
         "bull": 34.38509872242015
-      },
-      "reasons": [
-        "MISSING_OR_NONFINITE_BEAR_TARGET"
-      ],
-      "status": "REVIEW_ONLY_NO_ESTIMATE"
-    },
-    {
-      "market": "TPEX",
-      "code": "1570",
-      "name": "力肯",
-      "target_prices": {
-        "bear": null,
-        "base": 3.966589178551646,
-        "bull": 37.282883687175996
       },
       "reasons": [
         "MISSING_OR_NONFINITE_BEAR_TARGET"
@@ -158,6 +144,20 @@
     },
     {
       "market": "TPEX",
+      "code": "3310",
+      "name": "佳穎",
+      "target_prices": {
+        "bear": null,
+        "base": 84.16614049298953,
+        "bull": 329.9436811553848
+      },
+      "reasons": [
+        "MISSING_OR_NONFINITE_BEAR_TARGET"
+      ],
+      "status": "REVIEW_ONLY_NO_ESTIMATE"
+    },
+    {
+      "market": "TPEX",
       "code": "3490",
       "name": "單井",
       "target_prices": {
@@ -242,20 +242,6 @@
     },
     {
       "market": "TPEX",
-      "code": "5356",
-      "name": "協益",
-      "target_prices": {
-        "bear": null,
-        "base": 2.205108586246106,
-        "bull": 21.71328244556654
-      },
-      "reasons": [
-        "MISSING_OR_NONFINITE_BEAR_TARGET"
-      ],
-      "status": "REVIEW_ONLY_NO_ESTIMATE"
-    },
-    {
-      "market": "TPEX",
       "code": "5465",
       "name": "富驊",
       "target_prices": {
@@ -276,20 +262,6 @@
         "bear": null,
         "base": 8.386325539523128,
         "bull": 132.34310499809473
-      },
-      "reasons": [
-        "MISSING_OR_NONFINITE_BEAR_TARGET"
-      ],
-      "status": "REVIEW_ONLY_NO_ESTIMATE"
-    },
-    {
-      "market": "TPEX",
-      "code": "6194",
-      "name": "育富",
-      "target_prices": {
-        "bear": null,
-        "base": 1.365931053610813,
-        "bull": 34.4622087463859
       },
       "reasons": [
         "MISSING_OR_NONFINITE_BEAR_TARGET"
@@ -438,20 +410,6 @@
     },
     {
       "market": "TWSE",
-      "code": "2012",
-      "name": "春雨",
-      "target_prices": {
-        "bear": null,
-        "base": 2.6623563694173655,
-        "bull": 10.680902920928531
-      },
-      "reasons": [
-        "MISSING_OR_NONFINITE_BEAR_TARGET"
-      ],
-      "status": "REVIEW_ONLY_NO_ESTIMATE"
-    },
-    {
-      "market": "TWSE",
       "code": "2324",
       "name": "仁寶",
       "target_prices": {
@@ -542,20 +500,6 @@
         "bear": null,
         "base": 1.9954171501220768,
         "bull": 10.424017034723224
-      },
-      "reasons": [
-        "MISSING_OR_NONFINITE_BEAR_TARGET"
-      ],
-      "status": "REVIEW_ONLY_NO_ESTIMATE"
-    },
-    {
-      "market": "TWSE",
-      "code": "2945",
-      "name": "三商家購",
-      "target_prices": {
-        "bear": null,
-        "base": 30.26409529312922,
-        "bull": 121.83493652264282
       },
       "reasons": [
         "MISSING_OR_NONFINITE_BEAR_TARGET"
@@ -657,20 +601,6 @@
       },
       "reasons": [
         "BEAR_BASE_BULL_NOT_STRICTLY_ASCENDING"
-      ],
-      "status": "REVIEW_ONLY_NO_ESTIMATE"
-    },
-    {
-      "market": "TWSE",
-      "code": "6641",
-      "name": "基士德-KY",
-      "target_prices": {
-        "bear": null,
-        "base": 0.7288096730168948,
-        "bull": 18.408753648601966
-      },
-      "reasons": [
-        "MISSING_OR_NONFINITE_BEAR_TARGET"
       ],
       "status": "REVIEW_ONLY_NO_ESTIMATE"
     },
