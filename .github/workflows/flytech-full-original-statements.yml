@@ -45,6 +45,34 @@ jobs:
                      archived=j['original_full_statements_archived'],
                      errors=j['collection_errors'][:8]))
           PY
+      - name: Decode public packed AJAX route statically (never execute website code)
+        run: |
+          python - <<'PY'
+          import ast,re
+          from scripts.flytech_full_original_statements import fetch,DIRECTORY
+          html=fetch(DIRECTORY+'&year=2026',2000000).decode('utf-8','replace')
+          regex=r"return p\\}\\('((?:\\\\.|[^'])*)',(\\d+),(\\d+),'((?:\\\\.|[^'])*)'\\.split\\('\\|'\\),0,\\{\\}\\)\\)"
+          hits=list(re.finditer(regex,html,re.S))
+          print('PACKER_BODIES_FOUND',len(hits))
+          digits='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+          def enc(n):
+              return digits[n] if n<62 else enc(n//62)+digits[n%62]
+          for match in hits[:5]:
+              try:
+                  payload=ast.literal_eval("'"+match[1]+"'")
+                  base=int(match[2]);count=int(match[3])
+                  tokens=ast.literal_eval("'"+match[4]+"'").split('|')
+                  if base!=62 or count>200:continue
+                  for i in range(count-1,-1,-1):
+                      if i<len(tokens) and tokens[i]:
+                          payload=re.sub(r'\\b'+re.escape(enc(i))+r'\\b',lambda _:tokens[i],payload)
+                  for term in ('get_season','seasonId','GR_BLOCK_SEASON','ajax','get_monthly','investor_season'):
+                      for a in list(re.finditer(re.escape(term),payload,re.I))[:3]:
+                          print('UNPACKED_PUBLIC_AJAX_ROUTE',term,
+                                repr(payload[max(0,a.start()-350):a.end()+450])[:900])
+              except Exception as e:
+                  print('PUBLIC_PACKER_DECODE_PENDING',type(e).__name__,str(e)[:140])
+          PY
       - name: Diagnose public quarter-link loader when static directory is incomplete
         env:
           PYTHONPATH: '.'
