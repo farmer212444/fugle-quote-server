@@ -12,6 +12,8 @@ if str(ROOT) not in sys.path:sys.path.insert(0,str(ROOT))
 
 from scripts.honhai_original_statements import MANIFEST, safe, validate_archive, window
 from scripts.v891_gate_certification import write_if_changed
+from tw_model_v880.evidence import GATES
+from tw_model_v880.contracts import OBLIGATIONS
 
 SCHEMA="HONHAI_2317_AUDITOR_REVIEW_PREP_V1"
 PRIORITY_TERMS=("保留結論","保留意見","強調事項","其他事項",
@@ -137,6 +139,58 @@ def build_packet(root,last_quarter,asof):
                     "建立首次公告與更正版本PIT，不以本次下載時間替代",
                     "具名完成原13項review_pack及策略扣成本Walk-Forward"])
 
+def build_formal_review_starter(packet):
+    """Prepare a non-certifying, review-pack-shaped handoff from SHA-checked PDFs.
+
+    Only original PDFs already checked by build_packet are listed. This is
+    deliberately NOT placed in evidence/v880/review_packs: collection dates
+    never stand in for publication PIT, reviewer identity or a PASS decision.
+    """
+    if packet.get("issuer")!="2317" or packet.get("formal_gate_pass_count_created")!=0:
+        raise ValueError("HONHAI_HANDOFF_UNTRUSTED_PACKET")
+    coverage=packet["coverage"]
+    docs=[row for row in packet["original_documents"]
+          if row["archive_state"]=="SHA_REHASHED"]
+    if len(docs)!=(coverage["archived_count"] or 0):
+        raise ValueError("HONHAI_HANDOFF_SOURCE_COVERAGE_MISMATCH")
+    originals=[]
+    for row in docs:
+        originals.append(dict(period=row["period"],url=row["source_url"],
+            sha256=row["sha256"],archive_path=row["archive_path"],
+            captured_at_utc=row["captured_at_utc"],
+            origin_authenticated=False,available_at=None))
+    original_gates=frozenset((
+        "original_eight_quarter_statements","cash_and_working_capital",
+        "nonoperating_components","auditor_scope","point_in_time"))
+    gates={}
+    for name in GATES:
+        gates[name]=dict(issuer="2317",financial_period=packet["financial_period"],
+            status="PENDING",review_completed=False,reviewer_id=None,
+            checked_at=None,available_at=None,expires_at=None,
+            method=None,review_note=None,source_identity_reviewed=False,
+            sources=[dict(src) for src in originals] if name in original_gates else [],
+            required_evidence=OBLIGATIONS[name][1],
+            source_capture_is_not_formal_review=True)
+    return dict(schema="HONHAI_2317_FORMAL_REVIEW_STARTER_V1",
+        code="2317",financial_period=packet["financial_period"],
+        research_cutoff=packet["research_cutoff"],
+        manifest_sha256=packet["source_manifest_sha256"],
+        original_pdf_coverage=coverage,
+        source_originals=originals,gates=gates,
+        draft_only=True,can_admit_to_certificates=False,
+        formal_pass_created=0,formal_Aplus=False,
+        publication_PIT_verified=False,source_identity_reviewed=False,
+        reviewer_id=None,review_completed=False,
+        next_steps=[
+            "Read all eight complete originals and reconcile full statements and notes.",
+            "Review auditor opinion wording, affected entities and materiality.",
+            "Independently verify each original source identity and first published/revised time.",
+            "Check all remaining gates with their own original sources and method.",
+            "Only a real named reviewer may complete each decision and transfer the reviewed gates to evidence/v880/review_packs/2317.json.",
+            "Run scripts/v891_gate_certification.py after signed evidence is available; the strategy OOS gate is independent."
+        ])
+
+
 def render(packet):
     c=packet["coverage"]
     n=(str(c["archived_count"])+"/"+str(c["required_count"])
@@ -191,6 +245,9 @@ def main():
     write_if_changed(out/"2317_original_review_packet_latest.json",
                      json.dumps(packet,ensure_ascii=False,indent=2)+"\n")
     write_if_changed(out/"2317_original_review_packet_latest.md",render(packet))
+    starter=build_formal_review_starter(packet)
+    write_if_changed(out/"2317_gate_review_starter_latest.json",
+                     json.dumps(starter,ensure_ascii=False,indent=2)+"\n")
     print(json.dumps(dict(issuer="2317",coverage=packet["coverage"],formal_pass_created=0),
                      ensure_ascii=False))
 
