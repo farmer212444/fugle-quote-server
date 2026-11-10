@@ -104,7 +104,7 @@ def parse_profiles(raw, market, url, captured_at_utc, *, min_rows=1):
         listed = parse_official_date(listed_raw)
         if batch is None:
             raise ContractError("PROFILE_BATCH_DATE_MISSING")
-        if batch > local_day or (listed and listed > local_day):
+        if date.fromisoformat(batch) > local_day or (listed and date.fromisoformat(listed) > local_day):
             raise ContractError("PROFILE_DATE_IN_FUTURE")
         batches.add(batch)
         out.append({
