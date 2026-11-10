@@ -6,8 +6,10 @@ on:
       - 'alphamax/**'
       - 'scripts/alphamax_run.py'
       - 'scripts/alphamax_concentration.py'
+      - 'scripts/alphamax_universe_audit.py'
       - 'tests/test_alphamax.py'
       - 'tests/test_alphamax_concentration.py'
+      - 'tests/test_alphamax_universe.py'
       - '.github/workflows/alphamax-research.yml'
   push:
     branches:
@@ -35,12 +37,14 @@ jobs:
         with:
           python-version: '3.12'
       - name: Run independent no-leakage and contract tests
-        run: python -m unittest -v tests.test_alphamax tests.test_alphamax_concentration
+        run: python -m unittest -v tests.test_alphamax tests.test_alphamax_concentration tests.test_alphamax_universe
       - name: Audit official source readiness; never fabricate returns
         run: |
           python scripts/alphamax_run.py readiness --output alphamax-research-readiness.json
       - name: Audit concentration readiness; never create an unverified buy signal
         run: python scripts/alphamax_concentration.py --output alphamax-concentration-readiness.json
+      - name: Audit original historical issuer quote coverage without PIT claims
+        run: python scripts/alphamax_universe_audit.py --output alphamax-universe-readiness.json
       - name: Publish separate engineering and investment-readiness status
         run: |
           python - <<'PY'
@@ -49,11 +53,15 @@ jobs:
           from pathlib import Path
           research = json.loads(Path("alphamax-research-readiness.json").read_text())
           concentration = json.loads(Path("alphamax-concentration-readiness.json").read_text())
+          universe = json.loads(Path("alphamax-universe-readiness.json").read_text())
           with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as out:
               out.write("## AlphaMax verification — do not confuse CI with trading approval\n\n")
               out.write("- Code regression CI: **executed separately above**\n")
               out.write("- Historical data/PIT readiness: **%s**\n" % research["status"])
               out.write("- Concentration allocation readiness: **%s**\n" % concentration["status"])
+              out.write("- Issuer-history coverage: **%s**\n" % universe["status"])
+              out.write("- Historical price records / latest snapshot: **%s / %s**\n" % (universe.get("counts", {}).get("present_in_snapshot_with_history", 0), universe.get("current_quote_snapshot_securities", 0)))
+              out.write("- Companies with >= 756 preserved observed sessions: **%s** (observation count, not PIT audit)\n" % universe.get("counts", {}).get("history_files_ge_min_sessions", 0))
               out.write("- Live buy authorization: **NO**\n\n")
               for issue in research.get("blockers", []):
                   out.write("- Data blocker: %s\n" % issue)
@@ -71,5 +79,6 @@ jobs:
           path: |
             alphamax-research-readiness.json
             alphamax-concentration-readiness.json
+            alphamax-universe-readiness.json
           if-no-files-found: warn
           retention-days: 30
