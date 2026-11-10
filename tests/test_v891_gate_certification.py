@@ -97,7 +97,7 @@ class GateAdmissionTests(unittest.TestCase):
                          "BLOCKED_NO_ADMITTED_CERTIFICATES")
         self.assertEqual(report["review_pack_inventory"]["submitted_files"],1)
         self.assertEqual(report["review_pack_inventory"]["certificate_files"],0)
-        self.assertFalse(report["review_pack_inventory"]["file_presence_is_not_formal_pass"] is False)
+        self.assertTrue(report["review_pack_inventory"]["file_presence_is_not_formal_pass"])
 
     def test_pass_only_with_archived_reviewed_original(self):
         r=mod.emit_certificates(self.root,mod.timestamp(STAMP),"2026-Q2")
