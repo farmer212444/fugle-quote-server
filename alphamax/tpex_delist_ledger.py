@@ -177,6 +177,7 @@ def parse_tpex_json(raw, captured_at_utc):
         if not possible_code or not possible_name or not possible_date:
             continue
         ci, ni, di = possible_code[0], possible_name[0], possible_date[0]
+        reason_col = next((i for i,k in enumerate(headings) if "原因" in str(k)), None)
         for item in cells:
             if isinstance(item, dict):
                 item = [item.get(k, "") for k in headings]
@@ -189,6 +190,10 @@ def parse_tpex_json(raw, captured_at_utc):
             rows.append({
                 "market": "TPEX", "code": code, "company_name": name,
                 "termination_effective_date": date_value,
+                "termination_reason_source_text": (
+                    str(item[reason_col]).strip()
+                    if reason_col is not None and reason_col < len(item) else None
+                ),
                 "announced_at_pit_verified": False,
                 "transfer_vs_actual_death_verified": False,
                 "settlement_or_consideration_verified": False,
@@ -371,9 +376,31 @@ def capture_tpex_delist(output_dir, *, captured_at_utc=None, legacy_fetch=None, 
     # Probe historical year controls but never concatenate snapshots whose
     # query semantics or pagination have not been proved. Official form has
     # input name=date; the API response also echoes its accepted year.
-    if events and modern_fetch is None:
+    annual_years_verified = []
+    # The default official JSON is a *single current-year slice*.
+    # Verify the source-reported year and totalCount before treating it as
+    # complete, even if all returned rows are individually well-formed.
+    if events and not found_legacy:
+        source = json.loads(raw.decode("utf-8-sig"))
+        current_year = int(str(source.get("date", "0")))
+        expected = source.get("tables", [{}])[0].get("totalCount")
+        year_matches = all(
+            event["termination_effective_date"] is not None
+            and event["termination_effective_date"].startswith(str(current_year))
+            for event in events
+        )
+        current_complete = (type(expected) is int and expected == len(events)
+                            and current_year == datetime.fromisoformat(stamp).astimezone(TZ_TAIPEI).year
+                            and year_matches)
+        discovery["current_year_source_verified"] = current_complete
+        discovery["current_year_totalCount"] = expected
+        discovery["current_year"] = current_year
+        if current_complete:
+            annual_years_verified.append(current_year)
+
+    if events and modern_fetch is None and not found_legacy:
         discovery["year_filter_probes"] = []
-        for year in (2025, 2024):
+        for year in (2025, 2024, 2023, 2022, 2021):
             try:
                 year_raw = _fetch_year(year)
                 if not isinstance(year_raw, bytes) or len(year_raw) > 20_000_000:
@@ -387,36 +414,55 @@ def capture_tpex_delist(output_dir, *, captured_at_utc=None, legacy_fetch=None, 
                     str(r["termination_effective_date"])[:4]
                     for r in record["event_rows"]
                 })
-                verified = reported == str(year) and date_years == [str(year)]
+                total = (
+                    decoded.get("tables",[{}])[0].get("totalCount")
+                    if isinstance(decoded,dict) and decoded.get("tables") else None
+                )
+                complete = type(total) is int and total == record["record_count"]
+                verified = reported == str(year) and date_years == [str(year)] and complete
                 discovery["year_filter_probes"].append({
                     "requested_year": year, "source_url": NEW_URL,
                     "raw_artifact": name, "sha256": sha256(year_raw).hexdigest(),
                     "reported_year": reported, "event_years": date_years,
                     "row_count": record["record_count"],
-                    "year_filter_matches_exactly": verified,
-                    "source_totalCount": (
-                        decoded.get("tables",[{}])[0].get("totalCount")
-                        if isinstance(decoded,dict) and decoded.get("tables") else None
-                    ),
-                    "source_pagination_complete": (
-                        decoded.get("tables",[{}])[0].get("totalCount") == record["record_count"]
-                        if isinstance(decoded,dict) and decoded.get("tables") else False
-                    ),
+                    "year_filter_matches_exactly": reported == str(year) and date_years == [str(year)],
+                    "source_totalCount": total,
+                    "source_pagination_complete": complete,
+                    "accepted_for_bounded_2021_to_2026_observation": verified,
                 })
+                if verified:
+                    seen = {(r["code"], r["termination_effective_date"]) for r in events}
+                    incoming = {(r["code"], r["termination_effective_date"]) for r in record["event_rows"]}
+                    if seen & incoming:
+                        raise ContractError("TPEX_DELIST_CROSS_YEAR_DUPLICATE")
+                    events.extend(record["event_rows"])
+                    annual_years_verified.append(year)
+                    captures.append({
+                        "path": name, "sha256": sha256(year_raw).hexdigest(),
+                        "bytes": len(year_raw), "year": year,
+                        "records": len(record["event_rows"]), "explicit_dates": len(record["event_rows"]),
+                    })
             except (OSError, ValueError, TypeError, UnicodeError) as exc:
                 discovery["year_filter_probes"].append({
                     "requested_year":year, "status":"UNVERIFIED",
                     "reason":str(exc)[:200],
                 })
+    annual_years_verified.sort()
+    six_year_window_complete = annual_years_verified == [2021, 2022, 2023, 2024, 2025, 2026]
+    events.sort(key=lambda x: (x["termination_effective_date"] or "", x["code"]))
     valid_dates = sum(x["termination_effective_date"] is not None for x in events)
     status = (
-        "TPEX_OFFICIAL_EVENT_ROWS_OBSERVED_NOT_FULLY_PIT" if events
-        else "BLOCKED_TPEX_DELIST_SOURCE_NOT_PARSED"
+        "TPEX_2021_2026_ANNUAL_SLICES_VERIFIED_NOT_HISTORICAL_PIT"
+        if six_year_window_complete else
+        "TPEX_OFFICIAL_EVENT_ROWS_OBSERVED_NOT_FULLY_PIT"
+        if events else "BLOCKED_TPEX_DELIST_SOURCE_NOT_PARSED"
     )
     report = {
         "status": status, "captured_at_utc": stamp, "attempts": attempts,
         "source_receipts": captures, "unparsed_source_discovery": discovery,
         "event_count": len(events),
+        "verified_annual_slices": annual_years_verified,
+        "bounded_2021_2026_window_complete": six_year_window_complete,
         "explicit_effective_dates": valid_dates,
         "page_limit": page_limit, "legacy_pagination_exhaustion_verified": exhausted,
         "full_history_coverage_verified": False,
