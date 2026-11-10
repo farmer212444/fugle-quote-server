@@ -135,7 +135,8 @@ def analyze(row, prior, now, cash, oldyear, capital, quarter_num):
     return out
 
 
-def check_post_financial_quarter_revenue(root, research, now_income, prior_income, top):
+def check_post_financial_quarter_revenue(root, research, now_income, prior_income, top,
+                                         on_late_capture="raise"):
     """Watch next-quarter published YTD monthly sales without treating it as Q3 profits.
 
     Checks captured source receipt and each issuer's shard bytes; fails closed on
@@ -144,6 +145,8 @@ def check_post_financial_quarter_revenue(root, research, now_income, prior_incom
     """
     import datetime as datetime_module
     from zoneinfo import ZoneInfo
+    if on_late_capture not in ("raise","pending"):
+        raise ValueError("INVALID_LATE_CAPTURE_POLICY")
     result = {"status":"NOT_YET_CHECKED","issuer_checks":[],
               "issuer_filing_PIT_verified":False,"recognized_quarterly_profit_verified":False}
     path = root / "latest_manifest.json"
@@ -169,7 +172,19 @@ def check_post_financial_quarter_revenue(root, research, now_income, prior_incom
         return result
     stamp=datetime_module.datetime.fromisoformat(str(manifest.get("capture_utc","")).replace("Z","+00:00"))
     estimate=datetime_module.datetime.fromisoformat(str(research.get("estimate_vintage","")).replace("Z","+00:00"))
-    if stamp.tzinfo is None or estimate.tzinfo is None or stamp>estimate:
+    if stamp.tzinfo is None or estimate.tzinfo is None:
+        raise ValueError("MONTHLY_REVENUE_RECEIPT_FUTURE_OR_UNZONED")
+    if stamp>estimate:
+        if on_late_capture=="pending":
+            # The monthly data arrived after this forecast vintage. It must
+            # neither break independent earnings audits nor revise an earlier
+            # signal with information that was not yet known.
+            result.update(status="MONTHLY_REVENUE_CAPTURE_AFTER_FORECAST_NOT_ADMITTED",
+                model_estimate_vintage=research["estimate_vintage"],
+                later_monthly_capture_utc=manifest["capture_utc"],
+                future_receipt_excluded_from_issuer_checks=True,
+                usable_for_historical_same_vintage_forecast=False)
+            return result
         raise ValueError("MONTHLY_REVENUE_RECEIPT_FUTURE_OR_UNZONED")
     wanted=set(str(item["code"]) for item in top)
     shards=manifest.get("shards",[])
@@ -360,7 +375,9 @@ def run(root):
         "now":{(m,c):r for (period,m,k),rows in mirrors.items() if period==quarter and k=="income" for c,r in rows.items()},
         "prior":{(m,c):r for (period,m,k),rows in mirrors.items() if period==previous and k=="income" for c,r in rows.items()},
     }
-    next_quarter_revenue=check_post_financial_quarter_revenue(root,research,quarterly_lookup["now"],quarterly_lookup["prior"],top)
+    next_quarter_revenue=check_post_financial_quarter_revenue(
+        root,research,quarterly_lookup["now"],quarterly_lookup["prior"],top,
+        on_late_capture="pending")
     checks={r["code"]:r for r in next_quarter_revenue.get("issuer_checks",[])}
     for record in out:
         if record["code"] in checks:
