@@ -105,7 +105,7 @@ def candidates(raw_price,cap=8):
     ordered=[x for x in PREFERRED if x in bycode]
     require("6206" in ordered and "9802" in ordered,"CORE_6206_9802_NOT_IN_OFFICIAL_TWSE_PRICE_ARCHIVE")
     return ordered[:cap]
-def prioritized_candidates(raw_price,asof,cap=16,root=ROOT,*,execution_archive=False,months=3):
+def prioritized_candidates(raw_price,asof,cap=16,root=ROOT,*,execution_archive=False,months=3,now=None):
     """Use current A+ research order; skip issuers already backed up at reference date.
 
     Incomplete TPEX names are separately recorded by gate diagnostics: this TWSE
@@ -118,9 +118,10 @@ def prioritized_candidates(raw_price,asof,cap=16,root=ROOT,*,execution_archive=F
     path=Path(root)/"rankings/v891_gate_progress.json"
     if path.is_file():
         progress=json.loads(path.read_text(encoding="utf-8"))
-        # A dated research snapshot after asof may include later signals: fail closed.
-        require(progress.get("asof_price_date")==asof,
-                "HISTORY_PRIORITY_SNAPSHOT_PRICE_DATE_MISMATCH")
+        # Older research may order source collection, without creating a new
+        # signal or changing the independently dated quote/original checks.
+        from scripts.history_archive import collection_priority_context
+        collection_priority_context(progress, asof, now)
         ranked=progress.get("issuer_diagnostics",[])
         require(isinstance(ranked,list),"INVALID_GATE_PROGRESS_DIAGNOSTICS")
         pending=[str(x.get("code")) for x in ranked
@@ -276,6 +277,10 @@ def run(max_issuers=6,months=4,fetch=request,sleep=0.4,max_new_months=3):
         source_scope="TWSE_ISSUERS_ONLY_TPEX_NOT_YET_INCLUDED",
         original_capture_not_independent_PIT_certificate=True,
         formal_Aplus_issuers_created=0)
+    priority_path=ROOT/'rankings/v891_gate_progress.json'
+    if priority_path.is_file():
+        from scripts.history_archive import collection_priority_context
+        result['collection_priority']=collection_priority_context(json.loads(priority_path.read_text()),asof)
     loc=ROOT/"rankings/v889_backfill_progress.json"
     loc.parent.mkdir(parents=True,exist_ok=True)
     loc.write_text(json.dumps(result,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")

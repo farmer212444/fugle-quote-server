@@ -16,7 +16,7 @@ import urllib.parse
 import urllib.request
 from pathlib import Path
 from scripts.tw_history_backfill import ROOT, sha, require, stats
-from scripts.history_archive import archive_original, observed_ohlc, quote_source_ready, verify_original, canonical,outstanding_benchmark_codes
+from scripts.history_archive import archive_original, observed_ohlc, quote_source_ready, verify_original, canonical,outstanding_benchmark_codes,collection_priority_context
 from scripts.marketwide_history_priority import marketwide_uncovered
 
 RAW=Path("market-raw-tpex-daily")
@@ -93,12 +93,12 @@ def parse_daily(raw,day):
     require(len(quotes)>=300,"TPEX_OFFICIAL_MARKET_SHARD_UNDERSIZED")
     return quotes
 
-def selected_codes(root,asof,raw_market):
+def selected_codes(root,asof,raw_market,*,now=None):
     rows=json.loads(raw_market)
     official={str(x.get("code")):x for x in rows if x.get("market")=="TPEX"
               and CODE_RE.fullmatch(str(x.get("code","")))}
     progress=json.loads((Path(root)/"rankings/v891_gate_progress.json").read_text(encoding="utf-8"))
-    require(progress.get("asof_price_date")==asof,"TPEX_RESEARCH_PRICE_DATE_MISMATCH")
+    collection_priority_context(progress, asof, now)
     chosen=outstanding_benchmark_codes(root,'TPEX')
     for x in progress.get("issuer_diagnostics",[]):
         code=str(x.get("code"))
@@ -151,7 +151,8 @@ def run(max_dates=20,lookback=65,source=download,root=ROOT,rawdir=RAW,target_ses
     asof=manifest["date"]
     price_bytes=(root/"prices"/(asof+".json")).read_bytes()
     require(sha(price_bytes)==manifest["normalized_sha256"],"TPEX_LATEST_MARKET_RECEIPT_MISMATCH")
-    codes,latest=selected_codes(root,asof,price_bytes)
+    now=now or dt.datetime.now(dt.timezone.utc)
+    codes,latest=selected_codes(root,asof,price_bytes,now=now)
     old=load_old(root,codes,asof)
     histories={c:{d:r for d,r in old[c].get("by_day",{}).items() if d<=asof} for c in codes}
     verified_sources=set()
@@ -254,6 +255,8 @@ def run(max_dates=20,lookback=65,source=download,root=ROOT,rawdir=RAW,target_ses
         failed_source_dates=failed,issuers_with_20_source_sessions=eligible,
         formal_tradability_gate_PASSED=0,formal_Aplus_added=0,
         original_issuer_publication_PIT_not_verified=True)
+    priority_path=root/'rankings/v891_gate_progress.json'
+    progress['collection_priority']=collection_priority_context(json.loads(priority_path.read_text()),asof,now)
     dst=root/"rankings/v893_tpex_daily_history_progress.json"
     dst.write_text(json.dumps(progress,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
     print(json.dumps({"targeted_issuers":len(codes),"downloaded_days":len(results),
