@@ -185,7 +185,7 @@ def parse_tpex_json(raw, captured_at_utc):
                 raise ContractError("TPEX_DELIST_JSON_ROW_SHAPE")
             code, name = str(item[ci]).strip(), str(item[ni]).strip()
             date_value = _roc_date(item[di])
-            if not CODE.fullmatch(code) or not name or date_value is None:
+            if not re.fullmatch(r"(?:\d{4}|\d{6})", code) or not name or date_value is None:
                 raise ContractError("TPEX_DELIST_JSON_EXPLICIT_DATE_OR_CODE_REQUIRED")
             rows.append({
                 "market": "TPEX", "code": code, "company_name": name,
@@ -194,6 +194,10 @@ def parse_tpex_json(raw, captured_at_utc):
                     str(item[reason_col]).strip()
                     if reason_col is not None and reason_col < len(item) else None
                 ),
+                # 6-digit records are not automatically regular common equity.
+                # They require separate security-class evidence and must never
+                # silently enter the ordinary-stock training universe.
+                "security_class_review_required": len(code) != 4,
                 "announced_at_pit_verified": False,
                 "transfer_vs_actual_death_verified": False,
                 "settlement_or_consideration_verified": False,
@@ -461,6 +465,8 @@ def capture_tpex_delist(output_dir, *, captured_at_utc=None, legacy_fetch=None, 
         "status": status, "captured_at_utc": stamp, "attempts": attempts,
         "source_receipts": captures, "unparsed_source_discovery": discovery,
         "event_count": len(events),
+        "four_digit_event_count": sum(len(r["code"]) == 4 for r in events),
+        "non_four_digit_event_count": sum(len(r["code"]) != 4 for r in events),
         "verified_annual_slices": annual_years_verified,
         "bounded_2021_2026_window_complete": six_year_window_complete,
         "explicit_effective_dates": valid_dates,
