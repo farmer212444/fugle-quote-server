@@ -33,6 +33,8 @@ on:
       - 'scripts/v886_9802_early_revalue.py'
       - 'scripts/v888_6206_valuation.py'
       - 'scripts/v891_6206_gate_triage.py'
+      - 'scripts/v8108_focus_aplus_repair.py'
+      - 'tests/test_v8108_focus_aplus_repair.py'
       - 'scripts/v890_five_candidate_audit.py'
       - 'scripts/v892_top20_quality_audit.py'
       - 'scripts/v894_revenue_lead_discovery.py'
@@ -135,6 +137,8 @@ on:
       - 'scripts/v886_9802_early_revalue.py'
       - 'scripts/v888_6206_valuation.py'
       - 'scripts/v891_6206_gate_triage.py'
+      - 'scripts/v8108_focus_aplus_repair.py'
+      - 'tests/test_v8108_focus_aplus_repair.py'
       - 'scripts/v890_five_candidate_audit.py'
       - 'scripts/v892_top20_quality_audit.py'
       - 'scripts/v894_revenue_lead_discovery.py'
@@ -284,6 +288,7 @@ jobs:
           python -m unittest -v tests.test_2317_review_packet
           python -m unittest -v tests.test_tsmc_sec_filing_archive
           python -m unittest -v tests.test_footwear_review
+          python -m unittest -v tests.test_v8108_focus_aplus_repair
           python -m unittest -v tests.test_earnings_version_review
           python -m unittest -v tests.test_9802_cash_review
           python -m unittest -v tests.test_superforecast_ledger
