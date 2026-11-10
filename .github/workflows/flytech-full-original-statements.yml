@@ -123,6 +123,20 @@ jobs:
               except Exception as e:
                   print('PUBLIC_JS_FETCH_PENDING',u.path,type(e).__name__)
           PY
+      - name: Inspect official site AJAX wrapper declaration without executing JavaScript
+        run: |
+          python - <<'PY'
+          import urllib.request,re
+          u='https://www.flytech.com.tw/themes/zh-tw/assets/js/site.js'
+          with urllib.request.urlopen(urllib.request.Request(u,headers={'User-Agent':'Mozilla/5.0'}),timeout=15) as h:
+              t=h.read(90000).decode('utf-8','replace')
+          terms=('ajax','csrf','token','XMLHttpRequest','type:','dataType','contentType','beforeSend','setRequestHeader','site =','var site')
+          for term in terms:
+              matches=list(re.finditer(re.escape(term),t,re.I))
+              print('SITE_JS_SYMBOL',term,'hits',len(matches))
+              for m in matches[:3]:
+                  print('SITE_JS_CONTEXT',term,repr(t[max(0,m.start()-250):m.end()+400])[:720])
+          PY
       - name: Diagnose public quarter-link loader when static directory is incomplete
         env:
           PYTHONPATH: '.'
