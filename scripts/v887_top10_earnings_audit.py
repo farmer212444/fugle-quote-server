@@ -169,8 +169,18 @@ def check_post_financial_quarter_revenue(root, research, now_income, prior_incom
         return result
     stamp=datetime_module.datetime.fromisoformat(str(manifest.get("capture_utc","")).replace("Z","+00:00"))
     estimate=datetime_module.datetime.fromisoformat(str(research.get("estimate_vintage","")).replace("Z","+00:00"))
-    if stamp.tzinfo is None or estimate.tzinfo is None or stamp>estimate:
-        raise ValueError("MONTHLY_REVENUE_RECEIPT_FUTURE_OR_UNZONED")
+    if stamp.tzinfo is None or estimate.tzinfo is None:
+        raise ValueError("MONTHLY_REVENUE_RECEIPT_UNZONED")
+    if stamp>estimate:
+        # This official month may have been published after the model vintage.
+        # Keep the research vintage immutable: do not inspect its later shards,
+        # impute a missing value or flag growth using unavailable-at-the-time
+        # evidence. This is a pending time-scope audit, not a source PASS.
+        result["status"]="DEFERRED_MONTHLY_RECEIPT_AFTER_MODEL_VINTAGE"
+        result["expected"]=expected
+        result["manifest_capture_utc"]=manifest["capture_utc"]
+        result["model_estimate_vintage"]=research["estimate_vintage"]
+        return result
     wanted=set(str(item["code"]) for item in top)
     shards=manifest.get("shards",[])
     found={}
