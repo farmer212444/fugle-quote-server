@@ -2,6 +2,7 @@
 import json
 from pathlib import Path
 from tempfile import TemporaryDirectory
+from unittest.mock import patch
 import unittest
 from alphamax.core import ContractError
 from alphamax.tpex_delist_ledger import (
@@ -120,6 +121,46 @@ class TpexDelistTests(unittest.TestCase):
             self.assertIn("mainboard/listed/delisted",
                           out["unparsed_source_discovery"]["current_official_page"]["embedded_actions"])
             self.assertEqual(Path(tmp,"tpex-current-public-page.html").read_bytes(),raw)
+
+    @staticmethod
+    def mock_year_json(year):
+        code = str(3000 + year - 2020)
+        return json.dumps({"date":str(year),"stat":"ok","tables":[{
+            "fields":["股票代號","公司名稱","終止上櫃日期","終止上櫃原因"],
+            "data":[[code,"合成測試公司",f"{year-1911}/06/01","轉上市"]],
+            "totalCount":1
+        }]},ensure_ascii=False).encode()
+
+    def test_2021_to_2026_bounded_year_ledger_only_after_all_year_receipts(self):
+        with TemporaryDirectory() as tmp:
+            with patch("alphamax.tpex_delist_ledger._fetch_modern",
+                       return_value=self.mock_year_json(2026)):
+                with patch("alphamax.tpex_delist_ledger._fetch_year",
+                           side_effect=lambda year: self.mock_year_json(year)):
+                    out = capture_tpex_delist(
+                        tmp, captured_at_utc=NOW, page_limit=1,
+                        legacy_fetch=lambda _: (_ for _ in ()).throw(OSError("legacy down")))
+            self.assertEqual(out["verified_annual_slices"],list(range(2021,2027)))
+            self.assertTrue(out["bounded_2021_2026_window_complete"])
+            self.assertEqual(out["event_count"],6)
+            self.assertFalse(out["full_history_coverage_verified"])
+            self.assertFalse(out["investment_certified"])
+            self.assertEqual(len(out["source_receipts"]),6)
+            self.assertTrue(Path(tmp,"tpex-year-2021-probe.json").exists())
+
+    def test_wrong_year_echo_is_not_accepted_or_fabricated(self):
+        with TemporaryDirectory() as tmp:
+            with patch("alphamax.tpex_delist_ledger._fetch_modern",
+                       return_value=self.mock_year_json(2026)):
+                with patch("alphamax.tpex_delist_ledger._fetch_year",
+                           side_effect=lambda year: self.mock_year_json(2026) if year==2024 else self.mock_year_json(year)):
+                    out = capture_tpex_delist(
+                        tmp, captured_at_utc=NOW,page_limit=1,
+                        legacy_fetch=lambda _: (_ for _ in ()).throw(OSError("legacy down")))
+            self.assertNotIn(2024,out["verified_annual_slices"])
+            self.assertEqual(out["event_count"],5)
+            self.assertFalse(out["bounded_2021_2026_window_complete"])
+            self.assertFalse(out["investment_certified"])
 
     def test_bad_capture_timezone_blocks(self):
         with self.assertRaisesRegex(ContractError,"TZ_REQUIRED"):
