@@ -2,15 +2,15 @@
   "schema": "V8108_FOCUS_CERTIFICATION_REPAIR_V1",
   "model": "V8.10.8",
   "asof_price_date": "2026-11-09",
-  "estimate_vintage": "2026-11-10T10:01:41.469077+08:00",
+  "estimate_vintage": "2026-11-10T10:44:08.076629+08:00",
   "formal_Aplus_certificates_issued_by_this_report": 0,
   "formal_pass_added": 0,
   "no_trading_or_position_changes": true,
   "review_source_hashes": {
-    "triage": "89484f1f4dd3f08e4ee30437e1645f56f0088dbde93f851771102d987a2775e3",
-    "aplus_lanes": "5b2ce1f9d8900dcc074ef1741bbc7d83dbe4d561edceaaacf2a6d6199802559b",
-    "footwear": "81d92565ded65bce5113900ad8445361ced951cf28f338e066bdc08f22d8d078",
-    "self_report_q3": "5364c58e9757da34afa674ad1114988b0d369e52471eea07aed3e535cb22ab7d",
+    "triage": "7e7a62eb7080860009ea6e9cb0662aa25eb9c6a534c51aef61158a1fb9caf646",
+    "aplus_lanes": "2a0e87263ee34501ab79846950d05e6de3079b0ca5c9402b4d31c5d9abfff82d",
+    "footwear": "72a4b05273147660f8e06b8228a6b93641d0069f55d08f52584387e0391854db",
+    "self_report_q3": "98eb1c0e85678768b3cb6be2b31e79308a6a7a49aab37b1cc98e7c74cd9e747e",
     "flytech_original_manifest": "776e67f223839465f00c88972385a041762fe2c9fa319bbaa32e07980e7abde7",
     "footwear_cost_bridge": "742ef82ff7785ee75f31e7700da2bebe51989c3206c00fbfc9333479c27d73c2"
   },
@@ -24,6 +24,14 @@
     "current_h1_ocf_reconciliation_still_pending": true,
     "all_13_original_gates_preserved": true,
     "verified_presentation_pdf_count": 3,
+    "verified_full_statement_pdf_count": 3,
+    "missing_full_statement_quarters": [
+      "2024-Q3",
+      "2024-Q4",
+      "2025-Q1",
+      "2025-Q2",
+      "2025-Q3"
+    ],
     "review_priority": [
       {
         "priority": 1,
@@ -32,7 +40,7 @@
         "evidence": "OBSERVED_PARTIAL",
         "next_action": "逐季核對官方原始四表、修訂紀錄及完整附註",
         "owner_signoff": "NOT_RECORDED",
-        "issuer_original_PDFs_for_this_gate": 0
+        "issuer_original_PDFs_for_this_gate": 3
       },
       {
         "priority": 2,
@@ -41,7 +49,7 @@
         "evidence": "OBSERVED_PARTIAL",
         "next_action": "以正式現金流量表對帳OCF、存貨、應收應付與實際PPE現金支出",
         "owner_signoff": "NOT_RECORDED",
-        "issuer_original_PDFs_for_this_gate": 0
+        "issuer_original_PDFs_for_this_gate": 3
       },
       {
         "priority": 3,
@@ -50,7 +58,7 @@
         "evidence": "OBSERVED_PARTIAL",
         "next_action": "核對登記股數、員工認股、可轉債及潛在稀釋",
         "owner_signoff": "NOT_RECORDED",
-        "issuer_original_PDFs_for_this_gate": 0
+        "issuer_original_PDFs_for_this_gate": 3
       },
       {
         "priority": 4,
@@ -59,7 +67,7 @@
         "evidence": "OBSERVED_PARTIAL",
         "next_action": "用訂單、ASP、良率及軟硬體組合確認2027營益橋接",
         "owner_signoff": "NOT_RECORDED",
-        "issuer_original_PDFs_for_this_gate": 3
+        "issuer_original_PDFs_for_this_gate": 6
       },
       {
         "priority": 5,
@@ -68,7 +76,7 @@
         "evidence": "MISSING_OR_UNVERIFIED",
         "next_action": "核對會計師意見、核閱範圍及重要性",
         "owner_signoff": "NOT_RECORDED",
-        "issuer_original_PDFs_for_this_gate": 0
+        "issuer_original_PDFs_for_this_gate": 3
       },
       {
         "priority": 6,
@@ -77,7 +85,7 @@
         "evidence": "MISSING_OR_UNVERIFIED",
         "next_action": "由原始附註區分經常性及一次性業外",
         "owner_signoff": "NOT_RECORDED",
-        "issuer_original_PDFs_for_this_gate": 0
+        "issuer_original_PDFs_for_this_gate": 3
       },
       {
         "priority": 7,
@@ -95,7 +103,7 @@
         "evidence": "MISSING_OR_UNVERIFIED",
         "next_action": "取得原始公告精確時點及當時可知資料版本",
         "owner_signoff": "NOT_RECORDED",
-        "issuer_original_PDFs_for_this_gate": 0
+        "issuer_original_PDFs_for_this_gate": 3
       },
       {
         "priority": 9,
@@ -131,7 +139,7 @@
         "evidence": "OBSERVED_PARTIAL",
         "next_action": "核對除息、實際發放日期與每股股利",
         "owner_signoff": "NOT_RECORDED",
-        "issuer_original_PDFs_for_this_gate": 3
+        "issuer_original_PDFs_for_this_gate": 6
       },
       {
         "priority": 13,
@@ -149,7 +157,7 @@
     "code": "6206",
     "financial_period": "2026-Q2",
     "reviewed_financial_period": "2026-Q2",
-    "estimate_vintage": "2026-11-10T10:01:41.469077+08:00",
+    "estimate_vintage": "2026-11-10T10:44:08.076629+08:00",
     "originals_sha256_checked": 3,
     "presentations": [
       {
@@ -183,6 +191,44 @@
         "formal_gate_pass": false
       }
     ],
+    "official_full_statement_originals": [
+      {
+        "period": "2025-Q4",
+        "url": "https://doc.twse.com.tw/pdf/202504_6206_AI1_20261110_104243.pdf",
+        "sha256": "5868d93035d0986d50753bb9afb3597c2360967861cbfe33d7c70db8e606a2aa",
+        "archive_path": "evidence/v880/originals/6206/full_statements/2025-Q4/5868d93035d0986d50753bb9.pdf",
+        "captured_at_utc": "2026-11-10T02:42:25.904811+00:00",
+        "origin_authenticated": false,
+        "available_at": null,
+        "source_contents_reviewed": false,
+        "filing_PIT_verified": false,
+        "formal_gate_pass": false
+      },
+      {
+        "period": "2026-Q1",
+        "url": "https://doc.twse.com.tw/pdf/202601_6206_AI1_20261110_104242.pdf",
+        "sha256": "06b6daaaef7f4c60a5516aa0ec8d7fa12c341ae226d05cba2eb1c334f4ccf697",
+        "archive_path": "evidence/v880/originals/6206/full_statements/2026-Q1/06b6daaaef7f4c60a5516aa0.pdf",
+        "captured_at_utc": "2026-11-10T02:42:25.904811+00:00",
+        "origin_authenticated": false,
+        "available_at": null,
+        "source_contents_reviewed": false,
+        "filing_PIT_verified": false,
+        "formal_gate_pass": false
+      },
+      {
+        "period": "2026-Q2",
+        "url": "https://doc.twse.com.tw/pdf/202602_6206_AI1_20261110_104239.pdf",
+        "sha256": "daed2f0f338ee6cd799c35ade655afcf6f4a56d9b1df513f37bf732b265699a6",
+        "archive_path": "evidence/v880/originals/6206/full_statements/2026-Q2/daed2f0f338ee6cd799c35ad.pdf",
+        "captured_at_utc": "2026-11-10T02:42:25.904811+00:00",
+        "origin_authenticated": false,
+        "available_at": null,
+        "source_contents_reviewed": false,
+        "filing_PIT_verified": false,
+        "formal_gate_pass": false
+      }
+    ],
     "gate_review_starter": {
       "original_eight_quarter_statements": {
         "issuer": "6206",
@@ -196,7 +242,44 @@
         "method": null,
         "review_note": null,
         "source_identity_reviewed": false,
-        "sources": [],
+        "sources": [
+          {
+            "period": "2025-Q4",
+            "url": "https://doc.twse.com.tw/pdf/202504_6206_AI1_20261110_104243.pdf",
+            "sha256": "5868d93035d0986d50753bb9afb3597c2360967861cbfe33d7c70db8e606a2aa",
+            "archive_path": "evidence/v880/originals/6206/full_statements/2025-Q4/5868d93035d0986d50753bb9.pdf",
+            "captured_at_utc": "2026-11-10T02:42:25.904811+00:00",
+            "origin_authenticated": false,
+            "available_at": null,
+            "source_contents_reviewed": false,
+            "filing_PIT_verified": false,
+            "formal_gate_pass": false
+          },
+          {
+            "period": "2026-Q1",
+            "url": "https://doc.twse.com.tw/pdf/202601_6206_AI1_20261110_104242.pdf",
+            "sha256": "06b6daaaef7f4c60a5516aa0ec8d7fa12c341ae226d05cba2eb1c334f4ccf697",
+            "archive_path": "evidence/v880/originals/6206/full_statements/2026-Q1/06b6daaaef7f4c60a5516aa0.pdf",
+            "captured_at_utc": "2026-11-10T02:42:25.904811+00:00",
+            "origin_authenticated": false,
+            "available_at": null,
+            "source_contents_reviewed": false,
+            "filing_PIT_verified": false,
+            "formal_gate_pass": false
+          },
+          {
+            "period": "2026-Q2",
+            "url": "https://doc.twse.com.tw/pdf/202602_6206_AI1_20261110_104239.pdf",
+            "sha256": "daed2f0f338ee6cd799c35ade655afcf6f4a56d9b1df513f37bf732b265699a6",
+            "archive_path": "evidence/v880/originals/6206/full_statements/2026-Q2/daed2f0f338ee6cd799c35ad.pdf",
+            "captured_at_utc": "2026-11-10T02:42:25.904811+00:00",
+            "origin_authenticated": false,
+            "available_at": null,
+            "source_contents_reviewed": false,
+            "filing_PIT_verified": false,
+            "formal_gate_pass": false
+          }
+        ],
         "next_action": "逐季核對官方原始四表、修訂紀錄及完整附註",
         "source_coverage": "OBSERVED_PARTIAL",
         "reviewer_signoff_required": true,
@@ -214,7 +297,44 @@
         "method": null,
         "review_note": null,
         "source_identity_reviewed": false,
-        "sources": [],
+        "sources": [
+          {
+            "period": "2025-Q4",
+            "url": "https://doc.twse.com.tw/pdf/202504_6206_AI1_20261110_104243.pdf",
+            "sha256": "5868d93035d0986d50753bb9afb3597c2360967861cbfe33d7c70db8e606a2aa",
+            "archive_path": "evidence/v880/originals/6206/full_statements/2025-Q4/5868d93035d0986d50753bb9.pdf",
+            "captured_at_utc": "2026-11-10T02:42:25.904811+00:00",
+            "origin_authenticated": false,
+            "available_at": null,
+            "source_contents_reviewed": false,
+            "filing_PIT_verified": false,
+            "formal_gate_pass": false
+          },
+          {
+            "period": "2026-Q1",
+            "url": "https://doc.twse.com.tw/pdf/202601_6206_AI1_20261110_104242.pdf",
+            "sha256": "06b6daaaef7f4c60a5516aa0ec8d7fa12c341ae226d05cba2eb1c334f4ccf697",
+            "archive_path": "evidence/v880/originals/6206/full_statements/2026-Q1/06b6daaaef7f4c60a5516aa0.pdf",
+            "captured_at_utc": "2026-11-10T02:42:25.904811+00:00",
+            "origin_authenticated": false,
+            "available_at": null,
+            "source_contents_reviewed": false,
+            "filing_PIT_verified": false,
+            "formal_gate_pass": false
+          },
+          {
+            "period": "2026-Q2",
+            "url": "https://doc.twse.com.tw/pdf/202602_6206_AI1_20261110_104239.pdf",
+            "sha256": "daed2f0f338ee6cd799c35ade655afcf6f4a56d9b1df513f37bf732b265699a6",
+            "archive_path": "evidence/v880/originals/6206/full_statements/2026-Q2/daed2f0f338ee6cd799c35ad.pdf",
+            "captured_at_utc": "2026-11-10T02:42:25.904811+00:00",
+            "origin_authenticated": false,
+            "available_at": null,
+            "source_contents_reviewed": false,
+            "filing_PIT_verified": false,
+            "formal_gate_pass": false
+          }
+        ],
         "next_action": "以正式現金流量表對帳OCF、存貨、應收應付與實際PPE現金支出",
         "source_coverage": "OBSERVED_PARTIAL",
         "reviewer_signoff_required": true,
@@ -232,7 +352,44 @@
         "method": null,
         "review_note": null,
         "source_identity_reviewed": false,
-        "sources": [],
+        "sources": [
+          {
+            "period": "2025-Q4",
+            "url": "https://doc.twse.com.tw/pdf/202504_6206_AI1_20261110_104243.pdf",
+            "sha256": "5868d93035d0986d50753bb9afb3597c2360967861cbfe33d7c70db8e606a2aa",
+            "archive_path": "evidence/v880/originals/6206/full_statements/2025-Q4/5868d93035d0986d50753bb9.pdf",
+            "captured_at_utc": "2026-11-10T02:42:25.904811+00:00",
+            "origin_authenticated": false,
+            "available_at": null,
+            "source_contents_reviewed": false,
+            "filing_PIT_verified": false,
+            "formal_gate_pass": false
+          },
+          {
+            "period": "2026-Q1",
+            "url": "https://doc.twse.com.tw/pdf/202601_6206_AI1_20261110_104242.pdf",
+            "sha256": "06b6daaaef7f4c60a5516aa0ec8d7fa12c341ae226d05cba2eb1c334f4ccf697",
+            "archive_path": "evidence/v880/originals/6206/full_statements/2026-Q1/06b6daaaef7f4c60a5516aa0.pdf",
+            "captured_at_utc": "2026-11-10T02:42:25.904811+00:00",
+            "origin_authenticated": false,
+            "available_at": null,
+            "source_contents_reviewed": false,
+            "filing_PIT_verified": false,
+            "formal_gate_pass": false
+          },
+          {
+            "period": "2026-Q2",
+            "url": "https://doc.twse.com.tw/pdf/202602_6206_AI1_20261110_104239.pdf",
+            "sha256": "daed2f0f338ee6cd799c35ade655afcf6f4a56d9b1df513f37bf732b265699a6",
+            "archive_path": "evidence/v880/originals/6206/full_statements/2026-Q2/daed2f0f338ee6cd799c35ad.pdf",
+            "captured_at_utc": "2026-11-10T02:42:25.904811+00:00",
+            "origin_authenticated": false,
+            "available_at": null,
+            "source_contents_reviewed": false,
+            "filing_PIT_verified": false,
+            "formal_gate_pass": false
+          }
+        ],
         "next_action": "由原始附註區分經常性及一次性業外",
         "source_coverage": "MISSING_OR_UNVERIFIED",
         "reviewer_signoff_required": true,
@@ -250,7 +407,44 @@
         "method": null,
         "review_note": null,
         "source_identity_reviewed": false,
-        "sources": [],
+        "sources": [
+          {
+            "period": "2025-Q4",
+            "url": "https://doc.twse.com.tw/pdf/202504_6206_AI1_20261110_104243.pdf",
+            "sha256": "5868d93035d0986d50753bb9afb3597c2360967861cbfe33d7c70db8e606a2aa",
+            "archive_path": "evidence/v880/originals/6206/full_statements/2025-Q4/5868d93035d0986d50753bb9.pdf",
+            "captured_at_utc": "2026-11-10T02:42:25.904811+00:00",
+            "origin_authenticated": false,
+            "available_at": null,
+            "source_contents_reviewed": false,
+            "filing_PIT_verified": false,
+            "formal_gate_pass": false
+          },
+          {
+            "period": "2026-Q1",
+            "url": "https://doc.twse.com.tw/pdf/202601_6206_AI1_20261110_104242.pdf",
+            "sha256": "06b6daaaef7f4c60a5516aa0ec8d7fa12c341ae226d05cba2eb1c334f4ccf697",
+            "archive_path": "evidence/v880/originals/6206/full_statements/2026-Q1/06b6daaaef7f4c60a5516aa0.pdf",
+            "captured_at_utc": "2026-11-10T02:42:25.904811+00:00",
+            "origin_authenticated": false,
+            "available_at": null,
+            "source_contents_reviewed": false,
+            "filing_PIT_verified": false,
+            "formal_gate_pass": false
+          },
+          {
+            "period": "2026-Q2",
+            "url": "https://doc.twse.com.tw/pdf/202602_6206_AI1_20261110_104239.pdf",
+            "sha256": "daed2f0f338ee6cd799c35ade655afcf6f4a56d9b1df513f37bf732b265699a6",
+            "archive_path": "evidence/v880/originals/6206/full_statements/2026-Q2/daed2f0f338ee6cd799c35ad.pdf",
+            "captured_at_utc": "2026-11-10T02:42:25.904811+00:00",
+            "origin_authenticated": false,
+            "available_at": null,
+            "source_contents_reviewed": false,
+            "filing_PIT_verified": false,
+            "formal_gate_pass": false
+          }
+        ],
         "next_action": "核對登記股數、員工認股、可轉債及潛在稀釋",
         "source_coverage": "OBSERVED_PARTIAL",
         "reviewer_signoff_required": true,
@@ -335,7 +529,44 @@
         "method": null,
         "review_note": null,
         "source_identity_reviewed": false,
-        "sources": [],
+        "sources": [
+          {
+            "period": "2025-Q4",
+            "url": "https://doc.twse.com.tw/pdf/202504_6206_AI1_20261110_104243.pdf",
+            "sha256": "5868d93035d0986d50753bb9afb3597c2360967861cbfe33d7c70db8e606a2aa",
+            "archive_path": "evidence/v880/originals/6206/full_statements/2025-Q4/5868d93035d0986d50753bb9.pdf",
+            "captured_at_utc": "2026-11-10T02:42:25.904811+00:00",
+            "origin_authenticated": false,
+            "available_at": null,
+            "source_contents_reviewed": false,
+            "filing_PIT_verified": false,
+            "formal_gate_pass": false
+          },
+          {
+            "period": "2026-Q1",
+            "url": "https://doc.twse.com.tw/pdf/202601_6206_AI1_20261110_104242.pdf",
+            "sha256": "06b6daaaef7f4c60a5516aa0ec8d7fa12c341ae226d05cba2eb1c334f4ccf697",
+            "archive_path": "evidence/v880/originals/6206/full_statements/2026-Q1/06b6daaaef7f4c60a5516aa0.pdf",
+            "captured_at_utc": "2026-11-10T02:42:25.904811+00:00",
+            "origin_authenticated": false,
+            "available_at": null,
+            "source_contents_reviewed": false,
+            "filing_PIT_verified": false,
+            "formal_gate_pass": false
+          },
+          {
+            "period": "2026-Q2",
+            "url": "https://doc.twse.com.tw/pdf/202602_6206_AI1_20261110_104239.pdf",
+            "sha256": "daed2f0f338ee6cd799c35ade655afcf6f4a56d9b1df513f37bf732b265699a6",
+            "archive_path": "evidence/v880/originals/6206/full_statements/2026-Q2/daed2f0f338ee6cd799c35ad.pdf",
+            "captured_at_utc": "2026-11-10T02:42:25.904811+00:00",
+            "origin_authenticated": false,
+            "available_at": null,
+            "source_contents_reviewed": false,
+            "filing_PIT_verified": false,
+            "formal_gate_pass": false
+          }
+        ],
         "next_action": "核對會計師意見、核閱範圍及重要性",
         "source_coverage": "MISSING_OR_UNVERIFIED",
         "reviewer_signoff_required": true,
@@ -372,6 +603,42 @@
         "review_note": null,
         "source_identity_reviewed": false,
         "sources": [
+          {
+            "period": "2025-Q4",
+            "url": "https://doc.twse.com.tw/pdf/202504_6206_AI1_20261110_104243.pdf",
+            "sha256": "5868d93035d0986d50753bb9afb3597c2360967861cbfe33d7c70db8e606a2aa",
+            "archive_path": "evidence/v880/originals/6206/full_statements/2025-Q4/5868d93035d0986d50753bb9.pdf",
+            "captured_at_utc": "2026-11-10T02:42:25.904811+00:00",
+            "origin_authenticated": false,
+            "available_at": null,
+            "source_contents_reviewed": false,
+            "filing_PIT_verified": false,
+            "formal_gate_pass": false
+          },
+          {
+            "period": "2026-Q1",
+            "url": "https://doc.twse.com.tw/pdf/202601_6206_AI1_20261110_104242.pdf",
+            "sha256": "06b6daaaef7f4c60a5516aa0ec8d7fa12c341ae226d05cba2eb1c334f4ccf697",
+            "archive_path": "evidence/v880/originals/6206/full_statements/2026-Q1/06b6daaaef7f4c60a5516aa0.pdf",
+            "captured_at_utc": "2026-11-10T02:42:25.904811+00:00",
+            "origin_authenticated": false,
+            "available_at": null,
+            "source_contents_reviewed": false,
+            "filing_PIT_verified": false,
+            "formal_gate_pass": false
+          },
+          {
+            "period": "2026-Q2",
+            "url": "https://doc.twse.com.tw/pdf/202602_6206_AI1_20261110_104239.pdf",
+            "sha256": "daed2f0f338ee6cd799c35ade655afcf6f4a56d9b1df513f37bf732b265699a6",
+            "archive_path": "evidence/v880/originals/6206/full_statements/2026-Q2/daed2f0f338ee6cd799c35ad.pdf",
+            "captured_at_utc": "2026-11-10T02:42:25.904811+00:00",
+            "origin_authenticated": false,
+            "available_at": null,
+            "source_contents_reviewed": false,
+            "filing_PIT_verified": false,
+            "formal_gate_pass": false
+          },
           {
             "period": "2026-08-12",
             "url": "https://www.flytech.com.tw/data/investor_law/attached/1786525880605469429.pdf",
@@ -440,6 +707,42 @@
         "source_identity_reviewed": false,
         "sources": [
           {
+            "period": "2025-Q4",
+            "url": "https://doc.twse.com.tw/pdf/202504_6206_AI1_20261110_104243.pdf",
+            "sha256": "5868d93035d0986d50753bb9afb3597c2360967861cbfe33d7c70db8e606a2aa",
+            "archive_path": "evidence/v880/originals/6206/full_statements/2025-Q4/5868d93035d0986d50753bb9.pdf",
+            "captured_at_utc": "2026-11-10T02:42:25.904811+00:00",
+            "origin_authenticated": false,
+            "available_at": null,
+            "source_contents_reviewed": false,
+            "filing_PIT_verified": false,
+            "formal_gate_pass": false
+          },
+          {
+            "period": "2026-Q1",
+            "url": "https://doc.twse.com.tw/pdf/202601_6206_AI1_20261110_104242.pdf",
+            "sha256": "06b6daaaef7f4c60a5516aa0ec8d7fa12c341ae226d05cba2eb1c334f4ccf697",
+            "archive_path": "evidence/v880/originals/6206/full_statements/2026-Q1/06b6daaaef7f4c60a5516aa0.pdf",
+            "captured_at_utc": "2026-11-10T02:42:25.904811+00:00",
+            "origin_authenticated": false,
+            "available_at": null,
+            "source_contents_reviewed": false,
+            "filing_PIT_verified": false,
+            "formal_gate_pass": false
+          },
+          {
+            "period": "2026-Q2",
+            "url": "https://doc.twse.com.tw/pdf/202602_6206_AI1_20261110_104239.pdf",
+            "sha256": "daed2f0f338ee6cd799c35ade655afcf6f4a56d9b1df513f37bf732b265699a6",
+            "archive_path": "evidence/v880/originals/6206/full_statements/2026-Q2/daed2f0f338ee6cd799c35ad.pdf",
+            "captured_at_utc": "2026-11-10T02:42:25.904811+00:00",
+            "origin_authenticated": false,
+            "available_at": null,
+            "source_contents_reviewed": false,
+            "filing_PIT_verified": false,
+            "formal_gate_pass": false
+          },
+          {
             "period": "2026-08-12",
             "url": "https://www.flytech.com.tw/data/investor_law/attached/1786525880605469429.pdf",
             "sha256": "523a4595b772a0b98e14a832086848e393ff432658a2ae9d48d36a9a92a5a056",
@@ -487,7 +790,44 @@
         "method": null,
         "review_note": null,
         "source_identity_reviewed": false,
-        "sources": [],
+        "sources": [
+          {
+            "period": "2025-Q4",
+            "url": "https://doc.twse.com.tw/pdf/202504_6206_AI1_20261110_104243.pdf",
+            "sha256": "5868d93035d0986d50753bb9afb3597c2360967861cbfe33d7c70db8e606a2aa",
+            "archive_path": "evidence/v880/originals/6206/full_statements/2025-Q4/5868d93035d0986d50753bb9.pdf",
+            "captured_at_utc": "2026-11-10T02:42:25.904811+00:00",
+            "origin_authenticated": false,
+            "available_at": null,
+            "source_contents_reviewed": false,
+            "filing_PIT_verified": false,
+            "formal_gate_pass": false
+          },
+          {
+            "period": "2026-Q1",
+            "url": "https://doc.twse.com.tw/pdf/202601_6206_AI1_20261110_104242.pdf",
+            "sha256": "06b6daaaef7f4c60a5516aa0ec8d7fa12c341ae226d05cba2eb1c334f4ccf697",
+            "archive_path": "evidence/v880/originals/6206/full_statements/2026-Q1/06b6daaaef7f4c60a5516aa0.pdf",
+            "captured_at_utc": "2026-11-10T02:42:25.904811+00:00",
+            "origin_authenticated": false,
+            "available_at": null,
+            "source_contents_reviewed": false,
+            "filing_PIT_verified": false,
+            "formal_gate_pass": false
+          },
+          {
+            "period": "2026-Q2",
+            "url": "https://doc.twse.com.tw/pdf/202602_6206_AI1_20261110_104239.pdf",
+            "sha256": "daed2f0f338ee6cd799c35ade655afcf6f4a56d9b1df513f37bf732b265699a6",
+            "archive_path": "evidence/v880/originals/6206/full_statements/2026-Q2/daed2f0f338ee6cd799c35ad.pdf",
+            "captured_at_utc": "2026-11-10T02:42:25.904811+00:00",
+            "origin_authenticated": false,
+            "available_at": null,
+            "source_contents_reviewed": false,
+            "filing_PIT_verified": false,
+            "formal_gate_pass": false
+          }
+        ],
         "next_action": "取得原始公告精確時點及當時可知資料版本",
         "source_coverage": "MISSING_OR_UNVERIFIED",
         "reviewer_signoff_required": true,
@@ -512,7 +852,14 @@
         "source_capture_is_not_formal_review": true
       }
     },
-    "original_eight_quarter_full_pdf_count_verified": 0,
+    "original_eight_quarter_full_pdf_count_verified": 3,
+    "original_quarters_missing": [
+      "2024-Q3",
+      "2024-Q4",
+      "2025-Q1",
+      "2025-Q2",
+      "2025-Q3"
+    ],
     "original_pdf_presentations_are_not_quarterly_statements": true,
     "issuer_publication_PIT_verified": false,
     "named_reviewer_complete": false,

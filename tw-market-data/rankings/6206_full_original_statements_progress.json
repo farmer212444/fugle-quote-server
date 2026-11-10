@@ -1,0 +1,72 @@
+{
+  "schema": "V8108_6206_EIGHT_QUARTER_SOURCE_PROGRESS_V1",
+  "issuer": "6206",
+  "target_financial_period": "2026-Q2",
+  "required_quarters": [
+    "2024-Q3",
+    "2024-Q4",
+    "2025-Q1",
+    "2025-Q2",
+    "2025-Q3",
+    "2025-Q4",
+    "2026-Q1",
+    "2026-Q2"
+  ],
+  "archived_quarters": [
+    "2025-Q4",
+    "2026-Q1",
+    "2026-Q2"
+  ],
+  "original_full_statements_archived": 3,
+  "original_quarters_missing": [
+    "2024-Q3",
+    "2024-Q4",
+    "2025-Q1",
+    "2025-Q2",
+    "2025-Q3"
+  ],
+  "newly_downloaded_quarters": 3,
+  "source_period_links_discovered": 3,
+  "twse_quarters_attempted": [
+    "2026-Q2",
+    "2026-Q1",
+    "2025-Q4"
+  ],
+  "index_origin_capture_is_not_issuer_publication_PIT": true,
+  "source_note_contents_fully_reviewed": false,
+  "original_publication_PIT_certified": false,
+  "formal_Aplus": false,
+  "formal_gate_passes_issued": 0,
+  "collection_errors": [
+    {
+      "year": 2026,
+      "reason": "AJAX_JSONDecodeError",
+      "detail": "Expecting value: line 1 column 1 (char 0)"
+    },
+    {
+      "year": 2026,
+      "reason": "NO_PERIOD_LINKS_DISCOVERED",
+      "source_index_sha256": "817781fd822226914673f1758081e7112e1262521b4953a85a08923a73b3d20f"
+    },
+    {
+      "year": 2025,
+      "reason": "AJAX_JSONDecodeError",
+      "detail": "Expecting value: line 1 column 1 (char 0)"
+    },
+    {
+      "year": 2025,
+      "reason": "NO_PERIOD_LINKS_DISCOVERED",
+      "source_index_sha256": "9656b09316deb04cedd45a81976ef7137249827940f20120266a6e348f1b50ac"
+    },
+    {
+      "year": 2024,
+      "reason": "AJAX_JSONDecodeError",
+      "detail": "Expecting value: line 1 column 1 (char 0)"
+    },
+    {
+      "year": 2024,
+      "reason": "NO_PERIOD_LINKS_DISCOVERED",
+      "source_index_sha256": "ea99ba9c3415ed7d6232d83f8f51c294667dd1b81886063f5d79379584456f8b"
+    }
+  ]
+}
