@@ -78,6 +78,7 @@ def audit_history(root, *, min_sessions=756, max_examples=25):
         if not isinstance(current, list):
             raise ContractError("PRICE_SNAPSHOT_NOT_ARRAY")
         current_keys = set()
+        current_unpriced = []
         for row in current:
             if not isinstance(row, dict):
                 raise ContractError("PRICE_SNAPSHOT_ROW_NOT_OBJECT")
@@ -86,9 +87,13 @@ def audit_history(root, *, min_sessions=756, max_examples=25):
                 raise ContractError("PRICE_SNAPSHOT_INVALID_SECURITY")
             if (market, code) in current_keys:
                 raise ContractError("PRICE_SNAPSHOT_DUPLICATE_SECURITY")
-            if row.get("date") != asof.isoformat() or not _positive_price(row.get("close")):
-                raise ContractError("PRICE_SNAPSHOT_INVALID_DATE_OR_CLOSE")
+            if row.get("date") != asof.isoformat():
+                raise ContractError("PRICE_SNAPSHOT_INVALID_DATE")
             current_keys.add((market, code))
+            # An official quote row may have no valid trade/close. Preserve the
+            # observed identity but NEVER turn null/zero into an executable price.
+            if not _positive_price(row.get("close")):
+                current_unpriced.append(f"{market}:{code}")
     except (ValueError, TypeError, OSError) as exc:
         return {"status": "BLOCKED", "reason": "PRICE_SNAPSHOT_INVALID:" + str(exc)}
 
@@ -157,6 +162,8 @@ def audit_history(root, *, min_sessions=756, max_examples=25):
         "status": "BLOCKED_NOT_A_PIT_SECURITY_MASTER",
         "asof": asof.isoformat(),
         "current_quote_snapshot_securities": len(current_keys),
+        "current_quote_rows_without_positive_close": len(current_unpriced),
+        "current_quote_unpriced_sample": sorted(current_unpriced)[:max_examples],
         "min_sessions_target": min_sessions,
         "counts": counts,
         "snapshot_without_well_formed_history": len(missing_codes),
@@ -180,6 +187,6 @@ def audit_history(root, *, min_sessions=756, max_examples=25):
         "notice": (
             "History observations are evidence of observed prices only, never listing/delisting dates. "
             "Coverage counts are not issuer PIT or investor total-return certification. "
-            "Snapshot presence is not a tradable fill guarantee."
+            "Snapshot presence is not a tradable fill guarantee; null closes remain non-executable."
         ),
     }
