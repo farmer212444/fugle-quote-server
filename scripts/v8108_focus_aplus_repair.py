@@ -209,8 +209,7 @@ def build(root):
                 and rows[code]["company_gates_pending"]>=0
                 and rows[code]["company_gates_passed"]+
                     rows[code]["company_gates_pending"]<=12
-                and rows[code].get("strategy_validation_lane") in (
-                    "STRATEGY_PIT_OOS_PENDING","STRATEGY_PIT_OOS_FORMAL_PASS"),
+                and isinstance(rows[code].get("strategy_validation_lane"),str),
                 "FORMAL_QUALITY_COUNTS_OR_LANE_INVALID")
     starter=full_6206_starter(root,triage,rows["6206"],manifest)
     quarter=footwear.get("companies",[])
@@ -237,7 +236,7 @@ def build(root):
             issuer_original_PDFs_for_this_gate=len(p["sources"])))
     return dict(schema=SCHEMA,model=official["model"],
         asof_price_date=date,estimate_vintage=vintage,
-        formal_Aplus_count_unchanged=0,formal_pass_added=0,
+        formal_Aplus_certificates_issued_by_this_report=0,formal_pass_added=0,
         no_trading_or_position_changes=True,
         review_source_hashes=dict(triage=h1,aplus_lanes=h2,footwear=h3,
             self_report_q3=h4,flytech_original_manifest=h5,footwear_cost_bridge=h6),
