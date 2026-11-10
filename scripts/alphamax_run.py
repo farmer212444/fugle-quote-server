@@ -51,6 +51,8 @@ def research(bundle, asof=None, top_n=10, min_history=80):
     _, rows = load_bundle(bundle)
     signals = sorted({r["signal_date"] for r in rows})
     asof = asof or signals[-1]
+    if asof > date.today().isoformat():
+        raise ContractError("ASOF_IN_FUTURE")
     if asof not in signals:
         raise ContractError("ASOF_HAS_NO_SIGNAL_DATE")
     rank = rank_asof(rows, asof, min_history=min_history)
