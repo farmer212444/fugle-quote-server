@@ -161,6 +161,19 @@ class FlytechOriginalsTest(unittest.TestCase):
             self.assertEqual(r["formal_gate_passes_issued"],0)
             self.assertTrue(any(x["reason"].startswith("PDF_") for x in r["collection_errors"]))
 
+    def test_five_quarter_catchup_is_bounded_and_not_formal_pass(self):
+        with tempfile.TemporaryDirectory() as tmp,patch(
+            "scripts.flytech_full_original_statements.identity",side_effect=ident):
+            root=Path(tmp)
+            data=collect(root,max_new=5,twse_max_probes=5,
+                         fetcher=fake_fetch,twse_fetcher=unavailable_twse)
+            self.assertEqual(data["original_full_statements_archived"],2)
+            self.assertEqual(data["formal_gate_passes_issued"],0)
+            self.assertFalse(data["formal_Aplus"])
+            with self.assertRaisesRegex(ValueError,"UNBOUNDED_FETCH_REQUEST"):
+                collect(root,max_new=6,fetcher=fake_fetch,
+                        twse_fetcher=unavailable_twse)
+
     def test_no_source_links_is_evidence_pending_not_zero_quality(self):
         def empty_index(url,cap):
             return b"<html>Year 2026, records not reachable in static HTML</html>"
