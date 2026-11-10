@@ -18,6 +18,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+      - name: Install source PDF reader used by actual SHA-verification
+        run: python -m pip install pymupdf
       - name: Compile and validate unsigned review-pack policies
         env:
           PYTHONPATH: '.'
