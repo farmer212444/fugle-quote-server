@@ -101,7 +101,8 @@ class CertificationFocusTests(unittest.TestCase):
             self.assertEqual(pub["formal_pass_added"],0)
             self.assertTrue((root/"rankings/latest_focus_aplus_repair.md").exists())
             self.assertFalse((root/"evidence/v880/review_packs/6206.json").exists())
-            self.assertIn("18.37",markdown(pub) if pub["second_focus"]["operating_hurdle"]["required_2027_gm_pct_for_30pct"]==18.37 else markdown(pub))
+            self.assertIn("鈺齊-KY",markdown(pub))
+            self.assertIn("飛捷",markdown(pub))
 
     def test_tampering_original_pdf_is_rejected(self):
         with tempfile.TemporaryDirectory() as tmp:
