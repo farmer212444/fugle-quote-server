@@ -102,10 +102,24 @@ class TpexDelistTests(unittest.TestCase):
         with TemporaryDirectory() as tmp:
             out=capture_tpex_delist(tmp,captured_at_utc=NOW,page_limit=1,
                 legacy_fetch=lambda _: (_ for _ in ()).throw(OSError("synthetic 403")),
-                modern_fetch=lambda: (_ for _ in ()).throw(OSError("synthetic 403")))
+                modern_fetch=lambda: (_ for _ in ()).throw(OSError("synthetic 403")),
+                page_fetch=lambda: b'<html><body>synthetic official page only</body></html>')
             self.assertEqual(out["event_count"],0)
             self.assertEqual(out["status"],"BLOCKED_TPEX_DELIST_SOURCE_NOT_PARSED")
             self.assertTrue(Path(tmp,"capture-manifest.json").exists())
+
+    def test_official_page_action_probe_preserves_raw_and_remains_blocked(self):
+        with TemporaryDirectory() as tmp:
+            raw=b'<html><script>tables.init({ action: "mainboard/listed/delisted" });</script></html>'
+            out=capture_tpex_delist(tmp,captured_at_utc=NOW,page_limit=1,
+                legacy_fetch=lambda _: (_ for _ in ()).throw(OSError("synthetic")),
+                modern_fetch=lambda: (_ for _ in ()).throw(OSError("synthetic")),
+                page_fetch=lambda: raw)
+            self.assertEqual(out["event_count"],0)
+            self.assertEqual(out["status"],"BLOCKED_TPEX_DELIST_SOURCE_NOT_PARSED")
+            self.assertIn("mainboard/listed/delisted",
+                          out["unparsed_source_discovery"]["current_official_page"]["embedded_actions"])
+            self.assertEqual(Path(tmp,"tpex-current-public-page.html").read_bytes(),raw)
 
     def test_bad_capture_timezone_blocks(self):
         with self.assertRaisesRegex(ContractError,"TZ_REQUIRED"):
