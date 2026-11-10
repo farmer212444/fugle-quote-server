@@ -282,9 +282,11 @@ def verify_archive(root,manifest,window):
             "FORGED_FORMAL_PASS_OR_PIT")
     return record
 
-def collect(root,last="2026-Q2",now=None,max_new=3,fetcher=fetch,ajaxer=fetch_season,twse_fetcher=twse_fetch):
+def collect(root,last="2026-Q2",now=None,max_new=3,fetcher=fetch,ajaxer=fetch_season,twse_fetcher=twse_fetch,twse_max_probes=3):
     root=Path(root);window=quarter_window(last)
     require(type(max_new)==int and 0<=max_new<=4,"UNBOUNDED_FETCH_REQUEST")
+    require(type(twse_max_probes)==int and 0<=twse_max_probes<=8,
+            "TWSE_UNBOUNDED_INDEX_PROBES")
     now=now or dt.datetime.now(dt.timezone.utc)
     require(now.tzinfo is not None,"NAIVE_TIME")
     manifest=prior_manifest(root)
@@ -367,7 +369,10 @@ def collect(root,last="2026-Q2",now=None,max_new=3,fetcher=fetch,ajaxer=fetch_se
     # its exact filename must first appear in the official issuer-quarter
     # index, then be resolved by TWSE's own step=9 endpoint.
     twse_receipts={}
-    for period in [p for p in reversed(window) if p not in urls and p not in verified]:
+    pending_twse=[p for p in reversed(window) if p not in urls and p not in verified]
+    # Bounded official TWSE website load. As quarters become archived,
+    # the next runs naturally reach older gaps; never hammer all eight at once.
+    for period in pending_twse[:twse_max_probes]:
         try:
             index_url=twse_index_url(period)
             original_index=twse_fetcher(index_url,MAX_INDEX)
@@ -428,6 +433,7 @@ def collect(root,last="2026-Q2",now=None,max_new=3,fetcher=fetch,ajaxer=fetch_se
         original_full_statements_archived=len(verified),
         original_quarters_missing=[p for p in window if p not in verified],
         newly_downloaded_quarters=added,source_period_links_discovered=len(urls),
+        twse_quarters_attempted=pending_twse[:twse_max_probes],
         index_origin_capture_is_not_issuer_publication_PIT=True,
         source_note_contents_fully_reviewed=False,
         original_publication_PIT_certified=False,
@@ -456,8 +462,10 @@ def main():
     ap.add_argument("--data-root",default="tw-market-data")
     ap.add_argument("--last",default="2026-Q2")
     ap.add_argument("--max-new",type=int,default=3)
+    ap.add_argument("--max-twse-probes",type=int,default=3)
     args=ap.parse_args()
-    result=collect(args.data_root,last=args.last,max_new=args.max_new)
+    result=collect(args.data_root,last=args.last,max_new=args.max_new,
+                   twse_max_probes=args.max_twse_probes)
     print(json.dumps(dict(original_pdf_quarters=result["original_full_statements_archived"],
         found_links=result["source_period_links_discovered"],
         new=result["newly_downloaded_quarters"],
