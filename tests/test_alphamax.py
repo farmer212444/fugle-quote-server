@@ -134,8 +134,8 @@ class AlphaMaxTests(unittest.TestCase):
             }))
             state = readiness(root, root/"alphamax/datasets/production")
             self.assertEqual(state["status"], "BLOCKED")
-            self.assertIn("PRICES_NOT_TOTAL_RETURN_ADJUSTED", state["blockers"])
-            self.assertIn("PIT_SECURITY_MASTER_NOT_VERIFIED", state["blockers"])
+            self.assertIn("LEGACY_PRICES_NOT_TOTAL_RETURN_ADJUSTED", state["warnings"])
+            self.assertIn("LEGACY_PIT_SECURITY_MASTER_NOT_VERIFIED", state["warnings"])
 
 
 if __name__ == "__main__":
