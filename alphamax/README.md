@@ -31,10 +31,11 @@ optimized portfolio weights yet. The concentration allocator is a transparent
 ## Commands
 
 ```bash
-python -m unittest -v tests.test_alphamax tests.test_alphamax_concentration
+python -m unittest -v tests.test_alphamax tests.test_alphamax_concentration tests.test_alphamax_universe
 python scripts/alphamax_run.py readiness --output alphamax-research-readiness.json
 python scripts/alphamax_run.py research --bundle alphamax/datasets/production
 python scripts/alphamax_concentration.py --output alphamax-concentration-readiness.json
+python scripts/alphamax_universe_audit.py --output alphamax-universe-readiness.json
 ```
 
 The final command **must** return BLOCKED until a separately audited
@@ -127,3 +128,24 @@ PIT total-return data, calibrated 12m return distributions, joint stress
 evidence, an executable costed portfolio equity curve, independent reviewer
 signoff and paper-trading results exist. The GitHub workflow checks coding
 contracts and research readiness only; it does NOT promote production automatically.
+
+## Historical observation coverage audit (not an issuer master)
+
+`alphamax/universe_audit.py` and `scripts/alphamax_universe_audit.py` scan
+`tw-market-data/prices/issuer_history/{TWSE,TPEX}/*.json`, checking each
+session's immutable market+code identity, duplicate session dates, sane
+closing prices, and publication-time impossibilities. They compare those
+histories with the last dated TWSE/TPEx quote snapshot and count 252-session
+and 756-session coverage, invalid files, missing histories and finite
+sample errors. No history is inferred from the newest close alone.
+
+**A first or last observed price is not an official listing/delisting date.**
+A market/code with many observations may still be missing delisted peers,
+corporate action adjustments, dividend cash flows or contemporaneous company
+information. The resulting `BLOCKED_NOT_A_PIT_SECURITY_MASTER` is intentional.
+No green CI can substitute original, timestamped official listings and delistings,
+independent source receipts, and corporate-action-adjusted total returns.
+
+The GitHub workflow publishes `alphamax-universe-readiness.json` as a research
+artifact and summarizes observable coverage next to the research and concentration
+readiness states. Do not copy V8 certification fields into AlphaMax.
