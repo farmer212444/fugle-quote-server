@@ -1,5 +1,6 @@
 """Nine finance Ke/g hurdle sensitivity: source integrity, grid and no PASS."""
 import copy
+import hashlib
 import json
 import shutil
 import tempfile
@@ -111,12 +112,22 @@ class Financial0056KegTests(unittest.TestCase):
                        max=round(r["max_conditional_hurdle_gap_pp"],1))
                   for r in x["all_financials"]]),ensure_ascii=False))
 
-    def test_current_dated_hurdle_also_runs_after_daily_price_update(self):
+    def test_current_dated_hurdle_rejects_stale_snapshot_after_price_update(self):
         data=json.loads(INPUT.read_text(encoding='utf-8'))
-        result=sensitivity(data,ROOT)
-        self.assertEqual(result['official_close_date'],data['official_close_date'])
-        self.assertEqual(result['member_count'],9)
-        self.assertEqual(result['formal_Aplus_count_added'],0)
+        day=data['official_close_date']
+        actual=hashlib.sha256((ROOT/'prices'/f"{day}.json").read_bytes()).hexdigest()
+        if actual!=data['official_price_sha256']:
+            # Never rebind a published result or silently accept a newer
+            # mutable price file as its frozen source. Positive behavior is
+            # covered using the SHA-matching fixed fixture in setUpClass.
+            with self.assertRaisesRegex(ValueError,
+                                        '0056_FINANCIAL_SOURCE_CLOSE_HASH_MISMATCH'):
+                sensitivity(data,ROOT)
+        else:
+            result=sensitivity(data,ROOT)
+            self.assertEqual(result['official_close_date'],day)
+            self.assertEqual(result['member_count'],9)
+            self.assertEqual(result['formal_Aplus_count_added'],0)
 
     def test_future_or_noncanonical_price_date_never_reads_an_unbound_file(self):
         for day in ('2099-01-01','../outside','20261022'):
