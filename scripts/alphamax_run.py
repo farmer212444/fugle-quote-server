@@ -54,7 +54,7 @@ def research(bundle, asof=None, top_n=10, min_history=80):
     if asof not in signals:
         raise ContractError("ASOF_HAS_NO_SIGNAL_DATE")
     rank = rank_asof(rows, asof, min_history=min_history)
-    evaluation = walk_forward(rows, date.today().isoformat(),
+    evaluation = walk_forward(rows, min(asof, date.today().isoformat()),
                               top_n=top_n, min_history=min_history)
     return {"status": "UNCALIBRATED_RESEARCH_ONLY", "asof": asof,
             "predictions": rank["candidates"],
