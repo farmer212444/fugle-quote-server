@@ -1,8 +1,8 @@
 {
   "schema": "RETURN_MODEL_SEARCH_STATUS_V1",
-  "observed_at": "2026-11-10T07:20:01.004966+00:00",
+  "observed_at": "2026-11-10T08:29:21.292111+00:00",
   "model": "V8.10.8",
-  "estimate_vintage": "2026-11-10T15:19:14.411688+08:00",
+  "estimate_vintage": "2026-11-10T16:28:35.629890+08:00",
   "asof_price_date": "2026-11-10",
   "experiment_id": "search-1bd7a00c1991103076642296",
   "registered_at": "2026-11-10T01:49:47.010246+00:00",
@@ -2947,15 +2947,15 @@
     "ocf_to_sales": 818,
     "momentum_63_21_pct": 0
   },
-  "adv20_coverage": 338,
+  "adv20_coverage": 341,
   "input_coverage_by_market": {
     "TPEX": {
       "source_universe_count": 302,
-      "adv20_coverage": 277
+      "adv20_coverage": 279
     },
     "TWSE": {
       "source_universe_count": 516,
-      "adv20_coverage": 61
+      "adv20_coverage": 62
     }
   },
   "horizon_reports": [
@@ -6547,7 +6547,6 @@
       "market": "TPEX",
       "code": "3310",
       "missing_evidence": [
-        "OFFICIAL_20_SESSION_TURNOVER_HISTORY",
         "OFFICIAL_64_SESSION_MOMENTUM_AND_ACTION_REVIEW"
       ],
       "recommendation_blocked": false,
@@ -8057,7 +8056,6 @@
       "market": "TPEX",
       "code": "6294",
       "missing_evidence": [
-        "OFFICIAL_20_SESSION_TURNOVER_HISTORY",
         "OFFICIAL_64_SESSION_MOMENTUM_AND_ACTION_REVIEW"
       ],
       "recommendation_blocked": false,
@@ -12666,7 +12664,6 @@
       "market": "TWSE",
       "code": "4746",
       "missing_evidence": [
-        "OFFICIAL_20_SESSION_TURNOVER_HISTORY",
         "OFFICIAL_64_SESSION_MOMENTUM_AND_ACTION_REVIEW"
       ],
       "recommendation_blocked": false,
@@ -14676,7 +14673,7 @@
     }
   ],
   "input_repair_counts": {
-    "OFFICIAL_20_SESSION_TURNOVER_HISTORY": 480,
+    "OFFICIAL_20_SESSION_TURNOVER_HISTORY": 477,
     "OFFICIAL_64_SESSION_MOMENTUM_AND_ACTION_REVIEW": 818
   },
   "input_repair_queue_is_not_certified_source_data": true,
@@ -14684,9 +14681,9 @@
   "current_research_screens": {
     "schema": "CURRENT_REGISTERED_RESEARCH_SCREENS_V1",
     "model": "V8.10.8",
-    "estimate_vintage": "2026-11-10T15:19:14.411688+08:00",
+    "estimate_vintage": "2026-11-10T16:28:35.629890+08:00",
     "asof_price_date": "2026-11-10",
-    "features_checked_at": "2026-11-10T07:19:58.900229+00:00",
+    "features_checked_at": "2026-11-10T08:29:19.234536+00:00",
     "experiment_id": "search-1bd7a00c1991103076642296",
     "screens": [
       {
@@ -14711,8 +14708,8 @@
         "positions": [],
         "cash_weight": null,
         "exclusions": {
-          "ADV20_MISSING_OR_BELOW_THRESHOLD": 615,
-          "REQUIRED_FEATURE_MISSING": 203
+          "ADV20_MISSING_OR_BELOW_THRESHOLD": 614,
+          "REQUIRED_FEATURE_MISSING": 204
         },
         "status": "INPUT_COVERAGE_INCOMPLETE_NOT_A_PERFORMANCE_CANDIDATE"
       },
@@ -14730,7 +14727,7 @@
           "sector_cap": 0.25,
           "parameter_id": "fba4fc7e0f98702ddc21"
         },
-        "eligible_issuer_count": 203,
+        "eligible_issuer_count": 204,
         "inputs_ready": true,
         "positions": [
           {
@@ -14738,7 +14735,7 @@
             "market": "TWSE",
             "industry": "油電燃氣業",
             "weight": 0.1,
-            "score": 0.9405940594059405,
+            "score": 0.9408866995073892,
             "name": "台塑化",
             "reference_close": 89.6,
             "price_date": "2026-11-10",
@@ -14783,7 +14780,7 @@
             "market": "TPEX",
             "industry": "資訊服務業",
             "weight": 0.1,
-            "score": 0.9183168316831682,
+            "score": 0.9187192118226601,
             "name": "晉泰",
             "reference_close": 41.35,
             "price_date": "2026-11-10",
@@ -14829,7 +14826,7 @@
             "market": "TPEX",
             "industry": "其他電子業",
             "weight": 0.1,
-            "score": 0.9084158415841583,
+            "score": 0.9088669950738917,
             "name": "倚強科",
             "reference_close": 109.0,
             "price_date": "2026-11-10",
@@ -14877,7 +14874,7 @@
             "market": "TWSE",
             "industry": "生技醫療業",
             "weight": 0.1,
-            "score": 0.900990099009901,
+            "score": 0.9014778325123153,
             "name": "訊映",
             "reference_close": 17.5,
             "price_date": "2026-11-10",
@@ -14922,7 +14919,7 @@
             "market": "TPEX",
             "industry": "電腦及週邊設備業",
             "weight": 0.1,
-            "score": 0.8960396039603961,
+            "score": 0.896551724137931,
             "name": "廣寰科",
             "reference_close": 79.2,
             "price_date": "2026-11-10",
@@ -14967,7 +14964,7 @@
             "market": "TPEX",
             "industry": "電子零組件業",
             "weight": 0.1,
-            "score": 0.8836633663366337,
+            "score": 0.8842364532019704,
             "name": "倉和",
             "reference_close": 309.5,
             "price_date": "2026-11-10",
@@ -15013,7 +15010,7 @@
             "market": "TWSE",
             "industry": "電子零組件業",
             "weight": 0.1,
-            "score": 0.8762376237623762,
+            "score": 0.8768472906403941,
             "name": "川湖",
             "reference_close": 8565.0,
             "price_date": "2026-11-10",
@@ -15058,7 +15055,7 @@
             "market": "TPEX",
             "industry": "通信網路業",
             "weight": 0.1,
-            "score": 0.8638613861386139,
+            "score": 0.8645320197044335,
             "name": "華星光",
             "reference_close": 383.0,
             "price_date": "2026-11-10",
@@ -15104,7 +15101,7 @@
             "market": "TPEX",
             "industry": "化學工業",
             "weight": 0.1,
-            "score": 0.844059405940594,
+            "score": 0.8423645320197044,
             "name": "美琪瑪",
             "reference_close": 68.8,
             "price_date": "2026-11-10",
@@ -15151,7 +15148,7 @@
             "market": "TPEX",
             "industry": "電腦及週邊設備業",
             "weight": 0.1,
-            "score": 0.8242574257425743,
+            "score": 0.8251231527093597,
             "name": "新盛力",
             "reference_close": 185.5,
             "price_date": "2026-11-10",
@@ -15195,7 +15192,7 @@
         ],
         "cash_weight": 0,
         "exclusions": {
-          "ADV20_MISSING_OR_BELOW_THRESHOLD": 615
+          "ADV20_MISSING_OR_BELOW_THRESHOLD": 614
         },
         "status": "RESEARCH_PORTFOLIO_FROZEN_NOT_A_BUY_SIGNAL"
       },
@@ -15217,8 +15214,8 @@
         "positions": [],
         "cash_weight": null,
         "exclusions": {
-          "ADV20_MISSING_OR_BELOW_THRESHOLD": 615,
-          "REQUIRED_FEATURE_MISSING": 203
+          "ADV20_MISSING_OR_BELOW_THRESHOLD": 614,
+          "REQUIRED_FEATURE_MISSING": 204
         },
         "status": "INPUT_COVERAGE_INCOMPLETE_NOT_A_PERFORMANCE_CANDIDATE"
       },
@@ -15236,7 +15233,7 @@
           "sector_cap": 0.25,
           "parameter_id": "ddf5981eb5c5a8b7694b"
         },
-        "eligible_issuer_count": 203,
+        "eligible_issuer_count": 204,
         "inputs_ready": true,
         "positions": [
           {
@@ -15244,7 +15241,7 @@
             "market": "TPEX",
             "industry": "半導體業",
             "weight": 0.1,
-            "score": 0.9579207920792079,
+            "score": 0.958128078817734,
             "name": "鈺太",
             "reference_close": 158.0,
             "price_date": "2026-11-10",
@@ -15290,7 +15287,7 @@
             "market": "TWSE",
             "industry": "半導體業",
             "weight": 0.1,
-            "score": 0.9504950495049505,
+            "score": 0.9507389162561577,
             "name": "台積電",
             "reference_close": 2285.0,
             "price_date": "2026-11-10",
@@ -15337,7 +15334,7 @@
             "market": "TPEX",
             "industry": "生技醫療業",
             "weight": 0.1,
-            "score": 0.9405940594059405,
+            "score": 0.9408866995073892,
             "name": "長聖",
             "reference_close": 148.5,
             "price_date": "2026-11-10",
@@ -15382,7 +15379,7 @@
             "market": "TWSE",
             "industry": "電子零組件業",
             "weight": 0.1,
-            "score": 0.9183168316831684,
+            "score": 0.9187192118226601,
             "name": "川湖",
             "reference_close": 8565.0,
             "price_date": "2026-11-10",
@@ -15427,7 +15424,7 @@
             "market": "TWSE",
             "industry": "電器電纜",
             "weight": 0.1,
-            "score": 0.8985148514851485,
+            "score": 0.8990147783251232,
             "name": "合機",
             "reference_close": 35.75,
             "price_date": "2026-11-10",
@@ -15474,7 +15471,7 @@
             "market": "TPEX",
             "industry": "其他電子業",
             "weight": 0.1,
-            "score": 0.8737623762376238,
+            "score": 0.874384236453202,
             "name": "閎康",
             "reference_close": 193.0,
             "price_date": "2026-11-10",
@@ -15521,7 +15518,7 @@
             "market": "TPEX",
             "industry": "其他電子業",
             "weight": 0.1,
-            "score": 0.8589108910891089,
+            "score": 0.8596059113300493,
             "name": "竹陞科技",
             "reference_close": 781.0,
             "price_date": "2026-11-10",
@@ -15567,7 +15564,7 @@
             "market": "TPEX",
             "industry": "資訊服務業",
             "weight": 0.1,
-            "score": 0.8415841584158417,
+            "score": 0.8423645320197044,
             "name": "系微",
             "reference_close": 194.0,
             "price_date": "2026-11-10",
@@ -15612,7 +15609,7 @@
             "market": "TWSE",
             "industry": "生技醫療業",
             "weight": 0.1,
-            "score": 0.8366336633663367,
+            "score": 0.8374384236453202,
             "name": "訊映",
             "reference_close": 17.5,
             "price_date": "2026-11-10",
@@ -15657,7 +15654,7 @@
             "market": "TPEX",
             "industry": "綠能環保",
             "weight": 0.1,
-            "score": 0.8168316831683169,
+            "score": 0.8177339901477833,
             "name": "金益鼎",
             "reference_close": 81.9,
             "price_date": "2026-11-10",
@@ -15703,7 +15700,7 @@
         ],
         "cash_weight": 0,
         "exclusions": {
-          "ADV20_MISSING_OR_BELOW_THRESHOLD": 615
+          "ADV20_MISSING_OR_BELOW_THRESHOLD": 614
         },
         "status": "RESEARCH_PORTFOLIO_FROZEN_NOT_A_BUY_SIGNAL"
       },
@@ -15720,7 +15717,7 @@
           "sector_cap": 0.25,
           "parameter_id": "2764cce4402ae2e48d2a"
         },
-        "eligible_issuer_count": 203,
+        "eligible_issuer_count": 204,
         "inputs_ready": true,
         "positions": [
           {
@@ -15776,7 +15773,7 @@
             "market": "TWSE",
             "industry": "光電業",
             "weight": 0.1,
-            "score": 0.995049504950495,
+            "score": 0.9950738916256158,
             "name": "佳能",
             "reference_close": 52.4,
             "price_date": "2026-11-10",
@@ -15826,7 +15823,7 @@
             "market": "TWSE",
             "industry": "電子零組件業",
             "weight": 0.1,
-            "score": 0.9900990099009901,
+            "score": 0.9901477832512315,
             "name": "聯德控股-KY",
             "reference_close": 85.8,
             "price_date": "2026-11-10",
@@ -15871,7 +15868,7 @@
             "market": "TPEX",
             "industry": "綠能環保",
             "weight": 0.1,
-            "score": 0.9851485148514851,
+            "score": 0.9852216748768473,
             "name": "金益鼎",
             "reference_close": 81.9,
             "price_date": "2026-11-10",
@@ -15919,7 +15916,7 @@
             "market": "TWSE",
             "industry": "綠能環保",
             "weight": 0.1,
-            "score": 0.9801980198019802,
+            "score": 0.9802955665024631,
             "name": "山林水",
             "reference_close": 34.6,
             "price_date": "2026-11-10",
@@ -15966,7 +15963,7 @@
             "market": "TWSE",
             "industry": "電腦及週邊設備業",
             "weight": 0.1,
-            "score": 0.9752475247524752,
+            "score": 0.9753694581280788,
             "name": "技嘉",
             "reference_close": 304.5,
             "price_date": "2026-11-10",
@@ -16014,7 +16011,7 @@
             "market": "TPEX",
             "industry": "化學工業",
             "weight": 0.1,
-            "score": 0.9702970297029703,
+            "score": 0.9704433497536946,
             "name": "美琪瑪",
             "reference_close": 68.8,
             "price_date": "2026-11-10",
@@ -16061,7 +16058,7 @@
             "market": "TPEX",
             "industry": "塑膠工業",
             "weight": 0.1,
-            "score": 0.9653465346534653,
+            "score": 0.9655172413793104,
             "name": "信立",
             "reference_close": 27.0,
             "price_date": "2026-11-10",
@@ -16112,7 +16109,7 @@
             "market": "TWSE",
             "industry": "電腦及週邊設備業",
             "weight": 0.1,
-            "score": 0.9603960396039604,
+            "score": 0.9605911330049262,
             "name": "振樺電",
             "reference_close": 153.5,
             "price_date": "2026-11-10",
@@ -16160,7 +16157,7 @@
             "market": "TPEX",
             "industry": "半導體業",
             "weight": 0.1,
-            "score": 0.9554455445544554,
+            "score": 0.9556650246305419,
             "name": "翔名",
             "reference_close": 171.0,
             "price_date": "2026-11-10",
@@ -16203,7 +16200,7 @@
         ],
         "cash_weight": 0,
         "exclusions": {
-          "ADV20_MISSING_OR_BELOW_THRESHOLD": 615
+          "ADV20_MISSING_OR_BELOW_THRESHOLD": 614
         },
         "status": "RESEARCH_PORTFOLIO_FROZEN_NOT_A_BUY_SIGNAL"
       }
