@@ -62,6 +62,19 @@ class IssuerMasterCaptureTests(unittest.TestCase):
         self.assertIs(result["rows"][0]["past_membership_verified"], False)
         self.assertIs(result["rows"][0]["delisting_verified"], False)
 
+    def test_six_digit_depositary_receipt_is_explicitly_excluded(self):
+        raw = raw_json(twse_rows() + [{
+            "公司代號": "910322", "公司簡稱": "康師傅-DR",
+            "出表日期": "1151109", "上市日期": "20091216",
+        }])
+        obj = parse_profiles(raw, "TWSE", SOURCES["TWSE"][0], NOW)
+        self.assertEqual(obj["source_row_count"], 3)
+        self.assertEqual(obj["count"], 2)
+        self.assertEqual(obj["excluded_source_rows"], 1)
+        self.assertEqual(obj["excluded_unsupported_code_sample"][0]["code"], "910322")
+        self.assertNotIn("910322", [x["code"] for x in obj["rows"]])
+        self.assertEqual(obj["raw_sha256"], hashlib.sha256(raw).hexdigest())
+
     def test_tpex_english_json(self):
         result = parse_profiles(raw_json(tpex_rows()), "TPEX", SOURCES["TPEX"][0], NOW)
         self.assertEqual(result["rows"][0]["code"], "5274")
