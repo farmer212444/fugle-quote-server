@@ -193,6 +193,46 @@ class MarketwideInsiderTests(unittest.TestCase):
             self.assertEqual(second["requested"], 0)
             self.assertFalse((base/"detail"/"2026-09"/"1234.json").exists())
 
+    def test_stale_detail_receipt_cannot_bypass_fresh_failed_retry_cooldown(self):
+        # Regression: a checksum-valid gzip may still have stale/incorrect
+        # normalized fields. A fresh failed retry must prevent repeated HTTP
+        # requests until the existing 24-hour backoff expires.
+        with tempfile.TemporaryDirectory() as tmp:
+            base = Path(tmp)
+            code, month = "1234", "2026-09"
+            master = {code: {"market": "TWSE", "issued_shares": 1000000}}
+            original = body([row(buy=1000, sell=0)])
+            path = base / "detail" / month / (code + ".json")
+            receipt = save_original(
+                path, original, "https://mops.twse.com.tw/mops/api/query6_1", month)
+            put_json(path, dict(receipt, code=code, month=month,
+                                buy_shares=999999, sell_shares=0))
+            retry = base / "retry" / month / (code + ".json")
+            now = dt.datetime.now(dt.timezone.utc)
+            put_json(retry, dict(code=code, month=month,
+                                 reason="MOPS_DATA_MISSING_NOT_ZERO",
+                                 last_attempted_at=now.isoformat()))
+
+            def unexpected_network(url, payload):
+                raise AssertionError("Must honor the retry cooldown even with a stale detail")
+
+            deferred = capture_details(base, [month], master, 1, gap=0,
+                                       getter=unexpected_network)
+            self.assertEqual(deferred["requested"], 0)
+            self.assertEqual(
+                build_ranking(base, [month], master)["complete_issuer_count"], 0)
+
+            # After backoff, it must be possible to replace the bad cache
+            # using fresh official bytes and increase verified coverage.
+            put_json(retry, dict(code=code, month=month,
+                                 reason="MOPS_DATA_MISSING_NOT_ZERO",
+                                 last_attempted_at=(now-dt.timedelta(days=2)).isoformat()))
+            fetched = capture_details(base, [month], master, 1, gap=0,
+                                      getter=lambda url, payload: original)
+            self.assertEqual((fetched["requested"], fetched["succeeded"]), (1, 1))
+            self.assertEqual(
+                build_ranking(base, [month], master)["complete_issuer_count"], 1)
+
     def test_2026_buyer_leads_get_full_year_verified_before_broad_sweep(self):
         with tempfile.TemporaryDirectory() as tmp:
             base = Path(tmp)

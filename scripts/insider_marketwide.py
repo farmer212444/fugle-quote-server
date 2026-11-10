@@ -385,7 +385,11 @@ def capture_details(base, months, master, limit, gap=2.0, getter=fetch, deadline
             if deferred_identity_conflict(base, month, code, last_error):
                 deferred_reviews += 1
                 continue
-            if not prior and last_error and last_error.get("last_attempted_at"):
+            # An invalid cached detail pointer is not a verified filing. Respect
+            # the latest retry cooldown even if such a stale pointer exists,
+            # otherwise scheduled scans repeatedly spend MOPS requests on the
+            # same failing issuer-month before its backoff expires.
+            if last_error and last_error.get("last_attempted_at"):
                 try:
                     elapsed = dt.datetime.now(dt.timezone.utc) - dt.datetime.fromisoformat(last_error["last_attempted_at"])
                     if elapsed.total_seconds() < 24 * 3600:
