@@ -31,7 +31,7 @@ jobs:
         env:
           PYTHONPATH: '.'
         run: |
-          python scripts/flytech_full_original_statements.py --data-root "$RUNNER_TEMP/flytech-source-smoke" --last 2026-Q2 --max-new 1
+          python scripts/flytech_full_original_statements.py --data-root "$RUNNER_TEMP/flytech-source-smoke" --last 2026-Q2 --max-new 1 --max-twse-probes 1
           python - <<'PY'
           import json,os
           from pathlib import Path
@@ -44,110 +44,4 @@ jobs:
                 dict(found_links=j['source_period_links_discovered'],
                      archived=j['original_full_statements_archived'],
                      errors=j['collection_errors'][:8]))
-          PY
-      - name: Decode public packed AJAX route statically (never execute website code)
-        run: |
-          python - <<'PY'
-          import ast,re
-          from scripts.flytech_full_original_statements import fetch,DIRECTORY
-          html=fetch(DIRECTORY+'&year=2026',2000000).decode('utf-8','replace')
-          regex=r"return p\}\('((?:\\.|[^'])*)',(\d+),(\d+),'((?:\\.|[^'])*)'\.split\('\|'\),0,\{\}\)\)"
-          hits=list(re.finditer(regex,html,re.S))
-          print('PACKER_BODIES_FOUND',len(hits))
-          digits='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
-          def enc(n):
-              return digits[n] if n<62 else enc(n//62)+digits[n%62]
-          for match in hits[:5]:
-              try:
-                  payload=ast.literal_eval("'"+match[1]+"'")
-                  base=int(match[2]);count=int(match[3])
-                  tokens=ast.literal_eval("'"+match[4]+"'").split('|')
-                  if base!=62 or count>200:continue
-                  for i in range(count-1,-1,-1):
-                      if i<len(tokens) and tokens[i]:
-                          payload=re.sub(r'\b'+re.escape(enc(i))+r'\b',lambda _:tokens[i],payload)
-                  for term in ('get_season','seasonId','GR_BLOCK_SEASON','ajax','get_monthly','investor_season'):
-                      for a in list(re.finditer(re.escape(term),payload,re.I))[:3]:
-                          print('UNPACKED_PUBLIC_AJAX_ROUTE',term,
-                                repr(payload[max(0,a.start()-350):a.end()+450])[:900])
-              except Exception as e:
-                  print('PUBLIC_PACKER_DECODE_PENDING',type(e).__name__,str(e)[:140])
-          PY
-      - name: Diagnose public AJAX HTTP method and JSON transport without source execution
-        run: |
-          python - <<'PY'
-          import urllib.request,urllib.parse,http.cookiejar
-          from scripts.flytech_full_original_statements import DIRECTORY
-          base="https://www.flytech.com.tw/investor.php"
-          for mode in ("GET","POST","POST_WITH_COOKIE"):
-              try:
-                  jar=http.cookiejar.CookieJar()
-                  opener=urllib.request.build_opener(urllib.request.HTTPCookieProcessor(jar))
-                  if mode=="POST_WITH_COOKIE":
-                      opener.open(urllib.request.Request(DIRECTORY),timeout=12).read(200)
-                  data=urllib.parse.urlencode(dict(act="get_season",season=17)).encode("ascii")
-                  url=base+"?act=get_season&season=17" if mode=="GET" else base
-                  req=urllib.request.Request(url,data=None if mode=="GET" else data,
-                      headers=dict(Referer=DIRECTORY,
-                          **{"X-Requested-With":"XMLHttpRequest",
-                             "Content-Type":"application/x-www-form-urlencoded",
-                             "Accept":"application/json,text/javascript,*/*"}))
-                  with opener.open(req,timeout=15) as resp:
-                      raw=resp.read(400)
-                      print('PUBLIC_AJAX_HTTP_DIAGNOSTIC',mode,resp.status,
-                            resp.headers.get('Content-Type'),repr(raw[:240]))
-              except Exception as e:
-                  print('PUBLIC_AJAX_HTTP_DIAGNOSTIC',mode,type(e).__name__,str(e)[:100])
-          PY
-      - name: Inspect public website AJAX wrapper CSRF requirements without executing JS
-        run: |
-          python - <<'PY'
-          import re,urllib.request,urllib.parse
-          from scripts.flytech_full_original_statements import fetch,DIRECTORY
-          t=fetch(DIRECTORY+'&year=2026',2000000).decode('utf-8','replace')
-          sources=re.findall(r"""<script[^>]*src=['"]([^'"]+\.js(?:\?[^'"]*)?)['"]""",t,re.I)
-          print('PUBLIC_SAME_DOMAIN_JS_COUNT',len(sources))
-          for src in sources[:24]:
-              url=urllib.parse.urljoin(DIRECTORY,src)
-              u=urllib.parse.urlsplit(url)
-              if u.hostname!='www.flytech.com.tw':continue
-              try:
-                  with urllib.request.urlopen(urllib.request.Request(
-                      url,headers={'User-Agent':'Mozilla/5.0'}),timeout=15) as response:
-                      data=response.read(850000).decode('utf-8','replace')
-                  print('PUBLIC_JS_FILE',u.path,'bytes',len(data))
-                  for term in ('gr.csrf-token','X-CSRF','csrf','ajax.call','ajax:function','ajax:{','site.ajax','token','ajaxSetup'):
-                      for m in list(re.finditer(re.escape(term),data,re.I))[:2]:
-                          print('PUBLIC_JS_AJAX_PROTOCOL',term,
-                                repr(data[max(0,m.start()-160):m.end()+250])[:540])
-              except Exception as e:
-                  print('PUBLIC_JS_FETCH_PENDING',u.path,type(e).__name__)
-          PY
-      - name: Inspect official site AJAX wrapper declaration without executing JavaScript
-        run: |
-          python - <<'PY'
-          import urllib.request,re
-          u='https://www.flytech.com.tw/themes/zh-tw/assets/js/site.js'
-          with urllib.request.urlopen(urllib.request.Request(u,headers={'User-Agent':'Mozilla/5.0'}),timeout=15) as h:
-              t=h.read(90000).decode('utf-8','replace')
-          terms=('ajax','csrf','token','XMLHttpRequest','type:','dataType','contentType','beforeSend','setRequestHeader','site =','var site')
-          for term in terms:
-              matches=list(re.finditer(re.escape(term),t,re.I))
-              print('SITE_JS_SYMBOL',term,'hits',len(matches))
-              for m in matches[:3]:
-                  print('SITE_JS_CONTEXT',term,repr(t[max(0,m.start()-250):m.end()+400])[:720])
-          PY
-      - name: Diagnose public quarter-link loader when static directory is incomplete
-        env:
-          PYTHONPATH: '.'
-        run: |
-          python - <<'PY'
-          import re
-          from scripts.flytech_full_original_statements import fetch,DIRECTORY
-          text=fetch(DIRECTORY+'&year=2026',2000000).decode('utf-8','replace')
-          for term in ('investor_season','季報','季度財報','season','quarter','<script','results','ajax','download','api/','2026'):
-              positions=[m.start() for m in re.finditer(re.escape(term),text,re.I)]
-              for pos in positions[:4]:
-                  print('PUBLIC_DIRECTORY_DIAGNOSTIC',term,'position',pos,
-                        repr(text[max(0,pos-120):pos+330]).replace('\\n',' ')[:470])
           PY
