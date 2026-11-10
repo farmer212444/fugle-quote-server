@@ -4,6 +4,7 @@ This is a reverse ROE/PB hurdle research screen only. It must never certify
 2027 fair value or mix conditional financial rows into the 34 price-upsides.
 """
 import copy
+import hashlib
 import json
 from pathlib import Path
 import shutil
@@ -22,7 +23,32 @@ ASOF="2026-10-24T20:00:00+08:00"
 class FinancialNine0056Tests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.data=screen(ROOT,ASOF)
+        # The daily quoted-price archive may be replaced by an independently
+        # retrieved official vintage after the model is frozen. Production
+        # must fail closed if model receipts no longer match; unit arithmetic
+        # is checked on an explicitly synthetic SHA-aligned in-memory fixture,
+        # never by modifying the real archive or model certification.
+        holdings,compact,full=load_inputs(ROOT)
+        rel=f"prices/{full['asof_price_date']}.json"
+        refs=[x for x in full["input_receipts"] if x.get("path")==rel]
+        if len(refs)!=1:
+            raise AssertionError("TEST_REQUIRES_EXACTLY_ONE_FROZEN_PRICE_RECEIPT")
+        cls.actual_sha=hashlib.sha256((ROOT/rel).read_bytes()).hexdigest()
+        cls.original_model_receipt_sha=refs[0]["sha256"]
+        test_only_full=copy.deepcopy(full)
+        one=next(x for x in test_only_full["input_receipts"] if x.get("path")==rel)
+        one["sha256"]=cls.actual_sha
+        cls.synthetic_test_only_full=test_only_full
+        with patch('scripts.v8b6_0056_financial_pb_hurdle.load_inputs',
+                   return_value=(holdings,compact,test_only_full)):
+            cls.data=screen(ROOT,ASOF)
+
+    def test_production_frozen_model_rejects_replaced_daily_quote_archive(self):
+        if self.original_model_receipt_sha!=self.actual_sha:
+            with self.assertRaisesRegex(ValueError,"PRICE_SOURCE_DATE_OR_SHA_MISMATCH"):
+                screen(ROOT,ASOF)
+        else:
+            self.assertEqual(screen(ROOT,ASOF),self.data)
 
     def test_all_nine_guarded_and_seven_other_issuers_remain_missing(self):
         a=self.data
@@ -98,7 +124,8 @@ class FinancialNine0056Tests(unittest.TestCase):
                         'fundamentals/2026-Q2/TWSE_income.json',quote):
                 path=root/rel;path.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(ROOT/rel,path)
             (root/'prices/latest_manifest.json').write_text('{"date":"2026-12-31","path":"unused-new-vintage"}')
-            with patch('scripts.v8b6_0056_financial_pb_hurdle.load_inputs',return_value=(holdings,compact,full)):
+            with patch('scripts.v8b6_0056_financial_pb_hurdle.load_inputs',
+                       return_value=(holdings,compact,self.synthetic_test_only_full)):
                 self.assertEqual(screen(root,ASOF),self.data)
                 (root/quote).write_text('[]')
                 with self.assertRaisesRegex(ValueError,'PRICE_SOURCE_DATE_OR_SHA_MISMATCH'):
@@ -107,16 +134,18 @@ class FinancialNine0056Tests(unittest.TestCase):
     def test_missing_or_duplicate_frozen_price_receipt_is_rejected(self):
         holdings,compact,full=load_inputs(ROOT)
         rel=f"prices/{full['asof_price_date']}.json"
-        receipt=next(r for r in full['input_receipts'] if r['path']==rel)
+        receipt=next(r for r in self.synthetic_test_only_full['input_receipts'] if r['path']==rel)
         for refs in ([],[receipt,receipt]):
-            changed=dict(full,input_receipts=refs)
+            changed=dict(self.synthetic_test_only_full,input_receipts=refs)
             with patch('scripts.v8b6_0056_financial_pb_hurdle.load_inputs',return_value=(holdings,compact,changed)):
                 with self.assertRaisesRegex(ValueError,'PRICE_RECEIPT_MISSING_OR_AMBIGUOUS'):
                     screen(ROOT,ASOF)
 
     def test_print_financial_hurdle_for_research_review(self):
         import json
-        print('BEGIN_0056_NINE_FINANCE='+json.dumps({
+        print('BEGIN_0056_NINE_FINANCE_TEST_ONLY_UNCERTIFIED='+json.dumps({
+            'test_fixture_receipt_rebased_in_memory_only':True,
+            'real_model_quote_receipt_unchanged':True,
             'nine':self.data['nine_financial_ROE_PB_hurdle_only_count'],
             'not_yet_rankable':self.data['remaining_missing_comparable_count'],
             'rows':[{

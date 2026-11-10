@@ -88,6 +88,27 @@ class EarningsAuditTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError,"FUTURE_OR_UNZONED"):
                 mod.check_post_financial_quarter_revenue(base,research,
                     {("TWSE","3305"):self.now},{("TWSE","3305"):self.prior},[self.row])
+    def test_future_monthly_capture_is_explicit_pending_not_retroactive(self):
+        with tempfile.TemporaryDirectory() as folder:
+            base,shard,research=self._make_monthly_fixture(
+                folder,"2026-10-21T16:59:00+00:00")
+            out=mod.check_post_financial_quarter_revenue(
+                base,research,
+                {("TWSE","3305"):self.now},
+                {("TWSE","3305"):self.prior},
+                [self.row],on_late_capture="pending")
+            self.assertEqual(out["status"],
+                "MONTHLY_REVENUE_CAPTURE_AFTER_FORECAST_NOT_ADMITTED")
+            self.assertEqual(out["issuer_checks"],[])
+            self.assertTrue(out["future_receipt_excluded_from_issuer_checks"])
+            self.assertFalse(out["usable_for_historical_same_vintage_forecast"])
+            with self.assertRaisesRegex(ValueError,"INVALID_LATE_CAPTURE_POLICY"):
+                mod.check_post_financial_quarter_revenue(
+                    base,research,
+                    {("TWSE","3305"):self.now},
+                    {("TWSE","3305"):self.prior},
+                    [self.row],on_late_capture="ignore")
+
     def test_8390_equity_raise_stress_and_stale_fail_closed(self):
         import tempfile
         with tempfile.TemporaryDirectory() as folder:

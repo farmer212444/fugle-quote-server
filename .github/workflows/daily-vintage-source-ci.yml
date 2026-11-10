@@ -1,0 +1,43 @@
+name: V8.10.8 dated 0056 and Top10 PIT input regression
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/daily-vintage-source-ci.yml'
+      - 'tests/test_v8b6_0056_financial_pb.py'
+      - 'tests/test_v8b7_0056_financial_sensitivity.py'
+      - 'scripts/v887_top10_earnings_audit.py'
+      - 'tests/test_v887_top10_earnings_audit.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  immutable-dated-sources:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Test dated 0056 price integrity and monthly revenue after-vintage handling
+        env:
+          PYTHONPATH: '.'
+        run: |
+          python -m py_compile scripts/v887_top10_earnings_audit.py tests/test_v8b6_0056_financial_pb.py tests/test_v8b7_0056_financial_sensitivity.py tests/test_v887_top10_earnings_audit.py
+          python -m unittest -v tests.test_v8b6_0056_financial_pb tests.test_v8b7_0056_financial_sensitivity tests.test_v887_top10_earnings_audit
+      - name: Test real latest Top10 audit without admitting late revenue captures
+        env:
+          PYTHONPATH: '.'
+        run: |
+          python scripts/v887_top10_earnings_audit.py --data-dir tw-market-data
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          obj=json.loads(Path('tw-market-data/rankings/v887_top10_earnings_audit.json').read_text())
+          review=obj['next_quarter_monthly_revenue_check']
+          assert review['status']!='MONTHLY_REVENUE_RECEIPT_FUTURE_OR_UNZONED'
+          if review['status']=='MONTHLY_REVENUE_CAPTURE_AFTER_FORECAST_NOT_ADMITTED':
+              assert review['issuer_checks']==[]
+              assert not review['usable_for_historical_same_vintage_forecast']
+          print('TOP10_INPUT_PIT_STATUS',review['status'])
+          PY
