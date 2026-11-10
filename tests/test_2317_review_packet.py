@@ -110,7 +110,7 @@ class ReviewerPrepTests(unittest.TestCase):
             self.assertIsNone(gate["checked_at"])
         originals=starter["gates"]["original_eight_quarter_statements"]["sources"]
         self.assertEqual(len(originals),1)
-        self.assertEqual(originals[0]["sha256"],packet["original_documents"][3]["sha256"])
+        self.assertEqual(originals[0]["sha256"],next(x["sha256"] for x in packet["original_documents"] if x["period"]=="2025-Q4"))
         self.assertFalse(originals[0]["origin_authenticated"])
         self.assertIsNone(originals[0]["available_at"])
         self.assertEqual(starter["gates"]["insider_claims"]["sources"],[])
