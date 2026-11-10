@@ -79,6 +79,26 @@ class GateAdmissionTests(unittest.TestCase):
         probe=dict(estimate_vintage=STAMP,asof_price_date='2026-10-19',top_priority_evidence=[])
         self.save_snapshot(research,dispatch,probe,rows)
 
+    def test_no_review_packs_must_report_blocked_despite_green_model(self):
+        self.file.unlink()
+        self.progress_fixture()
+        report=mod.build_progress(self.root)
+        self.assertEqual(report["formal_aplus_blocker_state"],
+                         "BLOCKED_NO_REVIEWED_PACKS")
+        self.assertEqual(report["review_pack_inventory"]["submitted_files"],0)
+        self.assertEqual(report["review_pack_inventory"]["certificate_files"],0)
+        self.assertFalse(report["formally_certified_Aplus_in_report"])
+        self.assertIn("BLOCKED_NO_REVIEWED_PACKS",mod.render_md(report,[]))
+
+    def test_submitted_pack_without_admitted_cert_is_still_blocked(self):
+        self.progress_fixture()
+        report=mod.build_progress(self.root)
+        self.assertEqual(report["formal_aplus_blocker_state"],
+                         "BLOCKED_NO_ADMITTED_CERTIFICATES")
+        self.assertEqual(report["review_pack_inventory"]["submitted_files"],1)
+        self.assertEqual(report["review_pack_inventory"]["certificate_files"],0)
+        self.assertFalse(report["review_pack_inventory"]["file_presence_is_not_formal_pass"] is False)
+
     def test_pass_only_with_archived_reviewed_original(self):
         r=mod.emit_certificates(self.root,mod.timestamp(STAMP),"2026-Q2")
         self.assertEqual(r[0]["status"],"CERTIFICATE_EMITTED")
