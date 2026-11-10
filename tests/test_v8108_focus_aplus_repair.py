@@ -5,6 +5,7 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 from scripts.v8108_focus_aplus_repair import (
     build,cost_bridge,full_6206_starter,gm_hurdle,markdown,publish)
@@ -124,6 +125,27 @@ class CertificationFocusTests(unittest.TestCase):
             self.assertEqual(gate["status"],"MAIN_MODEL_DECISION_EXISTS_NOT_REISSUED")
             self.assertFalse(gate["review_completed"])
             self.assertEqual(result["formal_pass_added"],0)
+
+    def test_genuine_full_quarter_pdf_evidence_feeds_13_gate_starter_not_pass(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp)
+            fixture(root)
+            financial=dict(period="2026-Q2",sha256="a"*64,
+                source_url="https://www.flytech.com.tw/data/investor_season/attached/1234567890123456789.pdf",
+                archive_path="evidence/v880/originals/6206/full_statements/2026-Q2/a.pdf",
+                captured_at_utc="2026-11-10T02:00:00Z")
+            with patch("scripts.v8108_focus_aplus_repair.verify_archive",
+                       return_value={"2026-Q2":financial}):
+                report=build(root)
+            starter=report["review_starter"]
+            self.assertEqual(starter["original_eight_quarter_full_pdf_count_verified"],1)
+            eight=starter["gate_review_starter"]["original_eight_quarter_statements"]
+            self.assertEqual(len(eight["sources"]),1)
+            self.assertEqual(eight["sources"][0]["period"],"2026-Q2")
+            self.assertEqual(eight["status"],"PENDING")
+            self.assertFalse(eight["sources"][0]["origin_authenticated"])
+            self.assertFalse(eight["review_completed"])
+            self.assertFalse(report["review_pack_not_written"] is False)
 
     def test_tampering_original_pdf_is_rejected(self):
         with tempfile.TemporaryDirectory() as tmp:
