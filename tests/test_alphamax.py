@@ -136,6 +136,8 @@ class AlphaMaxTests(unittest.TestCase):
             rows = sample_rows()
             future = (date.today() + timedelta(days=30)).isoformat()
             rows[-1]["signal_date"] = future
+            rows[-1]["total_return_12m"] = None
+            rows[-1]["label_available_at"] = None
             folder = self._bundle(temp, rows=rows)
             with self.assertRaisesRegex(ContractError, "ASOF_IN_FUTURE"):
                 research(folder, future)
