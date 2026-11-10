@@ -15,6 +15,9 @@ import re
 import sys
 import urllib.parse
 import urllib.request
+import urllib.error
+import socket
+import time
 from pathlib import Path
 
 PROJECT=Path(__file__).resolve().parents[1]
@@ -100,6 +103,45 @@ def twse_fetch(url,cap,post=None):
         raw=resp.read(cap+1)
     require(0<len(raw)<=cap,"TWSE_EMPTY_OR_OVERSIZED")
     return raw
+
+
+def temporary_twse_failure(exc):
+    """Retry a small allowlist, never identity, safety or missing-file failures."""
+    if isinstance(exc, urllib.error.HTTPError):
+        return exc.code in (429, 500, 502, 503, 504)
+    if isinstance(exc, (TimeoutError, ConnectionRefusedError, ConnectionResetError,
+                        socket.timeout)):
+        return True
+    if isinstance(exc, urllib.error.URLError):
+        reason=exc.reason
+        if isinstance(reason, (TimeoutError, ConnectionRefusedError,
+                               ConnectionResetError, socket.timeout)):
+            return True
+        message=str(reason).lower()
+        return any(token in message for token in (
+            "connection refused", "timed out", "timeout", "connection reset"))
+    return False
+
+
+def twse_pdf_with_retry(url,cap,transport=None,sleeper=None,max_attempts=2):
+    """The same *verified* official PDF URL may get one delayed transient retry.
+
+    No URL synthesis, index bypass, revalidation shortcut, arbitrary retries,
+    or retry of 403/404, TLS certificate errors and identity mismatches.
+    """
+    require(twse_pdf_url(url), "TWSE_RETRY_URL_NOT_OFFICIAL")
+    require(type(max_attempts) is int and 1<=max_attempts<=2,
+            "TWSE_UNBOUNDED_PDF_RETRY")
+    transport=transport or twse_fetch
+    sleeper=sleeper or time.sleep
+    for index in range(max_attempts):
+        try:
+            return transport(url,cap)
+        except Exception as exc:
+            if index==max_attempts-1 or not temporary_twse_failure(exc):
+                raise
+            sleeper(2.0)
+    raise AssertionError("UNREACHABLE")
 
 def twse_resolve(raw,filename):
     require(type(raw) is bytes and len(raw)<=MAX_INDEX and
@@ -397,8 +439,8 @@ def collect(root,last="2026-Q2",now=None,max_new=3,fetcher=fetch,ajaxer=fetch_se
         if added>=max_new:break
         try:
             pdfurl=urls[period]
-            raw=(twse_fetcher(pdfurl,MAX_PDF) if twse_pdf_url(pdfurl)
-                 else fetcher(pdfurl,MAX_PDF))
+            raw=(twse_pdf_with_retry(pdfurl,MAX_PDF,transport=twse_fetcher)
+                 if twse_pdf_url(pdfurl) else fetcher(pdfurl,MAX_PDF))
             bytes_used+=len(raw)
             require(bytes_used<=MAX_BATCH,"BATCH_DOWNLOAD_BYTES_EXCEEDED")
             details=identity(raw,period)
