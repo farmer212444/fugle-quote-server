@@ -1,0 +1,50 @@
+name: V8.10.8 focus A+ evidence-repair checks
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/focus-aplus-repair.yml'
+      - '.github/workflows/tw_v877_research_rank.yml'
+      - 'scripts/v8108_focus_aplus_repair.py'
+      - 'scripts/run_research_pipeline.py'
+      - 'tests/test_v8108_focus_aplus_repair.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  focused-review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Compile and validate unsigned review-pack policies
+        env:
+          PYTHONPATH: '.'
+        run: |
+          python -m py_compile scripts/v8108_focus_aplus_repair.py tests/test_v8108_focus_aplus_repair.py
+          python -m unittest -v tests.test_v8108_focus_aplus_repair
+      - name: Audit real archived 6206 originals and 9802 gross-margin hurdle
+        env:
+          PYTHONPATH: '.'
+        run: |
+          python scripts/v8108_focus_aplus_repair.py --data-root tw-market-data
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path('tw-market-data/rankings')
+          x=json.loads((root/'latest_focus_aplus_repair.json').read_text())
+          y=json.loads((root/'6206_gate_review_starter_latest.json').read_text())
+          assert x['formal_Aplus_count_unchanged']==0 and x['formal_pass_added']==0
+          assert x['no_trading_or_position_changes']
+          assert len(y['gate_review_starter'])==13
+          assert y['originals_sha256_checked']>=2
+          assert all(z['status']=='PENDING' and not z['review_completed']
+                     for z in y['gate_review_starter'].values())
+          h=x['second_focus']['operating_hurdle']
+          assert h['required_2027_gm_pct_for_30pct']>h['base_gross_margin_pct']
+          assert x['review_pack_not_written']
+          assert not Path('tw-market-data/evidence/v880/review_packs/6206.json').exists()
+          print('SOURCE_REHASHED',y['originals_sha256_checked'],
+                '9802_2027_GM_HURDLE',h['required_2027_gm_pct_for_30pct'])
+          PY
