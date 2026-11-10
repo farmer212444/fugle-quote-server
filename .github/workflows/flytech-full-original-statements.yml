@@ -107,7 +107,7 @@ jobs:
           t=fetch(DIRECTORY+'&year=2026',2000000).decode('utf-8','replace')
           sources=re.findall(r"""<script[^>]*src=['"]([^'"]+\.js(?:\?[^'"]*)?)['"]""",t,re.I)
           print('PUBLIC_SAME_DOMAIN_JS_COUNT',len(sources))
-          for src in sources[:15]:
+          for src in sources[:24]:
               url=urllib.parse.urljoin(DIRECTORY,src)
               u=urllib.parse.urlsplit(url)
               if u.hostname!='www.flytech.com.tw':continue
@@ -115,9 +115,9 @@ jobs:
                   with urllib.request.urlopen(urllib.request.Request(
                       url,headers={'User-Agent':'Mozilla/5.0'}),timeout=15) as response:
                       data=response.read(850000).decode('utf-8','replace')
-                  print('PUBLIC_JS_FILE',u.path.rsplit('/',1)[-1],'bytes',len(data))
-                  for term in ('gr.csrf-token','X-CSRF','csrf','ajax.call','ajax:function','ajax:{'):
-                      for m in list(re.finditer(re.escape(term),data,re.I))[:3]:
+                  print('PUBLIC_JS_FILE',u.path,'bytes',len(data))
+                  for term in ('gr.csrf-token','X-CSRF','csrf','ajax.call','ajax:function','ajax:{','site.ajax','token','ajaxSetup'):
+                      for m in list(re.finditer(re.escape(term),data,re.I))[:2]:
                           print('PUBLIC_JS_AJAX_PROTOCOL',term,
                                 repr(data[max(0,m.start()-160):m.end()+250])[:540])
               except Exception as e:
