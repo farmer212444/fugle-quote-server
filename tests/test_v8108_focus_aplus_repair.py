@@ -104,6 +104,27 @@ class CertificationFocusTests(unittest.TestCase):
             self.assertIn("鈺齊-KY",markdown(pub))
             self.assertIn("飛捷",markdown(pub))
 
+    def test_later_real_review_decisions_are_not_blocked_or_reissued(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp);fixture(root)
+            p=root/"rankings/latest_aplus_decision_lanes.json"
+            lanes=json.loads(p.read_text())
+            flytech=next(x for x in lanes["issuers"] if x["code"]=="6206")
+            flytech["company_gates_pending"]=11
+            flytech["company_gates_passed"]=1
+            put(p,lanes)
+            triage=root/"rankings/v891_6206_gate_triage.json"
+            t=json.loads(triage.read_text())
+            t["gates"][0]["formal_status"]="NOT_PENDING_IN_MODEL_CHECK_CERTIFICATE"
+            put(triage,t)
+            result=build(root)
+            self.assertEqual(result["first_review_candidate"]["company_gates_passed"],1)
+            self.assertEqual(result["first_review_candidate"]["company_gates_pending"],11)
+            gate=result["review_starter"]["gate_review_starter"]["original_eight_quarter_statements"]
+            self.assertEqual(gate["status"],"MAIN_MODEL_DECISION_EXISTS_NOT_REISSUED")
+            self.assertFalse(gate["review_completed"])
+            self.assertEqual(result["formal_pass_added"],0)
+
     def test_tampering_original_pdf_is_rejected(self):
         with tempfile.TemporaryDirectory() as tmp:
             root=Path(tmp);rel,_=fixture(root)
