@@ -19,19 +19,22 @@ unadjusted closing-price snapshots into investor total returns.
 - Deterministic regression tests including future-feature rejection,
   label-leakage regression, missing receipts and non-executable securities.
 - Separate GitHub Actions workflow for tests and recurring *readiness reporting*.
+- **AlphaMax Concentration V1** (research-only): independent robust-return and joint-stress portfolio allocation, cash allowed, per-name/sector caps, minimum liquidity, tail-probability and confidence checks, forecast snapshot SHA-256, seven evidence assertions, and full fail-closed behavior. No imported V8 risk gates.
 
 This is a **baseline for validating a research pipeline**, not yet the
 multi-model calibrated predictive distribution described in the design brief.
 There is no LightGBM/CatBoost, double probability, calibrated tail probability,
-net portfolio CAGR, walk-forward statistical significance or optimized
-portfolio weights yet.
+net portfolio CAGR, walk-forward statistical significance or statistically
+optimized portfolio weights yet. The concentration allocator is a transparent
+**greedy paper-only heuristic**, not a validated maximum-return optimizer.
 
 ## Commands
 
 ```bash
-python -m unittest -v tests.test_alphamax
+python -m unittest -v tests.test_alphamax tests.test_alphamax_concentration
 python scripts/alphamax_run.py readiness --output alphamax-research-readiness.json
 python scripts/alphamax_run.py research --bundle alphamax/datasets/production
+python scripts/alphamax_concentration.py --output alphamax-concentration-readiness.json
 ```
 
 The final command **must** return BLOCKED until a separately audited
@@ -81,3 +84,46 @@ for a trustworthy 12-month net-return ranking.
 The daily GitHub workflow publishes a diagnostic artifact, not an investment
 recommendation. PR CI is active upon pull-request creation, while cron only
 operates after the workflow is merged to the default branch.
+
+
+## Concentration decision engine: explicit boundary and dataset contract
+
+Implementation: `alphamax/concentration.py`. Runner: `scripts/alphamax_concentration.py`.
+Both are **research-only** and must never issue live recommendations or brokerage orders.
+A `BLOCKED` output and 100% cash is correct if verified data are missing.
+
+The optional production file `alphamax/datasets/production/concentration.json`
+has keys:
+
+- `candidates`: list of unique code/sector rows with identical `asof` dates,
+  `horizon_months=12`, `expected_net_return_12m`,
+  `lower_bound_net_return_12m`, `probability_loss_30pct`,
+  `confidence`, `daily_turnover_ntd` and Boolean `executable`.
+  The returns **must already be net of all trading costs**. The lower bound
+  must arise from an actual out-of-sample uncertainty method, not a guess.
+- `scenarios`: at least two named **joint** stress scenarios, with a
+  nonnegative loss fraction (0..1) for **every** candidate in each scenario.
+  Scenarios are portfolio-wide, not unrelated single-company stress guesses.
+- `evidence`: `asof`, `receipt_ids` (nonempty, independently verifiable),
+  `forecast_sha256` and all seven evidence gates specified in
+  `alphamax/concentration.py` as actual audited `true` values.
+  Compute digest with `forecast_digest(candidates, scenarios)`.
+  The gates and hashes are **self-reported contract fields**, not proof that an
+  external source has been independently audited; evidence must be inspected
+  separately before any real deployment.
+- `cash_net_return_12m`: benchmark cash opportunity return (not stock 0050).
+- `policy`: optional limits defined by `ConcentrationPolicy`, including
+  20% single-stock, 30% sector, 12% worst joint-stress portfolio-loss caps,
+  1% allocation increments. These are preliminary limits, **not optimized**.
+
+The result includes research portfolio weights, remaining cash, joint-scenario
+losses and explicit rejection reasons. The engine purposely returns
+`buy_signal=false` under all conditions, including synthetic test fixtures.
+Do not bypass missing PIT, calibration or external verification by copying
+Boolean values from synthetic fixtures.
+
+**Promotion remains blocked** until real independently verified multi-year
+PIT total-return data, calibrated 12m return distributions, joint stress
+evidence, an executable costed portfolio equity curve, independent reviewer
+signoff and paper-trading results exist. The GitHub workflow checks coding
+contracts and research readiness only; it does NOT promote production automatically.
