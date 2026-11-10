@@ -149,3 +149,35 @@ independent source receipts, and corporate-action-adjusted total returns.
 The GitHub workflow publishes `alphamax-universe-readiness.json` as a research
 artifact and summarizes observable coverage next to the research and concentration
 readiness states. Do not copy V8 certification fields into AlphaMax.
+
+## Current official company-profile capture (NEW, prospective only)
+
+The independent collector in alphamax/security_master.py and runner
+scripts/alphamax_security_master.py capture TWSE company profiles via
+https://openapi.twse.com.tw/v1/opendata/t187ap03_L and TPEx company
+profiles via https://www.tpex.org.tw/openapi/v1/mopsfin_t187ap03_O.
+If the TPEx JSON source is blocked, the official MOPSFIN CSV endpoint
+https://mopsfin.twse.com.tw/opendata/t187ap03_O.csv is tried explicitly;
+the first-source error is retained in the attempt log.
+
+Each actual raw source response is preserved byte-for-byte with its SHA-256,
+fetch timestamp, ROC batch date and normalization output. The CI ZIP artifact
+also includes a reconciliation of profile market/code identities with the
+latest daily quote snapshot. Empty/partial sources stay BLOCKED. Old stock
+profiles are never retroactively created by a current capture.
+
+This source does not provide a queryable historical membership series; a
+company's reported historical listing date alone cannot prove continued
+listing on every historical day or the membership/delisting of companies no
+longer in the current source. Different securities in quote data (such as
+ETFs) need separate class information. The source capture therefore never
+turns historical_PIT_universe_approved or investment_certified to true.
+
+Run:
+    python -m unittest -v tests.test_alphamax_security_master
+    python scripts/alphamax_security_master.py --output-dir alphamax-profile-capture
+
+GitHub Actions raw artifacts currently expire in 90 days. They are not a
+permanent audited as-of vintage archive. A dated, immutable source archive
+and full historical delisting event ledger must be implemented and
+independently reviewed before this data can be admitted to real backtests.
