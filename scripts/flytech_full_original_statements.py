@@ -269,16 +269,24 @@ def collect(root,last="2026-Q2",now=None,max_new=3,fetcher=fetch,ajaxer=fetch_se
                 except Exception as exc:
                     errors.append(dict(year=year,reason="AJAX_"+type(exc).__name__,
                                        detail=str(exc)[:180]))
-            idx_hash=digest(body)
-            idx_rel=f"{FOLDER}/source_pages/{year}_{idx_hash[:20]}.html"
+            # The full HTML includes an ephemeral per-session CSRF value.
+            # Never preserve those tokens in a public GitHub data archive.
+            # AJAX source responses and actual PDFs retain exact raw SHA.
+            public_selector=json.dumps(dict(
+                year=year,public_season_id=ids.get(year),
+                static_issuer_pdf_urls=discovered),ensure_ascii=False,
+                sort_keys=True,separators=(",",":")).encode("utf-8")
+            idx_hash=digest(public_selector)
+            idx_rel=f"{FOLDER}/source_pages/{year}_{idx_hash[:20]}_selector.json"
             dst=safe(root,idx_rel);dst.parent.mkdir(parents=True,exist_ok=True)
             if dst.exists():
-                require(dst.read_bytes()==body,"INDEX_IMMUTABLE_CONFLICT")
-            else:dst.write_bytes(body)
+                require(dst.read_bytes()==public_selector,"INDEX_IMMUTABLE_CONFLICT")
+            else:dst.write_bytes(public_selector)
             if not any(r.get("sha256")==idx_hash and r.get("year")==year
                        for r in manifest["index_receipts"]):
                 manifest["index_receipts"].append(dict(year=year,url=url,
                     archive_path=idx_rel,sha256=idx_hash,
+                    receipt_kind="SANITIZED_PUBLIC_SELECTOR_ONLY_NO_CSRF_ORIGINAL_HTML",
                     captured_at_utc=now.isoformat()))
             for period,pdf in discovered.items():
                 if period not in window:continue
