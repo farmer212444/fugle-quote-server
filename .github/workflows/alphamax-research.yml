@@ -62,6 +62,7 @@ jobs:
               out.write("- Issuer-history coverage: **%s**\n" % universe["status"])
               out.write("- Historical price records / latest snapshot: **%s / %s**\n" % (universe.get("counts", {}).get("present_in_snapshot_with_history", 0), universe.get("current_quote_snapshot_securities", 0)))
               out.write("- Companies with >= 756 preserved observed sessions: **%s** (observation count, not PIT audit)\n" % universe.get("counts", {}).get("history_files_ge_min_sessions", 0))
+              out.write("- Snapshot rows with no valid close (not executable): **%s**\n" % universe.get("current_quote_rows_without_positive_close", 0))
               out.write("- Live buy authorization: **NO**\n\n")
               for issue in research.get("blockers", []):
                   out.write("- Data blocker: %s\n" % issue)
