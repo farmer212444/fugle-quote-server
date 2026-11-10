@@ -48,6 +48,13 @@ def readiness(root, bundle):
 
 
 def research(bundle, asof=None, top_n=10, min_history=80):
+    # Explicit future research dates must be rejected before reading any
+    # potentially invalid or contaminated return-label bundle. The gate is
+    # a request validation rule, not a side effect of dataset validity.
+    if asof is not None:
+        from alphamax.core import parse_date
+        if parse_date(asof) > date.today():
+            raise ContractError("ASOF_IN_FUTURE")
     _, rows = load_bundle(bundle)
     signals = sorted({r["signal_date"] for r in rows})
     asof = asof or signals[-1]
