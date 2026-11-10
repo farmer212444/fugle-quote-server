@@ -63,6 +63,18 @@ class TpexDelistTests(unittest.TestCase):
         self.assertEqual(out["records_with_explicit_termination_date"],1)
         self.assertFalse(out["source_publication_time_verified"])
 
+    def test_six_digit_tpex_history_code_kept_but_class_not_certified(self):
+        raw=json.dumps({"date":"2021","stat":"ok","tables":[{
+            "fields":["股票代號","公司名稱","終止上櫃日期","終止上櫃原因"],
+            "data":[["911613","特藝石油能源有限公司","110-09-03","依規定終止上櫃"]],
+            "totalCount":1
+        }]},ensure_ascii=False).encode()
+        out=parse_tpex_json(raw,NOW)
+        self.assertEqual(out["record_count"],1)
+        self.assertEqual(out["event_rows"][0]["code"],"911613")
+        self.assertTrue(out["event_rows"][0]["security_class_review_required"])
+        self.assertIs(out["event_rows"][0]["announced_at_pit_verified"],False)
+
     def test_json_missing_dates_block(self):
         raw=json.dumps({"stat":"ok","tables":[{
             "fields":["證券代號","證券名稱","原因"],"data":[["6747","亨泰光","合併"]]
