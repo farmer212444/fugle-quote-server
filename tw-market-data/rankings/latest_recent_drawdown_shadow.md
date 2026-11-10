@@ -1,6 +1,6 @@
 # V8.10.8 近期大跌風險研究影子層
 
-行情日期：2026-11-10；模型形成：2026-11-10T17:23:28.585789+08:00
+行情日期：2026-11-10；模型形成：2026-11-11T06:50:20.042032+08:00
 這不是實證勝率、正式A+、下單或賣出指令；20/60日完整交易曆及除權息尚未認證。
 下列5、10期均指資料庫內實際保存的觀測筆數，**不等於連續5、10個交易日**。
 使用個股未還原收盤價對照加權報酬指數含息，僅為粗略相對弱勢線索。
@@ -13,7 +13,6 @@
 |4912 聯德控股-KY|-1.8%|-7.9%|-10.2%|-16.7%|-0.6%|NO_THRESHOLD_TRIGGER_IN_OBSERVED_SNAPSHOTS|
 |8390 金益鼎|+1.7%|-3.2%|-3.2%|-9.9%|+4.2%|NO_THRESHOLD_TRIGGER_IN_OBSERVED_SNAPSHOTS|
 |8473 山林水|-2.5%|-7.5%|-7.7%|-9.7%|-0.1%|NO_THRESHOLD_TRIGGER_IN_OBSERVED_SNAPSHOTS|
-|6625 必應|-2.7%|-5.5%|-6.0%|-7.5%|+1.8%|NO_THRESHOLD_TRIGGER_IN_OBSERVED_SNAPSHOTS|
 |2364 倫飛|-13.6%|-17.6%|-18.3%|-18.3%|-10.3%|WATCH_MARKET_RELATIVE_WEAKNESS|
 |3285 微端|-3.4%|+4.7%|-6.4%|-16.0%|+12.1%|NO_THRESHOLD_TRIGGER_IN_OBSERVED_SNAPSHOTS|
 |2376 技嘉|-6.9%|-14.8%|-16.0%|-17.8%|-7.5%|WATCH_MARKET_RELATIVE_WEAKNESS|
@@ -27,6 +26,7 @@
 |8383 千附|+1.6%|-11.0%|-11.0%|-19.5%|-3.7%|NO_THRESHOLD_TRIGGER_IN_OBSERVED_SNAPSHOTS|
 |6143 振曜|-1.9%|-9.6%|-9.9%|-14.4%|-2.3%|NO_THRESHOLD_TRIGGER_IN_OBSERVED_SNAPSHOTS|
 |6613 朋億*|-6.0%|-12.2%|-13.2%|-18.1%|-4.8%|NO_THRESHOLD_TRIGGER_IN_OBSERVED_SNAPSHOTS|
+|2317 鴻海|-1.6%|-2.4%|-4.0%|-10.7%|+4.9%|NO_THRESHOLD_TRIGGER_IN_OBSERVED_SNAPSHOTS|
 
 最大回撤為已保存觀測點中先前高點至其後低點，不是推薦後績效、盤中最大跌幅或已驗證完整交易日回撤。
 門檻為尚未校準的暫定研究政策。缺少交易日、公司行動或PIT原件不得當作風險已解除。

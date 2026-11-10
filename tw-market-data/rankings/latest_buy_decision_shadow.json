@@ -2,7 +2,7 @@
   "schema": "V8108_BUY_DECISION_SHADOW_V1",
   "model": "V8.10.8",
   "asof_price_date": "2026-11-10",
-  "estimate_vintage": "2026-11-10T17:23:28.585789+08:00",
+  "estimate_vintage": "2026-11-11T06:50:20.042032+08:00",
   "issuer_count": 20,
   "source_top20_order_preserved": true,
   "formal_13_gates_unchanged": true,
@@ -31,11 +31,11 @@
       "source_lane": "TOP20_SHADOW",
       "source_base_rank": 1,
       "valuation": {
-        "base_upside_pct": 136.73,
-        "double20_stress_upside_pct": 51.51,
-        "base_2027_eps_scenario": 11.102,
+        "base_upside_pct": 136.02,
+        "double20_stress_upside_pct": 51.05,
+        "base_2027_eps_scenario": 11.068,
         "base_2027_pe_assumption": 22.39,
-        "base_target_price_scenario": 248.57,
+        "base_target_price_scenario": 247.82,
         "stressed_scenario_above_reference": true,
         "stressed_scenario_is_not_bear_loss_probability": true,
         "valuation_confidence": "PENDING_ORIGINAL_EPS_PE_AND_PEER_REVIEW"
@@ -91,11 +91,11 @@
       "source_lane": "TOP20_SHADOW",
       "source_base_rank": 2,
       "valuation": {
-        "base_upside_pct": 128.28,
-        "double20_stress_upside_pct": 46.1,
-        "base_2027_eps_scenario": 15.918,
+        "base_upside_pct": 132.76,
+        "double20_stress_upside_pct": 48.97,
+        "base_2027_eps_scenario": 16.23,
         "base_2027_pe_assumption": 15.56,
-        "base_target_price_scenario": 247.69,
+        "base_target_price_scenario": 252.54,
         "stressed_scenario_above_reference": true,
         "stressed_scenario_is_not_bear_loss_probability": true,
         "valuation_confidence": "PENDING_ORIGINAL_EPS_PE_AND_PEER_REVIEW"
@@ -378,67 +378,10 @@
       "formal_Aplus_created": false
     },
     {
-      "code": "6625",
-      "name": "必應",
-      "source_lane": "TOP20_SHADOW",
-      "source_base_rank": 7,
-      "valuation": {
-        "base_upside_pct": 107.15,
-        "double20_stress_upside_pct": 32.58,
-        "base_2027_eps_scenario": 10.881,
-        "base_2027_pe_assumption": 13.06,
-        "base_target_price_scenario": 142.11,
-        "stressed_scenario_above_reference": true,
-        "stressed_scenario_is_not_bear_loss_probability": true,
-        "valuation_confidence": "PENDING_ORIGINAL_EPS_PE_AND_PEER_REVIEW"
-      },
-      "quality": {
-        "passed": 0,
-        "pending": 13,
-        "failed": 0,
-        "formal_quality_all_pass": false,
-        "original_numerics_verified": false,
-        "red_flags": [
-          "Q3_REVENUE_GROWTH_DECELERATED_AT_LEAST_20PP"
-        ],
-        "governance_blocked": false,
-        "etf_convergence_watch": false
-      },
-      "price_risk": {
-        "code": "6625",
-        "name": "必應",
-        "status": "NO_THRESHOLD_TRIGGER_IN_OBSERVED_SNAPSHOTS",
-        "risk_blocked": false,
-        "relative_weakness_watch": false,
-        "observation_count": 11,
-        "current_unadjusted_close": 68.6,
-        "return_5observations_pct": -2.7,
-        "return_10observations_pct": -5.51,
-        "peak_to_current_10observations_pct": -6.03,
-        "observed_max_drawdown_pct": -7.53,
-        "relative_to_taiex_tr_pct": 1.83,
-        "complete_20_60_session_history_verified": false
-      },
-      "earnings_revision": "PENDING_DATED_EPS_REVISIONS_AND_FILING_RECONCILIATION",
-      "insider_buy_sell": "PENDING_VERIFIED_BUY_SELL_HOLDER_IDENTITY_AND_PIT",
-      "entry_timing": "PENDING_VERIFIED_PIT_MULTISESSION_ENTRY_SIGNAL",
-      "asymmetric_risk_reward": "PENDING_VERIFIED_BEAR_LOSS_AND_CALIBRATED_NET_RETURN",
-      "actual_portfolio_capacity": "PENDING_ACTUAL_HOLDINGS_CORRELATIONS_AND_EXECUTION_CAPACITY",
-      "action_review_state": "REVIEW_OPERATING_VALUATION_OR_CAPITAL_RISKS",
-      "buy_decision": "NOT_AUTHORIZED_UNVERIFIED",
-      "existing_position_hold_sell": "NOT_EVALUABLE_WITHOUT_VERIFIED_ACTUAL_POSITIONS",
-      "calibrated_probabilities": null,
-      "expected_net_return": null,
-      "downside_loss_bound": null,
-      "position_size_ntd": null,
-      "real_time_order_placed": false,
-      "formal_Aplus_created": false
-    },
-    {
       "code": "2364",
       "name": "倫飛",
       "source_lane": "TOP20_SHADOW",
-      "source_base_rank": 8,
+      "source_base_rank": 7,
       "valuation": {
         "base_upside_pct": 102.91,
         "double20_stress_upside_pct": 29.86,
@@ -493,7 +436,7 @@
       "code": "3285",
       "name": "微端",
       "source_lane": "TOP20_SHADOW",
-      "source_base_rank": 9,
+      "source_base_rank": 8,
       "valuation": {
         "base_upside_pct": 101.39,
         "double20_stress_upside_pct": 28.89,
@@ -552,7 +495,7 @@
       "code": "2376",
       "name": "技嘉",
       "source_lane": "TOP20_SHADOW",
-      "source_base_rank": 10,
+      "source_base_rank": 9,
       "valuation": {
         "base_upside_pct": 100.37,
         "double20_stress_upside_pct": 28.24,
@@ -612,7 +555,7 @@
       "code": "4721",
       "name": "美琪瑪",
       "source_lane": "TOP20_SHADOW",
-      "source_base_rank": 11,
+      "source_base_rank": 10,
       "valuation": {
         "base_upside_pct": 95.58,
         "double20_stress_upside_pct": 25.17,
@@ -672,7 +615,7 @@
       "code": "1256",
       "name": "鮮活果汁-KY",
       "source_lane": "TOP20_SHADOW",
-      "source_base_rank": 12,
+      "source_base_rank": 11,
       "valuation": {
         "base_upside_pct": 93.97,
         "double20_stress_upside_pct": 24.14,
@@ -731,7 +674,7 @@
       "code": "4303",
       "name": "信立",
       "source_lane": "TOP20_SHADOW",
-      "source_base_rank": 13,
+      "source_base_rank": 12,
       "valuation": {
         "base_upside_pct": 91.3,
         "double20_stress_upside_pct": 22.43,
@@ -789,7 +732,7 @@
       "code": "8114",
       "name": "振樺電",
       "source_lane": "TOP20_SHADOW",
-      "source_base_rank": 14,
+      "source_base_rank": 13,
       "valuation": {
         "base_upside_pct": 90.72,
         "double20_stress_upside_pct": 22.06,
@@ -848,7 +791,7 @@
       "code": "8091",
       "name": "翔名",
       "source_lane": "TOP20_SHADOW",
-      "source_base_rank": 15,
+      "source_base_rank": 14,
       "valuation": {
         "base_upside_pct": 86.25,
         "double20_stress_upside_pct": 19.2,
@@ -906,7 +849,7 @@
       "code": "5538",
       "name": "東明-KY",
       "source_lane": "TOP20_SHADOW",
-      "source_base_rank": 16,
+      "source_base_rank": 15,
       "valuation": {
         "base_upside_pct": 83.74,
         "double20_stress_upside_pct": 17.59,
@@ -964,7 +907,7 @@
       "code": "6505",
       "name": "台塑化",
       "source_lane": "TOP20_SHADOW",
-      "source_base_rank": 17,
+      "source_base_rank": 16,
       "valuation": {
         "base_upside_pct": 83.48,
         "double20_stress_upside_pct": 17.42,
@@ -1021,7 +964,7 @@
       "code": "8383",
       "name": "千附",
       "source_lane": "TOP20_SHADOW",
-      "source_base_rank": 18,
+      "source_base_rank": 17,
       "valuation": {
         "base_upside_pct": 82.57,
         "double20_stress_upside_pct": 16.85,
@@ -1078,7 +1021,7 @@
       "code": "6143",
       "name": "振曜",
       "source_lane": "TOP20_SHADOW",
-      "source_base_rank": 19,
+      "source_base_rank": 18,
       "valuation": {
         "base_upside_pct": 82.42,
         "double20_stress_upside_pct": 16.75,
@@ -1139,7 +1082,7 @@
       "code": "6613",
       "name": "朋億*",
       "source_lane": "TOP20_SHADOW",
-      "source_base_rank": 20,
+      "source_base_rank": 19,
       "valuation": {
         "base_upside_pct": 82.06,
         "double20_stress_upside_pct": 16.52,
@@ -1193,6 +1136,66 @@
       "position_size_ntd": null,
       "real_time_order_placed": false,
       "formal_Aplus_created": false
+    },
+    {
+      "code": "2317",
+      "name": "鴻海",
+      "source_lane": "TOP20_SHADOW",
+      "source_base_rank": 20,
+      "valuation": {
+        "base_upside_pct": 81.28,
+        "double20_stress_upside_pct": 16.02,
+        "base_2027_eps_scenario": 26.967,
+        "base_2027_pe_assumption": 16.235,
+        "base_target_price_scenario": 437.8,
+        "stressed_scenario_above_reference": true,
+        "stressed_scenario_is_not_bear_loss_probability": true,
+        "valuation_confidence": "PENDING_ORIGINAL_EPS_PE_AND_PEER_REVIEW"
+      },
+      "quality": {
+        "passed": 0,
+        "pending": 13,
+        "failed": 0,
+        "formal_quality_all_pass": false,
+        "original_numerics_verified": false,
+        "red_flags": [
+          "NEGATIVE_OR_ZERO_H1_OCF_REQUIRES_WORKING_CAPITAL_BRIDGE",
+          "NEGATIVE_YTD_OPERATING_CASHFLOW_CHECK_WORKING_CAPITAL",
+          "CB_LEGAL_TERMS_UNVERIFIED",
+          "LISTED_CB_TERMS_UNVERIFIED"
+        ],
+        "governance_blocked": false,
+        "etf_convergence_watch": false
+      },
+      "price_risk": {
+        "code": "2317",
+        "name": "鴻海",
+        "status": "NO_THRESHOLD_TRIGGER_IN_OBSERVED_SNAPSHOTS",
+        "risk_blocked": false,
+        "relative_weakness_watch": false,
+        "observation_count": 11,
+        "current_unadjusted_close": 241.5,
+        "return_5observations_pct": -1.63,
+        "return_10observations_pct": -2.42,
+        "peak_to_current_10observations_pct": -3.98,
+        "observed_max_drawdown_pct": -10.74,
+        "relative_to_taiex_tr_pct": 4.92,
+        "complete_20_60_session_history_verified": false
+      },
+      "earnings_revision": "PENDING_DATED_EPS_REVISIONS_AND_FILING_RECONCILIATION",
+      "insider_buy_sell": "PENDING_VERIFIED_BUY_SELL_HOLDER_IDENTITY_AND_PIT",
+      "entry_timing": "PENDING_VERIFIED_PIT_MULTISESSION_ENTRY_SIGNAL",
+      "asymmetric_risk_reward": "PENDING_VERIFIED_BEAR_LOSS_AND_CALIBRATED_NET_RETURN",
+      "actual_portfolio_capacity": "PENDING_ACTUAL_HOLDINGS_CORRELATIONS_AND_EXECUTION_CAPACITY",
+      "action_review_state": "REVIEW_OPERATING_VALUATION_OR_CAPITAL_RISKS",
+      "buy_decision": "NOT_AUTHORIZED_UNVERIFIED",
+      "existing_position_hold_sell": "NOT_EVALUABLE_WITHOUT_VERIFIED_ACTUAL_POSITIONS",
+      "calibrated_probabilities": null,
+      "expected_net_return": null,
+      "downside_loss_bound": null,
+      "position_size_ntd": null,
+      "real_time_order_placed": false,
+      "formal_Aplus_created": false
     }
   ],
   "focus_diagnostics": [
@@ -1224,7 +1227,7 @@
       "code": "2317",
       "name": "鴻海",
       "status": "WORK_QUEUE_RESEARCH_FOCUS_NOT_A_TRADE",
-      "source_lane": "FOCUS_ONLY",
+      "source_lane": "TOP20_AND_FOCUS",
       "original_quarter_coverage": {
         "required": 8,
         "archived": 8,
@@ -1253,10 +1256,10 @@
   "no_trade_instruction": true,
   "automatic_deployment": false,
   "source_sha256": {
-    "quality": "b18820c0a15b8791e472b5adeba00cb917e347e67ae48bbdd3395b48cf07a93c",
-    "readiness": "6a8a116ee4bdb98093358991724b485267b26dea98e9c223d563391f4b682ba0",
-    "work_queue": "6fc22b905407fc3432cf918d5db63d9f3d5ceeb982b68f9eb5ff91448be0b4e1",
+    "quality": "6bca1c850d041d78b58eaa62d1356224ced3e5f3db414683eb6733eb15bbb2b1",
+    "readiness": "f24849251a3220045711f7e570cd8532d4bd5e0be2e2871915277b09c165ab87",
+    "work_queue": "68bbd4e39c5faa71da41c4703f457a771c3531d08cb8a53d6506703fb786c4d1",
     "config": "f194399b91ba60882d5750e873dce9e4b60d59b7ff33fc66d74fa3c5ac592ba2",
-    "drawdown": "158fdf110d0783eaa5f0d557410a402e628a5d46023f2bea8b5c305d5439df99"
+    "drawdown": "f72c9e77390543e9cd3de9be0c368a11af76ecd3570e5f9a24cc4eade307d895"
   }
 }

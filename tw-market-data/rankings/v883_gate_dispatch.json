@@ -1,6 +1,6 @@
 {
   "model": "V8.10.8",
-  "vintage": "2026-11-10T17:23:28.585789+08:00",
+  "vintage": "2026-11-11T06:50:20.042032+08:00",
   "price_date": "2026-11-10",
   "eligible_research_count": 818,
   "tracked_issuer_count": 2004,
@@ -11,7 +11,7 @@
       "code": "3305",
       "name": "昇貿",
       "market": "TWSE",
-      "research_upside_pct": 136.73473916515078,
+      "research_upside_pct": 136.01686742865814,
       "research_source_tier": "MOPS_ISSUER_EARNINGS_ANNOUNCEMENT_RESEARCH",
       "lane": "HIGH_UPSIDE_GE30",
       "source_status": "CERTIFICATION_PENDING",
@@ -118,8 +118,8 @@
       "code": "6574",
       "name": "霈方",
       "market": "TPEX",
-      "research_upside_pct": 128.28387766600136,
-      "research_source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
+      "research_upside_pct": 132.75944272292017,
+      "research_source_tier": "MOPS_ISSUER_EARNINGS_ANNOUNCEMENT_RESEARCH",
       "lane": "HIGH_UPSIDE_GE30",
       "source_status": "CERTIFICATION_PENDING",
       "pending_gates": [
@@ -547,113 +547,6 @@
       "name": "山林水",
       "market": "TWSE",
       "research_upside_pct": 108.22732594272595,
-      "research_source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
-      "lane": "HIGH_UPSIDE_GE30",
-      "source_status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ],
-      "route_jobs": [
-        {
-          "gate": "original_eight_quarter_statements",
-          "route": "FINANCIAL_ORIGINALS",
-          "next_check": "Fetch eight dated issuer originals, verify units, revisions and notes",
-          "verified": false
-        },
-        {
-          "gate": "cash_and_working_capital",
-          "route": "FINANCIAL_CASH",
-          "next_check": "Reconcile operating cash flow, receivables, inventory, payables and capex",
-          "verified": false
-        },
-        {
-          "gate": "nonoperating_components",
-          "route": "FINANCIAL_NOTES",
-          "next_check": "Reconcile recurring versus volatile nonoperating income components",
-          "verified": false
-        },
-        {
-          "gate": "fully_diluted_shares",
-          "route": "CAPITAL_LEGAL",
-          "next_check": "Verify current common shares, outstanding CB, resets and conversion terms",
-          "verified": false
-        },
-        {
-          "gate": "matched_peers_and_cycle",
-          "route": "VALUATION_REVIEW",
-          "next_check": "Verify business-matched peer sample and full-cycle PE assumptions",
-          "verified": false
-        },
-        {
-          "gate": "management_promises",
-          "route": "HUMAN_REVIEW",
-          "next_check": "Verify management guidance and subsequent delivery from dated source",
-          "verified": false
-        },
-        {
-          "gate": "auditor_scope",
-          "route": "HUMAN_REVIEW",
-          "next_check": "Assess qualified reviews, emphasis paragraphs and materiality",
-          "verified": false
-        },
-        {
-          "gate": "tradability",
-          "route": "MARKET_HISTORY",
-          "next_check": "Collect 20+ dated sessions, spreads and position exit-capacity stress",
-          "verified": false
-        },
-        {
-          "gate": "forecast_bridge",
-          "route": "OPERATING_BRIDGE",
-          "next_check": "Verify issuer capacity, utilization, ASP, orders, costs and EPS bridge",
-          "verified": false
-        },
-        {
-          "gate": "insider_claims",
-          "route": "DISCLOSURE_REVIEW",
-          "next_check": "Match signed insider trade disclosures to issuer, person and date",
-          "verified": false
-        },
-        {
-          "gate": "dividend_window",
-          "route": "CORPORATE_ACTIONS",
-          "next_check": "Verify ex-date, payment, distribution amount and relevant window",
-          "verified": false
-        },
-        {
-          "gate": "point_in_time",
-          "route": "HISTORICAL_PIT",
-          "next_check": "Verify original public timestamps, revisions and then-known issuer universe",
-          "verified": false
-        },
-        {
-          "gate": "out_of_sample_validation",
-          "route": "HISTORICAL_BACKTEST",
-          "next_check": "Require frozen historical model vintages, actions, fees and prices",
-          "verified": false
-        }
-      ],
-      "next_route": "FINANCIAL_ORIGINALS",
-      "evidence_state": "PENDING_NOT_CERTIFIED",
-      "formal_Aplus": false
-    },
-    {
-      "code": "6625",
-      "name": "必應",
-      "market": "TWSE",
-      "research_upside_pct": 107.15096197619238,
       "research_source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "lane": "HIGH_UPSIDE_GE30",
       "source_status": "CERTIFICATION_PENDING",
@@ -3218,6 +3111,113 @@
       "formal_Aplus": false
     },
     {
+      "code": "6625",
+      "name": "必應",
+      "market": "TWSE",
+      "research_upside_pct": 73.24585018224614,
+      "research_source_tier": "MOPS_ISSUER_EARNINGS_ANNOUNCEMENT_RESEARCH",
+      "lane": "HIGH_UPSIDE_GE30",
+      "source_status": "CERTIFICATION_PENDING",
+      "pending_gates": [
+        "original_eight_quarter_statements",
+        "cash_and_working_capital",
+        "nonoperating_components",
+        "fully_diluted_shares",
+        "matched_peers_and_cycle",
+        "management_promises",
+        "auditor_scope",
+        "tradability",
+        "forecast_bridge",
+        "insider_claims",
+        "dividend_window",
+        "point_in_time",
+        "out_of_sample_validation"
+      ],
+      "route_jobs": [
+        {
+          "gate": "original_eight_quarter_statements",
+          "route": "FINANCIAL_ORIGINALS",
+          "next_check": "Fetch eight dated issuer originals, verify units, revisions and notes",
+          "verified": false
+        },
+        {
+          "gate": "cash_and_working_capital",
+          "route": "FINANCIAL_CASH",
+          "next_check": "Reconcile operating cash flow, receivables, inventory, payables and capex",
+          "verified": false
+        },
+        {
+          "gate": "nonoperating_components",
+          "route": "FINANCIAL_NOTES",
+          "next_check": "Reconcile recurring versus volatile nonoperating income components",
+          "verified": false
+        },
+        {
+          "gate": "fully_diluted_shares",
+          "route": "CAPITAL_LEGAL",
+          "next_check": "Verify current common shares, outstanding CB, resets and conversion terms",
+          "verified": false
+        },
+        {
+          "gate": "matched_peers_and_cycle",
+          "route": "VALUATION_REVIEW",
+          "next_check": "Verify business-matched peer sample and full-cycle PE assumptions",
+          "verified": false
+        },
+        {
+          "gate": "management_promises",
+          "route": "HUMAN_REVIEW",
+          "next_check": "Verify management guidance and subsequent delivery from dated source",
+          "verified": false
+        },
+        {
+          "gate": "auditor_scope",
+          "route": "HUMAN_REVIEW",
+          "next_check": "Assess qualified reviews, emphasis paragraphs and materiality",
+          "verified": false
+        },
+        {
+          "gate": "tradability",
+          "route": "MARKET_HISTORY",
+          "next_check": "Collect 20+ dated sessions, spreads and position exit-capacity stress",
+          "verified": false
+        },
+        {
+          "gate": "forecast_bridge",
+          "route": "OPERATING_BRIDGE",
+          "next_check": "Verify issuer capacity, utilization, ASP, orders, costs and EPS bridge",
+          "verified": false
+        },
+        {
+          "gate": "insider_claims",
+          "route": "DISCLOSURE_REVIEW",
+          "next_check": "Match signed insider trade disclosures to issuer, person and date",
+          "verified": false
+        },
+        {
+          "gate": "dividend_window",
+          "route": "CORPORATE_ACTIONS",
+          "next_check": "Verify ex-date, payment, distribution amount and relevant window",
+          "verified": false
+        },
+        {
+          "gate": "point_in_time",
+          "route": "HISTORICAL_PIT",
+          "next_check": "Verify original public timestamps, revisions and then-known issuer universe",
+          "verified": false
+        },
+        {
+          "gate": "out_of_sample_validation",
+          "route": "HISTORICAL_BACKTEST",
+          "next_check": "Require frozen historical model vintages, actions, fees and prices",
+          "verified": false
+        }
+      ],
+      "next_route": "FINANCIAL_ORIGINALS",
+      "evidence_state": "PENDING_NOT_CERTIFIED",
+      "formal_Aplus": false
+    },
+    {
       "code": "4953",
       "name": "緯致",
       "market": "TPEX",
@@ -5040,7 +5040,7 @@
       "code": "4771",
       "name": "望隼",
       "market": "TWSE",
-      "research_upside_pct": 59.850712864157906,
+      "research_upside_pct": 59.75003355697499,
       "research_source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "lane": "HIGH_UPSIDE_GE30",
       "source_status": "CERTIFICATION_PENDING",
@@ -5363,7 +5363,7 @@
       "code": "3305",
       "name": "昇貿",
       "market": "TWSE",
-      "research_upside_pct": 136.73473916515078,
+      "research_upside_pct": 136.01686742865814,
       "research_source_tier": "MOPS_ISSUER_EARNINGS_ANNOUNCEMENT_RESEARCH",
       "lane": "HIGH_UPSIDE_GE30",
       "source_status": "CERTIFICATION_PENDING",
@@ -5470,8 +5470,8 @@
       "code": "6574",
       "name": "霈方",
       "market": "TPEX",
-      "research_upside_pct": 128.28387766600136,
-      "research_source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
+      "research_upside_pct": 132.75944272292017,
+      "research_source_tier": "MOPS_ISSUER_EARNINGS_ANNOUNCEMENT_RESEARCH",
       "lane": "HIGH_UPSIDE_GE30",
       "source_status": "CERTIFICATION_PENDING",
       "pending_gates": [
@@ -5899,113 +5899,6 @@
       "name": "山林水",
       "market": "TWSE",
       "research_upside_pct": 108.22732594272595,
-      "research_source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
-      "lane": "HIGH_UPSIDE_GE30",
-      "source_status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ],
-      "route_jobs": [
-        {
-          "gate": "original_eight_quarter_statements",
-          "route": "FINANCIAL_ORIGINALS",
-          "next_check": "Fetch eight dated issuer originals, verify units, revisions and notes",
-          "verified": false
-        },
-        {
-          "gate": "cash_and_working_capital",
-          "route": "FINANCIAL_CASH",
-          "next_check": "Reconcile operating cash flow, receivables, inventory, payables and capex",
-          "verified": false
-        },
-        {
-          "gate": "nonoperating_components",
-          "route": "FINANCIAL_NOTES",
-          "next_check": "Reconcile recurring versus volatile nonoperating income components",
-          "verified": false
-        },
-        {
-          "gate": "fully_diluted_shares",
-          "route": "CAPITAL_LEGAL",
-          "next_check": "Verify current common shares, outstanding CB, resets and conversion terms",
-          "verified": false
-        },
-        {
-          "gate": "matched_peers_and_cycle",
-          "route": "VALUATION_REVIEW",
-          "next_check": "Verify business-matched peer sample and full-cycle PE assumptions",
-          "verified": false
-        },
-        {
-          "gate": "management_promises",
-          "route": "HUMAN_REVIEW",
-          "next_check": "Verify management guidance and subsequent delivery from dated source",
-          "verified": false
-        },
-        {
-          "gate": "auditor_scope",
-          "route": "HUMAN_REVIEW",
-          "next_check": "Assess qualified reviews, emphasis paragraphs and materiality",
-          "verified": false
-        },
-        {
-          "gate": "tradability",
-          "route": "MARKET_HISTORY",
-          "next_check": "Collect 20+ dated sessions, spreads and position exit-capacity stress",
-          "verified": false
-        },
-        {
-          "gate": "forecast_bridge",
-          "route": "OPERATING_BRIDGE",
-          "next_check": "Verify issuer capacity, utilization, ASP, orders, costs and EPS bridge",
-          "verified": false
-        },
-        {
-          "gate": "insider_claims",
-          "route": "DISCLOSURE_REVIEW",
-          "next_check": "Match signed insider trade disclosures to issuer, person and date",
-          "verified": false
-        },
-        {
-          "gate": "dividend_window",
-          "route": "CORPORATE_ACTIONS",
-          "next_check": "Verify ex-date, payment, distribution amount and relevant window",
-          "verified": false
-        },
-        {
-          "gate": "point_in_time",
-          "route": "HISTORICAL_PIT",
-          "next_check": "Verify original public timestamps, revisions and then-known issuer universe",
-          "verified": false
-        },
-        {
-          "gate": "out_of_sample_validation",
-          "route": "HISTORICAL_BACKTEST",
-          "next_check": "Require frozen historical model vintages, actions, fees and prices",
-          "verified": false
-        }
-      ],
-      "next_route": "FINANCIAL_ORIGINALS",
-      "evidence_state": "PENDING_NOT_CERTIFIED",
-      "formal_Aplus": false
-    },
-    {
-      "code": "6625",
-      "name": "必應",
-      "market": "TWSE",
-      "research_upside_pct": 107.15096197619238,
       "research_source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "lane": "HIGH_UPSIDE_GE30",
       "source_status": "CERTIFICATION_PENDING",
@@ -8570,6 +8463,113 @@
       "formal_Aplus": false
     },
     {
+      "code": "6625",
+      "name": "必應",
+      "market": "TWSE",
+      "research_upside_pct": 73.24585018224614,
+      "research_source_tier": "MOPS_ISSUER_EARNINGS_ANNOUNCEMENT_RESEARCH",
+      "lane": "HIGH_UPSIDE_GE30",
+      "source_status": "CERTIFICATION_PENDING",
+      "pending_gates": [
+        "original_eight_quarter_statements",
+        "cash_and_working_capital",
+        "nonoperating_components",
+        "fully_diluted_shares",
+        "matched_peers_and_cycle",
+        "management_promises",
+        "auditor_scope",
+        "tradability",
+        "forecast_bridge",
+        "insider_claims",
+        "dividend_window",
+        "point_in_time",
+        "out_of_sample_validation"
+      ],
+      "route_jobs": [
+        {
+          "gate": "original_eight_quarter_statements",
+          "route": "FINANCIAL_ORIGINALS",
+          "next_check": "Fetch eight dated issuer originals, verify units, revisions and notes",
+          "verified": false
+        },
+        {
+          "gate": "cash_and_working_capital",
+          "route": "FINANCIAL_CASH",
+          "next_check": "Reconcile operating cash flow, receivables, inventory, payables and capex",
+          "verified": false
+        },
+        {
+          "gate": "nonoperating_components",
+          "route": "FINANCIAL_NOTES",
+          "next_check": "Reconcile recurring versus volatile nonoperating income components",
+          "verified": false
+        },
+        {
+          "gate": "fully_diluted_shares",
+          "route": "CAPITAL_LEGAL",
+          "next_check": "Verify current common shares, outstanding CB, resets and conversion terms",
+          "verified": false
+        },
+        {
+          "gate": "matched_peers_and_cycle",
+          "route": "VALUATION_REVIEW",
+          "next_check": "Verify business-matched peer sample and full-cycle PE assumptions",
+          "verified": false
+        },
+        {
+          "gate": "management_promises",
+          "route": "HUMAN_REVIEW",
+          "next_check": "Verify management guidance and subsequent delivery from dated source",
+          "verified": false
+        },
+        {
+          "gate": "auditor_scope",
+          "route": "HUMAN_REVIEW",
+          "next_check": "Assess qualified reviews, emphasis paragraphs and materiality",
+          "verified": false
+        },
+        {
+          "gate": "tradability",
+          "route": "MARKET_HISTORY",
+          "next_check": "Collect 20+ dated sessions, spreads and position exit-capacity stress",
+          "verified": false
+        },
+        {
+          "gate": "forecast_bridge",
+          "route": "OPERATING_BRIDGE",
+          "next_check": "Verify issuer capacity, utilization, ASP, orders, costs and EPS bridge",
+          "verified": false
+        },
+        {
+          "gate": "insider_claims",
+          "route": "DISCLOSURE_REVIEW",
+          "next_check": "Match signed insider trade disclosures to issuer, person and date",
+          "verified": false
+        },
+        {
+          "gate": "dividend_window",
+          "route": "CORPORATE_ACTIONS",
+          "next_check": "Verify ex-date, payment, distribution amount and relevant window",
+          "verified": false
+        },
+        {
+          "gate": "point_in_time",
+          "route": "HISTORICAL_PIT",
+          "next_check": "Verify original public timestamps, revisions and then-known issuer universe",
+          "verified": false
+        },
+        {
+          "gate": "out_of_sample_validation",
+          "route": "HISTORICAL_BACKTEST",
+          "next_check": "Require frozen historical model vintages, actions, fees and prices",
+          "verified": false
+        }
+      ],
+      "next_route": "FINANCIAL_ORIGINALS",
+      "evidence_state": "PENDING_NOT_CERTIFIED",
+      "formal_Aplus": false
+    },
+    {
       "code": "4953",
       "name": "緯致",
       "market": "TPEX",
@@ -10392,7 +10392,7 @@
       "code": "4771",
       "name": "望隼",
       "market": "TWSE",
-      "research_upside_pct": 59.850712864157906,
+      "research_upside_pct": 59.75003355697499,
       "research_source_tier": "ORIGINAL_CURRENT_ISSUER_NUMERICS",
       "lane": "HIGH_UPSIDE_GE30",
       "source_status": "CERTIFICATION_PENDING",
@@ -66778,6 +66778,113 @@
       "formal_Aplus": false
     },
     {
+      "code": "6743",
+      "name": "安普新",
+      "market": "TWSE",
+      "research_upside_pct": -29.32258021301266,
+      "research_source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
+      "lane": "VALUED_BELOW25",
+      "source_status": "CERTIFICATION_PENDING",
+      "pending_gates": [
+        "original_eight_quarter_statements",
+        "cash_and_working_capital",
+        "nonoperating_components",
+        "fully_diluted_shares",
+        "matched_peers_and_cycle",
+        "management_promises",
+        "auditor_scope",
+        "tradability",
+        "forecast_bridge",
+        "insider_claims",
+        "dividend_window",
+        "point_in_time",
+        "out_of_sample_validation"
+      ],
+      "route_jobs": [
+        {
+          "gate": "original_eight_quarter_statements",
+          "route": "FINANCIAL_ORIGINALS",
+          "next_check": "Fetch eight dated issuer originals, verify units, revisions and notes",
+          "verified": false
+        },
+        {
+          "gate": "cash_and_working_capital",
+          "route": "FINANCIAL_CASH",
+          "next_check": "Reconcile operating cash flow, receivables, inventory, payables and capex",
+          "verified": false
+        },
+        {
+          "gate": "nonoperating_components",
+          "route": "FINANCIAL_NOTES",
+          "next_check": "Reconcile recurring versus volatile nonoperating income components",
+          "verified": false
+        },
+        {
+          "gate": "fully_diluted_shares",
+          "route": "CAPITAL_LEGAL",
+          "next_check": "Verify current common shares, outstanding CB, resets and conversion terms",
+          "verified": false
+        },
+        {
+          "gate": "matched_peers_and_cycle",
+          "route": "VALUATION_REVIEW",
+          "next_check": "Verify business-matched peer sample and full-cycle PE assumptions",
+          "verified": false
+        },
+        {
+          "gate": "management_promises",
+          "route": "HUMAN_REVIEW",
+          "next_check": "Verify management guidance and subsequent delivery from dated source",
+          "verified": false
+        },
+        {
+          "gate": "auditor_scope",
+          "route": "HUMAN_REVIEW",
+          "next_check": "Assess qualified reviews, emphasis paragraphs and materiality",
+          "verified": false
+        },
+        {
+          "gate": "tradability",
+          "route": "MARKET_HISTORY",
+          "next_check": "Collect 20+ dated sessions, spreads and position exit-capacity stress",
+          "verified": false
+        },
+        {
+          "gate": "forecast_bridge",
+          "route": "OPERATING_BRIDGE",
+          "next_check": "Verify issuer capacity, utilization, ASP, orders, costs and EPS bridge",
+          "verified": false
+        },
+        {
+          "gate": "insider_claims",
+          "route": "DISCLOSURE_REVIEW",
+          "next_check": "Match signed insider trade disclosures to issuer, person and date",
+          "verified": false
+        },
+        {
+          "gate": "dividend_window",
+          "route": "CORPORATE_ACTIONS",
+          "next_check": "Verify ex-date, payment, distribution amount and relevant window",
+          "verified": false
+        },
+        {
+          "gate": "point_in_time",
+          "route": "HISTORICAL_PIT",
+          "next_check": "Verify original public timestamps, revisions and then-known issuer universe",
+          "verified": false
+        },
+        {
+          "gate": "out_of_sample_validation",
+          "route": "HISTORICAL_BACKTEST",
+          "next_check": "Require frozen historical model vintages, actions, fees and prices",
+          "verified": false
+        }
+      ],
+      "next_route": "FINANCIAL_ORIGINALS",
+      "evidence_state": "PENDING_NOT_CERTIFIED",
+      "formal_Aplus": false
+    },
+    {
       "code": "6683",
       "name": "雍智科技",
       "market": "TPEX",
@@ -67531,113 +67638,6 @@
       "name": "達爾膚",
       "market": "TPEX",
       "research_upside_pct": -30.37419035828145,
-      "research_source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
-      "lane": "VALUED_BELOW25",
-      "source_status": "CERTIFICATION_PENDING",
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ],
-      "route_jobs": [
-        {
-          "gate": "original_eight_quarter_statements",
-          "route": "FINANCIAL_ORIGINALS",
-          "next_check": "Fetch eight dated issuer originals, verify units, revisions and notes",
-          "verified": false
-        },
-        {
-          "gate": "cash_and_working_capital",
-          "route": "FINANCIAL_CASH",
-          "next_check": "Reconcile operating cash flow, receivables, inventory, payables and capex",
-          "verified": false
-        },
-        {
-          "gate": "nonoperating_components",
-          "route": "FINANCIAL_NOTES",
-          "next_check": "Reconcile recurring versus volatile nonoperating income components",
-          "verified": false
-        },
-        {
-          "gate": "fully_diluted_shares",
-          "route": "CAPITAL_LEGAL",
-          "next_check": "Verify current common shares, outstanding CB, resets and conversion terms",
-          "verified": false
-        },
-        {
-          "gate": "matched_peers_and_cycle",
-          "route": "VALUATION_REVIEW",
-          "next_check": "Verify business-matched peer sample and full-cycle PE assumptions",
-          "verified": false
-        },
-        {
-          "gate": "management_promises",
-          "route": "HUMAN_REVIEW",
-          "next_check": "Verify management guidance and subsequent delivery from dated source",
-          "verified": false
-        },
-        {
-          "gate": "auditor_scope",
-          "route": "HUMAN_REVIEW",
-          "next_check": "Assess qualified reviews, emphasis paragraphs and materiality",
-          "verified": false
-        },
-        {
-          "gate": "tradability",
-          "route": "MARKET_HISTORY",
-          "next_check": "Collect 20+ dated sessions, spreads and position exit-capacity stress",
-          "verified": false
-        },
-        {
-          "gate": "forecast_bridge",
-          "route": "OPERATING_BRIDGE",
-          "next_check": "Verify issuer capacity, utilization, ASP, orders, costs and EPS bridge",
-          "verified": false
-        },
-        {
-          "gate": "insider_claims",
-          "route": "DISCLOSURE_REVIEW",
-          "next_check": "Match signed insider trade disclosures to issuer, person and date",
-          "verified": false
-        },
-        {
-          "gate": "dividend_window",
-          "route": "CORPORATE_ACTIONS",
-          "next_check": "Verify ex-date, payment, distribution amount and relevant window",
-          "verified": false
-        },
-        {
-          "gate": "point_in_time",
-          "route": "HISTORICAL_PIT",
-          "next_check": "Verify original public timestamps, revisions and then-known issuer universe",
-          "verified": false
-        },
-        {
-          "gate": "out_of_sample_validation",
-          "route": "HISTORICAL_BACKTEST",
-          "next_check": "Require frozen historical model vintages, actions, fees and prices",
-          "verified": false
-        }
-      ],
-      "next_route": "FINANCIAL_ORIGINALS",
-      "evidence_state": "PENDING_NOT_CERTIFIED",
-      "formal_Aplus": false
-    },
-    {
-      "code": "6743",
-      "name": "安普新",
-      "market": "TWSE",
-      "research_upside_pct": -30.500537209462454,
       "research_source_tier": "OFFICIAL_CURRENT_BATCH_WITH_UNVERIFIED_HISTORICAL_DETAIL",
       "lane": "VALUED_BELOW25",
       "source_status": "CERTIFICATION_PENDING",

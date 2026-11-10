@@ -1,6 +1,6 @@
 {
   "model": "V8.10.8",
-  "estimate_vintage": "2026-11-10T17:23:28.585789+08:00",
+  "estimate_vintage": "2026-11-11T06:50:20.042032+08:00",
   "asof_price_date": "2026-11-10",
   "tracked_issuers": 2004,
   "valued_candidates": 818,
@@ -13,7 +13,7 @@
     {
       "date": "2026-11-10",
       "path": "tw-market-data/prices/2026-11-10.json",
-      "sha256": "d5db12b85a6137fd4fcbd7463f4e84b04fdfe59df4084ece17c2d3318ead2f59",
+      "sha256": "32e1e5d0e1db5c0280a3bded5ac8ac2ab052f1cd82f6cbbd5c3cae6bad5c865a",
       "raw_official_bytes_independently_authenticated": false,
       "manifest_crosscheck": true
     },
@@ -136,7 +136,7 @@
       "code": "3305",
       "name": "昇貿",
       "market": "TWSE",
-      "research_upside_pct": 136.73473916515078,
+      "research_upside_pct": 136.01686742865814,
       "source_status": "CERTIFICATION_PENDING",
       "financial": {
         "normalized_income_8q_count": 8,
@@ -278,7 +278,7 @@
       "code": "6574",
       "name": "霈方",
       "market": "TPEX",
-      "research_upside_pct": 128.28387766600136,
+      "research_upside_pct": 132.75944272292017,
       "source_status": "CERTIFICATION_PENDING",
       "financial": {
         "normalized_income_8q_count": 8,
@@ -321,7 +321,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -361,7 +361,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -708,7 +708,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -748,7 +748,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -886,143 +886,6 @@
         ],
         "overlapping_sessions_checked": 11,
         "reused_issuer_history_sessions": 465,
-        "original_capture_is_not_authenticated_issuer_PIT": true,
-        "spread_and_limit_price_execution_not_verified": true,
-        "tradability_gate": "PENDING_NOT_CERTIFIED"
-      },
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ],
-      "ready_for_formal_certification": false,
-      "newly_passed_gates": [],
-      "source_tier": "NORMALIZED_ARCHIVE_AND_CAPTURE_RECEIPTS_NOT_INDEPENDENT_ORIGINAL_ATTESTATION"
-    },
-    {
-      "code": "6625",
-      "name": "必應",
-      "market": "TWSE",
-      "research_upside_pct": 107.15096197619238,
-      "source_status": "CERTIFICATION_PENDING",
-      "financial": {
-        "normalized_income_8q_count": 8,
-        "normalized_cashflow_8q_count": 8,
-        "missing_income_periods": [],
-        "missing_cashflow_periods": [],
-        "latest_primary_key_numbers_checked": false,
-        "full_eight_quarter_original_notes_audit": false,
-        "filing_specific_disclosure_timestamps_verified": false,
-        "original_eight_quarter_gate": "PENDING_NOT_CERTIFIED"
-      },
-      "capital": {
-        "issued_share_master_present": true,
-        "reported_bond_count": 0,
-        "unverified_bond_terms": [],
-        "dated_capital_terms_receipt_present": false,
-        "dated_capital_terms_fully_certified": false,
-        "no_listed_bond_does_not_prove_no_other_dilution": true,
-        "fully_diluted_shares_gate": "PENDING_NOT_CERTIFIED"
-      },
-      "market_history": {
-        "available_market_archives": 16,
-        "observed_20_session_issuer_count": 16,
-        "five_day": {
-          "sessions": 5,
-          "first": "2026-11-04",
-          "last": "2026-11-10",
-          "median_turnover_ntd": 9149450,
-          "min_turnover_ntd": 3431915,
-          "zero_turnover_days": 0,
-          "hypothetical_position_ntd": 5000000,
-          "participation_cap": 0.2,
-          "exit_sessions_at_median": 2.73,
-          "estimates_are_idealized_not_fills": true
-        },
-        "twenty_day": null,
-        "sixty_day": null,
-        "spread_and_order_book_evidence_available": false,
-        "tradability_gate": "PENDING_NOT_CERTIFIED"
-      },
-      "issuer_historical_market_data": {
-        "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 491,
-        "twenty_day": {
-          "sessions": 20,
-          "first": "2026-10-12",
-          "last": "2026-11-10",
-          "median_turnover_ntd": 4331741.0,
-          "min_turnover_ntd": 1765241,
-          "zero_turnover_days": 0,
-          "hypothetical_position_ntd": 5000000,
-          "participation_cap": 0.2,
-          "exit_sessions_at_median": 5.77,
-          "estimates_are_idealized_not_fills": true
-        },
-        "five_day": {
-          "sessions": 5,
-          "first": "2026-11-04",
-          "last": "2026-11-10",
-          "median_turnover_ntd": 9149450,
-          "min_turnover_ntd": 3431915,
-          "zero_turnover_days": 0,
-          "hypothetical_position_ntd": 5000000,
-          "participation_cap": 0.2,
-          "exit_sessions_at_median": 2.73,
-          "estimates_are_idealized_not_fills": true
-        },
-        "sixty_day": {
-          "sessions": 60,
-          "first": "2026-08-12",
-          "last": "2026-11-10",
-          "median_turnover_ntd": 4391627.5,
-          "min_turnover_ntd": 1692680,
-          "zero_turnover_days": 0,
-          "hypothetical_position_ntd": 5000000,
-          "participation_cap": 0.2,
-          "exit_sessions_at_median": 5.69,
-          "estimates_are_idealized_not_fills": true
-        },
-        "validated_archive_additions": 5,
-        "validated_archive_added_sessions": [
-          {
-            "date": "2026-11-10",
-            "turnover_ntd": 3431915,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          },
-          {
-            "date": "2026-10-30",
-            "turnover_ntd": 6158646,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          },
-          {
-            "date": "2026-10-29",
-            "turnover_ntd": 1765241,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          },
-          {
-            "date": "2026-10-28",
-            "turnover_ntd": 2459528,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          },
-          {
-            "date": "2026-10-27",
-            "turnover_ntd": 2409614,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          }
-        ],
-        "overlapping_sessions_checked": 11,
-        "reused_issuer_history_sessions": 486,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -1210,7 +1073,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -1250,7 +1113,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -1366,7 +1229,7 @@
         "validated_archive_added_sessions": [
           {
             "date": "2026-11-10",
-            "turnover_ntd": 2958097838,
+            "turnover_ntd": 3124111838,
             "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
           },
           {
@@ -1462,7 +1325,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -1502,7 +1365,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -1712,7 +1575,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -1752,7 +1615,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -1940,7 +1803,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -1980,7 +1843,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -2310,7 +2173,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -2350,7 +2213,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -2421,7 +2284,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -2461,7 +2324,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -2532,7 +2395,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -2572,7 +2435,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -2908,7 +2771,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -2948,7 +2811,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -3139,7 +3002,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -3179,7 +3042,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -3250,7 +3113,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -3290,7 +3153,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -3472,7 +3335,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -3512,7 +3375,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -3751,7 +3614,7 @@
           "first": "2026-11-04",
           "last": "2026-11-10",
           "median_turnover_ntd": 1257856289,
-          "min_turnover_ntd": 1036604354,
+          "min_turnover_ntd": 1142231854,
           "zero_turnover_days": 0,
           "hypothetical_position_ntd": 5000000,
           "participation_cap": 0.2,
@@ -3770,7 +3633,7 @@
           "sessions": 20,
           "first": "2026-10-12",
           "last": "2026-11-10",
-          "median_turnover_ntd": 1078956397.0,
+          "median_turnover_ntd": 1131770147.0,
           "min_turnover_ntd": 441370665,
           "zero_turnover_days": 0,
           "hypothetical_position_ntd": 5000000,
@@ -3783,7 +3646,7 @@
           "first": "2026-11-04",
           "last": "2026-11-10",
           "median_turnover_ntd": 1257856289,
-          "min_turnover_ntd": 1036604354,
+          "min_turnover_ntd": 1142231854,
           "zero_turnover_days": 0,
           "hypothetical_position_ntd": 5000000,
           "participation_cap": 0.2,
@@ -3806,12 +3669,149 @@
         "validated_archive_added_sessions": [
           {
             "date": "2026-11-10",
-            "turnover_ntd": 1036604354,
+            "turnover_ntd": 1142231854,
             "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
           }
         ],
         "overlapping_sessions_checked": 15,
         "reused_issuer_history_sessions": 66,
+        "original_capture_is_not_authenticated_issuer_PIT": true,
+        "spread_and_limit_price_execution_not_verified": true,
+        "tradability_gate": "PENDING_NOT_CERTIFIED"
+      },
+      "pending_gates": [
+        "original_eight_quarter_statements",
+        "cash_and_working_capital",
+        "nonoperating_components",
+        "fully_diluted_shares",
+        "matched_peers_and_cycle",
+        "management_promises",
+        "auditor_scope",
+        "tradability",
+        "forecast_bridge",
+        "insider_claims",
+        "dividend_window",
+        "point_in_time",
+        "out_of_sample_validation"
+      ],
+      "ready_for_formal_certification": false,
+      "newly_passed_gates": [],
+      "source_tier": "NORMALIZED_ARCHIVE_AND_CAPTURE_RECEIPTS_NOT_INDEPENDENT_ORIGINAL_ATTESTATION"
+    },
+    {
+      "code": "6625",
+      "name": "必應",
+      "market": "TWSE",
+      "research_upside_pct": 73.24585018224614,
+      "source_status": "CERTIFICATION_PENDING",
+      "financial": {
+        "normalized_income_8q_count": 8,
+        "normalized_cashflow_8q_count": 8,
+        "missing_income_periods": [],
+        "missing_cashflow_periods": [],
+        "latest_primary_key_numbers_checked": false,
+        "full_eight_quarter_original_notes_audit": false,
+        "filing_specific_disclosure_timestamps_verified": false,
+        "original_eight_quarter_gate": "PENDING_NOT_CERTIFIED"
+      },
+      "capital": {
+        "issued_share_master_present": true,
+        "reported_bond_count": 0,
+        "unverified_bond_terms": [],
+        "dated_capital_terms_receipt_present": false,
+        "dated_capital_terms_fully_certified": false,
+        "no_listed_bond_does_not_prove_no_other_dilution": true,
+        "fully_diluted_shares_gate": "PENDING_NOT_CERTIFIED"
+      },
+      "market_history": {
+        "available_market_archives": 16,
+        "observed_20_session_issuer_count": 16,
+        "five_day": {
+          "sessions": 5,
+          "first": "2026-11-04",
+          "last": "2026-11-10",
+          "median_turnover_ntd": 9149450,
+          "min_turnover_ntd": 3431915,
+          "zero_turnover_days": 0,
+          "hypothetical_position_ntd": 5000000,
+          "participation_cap": 0.2,
+          "exit_sessions_at_median": 2.73,
+          "estimates_are_idealized_not_fills": true
+        },
+        "twenty_day": null,
+        "sixty_day": null,
+        "spread_and_order_book_evidence_available": false,
+        "tradability_gate": "PENDING_NOT_CERTIFIED"
+      },
+      "issuer_historical_market_data": {
+        "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
+        "available_sessions": 491,
+        "twenty_day": {
+          "sessions": 20,
+          "first": "2026-10-12",
+          "last": "2026-11-10",
+          "median_turnover_ntd": 4331741.0,
+          "min_turnover_ntd": 1765241,
+          "zero_turnover_days": 0,
+          "hypothetical_position_ntd": 5000000,
+          "participation_cap": 0.2,
+          "exit_sessions_at_median": 5.77,
+          "estimates_are_idealized_not_fills": true
+        },
+        "five_day": {
+          "sessions": 5,
+          "first": "2026-11-04",
+          "last": "2026-11-10",
+          "median_turnover_ntd": 9149450,
+          "min_turnover_ntd": 3431915,
+          "zero_turnover_days": 0,
+          "hypothetical_position_ntd": 5000000,
+          "participation_cap": 0.2,
+          "exit_sessions_at_median": 2.73,
+          "estimates_are_idealized_not_fills": true
+        },
+        "sixty_day": {
+          "sessions": 60,
+          "first": "2026-08-12",
+          "last": "2026-11-10",
+          "median_turnover_ntd": 4391627.5,
+          "min_turnover_ntd": 1692680,
+          "zero_turnover_days": 0,
+          "hypothetical_position_ntd": 5000000,
+          "participation_cap": 0.2,
+          "exit_sessions_at_median": 5.69,
+          "estimates_are_idealized_not_fills": true
+        },
+        "validated_archive_additions": 5,
+        "validated_archive_added_sessions": [
+          {
+            "date": "2026-11-10",
+            "turnover_ntd": 3431915,
+            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
+          },
+          {
+            "date": "2026-10-30",
+            "turnover_ntd": 6158646,
+            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
+          },
+          {
+            "date": "2026-10-29",
+            "turnover_ntd": 1765241,
+            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
+          },
+          {
+            "date": "2026-10-28",
+            "turnover_ntd": 2459528,
+            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
+          },
+          {
+            "date": "2026-10-27",
+            "turnover_ntd": 2409614,
+            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
+          }
+        ],
+        "overlapping_sessions_checked": 11,
+        "reused_issuer_history_sessions": 486,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -3882,7 +3882,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -3922,7 +3922,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -4641,7 +4641,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -4681,7 +4681,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -5732,7 +5732,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -5772,7 +5772,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -6014,7 +6014,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 170,
+        "available_sessions": 173,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-09-30",
@@ -6043,7 +6043,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 9,
-        "reused_issuer_history_sessions": 170,
+        "reused_issuer_history_sessions": 173,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -6138,7 +6138,7 @@
       "code": "4771",
       "name": "望隼",
       "market": "TWSE",
-      "research_upside_pct": 59.850712864157906,
+      "research_upside_pct": 59.75003355697499,
       "source_status": "CERTIFICATION_PENDING",
       "financial": {
         "normalized_income_8q_count": 8,
@@ -6281,7 +6281,7 @@
           "first": "2026-11-04",
           "last": "2026-11-10",
           "median_turnover_ntd": 8104056625,
-          "min_turnover_ntd": 5644105780,
+          "min_turnover_ntd": 5865205780,
           "zero_turnover_days": 0,
           "hypothetical_position_ntd": 5000000,
           "participation_cap": 0.2,
@@ -6301,7 +6301,7 @@
           "first": "2026-10-12",
           "last": "2026-11-10",
           "median_turnover_ntd": 8484247287.5,
-          "min_turnover_ntd": 5644105780,
+          "min_turnover_ntd": 5865205780,
           "zero_turnover_days": 0,
           "hypothetical_position_ntd": 5000000,
           "participation_cap": 0.2,
@@ -6313,7 +6313,7 @@
           "first": "2026-11-04",
           "last": "2026-11-10",
           "median_turnover_ntd": 8104056625,
-          "min_turnover_ntd": 5644105780,
+          "min_turnover_ntd": 5865205780,
           "zero_turnover_days": 0,
           "hypothetical_position_ntd": 5000000,
           "participation_cap": 0.2,
@@ -6336,7 +6336,7 @@
         "validated_archive_added_sessions": [
           {
             "date": "2026-11-10",
-            "turnover_ntd": 5644105780,
+            "turnover_ntd": 5865205780,
             "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
           },
           {
@@ -6998,7 +6998,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -7038,7 +7038,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -7296,7 +7296,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -7336,7 +7336,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -8084,7 +8084,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -8124,7 +8124,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -8559,7 +8559,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -8599,7 +8599,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -8670,7 +8670,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -8710,7 +8710,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -8848,7 +8848,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -8888,7 +8888,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -9027,7 +9027,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -9067,7 +9067,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -9433,7 +9433,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -9473,7 +9473,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -9674,7 +9674,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -9714,7 +9714,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -9785,7 +9785,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -9825,7 +9825,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -10083,7 +10083,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -10123,7 +10123,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -10700,7 +10700,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 172,
+        "available_sessions": 175,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -10740,7 +10740,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 172,
+        "reused_issuer_history_sessions": 175,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -10811,7 +10811,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -10851,7 +10851,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -11024,86 +11024,10 @@
           "exit_sessions_at_median": 0.46,
           "estimates_are_idealized_not_fills": true
         },
-        "validated_archive_additions": 15,
-        "validated_archive_added_sessions": [
-          {
-            "date": "2026-11-10",
-            "turnover_ntd": 39005668,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          },
-          {
-            "date": "2026-11-09",
-            "turnover_ntd": 55955819,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          },
-          {
-            "date": "2026-11-06",
-            "turnover_ntd": 65381114,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          },
-          {
-            "date": "2026-11-05",
-            "turnover_ntd": 126011405,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          },
-          {
-            "date": "2026-11-04",
-            "turnover_ntd": 49059718,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          },
-          {
-            "date": "2026-11-03",
-            "turnover_ntd": 30509772,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          },
-          {
-            "date": "2026-11-02",
-            "turnover_ntd": 16709983,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          },
-          {
-            "date": "2026-10-30",
-            "turnover_ntd": 65788428,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          },
-          {
-            "date": "2026-10-29",
-            "turnover_ntd": 123095670,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          },
-          {
-            "date": "2026-10-28",
-            "turnover_ntd": 79302708,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          },
-          {
-            "date": "2026-10-27",
-            "turnover_ntd": 35819229,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          },
-          {
-            "date": "2026-10-22",
-            "turnover_ntd": 105955091,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          },
-          {
-            "date": "2026-10-21",
-            "turnover_ntd": 18934641,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          },
-          {
-            "date": "2026-10-20",
-            "turnover_ntd": 21811680,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          },
-          {
-            "date": "2026-10-19",
-            "turnover_ntd": 30365328,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          }
-        ],
-        "overlapping_sessions_checked": 1,
-        "reused_issuer_history_sessions": 52,
+        "validated_archive_additions": 0,
+        "validated_archive_added_sessions": [],
+        "overlapping_sessions_checked": 16,
+        "reused_issuer_history_sessions": 67,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -11174,7 +11098,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -11214,7 +11138,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -11285,7 +11209,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -11325,7 +11249,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -11396,7 +11320,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -11436,7 +11360,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -11575,7 +11499,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -11615,7 +11539,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -11672,7 +11596,7 @@
           "first": "2026-11-04",
           "last": "2026-11-10",
           "median_turnover_ntd": 102581042177,
-          "min_turnover_ntd": 82491848965,
+          "min_turnover_ntd": 82847295812,
           "zero_turnover_days": 0,
           "hypothetical_position_ntd": 5000000,
           "participation_cap": 0.2,
@@ -11704,7 +11628,7 @@
           "first": "2026-11-04",
           "last": "2026-11-10",
           "median_turnover_ntd": 102581042177,
-          "min_turnover_ntd": 82491848965,
+          "min_turnover_ntd": 82847295812,
           "zero_turnover_days": 0,
           "hypothetical_position_ntd": 5000000,
           "participation_cap": 0.2,
@@ -11727,7 +11651,7 @@
         "validated_archive_added_sessions": [
           {
             "date": "2026-11-10",
-            "turnover_ntd": 82491848965,
+            "turnover_ntd": 82847295812,
             "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
           },
           {
@@ -12125,7 +12049,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -12165,7 +12089,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -12236,7 +12160,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -12276,7 +12200,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -12534,7 +12458,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -12574,7 +12498,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -12712,7 +12636,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -12752,7 +12676,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -13075,7 +12999,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -13115,7 +13039,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -13186,7 +13110,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -13226,7 +13150,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -13297,7 +13221,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -13337,7 +13261,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -13473,7 +13397,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -13513,7 +13437,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -13649,7 +13573,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -13689,7 +13613,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -13764,7 +13688,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -13804,7 +13728,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -13875,7 +13799,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -13915,7 +13839,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -14240,7 +14164,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -14280,7 +14204,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -14462,7 +14386,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -14502,7 +14426,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -14573,7 +14497,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -14613,7 +14537,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -14684,7 +14608,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -14724,7 +14648,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -14799,7 +14723,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -14839,7 +14763,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -14910,7 +14834,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -14950,7 +14874,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -15021,7 +14945,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -15061,7 +14985,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -15132,7 +15056,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -15172,7 +15096,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -15308,7 +15232,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -15348,7 +15272,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -15549,7 +15473,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 46,
+        "available_sessions": 67,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -15574,11 +15498,22 @@
           "exit_sessions_at_median": 1.07,
           "estimates_are_idealized_not_fills": true
         },
-        "sixty_day": null,
+        "sixty_day": {
+          "sessions": 60,
+          "first": "2026-08-12",
+          "last": "2026-11-10",
+          "median_turnover_ntd": 29858224.0,
+          "min_turnover_ntd": 12035643,
+          "zero_turnover_days": 0,
+          "hypothetical_position_ntd": 5000000,
+          "participation_cap": 0.2,
+          "exit_sessions_at_median": 0.84,
+          "estimates_are_idealized_not_fills": true
+        },
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 46,
+        "reused_issuer_history_sessions": 67,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -15651,7 +15586,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -15691,7 +15626,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -16081,7 +16016,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -16121,7 +16056,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -16381,7 +16316,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -16421,7 +16356,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -16744,7 +16679,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -16784,7 +16719,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -17042,7 +16977,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -17082,7 +17017,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -17218,7 +17153,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -17258,7 +17193,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -17519,7 +17454,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -17559,7 +17494,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -17630,7 +17565,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -17670,7 +17605,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -17808,7 +17743,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -17848,7 +17783,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -17984,7 +17919,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -18024,7 +17959,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -18424,7 +18359,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -18464,7 +18399,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -18535,7 +18470,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -18575,7 +18510,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -18841,7 +18776,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -18881,7 +18816,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -18952,7 +18887,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -18992,7 +18927,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -19063,7 +18998,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -19103,7 +19038,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -19174,7 +19109,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -19214,7 +19149,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -19480,7 +19415,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -19520,7 +19455,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -19985,7 +19920,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -20025,7 +19960,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -20096,7 +20031,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -20136,7 +20071,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -20207,7 +20142,7 @@
       },
       "issuer_historical_market_data": {
         "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 177,
+        "available_sessions": 180,
         "twenty_day": {
           "sessions": 20,
           "first": "2026-10-12",
@@ -20247,7 +20182,7 @@
         "validated_archive_additions": 0,
         "validated_archive_added_sessions": [],
         "overlapping_sessions_checked": 16,
-        "reused_issuer_history_sessions": 177,
+        "reused_issuer_history_sessions": 180,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -20715,48 +20650,6 @@
       "automatic_pass_prohibited": true
     },
     {
-      "code": "6625",
-      "name": "必應",
-      "gate": "management_promises",
-      "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
-      "automatic_pass_prohibited": true
-    },
-    {
-      "code": "6625",
-      "name": "必應",
-      "gate": "auditor_scope",
-      "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
-      "automatic_pass_prohibited": true
-    },
-    {
-      "code": "6625",
-      "name": "必應",
-      "gate": "forecast_bridge",
-      "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
-      "automatic_pass_prohibited": true
-    },
-    {
-      "code": "6625",
-      "name": "必應",
-      "gate": "matched_peers_and_cycle",
-      "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
-      "automatic_pass_prohibited": true
-    },
-    {
-      "code": "6625",
-      "name": "必應",
-      "gate": "point_in_time",
-      "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
-      "automatic_pass_prohibited": true
-    },
-    {
-      "code": "6625",
-      "name": "必應",
-      "gate": "out_of_sample_validation",
-      "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
-      "automatic_pass_prohibited": true
-    },
-    {
       "code": "2364",
       "name": "倫飛",
       "gate": "management_promises",
@@ -21718,6 +21611,48 @@
     {
       "code": "2404",
       "name": "漢唐",
+      "gate": "out_of_sample_validation",
+      "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
+      "automatic_pass_prohibited": true
+    },
+    {
+      "code": "6625",
+      "name": "必應",
+      "gate": "management_promises",
+      "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
+      "automatic_pass_prohibited": true
+    },
+    {
+      "code": "6625",
+      "name": "必應",
+      "gate": "auditor_scope",
+      "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
+      "automatic_pass_prohibited": true
+    },
+    {
+      "code": "6625",
+      "name": "必應",
+      "gate": "forecast_bridge",
+      "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
+      "automatic_pass_prohibited": true
+    },
+    {
+      "code": "6625",
+      "name": "必應",
+      "gate": "matched_peers_and_cycle",
+      "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
+      "automatic_pass_prohibited": true
+    },
+    {
+      "code": "6625",
+      "name": "必應",
+      "gate": "point_in_time",
+      "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
+      "automatic_pass_prohibited": true
+    },
+    {
+      "code": "6625",
+      "name": "必應",
       "gate": "out_of_sample_validation",
       "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
       "automatic_pass_prohibited": true

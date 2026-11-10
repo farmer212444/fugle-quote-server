@@ -1,6 +1,6 @@
 # A+ 原始證據修復佇列
 
-模型：V8.10.8；估計：2026-11-10T17:23:28.585789+08:00。
+模型：V8.10.8；估計：2026-11-11T06:50:20.042032+08:00。
 僅涵蓋當次認證診斷名單。優先關注股，再按已完成門檻排序；潛在漲幅僅作同順位排序。
 同公司原始財報集中蒐集，各項仍須獨立查核；策略證據集中蒐集後仍須核對個股與子群適用性。
 
@@ -42,13 +42,12 @@
 |---|---:|---|---|
 |2317 鴻海|+81.3%|original_eight_quarter_statements|original_eight_quarter_statements：核閱已封存原件並補齊附註後再具名覆核|
 |6206 飛捷|+57.6%|management_promises|management_promises：核對已封存法說承諾與後續實績|
-|3305 昇貿|+136.7%|尚無可直接簽核原件|fully_diluted_shares：已取得股數摘要；補可轉債、員工認股及稀釋分母原件|
-|6574 霈方|+128.3%|尚無可直接簽核原件|fully_diluted_shares：已取得股數摘要；補可轉債、員工認股及稀釋分母原件|
+|3305 昇貿|+136.0%|尚無可直接簽核原件|fully_diluted_shares：已取得股數摘要；補可轉債、員工認股及稀釋分母原件|
+|6574 霈方|+132.8%|尚無可直接簽核原件|fully_diluted_shares：已取得股數摘要；補可轉債、員工認股及稀釋分母原件|
 |2374 佳能|+122.5%|尚無可直接簽核原件|tradability：已有成交額；補價差、滑價及清倉能力驗證|
 |4912 聯德控股-KY|+121.8%|尚無可直接簽核原件|fully_diluted_shares：已取得股數摘要；補可轉債、員工認股及稀釋分母原件|
 |8390 金益鼎|+121.3%|尚無可直接簽核原件|fully_diluted_shares：已取得股數摘要；補可轉債、員工認股及稀釋分母原件|
 |8473 山林水|+108.2%|尚無可直接簽核原件|fully_diluted_shares：已取得股數摘要；補可轉債、員工認股及稀釋分母原件|
-|6625 必應|+107.2%|尚無可直接簽核原件|fully_diluted_shares：已取得股數摘要；補可轉債、員工認股及稀釋分母原件|
 |2364 倫飛|+102.9%|尚無可直接簽核原件|fully_diluted_shares：已取得股數摘要；補可轉債、員工認股及稀釋分母原件|
 |3285 微端|+101.4%|尚無可直接簽核原件|fully_diluted_shares：已取得股數摘要；補可轉債、員工認股及稀釋分母原件|
 |2376 技嘉|+100.4%|尚無可直接簽核原件|tradability：已有成交額；補價差、滑價及清倉能力驗證|
@@ -70,6 +69,7 @@
 |2739 寒舍|+76.2%|尚無可直接簽核原件|fully_diluted_shares：已取得股數摘要；補可轉債、員工認股及稀釋分母原件|
 |3546 宇峻|+75.9%|尚無可直接簽核原件|fully_diluted_shares：已取得股數摘要；補可轉債、員工認股及稀釋分母原件|
 |3669 圓展|+74.9%|尚無可直接簽核原件|fully_diluted_shares：已取得股數摘要；補可轉債、員工認股及稀釋分母原件|
+|2404 漢唐|+73.7%|尚無可直接簽核原件|fully_diluted_shares：已取得股數摘要；補可轉債、員工認股及稀釋分母原件|
 
 ## 全部診斷公司的待辦（公司別及共同驗證分開）
 
@@ -85,7 +85,6 @@
 |4912 聯德控股-KY|A_PLUS_PRICE_ONLY|0/13|0|13|fully_diluted_shares：已取得股數摘要；補可轉債、員工認股及稀釋分母原件|
 |8390 金益鼎|A_PLUS_PRICE_ONLY|0/13|0|13|fully_diluted_shares：已取得股數摘要；補可轉債、員工認股及稀釋分母原件|
 |8473 山林水|A_PLUS_PRICE_ONLY|0/13|0|13|fully_diluted_shares：已取得股數摘要；補可轉債、員工認股及稀釋分母原件|
-|6625 必應|A_PLUS_PRICE_ONLY|0/13|0|13|fully_diluted_shares：已取得股數摘要；補可轉債、員工認股及稀釋分母原件|
 |2364 倫飛|A_PLUS_PRICE_ONLY|0/13|0|13|fully_diluted_shares：已取得股數摘要；補可轉債、員工認股及稀釋分母原件|
 |3285 微端|A_PLUS_PRICE_ONLY|0/13|0|13|fully_diluted_shares：已取得股數摘要；補可轉債、員工認股及稀釋分母原件|
 |2376 技嘉|A_PLUS_PRICE_ONLY|0/13|0|13|tradability：已有成交額；補價差、滑價及清倉能力驗證|
@@ -108,6 +107,7 @@
 |3546 宇峻|A_PLUS_PRICE_ONLY|0/13|0|13|fully_diluted_shares：已取得股數摘要；補可轉債、員工認股及稀釋分母原件|
 |3669 圓展|A_PLUS_PRICE_ONLY|0/13|0|13|fully_diluted_shares：已取得股數摘要；補可轉債、員工認股及稀釋分母原件|
 |2404 漢唐|A_PLUS_PRICE_ONLY|0/13|0|13|fully_diluted_shares：已取得股數摘要；補可轉債、員工認股及稀釋分母原件|
+|6625 必應|A_PLUS_PRICE_ONLY|0/13|0|13|fully_diluted_shares：已取得股數摘要；補可轉債、員工認股及稀釋分母原件|
 |4953 緯致|A_PLUS_PRICE_ONLY|0/13|0|13|fully_diluted_shares：已取得股數摘要；補可轉債、員工認股及稀釋分母原件|
 |4560 強信-KY|A_PLUS_PRICE_ONLY|0/13|0|13|fully_diluted_shares：已取得股數摘要；補可轉債、員工認股及稀釋分母原件|
 |3025 星通|A_PLUS_PRICE_ONLY|0/13|0|13|fully_diluted_shares：已取得股數摘要；補可轉債、員工認股及稀釋分母原件|
@@ -124,8 +124,8 @@
 |6811 宏碁資訊|A_PLUS_PRICE_ONLY|0/13|0|13|fully_diluted_shares：已取得股數摘要；補可轉債、員工認股及稀釋分母原件|
 |2348 海悅|A_PLUS_PRICE_ONLY|0/13|0|13|fully_diluted_shares：已取得股數摘要；補可轉債、員工認股及稀釋分母原件|
 |4207 環泰|A_PLUS_PRICE_ONLY|0/13|0|13|fully_diluted_shares：已取得股數摘要；補可轉債、員工認股及稀釋分母原件|
-|4771 望隼|A_PLUS_PRICE_ONLY|0/13|0|13|fully_diluted_shares：已取得股數摘要；補可轉債、員工認股及稀釋分母原件|
 |6165 浪凡|A_PLUS_PRICE_ONLY|0/13|0|13|original_eight_quarter_statements：蒐集並驗證原始資料及SHA|
+|4771 望隼|A_PLUS_PRICE_ONLY|0/13|0|13|fully_diluted_shares：已取得股數摘要；補可轉債、員工認股及稀釋分母原件|
 |6669 緯穎|A_PLUS_PRICE_ONLY|0/13|0|13|tradability：已有成交額；補價差、滑價及清倉能力驗證|
 |3694 海華|A_PLUS_PRICE_ONLY|0/13|0|13|fully_diluted_shares：已取得股數摘要；補可轉債、員工認股及稀釋分母原件|
 |2103 台橡|A_PLUS_PRICE_ONLY|0/13|0|13|fully_diluted_shares：已取得股數摘要；補可轉債、員工認股及稀釋分母原件|
