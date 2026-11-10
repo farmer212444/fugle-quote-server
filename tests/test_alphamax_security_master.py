@@ -161,7 +161,7 @@ class IssuerMasterCaptureTests(unittest.TestCase):
             self.assertEqual((Path(tmp)/"twse-original.json").read_bytes(), twraw)
             self.assertEqual((Path(tmp)/"tpex-original.csv").read_bytes(), tpex_csv)
             self.assertEqual(len(out["sources"]), 2)
-            self.assertIn("BLOCKED", str(out["blocking_reasons"]) if "BLOCKED" in str(out["blocking_reasons"]) else "BLOCKED")
+            self.assertIn("CURRENT_PROFILES_NOT_HISTORICAL_LISTING_DELISTING_MASTER", out["blocking_reasons"])
 
     def test_total_source_outage_remains_blocked(self):
         with TemporaryDirectory() as tmp:
