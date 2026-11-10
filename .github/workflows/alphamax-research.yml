@@ -41,6 +41,28 @@ jobs:
           python scripts/alphamax_run.py readiness --output alphamax-research-readiness.json
       - name: Audit concentration readiness; never create an unverified buy signal
         run: python scripts/alphamax_concentration.py --output alphamax-concentration-readiness.json
+      - name: Publish separate engineering and investment-readiness status
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          research = json.loads(Path("alphamax-research-readiness.json").read_text())
+          concentration = json.loads(Path("alphamax-concentration-readiness.json").read_text())
+          with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as out:
+              out.write("## AlphaMax verification — do not confuse CI with trading approval\n\n")
+              out.write("- Code regression CI: **executed separately above**\n")
+              out.write("- Historical data/PIT readiness: **%s**\n" % research["status"])
+              out.write("- Concentration allocation readiness: **%s**\n" % concentration["status"])
+              out.write("- Live buy authorization: **NO**\n\n")
+              for issue in research.get("blockers", []):
+                  out.write("- Data blocker: %s\n" % issue)
+              for issue in research.get("warnings", []):
+                  out.write("- Data warning: %s\n" % issue)
+              if concentration.get("reason"):
+                  out.write("- Allocation blocker: %s\n" % concentration["reason"])
+              out.write("\nReference: GitHub issue #179. Synthetic tests cannot certify expected returns.\n")
+          PY
       - name: Publish readiness as artifact
         if: always()
         uses: actions/upload-artifact@v4
