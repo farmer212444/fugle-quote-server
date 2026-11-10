@@ -1,0 +1,47 @@
+name: AlphaMax Independent Research
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'alphamax/**'
+      - 'scripts/alphamax_run.py'
+      - 'tests/test_alphamax.py'
+      - '.github/workflows/alphamax-research.yml'
+  push:
+    branches:
+      - 'main'
+    paths:
+      - 'alphamax/**'
+      - 'scripts/alphamax_run.py'
+      - 'tests/test_alphamax.py'
+      - '.github/workflows/alphamax-research.yml'
+  schedule:
+    # 16:50 Asia/Taipei, Mon-Fri; scheduled jobs only run from default branch.
+    - cron: '50 8 * * 1-5'
+permissions:
+  contents: read
+concurrency:
+  group: alphamax-research-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  contract-and-readiness:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run independent no-leakage and contract tests
+        run: python -m unittest -v tests.test_alphamax
+      - name: Audit official source readiness; never fabricate returns
+        run: |
+          python scripts/alphamax_run.py readiness --output alphamax-research-readiness.json
+      - name: Publish readiness as artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: alphamax-readiness
+          path: alphamax-research-readiness.json
+          if-no-files-found: warn
+          retention-days: 30
