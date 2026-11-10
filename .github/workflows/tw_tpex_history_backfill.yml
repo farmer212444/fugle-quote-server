@@ -5,23 +5,27 @@ on:
     paths:
       - '.github/workflows/tw_tpex_history_backfill.yml'
       - 'scripts/v893_tpex_daily_backfill.py'
+      - 'scripts/marketwide_history_priority.py'
       - 'scripts/history_archive.py'
       - 'scripts/v8a8_forward_top30_0050.py'
       - 'tw-market-data/config/forward_top30_0050_v1.json'
       - 'scripts/execution_quote_archive.py'
       - 'tests/test_history_archive.py'
       - 'tests/test_v893_tpex_daily_backfill.py'
+      - 'tests/test_marketwide_history_priority.py'
       - 'scripts/v884_evidence_probe.py'
   pull_request:
     paths:
       - '.github/workflows/tw_tpex_history_backfill.yml'
       - 'scripts/v893_tpex_daily_backfill.py'
+      - 'scripts/marketwide_history_priority.py'
       - 'scripts/history_archive.py'
       - 'scripts/v8a8_forward_top30_0050.py'
       - 'tw-market-data/config/forward_top30_0050_v1.json'
       - 'scripts/execution_quote_archive.py'
       - 'tests/test_history_archive.py'
       - 'tests/test_v893_tpex_daily_backfill.py'
+      - 'tests/test_marketwide_history_priority.py'
   schedule:
     # Taiwan local 09:10, 12:10, 15:10, 18:10, 20:10 weekdays.
     - cron: '10 1,4,7,10,12 * * 1-5'
@@ -40,7 +44,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Test modern TPEx daily market source and PIT safeguards
-        run: python -m unittest -v tests.test_v893_tpex_daily_backfill tests.test_history_archive
+        run: python -m unittest -v tests.test_v893_tpex_daily_backfill tests.test_marketwide_history_priority tests.test_history_archive
       - name: Fetch modern official market-wide dated TPEx sessions
         id: collect
         if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'

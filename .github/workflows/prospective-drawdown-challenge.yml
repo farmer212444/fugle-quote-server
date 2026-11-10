@@ -1,0 +1,53 @@
+name: V8.10.8 prospective risk cohort registry
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/prospective-drawdown-challenge.yml'
+      - '.github/workflows/tw_v877_research_rank.yml'
+      - 'scripts/prospective_drawdown_challenge.py'
+      - 'tests/test_prospective_drawdown_challenge.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  prospective-risk-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Compiles and runs prospective data-integrity tests
+        env:
+          PYTHONPATH: '.'
+        run: |
+          python -m py_compile scripts/prospective_drawdown_challenge.py tests/test_prospective_drawdown_challenge.py
+          python -m unittest -v tests.test_prospective_drawdown_challenge
+      - name: Recheck frozen risk cohorts without any trades
+        env:
+          PYTHONPATH: '.'
+        run: |
+          python scripts/prospective_drawdown_challenge.py report
+      - name: Smoke-test fresh archive at current reference (PR-only output)
+        if: github.event_name == 'pull_request'
+        env:
+          PYTHONPATH: '.'
+        run: |
+          python - <<'PY'
+          import datetime as dt
+          import json
+          from pathlib import Path
+          src=json.loads(Path('tw-market-data/rankings/latest_marketwide_drawdown_coverage.json').read_text())
+          last=dt.date.fromisoformat(src['price_date'])
+          now=dt.datetime.now(dt.timezone.utc).date()
+          print('Reference price date:',last,'CI date:',now)
+          if (now-last).days > 7:
+              print('SKIPPED: stale archived research cannot be first-registered retroactively.')
+          else:
+              from scripts.prospective_drawdown_challenge import make
+              frozen=make(Path('tw-market-data'),dt.datetime.now(dt.timezone.utc))
+              assert frozen['issuer_count']==src['marketwide_snapshot_rows']
+              assert frozen['verified_future_returns']==0
+              assert frozen['first_eligible_market_open'] is None
+              print('PRECOMMIT_SMOKE_OK issuer_count:',frozen['issuer_count'])
+          PY

@@ -17,6 +17,7 @@ import urllib.request
 from pathlib import Path
 from scripts.tw_history_backfill import ROOT, sha, require, stats
 from scripts.history_archive import archive_original, observed_ohlc, quote_source_ready, verify_original, canonical,outstanding_benchmark_codes,collection_priority_context
+from scripts.marketwide_history_priority import marketwide_uncovered
 
 RAW=Path("market-raw-tpex-daily")
 OUT=ROOT/"prices/issuer_history/TPEX"
@@ -104,7 +105,12 @@ def selected_codes(root,asof,raw_market,*,now=None):
         if x.get("market")=="TPEX" and x.get("research_upside_pct") is not None and x["research_upside_pct"]>=30 and code in official:
             if code not in chosen:chosen.append(code)
     require(len(chosen)==len(set(chosen)),"TPEX_CANDIDATE_DUPLICATE")
-    return chosen,official
+    # Unlike historical research ranks, broad-market history is collection-only.
+    # Archived source responses contain the full TPEx daily table; append a
+    # small new-issuer lane without increasing the date-fetch HTTP budget.
+    breadth=marketwide_uncovered(root,raw_market,"TPEX",asof,
+                                  excluded=chosen,cap=6)
+    return chosen+breadth,official
 
 def load_old(root,codes,asof):
     old={}

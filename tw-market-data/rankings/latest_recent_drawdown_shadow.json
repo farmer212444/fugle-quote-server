@@ -2,7 +2,7 @@
   "schema": "V8108_RECENT_DRAWDOWN_RESEARCH_SHADOW_V1",
   "model": "V8.10.8",
   "asof_price_date": "2026-11-09",
-  "estimate_vintage": "2026-11-10T07:07:47.185321+08:00",
+  "estimate_vintage": "2026-11-10T09:16:28.134918+08:00",
   "issuer_count": 20,
   "formal_Aplus_added": 0,
   "trade_signals_issued": 0,
@@ -11,6 +11,7 @@
   "benchmark_is_total_return_stock_is_price_only": true,
   "historical_capture_pit_not_verified": true,
   "observed_snapshots_are_not_necessarily_consecutive_sessions": true,
+  "observed_max_drawdown_is_not_full_session_or_intraday_drawdown": true,
   "risk_policy_is_provisional_unvalidated": true,
   "study_thresholds": {
     "return_5observations_pause_pct": -15,
@@ -19,7 +20,7 @@
     "relative_weakness_price_minus_taiex_tr_pct": -5
   },
   "source_sha256": {
-    "quality": "d6869b51f4b6be540fae547f3d148a43a0a100ca9c0704249d468de2b8af6733",
+    "quality": "e4b7f43136d541ba97f976da9697139c73fac1e30631d3164ef0f57427f208fc",
     "price_snapshots": {
       "2026-10-16": "152811dc2ed6304fbb889e78972d363d96bc7bc2d0d2593e801d23a196c79661",
       "2026-10-19": "3e76ef62c569d6266dbae4e76716981dd6f4b2633b1a731d3753027766de717a",
@@ -60,6 +61,7 @@
       "return_5observations_pct": -5.11,
       "return_10observations_pct": -10.83,
       "peak_to_current_10observations_pct": -14.07,
+      "observed_max_drawdown_pct": -14.07,
       "relative_to_taiex_tr_pct": -1.32,
       "complete_20_60_session_history_verified": false
     },
@@ -74,6 +76,7 @@
       "return_5observations_pct": -9.78,
       "return_10observations_pct": -13.25,
       "peak_to_current_10observations_pct": -13.25,
+      "observed_max_drawdown_pct": -17.09,
       "relative_to_taiex_tr_pct": -3.74,
       "complete_20_60_session_history_verified": false
     },
@@ -88,6 +91,7 @@
       "return_5observations_pct": -6.38,
       "return_10observations_pct": -5.05,
       "peak_to_current_10observations_pct": -9.36,
+      "observed_max_drawdown_pct": -17.55,
       "relative_to_taiex_tr_pct": 4.46,
       "complete_20_60_session_history_verified": false
     },
@@ -102,6 +106,7 @@
       "return_5observations_pct": -11.46,
       "return_10observations_pct": -11.74,
       "peak_to_current_10observations_pct": -11.92,
+      "observed_max_drawdown_pct": -16.74,
       "relative_to_taiex_tr_pct": -2.23,
       "complete_20_60_session_history_verified": false
     },
@@ -116,6 +121,7 @@
       "return_5observations_pct": -1.23,
       "return_10observations_pct": -8.11,
       "peak_to_current_10observations_pct": -8.11,
+      "observed_max_drawdown_pct": -12.91,
       "relative_to_taiex_tr_pct": 1.4,
       "complete_20_60_session_history_verified": false
     },
@@ -130,6 +136,7 @@
       "return_5observations_pct": -3.25,
       "return_10observations_pct": -5.52,
       "peak_to_current_10observations_pct": -6.16,
+      "observed_max_drawdown_pct": -7.53,
       "relative_to_taiex_tr_pct": 3.99,
       "complete_20_60_session_history_verified": false
     },
@@ -144,6 +151,7 @@
       "return_5observations_pct": -10.19,
       "return_10observations_pct": -11.6,
       "peak_to_current_10observations_pct": -14.42,
+      "observed_max_drawdown_pct": -18.97,
       "relative_to_taiex_tr_pct": -2.09,
       "complete_20_60_session_history_verified": false
     },
@@ -158,6 +166,7 @@
       "return_5observations_pct": -5.03,
       "return_10observations_pct": -7.18,
       "peak_to_current_10observations_pct": -7.18,
+      "observed_max_drawdown_pct": -9.97,
       "relative_to_taiex_tr_pct": 2.33,
       "complete_20_60_session_history_verified": false
     },
@@ -172,6 +181,7 @@
       "return_5observations_pct": -3.11,
       "return_10observations_pct": 3.81,
       "peak_to_current_10observations_pct": -7.63,
+      "observed_max_drawdown_pct": -16.0,
       "relative_to_taiex_tr_pct": 13.32,
       "complete_20_60_session_history_verified": false
     },
@@ -186,6 +196,7 @@
       "return_5observations_pct": -8.84,
       "return_10observations_pct": -11.32,
       "peak_to_current_10observations_pct": -14.62,
+      "observed_max_drawdown_pct": -17.79,
       "relative_to_taiex_tr_pct": -1.81,
       "complete_20_60_session_history_verified": false
     },
@@ -200,6 +211,7 @@
       "return_5observations_pct": -1.49,
       "return_10observations_pct": -0.6,
       "peak_to_current_10observations_pct": -1.49,
+      "observed_max_drawdown_pct": -4.48,
       "relative_to_taiex_tr_pct": 8.91,
       "complete_20_60_session_history_verified": false
     },
@@ -214,6 +226,7 @@
       "return_5observations_pct": -9.52,
       "return_10observations_pct": -14.61,
       "peak_to_current_10observations_pct": -14.61,
+      "observed_max_drawdown_pct": -15.73,
       "relative_to_taiex_tr_pct": -5.1,
       "complete_20_60_session_history_verified": false
     },
@@ -228,6 +241,7 @@
       "return_5observations_pct": -13.71,
       "return_10observations_pct": -15.42,
       "peak_to_current_10observations_pct": -15.84,
+      "observed_max_drawdown_pct": -17.49,
       "relative_to_taiex_tr_pct": -5.91,
       "complete_20_60_session_history_verified": false
     },
@@ -242,6 +256,7 @@
       "return_5observations_pct": -15.03,
       "return_10observations_pct": -18.52,
       "peak_to_current_10observations_pct": -18.8,
+      "observed_max_drawdown_pct": -24.62,
       "relative_to_taiex_tr_pct": -9.01,
       "complete_20_60_session_history_verified": false
     },
@@ -256,6 +271,7 @@
       "return_5observations_pct": -10.3,
       "return_10observations_pct": -10.0,
       "peak_to_current_10observations_pct": -12.62,
+      "observed_max_drawdown_pct": -14.56,
       "relative_to_taiex_tr_pct": -0.49,
       "complete_20_60_session_history_verified": false
     },
@@ -270,6 +286,7 @@
       "return_5observations_pct": -17.12,
       "return_10observations_pct": -17.67,
       "peak_to_current_10observations_pct": -20.6,
+      "observed_max_drawdown_pct": -23.95,
       "relative_to_taiex_tr_pct": -8.16,
       "complete_20_60_session_history_verified": false
     },
@@ -284,6 +301,7 @@
       "return_5observations_pct": -1.53,
       "return_10observations_pct": -4.72,
       "peak_to_current_10observations_pct": -6.49,
+      "observed_max_drawdown_pct": -12.98,
       "relative_to_taiex_tr_pct": 4.79,
       "complete_20_60_session_history_verified": false
     },
@@ -298,6 +316,7 @@
       "return_5observations_pct": -13.14,
       "return_10observations_pct": -15.75,
       "peak_to_current_10observations_pct": -18.0,
+      "observed_max_drawdown_pct": -23.36,
       "relative_to_taiex_tr_pct": -6.24,
       "complete_20_60_session_history_verified": false
     },
@@ -312,6 +331,7 @@
       "return_5observations_pct": -7.1,
       "return_10observations_pct": -10.87,
       "peak_to_current_10observations_pct": -13.14,
+      "observed_max_drawdown_pct": -19.49,
       "relative_to_taiex_tr_pct": -1.36,
       "complete_20_60_session_history_verified": false
     },
@@ -326,6 +346,7 @@
       "return_5observations_pct": -14.17,
       "return_10observations_pct": -17.0,
       "peak_to_current_10observations_pct": -17.0,
+      "observed_max_drawdown_pct": -19.53,
       "relative_to_taiex_tr_pct": -7.48,
       "complete_20_60_session_history_verified": false
     }

@@ -56,12 +56,25 @@ class RecentDrawdownTests(unittest.TestCase):
             self.assertEqual(out["return_5observations_pct"],-20)
             self.assertIsNone(out["return_10observations_pct"])
             self.assertEqual(out["current_unadjusted_close"],80)
+            self.assertEqual(out["observed_max_drawdown_pct"],-20)
             self.assertEqual(doc["trade_signals_issued"],0)
             self.assertEqual(doc["formal_Aplus_added"],0)
             self.assertNotIn("2026-11-10",doc["source_sha256"]["price_snapshots"])
             published=publish(root)
             self.assertEqual(published["issuer_count"],1)
             self.assertTrue((root/"rankings/latest_recent_drawdown_shadow.md").exists())
+
+    def test_intrawindow_trough_is_not_erased_by_rebound(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp)
+            fixture(root,[100,112,88,111,110],DATES[-5:])
+            out=build(root)["outputs"][0]
+            self.assertEqual(out["observed_max_drawdown_pct"],-21.43)
+            self.assertEqual(out["peak_to_current_10observations_pct"],-1.79)
+            self.assertEqual(out["status"],"PENDING_INCOMPLETE_OBSERVATION_WINDOW")
+            self.assertFalse(out["risk_blocked"])
+            self.assertFalse(out["complete_20_60_session_history_verified"])
+            self.assertTrue(build(root)["observed_max_drawdown_is_not_full_session_or_intraday_drawdown"])
 
     def test_insufficient_archive_is_pending_not_safe(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -70,6 +83,7 @@ class RecentDrawdownTests(unittest.TestCase):
             out=build(root)["outputs"][0]
             self.assertEqual(out["status"],"PENDING_INCOMPLETE_OBSERVATION_WINDOW")
             self.assertIsNone(out["return_5observations_pct"])
+            self.assertEqual(out["observed_max_drawdown_pct"],0)
             self.assertFalse(out["complete_20_60_session_history_verified"])
 
     def test_relative_weakness_requires_dated_benchmark(self):
