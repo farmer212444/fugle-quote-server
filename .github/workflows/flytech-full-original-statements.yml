@@ -45,3 +45,17 @@ jobs:
                      archived=j['original_full_statements_archived'],
                      errors=j['collection_errors'][:8]))
           PY
+      - name: Diagnose public quarter-link loader when static directory is incomplete
+        env:
+          PYTHONPATH: '.'
+        run: |
+          python - <<'PY'
+          import re
+          from scripts.flytech_full_original_statements import fetch,DIRECTORY
+          text=fetch(DIRECTORY+'&year=2026',2000000).decode('utf-8','replace')
+          for term in ('investor_season','季報','季度財報','season','quarter','<script','results','ajax','download','api/','2026'):
+              positions=[m.start() for m in re.finditer(re.escape(term),text,re.I)]
+              for pos in positions[:4]:
+                  print('PUBLIC_DIRECTORY_DIAGNOSTIC',term,'position',pos,
+                        repr(text[max(0,pos-120):pos+330]).replace('\\n',' ')[:470])
+          PY
