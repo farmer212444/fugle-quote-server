@@ -98,7 +98,9 @@ def discover(raw,year):
     return out,ambiguous
 
 def fetch(url,cap):
-    if url!=DIRECTORY and not official_url(url):
+    allowed_index=(isinstance(url,str) and re.fullmatch(
+        re.escape(DIRECTORY)+r"&year=20[0-9]{2}",url) is not None)
+    if not allowed_index and not official_url(url):
         raise ValueError("FLYTECH_FULL_REPORT_UNTRUSTED_URL")
     req=urllib.request.Request(url,headers={"User-Agent":"Mozilla/5.0 (official issuer finance archive research)"})
     with urllib.request.urlopen(req,timeout=25) as resp:
