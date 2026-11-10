@@ -166,7 +166,7 @@ def prioritized_candidates(raw_price,asof,cap=16,root=ROOT,*,execution_archive=F
     focus=backlog[:focus_slots]
     broad=marketwide_uncovered(root,raw_price,"TWSE",asof,
                                excluded=set(order)|set(focus),
-                               cap=broad_slots)
+                               cap=cap-len(focus))
     return focus+broad
 
 def combine(records,asof,code):
