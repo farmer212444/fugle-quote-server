@@ -29,7 +29,7 @@ SCHEMA="V8108_6206_QUARTERLY_FULL_ORIGINALS_V1"
 MAX_INDEX=2_000_000
 MAX_PDF=17_000_000
 MAX_BATCH=70_000_000
-REGEX_URL=re.compile(r"(?:https?://(?:www\.)?flytech\.com\.tw)?/data/investor_season/attached/[0-9]{10,24}\.pdf",re.I)
+REGEX_URL=re.compile(r"(?:https?://(?:www\.)?flytech\.com\.tw)?/?data/investor_season/attached/[0-9]{10,24}\.pdf",re.I)
 QUARTER_WORDS={"一":1,"二":2,"三":3,"四":4}
 SECTION_WORDS=("資產負債表","綜合損益表","權益變動表","現金流量表","財務報告附註")
 
@@ -83,7 +83,11 @@ def discover(raw,year):
             segment=before[context:]
         else:
             segment=before[-250:]
-        label=strip_markup(segment)
+        # In the AJAX response the quarter may only appear *after* href
+        # inside the current anchor; never inspect the next list item.
+        tail=page[m.end():m.end()+220]
+        tail=re.split(r"</a>|</li>|</tr>|<li|<tr",tail,1,flags=re.I)[0]
+        label=strip_markup(segment+" "+tail)
         hits=[QUARTER_WORDS[x] for x in re.findall(r"第([一二三四])季",label)]
         hits += [int(x) for x in re.findall(r"\bQ([1-4])\b",label,re.I)]
         possible=sorted(set(hits))
@@ -109,6 +113,42 @@ def fetch(url,cap):
         body=resp.read(cap+1)
     require(200<len(body)<=cap,"SOURCE_EMPTY_OR_LARGE")
     return body
+
+def season_options(raw):
+    """Derive server-assigned season IDs from the issuer's own year selector."""
+    text=raw.decode("utf-8","replace")
+    match=re.search(r'<select\\b[^>]*\\bname\\s*=\\s*["\\\']season["\\\'][^>]*>(.*?)</select>',
+                    text,re.I|re.S)
+    if not match:return {}
+    opts={}
+    for val,year in re.findall(
+        r'<option\\b[^>]*\\bvalue\\s*=\\s*["\\\'](\\d+)["\\\'][^>]*>\\s*(20\\d{2})\\s*</option>',
+        match.group(1),re.I|re.S):
+        if int(year) in opts and opts[int(year)]!=int(val):
+            raise ValueError("FLYTECH_FULL_REPORT_DUPLICATE_SEASON_ID")
+        opts[int(year)]=int(val)
+    return opts
+
+def fetch_season(season_id):
+    """Issuer's public site.ajax.call route: POST /investor.php act=get_season."""
+    require(type(season_id)==int and 1<=season_id<=99,"BAD_SEASON_ID")
+    post=urllib.parse.urlencode(dict(act="get_season",season=season_id)).encode("ascii")
+    url="https://www.flytech.com.tw/investor.php"
+    req=urllib.request.Request(url,data=post,method="POST",headers={
+        "User-Agent":"Mozilla/5.0 (issuer financial original archive)",
+        "Content-Type":"application/x-www-form-urlencoded; charset=UTF-8",
+        "Accept":"application/json,text/javascript,*/*;q=0.8",
+        "X-Requested-With":"XMLHttpRequest",
+        "Referer":DIRECTORY})
+    with urllib.request.urlopen(req,timeout=25) as resp:
+        require(resp.status==200 and resp.geturl()==url,"SEASON_AJAX_HTTP_OR_REDIRECT")
+        raw=resp.read(MAX_INDEX+1)
+    require(0<len(raw)<=MAX_INDEX,"SEASON_AJAX_EMPTY_OR_OVERSIZE")
+    doc=json.loads(raw)
+    require(doc.get("error_code") in (None,0,"0"),"SEASON_AJAX_ERROR_CODE")
+    fragment=doc.get("html",{}).get("season_list")
+    require(isinstance(fragment,str),"SEASON_AJAX_LIST_NOT_FOUND")
+    return fragment.encode("utf-8"),raw
 
 def roc_digits(year):
     return "".join("零一二三四五六七八九"[int(x)] for x in str(year-1911))
@@ -182,7 +222,7 @@ def verify_archive(root,manifest,window):
             "FORGED_FORMAL_PASS_OR_PIT")
     return record
 
-def collect(root,last="2026-Q2",now=None,max_new=3,fetcher=fetch):
+def collect(root,last="2026-Q2",now=None,max_new=3,fetcher=fetch,ajaxer=fetch_season):
     root=Path(root);window=quarter_window(last)
     require(type(max_new)==int and 0<=max_new<=4,"UNBOUNDED_FETCH_REQUEST")
     now=now or dt.datetime.now(dt.timezone.utc)
@@ -201,6 +241,34 @@ def collect(root,last="2026-Q2",now=None,max_new=3,fetcher=fetch):
             index_total+=len(body)
             require(index_total<=3*MAX_INDEX,"INDEX_TOTAL_OVERSIZE")
             discovered,ambiguous=discover(body,year)
+            ids=season_options(body)
+            if year in ids:
+                try:
+                    fragment,raw_ajax=ajaxer(ids[year])
+                    require(type(fragment) is bytes and type(raw_ajax) is bytes,
+                            "AJAX_SOURCE_BYTES_REQUIRED")
+                    # The original JSON response is archived immutably so
+                    # the issuer-origin link can be replayed in GitHub.
+                    hx=digest(raw_ajax)
+                    ajax_path=f"{FOLDER}/source_pages/{year}_{hx[:20]}_ajax.json"
+                    ajax_dst=safe(root,ajax_path)
+                    ajax_dst.parent.mkdir(parents=True,exist_ok=True)
+                    if ajax_dst.exists():
+                        require(ajax_dst.read_bytes()==raw_ajax,
+                                "AJAX_ORIGINAL_BYTES_CHANGED")
+                    else:ajax_dst.write_bytes(raw_ajax)
+                    manifest.setdefault("ajax_receipts",[])
+                    if not any(x.get("sha256")==hx for x in manifest["ajax_receipts"]):
+                        manifest["ajax_receipts"].append(dict(
+                            year=year,season_id=ids[year],url="https://www.flytech.com.tw/investor.php",
+                            archive_path=ajax_path,sha256=hx,
+                            captured_at_utc=now.isoformat()))
+                    dynamic,ambiguous_ajax=discover(fragment,year)
+                    discovered.update(dynamic)
+                    ambiguous.extend(ambiguous_ajax)
+                except Exception as exc:
+                    errors.append(dict(year=year,reason="AJAX_"+type(exc).__name__,
+                                       detail=str(exc)[:180]))
             idx_hash=digest(body)
             idx_rel=f"{FOLDER}/source_pages/{year}_{idx_hash[:20]}.html"
             dst=safe(root,idx_rel);dst.parent.mkdir(parents=True,exist_ok=True)
