@@ -7,9 +7,11 @@ on:
       - 'scripts/alphamax_run.py'
       - 'scripts/alphamax_concentration.py'
       - 'scripts/alphamax_universe_audit.py'
+      - 'scripts/alphamax_security_master.py'
       - 'tests/test_alphamax.py'
       - 'tests/test_alphamax_concentration.py'
       - 'tests/test_alphamax_universe.py'
+      - 'tests/test_alphamax_security_master.py'
       - '.github/workflows/alphamax-research.yml'
   push:
     branches:
@@ -37,7 +39,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Run independent no-leakage and contract tests
-        run: python -m unittest -v tests.test_alphamax tests.test_alphamax_concentration tests.test_alphamax_universe
+        run: python -m unittest -v tests.test_alphamax tests.test_alphamax_concentration tests.test_alphamax_universe tests.test_alphamax_security_master
       - name: Audit official source readiness; never fabricate returns
         run: |
           python scripts/alphamax_run.py readiness --output alphamax-research-readiness.json
@@ -45,6 +47,8 @@ jobs:
         run: python scripts/alphamax_concentration.py --output alphamax-concentration-readiness.json
       - name: Audit original historical issuer quote coverage without PIT claims
         run: python scripts/alphamax_universe_audit.py --output alphamax-universe-readiness.json
+      - name: Capture current official issuer profiles with original bytes and source receipts
+        run: python scripts/alphamax_security_master.py --output-dir alphamax-profile-capture
       - name: Publish separate engineering and investment-readiness status
         run: |
           python - <<'PY'
@@ -54,12 +58,16 @@ jobs:
           research = json.loads(Path("alphamax-research-readiness.json").read_text())
           concentration = json.loads(Path("alphamax-concentration-readiness.json").read_text())
           universe = json.loads(Path("alphamax-universe-readiness.json").read_text())
+          profile_file = Path("alphamax-profile-capture/capture-manifest.json")
+          profiles = json.loads(profile_file.read_text()) if profile_file.exists() else {"status": "CAPTURE_MANIFEST_MISSING", "profile_count": 0}
           with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as out:
               out.write("## AlphaMax verification — do not confuse CI with trading approval\n\n")
               out.write("- Code regression CI: **executed separately above**\n")
               out.write("- Historical data/PIT readiness: **%s**\n" % research["status"])
               out.write("- Concentration allocation readiness: **%s**\n" % concentration["status"])
               out.write("- Issuer-history coverage: **%s**\n" % universe["status"])
+              out.write("- Current official company roster capture: **%s**, %s issuer profiles\n" % (profiles["status"], profiles.get("profile_count", 0)))
+              out.write("- Historical listed/delisted membership certified: **NO** (current profiles cannot supply past membership)\n")
               out.write("- Historical price records / latest snapshot: **%s / %s**\n" % (universe.get("counts", {}).get("present_in_snapshot_with_history", 0), universe.get("current_quote_snapshot_securities", 0)))
               out.write("- Companies with >= 756 preserved observed sessions: **%s** (observation count, not PIT audit)\n" % universe.get("counts", {}).get("history_files_ge_min_sessions", 0))
               out.write("- Snapshot rows with no valid close (not executable): **%s**\n" % universe.get("current_quote_rows_without_positive_close", 0))
@@ -82,5 +90,6 @@ jobs:
             alphamax-research-readiness.json
             alphamax-concentration-readiness.json
             alphamax-universe-readiness.json
+            alphamax-profile-capture/
           if-no-files-found: warn
-          retention-days: 30
+          retention-days: 90
