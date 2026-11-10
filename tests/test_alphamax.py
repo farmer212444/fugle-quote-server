@@ -122,6 +122,15 @@ class AlphaMaxTests(unittest.TestCase):
             self.assertEqual(result["status"], "UNCALIBRATED_RESEARCH_ONLY")
             self.assertTrue(result["predictions"])
 
+    def test_research_backtest_does_not_look_past_requested_asof(self):
+        with tempfile.TemporaryDirectory() as temp:
+            folder = self._bundle(temp)
+            result = research(folder, "2023-11-01", top_n=5)
+            cohorts = result["backtest"].get("cohorts", [])
+            self.assertTrue(all(x["signal_date"] < "2023-11-01" for x in cohorts))
+            # All 12-month labels for the 2023 cohorts mature after this as-of.
+            self.assertTrue(all(x["signal_date"] <= "2022-10-01" for x in cohorts))
+
     def test_live_repository_is_blocked_without_total_return_history(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
