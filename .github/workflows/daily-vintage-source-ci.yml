@@ -33,7 +33,7 @@ jobs:
           python - <<'PY'
           import json
           from pathlib import Path
-          obj=json.loads(Path('tw-market-data/rankings/latest_top10_earnings_audit.json').read_text())
+          obj=json.loads(Path('tw-market-data/rankings/v887_top10_earnings_audit.json').read_text())
           review=obj['next_quarter_monthly_revenue_check']
           assert review['status']!='MONTHLY_REVENUE_RECEIPT_FUTURE_OR_UNZONED'
           if review['status']=='MONTHLY_REVENUE_CAPTURE_AFTER_FORECAST_NOT_ADMITTED':
