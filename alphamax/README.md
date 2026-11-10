@@ -212,3 +212,40 @@ Run (online GitHub Actions environment):
 
 CI reports are immutable per run but the artifact retention is 90 days;
 it is not a permanent independent original-source archive.
+
+
+## TPEx terminated-OTC historical year slices (2021–2026)
+
+A separate official-source collector uses the TPEx webpage-declared action
+`company/deListed`, served at
+https://www.tpex.org.tw/www/zh-tw/company/deListed?response=json
+and year-filtered requests with exact `date=YYYY&reason=-1&response=json`.
+This route was verified from the official TPEx terminated-OTC webpage
+https://www.tpex.org.tw/zh-tw/mainboard/listed/delisted.html,
+rather than derived from 2026's current listed-company names.
+
+Collector: `alphamax/tpex_delist_ledger.py`
+Runner: `scripts/alphamax_tpex_delist.py`
+Tests: `tests/test_alphamax_tpex_delist.py`
+
+Each reported historical year is admitted to a **bounded retrospective event
+ledger** only when the response echoes the requested year, every event has a
+valid effective termination date in that year, and the provider's
+`tables[0].totalCount` equals the parsed row count. Every accepted source
+year preserves its raw JSON and SHA-256 receipt. When a year is incomplete,
+missing, mismatched or has unsatisfied pagination, that year is left
+unverified. This is *not* a listing-date or delisting-announcement vintage
+certification. The current public form starts at 2021, so any older TPEx
+company history remains unproven from this source.
+
+Six-digit history codes (e.g. 911613 in 2021) are **preserved as historical
+events**, but tagged `security_class_review_required=true`; they are not
+implicitly ordinary four-digit stocks. The termination reason is retained as
+official raw text without guessing bankruptcy, merger consideration, share
+conversion terms, last executable close or realized investor loss.
+
+The outcome always sets `investment_certified=false` and
+`full_history_coverage_verified=false`, even if all bounded annual slices
+pass. Missing full historical PIT membership, corporate action and dividend
+ledgers, public-announcement vintages, and valid investment total returns
+still block a formal AlphaMax Top 20 or a concentrated position decision.
