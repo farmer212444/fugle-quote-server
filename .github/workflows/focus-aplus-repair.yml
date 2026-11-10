@@ -35,7 +35,7 @@ jobs:
           root=Path('tw-market-data/rankings')
           x=json.loads((root/'latest_focus_aplus_repair.json').read_text())
           y=json.loads((root/'6206_gate_review_starter_latest.json').read_text())
-          assert x['formal_Aplus_count_unchanged']==0 and x['formal_pass_added']==0
+          assert x['formal_Aplus_certificates_issued_by_this_report']==0 and x['formal_pass_added']==0
           assert x['no_trading_or_position_changes']
           assert len(y['gate_review_starter'])==13
           assert y['originals_sha256_checked']>=2
