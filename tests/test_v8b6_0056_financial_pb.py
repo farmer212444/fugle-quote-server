@@ -4,6 +4,7 @@ This is a reverse ROE/PB hurdle research screen only. It must never certify
 2027 fair value or mix conditional financial rows into the 34 price-upsides.
 """
 import copy
+import hashlib
 import json
 from pathlib import Path
 import shutil
@@ -22,7 +23,37 @@ ASOF="2026-10-24T20:00:00+08:00"
 class FinancialNine0056Tests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.data=screen(ROOT,ASOF)
+        # Unit tests use a synthetic, in-memory model receipt aligned with the
+        # *current* quote fixture bytes. This is not a historical/PIT claim or
+        # a change to the published model's original SHA.
+        cls.holdings,cls.compact,model=load_inputs(ROOT)
+        cls.synthetic_full=copy.deepcopy(model)
+        rel=f"prices/{model['asof_price_date']}.json"
+        receipts=[r for r in model['input_receipts'] if r.get('path')==rel]
+        if len(receipts)!=1:
+            raise AssertionError("Expected exactly one dated price receipt")
+        observed_hash=hashlib.sha256((ROOT/rel).read_bytes()).hexdigest()
+        cls.synthetic_full['input_receipts']=[
+            dict(receipt,sha256=observed_hash) if receipt.get('path')==rel
+            else copy.deepcopy(receipt)
+            for receipt in model['input_receipts']
+        ]
+        with patch('scripts.v8b6_0056_financial_pb_hurdle.load_inputs',
+                   return_value=(cls.holdings,cls.compact,cls.synthetic_full)):
+            cls.data=screen(ROOT,ASOF)
+
+    def test_actual_model_receipt_mismatch_is_never_accepted(self):
+        holdings,compact,full=load_inputs(ROOT)
+        rel=f"prices/{full['asof_price_date']}.json"
+        recorded=next(x['sha256'] for x in full['input_receipts']
+                      if x.get('path')==rel)
+        actual=hashlib.sha256((ROOT/rel).read_bytes()).hexdigest()
+        if recorded!=actual:
+            with self.assertRaisesRegex(ValueError,
+                                        'PRICE_SOURCE_DATE_OR_SHA_MISMATCH'):
+                screen(ROOT,ASOF)
+        else:
+            self.assertEqual(screen(ROOT,ASOF)['official_price_sha256'],actual)
 
     def test_all_nine_guarded_and_seven_other_issuers_remain_missing(self):
         a=self.data
@@ -90,7 +121,8 @@ class FinancialNine0056Tests(unittest.TestCase):
             self.assertIn('凱基金',t)
 
     def test_frozen_model_quotes_survive_latest_manifest_update_but_reject_tampering(self):
-        holdings,compact,full=load_inputs(ROOT)
+        holdings,compact= self.holdings,self.compact
+        full=self.synthetic_full
         quote=f"prices/{full['asof_price_date']}.json"
         with tempfile.TemporaryDirectory() as tmp:
             root=Path(tmp)
