@@ -18,7 +18,7 @@ from alphamax.core import ContractError
 
 TZ_TAIPEI = timezone(timedelta(hours=8))
 OLD_URL = "https://www.tpex.org.tw/web/regular_emerging/deListed/de-listed_companies.php"
-NEW_URL = "https://www.tpex.org.tw/www/zh-tw/mainboard/listed/delisted"
+NEW_URL = "https://www.tpex.org.tw/www/zh-tw/company/deListed"
 WEB_PAGE = "https://www.tpex.org.tw/zh-tw/mainboard/listed/delisted.html"
 DATE_SHORT = re.compile(r"^(?:\d{2,3}[/-]\d{1,2}[/-]\d{1,2}|\d{7}|\d{8})$")
 CODE = re.compile(r"^\d{4}$")
@@ -327,9 +327,9 @@ def capture_tpex_delist(output_dir, *, captured_at_utc=None, legacy_fetch=None, 
                 "explicit_dates":len(parsed["event_rows"]),
             })
             events = parsed["event_rows"]
-            attempts.append({"path":"modern", "status":"PARSED"})
+            attempts.append({"path":"modern", "source_url":NEW_URL + "?response=json", "status":"PARSED"})
         except (OSError, ValueError, TypeError, UnicodeError) as exc:
-            attempts.append({"path":"modern", "status":"REJECTED", "reason":str(exc)[:220]})
+            attempts.append({"path":"modern", "source_url":NEW_URL + "?response=json", "status":"REJECTED", "reason":str(exc)[:220]})
     if not events:
         try:
             raw = (page_fetch or _fetch_page)()
