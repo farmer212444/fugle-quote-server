@@ -237,8 +237,16 @@ def _fetch_modern():
         return res.read(20_000_001)
 
 
+def _fetch_page():
+    req = Request(WEB_PAGE, headers={"User-Agent": "Mozilla/5.0 AlphaMax research"})
+    with urlopen(req, timeout=30) as res:
+        if res.status != 200:
+            raise ContractError("TPEX_DELIST_OFFICIAL_PAGE_HTTP_STATUS")
+        return res.read(20_000_001)
+
+
 def capture_tpex_delist(output_dir, *, captured_at_utc=None, legacy_fetch=None, modern_fetch=None,
-                       page_limit=15):
+                       page_fetch=None, page_limit=15):
     """Try official historical pages; preserve parse failures for follow-up."""
     if type(page_limit) is not int or not 1 <= page_limit <= 50:
         raise ContractError("TPEX_DELIST_BAD_PAGE_LIMIT")
@@ -254,6 +262,7 @@ def capture_tpex_delist(output_dir, *, captured_at_utc=None, legacy_fetch=None, 
     attempts = []
     events = []
     captures = []
+    discovery = {}
     fetch_legacy = legacy_fetch or _fetch_legacy
     found_legacy = False
     exhausted = False
@@ -262,6 +271,17 @@ def capture_tpex_delist(output_dir, *, captured_at_utc=None, legacy_fetch=None, 
             raw = fetch_legacy(page)
             if not isinstance(raw, bytes) or len(raw) > 20_000_000:
                 raise ContractError("TPEX_DELIST_BAD_RAW_PAGE")
+            # Archive rejected official responses too, for reproducible
+            # diagnosis of changing endpoint shape and parsing contracts.
+            probe_name = f"tpex-legacy-probe-{page:02d}.html"
+            (output / probe_name).write_bytes(raw)
+            discovery["legacy_first_page"] = {
+                "path": probe_name, "sha256": sha256(raw).hexdigest(),
+                "bytes": len(raw),
+                "public_response_preview": re.sub(
+                    r"\\s+", " ", raw[:2200].decode("utf-8", "replace")
+                )[:400],
+            }
             parsed = parse_tpex_html(raw, OLD_URL, stamp)
             records = parsed["event_rows"]
             old_codes = {(r["code"], r["termination_effective_date"]) for r in events}
@@ -289,6 +309,16 @@ def capture_tpex_delist(output_dir, *, captured_at_utc=None, legacy_fetch=None, 
     if not found_legacy:
         try:
             raw = (modern_fetch or _fetch_modern)()
+            if not isinstance(raw, bytes) or len(raw) > 20_000_000:
+                raise ContractError("TPEX_DELIST_MODERN_SOURCE_INVALID")
+            (output / "tpex-modern-probe.bin").write_bytes(raw)
+            discovery["modern_candidate"] = {
+                "path": "tpex-modern-probe.bin", "sha256": sha256(raw).hexdigest(),
+                "bytes": len(raw),
+                "public_response_preview": re.sub(
+                    r"\\s+", " ", raw[:2200].decode("utf-8","replace")
+                )[:400],
+            }
             parsed = parse_tpex_json(raw, stamp)
             (output / "tpex-modern-raw.json").write_bytes(raw)
             captures.append({
@@ -300,6 +330,29 @@ def capture_tpex_delist(output_dir, *, captured_at_utc=None, legacy_fetch=None, 
             attempts.append({"path":"modern", "status":"PARSED"})
         except (OSError, ValueError, TypeError, UnicodeError) as exc:
             attempts.append({"path":"modern", "status":"REJECTED", "reason":str(exc)[:220]})
+    if not events:
+        try:
+            raw = (page_fetch or _fetch_page)()
+            if not isinstance(raw, bytes) or len(raw) > 20_000_000:
+                raise ContractError("TPEX_DELIST_PUBLIC_PAGE_INVALID")
+            (output / "tpex-current-public-page.html").write_bytes(raw)
+            text, _ = _decode(raw)
+            # Official page inline initialization may describe its actual
+            # backend action; only report it, never auto-follow arbitrary URLs.
+            actions = re.findall(
+                r"""action\s*:\s*["']([^"']+)["']""", text
+            )[:10]
+            discovery["current_official_page"] = {
+                "sha256": sha256(raw).hexdigest(), "bytes": len(raw),
+                "path": "tpex-current-public-page.html", "embedded_actions": actions,
+                "tables_init_context": (
+                    re.sub(r"\s+", " ", text[max(0,text.find("tables.init")-90):text.find("tables.init")+500])[:550]
+                    if "tables.init" in text else None
+                ),
+                "public_response_preview": re.sub(r"\s+", " ", text[:1500])[:400],
+            }
+        except (OSError, ValueError, TypeError, UnicodeError) as exc:
+            discovery["current_official_page"] = {"status": "UNAVAILABLE", "reason": str(exc)[:200]}
     valid_dates = sum(x["termination_effective_date"] is not None for x in events)
     status = (
         "TPEX_OFFICIAL_EVENT_ROWS_OBSERVED_NOT_FULLY_PIT" if events
@@ -307,7 +360,8 @@ def capture_tpex_delist(output_dir, *, captured_at_utc=None, legacy_fetch=None, 
     )
     report = {
         "status": status, "captured_at_utc": stamp, "attempts": attempts,
-        "source_receipts": captures, "event_count": len(events),
+        "source_receipts": captures, "unparsed_source_discovery": discovery,
+        "event_count": len(events),
         "explicit_effective_dates": valid_dates,
         "page_limit": page_limit, "legacy_pagination_exhaustion_verified": exhausted,
         "full_history_coverage_verified": False,
