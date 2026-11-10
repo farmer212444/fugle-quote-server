@@ -237,6 +237,21 @@ def _fetch_modern():
         return res.read(20_000_001)
 
 
+def _fetch_year(year):
+    if type(year) is not int or not 2000 <= year <= 2100:
+        raise ContractError("TPEX_DELIST_BAD_PROBE_YEAR")
+    # These names are taken from the official current page tables-form; this
+    # is a *probe* until year filtering is verified against each record.
+    url = NEW_URL + "?" + urlencode({
+        "date": str(year), "reason": "-1", "response": "json"
+    })
+    request = Request(url, headers={"User-Agent": "Mozilla/5.0 AlphaMax evidence audit"})
+    with urlopen(request, timeout=30) as response:
+        if response.status != 200:
+            raise ContractError("TPEX_DELIST_YEAR_HTTP_STATUS")
+        return response.read(20_000_001)
+
+
 def _fetch_page():
     req = Request(WEB_PAGE, headers={"User-Agent": "Mozilla/5.0 AlphaMax research"})
     with urlopen(req, timeout=30) as res:
@@ -353,6 +368,46 @@ def capture_tpex_delist(output_dir, *, captured_at_utc=None, legacy_fetch=None, 
             }
         except (OSError, ValueError, TypeError, UnicodeError) as exc:
             discovery["current_official_page"] = {"status": "UNAVAILABLE", "reason": str(exc)[:200]}
+    # Probe historical year controls but never concatenate snapshots whose
+    # query semantics or pagination have not been proved. Official form has
+    # input name=date; the API response also echoes its accepted year.
+    if events and modern_fetch is None:
+        discovery["year_filter_probes"] = []
+        for year in (2025, 2024):
+            try:
+                year_raw = _fetch_year(year)
+                if not isinstance(year_raw, bytes) or len(year_raw) > 20_000_000:
+                    raise ContractError("TPEX_DELIST_YEAR_BAD_RESPONSE")
+                name = f"tpex-year-{year}-probe.json"
+                (output / name).write_bytes(year_raw)
+                decoded = json.loads(year_raw.decode("utf-8-sig"))
+                record = parse_tpex_json(year_raw, stamp)
+                reported = str(decoded.get("date","")) if isinstance(decoded, dict) else ""
+                date_years = sorted({
+                    str(r["termination_effective_date"])[:4]
+                    for r in record["event_rows"]
+                })
+                verified = reported == str(year) and date_years == [str(year)]
+                discovery["year_filter_probes"].append({
+                    "requested_year": year, "source_url": NEW_URL,
+                    "raw_artifact": name, "sha256": sha256(year_raw).hexdigest(),
+                    "reported_year": reported, "event_years": date_years,
+                    "row_count": record["record_count"],
+                    "year_filter_matches_exactly": verified,
+                    "source_totalCount": (
+                        decoded.get("tables",[{}])[0].get("totalCount")
+                        if isinstance(decoded,dict) and decoded.get("tables") else None
+                    ),
+                    "source_pagination_complete": (
+                        decoded.get("tables",[{}])[0].get("totalCount") == record["record_count"]
+                        if isinstance(decoded,dict) and decoded.get("tables") else False
+                    ),
+                })
+            except (OSError, ValueError, TypeError, UnicodeError) as exc:
+                discovery["year_filter_probes"].append({
+                    "requested_year":year, "status":"UNVERIFIED",
+                    "reason":str(exc)[:200],
+                })
     valid_dates = sum(x["termination_effective_date"] is not None for x in events)
     status = (
         "TPEX_OFFICIAL_EVENT_ROWS_OBSERVED_NOT_FULLY_PIT" if events
