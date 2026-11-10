@@ -2,6 +2,7 @@
 import datetime as dt
 import hashlib
 import json
+import urllib.error
 import tempfile
 import unittest
 from pathlib import Path
@@ -9,7 +10,8 @@ from unittest.mock import patch
 
 from scripts.flytech_full_original_statements import (
   DIRECTORY,discover,official_url,quarter_window,collect,verify_archive,
-  identity,fetch,season_options,twse_index_url,twse_filename,twse_resolve)
+  identity,fetch,season_options,twse_index_url,twse_filename,twse_resolve,
+  twse_pdf_with_retry,temporary_twse_failure)
 
 def table(period_code,token):
     return ('<tr><td>第'+period_code+'季</td><td><a href="/data/investor_season/attached/'+
@@ -160,6 +162,53 @@ class FlytechOriginalsTest(unittest.TestCase):
             self.assertEqual(r["original_full_statements_archived"],0)
             self.assertEqual(r["formal_gate_passes_issued"],0)
             self.assertTrue(any(x["reason"].startswith("PDF_") for x in r["collection_errors"]))
+
+    def test_transient_twse_pdf_retries_once_only_and_never_loosens_sha(self):
+        url="https://doc.twse.com.tw/pdf/202502_6206_AI1_20261110_123117.pdf"
+        attempts=[]
+        delays=[]
+        def flaky(u,cap):
+            self.assertEqual(u,url)
+            attempts.append(cap)
+            if len(attempts)==1:
+                raise urllib.error.URLError(ConnectionRefusedError(111,
+                                         "Connection refused"))
+            return b"%PDF-1.4 test bytes for source verification"
+        raw=twse_pdf_with_retry(url,12_000_000,transport=flaky,
+                                sleeper=delays.append)
+        self.assertTrue(raw.startswith(b"%PDF"))
+        self.assertEqual(len(attempts),2)
+        self.assertEqual(delays,[2.0])
+        self.assertTrue(temporary_twse_failure(urllib.error.URLError(
+                        TimeoutError("timed out"))))
+
+    def test_nontransient_pdf_failure_never_retries(self):
+        url="https://doc.twse.com.tw/pdf/202502_6206_AI1_20261110_123117.pdf"
+        calls=[]
+        def missing(u,cap):
+            calls.append((u,cap))
+            raise urllib.error.HTTPError(u,404,"not found",{},None)
+        with self.assertRaises(urllib.error.HTTPError):
+            twse_pdf_with_retry(url,1000,transport=missing,
+                                sleeper=lambda _:self.fail("no delay allowed"))
+        self.assertEqual(len(calls),1)
+        with self.assertRaisesRegex(ValueError,"UNBOUNDED_PDF_RETRY"):
+            twse_pdf_with_retry(url,1000,max_attempts=3,
+                                transport=missing,sleeper=lambda _:None)
+        with self.assertRaisesRegex(ValueError,"URL_NOT_OFFICIAL"):
+            twse_pdf_with_retry("http://example.org/issuer.pdf",1000,
+                                transport=missing,sleeper=lambda _:None)
+
+    def test_persistent_connection_refused_does_not_claim_pdf_download(self):
+        url="https://doc.twse.com.tw/pdf/202501_6206_AI1_20261110_123120.pdf"
+        calls=[]
+        def blocked(u,cap):
+            calls.append(u)
+            raise urllib.error.URLError(ConnectionRefusedError(111,"Connection refused"))
+        with self.assertRaises(urllib.error.URLError):
+            twse_pdf_with_retry(url,1000,transport=blocked,
+                                sleeper=lambda _:None)
+        self.assertEqual(len(calls),2)
 
     def test_five_quarter_catchup_is_bounded_and_not_formal_pass(self):
         with tempfile.TemporaryDirectory() as tmp,patch(
