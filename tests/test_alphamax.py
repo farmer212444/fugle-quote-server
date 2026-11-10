@@ -131,6 +131,15 @@ class AlphaMaxTests(unittest.TestCase):
             # All 12-month labels for the 2023 cohorts mature after this as-of.
             self.assertTrue(all(x["signal_date"] <= "2022-10-01" for x in cohorts))
 
+    def test_future_research_asof_is_blocked(self):
+        with tempfile.TemporaryDirectory() as temp:
+            rows = sample_rows()
+            future = (date.today() + timedelta(days=30)).isoformat()
+            rows[-1]["signal_date"] = future
+            folder = self._bundle(temp, rows=rows)
+            with self.assertRaisesRegex(ContractError, "ASOF_IN_FUTURE"):
+                research(folder, future)
+
     def test_live_repository_is_blocked_without_total_return_history(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
