@@ -105,7 +105,7 @@ jobs:
           import re,urllib.request,urllib.parse
           from scripts.flytech_full_original_statements import fetch,DIRECTORY
           t=fetch(DIRECTORY+'&year=2026',2000000).decode('utf-8','replace')
-          sources=re.findall(r'<script[^>]*src=["\\\']([^"\\\']+\\.js(?:\\?[^"\\\']*)?)["\\\']',t,re.I)
+          sources=re.findall(r"""<script[^>]*src=['"]([^'"]+\.js(?:\?[^'"]*)?)['"]""",t,re.I)
           print('PUBLIC_SAME_DOMAIN_JS_COUNT',len(sources))
           for src in sources[:15]:
               url=urllib.parse.urljoin(DIRECTORY,src)
