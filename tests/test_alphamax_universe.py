@@ -149,13 +149,26 @@ class UniverseAuditTests(unittest.TestCase):
             (root / "tw-market-data/prices/2026-11-10.json").unlink()
             self.assertEqual(audit_history(root)["reason"], "MATCHING_PRICE_SNAPSHOT_MISSING")
 
-    def test_invalid_history_close_blocks_that_file(self):
+    def test_unpriced_history_is_kept_but_never_counted_as_valid_return(self):
         with TemporaryDirectory() as tmp:
             root = Path(tmp)
-            build(root, history=[{"date": "2026-11-09", "close": 0, "turnover_ntd": 1}])
+            build(root, history=[{"date": "2026-11-09", "close": None, "turnover_ntd": 1},
+                                 {"date": "2026-11-10", "close": 100, "turnover_ntd": 1}])
+            a = audit_history(root, min_sessions=2)
+            self.assertEqual(a["counts"]["invalid_history_files"], 0)
+            self.assertEqual(a["counts"]["unpriced_historical_sessions"], 1)
+            self.assertEqual(a["counts"]["history_files_with_unpriced_sessions"], 1)
+            self.assertEqual(a["counts"]["history_files_ge_min_sessions"], 0)
+            self.assertEqual(a["counts"]["present_in_snapshot_with_history"], 1)
+
+    def test_all_unpriced_session_file_is_not_tradable_history(self):
+        with TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            build(root, history=[{"date": "2026-11-09", "close": None, "turnover_ntd": 0}])
             a = audit_history(root)
-            self.assertEqual(a["counts"]["invalid_history_files"], 1)
-            self.assertIn("CLOSE", a["invalid_sample"][0]["reason"])
+            self.assertEqual(a["counts"]["history_files_without_any_positive_close"], 1)
+            self.assertEqual(a["counts"]["present_in_snapshot_with_history"], 0)
+            self.assertEqual(a["snapshot_without_well_formed_history"], 2)
 
     def test_future_max_example_guard(self):
         with TemporaryDirectory() as tmp:
