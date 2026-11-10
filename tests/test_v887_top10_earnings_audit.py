@@ -85,7 +85,16 @@ class EarningsAuditTests(unittest.TestCase):
                 mod.check_post_financial_quarter_revenue(base,research,
                     {("TWSE","3305"):self.now},{("TWSE","3305"):self.prior},[self.row])
             base,shard,research=self._make_monthly_fixture(folder,"2026-10-21T16:59:00+00:00")
-            with self.assertRaisesRegex(ValueError,"FUTURE_OR_UNZONED"):
+            future=mod.check_post_financial_quarter_revenue(base,research,
+                {("TWSE","3305"):self.now},{("TWSE","3305"):self.prior},[self.row])
+            self.assertEqual(future["status"],"DEFERRED_MONTHLY_RECEIPT_AFTER_MODEL_VINTAGE")
+            self.assertEqual(future["issuer_checks"],[])
+            self.assertFalse(future["recognized_quarterly_profit_verified"])
+            self.assertFalse(future["issuer_filing_PIT_verified"])
+            self.assertEqual(future["model_estimate_vintage"],research["estimate_vintage"])
+            # A manifest with no timezone cannot establish source chronology.
+            base,shard,research=self._make_monthly_fixture(folder,"2026-10-19T16:59:00")
+            with self.assertRaisesRegex(ValueError,"MONTHLY_REVENUE_RECEIPT_UNZONED"):
                 mod.check_post_financial_quarter_revenue(base,research,
                     {("TWSE","3305"):self.now},{("TWSE","3305"):self.prior},[self.row])
     def test_8390_equity_raise_stress_and_stale_fail_closed(self):
