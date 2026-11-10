@@ -190,7 +190,7 @@ def build(root):
     date=official.get("asof_price_date")
     require(all(x==vintage for x in (
         triage.get("estimate_vintage"),footwear.get("estimate_vintage"),
-        early.get("estimate_vintage")),"INPUT_ESTIMATE_VINTAGE_MISMATCH")
+        early.get("estimate_vintage"))),"INPUT_ESTIMATE_VINTAGE_MISMATCH")
     require(all(x==date for x in (triage.get("price_date"),
                                  footwear.get("asof_price_date"))),
             "INPUT_REFERENCE_PRICE_DATE_MISMATCH")
