@@ -1,6 +1,6 @@
 {
   "model": "V8.10.8",
-  "estimate_vintage": "2026-11-10T16:43:43.506857+08:00",
+  "estimate_vintage": "2026-11-10T17:23:28.585789+08:00",
   "asof_price_date": "2026-11-10",
   "tracked_issuers": 2004,
   "valued_candidates": 818,
@@ -1047,6 +1047,123 @@
       "source_tier": "NORMALIZED_ARCHIVE_AND_CAPTURE_RECEIPTS_NOT_INDEPENDENT_ORIGINAL_ATTESTATION"
     },
     {
+      "code": "2364",
+      "name": "倫飛",
+      "market": "TWSE",
+      "research_upside_pct": 102.90556527373323,
+      "source_status": "CERTIFICATION_PENDING",
+      "financial": {
+        "normalized_income_8q_count": 8,
+        "normalized_cashflow_8q_count": 8,
+        "missing_income_periods": [],
+        "missing_cashflow_periods": [],
+        "latest_primary_key_numbers_checked": false,
+        "full_eight_quarter_original_notes_audit": false,
+        "filing_specific_disclosure_timestamps_verified": false,
+        "original_eight_quarter_gate": "PENDING_NOT_CERTIFIED"
+      },
+      "capital": {
+        "issued_share_master_present": true,
+        "reported_bond_count": 0,
+        "unverified_bond_terms": [],
+        "dated_capital_terms_receipt_present": false,
+        "dated_capital_terms_fully_certified": false,
+        "no_listed_bond_does_not_prove_no_other_dilution": true,
+        "fully_diluted_shares_gate": "PENDING_NOT_CERTIFIED"
+      },
+      "market_history": {
+        "available_market_archives": 16,
+        "observed_20_session_issuer_count": 16,
+        "five_day": {
+          "sessions": 5,
+          "first": "2026-11-04",
+          "last": "2026-11-10",
+          "median_turnover_ntd": 16988885,
+          "min_turnover_ntd": 10704807,
+          "zero_turnover_days": 0,
+          "hypothetical_position_ntd": 5000000,
+          "participation_cap": 0.2,
+          "exit_sessions_at_median": 1.47,
+          "estimates_are_idealized_not_fills": true
+        },
+        "twenty_day": null,
+        "sixty_day": null,
+        "spread_and_order_book_evidence_available": false,
+        "tradability_gate": "PENDING_NOT_CERTIFIED"
+      },
+      "issuer_historical_market_data": {
+        "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
+        "available_sessions": 67,
+        "twenty_day": {
+          "sessions": 20,
+          "first": "2026-10-12",
+          "last": "2026-11-10",
+          "median_turnover_ntd": 11941448.5,
+          "min_turnover_ntd": 3999446,
+          "zero_turnover_days": 0,
+          "hypothetical_position_ntd": 5000000,
+          "participation_cap": 0.2,
+          "exit_sessions_at_median": 2.09,
+          "estimates_are_idealized_not_fills": true
+        },
+        "five_day": {
+          "sessions": 5,
+          "first": "2026-11-04",
+          "last": "2026-11-10",
+          "median_turnover_ntd": 16988885,
+          "min_turnover_ntd": 10704807,
+          "zero_turnover_days": 0,
+          "hypothetical_position_ntd": 5000000,
+          "participation_cap": 0.2,
+          "exit_sessions_at_median": 1.47,
+          "estimates_are_idealized_not_fills": true
+        },
+        "sixty_day": {
+          "sessions": 60,
+          "first": "2026-08-12",
+          "last": "2026-11-10",
+          "median_turnover_ntd": 15672456.5,
+          "min_turnover_ntd": 3999446,
+          "zero_turnover_days": 0,
+          "hypothetical_position_ntd": 5000000,
+          "participation_cap": 0.2,
+          "exit_sessions_at_median": 1.6,
+          "estimates_are_idealized_not_fills": true
+        },
+        "validated_archive_additions": 1,
+        "validated_archive_added_sessions": [
+          {
+            "date": "2026-11-10",
+            "turnover_ntd": 17116009,
+            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
+          }
+        ],
+        "overlapping_sessions_checked": 15,
+        "reused_issuer_history_sessions": 66,
+        "original_capture_is_not_authenticated_issuer_PIT": true,
+        "spread_and_limit_price_execution_not_verified": true,
+        "tradability_gate": "PENDING_NOT_CERTIFIED"
+      },
+      "pending_gates": [
+        "original_eight_quarter_statements",
+        "cash_and_working_capital",
+        "nonoperating_components",
+        "fully_diluted_shares",
+        "matched_peers_and_cycle",
+        "management_promises",
+        "auditor_scope",
+        "tradability",
+        "forecast_bridge",
+        "insider_claims",
+        "dividend_window",
+        "point_in_time",
+        "out_of_sample_validation"
+      ],
+      "ready_for_formal_certification": false,
+      "newly_passed_gates": [],
+      "source_tier": "NORMALIZED_ARCHIVE_AND_CAPTURE_RECEIPTS_NOT_INDEPENDENT_ORIGINAL_ATTESTATION"
+    },
+    {
       "code": "3285",
       "name": "微端",
       "market": "TPEX",
@@ -1275,123 +1392,6 @@
         ],
         "overlapping_sessions_checked": 11,
         "reused_issuer_history_sessions": 327,
-        "original_capture_is_not_authenticated_issuer_PIT": true,
-        "spread_and_limit_price_execution_not_verified": true,
-        "tradability_gate": "PENDING_NOT_CERTIFIED"
-      },
-      "pending_gates": [
-        "original_eight_quarter_statements",
-        "cash_and_working_capital",
-        "nonoperating_components",
-        "fully_diluted_shares",
-        "matched_peers_and_cycle",
-        "management_promises",
-        "auditor_scope",
-        "tradability",
-        "forecast_bridge",
-        "insider_claims",
-        "dividend_window",
-        "point_in_time",
-        "out_of_sample_validation"
-      ],
-      "ready_for_formal_certification": false,
-      "newly_passed_gates": [],
-      "source_tier": "NORMALIZED_ARCHIVE_AND_CAPTURE_RECEIPTS_NOT_INDEPENDENT_ORIGINAL_ATTESTATION"
-    },
-    {
-      "code": "2364",
-      "name": "倫飛",
-      "market": "TWSE",
-      "research_upside_pct": 98.25403102200585,
-      "source_status": "CERTIFICATION_PENDING",
-      "financial": {
-        "normalized_income_8q_count": 8,
-        "normalized_cashflow_8q_count": 8,
-        "missing_income_periods": [],
-        "missing_cashflow_periods": [],
-        "latest_primary_key_numbers_checked": false,
-        "full_eight_quarter_original_notes_audit": false,
-        "filing_specific_disclosure_timestamps_verified": false,
-        "original_eight_quarter_gate": "PENDING_NOT_CERTIFIED"
-      },
-      "capital": {
-        "issued_share_master_present": true,
-        "reported_bond_count": 0,
-        "unverified_bond_terms": [],
-        "dated_capital_terms_receipt_present": false,
-        "dated_capital_terms_fully_certified": false,
-        "no_listed_bond_does_not_prove_no_other_dilution": true,
-        "fully_diluted_shares_gate": "PENDING_NOT_CERTIFIED"
-      },
-      "market_history": {
-        "available_market_archives": 16,
-        "observed_20_session_issuer_count": 16,
-        "five_day": {
-          "sessions": 5,
-          "first": "2026-11-04",
-          "last": "2026-11-10",
-          "median_turnover_ntd": 16988885,
-          "min_turnover_ntd": 10704807,
-          "zero_turnover_days": 0,
-          "hypothetical_position_ntd": 5000000,
-          "participation_cap": 0.2,
-          "exit_sessions_at_median": 1.47,
-          "estimates_are_idealized_not_fills": true
-        },
-        "twenty_day": null,
-        "sixty_day": null,
-        "spread_and_order_book_evidence_available": false,
-        "tradability_gate": "PENDING_NOT_CERTIFIED"
-      },
-      "issuer_historical_market_data": {
-        "status": "SOURCE_CAPTURED_NOT_FULL_TRADABILITY",
-        "available_sessions": 67,
-        "twenty_day": {
-          "sessions": 20,
-          "first": "2026-10-12",
-          "last": "2026-11-10",
-          "median_turnover_ntd": 11941448.5,
-          "min_turnover_ntd": 3999446,
-          "zero_turnover_days": 0,
-          "hypothetical_position_ntd": 5000000,
-          "participation_cap": 0.2,
-          "exit_sessions_at_median": 2.09,
-          "estimates_are_idealized_not_fills": true
-        },
-        "five_day": {
-          "sessions": 5,
-          "first": "2026-11-04",
-          "last": "2026-11-10",
-          "median_turnover_ntd": 16988885,
-          "min_turnover_ntd": 10704807,
-          "zero_turnover_days": 0,
-          "hypothetical_position_ntd": 5000000,
-          "participation_cap": 0.2,
-          "exit_sessions_at_median": 1.47,
-          "estimates_are_idealized_not_fills": true
-        },
-        "sixty_day": {
-          "sessions": 60,
-          "first": "2026-08-12",
-          "last": "2026-11-10",
-          "median_turnover_ntd": 15672456.5,
-          "min_turnover_ntd": 3999446,
-          "zero_turnover_days": 0,
-          "hypothetical_position_ntd": 5000000,
-          "participation_cap": 0.2,
-          "exit_sessions_at_median": 1.6,
-          "estimates_are_idealized_not_fills": true
-        },
-        "validated_archive_additions": 1,
-        "validated_archive_added_sessions": [
-          {
-            "date": "2026-11-10",
-            "turnover_ntd": 17116009,
-            "source": "SHA_CHECKED_MARKET_DAILY_ARCHIVE"
-          }
-        ],
-        "overlapping_sessions_checked": 15,
-        "reused_issuer_history_sessions": 66,
         "original_capture_is_not_authenticated_issuer_PIT": true,
         "spread_and_limit_price_execution_not_verified": true,
         "tradability_gate": "PENDING_NOT_CERTIFIED"
@@ -20757,6 +20757,48 @@
       "automatic_pass_prohibited": true
     },
     {
+      "code": "2364",
+      "name": "倫飛",
+      "gate": "management_promises",
+      "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
+      "automatic_pass_prohibited": true
+    },
+    {
+      "code": "2364",
+      "name": "倫飛",
+      "gate": "auditor_scope",
+      "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
+      "automatic_pass_prohibited": true
+    },
+    {
+      "code": "2364",
+      "name": "倫飛",
+      "gate": "forecast_bridge",
+      "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
+      "automatic_pass_prohibited": true
+    },
+    {
+      "code": "2364",
+      "name": "倫飛",
+      "gate": "matched_peers_and_cycle",
+      "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
+      "automatic_pass_prohibited": true
+    },
+    {
+      "code": "2364",
+      "name": "倫飛",
+      "gate": "point_in_time",
+      "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
+      "automatic_pass_prohibited": true
+    },
+    {
+      "code": "2364",
+      "name": "倫飛",
+      "gate": "out_of_sample_validation",
+      "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
+      "automatic_pass_prohibited": true
+    },
+    {
       "code": "3285",
       "name": "微端",
       "gate": "management_promises",
@@ -20836,48 +20878,6 @@
     {
       "code": "2376",
       "name": "技嘉",
-      "gate": "out_of_sample_validation",
-      "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
-      "automatic_pass_prohibited": true
-    },
-    {
-      "code": "2364",
-      "name": "倫飛",
-      "gate": "management_promises",
-      "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
-      "automatic_pass_prohibited": true
-    },
-    {
-      "code": "2364",
-      "name": "倫飛",
-      "gate": "auditor_scope",
-      "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
-      "automatic_pass_prohibited": true
-    },
-    {
-      "code": "2364",
-      "name": "倫飛",
-      "gate": "forecast_bridge",
-      "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
-      "automatic_pass_prohibited": true
-    },
-    {
-      "code": "2364",
-      "name": "倫飛",
-      "gate": "matched_peers_and_cycle",
-      "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
-      "automatic_pass_prohibited": true
-    },
-    {
-      "code": "2364",
-      "name": "倫飛",
-      "gate": "point_in_time",
-      "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
-      "automatic_pass_prohibited": true
-    },
-    {
-      "code": "2364",
-      "name": "倫飛",
       "gate": "out_of_sample_validation",
       "status": "MANUAL_OR_DATED_ORIGINAL_REVIEW_PENDING",
       "automatic_pass_prohibited": true

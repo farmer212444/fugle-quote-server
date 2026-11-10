@@ -1,8 +1,8 @@
 {
   "schema": "V810_INSTITUTIONAL_RESEARCH_CONTROLS",
   "model": "V8.10.8",
-  "estimate_vintage": "2026-11-10T16:43:43.506857+08:00",
-  "report_observed_at": "2026-11-10T08:45:04.050500+00:00",
+  "estimate_vintage": "2026-11-10T17:23:28.585789+08:00",
+  "report_observed_at": "2026-11-10T09:24:51.766043+00:00",
   "asof_price_date": "2026-11-10",
   "source_model_sha256": "90396d21b1d2d0e6a8806836d0805f2c8974bd920825f3db95dc3a4ea3ca92b8",
   "policy_sha256": "3f378fb673213f6178983a4698ed80c7e5a8c5b62e82192a85eea1c6a3b0b493",
@@ -13,7 +13,7 @@
     "tracked_issuer_universe": 2004,
     "original_latest_issuer_numeric_coverage": 66,
     "official_current_bulk_issuers": 1939,
-    "primary_research_rankable": 59,
+    "primary_research_rankable": 60,
     "market_research_rankable": 818,
     "not_rankable": 1186,
     "broad_unverified_historical_detail_rankable": 818,
@@ -1742,6 +1742,283 @@
       }
     },
     {
+      "code": "2364",
+      "market": "TWSE",
+      "name": "倫飛",
+      "industry": "電腦及週邊設備業",
+      "base_upside_pct": 102.90556527373323,
+      "base": {
+        "revenue_k": 1964361.1945752164,
+        "gross_margin": 0.4107245041961064,
+        "gross_profit_k": 806811.2777039771,
+        "opex_ratio": 0.25610940928915565,
+        "opex_k": 503091.3851731988,
+        "operating_profit_k": 303719.89253077825,
+        "nonoperating_k": 20972.0,
+        "pretax_k": 324691.89253077825,
+        "tax_rate": 0.0011529578774045477,
+        "parent_fraction": 0.9962016686686361,
+        "parent_profit_k": 323085.6709955256,
+        "shares": 58448513.0,
+        "eps": 5.527697017638851,
+        "pe": 18.17,
+        "target_price": 100.43825481049794,
+        "price_upside_pct": 102.90556527373323,
+        "future_dividends_per_share": null,
+        "total_return_pct": null
+      },
+      "financial_period": "2026-Q3",
+      "cashflow_financial_period": "2026-Q2",
+      "valuation_diagnostics": {
+        "status": "RESEARCH_ASSUMPTION_SENSITIVITY_NOT_A_PROBABILITY",
+        "market_implied_eps_at_model_pe": 2.7242707760044027,
+        "market_implied_gross_margin": 0.32689536588418017,
+        "gross_margin_required_for_30pct_upside": 0.35133402615166054,
+        "eps_gain_per_1pp_gross_margin": 0.3344214551273289,
+        "eps_pe_each_minus20_upside_pct": 29.85956177518925,
+        "bear_price_upside_pct": 12.432202311292073,
+        "pe_is_matched_peer_certified": false,
+        "forward_annual_profit_bridge_verified": false
+      },
+      "review_work": [
+        {
+          "gate": "original_eight_quarter_statements",
+          "scope": "ISSUER",
+          "decision": "PENDING",
+          "reason": "LATEST_MOPS_ANNOUNCEMENT_NOT_COMPLETE_FINANCIAL_STATEMENTS",
+          "required_evidence": "逐季原始四表、附註、重編及完整性核對",
+          "invalidates_on": "財報／重編更新",
+          "strategy_evidence_reusable_by_version": false,
+          "formal_pass": false
+        },
+        {
+          "gate": "cash_and_working_capital",
+          "scope": "ISSUER",
+          "decision": "PENDING",
+          "reason": "MULTI_PERIOD_WORKING_CAPITAL_AND_LIQUIDITY_REVIEW_REQUIRED",
+          "required_evidence": "應收、存貨、應付、CAPEX與資金來源橋接",
+          "invalidates_on": "新財報／資金事件",
+          "strategy_evidence_reusable_by_version": false,
+          "formal_pass": false
+        },
+        {
+          "gate": "nonoperating_components",
+          "scope": "ISSUER",
+          "decision": "PENDING",
+          "reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
+          "required_evidence": "經常性、匯兌、處分、評價與減損分解",
+          "invalidates_on": "業外組成更新",
+          "strategy_evidence_reusable_by_version": false,
+          "formal_pass": false
+        },
+        {
+          "gate": "fully_diluted_shares",
+          "scope": "ISSUER",
+          "decision": "PENDING",
+          "reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
+          "required_evidence": "現有股數、CB最新條款、員工股份與分母勾稽",
+          "invalidates_on": "增減資／CB條款更新",
+          "strategy_evidence_reusable_by_version": false,
+          "formal_pass": false
+        },
+        {
+          "gate": "matched_peers_and_cycle",
+          "scope": "ISSUER",
+          "decision": "PENDING",
+          "reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
+          "required_evidence": "商業模式相符同業、循環位置與倍數依據",
+          "invalidates_on": "營運模式／循環假設改變",
+          "strategy_evidence_reusable_by_version": false,
+          "formal_pass": false
+        },
+        {
+          "gate": "management_promises",
+          "scope": "ISSUER",
+          "decision": "PENDING",
+          "reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
+          "required_evidence": "原始承諾、可驗證指標、時程與後續交付紀錄",
+          "invalidates_on": "新承諾／驗證到期",
+          "strategy_evidence_reusable_by_version": false,
+          "formal_pass": false
+        },
+        {
+          "gate": "auditor_scope",
+          "scope": "ISSUER",
+          "decision": "PENDING",
+          "reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
+          "required_evidence": "完整核閱意見、保留範圍及重要性判斷",
+          "invalidates_on": "新核閱／重大事項",
+          "strategy_evidence_reusable_by_version": false,
+          "formal_pass": false
+        },
+        {
+          "gate": "tradability",
+          "scope": "EXECUTION",
+          "decision": "PENDING",
+          "reason": "SINGLE_DAY_QUOTE_IS_NOT_CONTINUOUS_TRADABILITY_CERTIFICATION",
+          "required_evidence": "多日成交、價差、參與率與清倉能力",
+          "invalidates_on": "股價／成交條件改變",
+          "strategy_evidence_reusable_by_version": false,
+          "formal_pass": false
+        },
+        {
+          "gate": "forecast_bridge",
+          "scope": "ISSUER",
+          "decision": "PENDING",
+          "reason": "LATEST_EARNINGS_EVENT_REBASED_ISSUER_2027_OPERATING_BRIDGE_REQUIRED",
+          "required_evidence": "量價、產能、稼動、成本、折舊及2027EPS推導",
+          "invalidates_on": "經濟輸入／預測方法改變",
+          "strategy_evidence_reusable_by_version": false,
+          "formal_pass": false
+        },
+        {
+          "gate": "insider_claims",
+          "scope": "ISSUER",
+          "decision": "PENDING",
+          "reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
+          "required_evidence": "原始申報、身份、實際增減與公告可得時間",
+          "invalidates_on": "新申報／說法變更",
+          "strategy_evidence_reusable_by_version": false,
+          "formal_pass": false
+        },
+        {
+          "gate": "dividend_window",
+          "scope": "CORPORATE_ACTION",
+          "decision": "PENDING",
+          "reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
+          "required_evidence": "除權息、支付、股數與估值適用期間",
+          "invalidates_on": "公司行動公告／修正",
+          "strategy_evidence_reusable_by_version": false,
+          "formal_pass": false
+        },
+        {
+          "gate": "point_in_time",
+          "scope": "SOURCE",
+          "decision": "PENDING",
+          "reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
+          "required_evidence": "原始公告、修訂與首次可得時間",
+          "invalidates_on": "來源修訂／可得時間更正",
+          "strategy_evidence_reusable_by_version": false,
+          "formal_pass": false
+        },
+        {
+          "gate": "out_of_sample_validation",
+          "scope": "STRATEGY",
+          "decision": "PENDING",
+          "reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
+          "required_evidence": "固定策略版本與適用子群的扣成本樣本外驗證",
+          "invalidates_on": "策略／母體／交易規則改變",
+          "strategy_evidence_reusable_by_version": true,
+          "formal_pass": false
+        }
+      ],
+      "forecast_binding": {
+        "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
+        "forecast_input_sha256": "cf3d262e6e8826ade85062006cc02ab410dee9e967721fdf2cd315c6caf134d8",
+        "forecast_method_sha256": "c44d2b22fd76bf09e53d1876871ec4edc3d81bc7e6c36a485b9b245dd14d71f8",
+        "target_date": "2027-12-31",
+        "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
+      },
+      "fresh_earnings_update": {
+        "applied": true,
+        "source_kind": "MOPS_ISSUER_EARNINGS_ANNOUNCEMENT_RESEARCH",
+        "event": {
+          "code": "2364",
+          "financial_period": "2026-Q3",
+          "prior_period": "2025-Q3",
+          "current": {
+            "revenue_k": 1405876.0,
+            "gross_profit_k": 583101.0,
+            "operating_profit_k": 250141.0,
+            "pretax_profit_k": 277547.0,
+            "net_income_k": 277227.0,
+            "parent_net_income_k": 276174.0,
+            "optional_reconciliation_gaps": [],
+            "opex_k": 332960.0,
+            "reported_opex_k": 332960.0,
+            "other_operating_gains_k": null,
+            "nonoperating_k": 27406.0,
+            "basic_eps": 4.79
+          },
+          "prior": {
+            "revenue_k": 1163644.0,
+            "gross_profit_k": 463010.0,
+            "operating_profit_k": 173048.0,
+            "pretax_profit_k": 164141.0,
+            "net_income_k": 163793.0,
+            "parent_net_income_k": 164592.0,
+            "nonoperating_k": -8907.0
+          },
+          "single_quarter": {
+            "revenue_k": 547617.0,
+            "gross_profit_k": 225782.0,
+            "operating_profit_k": 108353.0,
+            "pretax_profit_k": 116438.0,
+            "net_income_k": 116326.0,
+            "parent_net_income_k": 116055.0,
+            "nonoperating_k": 8085.0
+          },
+          "source_kind": "MOPS_ISSUER_EARNINGS_ANNOUNCEMENT_RESEARCH",
+          "source_url": "https://mopsov.twse.com.tw/mops/web/ajax_t05st01?firstin=true&step=2&off=1&seq_no=1&spoke_time=171832&spoke_date=20261110&co_id=2364&TYPEK=sii",
+          "archive_path": "evidence/v880/early_bulk/TWSE/81613b9541ad94ca21cbb6a05db55fee6a58bd42600218cf3a962259205c16f8.notice.html.gz",
+          "source_sha256": "81613b9541ad94ca21cbb6a05db55fee6a58bd42600218cf3a962259205c16f8",
+          "available_at": "2026-11-10T09:22:30.884147+00:00",
+          "extraction_recipe": "OFFICIAL_EARLY_QUARTER_INCOME_INTAKE_V1",
+          "standalone_quarter_derived_by_ytd_difference": true,
+          "prior_year_detail_is_not_original_certified": true,
+          "original_numeric_table_reconciled": false,
+          "historical_issuer_publication_PIT_verified": false,
+          "formal_quality_pass": false,
+          "event_sha256": "79ece9021af83601c30c7641707e4199a2a4b8e438bf5974e4a2fb67a9f64d82"
+        },
+        "method": "EXISTING_CALIBRATED_ACCOUNTING_EQUATIONS_WITH_NEW_RECONCILED_YTD_FACTS",
+        "annual_forecast_still_requires_issuer_operating_bridge": true,
+        "event_state": {
+          "status": "MOPS_ISSUER_ANNOUNCEMENT_RESEARCH_ADMITTED",
+          "period": "2026-Q3",
+          "blocks_current_decision": false
+        },
+        "baseline_without_new_event": {
+          "eps": 5.400976629383208,
+          "pe": 18.17,
+          "target_price": 98.1357453558929,
+          "price_upside_pct": 98.25403102200585
+        },
+        "baseline_same_model_price_and_vintage": true
+      },
+      "liquidity": {
+        "status": "TWENTY_SESSION_TURNOVER_PROXY_NOT_EXECUTION_REVIEW",
+        "sessions": 20,
+        "first_date": "2026-10-12",
+        "last_date": "2026-11-10",
+        "median20_turnover_ntd": 11941448.5,
+        "spread_and_exit_verified": false
+      },
+      "capacity_weight_at_reference_capital": 0.2985362125,
+      "formal_Aplus": false,
+      "risk_profile": {
+        "status": "REVIEWED_COMMON_RISK_AND_STRESS_PROFILE_MISSING"
+      },
+      "governance_review": {
+        "status": "NO_EVENT_LEDGER_NOT_LEGAL_CLEARANCE",
+        "coverage": "REGISTERED_EVENTS_ONLY_NOT_FULL_MARKET_LEGAL_CLEARANCE",
+        "blocks_recommendation": false,
+        "material_open_event_ids": [],
+        "events": []
+      },
+      "recommendation_blocked": false,
+      "common_risk_tags": null,
+      "reviewed_stress_loss_fraction": null,
+      "execution_review": {
+        "status": "TWENTY_SESSION_TURNOVER_PROXY_NOT_EXECUTION_REVIEW",
+        "sessions": 20,
+        "first_date": "2026-10-12",
+        "last_date": "2026-11-10",
+        "median20_turnover_ntd": 11941448.5,
+        "spread_and_exit_verified": false
+      }
+    },
+    {
       "code": "3285",
       "market": "TPEX",
       "name": "微端",
@@ -2182,228 +2459,6 @@
         "first_date": "2026-10-12",
         "last_date": "2026-11-10",
         "median20_turnover_ntd": 1498747802.5,
-        "spread_and_exit_verified": false
-      }
-    },
-    {
-      "code": "2364",
-      "market": "TWSE",
-      "name": "倫飛",
-      "industry": "電腦及週邊設備業",
-      "base_upside_pct": 98.25403102200585,
-      "base": {
-        "revenue_k": 1960039.8631711141,
-        "gross_margin": 0.4203911136827371,
-        "gross_profit_k": 823983.3409410644,
-        "opex_ratio": 0.2690376280788731,
-        "opex_k": 527324.4757275955,
-        "operating_profit_k": 296658.8652134689,
-        "nonoperating_k": 20972.0,
-        "pretax_k": 317630.8652134689,
-        "tax_rate": 0.0012910513999838619,
-        "parent_fraction": 0.9951398686148626,
-        "parent_profit_k": 315679.05273520056,
-        "shares": 58448513.0,
-        "eps": 5.400976629383208,
-        "pe": 18.17,
-        "target_price": 98.1357453558929,
-        "price_upside_pct": 98.25403102200585,
-        "future_dividends_per_share": null,
-        "total_return_pct": null
-      },
-      "financial_period": "2026-Q2",
-      "cashflow_financial_period": "2026-Q2",
-      "valuation_diagnostics": {
-        "status": "RESEARCH_ASSUMPTION_SENSITIVITY_NOT_A_PROBABILITY",
-        "market_implied_eps_at_model_pe": 2.7242707760044027,
-        "market_implied_gross_margin": 0.3400780590728419,
-        "gross_margin_required_for_30pct_upside": 0.36460012308624845,
-        "eps_gain_per_1pp_gross_margin": 0.33328403039585175,
-        "eps_pe_each_minus20_upside_pct": 26.882579854083755,
-        "bear_price_upside_pct": 9.635956299036508,
-        "pe_is_matched_peer_certified": false,
-        "forward_annual_profit_bridge_verified": false
-      },
-      "review_work": [
-        {
-          "gate": "original_eight_quarter_statements",
-          "scope": "ISSUER",
-          "decision": "PENDING",
-          "reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
-          "required_evidence": "逐季原始四表、附註、重編及完整性核對",
-          "invalidates_on": "財報／重編更新",
-          "strategy_evidence_reusable_by_version": false,
-          "formal_pass": false
-        },
-        {
-          "gate": "cash_and_working_capital",
-          "scope": "ISSUER",
-          "decision": "PENDING",
-          "reason": "MULTI_PERIOD_WORKING_CAPITAL_AND_LIQUIDITY_REVIEW_REQUIRED",
-          "required_evidence": "應收、存貨、應付、CAPEX與資金來源橋接",
-          "invalidates_on": "新財報／資金事件",
-          "strategy_evidence_reusable_by_version": false,
-          "formal_pass": false
-        },
-        {
-          "gate": "nonoperating_components",
-          "scope": "ISSUER",
-          "decision": "PENDING",
-          "reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
-          "required_evidence": "經常性、匯兌、處分、評價與減損分解",
-          "invalidates_on": "業外組成更新",
-          "strategy_evidence_reusable_by_version": false,
-          "formal_pass": false
-        },
-        {
-          "gate": "fully_diluted_shares",
-          "scope": "ISSUER",
-          "decision": "PENDING",
-          "reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
-          "required_evidence": "現有股數、CB最新條款、員工股份與分母勾稽",
-          "invalidates_on": "增減資／CB條款更新",
-          "strategy_evidence_reusable_by_version": false,
-          "formal_pass": false
-        },
-        {
-          "gate": "matched_peers_and_cycle",
-          "scope": "ISSUER",
-          "decision": "PENDING",
-          "reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
-          "required_evidence": "商業模式相符同業、循環位置與倍數依據",
-          "invalidates_on": "營運模式／循環假設改變",
-          "strategy_evidence_reusable_by_version": false,
-          "formal_pass": false
-        },
-        {
-          "gate": "management_promises",
-          "scope": "ISSUER",
-          "decision": "PENDING",
-          "reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
-          "required_evidence": "原始承諾、可驗證指標、時程與後續交付紀錄",
-          "invalidates_on": "新承諾／驗證到期",
-          "strategy_evidence_reusable_by_version": false,
-          "formal_pass": false
-        },
-        {
-          "gate": "auditor_scope",
-          "scope": "ISSUER",
-          "decision": "PENDING",
-          "reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
-          "required_evidence": "完整核閱意見、保留範圍及重要性判斷",
-          "invalidates_on": "新核閱／重大事項",
-          "strategy_evidence_reusable_by_version": false,
-          "formal_pass": false
-        },
-        {
-          "gate": "tradability",
-          "scope": "EXECUTION",
-          "decision": "PENDING",
-          "reason": "SINGLE_DAY_QUOTE_IS_NOT_CONTINUOUS_TRADABILITY_CERTIFICATION",
-          "required_evidence": "多日成交、價差、參與率與清倉能力",
-          "invalidates_on": "股價／成交條件改變",
-          "strategy_evidence_reusable_by_version": false,
-          "formal_pass": false
-        },
-        {
-          "gate": "forecast_bridge",
-          "scope": "ISSUER",
-          "decision": "PENDING",
-          "reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
-          "required_evidence": "量價、產能、稼動、成本、折舊及2027EPS推導",
-          "invalidates_on": "經濟輸入／預測方法改變",
-          "strategy_evidence_reusable_by_version": false,
-          "formal_pass": false
-        },
-        {
-          "gate": "insider_claims",
-          "scope": "ISSUER",
-          "decision": "PENDING",
-          "reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
-          "required_evidence": "原始申報、身份、實際增減與公告可得時間",
-          "invalidates_on": "新申報／說法變更",
-          "strategy_evidence_reusable_by_version": false,
-          "formal_pass": false
-        },
-        {
-          "gate": "dividend_window",
-          "scope": "CORPORATE_ACTION",
-          "decision": "PENDING",
-          "reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
-          "required_evidence": "除權息、支付、股數與估值適用期間",
-          "invalidates_on": "公司行動公告／修正",
-          "strategy_evidence_reusable_by_version": false,
-          "formal_pass": false
-        },
-        {
-          "gate": "point_in_time",
-          "scope": "SOURCE",
-          "decision": "PENDING",
-          "reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
-          "required_evidence": "原始公告、修訂與首次可得時間",
-          "invalidates_on": "來源修訂／可得時間更正",
-          "strategy_evidence_reusable_by_version": false,
-          "formal_pass": false
-        },
-        {
-          "gate": "out_of_sample_validation",
-          "scope": "STRATEGY",
-          "decision": "PENDING",
-          "reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
-          "required_evidence": "固定策略版本與適用子群的扣成本樣本外驗證",
-          "invalidates_on": "策略／母體／交易規則改變",
-          "strategy_evidence_reusable_by_version": true,
-          "formal_pass": false
-        }
-      ],
-      "forecast_binding": {
-        "forecast_contract_version": "V810_ECONOMIC_INPUTS_V1",
-        "forecast_input_sha256": "f3018f37f710d30eb47dc41902b292d7f8a9eebb5b13892e2d168ec67fd80a31",
-        "forecast_method_sha256": "c44d2b22fd76bf09e53d1876871ec4edc3d81bc7e6c36a485b9b245dd14d71f8",
-        "target_date": "2027-12-31",
-        "invalidates_on": "ECONOMIC_INPUT_OR_METHOD_CHANGE_NOT_REFERENCE_PRICE_DATE"
-      },
-      "fresh_earnings_update": {
-        "applied": false,
-        "source_kind": null,
-        "event": null,
-        "method": null,
-        "annual_forecast_still_requires_issuer_operating_bridge": true,
-        "event_state": {
-          "status": "NOT_OBSERVED_IN_PARTIAL_OFFICIAL_TABLE",
-          "blocks_current_decision": false,
-          "absence_is_not_zero_or_proof_unannounced": true
-        }
-      },
-      "liquidity": {
-        "status": "TWENTY_SESSION_TURNOVER_PROXY_NOT_EXECUTION_REVIEW",
-        "sessions": 20,
-        "first_date": "2026-10-12",
-        "last_date": "2026-11-10",
-        "median20_turnover_ntd": 11941448.5,
-        "spread_and_exit_verified": false
-      },
-      "capacity_weight_at_reference_capital": 0.2985362125,
-      "formal_Aplus": false,
-      "risk_profile": {
-        "status": "REVIEWED_COMMON_RISK_AND_STRESS_PROFILE_MISSING"
-      },
-      "governance_review": {
-        "status": "NO_EVENT_LEDGER_NOT_LEGAL_CLEARANCE",
-        "coverage": "REGISTERED_EVENTS_ONLY_NOT_FULL_MARKET_LEGAL_CLEARANCE",
-        "blocks_recommendation": false,
-        "material_open_event_ids": [],
-        "events": []
-      },
-      "recommendation_blocked": false,
-      "common_risk_tags": null,
-      "reviewed_stress_loss_fraction": null,
-      "execution_review": {
-        "status": "TWENTY_SESSION_TURNOVER_PROXY_NOT_EXECUTION_REVIEW",
-        "sessions": 20,
-        "first_date": "2026-10-12",
-        "last_date": "2026-11-10",
-        "median20_turnover_ntd": 11941448.5,
         "spread_and_exit_verified": false
       }
     },
@@ -5300,6 +5355,15 @@
         ]
       },
       {
+        "code": "2364",
+        "reasons": [
+          "FORMAL_QUALITY_NOT_COMPLETE",
+          "EXECUTION_REVIEW_MISSING",
+          "COMMON_RISK_EXPOSURES_UNREVIEWED",
+          "POSITIVE_REVIEWED_STRESS_LOSS_REQUIRED"
+        ]
+      },
+      {
         "code": "3285",
         "reasons": [
           "FORMAL_QUALITY_NOT_COMPLETE",
@@ -5310,15 +5374,6 @@
       },
       {
         "code": "2376",
-        "reasons": [
-          "FORMAL_QUALITY_NOT_COMPLETE",
-          "EXECUTION_REVIEW_MISSING",
-          "COMMON_RISK_EXPOSURES_UNREVIEWED",
-          "POSITIVE_REVIEWED_STRESS_LOSS_REQUIRED"
-        ]
-      },
-      {
-        "code": "2364",
         "reasons": [
           "FORMAL_QUALITY_NOT_COMPLETE",
           "EXECUTION_REVIEW_MISSING",
@@ -8182,7 +8237,7 @@
   },
   "benchmark_validation": {
     "schema": "TOP30_VS_TAIEX_TR_V1",
-    "observed_at": "2026-11-10T08:45:04.050500+00:00",
+    "observed_at": "2026-11-10T09:24:51.766043+00:00",
     "benchmark_id": "TAIEX_TR",
     "trials": [
       {

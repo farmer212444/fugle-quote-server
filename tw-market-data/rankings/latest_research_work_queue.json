@@ -25,7 +25,7 @@
     "count_scope": "DETAIL_ONLY_NOT_FULL_MARKET"
   },
   "model": "V8.10.8",
-  "estimate_vintage": "2026-11-10T16:43:43.506857+08:00",
+  "estimate_vintage": "2026-11-10T17:23:28.585789+08:00",
   "asof_price_date": "2026-11-10",
   "source_model_sha256": "90396d21b1d2d0e6a8806836d0805f2c8974bd920825f3db95dc3a4ea3ca92b8",
   "issuer_job_count": 177,
@@ -2275,6 +2275,208 @@
       "formal_Aplus": false
     },
     {
+      "market": "TWSE",
+      "code": "2364",
+      "name": "倫飛",
+      "financial_period": "2026-Q3",
+      "reviewed_financial_period": "2026-Q2",
+      "research_upside_pct": 102.91,
+      "original_quarter_coverage": null,
+      "independent_decision_lanes": {
+        "code": "2364",
+        "market": "TWSE",
+        "name": "倫飛",
+        "valuation_period": "2026-Q3",
+        "reviewed_period": "2026-Q2",
+        "research_upside_pct": 102.91,
+        "price_lane": "A_PLUS_PRICE_CANDIDATE_UNVERIFIED",
+        "company_quality_lane": "QUALITY_REVIEW_PENDING",
+        "company_gates_passed": 0,
+        "company_gates_failed": 0,
+        "company_gates_pending": 12,
+        "company_gates_not_evaluated": 0,
+        "company_gates_total": 12,
+        "strategy_validation_lane": "STRATEGY_PIT_OOS_PENDING",
+        "formal_Aplus": false,
+        "dual_20pct_eps_pe_stress_upside_pct": 29.86,
+        "dual_20pct_stress_is_mechanical_not_probability_calibrated": true,
+        "no_trade_signal": true,
+        "gate_decisions_unchanged": true,
+        "evidence_provenance_is_not_formal_review": true
+      },
+      "watchlist_focus": false,
+      "passed_gate_count": 0,
+      "failed_gates": [],
+      "unresolved_gate_count": 13,
+      "work": [
+        {
+          "gate": "original_eight_quarter_statements",
+          "decision": "PENDING",
+          "stage": "MIRROR_CAPTURED",
+          "next_action": "CAPTURE_AND_VERIFY_ORIGINAL_SOURCE",
+          "scope": "ISSUER",
+          "required_evidence": "逐季原始四表、附註、重編及完整性核對",
+          "reason": "8 income and 8 cashflow summary periods; original full notes and issuer filing PIT missing",
+          "model_reason": "LATEST_MOPS_ANNOUNCEMENT_NOT_COMPLETE_FINANCIAL_STATEMENTS",
+          "invalidates_on": "財報／重編更新"
+        },
+        {
+          "gate": "cash_and_working_capital",
+          "decision": "PENDING",
+          "stage": "MIRROR_CAPTURED",
+          "next_action": "CAPTURE_AND_VERIFY_ORIGINAL_SOURCE",
+          "scope": "ISSUER",
+          "required_evidence": "應收、存貨、應付、CAPEX與資金來源橋接",
+          "reason": "Cashflow mirror 8/8; receivable/inventory/capex notes need reconciliation",
+          "model_reason": "MULTI_PERIOD_WORKING_CAPITAL_AND_LIQUIDITY_REVIEW_REQUIRED",
+          "invalidates_on": "新財報／資金事件"
+        },
+        {
+          "gate": "nonoperating_components",
+          "decision": "PENDING",
+          "stage": "REVIEW_PENDING",
+          "next_action": "COMPLETE_EVIDENCE_BRIDGE_AND_REVIEW",
+          "scope": "ISSUER",
+          "required_evidence": "經常性、匯兌、處分、評價與減損分解",
+          "reason": "Dated issuer source, analytical bridge and evidence signoff outstanding",
+          "model_reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
+          "invalidates_on": "業外組成更新"
+        },
+        {
+          "gate": "fully_diluted_shares",
+          "decision": "PENDING",
+          "stage": "SOURCE_CAPTURED",
+          "next_action": "VERIFY_CAPITAL_DILUTION_TERMS",
+          "scope": "ISSUER",
+          "required_evidence": "現有股數、CB最新條款、員工股份與分母勾稽",
+          "reason": "Issued shares present; no listed CB alone does not validate all potential dilution",
+          "model_reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
+          "invalidates_on": "增減資／CB條款更新"
+        },
+        {
+          "gate": "matched_peers_and_cycle",
+          "decision": "PENDING",
+          "stage": "REVIEW_PENDING",
+          "next_action": "COMPLETE_EVIDENCE_BRIDGE_AND_REVIEW",
+          "scope": "ISSUER",
+          "required_evidence": "商業模式相符同業、循環位置與倍數依據",
+          "reason": "Dated issuer source, analytical bridge and evidence signoff outstanding",
+          "model_reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
+          "invalidates_on": "營運模式／循環假設改變"
+        },
+        {
+          "gate": "management_promises",
+          "decision": "PENDING",
+          "stage": "REVIEW_PENDING",
+          "next_action": "COMPLETE_EVIDENCE_BRIDGE_AND_REVIEW",
+          "scope": "ISSUER",
+          "required_evidence": "原始承諾、可驗證指標、時程與後續交付紀錄",
+          "reason": "Dated issuer source, analytical bridge and evidence signoff outstanding",
+          "model_reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
+          "invalidates_on": "新承諾／驗證到期"
+        },
+        {
+          "gate": "auditor_scope",
+          "decision": "PENDING",
+          "stage": "REVIEW_PENDING",
+          "next_action": "COMPLETE_EVIDENCE_BRIDGE_AND_REVIEW",
+          "scope": "ISSUER",
+          "required_evidence": "完整核閱意見、保留範圍及重要性判斷",
+          "reason": "Dated issuer source, analytical bridge and evidence signoff outstanding",
+          "model_reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
+          "invalidates_on": "新核閱／重大事項"
+        },
+        {
+          "gate": "tradability",
+          "decision": "PENDING",
+          "stage": "SOURCE_CAPTURED",
+          "next_action": "VERIFY_MARKET_SPREAD_EXIT_CAPACITY",
+          "scope": "EXECUTION",
+          "required_evidence": "多日成交、價差、參與率與清倉能力",
+          "reason": "20 daily turnovers archived; bid/ask spread and actual executable exit not verified",
+          "model_reason": "SINGLE_DAY_QUOTE_IS_NOT_CONTINUOUS_TRADABILITY_CERTIFICATION",
+          "invalidates_on": "股價／成交條件改變"
+        },
+        {
+          "gate": "forecast_bridge",
+          "decision": "PENDING",
+          "stage": "REVIEW_PENDING",
+          "next_action": "COMPLETE_EVIDENCE_BRIDGE_AND_REVIEW",
+          "scope": "ISSUER",
+          "required_evidence": "量價、產能、稼動、成本、折舊及2027EPS推導",
+          "reason": "Dated issuer source, analytical bridge and evidence signoff outstanding",
+          "model_reason": "LATEST_EARNINGS_EVENT_REBASED_ISSUER_2027_OPERATING_BRIDGE_REQUIRED",
+          "invalidates_on": "經濟輸入／預測方法改變"
+        },
+        {
+          "gate": "insider_claims",
+          "decision": "PENDING",
+          "stage": "REVIEW_PENDING",
+          "next_action": "COMPLETE_EVIDENCE_BRIDGE_AND_REVIEW",
+          "scope": "ISSUER",
+          "required_evidence": "原始申報、身份、實際增減與公告可得時間",
+          "reason": "Dated issuer source, analytical bridge and evidence signoff outstanding",
+          "model_reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
+          "invalidates_on": "新申報／說法變更"
+        },
+        {
+          "gate": "dividend_window",
+          "decision": "PENDING",
+          "stage": "REVIEW_PENDING",
+          "next_action": "COMPLETE_EVIDENCE_BRIDGE_AND_REVIEW",
+          "scope": "CORPORATE_ACTION",
+          "required_evidence": "除權息、支付、股數與估值適用期間",
+          "reason": "Dated issuer source, analytical bridge and evidence signoff outstanding",
+          "model_reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
+          "invalidates_on": "公司行動公告／修正"
+        },
+        {
+          "gate": "point_in_time",
+          "decision": "PENDING",
+          "stage": "REVIEW_PENDING",
+          "next_action": "COMPLETE_EVIDENCE_BRIDGE_AND_REVIEW",
+          "scope": "SOURCE",
+          "required_evidence": "原始公告、修訂與首次可得時間",
+          "reason": "Issuer-specific publication and restatement timestamps not verified",
+          "model_reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
+          "invalidates_on": "來源修訂／可得時間更正"
+        },
+        {
+          "gate": "out_of_sample_validation",
+          "decision": "PENDING",
+          "stage": "REVIEW_PENDING",
+          "next_action": "COMPLETE_EVIDENCE_BRIDGE_AND_REVIEW",
+          "scope": "STRATEGY",
+          "required_evidence": "固定策略版本與適用子群的扣成本樣本外驗證",
+          "reason": "No frozen PIT trading and total-return backtest",
+          "model_reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
+          "invalidates_on": "策略／母體／交易規則改變"
+        }
+      ],
+      "price_lane": "A_PLUS_PRICE_ONLY",
+      "source_advanced_gate_count": 2,
+      "source_advanced_gates": [
+        "fully_diluted_shares",
+        "tradability"
+      ],
+      "review_ready_original_gate_count": 0,
+      "review_ready_original_gates": [],
+      "next_issuer_gate": "fully_diluted_shares",
+      "next_issuer_action": "VERIFY_CAPITAL_DILUTION_TERMS",
+      "next_issuer_stage": "SOURCE_CAPTURED",
+      "filing_collection_packet": {
+        "gates": [
+          "original_eight_quarter_statements",
+          "cash_and_working_capital",
+          "nonoperating_components",
+          "auditor_scope",
+          "point_in_time"
+        ],
+        "reuse": "COLLECT_SAME_ISSUER_ORIGINALS_ONCE_REVIEW_EACH_GATE_SEPARATELY"
+      },
+      "formal_Aplus": false
+    },
+    {
       "market": "TPEX",
       "code": "3285",
       "name": "微端",
@@ -2664,208 +2866,6 @@
       "review_ready_original_gates": [],
       "next_issuer_gate": "tradability",
       "next_issuer_action": "VERIFY_MARKET_SPREAD_EXIT_CAPACITY",
-      "next_issuer_stage": "SOURCE_CAPTURED",
-      "filing_collection_packet": {
-        "gates": [
-          "original_eight_quarter_statements",
-          "cash_and_working_capital",
-          "nonoperating_components",
-          "auditor_scope",
-          "point_in_time"
-        ],
-        "reuse": "COLLECT_SAME_ISSUER_ORIGINALS_ONCE_REVIEW_EACH_GATE_SEPARATELY"
-      },
-      "formal_Aplus": false
-    },
-    {
-      "market": "TWSE",
-      "code": "2364",
-      "name": "倫飛",
-      "financial_period": "2026-Q2",
-      "reviewed_financial_period": "2026-Q2",
-      "research_upside_pct": 98.25,
-      "original_quarter_coverage": null,
-      "independent_decision_lanes": {
-        "code": "2364",
-        "market": "TWSE",
-        "name": "倫飛",
-        "valuation_period": "2026-Q2",
-        "reviewed_period": "2026-Q2",
-        "research_upside_pct": 98.25,
-        "price_lane": "A_PLUS_PRICE_CANDIDATE_UNVERIFIED",
-        "company_quality_lane": "QUALITY_REVIEW_PENDING",
-        "company_gates_passed": 0,
-        "company_gates_failed": 0,
-        "company_gates_pending": 12,
-        "company_gates_not_evaluated": 0,
-        "company_gates_total": 12,
-        "strategy_validation_lane": "STRATEGY_PIT_OOS_PENDING",
-        "formal_Aplus": false,
-        "dual_20pct_eps_pe_stress_upside_pct": 26.88,
-        "dual_20pct_stress_is_mechanical_not_probability_calibrated": true,
-        "no_trade_signal": true,
-        "gate_decisions_unchanged": true,
-        "evidence_provenance_is_not_formal_review": true
-      },
-      "watchlist_focus": false,
-      "passed_gate_count": 0,
-      "failed_gates": [],
-      "unresolved_gate_count": 13,
-      "work": [
-        {
-          "gate": "original_eight_quarter_statements",
-          "decision": "PENDING",
-          "stage": "MIRROR_CAPTURED",
-          "next_action": "CAPTURE_AND_VERIFY_ORIGINAL_SOURCE",
-          "scope": "ISSUER",
-          "required_evidence": "逐季原始四表、附註、重編及完整性核對",
-          "reason": "8 income and 8 cashflow summary periods; original full notes and issuer filing PIT missing",
-          "model_reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
-          "invalidates_on": "財報／重編更新"
-        },
-        {
-          "gate": "cash_and_working_capital",
-          "decision": "PENDING",
-          "stage": "MIRROR_CAPTURED",
-          "next_action": "CAPTURE_AND_VERIFY_ORIGINAL_SOURCE",
-          "scope": "ISSUER",
-          "required_evidence": "應收、存貨、應付、CAPEX與資金來源橋接",
-          "reason": "Cashflow mirror 8/8; receivable/inventory/capex notes need reconciliation",
-          "model_reason": "MULTI_PERIOD_WORKING_CAPITAL_AND_LIQUIDITY_REVIEW_REQUIRED",
-          "invalidates_on": "新財報／資金事件"
-        },
-        {
-          "gate": "nonoperating_components",
-          "decision": "PENDING",
-          "stage": "REVIEW_PENDING",
-          "next_action": "COMPLETE_EVIDENCE_BRIDGE_AND_REVIEW",
-          "scope": "ISSUER",
-          "required_evidence": "經常性、匯兌、處分、評價與減損分解",
-          "reason": "Dated issuer source, analytical bridge and evidence signoff outstanding",
-          "model_reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
-          "invalidates_on": "業外組成更新"
-        },
-        {
-          "gate": "fully_diluted_shares",
-          "decision": "PENDING",
-          "stage": "SOURCE_CAPTURED",
-          "next_action": "VERIFY_CAPITAL_DILUTION_TERMS",
-          "scope": "ISSUER",
-          "required_evidence": "現有股數、CB最新條款、員工股份與分母勾稽",
-          "reason": "Issued shares present; no listed CB alone does not validate all potential dilution",
-          "model_reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
-          "invalidates_on": "增減資／CB條款更新"
-        },
-        {
-          "gate": "matched_peers_and_cycle",
-          "decision": "PENDING",
-          "stage": "REVIEW_PENDING",
-          "next_action": "COMPLETE_EVIDENCE_BRIDGE_AND_REVIEW",
-          "scope": "ISSUER",
-          "required_evidence": "商業模式相符同業、循環位置與倍數依據",
-          "reason": "Dated issuer source, analytical bridge and evidence signoff outstanding",
-          "model_reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
-          "invalidates_on": "營運模式／循環假設改變"
-        },
-        {
-          "gate": "management_promises",
-          "decision": "PENDING",
-          "stage": "REVIEW_PENDING",
-          "next_action": "COMPLETE_EVIDENCE_BRIDGE_AND_REVIEW",
-          "scope": "ISSUER",
-          "required_evidence": "原始承諾、可驗證指標、時程與後續交付紀錄",
-          "reason": "Dated issuer source, analytical bridge and evidence signoff outstanding",
-          "model_reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
-          "invalidates_on": "新承諾／驗證到期"
-        },
-        {
-          "gate": "auditor_scope",
-          "decision": "PENDING",
-          "stage": "REVIEW_PENDING",
-          "next_action": "COMPLETE_EVIDENCE_BRIDGE_AND_REVIEW",
-          "scope": "ISSUER",
-          "required_evidence": "完整核閱意見、保留範圍及重要性判斷",
-          "reason": "Dated issuer source, analytical bridge and evidence signoff outstanding",
-          "model_reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
-          "invalidates_on": "新核閱／重大事項"
-        },
-        {
-          "gate": "tradability",
-          "decision": "PENDING",
-          "stage": "SOURCE_CAPTURED",
-          "next_action": "VERIFY_MARKET_SPREAD_EXIT_CAPACITY",
-          "scope": "EXECUTION",
-          "required_evidence": "多日成交、價差、參與率與清倉能力",
-          "reason": "20 daily turnovers archived; bid/ask spread and actual executable exit not verified",
-          "model_reason": "SINGLE_DAY_QUOTE_IS_NOT_CONTINUOUS_TRADABILITY_CERTIFICATION",
-          "invalidates_on": "股價／成交條件改變"
-        },
-        {
-          "gate": "forecast_bridge",
-          "decision": "PENDING",
-          "stage": "REVIEW_PENDING",
-          "next_action": "COMPLETE_EVIDENCE_BRIDGE_AND_REVIEW",
-          "scope": "ISSUER",
-          "required_evidence": "量價、產能、稼動、成本、折舊及2027EPS推導",
-          "reason": "Dated issuer source, analytical bridge and evidence signoff outstanding",
-          "model_reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
-          "invalidates_on": "經濟輸入／預測方法改變"
-        },
-        {
-          "gate": "insider_claims",
-          "decision": "PENDING",
-          "stage": "REVIEW_PENDING",
-          "next_action": "COMPLETE_EVIDENCE_BRIDGE_AND_REVIEW",
-          "scope": "ISSUER",
-          "required_evidence": "原始申報、身份、實際增減與公告可得時間",
-          "reason": "Dated issuer source, analytical bridge and evidence signoff outstanding",
-          "model_reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
-          "invalidates_on": "新申報／說法變更"
-        },
-        {
-          "gate": "dividend_window",
-          "decision": "PENDING",
-          "stage": "REVIEW_PENDING",
-          "next_action": "COMPLETE_EVIDENCE_BRIDGE_AND_REVIEW",
-          "scope": "CORPORATE_ACTION",
-          "required_evidence": "除權息、支付、股數與估值適用期間",
-          "reason": "Dated issuer source, analytical bridge and evidence signoff outstanding",
-          "model_reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
-          "invalidates_on": "公司行動公告／修正"
-        },
-        {
-          "gate": "point_in_time",
-          "decision": "PENDING",
-          "stage": "REVIEW_PENDING",
-          "next_action": "COMPLETE_EVIDENCE_BRIDGE_AND_REVIEW",
-          "scope": "SOURCE",
-          "required_evidence": "原始公告、修訂與首次可得時間",
-          "reason": "Issuer-specific publication and restatement timestamps not verified",
-          "model_reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
-          "invalidates_on": "來源修訂／可得時間更正"
-        },
-        {
-          "gate": "out_of_sample_validation",
-          "decision": "PENDING",
-          "stage": "REVIEW_PENDING",
-          "next_action": "COMPLETE_EVIDENCE_BRIDGE_AND_REVIEW",
-          "scope": "STRATEGY",
-          "required_evidence": "固定策略版本與適用子群的扣成本樣本外驗證",
-          "reason": "No frozen PIT trading and total-return backtest",
-          "model_reason": "SOURCE_CHECK_OR_ISSUER_RECONCILIATION_REQUIRED",
-          "invalidates_on": "策略／母體／交易規則改變"
-        }
-      ],
-      "price_lane": "A_PLUS_PRICE_ONLY",
-      "source_advanced_gate_count": 2,
-      "source_advanced_gates": [
-        "fully_diluted_shares",
-        "tradability"
-      ],
-      "review_ready_original_gate_count": 0,
-      "review_ready_original_gates": [],
-      "next_issuer_gate": "fully_diluted_shares",
-      "next_issuer_action": "VERIFY_CAPITAL_DILUTION_TERMS",
       "next_issuer_stage": "SOURCE_CAPTURED",
       "filing_collection_packet": {
         "gates": [
@@ -35922,6 +35922,16 @@
         "next_issuer_stage": "SOURCE_CAPTURED"
       },
       {
+        "code": "2364",
+        "name": "倫飛",
+        "upside_pct": 102.91,
+        "pass_count": 0,
+        "review_ready_original_gates": [],
+        "next_issuer_gate": "fully_diluted_shares",
+        "next_issuer_action": "VERIFY_CAPITAL_DILUTION_TERMS",
+        "next_issuer_stage": "SOURCE_CAPTURED"
+      },
+      {
         "code": "3285",
         "name": "微端",
         "upside_pct": 101.39,
@@ -35939,16 +35949,6 @@
         "review_ready_original_gates": [],
         "next_issuer_gate": "tradability",
         "next_issuer_action": "VERIFY_MARKET_SPREAD_EXIT_CAPACITY",
-        "next_issuer_stage": "SOURCE_CAPTURED"
-      },
-      {
-        "code": "2364",
-        "name": "倫飛",
-        "upside_pct": 98.25,
-        "pass_count": 0,
-        "review_ready_original_gates": [],
-        "next_issuer_gate": "fully_diluted_shares",
-        "next_issuer_action": "VERIFY_CAPITAL_DILUTION_TERMS",
         "next_issuer_stage": "SOURCE_CAPTURED"
       },
       {
@@ -36247,6 +36247,11 @@
         "decision": "PENDING"
       },
       {
+        "market": "TWSE",
+        "code": "2364",
+        "decision": "PENDING"
+      },
+      {
         "market": "TPEX",
         "code": "3285",
         "decision": "PENDING"
@@ -36254,11 +36259,6 @@
       {
         "market": "TWSE",
         "code": "2376",
-        "decision": "PENDING"
-      },
-      {
-        "market": "TWSE",
-        "code": "2364",
         "decision": "PENDING"
       },
       {
@@ -37103,5 +37103,5 @@
   },
   "formal_gate_decisions_changed": 0,
   "certificates_issued": 0,
-  "source_progress_sha256": "5301f033e633e0a3080c0c7d1adb7128be70cc00961a9b80bdfef5195c90ba6b"
+  "source_progress_sha256": "53f9eabfb9534060cf2eb79a961ae2b58d2026e12da280a9a810b7f248867d79"
 }
