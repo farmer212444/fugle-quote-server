@@ -38,7 +38,9 @@ def marketwide_uncovered(root,raw_price,market,asof,excluded=(),cap=4):
         if (r.get("market")!=market or not isinstance(code,str)
                 or CODE.fullmatch(code) is None):
             continue
-        if r.get("date")!=asof:
+        # A source-matched upstream manifest may omit per-row date in older
+        # research fixtures. An explicitly different date is never admissible.
+        if r.get("date") not in (None,asof):
             raise ValueError("MARKETWIDE_HISTORY_SNAPSHOT_DATE_MISMATCH")
         if code in unique:
             raise ValueError("MARKETWIDE_HISTORY_DUPLICATE_ISSUER")
