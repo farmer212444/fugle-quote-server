@@ -32,6 +32,8 @@ MAX_BATCH=70_000_000
 REGEX_URL=re.compile(r"(?:https?://(?:www\.)?flytech\.com\.tw)?/?data/investor_season/attached/[0-9]{10,24}\.pdf",re.I)
 QUARTER_WORDS={"一":1,"二":2,"三":3,"四":4}
 SECTION_WORDS=("資產負債表","綜合損益表","權益變動表","現金流量表","財務報告附註")
+TWSE_INDEX="https://doc.twse.com.tw/server-java/t57sb01"
+TWSE_PDF_REGEX=re.compile(r"/pdf/[0-9A-Za-z_.-]+\\.pdf")
 
 def require(ok,why):
     if not ok:
@@ -53,6 +55,63 @@ def official_url(url):
         and parts.username is None and parts.password is None
         and not parts.fragment and not parts.query
         and re.fullmatch(r"/data/investor_season/attached/[0-9]{10,24}\.pdf",parts.path) is not None)
+
+def twse_pdf_url(url):
+    if not isinstance(url,str):return False
+    p=urllib.parse.urlsplit(url)
+    return (p.scheme=="https" and p.netloc=="doc.twse.com.tw"
+        and not p.query and not p.fragment and not p.username
+        and TWSE_PDF_REGEX.fullmatch(p.path) is not None)
+
+def twse_index_url(period):
+    year=int(period[:4])-1911
+    q=int(period[-1])
+    require(110<=year<=118 and q in (1,2,3,4),"TWSE_BAD_INDEX_PERIOD")
+    return TWSE_INDEX+"?"+urllib.parse.urlencode({
+        "step":"1","colorchg":"1","co_id":"6206","year":year,
+        "seamon":q,"mtype":"A"})
+
+def twse_filename(raw,period):
+    require(type(raw) is bytes and 0<len(raw)<=MAX_INDEX,
+            "TWSE_INDEX_BYTES_INVALID")
+    t=raw.decode("utf-8","replace")
+    roc=int(period[:4])-1911;q=int(period[-1])
+    name=f"{roc+1911}{q:02d}_6206_AI1.pdf"
+    matches=re.findall(r"(?<![0-9A-Za-z_])"+re.escape(name)+r"(?![0-9A-Za-z_])",t)
+    require("6206" in t and "IFRS" in t.upper() and len(matches)>=1,
+            "TWSE_OFFICIAL_INDEX_NO_CONSOLIDATED_REPORT")
+    return name
+
+def twse_fetch(url,cap,post=None):
+    # Both endpoints are issuer-less official TWSE paths already discovered
+    # through an independently verified filing index.
+    if post is not None:
+        require(url==TWSE_INDEX and type(post) is bytes,
+                "TWSE_RESOLVE_POST_INVALID")
+    else:
+        require(url.startswith(TWSE_INDEX+"?") or twse_pdf_url(url),
+                "TWSE_FETCH_URL_INVALID")
+    req=urllib.request.Request(url,data=post,headers={
+        "User-Agent":"Mozilla/5.0 (TWSE financial original evidence)",
+        "Referer":TWSE_INDEX})
+    with urllib.request.urlopen(req,timeout=30) as resp:
+        require(resp.status==200 and resp.geturl()==url,
+                "TWSE_HTTP_OR_REDIRECT_INVALID")
+        raw=resp.read(cap+1)
+    require(0<len(raw)<=cap,"TWSE_EMPTY_OR_OVERSIZED")
+    return raw
+
+def twse_resolve(raw,filename):
+    require(type(raw) is bytes and len(raw)<=MAX_INDEX and
+            re.fullmatch(r"20[0-9]{2}[0-4][0-9]_6206_AI1\\.pdf",filename) is not None,
+            "TWSE_INVALID_RESOLUTION")
+    t=raw.decode("utf-8","replace")
+    links=re.findall(r'(?i)href\\s*=\\s*["\\\'](/pdf/[0-9A-Za-z_.-]+\\.pdf)["\\\']',t)
+    links=[v for v in links if filename.rsplit(".pdf",1)[0] in v]
+    require(len(set(links))==1,"TWSE_NO_UNIQUE_OFFICIAL_PDF_LINK")
+    actual=urllib.parse.urljoin(TWSE_INDEX,links[0])
+    require(twse_pdf_url(actual),"TWSE_PDF_NOT_OFFICIAL")
+    return actual
 
 def strip_markup(snippet):
     snippet=re.sub(r"<script\b[^>]*>[\s\S]*?</script>"," ",snippet,flags=re.I)
@@ -208,7 +267,8 @@ def verify_archive(root,manifest,window):
     record={}
     for item in manifest["documents"]:
         period=item.get("period");url=item.get("source_url")
-        require(period in window and official_url(url),"UNTRUSTED_ARCHIVE_RECORD")
+        require(period in window and (official_url(url) or twse_pdf_url(url)),
+                "UNTRUSTED_ARCHIVE_RECORD")
         require(period not in record,"DUPLICATE_PERIOD_IN_ARCHIVE")
         raw=safe(root,item["archive_path"]).read_bytes()
         require(digest(raw)==item.get("sha256"),"PDF_ARCHIVE_HASH_MISMATCH")
@@ -222,7 +282,7 @@ def verify_archive(root,manifest,window):
             "FORGED_FORMAL_PASS_OR_PIT")
     return record
 
-def collect(root,last="2026-Q2",now=None,max_new=3,fetcher=fetch,ajaxer=fetch_season):
+def collect(root,last="2026-Q2",now=None,max_new=3,fetcher=fetch,ajaxer=fetch_season,twse_fetcher=twse_fetch):
     root=Path(root);window=quarter_window(last)
     require(type(max_new)==int and 0<=max_new<=4,"UNBOUNDED_FETCH_REQUEST")
     now=now or dt.datetime.now(dt.timezone.utc)
@@ -302,11 +362,38 @@ def collect(root,last="2026-Q2",now=None,max_new=3,fetcher=fetch,ajaxer=fetch_se
         except Exception as exc:
             errors.append(dict(year=year,reason="INDEX_"+type(exc).__name__,
                                detail=str(exc)[:140]))
+    # Use the public TWSE e-document index as a stronger official fallback.
+    # Never construct a downloadable PDF URL from an expected filename alone:
+    # its exact filename must first appear in the official issuer-quarter
+    # index, then be resolved by TWSE's own step=9 endpoint.
+    twse_receipts={}
+    for period in [p for p in reversed(window) if p not in urls and p not in verified]:
+        try:
+            index_url=twse_index_url(period)
+            original_index=twse_fetcher(index_url,MAX_INDEX)
+            file_name=twse_filename(original_index,period)
+            request=urllib.parse.urlencode(dict(step="9",kind="A",
+                co_id="6206",filename=file_name)).encode("ascii")
+            response=twse_fetcher(TWSE_INDEX,MAX_INDEX,post=request)
+            url=twse_resolve(response,file_name)
+            urls[period]=url
+            twse_receipts[period]=dict(
+                official_index_url=index_url,
+                official_index_sha256=digest(original_index),
+                official_resolver_sha256=digest(response),
+                official_filename=file_name,
+                response_link_checked=True,
+                original_publication_timestamp_verified=False)
+        except Exception as exc:
+            errors.append(dict(period=period,reason="TWSE_"+type(exc).__name__,
+                               detail=str(exc)[:170]))
     added=0;bytes_used=0
     for period in sorted(set(urls)-set(verified),reverse=True):
         if added>=max_new:break
         try:
-            raw=fetcher(urls[period],MAX_PDF)
+            pdfurl=urls[period]
+            raw=(twse_fetcher(pdfurl,MAX_PDF) if twse_pdf_url(pdfurl)
+                 else fetcher(pdfurl,MAX_PDF))
             bytes_used+=len(raw)
             require(bytes_used<=MAX_BATCH,"BATCH_DOWNLOAD_BYTES_EXCEEDED")
             details=identity(raw,period)
@@ -318,7 +405,8 @@ def collect(root,last="2026-Q2",now=None,max_new=3,fetcher=fetch,ajaxer=fetch_se
             manifest["documents"].append(dict(period=period,source_url=urls[period],
                 sha256=sha,bytes=len(raw),archive_path=relative,
                 captured_at_utc=now.isoformat(),pdf_identity=details,
-                official_issuer_link_discovered=True,
+                official_issuer_link_discovered=official_url(urls[period]),
+                twse_source_receipt=twse_receipts.get(period),
                 first_publication_timestamp_verified=False,
                 original_full_notes_reviewed=False,
                 formal_gate_pass=False))
