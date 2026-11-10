@@ -13,24 +13,26 @@
     "2026-Q2"
   ],
   "archived_quarters": [
+    "2024-Q3",
+    "2025-Q3",
     "2025-Q4",
     "2026-Q1",
     "2026-Q2"
   ],
-  "original_full_statements_archived": 3,
+  "original_full_statements_archived": 5,
   "original_quarters_missing": [
-    "2024-Q3",
     "2024-Q4",
     "2025-Q1",
-    "2025-Q2",
-    "2025-Q3"
+    "2025-Q2"
   ],
-  "newly_downloaded_quarters": 3,
-  "source_period_links_discovered": 3,
+  "newly_downloaded_quarters": 2,
+  "source_period_links_discovered": 5,
   "twse_quarters_attempted": [
-    "2026-Q2",
-    "2026-Q1",
-    "2025-Q4"
+    "2025-Q3",
+    "2025-Q2",
+    "2025-Q1",
+    "2024-Q4",
+    "2024-Q3"
   ],
   "index_origin_capture_is_not_issuer_publication_PIT": true,
   "source_note_contents_fully_reviewed": false,
@@ -67,6 +69,24 @@
       "year": 2024,
       "reason": "NO_PERIOD_LINKS_DISCOVERED",
       "source_index_sha256": "ea99ba9c3415ed7d6232d83f8f51c294667dd1b81886063f5d79379584456f8b"
+    },
+    {
+      "period": "2025-Q2",
+      "reason": "PDF_URLError",
+      "detail": "<urlopen error [Errno 111] Connection refused>",
+      "url": "https://doc.twse.com.tw/pdf/202502_6206_AI1_20261110_123117.pdf"
+    },
+    {
+      "period": "2025-Q1",
+      "reason": "PDF_URLError",
+      "detail": "<urlopen error [Errno 111] Connection refused>",
+      "url": "https://doc.twse.com.tw/pdf/202501_6206_AI1_20261110_123120.pdf"
+    },
+    {
+      "period": "2024-Q4",
+      "reason": "PDF_URLError",
+      "detail": "<urlopen error timed out>",
+      "url": "https://doc.twse.com.tw/pdf/202404_6206_AI1_20261110_123125.pdf"
     }
   ]
 }
