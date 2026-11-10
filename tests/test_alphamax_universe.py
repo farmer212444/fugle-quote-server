@@ -128,6 +128,20 @@ class UniverseAuditTests(unittest.TestCase):
             self.assertEqual(a["status"], "BLOCKED")
             self.assertIn("DUPLICATE", a["reason"])
 
+    def test_null_close_is_retained_as_unpriced_not_executable(self):
+        with TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            build(root)
+            file = root / "tw-market-data/prices/2026-11-10.json"
+            rows = json.loads(file.read_text())
+            rows[0]["close"] = None
+            file.write_text(json.dumps(rows))
+            a = audit_history(root, min_sessions=2)
+            self.assertEqual(a["status"], "BLOCKED_NOT_A_PIT_SECURITY_MASTER")
+            self.assertEqual(a["current_quote_snapshot_securities"], 2)
+            self.assertEqual(a["current_quote_rows_without_positive_close"], 1)
+            self.assertIn("TWSE:2330", a["current_quote_unpriced_sample"])
+
     def test_missing_snapshots_block(self):
         with TemporaryDirectory() as tmp:
             root = Path(tmp)
