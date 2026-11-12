@@ -70,6 +70,35 @@ def _finite_number(x):
     return type(x) in (int, float) and isfinite(x)
 
 
+def _valid_12m_label_maturity(signal_date, label_available_at):
+    """A 12-month outcome cannot become known before its calendar anniversary.
+
+    Feb 29 rolls to Feb 28 in a non-leap year. The separate PIT gate still
+    requires the complete outcome and its publication time to be evidenced.
+    """
+    signal = parse_date(signal_date)
+    available = parse_date(label_available_at)
+    if signal.year == 9999:
+        return False
+    try:
+        anniversary = signal.replace(year=signal.year + 1)
+    except ValueError:
+        anniversary = signal.replace(year=signal.year + 1, day=28)
+    return available >= anniversary
+
+
+def _assert_12m_label_maturities(rows):
+    """Protect direct fit/walk-forward callers, not just manifest ingestion."""
+    for row in rows:
+        if row.get("total_return_12m") is not None and (
+            row.get("label_available_at") is None
+            or not _valid_12m_label_maturity(
+                row["signal_date"], row["label_available_at"]
+            )
+        ):
+            raise ContractError("INVALID_OR_LEAKING_RETURN_LABEL")
+
+
 def load_bundle(folder):
     """Require cryptographic integrity plus explicit source audit evidence.
 
@@ -126,7 +155,7 @@ def load_bundle(folder):
         if y is None:
             if maturity is not None:
                 raise ContractError("UNMATCHED_LABEL_MATURITY")
-        elif not _finite_number(y) or y < -1 or maturity is None or parse_date(maturity) <= signal_date:
+        elif not _finite_number(y) or y < -1 or maturity is None or not _valid_12m_label_maturity(row["signal_date"], maturity):
             raise ContractError("INVALID_OR_LEAKING_RETURN_LABEL")
         rows.append(row)
     if not rows:
@@ -158,6 +187,7 @@ def _solve(matrix, vector):
 def fit_asof(rows, signal_date, costs=None, min_history=80, ridge=1.0):
     """Train ONLY on labels observable before a historical prediction date."""
     asof = parse_date(signal_date)
+    _assert_12m_label_maturities(rows)
     costs = costs or TradingCosts()
     if ridge <= 0 or not isfinite(ridge):
         raise ContractError("INVALID_RIDGE")
@@ -216,6 +246,7 @@ def walk_forward(rows, evaluation_asof, costs=None, top_n=10, min_history=80):
     independent. For production, implement a costed holdings/equity simulator.
     """
     cutoff = parse_date(evaluation_asof)
+    _assert_12m_label_maturities(rows)
     if top_n < 1:
         raise ContractError("TOP_N_MUST_BE_POSITIVE")
     costs = costs or TradingCosts()
