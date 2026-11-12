@@ -99,6 +99,34 @@ class AlphaMaxTests(unittest.TestCase):
             with self.assertRaisesRegex(ContractError, "SHA256_MISMATCH"):
                 load_bundle(folder)
 
+    def test_premature_12m_label_is_rejected_at_ingestion_and_training(self):
+        rows = sample_rows()
+        rows[0]["label_available_at"] = "2020-02-01"
+        with tempfile.TemporaryDirectory() as temp:
+            folder = self._bundle(temp, rows=rows)
+            with self.assertRaisesRegex(ContractError, "INVALID_OR_LEAKING_RETURN_LABEL"):
+                load_bundle(folder)
+        # A direct lower-level training/backtest call must not bypass the gate.
+        with self.assertRaisesRegex(ContractError, "INVALID_OR_LEAKING_RETURN_LABEL"):
+            fit_asof(rows, "2023-11-01")
+        with self.assertRaisesRegex(ContractError, "INVALID_OR_LEAKING_RETURN_LABEL"):
+            walk_forward(rows, "2024-07-01", top_n=5)
+
+    def test_feb29_12m_maturity_boundary(self):
+        rows = sample_rows()
+        rows[0]["signal_date"] = "2020-02-29"
+        rows[0]["feature_available_at"] = {name: "2020-02-29" for name in FEATURES}
+        rows[0]["label_available_at"] = "2021-02-27"
+        with tempfile.TemporaryDirectory() as temp:
+            folder = self._bundle(temp, rows=rows)
+            with self.assertRaisesRegex(ContractError, "INVALID_OR_LEAKING_RETURN_LABEL"):
+                load_bundle(folder)
+        rows[0]["label_available_at"] = "2021-02-28"
+        with tempfile.TemporaryDirectory() as temp:
+            folder = self._bundle(temp, rows=rows)
+            _, accepted = load_bundle(folder)
+            self.assertEqual(len(accepted), len(rows))
+
     def test_future_feature_rejected(self):
         with tempfile.TemporaryDirectory() as temp:
             rows = sample_rows()
