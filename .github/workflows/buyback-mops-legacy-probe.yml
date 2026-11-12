@@ -1,0 +1,28 @@
+name: Read-only MOPS historical buyback POST verification
+on:
+  pull_request:
+    paths:
+      - 'scripts/buyback_mops_legacy_reprobe.py'
+      - '.github/workflows/buyback-mops-legacy-probe.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  legacy-mops-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python scripts/buyback_mops_legacy_reprobe.py
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: buyback-mops-legacy-reprobe-2020
+          path: /tmp/mops-reprobe/
+          retention-days: 14
+          if-no-files-found: warn

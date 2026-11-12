@@ -1,0 +1,36 @@
+name: Archive historical TW50 TR for buyback control
+on:
+  pull_request:
+    paths:
+      - 'scripts/buyback_collect_taiwan50_tr.py'
+      - 'scripts/buyback_source_probe.py'
+      - '.github/workflows/buyback-tw50-history.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  index-originals:
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        year: [2020, 2021, 2022, 2023, 2024, 2025]
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Collect index monthly originals (not 0050 ETF)
+        run: python -m scripts.buyback_collect_taiwan50_tr --year ${{ matrix.year }} --out /tmp/tw50-${{ matrix.year }}
+      - name: Archive all original responses and audit manifest
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: buyback-control-tw50-${{ matrix.year }}
+          path: /tmp/tw50-${{ matrix.year }}/
+          retention-days: 14
+          if-no-files-found: warn
