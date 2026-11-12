@@ -12,9 +12,11 @@ on:
       - 'scripts/alphamax_tpex_delist.py'
       - 'scripts/alphamax_pk_exhibition.py'
       - 'scripts/alphamax_pk_shadow_monitor.py'
+      - 'scripts/alphamax_pit_pk_gap_audit.py'
       - 'tests/test_alphamax.py'
       - 'tests/test_alphamax_pk_exhibition.py'
       - 'tests/test_alphamax_pk_shadow_monitor.py'
+      - 'tests/test_alphamax_pit_pk_gap_audit.py'
       - 'tests/test_alphamax_concentration.py'
       - 'tests/test_alphamax_universe.py'
       - 'tests/test_alphamax_security_master.py'
@@ -49,7 +51,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Run independent no-leakage and contract tests
-        run: python -m unittest -v tests.test_alphamax tests.test_alphamax_concentration tests.test_alphamax_universe tests.test_alphamax_security_master tests.test_alphamax_delist tests.test_alphamax_tpex_delist tests.test_alphamax_pk_exhibition tests.test_alphamax_pk_shadow_monitor
+        run: python -m unittest -v tests.test_alphamax tests.test_alphamax_concentration tests.test_alphamax_universe tests.test_alphamax_security_master tests.test_alphamax_delist tests.test_alphamax_tpex_delist tests.test_alphamax_pk_exhibition tests.test_alphamax_pk_shadow_monitor tests.test_alphamax_pit_pk_gap_audit
       - name: Audit official source readiness; never fabricate returns
         run: |
           python scripts/alphamax_run.py readiness --output alphamax-research-readiness.json
@@ -87,6 +89,7 @@ jobs:
           PY
           python scripts/alphamax_pk_exhibition.py --manifest alphamax-pk-source/manifest.json --snapshot alphamax-pk-source/prices.json --output alphamax-pk-observation.json
           python scripts/alphamax_pk_shadow_monitor.py --manifest alphamax-pk-source/manifest.json --latest alphamax-pk-source/prices.json --entry alphamax-pk-source/entry-prices.json --output alphamax-pk-shadow-price-only.json
+          python scripts/alphamax_pit_pk_gap_audit.py --repo . --source-ref origin/main --output alphamax-pk-training-gap-audit.json --history-cache alphamax-pk-source/issuer-history
       - name: Publish separate engineering and investment-readiness status
         run: |
           python - <<'PY'
@@ -106,6 +109,8 @@ jobs:
           pk = json.loads(pk_file.read_text()) if pk_file.exists() else {"status": "PK_OBSERVATION_MISSING"}
           shadow_file = Path("alphamax-pk-shadow-price-only.json")
           shadow = json.loads(shadow_file.read_text()) if shadow_file.exists() else {"status": "PK_SHADOW_MISSING"}
+          gap_file = Path("alphamax-pk-training-gap-audit.json")
+          gap = json.loads(gap_file.read_text()) if gap_file.exists() else {"status": "PK_TRAINING_GAP_AUDIT_MISSING"}
           with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as out:
               out.write("## AlphaMax verification — do not confuse CI with trading approval\n\n")
               out.write("- Code regression CI: **executed separately above**\n")
@@ -138,6 +143,15 @@ jobs:
                   stat = shadow.get("lanes", {}).get(lane, {})
                   out.write("- %s: **%s/10** raw quotes; cumulative unadjusted price-only change **%s%%**\n" % (label, stat.get("complete_quote_count", "missing"), stat.get("equal_initial_capital_unadjusted_price_change_pct", "N/A")))
               out.write("- 0050 raw price-only comparison: **%s%%**; **NOT** dividend/corporate-action adjusted, investable P&L, a backtest, or a winner\n\n" % shadow.get("benchmark_0050", {}).get("raw_price_only_change_pct", "N/A"))
+              out.write("### Independent historical training-evidence gap audit\n\n")
+              out.write("- Audit state: **%s**; source main SHA: %s\n" % (gap["status"], gap.get("main_source_commit", "unknown")))
+              benchmark = gap.get("benchmark_0050", {})
+              out.write("- 0050 saved quoted sessions / calendar span: **%s / %s days**; 12m raw-span candidate: **%s**\n" % (benchmark.get("priced_sessions", "missing"), benchmark.get("calendar_span_days", "missing"), benchmark.get("potential_12m_price_only_span", False)))
+              for lane, label in (("alpha_lane", "Alpha human research"), ("v8_lane", "V8 Growth research")):
+                  ls = gap.get("lanes", {}).get(lane, {})
+                  out.write("- %s: files **%s/10**; 12m raw-quote spans **%s/10**; verified PIT universe **%s/10**; verified dividend paths **%s/10**\n" % (label, ls.get("history_files", "missing"), ls.get("raw_quote_spans_at_least_12m", "missing"), ls.get("historical_PIT_universe_verified_count", "missing"), ls.get("adjusted_dividend_return_verified_count", "missing")))
+              out.write("- Certified model walk-forward training labels: **0**; real model-vs-model PK: **BLOCKED**\n")
+              out.write("- Critical blockers: **%s**\n\n" % ", ".join(gap.get("blockers", [])))
               for issue in research.get("blockers", []):
                   out.write("- Data blocker: %s\n" % issue)
               for issue in research.get("warnings", []):
@@ -157,6 +171,7 @@ jobs:
             alphamax-universe-readiness.json
             alphamax-pk-observation.json
             alphamax-pk-shadow-price-only.json
+            alphamax-pk-training-gap-audit.json
             alphamax-pk-source/
             alphamax-profile-capture/
             alphamax-delist-capture/
