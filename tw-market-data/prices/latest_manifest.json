@@ -4,16 +4,16 @@
   "TPEX_rows": 895,
   "total": 1993,
   "path": "tw-market-data/prices/2026-11-12.json",
-  "normalized_sha256": "93486e01e5fc74adf02bae77a041e10cf295e514bc65cd53dc6c6c2341133948",
+  "normalized_sha256": "573bd7a8ac1eec4953b92ee292b669c170adfaca1799aa8ed4b85da1830fa8a5",
   "raw_source_sha256": {
-    "TWSE": "d706d53c6b59c8f344f1c541d7c3f44c6a089f3feabf6cf774ca3852714b2b84",
-    "TPEX": "71c3b8be0f71434d3ecc34fed021e9de736a2f6a793209bddf46f6292e53a915"
+    "TWSE": "87fb635ba32f86e95c0a264cb362bc2e32b88257a0d91e0f1a04a1c3478b6d05",
+    "TPEX": "7c39dba55a85f621202e8763106cabd839777449076b8d4fd901f1546ddcae30"
   },
   "sources": {
     "TWSE": "https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX?date=20261112&type=ALLBUT0999&response=json",
-    "TPEX": "https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes?date=115%2F11%2F12&response=json"
+    "TPEX": "https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_close_quotes"
   },
-  "original_receipt_path": "originals/2026-11-12/702151e3379eb13b96f3.json",
+  "original_receipt_path": "originals/2026-11-12/cdc19aa6db5a51aa3281.json",
   "unadjusted_quotes": true,
   "security_master_verified": false,
   "note": "Latest daily unadjusted close; not adjusted for cash dividends, splits or corporate actions."
