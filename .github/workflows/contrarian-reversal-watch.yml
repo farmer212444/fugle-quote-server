@@ -1,0 +1,47 @@
+name: Contrarian reversal watch research
+on:
+  push:
+    branches:
+      - feature/contrarian-reversal-research-v1
+    paths:
+      - scripts/contrarian_reversal_watch.py
+      - tests/test_contrarian_reversal_watch.py
+      - tw-market-data/config/contrarian_overhang_v1.json
+      - .github/workflows/contrarian-reversal-watch.yml
+  pull_request:
+    paths:
+      - scripts/contrarian_reversal_watch.py
+      - tests/test_contrarian_reversal_watch.py
+      - tw-market-data/config/contrarian_overhang_v1.json
+      - .github/workflows/contrarian-reversal-watch.yml
+  workflow_dispatch:
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Unit tests
+        run: python -m unittest -v tests.test_contrarian_reversal_watch
+      - name: Research-only six-company snapshot
+        run: |
+          python scripts/contrarian_reversal_watch.py --out-prefix /tmp/latest_contrarian_reversal_watch
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('/tmp/latest_contrarian_reversal_watch.json')
+          x=json.loads(p.read_text())
+          assert x['trade_signals_issued']==0 and x['complete_market_scan'] is False
+          assert all(row['expected_return_pct'] is None for row in x['rows'])
+          print('Research queue: ' + ', '.join(row['code'] for row in x['rows']))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: contrarian-reversal-watch-research
+          path: |
+            /tmp/latest_contrarian_reversal_watch.json
+            /tmp/latest_contrarian_reversal_watch.md
