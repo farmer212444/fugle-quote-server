@@ -6,7 +6,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from scripts.recent_drawdown_guard import build, publish
+from scripts.recent_drawdown_guard import build, publish, markdown
 
 VINTAGE = "2026-11-09T18:55:31+08:00"
 DATES = ["2026-10-22","2026-10-27","2026-10-28","2026-10-29",
@@ -76,6 +76,20 @@ class RecentDrawdownTests(unittest.TestCase):
             self.assertFalse(out["complete_20_60_session_history_verified"])
             self.assertTrue(build(root)["observed_max_drawdown_is_not_full_session_or_intraday_drawdown"])
 
+    def test_rebounded_deep_drawdown_gets_independent_watch_not_pause(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp)
+            fixture(root,[100,112,88,111,110,109],DATES[-6:])
+            report=build(root)
+            out=report["outputs"][0]
+            self.assertEqual(out["observed_max_drawdown_pct"],-21.43)
+            self.assertTrue(out["observed_deep_drawdown_watch"])
+            self.assertEqual(out["status"],"WATCH_OBSERVED_DEEP_DRAWDOWN")
+            self.assertFalse(out["risk_blocked"])
+            self.assertEqual(report["formal_Aplus_added"],0)
+            self.assertEqual(report["trade_signals_issued"],0)
+            self.assertIn("深度回撤觀察",markdown(report))
+
     def test_insufficient_archive_is_pending_not_safe(self):
         with tempfile.TemporaryDirectory() as tmp:
             root=Path(tmp)
@@ -84,6 +98,7 @@ class RecentDrawdownTests(unittest.TestCase):
             self.assertEqual(out["status"],"PENDING_INCOMPLETE_OBSERVATION_WINDOW")
             self.assertIsNone(out["return_5observations_pct"])
             self.assertEqual(out["observed_max_drawdown_pct"],0)
+            self.assertIsNone(out["observed_deep_drawdown_watch"])
             self.assertFalse(out["complete_20_60_session_history_verified"])
 
     def test_relative_weakness_requires_dated_benchmark(self):

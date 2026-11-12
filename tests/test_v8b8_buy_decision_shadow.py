@@ -186,6 +186,26 @@ class BuyShadowTests(unittest.TestCase):
         self.assertTrue(report["provisional_drawdown_shadow_present"])
         self.assertIn("近期急跌",markdown(report))
 
+    def test_historic_peak_trough_watch_is_not_a_pause_or_trade(self):
+        q,r,w,p=fixture()
+        risk=dict(schema="V8108_RECENT_DRAWDOWN_RESEARCH_SHADOW_V1",
+                  asof_price_date=DATE,estimate_vintage=VINTAGE,
+                  issuer_count=2,formal_Aplus_added=0,trade_signals_issued=0,
+                  outputs=[dict(code="6741",risk_blocked=False,
+                                relative_weakness_watch=False,
+                                observed_deep_drawdown_watch=True,
+                                status="WATCH_OBSERVED_DEEP_DRAWDOWN"),
+                           dict(code="2376",risk_blocked=False,
+                                relative_weakness_watch=False,
+                                observed_deep_drawdown_watch=None,
+                                status="PENDING_INCOMPLETE_OBSERVATION_WINDOW")])
+        report=assess(q,r,w,p,risk)
+        self.assertEqual(report["outputs"][0]["action_review_state"],
+                         "WATCH_OBSERVED_DEEP_DRAWDOWN")
+        self.assertEqual(report["buy_ready_count"],0)
+        self.assertEqual(report["issuer_buy_orders_created"],0)
+        self.assertEqual(report["formal_Aplus_added"],0)
+
     def test_drawdown_must_match_same_source_vintage_and_issuer_universe(self):
         q,r,w,p=fixture()
         risk=dict(schema="V8108_RECENT_DRAWDOWN_RESEARCH_SHADOW_V1",

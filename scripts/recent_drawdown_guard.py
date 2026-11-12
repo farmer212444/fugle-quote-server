@@ -151,7 +151,7 @@ def build(root):
                 return_5observations_pct=None,return_10observations_pct=None,
                 peak_to_current_10observations_pct=None,
                 relative_to_taiex_tr_pct=None,
-                observed_max_drawdown_pct=None,
+                observed_max_drawdown_pct=None,observed_deep_drawdown_watch=None,
                 complete_20_60_session_history_verified=False))
             continue
         observations = snapshots[identities[0]]
@@ -162,6 +162,8 @@ def build(root):
         ret10 = (current / sampled[-11][1] - 1) * 100 if count >= 11 else None
         from_peak = (current / max(p for _,p in sampled) - 1) * 100
         observed_mdd = observed_max_drawdown_pct(sampled)
+        # An observed-history alert, not a predictive pause or executable trade.
+        observed_deep_watch = observed_mdd <= -20 if count >= 6 else None
         # A reproducible price-only relative proxy, NOT total-return alpha.
         relative = None
         if count >= 11:
@@ -182,6 +184,8 @@ def build(root):
                          and relative is not None and relative <= -5)
         if blocked:
             state = "PAUSE_RECENT_SELL_OFF_REVIEW"
+        elif observed_deep_watch:
+            state = "WATCH_OBSERVED_DEEP_DRAWDOWN"
         elif relative_weak:
             state = "WATCH_MARKET_RELATIVE_WEAKNESS"
         elif ret5 is None or ret10 is None:
@@ -191,6 +195,7 @@ def build(root):
         outputs.append(dict(
             code=code,name=row.get("name"),status=state,risk_blocked=blocked,
             relative_weakness_watch=relative_weak,
+            observed_deep_drawdown_watch=observed_deep_watch,
             observation_count=count,current_unadjusted_close=current,
             return_5observations_pct=round(ret5,2) if ret5 is not None else None,
             return_10observations_pct=round(ret10,2) if ret10 is not None else None,
@@ -211,6 +216,7 @@ def build(root):
         study_thresholds=dict(return_5observations_pause_pct=-15,
                               return_10observations_pause_pct=-20,
                               peak_to_current_pause_pct=-20,
+                              observed_peak_to_trough_watch_pct=-20,
                               relative_weakness_price_minus_taiex_tr_pct=-5),
         source_sha256=dict(quality=hashlib.sha256(source).hexdigest(),
                            price_snapshots=price_receipts,benchmark_months=market_receipts),
@@ -222,8 +228,8 @@ def markdown(report):
       "這不是實證勝率、正式A+、下單或賣出指令；20/60日完整交易曆及除權息尚未認證。",
       "下列5、10期均指資料庫內實際保存的觀測筆數，**不等於連續5、10個交易日**。",
       "使用個股未還原收盤價對照加權報酬指數含息，僅為粗略相對弱勢線索。",
-      "", "|股票|5筆變化|10筆變化|高點到目前|已觀測最大回撤|相對指數|狀態|",
-      "|---|---:|---:|---:|---:|---:|---|"]
+      "", "|股票|5筆變化|10筆變化|高點到目前|已觀測最大回撤|深度回撤觀察|相對指數|狀態|",
+      "|---|---:|---:|---:|---:|---|---:|---|"]
     def fmt(n):
         return "待補" if n is None else "%+.1f%%" % n
     for r in report["outputs"]:
@@ -232,8 +238,11 @@ def markdown(report):
           fmt(r["return_10observations_pct"])+"|"+
           fmt(r["peak_to_current_10observations_pct"])+"|"+
           fmt(r["observed_max_drawdown_pct"])+"|"+
+          ("待補" if r.get("observed_deep_drawdown_watch") is None else
+           "是" if r["observed_deep_drawdown_watch"] else "否")+"|"+
           fmt(r["relative_to_taiex_tr_pct"])+"|"+r["status"]+"|")
     lines += ["", "最大回撤為已保存觀測點中先前高點至其後低點，不是推薦後績效、盤中最大跌幅或已驗證完整交易日回撤。",
+      "至少6筆已存價格觀測且最大回撤達-20%時，標記歷史深度回撤觀察；不改原暫停門檻、不代表未來下跌預測。",
       "門檻為尚未校準的暫定研究政策。缺少交易日、公司行動或PIT原件不得當作風險已解除。",
       "只讀風險與原有估值；沒有任何正式品質關卡、EPS、PE、排名或部位被更新。", ""]
     return "\n".join(lines)

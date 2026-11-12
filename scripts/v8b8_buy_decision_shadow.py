@@ -156,7 +156,8 @@ def assess(quality_report,readiness,work_queue,config,drawdown=None):
             status="PENDING_DRAWDOWN_SOURCE_UNAVAILABLE",risk_blocked=False,
             relative_weakness_watch=False))
         require(type(price_risk.get("risk_blocked")) is bool
-                and type(price_risk.get("relative_weakness_watch",False)) is bool,
+                and type(price_risk.get("relative_weakness_watch",False)) is bool
+                and type(price_risk.get("observed_deep_drawdown_watch")) in (bool,type(None)),
                 "DRAWDOWN_INVALID_DECISION_FLAG")
         if quality["governance_blocked"]:
             state="PAUSE_GOVERNANCE_REVIEW"
@@ -164,6 +165,8 @@ def assess(quality_report,readiness,work_queue,config,drawdown=None):
             state="PAUSE_FORMAL_QUALITY_FAIL_REVIEW"
         elif price_risk["risk_blocked"]:
             state="PAUSE_RECENT_DRAWDOWN_REVIEW"
+        elif price_risk.get("observed_deep_drawdown_watch") is True:
+            state="WATCH_OBSERVED_DEEP_DRAWDOWN"
         elif price_risk["relative_weakness_watch"]:
             state="WATCH_MARKET_RELATIVE_WEAKNESS"
         elif quality["red_flags"] or quality["etf_convergence_watch"]:
