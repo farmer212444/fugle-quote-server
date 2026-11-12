@@ -92,7 +92,7 @@ def pr_archive_has_newer_dated_market_source(root):
     market=read(root/"prices/latest_manifest.json")
     a,b=report.get("price_date"),market.get("date")
     require(all(isinstance(x,str) and re.fullmatch(
-        r"20\\d{2}-\\d{2}-\\d{2}",x) for x in (a,b)),
+        r"20\d{2}-\d{2}-\d{2}",x) for x in (a,b)),
         "PR_SMOKE_SOURCE_DATE_INVALID")
     require(b>=a,"PR_SMOKE_MARKET_BEHIND_RESEARCH")
     return b>a
