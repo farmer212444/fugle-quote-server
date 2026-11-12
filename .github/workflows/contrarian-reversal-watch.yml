@@ -26,7 +26,7 @@ jobs:
         with:
           python-version: '3.11'
       - name: Unit tests
-        run: python -m unittest -v tests.test_contrarian_reversal_watch
+        run: python -m unittest discover -s tests -p 'test_contrarian_reversal_watch.py' -v
       - name: Research-only six-company snapshot
         run: |
           python scripts/contrarian_reversal_watch.py --out-prefix /tmp/latest_contrarian_reversal_watch
