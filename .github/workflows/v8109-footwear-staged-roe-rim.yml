@@ -1,0 +1,50 @@
+name: V8.10.9 Footwear Multi-Year ROE Sustainability
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/footwear-pb-2016-2026-20261024
+    paths:
+      - 'scripts/v8109_footwear_staged_roe_rim.py'
+      - 'tests/test_v8109_footwear_staged_roe_rim.py'
+      - 'tw-market-data/research/footwear_pb_2016_2026/2027_2031_staged_roe_rim_inputs.json'
+      - '.github/workflows/v8109-footwear-staged-roe-rim.yml'
+permissions:
+  contents: write
+concurrency:
+  group: v8109-footwear-roe-20261024
+  cancel-in-progress: true
+jobs:
+  verify-2027-through-2031-finite-roe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Guard 2026 H1 original reprints, equity bridge and no fake A+
+        run: python -m unittest -v tests.test_v8109_footwear_staged_roe_rim
+      - name: Calculate finite ROE fade, sustainable break-even, discount rate stress
+        run: python -m scripts.v8109_footwear_staged_roe_rim
+      - name: Archive the read-only research valuation and sources in draft branch
+        if: success()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add tw-market-data/research/footwear_pb_2016_2026/2027_2031_staged_roe_rim_shadow.json
+          if ! git diff --cached --quiet; then
+            git commit -m "data: source-reconciled staged ROE and Baocheng vs Fulgentsun relative valuation"
+            for attempt in 1 2 3; do
+              git fetch origin research/footwear-pb-2016-2026-20261024
+              git rebase origin/research/footwear-pb-2016-2026-20261024 || {
+                git rebase --abort || true
+                exit 1
+              }
+              if git push origin HEAD:research/footwear-pb-2016-2026-20261024; then
+                exit 0
+              fi
+              sleep 2
+            done
+            exit 1
+          fi
