@@ -1,0 +1,112 @@
+{
+  "schema": "V8106_4771_6206_Q2_OPERATING_CYCLE_RECONCILIATION_INPUT_V1",
+  "research_asof": "2026-10-24",
+  "observation_end": "2026-06-30",
+  "data_scope": "PUBLIC_DATED_Q2_2025_VS_Q2_2026_WITH_Q1_2026_SEASONAL_CONTROL",
+  "limits": [
+    "Published turnover days are transcribed from company presentation snapshots or published financial-ratio secondary computations; underlying original PDF and complete original notes have not been independently byte-hash archived.",
+    "Two 4771 sources use different calculation conventions; their exact day levels are NOT interchangeable. Use within-source directional comparisons only.",
+    "No company has a disclosed bad-debt severity, accounts aging schedule or purchase-order inventory allocation independently archived in this dataset.",
+    "A change in days is not itself a conclusion about asset impairment, misconduct, or profit overstatement.",
+    "Quarter sales and COGS are reported from public Q2 income statements; dollar balances are rounded summary numbers or secondary reports and may differ slightly from exact filing lines."
+  ],
+  "issuers": {
+    "4771": {
+      "name": "望隼",
+      "sales_2025q2_k": 872361,
+      "sales_2026q2_k": 1196065,
+      "cogs_2025q2_k": 516683,
+      "cogs_2026q2_k": 676206,
+      "sales_source": "https://m.moneydj.com/f1a.aspx?a=D1706BB6-E2E6-4D97-A025-D34003E5BC66",
+      "balance_source": "https://stock.pchome.com.tw/stock/sto2/ock0/sid4771.html",
+      "ar_2025q2_m": 671.35,
+      "ar_2026q1_m": 938.19,
+      "ar_2026q2_m": 1064.78,
+      "inventory_2025q2_m": 289.95,
+      "inventory_2026q2_m": 384.24,
+      "sources": [
+        {
+          "source_id": "4771_company_deck_transcription",
+          "url": "https://finmoconf.diveinvest.net/presentation/6a7c8114a16a75b81397b1e1",
+          "kind": "SECONDARY_TRANSCRIPTION_OF_ISSUER_PRESENTATION",
+          "method": "SLIDE_COMPANY_OPERATING_CYCLE_ROUNDED_DAYS",
+          "dso_2025q2": 72,
+          "dso_2026q1": 81,
+          "dso_2026q2": 80,
+          "dio_2025q2": 53,
+          "dio_2026q1": 56,
+          "dio_2026q2": 53,
+          "dpo_2025q2": 36,
+          "dpo_2026q1": 40,
+          "dpo_2026q2": 39,
+          "ccc_2025q2": null,
+          "ccc_2026q1": null,
+          "ccc_2026q2": null,
+          "issuer_original_document_sha256": null,
+          "original_document_ever_archived": false
+        },
+        {
+          "source_id": "4771_financial_ratio_vendor",
+          "url": "https://fubon-ebrokerdj.fbs.com.tw/z/zc/zcr/zcr_4771.djhtm",
+          "kind": "SECONDARY_FINANCIAL_RATIO_CALCULATION",
+          "method": "VENDOR_FINANCIAL_RATIO_METHODOLOGY_NOT_EQUAL_COMPANY_SLIDE",
+          "dso_2025q2": 69.54,
+          "dso_2026q1": 81.15,
+          "dso_2026q2": 76.69,
+          "dio_2025q2": 51.43,
+          "dio_2026q1": 55.45,
+          "dio_2026q2": 51.46,
+          "dpo_2025q2": 35.1,
+          "dpo_2026q1": 39.77,
+          "dpo_2026q2": 38.5,
+          "ccc_2025q2": 85.87,
+          "ccc_2026q1": 96.83,
+          "ccc_2026q2": 89.65,
+          "issuer_original_document_sha256": null,
+          "original_document_ever_archived": false
+        }
+      ],
+      "normalized_2026h1_ocf_k": 676113
+    },
+    "6206": {
+      "name": "飛捷",
+      "sales_2025q2_k": 1360861,
+      "sales_2026q2_k": 1881598,
+      "cogs_2025q2_k": 763949,
+      "cogs_2026q2_k": 1027619,
+      "sales_source": "https://m.esunsec.com.tw/news/instant-detail.aspx?id=%7BCDD8498E-FC6C-4877-8208-C960A0FAA576%7D",
+      "issuer_press_release": "https://www.flytech.com.tw/investor.php?act=news_view&id=191",
+      "ar_2025q2_m": 1206,
+      "ar_2026q1_m": 1237,
+      "ar_2026q2_m": 1617,
+      "inventory_2025q2_m": 767,
+      "inventory_2026q1_m": 1310,
+      "inventory_2026q2_m": 1510,
+      "sources": [
+        {
+          "source_id": "6206_company_deck_transcription",
+          "url": "https://finmoconf.diveinvest.net/presentation/6a7c8114a16a75b81397b1e3",
+          "kind": "SECONDARY_TRANSCRIPTION_OF_ISSUER_PRESENTATION",
+          "method": "SLIDE_COMPANY_OPERATING_DAYS",
+          "dso_2025q2": 79,
+          "dso_2026q1": 65,
+          "dso_2026q2": 68,
+          "dio_2025q2": 80,
+          "dio_2026q1": 117,
+          "dio_2026q2": 114,
+          "dpo_2025q2": null,
+          "dpo_2026q1": null,
+          "dpo_2026q2": null,
+          "ccc_2025q2": null,
+          "ccc_2026q1": null,
+          "ccc_2026q2": null,
+          "issuer_original_document_sha256": null,
+          "original_document_ever_archived": false
+        }
+      ],
+      "normalized_2026h1_ocf_k": -97618,
+      "normalized_2026q1_ocf_k": -197541,
+      "normalized_2026q2_standalone_ocf_k": 99923
+    }
+  }
+}
