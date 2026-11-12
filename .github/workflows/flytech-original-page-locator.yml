@@ -1,0 +1,44 @@
+name: V8.10.8 Flytech eight original financial PDF page locator
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/flytech-original-page-locator.yml'
+      - '.github/workflows/tw_v877_research_rank.yml'
+      - 'scripts/flytech_original_pdf_locator.py'
+      - 'tests/test_flytech_original_pdf_locator.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  section-page-locator:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install PDF text source engine
+        run: python -m pip install -r requirements-model.txt
+      - name: Test PDF source integrity and no automatic certification
+        run: |
+          python -m py_compile scripts/flytech_original_pdf_locator.py tests/test_flytech_original_pdf_locator.py
+          python -m unittest -v tests.test_flytech_original_pdf_locator
+      - name: Scan all eight actual archived financial reports
+        run: |
+          python scripts/flytech_original_pdf_locator.py --data-root tw-market-data
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          report=json.loads(Path('tw-market-data/rankings/6206_original_pdf_page_locator_latest.json').read_text())
+          assert report['original_document_count']==8
+          assert report['eight_full_originals_sha_checked'] is True
+          assert report['formal_gates_PASS_added']==0 and report['formal_Aplus'] is False
+          assert all(d['page_index_base']==1 and d['document_pdf_page_count']>=20
+                     and d['working_capital_and_ocf_reconciled'] is False
+                     and d['first_publication_PIT_verified'] is False
+                     for d in report['documents'])
+          print('EIGHT_PDF_LOCATOR_VERIFIED',
+                [(d['period'],d['document_pdf_page_count'],
+                  len(d['page_locator']['cashflow_statement'])) for d in report['documents']])
+          PY
