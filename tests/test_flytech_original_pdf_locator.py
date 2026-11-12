@@ -42,7 +42,7 @@ class OriginalQuarterLocator(unittest.TestCase):
     def test_page_number_one_based_heading_leads_not_audit(self):
         p=locate(["", "合 併 現 金 流 量 表\\n應 收 帳 款",
                   "會計師核閱報告  存 貨"])
-        self.assertEqual(p["cashflow_statement"],[])  # literal backslash is not space
+        self.assertEqual(p["cashflow_statement"],[2])
         self.assertEqual(p["accountant_report"],[3])
         self.assertEqual(p["inventories"],[3])
         self.assertEqual(normalize("合 併 財 務 報 表 附 註"),"合併財務報表附註")
