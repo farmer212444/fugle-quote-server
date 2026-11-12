@@ -35,6 +35,8 @@ on:
       - 'scripts/v888_6206_valuation.py'
       - 'scripts/v891_6206_gate_triage.py'
       - 'scripts/flytech_full_original_statements.py'
+      - 'scripts/flytech_original_pdf_locator.py'
+      - 'tests/test_flytech_original_pdf_locator.py'
       - 'tests/test_flytech_full_original_statements.py'
       - 'scripts/v8108_focus_aplus_repair.py'
       - 'tests/test_v8108_focus_aplus_repair.py'
@@ -141,6 +143,8 @@ on:
       - 'scripts/v888_6206_valuation.py'
       - 'scripts/v891_6206_gate_triage.py'
       - 'scripts/flytech_full_original_statements.py'
+      - 'scripts/flytech_original_pdf_locator.py'
+      - 'tests/test_flytech_original_pdf_locator.py'
       - 'tests/test_flytech_full_original_statements.py'
       - 'scripts/v8108_focus_aplus_repair.py'
       - 'tests/test_v8108_focus_aplus_repair.py'
@@ -293,7 +297,7 @@ jobs:
           python -m unittest -v tests.test_2317_review_packet
           python -m unittest -v tests.test_tsmc_sec_filing_archive
           python -m unittest -v tests.test_footwear_review
-          python -m unittest -v tests.test_flytech_full_original_statements
+          python -m unittest -v tests.test_flytech_full_original_statements tests.test_flytech_original_pdf_locator
           python -m unittest -v tests.test_v8108_focus_aplus_repair
           python -m unittest -v tests.test_earnings_version_review
           python -m unittest -v tests.test_9802_cash_review
@@ -340,6 +344,7 @@ jobs:
       - name: Archive 6206 issuer-linked full consolidated statement PDFs (not A+)
         if: github.event_name != 'pull_request'
         run: python scripts/flytech_full_original_statements.py --data-root tw-market-data --last 2026-Q2 --max-new 5 --max-twse-probes 5
+          python scripts/flytech_original_pdf_locator.py --data-root tw-market-data
       - name: Admit verified original-source review packs before valuation
         run: python scripts/v891_gate_certification.py --issue-only
       - name: Produce dated scenarios and evidence decisions
@@ -392,6 +397,7 @@ jobs:
               python scripts/tsmc_sec_filing_archive.py
               python scripts/honhai_original_statements.py
               python scripts/flytech_full_original_statements.py --data-root tw-market-data --last 2026-Q2 --max-new 5 --max-twse-probes 5
+          python scripts/flytech_original_pdf_locator.py --data-root tw-market-data
               python scripts/v891_gate_certification.py --issue-only
               python scripts/run_research_pipeline.py --phase core
               python scripts/honhai_original_review_packet.py
