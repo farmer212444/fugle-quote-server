@@ -15,6 +15,8 @@ on:
       - '.github/workflows/tw_v877_research_rank.yml'
       - 'tw_model_v880/**'
       - 'scripts/tw_v880_run.py'
+      - 'scripts/research_work_queue.py'
+      - 'tests/test_research_work_queue_null_gap.py'
       - 'scripts/early_bulk_earnings.py'
       - 'tests/test_early_bulk_retention.py'
       - 'scripts/oneoff_original_review.py'
@@ -124,6 +126,8 @@ on:
       - '.github/workflows/tw_v877_research_rank.yml'
       - 'tw_model_v880/**'
       - 'scripts/tw_v880_run.py'
+      - 'scripts/research_work_queue.py'
+      - 'tests/test_research_work_queue_null_gap.py'
       - 'scripts/early_bulk_earnings.py'
       - 'scripts/oneoff_original_review.py'
       - 'scripts/refresh_top10_sources.py'
@@ -290,6 +294,7 @@ jobs:
           python -m unittest -v tests.test_oneoff_original
           python -m unittest -v tests.test_top10_source_refresh
           python -m unittest -v tests.test_collect_official_prices tests.test_v8a3_price_freshness tests.test_v8a4_market_close_recovery
+          python -m unittest -v tests.test_research_work_queue_null_gap
           python -m unittest -v tests.test_readiness_lanes tests.test_aplus_work_queue_repair tests.test_2330_2317_dual_lane tests.test_dual_focus_publication tests.test_research_pipeline
           python -m unittest -v tests.test_tsmc_original_statements
           python -m unittest -v tests.test_2317_original_statements

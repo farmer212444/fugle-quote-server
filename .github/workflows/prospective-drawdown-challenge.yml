@@ -44,10 +44,16 @@ jobs:
           if (now-last).days > 7:
               print('SKIPPED: stale archived research cannot be first-registered retroactively.')
           else:
-              from scripts.prospective_drawdown_challenge import make
-              frozen=make(Path('tw-market-data'),dt.datetime.now(dt.timezone.utc))
-              assert frozen['issuer_count']==src['marketwide_snapshot_rows']
-              assert frozen['verified_future_returns']==0
-              assert frozen['first_eligible_market_open'] is None
-              print('PRECOMMIT_SMOKE_OK issuer_count:',frozen['issuer_count'])
+              from scripts.prospective_drawdown_challenge import (
+                  make,pr_archive_has_newer_dated_market_source)
+              root=Path('tw-market-data')
+              if pr_archive_has_newer_dated_market_source(root):
+                  print('SKIPPED_STALE_RESEARCH_SNAPSHOT_NEWER_PRICING; '
+                        'no retroactive risk registration is claimed')
+              else:
+                  frozen=make(root,dt.datetime.now(dt.timezone.utc))
+                  assert frozen['issuer_count']==src['marketwide_snapshot_rows']
+                  assert frozen['verified_future_returns']==0
+                  assert frozen['first_eligible_market_open'] is None
+                  print('PRECOMMIT_SMOKE_OK issuer_count:',frozen['issuer_count'])
           PY

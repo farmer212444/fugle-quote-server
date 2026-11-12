@@ -1,0 +1,40 @@
+name: V8.10.8 work queue missing-price and prospective source smoke
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/work-queue-null-gap-ci.yml'
+      - '.github/workflows/prospective-drawdown-challenge.yml'
+      - 'scripts/research_work_queue.py'
+      - 'scripts/prospective_drawdown_challenge.py'
+      - 'tests/test_research_work_queue_null_gap.py'
+      - 'tests/test_prospective_drawdown_challenge.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  dated-inputs-and-null-gap:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compile and test null-gap plus prospective cohort source chronologies
+        run: |
+          python -m py_compile scripts/research_work_queue.py scripts/prospective_drawdown_challenge.py
+          python -m unittest -v tests.test_research_work_queue_null_gap tests.test_prospective_drawdown_challenge
+      - name: Render current work queue without treating missing upside as zero
+        run: |
+          python scripts/research_work_queue.py --data-root tw-market-data
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path('tw-market-data/rankings')
+          a=json.loads((root/'latest_research_work_queue.json').read_text())
+          assert a['formal_gate_decisions_changed']==0
+          assert a['certificates_issued']==0
+          text=(root/'latest_research_work_queue.md').read_text()
+          assert 'A+ 原始證據修復佇列' in text
+          print('WORK_QUEUE_RENDERED_NONCERTIFYING',len(text))
+          PY

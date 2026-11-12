@@ -80,6 +80,24 @@ def verify(path):
                 for x in entries), "INVALID_SOURCE_PRICE")
     return frozen
 
+def pr_archive_has_newer_dated_market_source(root):
+    """Only PR *smoke* may skip a stale research snapshot after new prices.
+
+    Main registration and make() still require all source price/quality hashes.
+    A market snapshot older than the research report is inconsistent and must
+    not be silently skipped.
+    """
+    root=Path(root)
+    report=read(root/"rankings/latest_marketwide_drawdown_coverage.json")
+    market=read(root/"prices/latest_manifest.json")
+    a,b=report.get("price_date"),market.get("date")
+    require(all(isinstance(x,str) and re.fullmatch(
+        r"20\d{2}-\d{2}-\d{2}",x) for x in (a,b)),
+        "PR_SMOKE_SOURCE_DATE_INVALID")
+    require(b>=a,"PR_SMOKE_MARKET_BEHIND_RESEARCH")
+    return b>a
+
+
 def make(root, now, git_sha=None):
     root=Path(root)
     now=now.astimezone(dt.timezone.utc)

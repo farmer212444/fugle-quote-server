@@ -3,6 +3,7 @@
 import argparse
 import hashlib
 import json
+import math
 import sys
 from pathlib import Path
 
@@ -324,6 +325,13 @@ def build_queue(progress,research,sec_archive=None):
                 formal_gate_decisions_changed=0,certificates_issued=0)
 
 
+def pct_or_pending(value):
+    """Render only a finite numeric *research* price gap, never None as 0."""
+    if type(value) in (int,float) and math.isfinite(value):
+        return f"{value:+.1f}%"
+    return "待核（缺少可比較估值）"
+
+
 def render(report):
     aplus=report['aplus_repair']
     tsmc=report.get('tsmc_aplus_research_status')
@@ -341,7 +349,7 @@ def render(report):
                 lines.append(f"|{focus['code']}|—|不在本次診斷名單|未核|未知|否|")
                 continue
             up=focus['research_upside_pct']
-            upside=f"{up:+.1f}%" if isinstance(up,(int,float)) else '未核'
+            upside=pct_or_pending(up)
             original=focus['original_quarter_coverage']
             if original:
                 source=f"{original['archived']}/{original['required']}季；缺："+('、'.join(original['missing_quarters']) or '無')
@@ -361,14 +369,22 @@ def render(report):
                 lines.append(f"- {focus['code']}：先補齊正式診斷資料，不推定品質結果")
         lines+=['','未取得原件SHA、全文核閱或策略PIT扣成本回測證據，不得提升品質PASS、A+或A++。','']
     if tsmc:
-        name='A+價格候選（研究限定）' if tsmc['price_lane']=='A_PLUS_PRICE_ONLY' else tsmc['price_lane']
+        raw_gap=tsmc.get('research_upside_pct')
+        has_comparable=type(raw_gap) in (int,float) and math.isfinite(raw_gap)
+        name=('A+價格候選（研究限定）'
+              if tsmc['price_lane']=='A_PLUS_PRICE_ONLY' and has_comparable and raw_gap>=30
+              else '價格門檻待重新核對（缺少可比較估值）'
+              if tsmc['price_lane']=='A_PLUS_PRICE_ONLY' and not has_comparable
+              else '價格門檻未達30%（狀態與有效價差不一致）'
+              if tsmc['price_lane']=='A_PLUS_PRICE_ONLY' and raw_gap<30
+              else tsmc['price_lane'])
         coverage=tsmc['original_quarter_coverage']
         source_note=(f"{coverage['archived']}/{coverage['required']}季封存，缺："
                      +('、'.join(coverage['missing_quarters']) or '無')
                      if coverage else '原始完整八季覆蓋未核')
         lines+=['## 2330 台積電：價格候選與正式認證分離','',
                 '|項目|狀態|','|---|---|',
-                f"|價格研究分級|{name}，研究價差{tsmc['research_upside_pct']:+.1f}%|",
+                f"|價格研究分級|{name}，研究價差{pct_or_pending(tsmc.get('research_upside_pct'))}|",
                 f"|公司品質證據|{tsmc['company_gates_passed']}/{tsmc['company_gates_total']}正式PASS；"
                 f"{tsmc['company_gates_pending']}項待驗、{tsmc['company_gates_failed']}項FAIL|",
                 f"|策略樣本外回測|{tsmc['strategy_oos_gate_decision']}|",
@@ -395,7 +411,7 @@ def render(report):
            '|---|---:|---|---|']
     for item in aplus['verification_priority']:
         action=ACTION_ZH.get(item['next_issuer_action'],'已無公司別待辦')
-        lines.append(f"|{item['code']} {item.get('name') or ''}|{item['upside_pct']:+.1f}%|"
+        lines.append(f"|{item['code']} {item.get('name') or ''}|{pct_or_pending(item.get('upside_pct'))}|"
                      f"{'、'.join(item['review_ready_original_gates']) or '尚無可直接簽核原件'}|"
                      f"{item['next_issuer_gate'] or '策略共同驗證'}：{action}|")
     lines+=['','## 全部診斷公司的待辦（公司別及共同驗證分開）','',
