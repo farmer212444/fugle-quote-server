@@ -1,0 +1,48 @@
+name: Shoe industry monthly revenue monitor
+on:
+  pull_request:
+    paths:
+      - 'scripts/shoe_revenue_monitor.py'
+      - 'tests/test_shoe_revenue_monitor.py'
+      - '.github/workflows/shoe_revenue_monitor.yml'
+  workflow_dispatch:
+    inputs:
+      month:
+        description: 'Gregorian month YYYY-MM (blank = previous calendar month)'
+        required: false
+        type: string
+  schedule:
+    - cron: '25 2,8 * * *'
+concurrency:
+  group: shoe-revenue-monitor-main
+  cancel-in-progress: false
+permissions:
+  contents: write
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Offline unit tests
+        run: python -m unittest discover -s tests -p 'test_shoe_revenue_monitor.py' -v
+      - name: Fetch official revenue data
+        if: github.event_name != 'pull_request'
+        env:
+          MONTH_INPUT: ${{ inputs.month }}
+        run: |
+          MONTH="${MONTH_INPUT:-$(date -u -d 'last month' +%Y-%m)}"
+          python scripts/shoe_revenue_monitor.py --month "$MONTH"
+      - name: Commit changed snapshot only
+        if: github.event_name != 'pull_request'
+        run: |
+          git add tw-market-data/revenue/shoe_revenue_latest.json
+          if git diff --cached --quiet; then echo 'No change'; exit 0; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'data: refresh shoe revenue observation'
+          git pull --rebase origin main
+          git push origin HEAD:main
