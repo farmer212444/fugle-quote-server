@@ -1,0 +1,97 @@
+name: V8.9.11 Factory margin recovery retrospective backtest
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'scripts/v8a1_factory_margin_recovery_backtest.py'
+      - 'tests/test_v8a1_factory_margin_recovery_backtest.py'
+      - '.github/workflows/v8a1-factory-margin-backtest.yml'
+  push:
+    paths:
+      - 'scripts/v8a1_factory_margin_recovery_backtest.py'
+      - 'tests/test_v8a1_factory_margin_recovery_backtest.py'
+      - 'tw-market-data/fundamentals/2024-Q3/**'
+      - 'tw-market-data/fundamentals/2024-Q4/**'
+      - 'tw-market-data/fundamentals/2025-Q1/**'
+      - 'tw-market-data/fundamentals/2025-Q2/**'
+      - 'tw-market-data/fundamentals/2025-Q3/**'
+      - 'tw-market-data/fundamentals/2025-Q4/**'
+      - 'tw-market-data/fundamentals/2026-Q1/**'
+      - 'tw-market-data/fundamentals/2026-Q2/**'
+      - '.github/workflows/v8a1-factory-margin-backtest.yml'
+permissions:
+  contents: write
+concurrency:
+  group: v8a1-factory-recovery-retro
+  cancel-in-progress: false
+jobs:
+  methodology_and_reproduction:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compile
+        run: python -m py_compile scripts/v8a1_factory_margin_recovery_backtest.py
+      - name: Full unit and archive reproducibility tests
+        run: python -m unittest -v tests.test_v8a1_factory_margin_recovery_backtest
+      - name: Rebuild strictly separated 2Q/4Q retrospective cohorts
+        run: python scripts/v8a1_factory_margin_recovery_backtest.py --data-dir tw-market-data
+      - name: Check provenance, no fake factory cohort, and no formal valuation changes
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path('tw-market-data/rankings/v8a1_factory_margin_recovery_backtest.json').read_text())
+          assert r['company_universe_size'] == 1978
+          assert r['true_new_factory_ramp_success_rate_pct'] is None
+          assert r['historical_issuer_financial_release_PIT_verified'] is False
+          assert r['stock_total_return_backtest_done'] is False
+          assert r['formal_Aplus_changed'] is False
+          assert r['base_eps_pe_target_changed'] is False
+          for horizon in ('2','4'):
+            x=r['horizons'][horizon]
+            assert x['matured_company_events'] > 100
+            assert x['censored_company_events'] > 0
+            for category in ('threshold_rebound_any','full_pre_drop_recovery_any'):
+              v=x['outcomes'][category]
+              assert 0 <= v['success'] <= v['total']
+              assert v['total'] == x['matured_company_events']
+          print('Retrospective accounting proxy passed; actual new-factory success rate remains unestimated.')
+          PY
+  publish_frozen_proxy:
+    needs: methodology_and_reproduction
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Rebuild against latest primary mirrors and publish report once per source version
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          for attempt in 1 2 3; do
+            git fetch origin main
+            git reset --hard origin/main
+            latest_input=$(git log -1 --format=%H -- scripts/v8a1_factory_margin_recovery_backtest.py tw-market-data/fundamentals/2024-Q3/ tw-market-data/fundamentals/2024-Q4/ tw-market-data/fundamentals/2025-Q1/ tw-market-data/fundamentals/2025-Q2/ tw-market-data/fundamentals/2025-Q3/ tw-market-data/fundamentals/2025-Q4/ tw-market-data/fundamentals/2026-Q1/ tw-market-data/fundamentals/2026-Q2/)
+            last_report=$(git log -1 --format=%H -- tw-market-data/rankings/v8a1_factory_margin_recovery_backtest.json)
+            if [ -n "$last_report" ] && [ -n "$latest_input" ] && git merge-base --is-ancestor "$latest_input" "$last_report"; then
+              echo 'Prior report already contains same eligible financial archive and method.'
+              exit 0
+            fi
+            python scripts/v8a1_factory_margin_recovery_backtest.py --data-dir tw-market-data
+            git add tw-market-data/rankings/v8a1_factory_margin_recovery_backtest.md tw-market-data/rankings/v8a1_factory_margin_recovery_backtest.json
+            if git diff --cached --quiet; then exit 0; fi
+            git commit -m 'data: freeze 2024-2026 financial drawdown recovery study'
+            if git push origin HEAD:main; then exit 0; fi
+            echo "Source updated concurrently; retry $attempt/3"
+          done
+          exit 1
