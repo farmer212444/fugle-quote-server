@@ -436,7 +436,23 @@ def build_progress(root):
         raise ValueError("GATE_DISPATCH_MODEL_UNIVERSE_MISMATCH")
     issuer_reports.sort(key=lambda x:(not x["formal_Aplus"],
         -x["research_upside_pct"] if x["research_upside_pct"] is not None else math.inf,x["code"]))
+    # Distinguish an operationally green model run from missing formal
+    # review inputs. File presence never implies a validated PASS.
+    submitted_packs=len(list((root/"evidence/v880/review_packs").glob("*.json")))
+    certificate_files=len(list((root/"evidence/v880/certificates").glob("*.json")))
+    if counts["formal_Aplus_total"]:
+        blocker="FORMAL_APLUS_CERTIFIED"
+    elif not submitted_packs:
+        blocker="BLOCKED_NO_REVIEWED_PACKS"
+    elif not certificate_files:
+        blocker="BLOCKED_NO_ADMITTED_CERTIFICATES"
+    else:
+        blocker="NO_FORMAL_APLUS_CERTIFIED"
     status={
+        "formal_aplus_blocker_state":blocker,
+        "review_pack_inventory":{"submitted_files":submitted_packs,
+                                 "certificate_files":certificate_files,
+                                 "file_presence_is_not_formal_pass":True},
         "model":research["model"],"estimate_vintage":asof,
         "asof_price_date":research["asof_price_date"],"financial_period":period,
         "research_candidates":dispatch["eligible_research_count"],
@@ -473,6 +489,10 @@ def render_md(r, admitted):
       f"模型：{r['model']}；估值：{r['estimate_vintage']}；股價基準：{r['asof_price_date']}。",
       f"研究估值候選：{r['research_candidates']}，潛在漲幅≥30%：{r['high_upside_research_candidates']}；正式A+：**{r['formally_certified_Aplus_in_report']}**。","",
       "本報告區分「來源齊全／數值鏡像／核閱待辦／有效PASS／有效FAIL」，不以蒐集收據冒充正式通過。","",
+      f"認證阻塞狀態：**{r['formal_aplus_blocker_state']}**；"
+      f"已提交核閱包 {r['review_pack_inventory']['submitted_files']} 份、"
+      f"憑證檔案 {r['review_pack_inventory']['certificate_files']} 份。"
+      "檔案存在並不代表已核准的PASS。","",
       f"追蹤母體 {r['tracked_issuer_count']} 家；模型已逐項判定 {r['model_evaluated_issuer_count']} 家；"
       f"尚未進入判定 {r['not_evaluated_issuer_count']} 家（來源或估值缺件，不冒充品質FAIL）。","",
       "## 13項實際卡關","",
@@ -567,7 +587,9 @@ def main():
                               render_md(status,admitted))
     print(json.dumps(dict(model=status["model"],upside_ge30=status["high_upside_research_candidates"],
                           certified_Aplus=status["formally_certified_Aplus_in_report"],
-                          reviewed_packs=len(admitted),changed=(changed1 or changed2)),
+                          reviewed_packs=len(admitted),
+                          formal_aplus_blocker_state=status["formal_aplus_blocker_state"],
+                          changed=(changed1 or changed2)),
                      ensure_ascii=False))
 
 if __name__=="__main__":
