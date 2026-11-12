@@ -122,3 +122,45 @@ independently reviewed investor total-return ledger. On future sessions, the
 monitor may report *price-only* change since the same 2026-11-12 opening price
 if the archive is present and untampered. Nothing runs on the default branch
 until the PR workflow is merged.
+
+## Direct blocker repair: matched 12-month PIT training readiness
+
+New `alphamax/pit_pk_gap_audit.py` plus
+`scripts/alphamax_pit_pk_gap_audit.py` analyze **the same main-branch Git
+commit** for the frozen 20 stocks and benchmark 0050. The audit separates:
+
+- Valid raw observed trading sessions and 365-day calendar span, which is
+  only a necessary candidate for a one-year close-to-close comparison.
+- Exact historical issuer/security-class PIT membership and delisted peers.
+- Issuer-specific original public filing timestamps and revision vintages.
+- Corporate actions, dividends and executable fills.
+- Matched 0050 total-return benchmark evidence.
+
+On 2026-11-12, the independent audit found 0050 had **45 valid price sessions
+over 69 calendar days**, Alpha lane **0/10** twelve-month raw-price history
+candidates and V8 Growth lane **1/10**. Formal historical financial PIT batches,
+after-cost 12-month OOS return labels and real model-vs-model winners remained
+**zero**. These counts are explicitly from this dated historical
+repository snapshot, not a predictive skill score.
+
+The corresponding tests include future-price, changed-issuer,
+nonadjusted-dividend, missing-0050, falsified-PIT-flag and malformed-date
+regressions. Synthetic passes never become tradable performance results.
+
+### Source collector for 0050 (queued, not yet active on main)
+
+`scripts/alphamax_0050_backfill.py` reuses the existing official TWSE
+`STOCK_DAY` parser and SHA-256-checked durable original receipt writer.
+It queues the **oldest incomplete full months** from **2025-01** onward,
+checks raw evidence before skipping a month, and limits requests to four per
+TWSE backfill cycle. No newly requested *partial current month* is treated
+as complete by this pilot. The `tw_history_backfill.yml` workflow has
+been updated on this feature branch to run the collector after the existing
+TWSE and 0050 forward source jobs, including the conflict-safe retry path.
+Those writes only occur on **main after PR merge**, not on pull request tests.
+
+Even after all prices are present, historical 0050 share splits/distributions,
+issuer PIT filing vintages, stock dividends/corporate actions, realistic fills,
+and full independent OOS calibration remain separate **mandatory**
+certification gates. The raw-price collector must never declare A+, a
+twelve-month expected return, or a PK winner.
