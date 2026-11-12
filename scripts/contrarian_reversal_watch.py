@@ -46,7 +46,7 @@ def scenario_row(code, name, price, price_date, cases, *, asof, origin, overhang
     gaps = {key: upside(p, price) for key, p in prices.items()}
     if gaps["base"] >= 20 and gaps["bear"] >= -30:
         lane = "BASE_DISCOUNT_WITH_LIMITED_SCENARIO_DOWNSIDE"
-    elif gaps["bull"] >= 35 and gaps["base"] < 20:
+    elif gaps["bull"] >= 35 and -20 <= gaps["base"] < 20:
         lane = "UNCONFIRMED_RECOVERY_OPTION"
     else:
         lane = "REQUIRES_REVALUATION"
