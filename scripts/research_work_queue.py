@@ -375,6 +375,8 @@ def render(report):
               if tsmc['price_lane']=='A_PLUS_PRICE_ONLY' and has_comparable and raw_gap>=30
               else '價格門檻待重新核對（缺少可比較估值）'
               if tsmc['price_lane']=='A_PLUS_PRICE_ONLY' and not has_comparable
+              else '價格門檻未達30%（狀態與有效價差不一致）'
+              if tsmc['price_lane']=='A_PLUS_PRICE_ONLY' and raw_gap<30
               else tsmc['price_lane'])
         coverage=tsmc['original_quarter_coverage']
         source_note=(f"{coverage['archived']}/{coverage['required']}季封存，缺："
