@@ -5,6 +5,7 @@ on:
     paths:
       - 'alphamax/**'
       - 'scripts/alphamax_run.py'
+      - 'scripts/alphamax_0050_backfill.py'
       - 'scripts/alphamax_concentration.py'
       - 'scripts/alphamax_universe_audit.py'
       - 'scripts/alphamax_security_master.py'
@@ -14,6 +15,7 @@ on:
       - 'scripts/alphamax_pk_shadow_monitor.py'
       - 'scripts/alphamax_pit_pk_gap_audit.py'
       - 'tests/test_alphamax.py'
+      - 'tests/test_alphamax_0050_backfill.py'
       - 'tests/test_alphamax_pk_exhibition.py'
       - 'tests/test_alphamax_pk_shadow_monitor.py'
       - 'tests/test_alphamax_pit_pk_gap_audit.py'
@@ -29,8 +31,10 @@ on:
     paths:
       - 'alphamax/**'
       - 'scripts/alphamax_run.py'
+      - 'scripts/alphamax_0050_backfill.py'
       - 'scripts/alphamax_pk_exhibition.py'
       - 'tests/test_alphamax.py'
+      - 'tests/test_alphamax_0050_backfill.py'
       - 'tests/test_alphamax_pk_exhibition.py'
       - '.github/workflows/alphamax-research.yml'
   schedule:
@@ -51,7 +55,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Run independent no-leakage and contract tests
-        run: python -m unittest -v tests.test_alphamax tests.test_alphamax_concentration tests.test_alphamax_universe tests.test_alphamax_security_master tests.test_alphamax_delist tests.test_alphamax_tpex_delist tests.test_alphamax_pk_exhibition tests.test_alphamax_pk_shadow_monitor tests.test_alphamax_pit_pk_gap_audit
+        run: python -m unittest -v tests.test_alphamax tests.test_alphamax_0050_backfill tests.test_alphamax_concentration tests.test_alphamax_universe tests.test_alphamax_security_master tests.test_alphamax_delist tests.test_alphamax_tpex_delist tests.test_alphamax_pk_exhibition tests.test_alphamax_pk_shadow_monitor tests.test_alphamax_pit_pk_gap_audit
       - name: Audit official source readiness; never fabricate returns
         run: |
           python scripts/alphamax_run.py readiness --output alphamax-research-readiness.json
