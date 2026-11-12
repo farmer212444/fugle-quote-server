@@ -135,6 +135,26 @@ class AlphaMaxTests(unittest.TestCase):
             with self.assertRaisesRegex(ContractError, "FUTURE_OR_INVALID_FEATURE"):
                 load_bundle(folder)
 
+    def test_direct_training_cannot_bypass_feature_pit(self):
+        rows = sample_rows()
+        rows[0]["feature_available_at"][FEATURES[0]] = "2020-02-01"
+        with self.assertRaisesRegex(ContractError, "FUTURE_OR_INVALID_FEATURE"):
+            fit_asof(rows, "2023-11-01")
+
+    def test_direct_prediction_cannot_bypass_feature_pit(self):
+        rows = sample_rows()
+        current = next(r for r in rows if r["signal_date"] == "2023-11-01")
+        current["feature_available_at"][FEATURES[0]] = "2023-12-01"
+        with self.assertRaisesRegex(ContractError, "FUTURE_OR_INVALID_FEATURE"):
+            rank_asof(rows, "2023-11-01")
+
+    def test_walk_forward_cannot_bypass_feature_pit(self):
+        rows = sample_rows()
+        cohort = next(r for r in rows if r["signal_date"] == "2023-01-01")
+        cohort["feature_available_at"][FEATURES[0]] = "2023-02-01"
+        with self.assertRaisesRegex(ContractError, "FUTURE_OR_INVALID_FEATURE"):
+            walk_forward(rows, "2024-07-01", top_n=5)
+
     def test_duplicate_security_date_rejected(self):
         with tempfile.TemporaryDirectory() as temp:
             rows = sample_rows()
