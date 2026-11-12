@@ -22,6 +22,77 @@ from tw_model_v880.early_bulk import (FOLDER, SCHEMA, URLS, MOPS, ANNOUNCEMENT_K
                                     parse, period, sha, announcement, verified_source)
 from tw_model_v880.evidence import timestamp
 
+MAX_LAST_GOOD_AGE_DAYS = 7
+
+
+def verify_retained_last_good(root, requested, now=None):
+    """A failed live pull may keep *only* an independently replayable old manifest.
+
+    The manifest is never rewritten, restamped, or represented as fresh. Missing
+    newly requested issuers are named explicitly, rather than treated as zero
+    observations. Old source archives must retain the same original SHA bytes.
+    """
+    root = Path(root).resolve()
+    old_path = root / FOLDER / 'manifest.json'
+    if not old_path.is_file():
+        raise ValueError('EARLY_LAST_GOOD_MANIFEST_MISSING')
+    prior_bytes = old_path.read_bytes()
+    old = json.loads(prior_bytes)
+    if (old.get('schema') != SCHEMA or old.get('formal_quality_pass') is not False
+            or old.get('retrospective_PIT_verified') is not False):
+        raise ValueError('EARLY_LAST_GOOD_MANIFEST_SCOPE_INVALID')
+    prior_scope = old.get('requested_issuers')
+    if (not isinstance(prior_scope, list) or not prior_scope or len(prior_scope)>2004
+            or not isinstance(old.get('captures'), list) or not old['captures']
+            or not isinstance(old.get('announcements', []), list)):
+        raise ValueError('EARLY_LAST_GOOD_MANIFEST_INCOMPLETE')
+    def identity(row):
+        if (not isinstance(row,dict) or row.get('market') not in ('TWSE','TPEX')
+                or not isinstance(row.get('code'),str)
+                or not re.fullmatch(r'\d{4}',row['code'])):
+            raise ValueError('EARLY_LAST_GOOD_ISSUER_IDENTITY_INVALID')
+        return (row['market'],row['code'])
+    scope = [identity(x) for x in prior_scope]
+    wanted = [identity(x) for x in requested]
+    if len(scope)!=len(set(scope)) or len(wanted)!=len(set(wanted)):
+        raise ValueError('EARLY_LAST_GOOD_DUPLICATED_ISSUER')
+    captured_markets = [r.get('market') for r in old['captures']]
+    if (len(captured_markets)!=len(set(captured_markets))
+            or not set(m for m,c in wanted).issubset(set(captured_markets))):
+        raise ValueError('EARLY_LAST_GOOD_MARKET_SOURCE_MISSING')
+    now = now or dt.datetime.now(dt.timezone.utc)
+    if now.tzinfo is None:
+        raise ValueError('EARLY_LAST_GOOD_CLOCK_NAIVE')
+    cutoff = timestamp(now.isoformat())
+    verified_count = 0
+    receipt_times = []
+    notice_pairs = set()
+    for receipt in old['captures'] + old.get('announcements', []):
+        if receipt.get('source_kind') == ANNOUNCEMENT_KIND:
+            pair = identity(receipt)
+            if pair in notice_pairs or pair not in set(scope):
+                raise ValueError('EARLY_LAST_GOOD_NOTICE_SCOPE_OR_DUPLICATE')
+            notice_pairs.add(pair)
+        verified_source(root, receipt, cutoff)
+        receipt_times.append(timestamp(receipt['captured_at']))
+        verified_count += 1
+    newest = max(receipt_times)
+    if newest>cutoff or (cutoff-newest)>dt.timedelta(days=MAX_LAST_GOOD_AGE_DAYS):
+        raise ValueError('EARLY_LAST_GOOD_SOURCE_TOO_OLD_OR_FUTURE')
+    extra = sorted(set(wanted)-set(scope))
+    return dict(
+        prior_manifest_sha256=sha(prior_bytes),
+        previous_manifest_unchanged=True,
+        verified_retained_receipts=verified_count,
+        last_good_capture_utc=newest.isoformat(),
+        latest_observation_is_not_new=True,
+        missing_latest_requested_issuers=[
+            dict(market=market,code=code) for market,code in extra],
+        newly_requested_issuers_not_assumed_observed=True,
+        formal_quality_pass=False,
+        model_PIT_or_Aplus_advanced=False,
+    )
+
 
 def fetch_bytes(request, limit, timeout, *, expected_url=None):
     """Retry only transport failures; source identity and content still fail closed."""
@@ -146,6 +217,9 @@ def main():
     parser.add_argument('--root', type=Path, default=ROOT / 'tw-market-data')
     parser.add_argument('--codes', nargs='+')
     parser.add_argument('--offline', action='store_true')
+    parser.add_argument('--retain-verified-on-error', action='store_true',
+                        help='continue on failed new sources only when the last-good '
+                             'manifest is independently replayed with bounded age')
     args = parser.parse_args()
     root = args.root.resolve()
     if args.offline:
@@ -180,15 +254,33 @@ def main():
                 notices.extend(rows)
             except Exception as exc:
                 errors.append(dict(code=issuer['code'], error=str(exc)))
-    # Failed sources do not silently overwrite a last-good manifest.
+    # Never permit a malformed or unreachable current source into the
+    # model. Scheduled runs may continue on *previous, fully hash-replayed*
+    # evidence, with an explicit intake-health artifact and a bounded age.
+    health_path = root / 'rankings/early_bulk_intake_health_latest.json'
     if errors:
-        print(json.dumps(dict(status='SOURCE_REJECTED_PREVIOUS_INPUT_RETAINED', errors=errors)))
+        issue=dict(status='CURRENT_EARLY_SOURCES_REJECTED',errors=errors,
+                   new_captures_not_admitted=True,
+                   Aplus_added=0,older_source_not_a_current_observation=True)
+        if args.retain_verified_on_error:
+            retained=verify_retained_last_good(root,requested)
+            issue.update(retained)
+            issue['status']='VERIFIED_LAST_GOOD_RETAINED_NEW_SOURCES_REJECTED'
+            atomic_json(health_path,issue)
+            print(json.dumps(issue,ensure_ascii=False))
+            return 0
+        print(json.dumps(issue,ensure_ascii=False))
         return 1
     manifest = dict(schema=SCHEMA, requested_issuers=requested, captures=captures,
                     announcements=notices, announcement_probes=probes,
                     full_market_eligible_period_unchanged=True,
                     formal_quality_pass=False, retrospective_PIT_verified=False)
     atomic_json(root / FOLDER / 'manifest.json', manifest)
+    atomic_json(health_path,dict(status='ALL_CURRENT_EARLY_SOURCES_CAPTURED',
+        requested=len(requested),new_source_errors=[],
+        retained_prior_after_failed_fetch=False,
+        issuer_announcements=len(notices),Aplus_added=0,
+        historical_PIT_certified=False))
     print(json.dumps(dict(status='OFFICIAL_PARTIAL_TABLE_ARCHIVED_RESEARCH_ONLY',
                          requested=len(requested), issuer_announcements=len(notices), captures=[dict(market=r['market'], rows=r['observed_rows'],
                          periods=r['observed_periods']) for r in captures]), ensure_ascii=False))
