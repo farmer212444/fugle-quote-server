@@ -10,7 +10,9 @@ on:
       - 'scripts/alphamax_security_master.py'
       - 'scripts/alphamax_delist.py'
       - 'scripts/alphamax_tpex_delist.py'
+      - 'scripts/alphamax_pk_exhibition.py'
       - 'tests/test_alphamax.py'
+      - 'tests/test_alphamax_pk_exhibition.py'
       - 'tests/test_alphamax_concentration.py'
       - 'tests/test_alphamax_universe.py'
       - 'tests/test_alphamax_security_master.py'
@@ -23,7 +25,9 @@ on:
     paths:
       - 'alphamax/**'
       - 'scripts/alphamax_run.py'
+      - 'scripts/alphamax_pk_exhibition.py'
       - 'tests/test_alphamax.py'
+      - 'tests/test_alphamax_pk_exhibition.py'
       - '.github/workflows/alphamax-research.yml'
   schedule:
     # 16:50 Asia/Taipei, Mon-Fri; scheduled jobs only run from default branch.
@@ -43,7 +47,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Run independent no-leakage and contract tests
-        run: python -m unittest -v tests.test_alphamax tests.test_alphamax_concentration tests.test_alphamax_universe tests.test_alphamax_security_master tests.test_alphamax_delist tests.test_alphamax_tpex_delist
+        run: python -m unittest -v tests.test_alphamax tests.test_alphamax_concentration tests.test_alphamax_universe tests.test_alphamax_security_master tests.test_alphamax_delist tests.test_alphamax_tpex_delist tests.test_alphamax_pk_exhibition
       - name: Audit official source readiness; never fabricate returns
         run: |
           python scripts/alphamax_run.py readiness --output alphamax-research-readiness.json
@@ -57,6 +61,27 @@ jobs:
         run: python scripts/alphamax_delist.py --output-dir alphamax-delist-capture
       - name: Probe TPEx historical termination pages with official original receipts
         run: python scripts/alphamax_tpex_delist.py --output-dir alphamax-tpex-delist-capture --page-limit 15
+      - name: Inspect latest official main-branch quotes for frozen PK without claiming trading performance
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --depth=1 origin main
+          mkdir -p alphamax-pk-source
+          git rev-parse origin/main > alphamax-pk-source/source-commit.txt
+          git show origin/main:tw-market-data/prices/latest_manifest.json > alphamax-pk-source/manifest.json
+          python - <<'PY'
+          import json
+          import subprocess
+          from pathlib import Path
+
+          manifest = json.loads(Path("alphamax-pk-source/manifest.json").read_text(encoding="utf-8"))
+          path = manifest["path"]
+          if not path.startswith("tw-market-data/prices/") or not path.endswith(".json") or ".." in path:
+              raise SystemExit("UNSAFE_MAIN_PRICE_MANIFEST_PATH")
+          with Path("alphamax-pk-source/prices.json").open("wb") as out:
+              subprocess.run(["git", "show", "origin/main:" + path], stdout=out, check=True)
+          PY
+          python scripts/alphamax_pk_exhibition.py --manifest alphamax-pk-source/manifest.json --snapshot alphamax-pk-source/prices.json --output alphamax-pk-observation.json
       - name: Publish separate engineering and investment-readiness status
         run: |
           python - <<'PY'
@@ -72,6 +97,8 @@ jobs:
           delist = json.loads(delist_file.read_text()) if delist_file.exists() else {"status": "CAPTURE_MANIFEST_MISSING", "event_count": 0}
           tpex_file = Path("alphamax-tpex-delist-capture/capture-manifest.json")
           tpex_delist = json.loads(tpex_file.read_text()) if tpex_file.exists() else {"status": "CAPTURE_MANIFEST_MISSING", "event_count": 0}
+          pk_file = Path("alphamax-pk-observation.json")
+          pk = json.loads(pk_file.read_text()) if pk_file.exists() else {"status": "PK_OBSERVATION_MISSING"}
           with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as out:
               out.write("## AlphaMax verification — do not confuse CI with trading approval\n\n")
               out.write("- Code regression CI: **executed separately above**\n")
@@ -88,6 +115,15 @@ jobs:
               out.write("- Snapshot rows with no valid close (not executable): **%s**\n" % universe.get("current_quote_rows_without_positive_close", 0))
               out.write("- Historical sessions with missing/invalid close: **%s** (not counted as priced sessions)\n" % universe.get("counts", {}).get("unpriced_historical_sessions", 0))
               out.write("- Live buy authorization: **NO**\n\n")
+              out.write("### Frozen PK exhibition (NOT model vs model)\n\n")
+              out.write("- Observation: **%s**; official winner: **NONE**\n" % pk["status"])
+              obs = pk.get("observation", {})
+              out.write("- Main-branch official raw quote session: **%s** (NO trades or dividend adjustments)\n" % obs.get("observation_price_date", "unknown"))
+              for lane, label in (("alpha_lane", "Alpha human triage"), ("v8_lane", "V8 Growth research")):
+                  stat = obs.get("lanes", {}).get(lane, {})
+                  out.write("- %s raw quote coverage: **%s/10**; unadjusted baseline change: **%s%%**, NOT INVESTABLE\n" %
+                            (label, stat.get("quote_coverage", "not checked"), stat.get("raw_equal_weight_close_change_pct", "N/A")))
+              out.write("- Both lanes: **not certified**; no verified execution, cash dividends, corporate actions or true model-vs-model 12m outcomes\n\n")
               for issue in research.get("blockers", []):
                   out.write("- Data blocker: %s\n" % issue)
               for issue in research.get("warnings", []):
@@ -105,6 +141,8 @@ jobs:
             alphamax-research-readiness.json
             alphamax-concentration-readiness.json
             alphamax-universe-readiness.json
+            alphamax-pk-observation.json
+            alphamax-pk-source/
             alphamax-profile-capture/
             alphamax-delist-capture/
             alphamax-tpex-delist-capture/
