@@ -1,0 +1,38 @@
+{
+  "schema": "INSIDER_BUY_NOTIFICATION_CHECKPOINT_V1",
+  "baseline_kind": "user_visible_chat_report",
+  "baseline_note": "2026-11-12 user-visible ChatGPT message compared 2026-11-10 vs 2026-11-11 insider ranking. Records observed findings, not confirmed push-delivery status or formal investor-account identity certification.",
+  "last_notified_date_taipei": "2026-11-12",
+  "last_notified_ranking_blob_sha": "431f42d700ae7bf6823f8f97a248e99786d1a3eb",
+  "last_notified_ranking_git_commit": "d31128b777c1e36380d93221c77a6b49f5ba3c02",
+  "compared_prior_ranking_blob_sha": "b321b72bd967327b843737cebaa09eabe477d1d0",
+  "covered_months": [
+    "2026-01",
+    "2026-02",
+    "2026-03",
+    "2026-04",
+    "2026-05",
+    "2026-06",
+    "2026-07",
+    "2026-08",
+    "2026-09"
+  ],
+  "metrics": {
+    "observed_positive_issuer_count": 945,
+    "complete_issuer_count": 20,
+    "listed_otc_issuer_count": 1979,
+    "verified_detail_month_count": 15183,
+    "expected_detail_month_count": 17811
+  },
+  "notified_new_positive_codes": [
+    "6596",
+    "6574",
+    "6530",
+    "6279"
+  ],
+  "notified_material_change_codes": [
+    "6578"
+  ],
+  "source": "https://github.com/farmer212444/fugle-quote-server/blob/main/tw-market-data/rankings/insider_marketwide_latest.json",
+  "caution": "Historical observations, partial current-year coverage, holder identity not formally certified. This file must advance only after a user-visible notification of eligible source-backed change."
+}
