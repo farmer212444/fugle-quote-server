@@ -108,7 +108,7 @@ class PipelineTiming(unittest.TestCase):
     def test_core_defers_expensive_observation_until_after_vintage_freeze(self):
         core=research_stages('core');observation=research_stages('observation')
         self.assertEqual(core+observation,research_stages())
-        self.assertEqual([name for name,_ in observation],['shadow_comparison','benchmark_validation','institutional_review'])
+        self.assertEqual([name for name,_ in observation],['shadow_comparison','benchmark_validation','institutional_review','munger_inversion'])
         self.assertFalse(set(name for name,_ in core)&set(name for name,_ in observation))
         self.assertIn(('historical_source_readiness',['historical_pit_readiness.py']),core)
 
