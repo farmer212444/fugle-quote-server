@@ -84,3 +84,41 @@ artifact, and explicitly states there is **no certified winner**.
 Do **not** transform the initial raw-close comparison into a forward return.
 A favorable raw close move on 2026-11-11 is uninvestable evidence for this
 freeze; that date was chosen only to test the diagnostic data path.
+
+## New: pinned post-freeze prospective PRICE-ONLY shadow tracking
+
+The archived 2026-11-12 official market session now exists in main as
+`tw-market-data/prices/2026-11-12.json`, containing quote **open and close**
+for all 20 exhibition names and ETF 0050. The reference quote date is
+2026-11-10 and the selection freeze date is 2026-11-11. For a forward
+*research* shadow display, the shared first **post-freeze** auction-opening
+price proxy is fixed to **2026-11-12**. It cannot be reselected retrospectively
+to maximize performance:
+
+- Module: `alphamax/pk_shadow_monitor.py`
+- CLI: `scripts/alphamax_pk_shadow_monitor.py`
+- Tests: `tests/test_alphamax_pk_shadow_monitor.py`
+- Entry blob Git SHA-1: `58231b3ee3e6fcd3a96aa02c379eb40496c9d8d6`
+- Entry prices are separately fetched from `origin/main` and fail closed if
+  their original Git blob differs. The daily latest snapshot and its manifest
+  are fetched from **the same main commit**, and the cohort weights use
+  equal INITIAL capital per frozen ticker (no daily rebalancing).
+- A missing open in the baseline or missing 0050 entry prevents shadow
+  initialization. A missing latest issuer price blocks its entire ten-name
+  result rather than pretending an unknown delisted/suspended stock returned 0%.
+- A valid latest 0050 price is necessary to show excess relative to 0050.
+
+**All output returns are raw price ratios, NOT investor profits or model
+skill.** Opening-price records are official reported prices, but the archive
+declares `fillability_verified=false` and `open_at` is only a scheduled
+session timestamp. Therefore these quotes do not prove execution of an
+actual order of any size, especially during wide opening gaps. Raw prices also
+omit dividends, corporate actions, delisting payouts, brokerage fees, stamp
+duties, and spread/slippage. The program returns `official_winner=null` and
+`is_model_vs_model=false` in all cases.
+
+The main-branch quote archive is research evidence, not yet a signed,
+independently reviewed investor total-return ledger. On future sessions, the
+monitor may report *price-only* change since the same 2026-11-12 opening price
+if the archive is present and untampered. Nothing runs on the default branch
+until the PR workflow is merged.
