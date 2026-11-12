@@ -84,7 +84,10 @@ class ExhibitionPKTests(unittest.TestCase):
         self.assertFalse(out["fair_executable_entry_approved"])
 
     def test_same_day_quotes_are_not_postfreeze_returns(self):
-        out = observed_quotes(self.frozen, self.quotes(), "2026-11-10")
+        rows = self.quotes()
+        for row in rows:
+            row["date"] = "2026-11-10"
+        out = observed_quotes(self.frozen, rows, "2026-11-10")
         self.assertIsNone(out["lanes"]["alpha_lane"]["raw_equal_weight_close_change_pct"])
         self.assertIsNone(out["official_winner"])
 
