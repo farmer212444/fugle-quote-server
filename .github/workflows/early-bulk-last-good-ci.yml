@@ -1,0 +1,39 @@
+name: V8.10.8 verified last-good early-source recovery
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/early-bulk-last-good-ci.yml'
+      - '.github/workflows/tw_v877_research_rank.yml'
+      - 'scripts/early_bulk_earnings.py'
+      - 'tests/test_early_bulk_retention.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  fail-closed-originals:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compile and test SHA-bounded last-good recovery
+        run: |
+          python -m py_compile scripts/early_bulk_earnings.py tests/test_early_bulk_retention.py
+          python -m unittest -v tests.test_early_bulk_retention tests.test_early_bulk_transport tests.test_early_bulk_earnings
+      - name: Reverify real archived last-good raw bytes and source URLs
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from scripts.early_bulk_earnings import verify_retained_last_good
+          root=Path('tw-market-data')
+          doc=json.loads((root/'evidence/v880/early_bulk/manifest.json').read_text())
+          r=verify_retained_last_good(root,doc['requested_issuers'])
+          assert r['verified_retained_receipts'] >= 2
+          assert r['previous_manifest_unchanged'] is True
+          assert r['model_PIT_or_Aplus_advanced'] is False
+          print('ORIGINALS_REPLAY_OK',r['verified_retained_receipts'],
+                'LAST_GOOD',r['last_good_capture_utc'])
+          PY

@@ -16,6 +16,7 @@ on:
       - 'tw_model_v880/**'
       - 'scripts/tw_v880_run.py'
       - 'scripts/early_bulk_earnings.py'
+      - 'tests/test_early_bulk_retention.py'
       - 'scripts/oneoff_original_review.py'
       - 'scripts/refresh_top10_sources.py'
       - 'scripts/collect_official_prices.py'
@@ -281,7 +282,7 @@ jobs:
       - name: Validate model controls and independent 6206 triage
         run: |
           python scripts/tw_v880_run.py --self-test
-          python -m unittest -v tests.test_early_bulk_earnings tests.test_early_bulk_transport
+          python -m unittest -v tests.test_early_bulk_earnings tests.test_early_bulk_transport tests.test_early_bulk_retention
           python -m unittest -v tests.test_oneoff_original
           python -m unittest -v tests.test_top10_source_refresh
           python -m unittest -v tests.test_collect_official_prices tests.test_v8a3_price_freshness tests.test_v8a4_market_close_recovery
@@ -315,7 +316,7 @@ jobs:
         run: python scripts/refresh_v880_public.py
       - name: Archive partial-quarter official results and issuer announcements for current Top10
         if: github.event_name != 'pull_request'
-        run: python scripts/early_bulk_earnings.py
+        run: python scripts/early_bulk_earnings.py --retain-verified-on-error
       - name: Archive source-pinned selected one-off gains without issuing quality PASS
         if: github.event_name != 'pull_request'
         run: python scripts/oneoff_original_review.py
@@ -383,7 +384,7 @@ jobs:
               python -m pip install -r requirements-model.txt
               python scripts/collect_official_prices.py
               python scripts/refresh_v880_public.py
-              python scripts/early_bulk_earnings.py
+              python scripts/early_bulk_earnings.py --retain-verified-on-error
               python scripts/oneoff_original_review.py
               python scripts/benchmark_sources.py
               python scripts/v8a9_8383_original_archive.py
