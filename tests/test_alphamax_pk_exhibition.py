@@ -123,6 +123,16 @@ class ExhibitionPKTests(unittest.TestCase):
         with self.assertRaisesRegex(PKContractError, "FROZEN_RANK_ORDER_CHANGED"):
             validate_freeze(frozen)
 
+    def test_lineup_and_reference_price_cannot_be_retrospectively_changed(self):
+        changed = copy.deepcopy(self.frozen)
+        changed["alpha_lane"]["rows"][0]["code"] = "9999"
+        with self.assertRaisesRegex(PKContractError, "FROZEN_LINEUP_OR_PRICE_TAMPERED"):
+            validate_freeze(changed)
+        changed = copy.deepcopy(self.frozen)
+        changed["v8_lane"]["rows"][0]["reference_close"] += 10
+        with self.assertRaisesRegex(PKContractError, "FROZEN_LINEUP_OR_PRICE_TAMPERED"):
+            validate_freeze(changed)
+
     def test_future_evidence_is_illustrative_not_certified(self):
         out = evidence_scorecard(self.frozen, self.evidence())
         self.assertEqual(out["status"], "CONTRACT_ONLY_EXTERNAL_AUDIT_REQUIRED")
