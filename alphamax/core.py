@@ -99,6 +99,20 @@ def _assert_12m_label_maturities(rows):
             raise ContractError("INVALID_OR_LEAKING_RETURN_LABEL")
 
 
+def _assert_feature_pit(row):
+    """Do not allow direct training or ranking calls to bypass PIT feature checks."""
+    signal_date = parse_date(row.get("signal_date"))
+    feats = row.get("features")
+    stamps = row.get("feature_available_at")
+    if not isinstance(feats, dict) or not isinstance(stamps, dict):
+        raise ContractError("FEATURES_AND_TIMESTAMPS_REQUIRED")
+    if set(feats) != set(FEATURES) or set(stamps) != set(FEATURES):
+        raise ContractError("FEATURE_SCHEMA_MISMATCH")
+    if any(not _finite_number(feats[f]) or parse_date(stamps[f]) > signal_date
+           for f in FEATURES):
+        raise ContractError("FUTURE_OR_INVALID_FEATURE")
+
+
 def load_bundle(folder):
     """Require cryptographic integrity plus explicit source audit evidence.
 
@@ -137,14 +151,7 @@ def load_bundle(folder):
         if key in seen:
             raise ContractError("DUPLICATE_SECURITY_SIGNAL_DATE")
         seen.add(key)
-        feats = row.get("features")
-        stamps = row.get("feature_available_at")
-        if not isinstance(feats, dict) or not isinstance(stamps, dict):
-            raise ContractError("FEATURES_AND_TIMESTAMPS_REQUIRED")
-        if set(feats) != set(FEATURES) or set(stamps) != set(FEATURES):
-            raise ContractError("FEATURE_SCHEMA_MISMATCH")
-        if any(not _finite_number(feats[f]) or parse_date(stamps[f]) > signal_date for f in FEATURES):
-            raise ContractError("FUTURE_OR_INVALID_FEATURE")
+        _assert_feature_pit(row)
         if row.get("execution_possible") is not True:
             # Don't silently drop hard-to-trade stocks from the validation universe.
             # Preserve rows, but flag them as infeasible for a real transaction.
@@ -202,6 +209,8 @@ def fit_asof(rows, signal_date, costs=None, min_history=80, ridge=1.0):
         or len({r["signal_date"] for r in historical}) < 8
         or len({r["code"] for r in historical}) < 8):
         raise ContractError("INSUFFICIENT_MATURED_PIT_TRAINING_HISTORY")
+    for row in historical:
+        _assert_feature_pit(row)
     x = [[float(r["features"][f]) for f in FEATURES] for r in historical]
     y = [costs.net(r["total_return_12m"]) for r in historical]
     n, k = len(x), len(FEATURES)
@@ -219,6 +228,7 @@ def fit_asof(rows, signal_date, costs=None, min_history=80, ridge=1.0):
 
 
 def _predict(model, row):
+    _assert_feature_pit(row)
     return model["intercept"] + sum(
         model["coefficients"][j] * (row["features"][name]-model["means"][j])/model["stds"][j]
         for j, name in enumerate(FEATURES)
