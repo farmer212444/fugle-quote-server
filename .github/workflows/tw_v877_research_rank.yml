@@ -314,6 +314,7 @@ jobs:
           python -m unittest -v tests.test_historical_pit_admission tests.test_historical_pit_readiness
           python -m unittest -v tests.test_sec_pit_intake tests.test_sec_api_intake tests.test_issuer_earnings_intake tests.test_issuer_pdf_originals
           python -m unittest -v tests.test_v8a8_forward_top30_0050
+          python -m unittest -v tests.test_buffett_owner_economics
           python -m unittest discover -s tests -p test_v891_6206_gate_triage.py
           python -m unittest discover -s tests -p test_v892_top20_quality_audit.py
           python -m unittest discover -s tests -p test_v894_revenue_lead_discovery.py
