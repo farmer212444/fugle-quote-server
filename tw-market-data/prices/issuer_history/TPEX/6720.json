@@ -2,10 +2,10 @@
   "schema": "V893_OFFICIAL_TPEX_DAILY",
   "issuer": "6720",
   "market": "TPEX",
-  "price_reference_asof": "2026-11-11",
+  "price_reference_asof": "2026-11-12",
   "source_type": "OFFICIAL_TPEX_DAILY_MARKET",
   "original_raw_responses_preserved_in_actions_artifact_not_repository": false,
-  "durable_original_sessions": 192,
+  "durable_original_sessions": 195,
   "original_source_not_cryptographically_signed": true,
   "issuer_PIT_history_verified": false,
   "share_adjusted_history": false,
@@ -7115,9 +7115,135 @@
         "fillability_verified": false,
         "session_times_are_scheduled_not_broker_fills": true
       }
+    },
+    "2026-11-12": {
+      "date": "2026-11-12",
+      "source_url": "https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes?response=json&date=115%2F11%2F12",
+      "original_response_sha256": "71c3b8be0f71434d3ecc34fed021e9de736a2f6a793209bddf46f6292e53a915",
+      "captured_at_utc": "2026-11-12T08:14:48.483777+00:00",
+      "original_archive": {
+        "schema": "HISTORICAL_EXCHANGE_ORIGINAL_V1",
+        "market": "TPEX",
+        "identity": "2026-11-12",
+        "source_url": "https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes?response=json&date=115%2F11%2F12",
+        "captured_at_utc": "2026-11-12T08:14:48.483777+00:00",
+        "archive_path": "prices/originals/history/TPEX/2026-11-12/71c3b8be0f71434d3ecc34fed021e9de736a2f6a793209bddf46f6292e53a915.json.gz",
+        "original_response_sha256": "71c3b8be0f71434d3ecc34fed021e9de736a2f6a793209bddf46f6292e53a915",
+        "parsed_rows_sha256": "a48691530bd4f58bd185bbd9d1a552cf4478a1eacb425d58d020cb0e2f22f3c6",
+        "bytes": 2055846,
+        "issuer_publication_pit_verified": false,
+        "contemporaneous_universe_verified": false,
+        "fillability_verified": false,
+        "receipt_path": "prices/originals/history/TPEX/2026-11-12/343ca484d789c853c92da70a5cdadcded17d511b9c199cb1d83da780466455ed.json"
+      },
+      "raw_market_response_stored_in_artifact": false,
+      "row": {
+        "date": "2026-11-12",
+        "code": "6720",
+        "market": "TPEX",
+        "close": 98.8,
+        "turnover_ntd": 6578199,
+        "volume_shares": 65101,
+        "high": 103.5,
+        "low": 98.0,
+        "open": 102.5,
+        "open_at": "2026-11-12T09:00:00+08:00",
+        "close_at": "2026-11-12T13:30:00+08:00",
+        "fillability_verified": false,
+        "session_times_are_scheduled_not_broker_fills": true
+      }
+    },
+    "2026-01-21": {
+      "date": "2026-01-21",
+      "source_url": "https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes?response=json&date=115%2F01%2F21",
+      "original_response_sha256": "550ecfe7e5b0e2bc417685717c2f75159f944eee2d063d5f416427cb6264f4b6",
+      "captured_at_utc": "2026-11-12T08:15:25.385144+00:00",
+      "original_archive": {
+        "schema": "HISTORICAL_EXCHANGE_ORIGINAL_V1",
+        "market": "TPEX",
+        "identity": "2026-01-21",
+        "source_url": "https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes?response=json&date=115%2F01%2F21",
+        "captured_at_utc": "2026-11-12T08:15:25.385144+00:00",
+        "archive_path": "prices/originals/history/TPEX/2026-01-21/550ecfe7e5b0e2bc417685717c2f75159f944eee2d063d5f416427cb6264f4b6.json.gz",
+        "original_response_sha256": "550ecfe7e5b0e2bc417685717c2f75159f944eee2d063d5f416427cb6264f4b6",
+        "parsed_rows_sha256": "f9d9ceb822abe4ce4e60bc295b248e45be0824e63612754aa4a3279d100592b4",
+        "bytes": 1808028,
+        "issuer_publication_pit_verified": false,
+        "contemporaneous_universe_verified": false,
+        "fillability_verified": false,
+        "receipt_path": "prices/originals/history/TPEX/2026-01-21/943e4fe1d77d80cbe586db372499ee65f423f8f8772a98db45c2eb59b3ce870b.json"
+      },
+      "raw_market_response_stored_in_artifact": false,
+      "row": {
+        "date": "2026-01-21",
+        "code": "6720",
+        "market": "TPEX",
+        "close": 133.0,
+        "turnover_ntd": 15443843,
+        "volume_shares": 114951,
+        "high": 138.0,
+        "low": 132.0,
+        "open": 133.5,
+        "open_at": "2026-01-21T09:00:00+08:00",
+        "close_at": "2026-01-21T13:30:00+08:00",
+        "fillability_verified": false,
+        "session_times_are_scheduled_not_broker_fills": true
+      }
+    },
+    "2026-01-20": {
+      "date": "2026-01-20",
+      "source_url": "https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes?response=json&date=115%2F01%2F20",
+      "original_response_sha256": "49161c7f046247e0ac1e248aa4fc058f3f4f741b3369a37ba90df7cddff37628",
+      "captured_at_utc": "2026-11-12T08:15:31.344200+00:00",
+      "original_archive": {
+        "schema": "HISTORICAL_EXCHANGE_ORIGINAL_V1",
+        "market": "TPEX",
+        "identity": "2026-01-20",
+        "source_url": "https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes?response=json&date=115%2F01%2F20",
+        "captured_at_utc": "2026-11-12T08:15:31.344200+00:00",
+        "archive_path": "prices/originals/history/TPEX/2026-01-20/49161c7f046247e0ac1e248aa4fc058f3f4f741b3369a37ba90df7cddff37628.json.gz",
+        "original_response_sha256": "49161c7f046247e0ac1e248aa4fc058f3f4f741b3369a37ba90df7cddff37628",
+        "parsed_rows_sha256": "8923f54a355cf134125ad656bfa2971e2433235729ce7b38db23560986e4268e",
+        "bytes": 1804909,
+        "issuer_publication_pit_verified": false,
+        "contemporaneous_universe_verified": false,
+        "fillability_verified": false,
+        "receipt_path": "prices/originals/history/TPEX/2026-01-20/3bbe2aed33cbe6ced1c7d87965d5e73ed2166eed226ef28303949b164e4efbeb.json"
+      },
+      "raw_market_response_stored_in_artifact": false,
+      "row": {
+        "date": "2026-01-20",
+        "code": "6720",
+        "market": "TPEX",
+        "close": 136.5,
+        "turnover_ntd": 37266572,
+        "volume_shares": 276969,
+        "high": 140.0,
+        "low": 128.5,
+        "open": 129.0,
+        "open_at": "2026-01-20T09:00:00+08:00",
+        "close_at": "2026-01-20T13:30:00+08:00",
+        "fillability_verified": false,
+        "session_times_are_scheduled_not_broker_fills": true
+      }
     }
   },
   "sessions": [
+    {
+      "date": "2026-11-12",
+      "code": "6720",
+      "market": "TPEX",
+      "close": 98.8,
+      "turnover_ntd": 6578199,
+      "volume_shares": 65101,
+      "high": 103.5,
+      "low": 98.0,
+      "open": 102.5,
+      "open_at": "2026-11-12T09:00:00+08:00",
+      "close_at": "2026-11-12T13:30:00+08:00",
+      "fillability_verified": false,
+      "session_times_are_scheduled_not_broker_fills": true
+    },
     {
       "date": "2026-11-11",
       "code": "6720",
@@ -9997,13 +10123,43 @@
       "close_at": "2026-01-22T13:30:00+08:00",
       "fillability_verified": false,
       "session_times_are_scheduled_not_broker_fills": true
+    },
+    {
+      "date": "2026-01-21",
+      "code": "6720",
+      "market": "TPEX",
+      "close": 133.0,
+      "turnover_ntd": 15443843,
+      "volume_shares": 114951,
+      "high": 138.0,
+      "low": 132.0,
+      "open": 133.5,
+      "open_at": "2026-01-21T09:00:00+08:00",
+      "close_at": "2026-01-21T13:30:00+08:00",
+      "fillability_verified": false,
+      "session_times_are_scheduled_not_broker_fills": true
+    },
+    {
+      "date": "2026-01-20",
+      "code": "6720",
+      "market": "TPEX",
+      "close": 136.5,
+      "turnover_ntd": 37266572,
+      "volume_shares": 276969,
+      "high": 140.0,
+      "low": 128.5,
+      "open": 129.0,
+      "open_at": "2026-01-20T09:00:00+08:00",
+      "close_at": "2026-01-20T13:30:00+08:00",
+      "fillability_verified": false,
+      "session_times_are_scheduled_not_broker_fills": true
     }
   ],
   "liquidity": {
     "5": {
       "sessions": 5,
-      "first": "2026-11-05",
-      "last": "2026-11-11",
+      "first": "2026-11-06",
+      "last": "2026-11-12",
       "median_turnover_ntd": 6011038,
       "min_turnover_ntd": 2894195,
       "zero_turnover_sessions": 0,
@@ -10011,8 +10167,8 @@
     },
     "20": {
       "sessions": 20,
-      "first": "2026-10-13",
-      "last": "2026-11-11",
+      "first": "2026-10-14",
+      "last": "2026-11-12",
       "median_turnover_ntd": 2904710.0,
       "min_turnover_ntd": 404219,
       "zero_turnover_sessions": 0,
@@ -10020,12 +10176,12 @@
     },
     "60": {
       "sessions": 60,
-      "first": "2026-08-13",
-      "last": "2026-11-11",
-      "median_turnover_ntd": 2268995.5,
+      "first": "2026-08-14",
+      "last": "2026-11-12",
+      "median_turnover_ntd": 2370021.5,
       "min_turnover_ntd": 131,
       "zero_turnover_sessions": 0,
-      "idealized_5m_exit_sessions_at_20pct": 11.02
+      "idealized_5m_exit_sessions_at_20pct": 10.55
     }
   }
 }
