@@ -16,6 +16,114 @@ FREEZE_SCHEMA = "ALPHAMAX_V8_RESEARCH_EXHIBITION_MATCH_V1"
 EXECUTION_SCHEMA = "ALPHAMAX_PK_EXECUTIONS_V1"
 ALLOWED_HORIZONS = (21, 63, 126, 252)
 BENCHMARK = ("TWSE", "0050")
+# Pre-registered, immutable original market/code/reference-price triples.
+FROZEN_REFERENCE_TABLE = {
+  "alpha_lane": [
+    [
+      "TPEX",
+      "8299",
+      1675
+    ],
+    [
+      "TWSE",
+      "6691",
+      568
+    ],
+    [
+      "TPEX",
+      "6274",
+      982
+    ],
+    [
+      "TWSE",
+      "2330",
+      2285
+    ],
+    [
+      "TWSE",
+      "2383",
+      4365
+    ],
+    [
+      "TWSE",
+      "2395",
+      593
+    ],
+    [
+      "TWSE",
+      "2408",
+      383
+    ],
+    [
+      "TWSE",
+      "2344",
+      135
+    ],
+    [
+      "TWSE",
+      "2360",
+      1310
+    ],
+    [
+      "TPEX",
+      "5274",
+      11935
+    ]
+  ],
+  "v8_lane": [
+    [
+      "TWSE",
+      "6505",
+      89.6
+    ],
+    [
+      "TPEX",
+      "6221",
+      41.35
+    ],
+    [
+      "TPEX",
+      "3219",
+      109
+    ],
+    [
+      "TWSE",
+      "4155",
+      17.5
+    ],
+    [
+      "TPEX",
+      "3287",
+      79.2
+    ],
+    [
+      "TPEX",
+      "6538",
+      309.5
+    ],
+    [
+      "TWSE",
+      "2059",
+      8565
+    ],
+    [
+      "TPEX",
+      "4979",
+      383
+    ],
+    [
+      "TPEX",
+      "4721",
+      68.8
+    ],
+    [
+      "TPEX",
+      "4931",
+      185.5
+    ]
+  ]
+}
+
 
 
 class PKContractError(ValueError):
@@ -65,7 +173,9 @@ def validate_freeze(freeze):
                 raise PKContractError("DUPLICATE_FROZEN_SECURITY")
             if row.get("price_date") != ref.isoformat():
                 raise PKContractError("FROZEN_REFERENCE_DATE_MISMATCH")
-            _number(row.get("reference_close"), positive=True)
+            close = _number(row.get("reference_close"), positive=True)
+            if (key[0], key[1], close) != tuple(FROZEN_REFERENCE_TABLE[lane][i - 1]):
+                raise PKContractError("FROZEN_LINEUP_OR_PRICE_TAMPERED")
             unique.add(key)
         names[lane] = unique
     if names["alpha_lane"] & names["v8_lane"]:
