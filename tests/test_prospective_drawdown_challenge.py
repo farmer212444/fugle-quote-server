@@ -6,7 +6,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from scripts.prospective_drawdown_challenge import issue, verify, report, make
+from scripts.prospective_drawdown_challenge import issue, verify, report, make, pr_archive_has_newer_dated_market_source
 
 ASOF="2026-11-09"
 FORMED="2026-11-09T18:55:31+08:00"
@@ -70,6 +70,32 @@ class ProspectiveRegistryTests(unittest.TestCase):
             self.assertEqual(result["status"],"ALREADY_FROZEN_FIRST_REGISTRATION_PRESERVED")
             self.assertEqual(path.read_bytes(),previous)
             self.assertEqual(report(root)["verified_forward_returns"],0)
+
+    def test_pr_smoke_does_not_backregister_old_risk_after_new_market_day(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp);prepare(root)
+            self.assertFalse(pr_archive_has_newer_dated_market_source(root))
+            manifest=root/"prices/latest_manifest.json"
+            doc=json.loads(manifest.read_text())
+            doc["date"]="2026-11-10"
+            save(manifest,doc)
+            self.assertTrue(pr_archive_has_newer_dated_market_source(root))
+            with self.assertRaisesRegex(ValueError,"MARKET_PRICE_SOURCE_HASH_CONFLICT"):
+                make(root,NOW)
+
+    def test_pr_smoke_does_not_skip_market_behind_report_or_unparseable_date(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp);prepare(root)
+            path=root/"prices/latest_manifest.json"
+            m=json.loads(path.read_text())
+            m["date"]="2026-11-08"
+            save(path,m)
+            with self.assertRaisesRegex(ValueError,"PR_SMOKE_MARKET_BEHIND_RESEARCH"):
+                pr_archive_has_newer_dated_market_source(root)
+            m["date"]="11/10/2026"
+            save(path,m)
+            with self.assertRaisesRegex(ValueError,"PR_SMOKE_SOURCE_DATE_INVALID"):
+                pr_archive_has_newer_dated_market_source(root)
 
     def test_tampering_frozen_risk_labels_detected(self):
         with tempfile.TemporaryDirectory() as tmp:
