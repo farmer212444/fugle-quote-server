@@ -108,7 +108,7 @@ def run(root, max_requests=4, start_month=BEGIN_MONTH, *, fetch=request, sleep=0
         "remaining_completed_months_without_durable_original_receipts": reread["all_incomplete_months"],
         "available_unadjusted_sessions": len(after.get("sessions", [])),
         "price_only_backfill": True,
-        "pIT_training_certified": False,
+        "pit_training_certified": False,
         "dividend_and_corporate_actions_verified": False,
         "investor_total_return_certified": False,
         "model_backtest_completed": False,
