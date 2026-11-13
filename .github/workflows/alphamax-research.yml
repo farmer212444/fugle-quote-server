@@ -74,8 +74,12 @@ jobs:
         run: |
           set -euo pipefail
           git fetch --depth=1 origin main
+          # The 2026-11-12 entry was frozen at this previously verified commit.
+          # Never silently rebase its prices when main republishes that date.
+          git fetch --depth=1 origin 6ea4b93db706265fc64b415e8080f14f89469eb4
           mkdir -p alphamax-pk-source
           git rev-parse origin/main > alphamax-pk-source/source-commit.txt
+          printf '%s\\n' '6ea4b93db706265fc64b415e8080f14f89469eb4' > alphamax-pk-source/frozen-entry-commit.txt
           git show origin/main:tw-market-data/prices/latest_manifest.json > alphamax-pk-source/manifest.json
           python - <<'PY'
           import json
@@ -89,7 +93,7 @@ jobs:
           with Path("alphamax-pk-source/prices.json").open("wb") as out:
               subprocess.run(["git", "show", "origin/main:" + path], stdout=out, check=True)
           with Path("alphamax-pk-source/entry-prices.json").open("wb") as out:
-              subprocess.run(["git", "show", "origin/main:tw-market-data/prices/2026-11-12.json"], stdout=out, check=True)
+              subprocess.run(["git", "show", "6ea4b93db706265fc64b415e8080f14f89469eb4:tw-market-data/prices/2026-11-12.json"], stdout=out, check=True)
           PY
           python scripts/alphamax_pk_exhibition.py --manifest alphamax-pk-source/manifest.json --snapshot alphamax-pk-source/prices.json --output alphamax-pk-observation.json
           python scripts/alphamax_pk_shadow_monitor.py --manifest alphamax-pk-source/manifest.json --latest alphamax-pk-source/prices.json --entry alphamax-pk-source/entry-prices.json --output alphamax-pk-shadow-price-only.json
