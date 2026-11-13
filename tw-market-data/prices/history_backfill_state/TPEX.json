@@ -50,17 +50,17 @@
       "status": "RETRY_REQUIRED_NOT_VERIFIED_AS_NONTRADING"
     },
     "2026-10-26": {
-      "attempts": 4,
-      "last_attempt_utc": "2026-11-11T07:43:34.048057+00:00",
-      "retry_after_utc": "2026-11-13T07:43:34.048057+00:00",
+      "attempts": 5,
+      "last_attempt_utc": "2026-11-13T07:49:43.067771+00:00",
+      "retry_after_utc": "2026-11-17T07:49:43.067771+00:00",
       "source_url": "https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes?response=json&date=115%2F10%2F26",
       "last_error": "ValueError:TPEX_OFFICIAL_MARKET_SHARD_UNDERSIZED",
       "status": "RETRY_REQUIRED_NOT_VERIFIED_AS_NONTRADING"
     },
     "2026-10-23": {
-      "attempts": 4,
-      "last_attempt_utc": "2026-11-11T07:43:34.048057+00:00",
-      "retry_after_utc": "2026-11-13T07:43:34.048057+00:00",
+      "attempts": 5,
+      "last_attempt_utc": "2026-11-13T07:49:43.067771+00:00",
+      "retry_after_utc": "2026-11-17T07:49:43.067771+00:00",
       "source_url": "https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes?response=json&date=115%2F10%2F23",
       "last_error": "ValueError:TPEX_OFFICIAL_MARKET_SHARD_UNDERSIZED",
       "status": "RETRY_REQUIRED_NOT_VERIFIED_AS_NONTRADING"
@@ -142,6 +142,22 @@
       "last_attempt_utc": "2026-11-12T08:13:28.493958+00:00",
       "retry_after_utc": "2026-11-14T08:13:28.493958+00:00",
       "source_url": "https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes?response=json&date=115%2F02%2F12",
+      "last_error": "ValueError:TPEX_OFFICIAL_MARKET_SHARD_UNDERSIZED",
+      "status": "RETRY_REQUIRED_NOT_VERIFIED_AS_NONTRADING"
+    },
+    "2026-01-01": {
+      "attempts": 1,
+      "last_attempt_utc": "2026-11-13T07:49:43.067771+00:00",
+      "retry_after_utc": "2026-11-13T13:49:43.067771+00:00",
+      "source_url": "https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes?response=json&date=115%2F01%2F01",
+      "last_error": "ValueError:TPEX_OFFICIAL_MARKET_SHARD_UNDERSIZED",
+      "status": "RETRY_REQUIRED_NOT_VERIFIED_AS_NONTRADING"
+    },
+    "2025-12-25": {
+      "attempts": 1,
+      "last_attempt_utc": "2026-11-13T07:49:43.067771+00:00",
+      "retry_after_utc": "2026-11-13T13:49:43.067771+00:00",
+      "source_url": "https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes?response=json&date=114%2F12%2F25",
       "last_error": "ValueError:TPEX_OFFICIAL_MARKET_SHARD_UNDERSIZED",
       "status": "RETRY_REQUIRED_NOT_VERIFIED_AS_NONTRADING"
     }
