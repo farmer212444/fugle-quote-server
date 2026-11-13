@@ -86,6 +86,38 @@ def shadow_price_only(freeze, entry_raw: bytes, last_raw: bytes, last_manifest,
         raise PKContractError("SHADOW_ENTRY_BLOB_TAMPERED")
     entry = _unique_rows(entry_raw, SHADOW_ENTRY_DATE, field="open")
     last = _unique_rows(last_raw, today.isoformat(), field="close")
+
+    # A rewritten snapshot for the *entry session itself* is not a new trading
+    # session. Cross-vintage same-day differences must not be scored as gains.
+    if today == entrydate and git_blob_sha(last_raw) != expected_entry_blob_sha:
+        return {
+            "schema": "ALPHAMAX_PK_SHADOW_PRICE_ONLY_V1",
+            "status": "BLOCKED_SAME_SESSION_SNAPSHOT_REVISED",
+            "freeze_date": freeze["comparator_vintage_date"],
+            "frozen_lineup_digest_sha256": frozen_digest(freeze),
+            "entry_price_date": SHADOW_ENTRY_DATE,
+            "entry_price_source_git_blob_sha": git_blob_sha(entry_raw),
+            "last_price_date": today.isoformat(),
+            "last_snapshot_git_blob_sha": git_blob_sha(last_raw),
+            "lanes": {
+                lane: {
+                    "complete_quote_count": None,
+                    "security_count": 10,
+                    "equal_initial_capital_unadjusted_price_change_pct": None,
+                    "unadjusted_excess_vs_0050_pct_points": None,
+                    "positions": [],
+                } for lane in ("alpha_lane", "v8_lane")
+            },
+            "benchmark_0050": {"raw_price_only_change_pct": None},
+            "verified_executable_returns": None,
+            "verified_after_cost_total_returns": None,
+            "dividend_corporate_action_adjusted": False,
+            "official_winner": None,
+            "is_model_vs_model": False,
+            "reason": "The pinned entry and current main snapshot for the same "
+                      "trading date differ. No later session exists; return "
+                      "diagnostics are BLOCKED, not rebased to revised prices.",
+        }
     required = {BENCHMARK}
     for lane in ("alpha_lane", "v8_lane"):
         required.update((r["market"], r["code"]) for r in freeze[lane]["rows"])
