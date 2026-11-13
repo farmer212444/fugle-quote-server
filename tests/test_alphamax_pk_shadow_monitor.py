@@ -37,7 +37,7 @@ class ShadowPKTests(unittest.TestCase):
     def raw(rows):
         return json.dumps(rows, sort_keys=True, separators=(",", ":")).encode()
 
-    def run_shadow(self, entries=None, latest=None, latest_date="2026-11-12", manifest=None):
+    def run_shadow(self, entries=None, latest=None, latest_date="2026-11-13", manifest=None):
         entry_data = self.raw(self.rows() if entries is None else entries)
         latest_data = self.raw(self.rows(dt=latest_date, multiplier=1.1) if latest is None else latest)
         m = manifest or {"date": latest_date, "unadjusted_quotes": True,
@@ -45,7 +45,7 @@ class ShadowPKTests(unittest.TestCase):
         return shadow_price_only(self.frozen, entry_data, latest_data, m,
                                  expected_entry_blob_sha=git_blob_sha(entry_data))
 
-    def test_same_day_paper_open_close_is_raw_only(self):
+    def test_postfreeze_quote_change_is_raw_only(self):
         r = self.run_shadow()
         self.assertEqual(r["lanes"]["alpha_lane"]["complete_quote_count"], 10)
         self.assertEqual(r["lanes"]["v8_lane"]["complete_quote_count"], 10)
@@ -55,6 +55,19 @@ class ShadowPKTests(unittest.TestCase):
         self.assertIsNone(r["verified_after_cost_total_returns"])
         self.assertFalse(r["dividend_corporate_action_adjusted"])
         self.assertFalse(r["is_model_vs_model"])
+
+    def test_same_session_revision_blocks_price_only_changes(self):
+        out = self.run_shadow(latest_date="2026-11-12")
+        self.assertEqual(out["status"], "BLOCKED_SAME_SESSION_SNAPSHOT_REVISED")
+        self.assertIsNone(out["official_winner"])
+        self.assertIsNone(out["benchmark_0050"]["raw_price_only_change_pct"])
+        self.assertNotEqual(out["entry_price_source_git_blob_sha"],
+                            out["last_snapshot_git_blob_sha"])
+        for lane in ("alpha_lane", "v8_lane"):
+            self.assertIsNone(
+                out["lanes"][lane]["equal_initial_capital_unadjusted_price_change_pct"]
+            )
+            self.assertIsNone(out["lanes"][lane]["complete_quote_count"])
 
     def test_fixed_entry_sha_rejects_revised_reference(self):
         data = self.raw(self.rows())
@@ -71,7 +84,7 @@ class ShadowPKTests(unittest.TestCase):
             self.run_shadow(entries=entries)
 
     def test_missing_latest_quote_blocks_full_basket(self):
-        latest = self.rows(multiplier=1.1)[1:]
+        latest = self.rows(dt="2026-11-13", multiplier=1.1)[1:]
         r = self.run_shadow(latest=latest)
         self.assertEqual(r["lanes"]["alpha_lane"]["complete_quote_count"], 9)
         self.assertIsNone(r["lanes"]["alpha_lane"]["equal_initial_capital_unadjusted_price_change_pct"])
@@ -79,25 +92,25 @@ class ShadowPKTests(unittest.TestCase):
         self.assertIsNone(r["official_winner"])
 
     def test_missing_latest_benchmark_blocks_excess_only(self):
-        latest = self.rows(multiplier=1.1)[:-1]
+        latest = self.rows(dt="2026-11-13", multiplier=1.1)[:-1]
         r = self.run_shadow(latest=latest)
         self.assertEqual(r["lanes"]["alpha_lane"]["complete_quote_count"], 10)
         self.assertIsNone(r["benchmark_0050"]["raw_price_only_change_pct"])
         self.assertIsNone(r["lanes"]["alpha_lane"]["unadjusted_excess_vs_0050_pct_points"])
 
     def test_mixed_date_or_duplicate_in_latest_rejected(self):
-        d = self.rows()
+        d = self.rows(dt="2026-11-13")
         d[0]["date"] = "2026-11-11"
         with self.assertRaisesRegex(PKContractError, "MIXED_SNAPSHOT_DATES"):
             self.run_shadow(latest=d)
-        d = self.rows()
+        d = self.rows(dt="2026-11-13")
         d.append(copy.deepcopy(d[0]))
         with self.assertRaisesRegex(PKContractError, "DUPLICATE_MARKET_CODE"):
             self.run_shadow(latest=d)
 
     def test_fake_broker_fill_does_not_promote_shadows(self):
         a = self.rows()
-        b = self.rows(multiplier=1.1)
+        b = self.rows(dt="2026-11-13", multiplier=1.1)
         for x in a + b:
             x["fillability_verified"] = True
         result = self.run_shadow(entries=a, latest=b)
@@ -106,7 +119,7 @@ class ShadowPKTests(unittest.TestCase):
         self.assertFalse(result["is_model_vs_model"])
 
     def test_price_not_finite_does_not_create_a_return(self):
-        latest = self.rows(multiplier=1.10)
+        latest = self.rows(dt="2026-11-13", multiplier=1.10)
         latest[0]["close"] = None
         r = self.run_shadow(latest=latest)
         self.assertIsNone(r["lanes"]["alpha_lane"]["equal_initial_capital_unadjusted_price_change_pct"])
