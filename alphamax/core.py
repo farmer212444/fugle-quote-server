@@ -40,6 +40,14 @@ def parse_date(value):
     return result
 
 
+def _research_asof_date(value):
+    """Reject unobserved future dates for direct research entrypoints."""
+    asof = parse_date(value)
+    if asof > date.today():
+        raise ContractError("ASOF_IN_FUTURE")
+    return asof
+
+
 @dataclass(frozen=True)
 class TradingCosts:
     """Example gross stock-return to net investor-return conversion.
@@ -193,7 +201,7 @@ def _solve(matrix, vector):
 
 def fit_asof(rows, signal_date, costs=None, min_history=80, ridge=1.0):
     """Train ONLY on labels observable before a historical prediction date."""
-    asof = parse_date(signal_date)
+    asof = _research_asof_date(signal_date)
     _assert_12m_label_maturities(rows)
     costs = costs or TradingCosts()
     if ridge <= 0 or not isfinite(ridge):
@@ -255,7 +263,7 @@ def walk_forward(rows, evaluation_asof, costs=None, top_n=10, min_history=80):
     No annualized Sharpe/CAGR claimed: overlapping 12-month cohorts aren't
     independent. For production, implement a costed holdings/equity simulator.
     """
-    cutoff = parse_date(evaluation_asof)
+    cutoff = _research_asof_date(evaluation_asof)
     _assert_12m_label_maturities(rows)
     if top_n < 1:
         raise ContractError("TOP_N_MUST_BE_POSITIVE")
