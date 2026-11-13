@@ -190,6 +190,18 @@ class AlphaMaxTests(unittest.TestCase):
             with self.assertRaisesRegex(ContractError, "ASOF_IN_FUTURE"):
                 research(folder, future)
 
+    def test_direct_future_training_and_ranking_asof_blocked(self):
+        future = (date.today() + timedelta(days=30)).isoformat()
+        with self.assertRaisesRegex(ContractError, "ASOF_IN_FUTURE"):
+            fit_asof(sample_rows(), future)
+        with self.assertRaisesRegex(ContractError, "ASOF_IN_FUTURE"):
+            rank_asof(sample_rows(), future)
+
+    def test_direct_future_walk_forward_asof_blocked(self):
+        future = (date.today() + timedelta(days=30)).isoformat()
+        with self.assertRaisesRegex(ContractError, "ASOF_IN_FUTURE"):
+            walk_forward(sample_rows(), future, top_n=5)
+
     def test_live_repository_is_blocked_without_total_return_history(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
