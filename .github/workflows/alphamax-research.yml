@@ -79,7 +79,7 @@ jobs:
           git fetch --depth=1 origin 6ea4b93db706265fc64b415e8080f14f89469eb4
           mkdir -p alphamax-pk-source
           git rev-parse origin/main > alphamax-pk-source/source-commit.txt
-          printf '%s\\n' '6ea4b93db706265fc64b415e8080f14f89469eb4' > alphamax-pk-source/frozen-entry-commit.txt
+          echo 6ea4b93db706265fc64b415e8080f14f89469eb4 > alphamax-pk-source/frozen-entry-commit.txt
           git show origin/main:tw-market-data/prices/latest_manifest.json > alphamax-pk-source/manifest.json
           python - <<'PY'
           import json
