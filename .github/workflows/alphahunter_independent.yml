@@ -1,0 +1,37 @@
+name: AlphaHunter Independent Research Contract
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'alphahunter/**'
+      - 'scripts/alphahunter_run.py'
+      - 'tests/test_alphahunter.py'
+      - '.github/workflows/alphahunter_independent.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  independent-contract-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test PIT and scenario-research isolation
+        run: python -m unittest discover -s tests -p 'test_alphahunter.py' -v
+      - name: Verify production ranking is denied without audited bundle
+        run: |
+          python scripts/alphahunter_run.py readiness --bundle alphahunter/datasets/production --output alphahunter-readiness.json
+          python -c "import json; r=json.load(open('alphahunter-readiness.json')); assert r['status']=='BLOCKED' and not r['production_ranking_allowed']"
+      - name: Publish research readiness proof
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: alphahunter-contract-readiness
+          path: alphahunter-readiness.json
+          if-no-files-found: ignore
+          retention-days: 30
