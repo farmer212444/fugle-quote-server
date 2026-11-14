@@ -109,3 +109,30 @@ dataset, and the first version never issues a trade signal.
 ```sh
 python -m unittest discover -s tests -p 'test_alphahunter*.py' -v
 ```
+
+
+## Explicit 2027 forecast horizon (new)
+Use `alphahunter.forward_projection.build_fiscal_year_scenarios` when the
+latest independently checked **full-year** financial statement predates the
+target fiscal year by multiple years. This avoids a material estimation error:
+**2025 sales × one annual growth rate is a 2026 sales forecast, not a 2027 one.**
+
+For example, a 2025 full-year sales baseline of NT$100 billion and declared
+2026/2027 base-case sales growth of +10% / +20% projects:
+- 2026 revenue: NT$110 billion;
+- 2027 revenue: NT$132 billion.
+
+The base-case 2027 EPS then uses **2027** gross-margin, expense, non-operating,
+tax-rate and fully diluted share assumptions. Growth for every intermediate
+fiscal year must be specified. Maximum research horizon is three fiscal years.
+The method deliberately requires a December 31 **full-year** baseline; it does
+not treat quarterly nine-month revenue or TTM figures as annual reported revenue.
+
+This routine validates the *declared* as-of timestamps, but not their
+authenticity. Revenue paths, margin expectations and multiples are analyst-free
+**manual scenarios**, not trained forecasts or calibrated occurrence rates.
+The bridge does not authorize a formal Top10, A+ or trading recommendation.
+
+```sh
+python -m unittest discover -s tests -p 'test_alphahunter*.py' -v
+```
