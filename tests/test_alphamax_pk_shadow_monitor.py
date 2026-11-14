@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import copy
 import json
+from hashlib import sha256
 from pathlib import Path
 import unittest
 
@@ -42,6 +43,7 @@ class ShadowPKTests(unittest.TestCase):
         latest_data = self.raw(self.rows(dt=latest_date, multiplier=1.1) if latest is None else latest)
         m = manifest or {"date": latest_date, "unadjusted_quotes": True,
                          "path": "tw-market-data/prices/" + latest_date + ".json"}
+        m.setdefault("normalized_sha256", sha256(latest_data).hexdigest())
         return shadow_price_only(self.frozen, entry_data, latest_data, m,
                                  expected_entry_blob_sha=git_blob_sha(entry_data))
 
@@ -52,9 +54,31 @@ class ShadowPKTests(unittest.TestCase):
         self.assertAlmostEqual(r["lanes"]["alpha_lane"]["equal_initial_capital_unadjusted_price_change_pct"], 10)
         self.assertAlmostEqual(r["benchmark_0050"]["raw_price_only_change_pct"], 10)
         self.assertIsNone(r["official_winner"])
+        self.assertTrue(r["last_source_snapshot_hash_matched_manifest"])
         self.assertIsNone(r["verified_after_cost_total_returns"])
         self.assertFalse(r["dividend_corporate_action_adjusted"])
         self.assertFalse(r["is_model_vs_model"])
+
+    def test_latest_snapshot_hash_mismatch_rejected(self):
+        entry = self.raw(self.rows())
+        latest = self.raw(self.rows(dt="2026-11-13", multiplier=1.1))
+        manifest = {"date": "2026-11-13",
+                    "path": "tw-market-data/prices/2026-11-13.json",
+                    "unadjusted_quotes": True,
+                    "normalized_sha256": "0" * 64}
+        with self.assertRaisesRegex(PKContractError, "LATEST_SNAPSHOT_SHA256_MISMATCH"):
+            shadow_price_only(self.frozen, entry, latest, manifest,
+                              expected_entry_blob_sha=git_blob_sha(entry))
+
+    def test_latest_snapshot_without_hash_receipt_rejected(self):
+        entry = self.raw(self.rows())
+        latest = self.raw(self.rows(dt="2026-11-13"))
+        manifest = {"date": "2026-11-13",
+                    "path": "tw-market-data/prices/2026-11-13.json",
+                    "unadjusted_quotes": True}
+        with self.assertRaisesRegex(PKContractError, "LATEST_SNAPSHOT_SHA256_RECEIPT_MISSING"):
+            shadow_price_only(self.frozen, entry, latest, manifest,
+                              expected_entry_blob_sha=git_blob_sha(entry))
 
     def test_same_session_revision_blocks_price_only_changes(self):
         out = self.run_shadow(latest_date="2026-11-12")
