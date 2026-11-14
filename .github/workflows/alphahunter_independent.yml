@@ -6,7 +6,7 @@ on:
     paths:
       - 'alphahunter/**'
       - 'scripts/alphahunter_run.py'
-      - 'tests/test_alphahunter.py'
+      - 'tests/test_alphahunter*.py'
       - '.github/workflows/alphahunter_independent.yml'
 
 permissions:
@@ -22,7 +22,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Test PIT and scenario-research isolation
-        run: python -m unittest discover -s tests -p 'test_alphahunter.py' -v
+        run: python -m unittest discover -s tests -p 'test_alphahunter*.py' -v
       - name: Verify production ranking is denied without audited bundle
         run: |
           python scripts/alphahunter_run.py readiness --bundle alphahunter/datasets/production --output alphahunter-readiness.json
