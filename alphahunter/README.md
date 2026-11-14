@@ -71,3 +71,41 @@ contract-conforming bundle is supplied, and still remains `UNCALIBRATED_RESEARCH
 
 **Do not merge solely because CI passes.** Synthetic checks establish software
 properties only, not market outperformance.
+
+
+## Independent EPS bridge (research-only)
+`alphahunter/earnings_bridge.py` exposes `build_eps_scenarios(financials, assumptions, signal_date)`.
+It derives each scenario's EPS from a **trailing reported revenue baseline**,
+assumed sales growth, gross margin, operating expense ratio, net non-operating
+income, estimated cash tax rate and fully diluted shares:
+
+```
+scenario_sales = trailing_reported_revenue × (1 + scenario_growth)
+scenario_operating_profit = scenario_sales × (gross_margin - opex_ratio)
+scenario_net_profit = (scenario_operating_profit + net_nonoperating_income)
+                      × (1 - tax_rate)  # only for positive pretax income
+scenario_eps = scenario_net_profit / diluted_shares
+```
+
+All monetary amounts must be **TWD, not NT$ millions**, and all shares must be
+actual individual diluted shares, not lots. Each financial record carries its
+original fiscal period end and *declared* public availability date, and every
+research assumption carries an as-of date. No input can postdate the
+signal. The as-of flags require **independent original filing verification**
+before any result can be treated as publicly available in the real market.
+
+P/E is not defined for losses. For a loss-making scenario only, the earnings
+bridge provides a **zero EPS P/E payoff proxy** and separately preserves its
+negative raw EPS and `loss_making_scenario_not_pe_valued=true`. This is a
+diagnostic floor and *not* an independently defensible terminal equity
+valuation. Validate balance-sheet values, liquidation risk and capital
+raising separately before applying the model to distressed firms.
+
+The bridge's outputs fit the existing `scenarios` field but are
+**uncalibrated**, not forward earnings endorsed by the exchange, a broker, or
+the model. Historical training labels still do not exist in the production
+dataset, and the first version never issues a trade signal.
+
+```sh
+python -m unittest discover -s tests -p 'test_alphahunter*.py' -v
+```
