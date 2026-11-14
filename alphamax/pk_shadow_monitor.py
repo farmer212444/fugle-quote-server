@@ -6,7 +6,7 @@ Alpha side is an analyst research queue and official open is not a broker fill.
 from __future__ import annotations
 
 from datetime import date
-from hashlib import sha1
+from hashlib import sha1, sha256
 import json
 from math import isfinite
 
@@ -84,6 +84,17 @@ def shadow_price_only(freeze, entry_raw: bytes, last_raw: bytes, last_manifest,
         raise PKContractError("LATEST_SNAPSHOT_ADJUSTMENT_STATUS_UNKNOWN")
     if git_blob_sha(entry_raw) != expected_entry_blob_sha:
         raise PKContractError("SHADOW_ENTRY_BLOB_TAMPERED")
+    # Compare the *actual latest bytes* with the digest in the same-version
+    # manifest. Merely returning the manifest hash would not validate data.
+    if not isinstance(last_raw, bytes):
+        raise PKContractError("LATEST_SNAPSHOT_BYTES_REQUIRED")
+    expected_latest_hash = last_manifest.get("normalized_sha256")
+    if (not isinstance(expected_latest_hash, str)
+            or len(expected_latest_hash) != 64
+            or any(c not in "0123456789abcdef" for c in expected_latest_hash)):
+        raise PKContractError("LATEST_SNAPSHOT_SHA256_RECEIPT_MISSING")
+    if sha256(last_raw).hexdigest() != expected_latest_hash:
+        raise PKContractError("LATEST_SNAPSHOT_SHA256_MISMATCH")
     entry = _unique_rows(entry_raw, SHADOW_ENTRY_DATE, field="open")
     last = _unique_rows(last_raw, today.isoformat(), field="close")
 
@@ -180,6 +191,7 @@ def shadow_price_only(freeze, entry_raw: bytes, last_raw: bytes, last_manifest,
         "entry_price_source_git_blob_sha": git_blob_sha(entry_raw),
         "last_price_date": today.isoformat(),
         "last_source_normalized_sha256_unverified": last_manifest.get("normalized_sha256"),
+        "last_source_snapshot_hash_matched_manifest": True,
         "lanes": lanes,
         "benchmark_0050": {
             "entry_open_price_proxy": first_benchmark,
