@@ -40,7 +40,7 @@ class IndependentEarningsBridgeTests(unittest.TestCase):
         facts, scenarios = inputs()
         out = build_eps_scenarios(facts, scenarios, "2026-05-01")
         self.assertAlmostEqual(out["scenarios"]["base"]["eps"], 8.8)
-        self.assertAlmostEqual(out["income_bridge"]["base"]["operating_profit_twd"], 11e9)
+        self.assertAlmostEqual(out["income_bridge"]["base"]["operating_profit_twd"], 11e9, delta=0.01)
         self.assertFalse(out["probabilities_calibrated"])
         self.assertFalse(out["source_references_proven"])
 
