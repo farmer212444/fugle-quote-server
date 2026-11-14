@@ -1,0 +1,30 @@
+{
+  "schema": "V810_DURABLE_ORIGINAL_EXCHANGE_QUOTES_NOT_EXECUTION_CERTIFICATE",
+  "captured_at": "2026-11-14T06:10:05.215767+00:00",
+  "identity": {
+    "date": "2026-11-13",
+    "normalized_sha256": "ccba4a7c1e56401cf505261d3d0491185c63d8a5eeaea4c4d377d530239b5123",
+    "raw_hashes": {
+      "TWSE": "67f5c4ea2d705326a07f8f1cb5bcca99551f4381dc98c5a802e77484c1eaba9b",
+      "TPEX": "80e1a6793114a690b864c43103407d2c6f98704e1607d915b0a52adfab593b7a"
+    },
+    "sources": {
+      "TWSE": "https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL",
+      "TPEX": "https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_close_quotes"
+    }
+  },
+  "raw_archives": {
+    "TWSE": {
+      "path": "originals/2026-11-13/TWSE_67f5c4ea2d705326a07f8f1cb5bcca99551f4381dc98c5a802e77484c1eaba9b.json.gz",
+      "original_sha256": "67f5c4ea2d705326a07f8f1cb5bcca99551f4381dc98c5a802e77484c1eaba9b",
+      "bytes": 321004
+    },
+    "TPEX": {
+      "path": "originals/2026-11-13/TPEX_80e1a6793114a690b864c43103407d2c6f98704e1607d915b0a52adfab593b7a.json.gz",
+      "original_sha256": "80e1a6793114a690b864c43103407d2c6f98704e1607d915b0a52adfab593b7a",
+      "bytes": 5380877
+    }
+  },
+  "fillability_verified": false,
+  "corporate_actions_verified": false
+}
