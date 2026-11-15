@@ -17,7 +17,7 @@ V8.10.8 重新解析既存公司原件，將 2026H1 營運現金流、帳齡、�
 
 ## 2026Q3 原始財報數值補充（2026-11-15，僅研究）
 
-公司於 2026-11-05 通過 2026Q3 合併季報。PDF 列印頁 6、10、11、17、44 的資產負債、現金流、存貨與流動性數字已逐頁辨識；使用的轉載 PDF URL 和公司正式財報列表收錄於 `tw-market-data/evidence/v880/working_capital_watch/9802_2026Q3_partial_pdf_numbers.json`。目前尚未取得並 SHA256 封存完整 PDF 位元組，亦未核實發行人個別原始 MOPS PIT，因此證據層級為 **PDF 可視數值與算術核對，不是完整原件或 A+ 的正式認證**。
+公司於 2026-11-05 通過 2026Q3 合併季報。PDF 列印頁 6、10、11、17、44 的資產負債、現金流、存貨與流動性數字已逐頁辨識；使用的轉載 PDF URL 和公司正式財報列表收錄於 `tw-market-data/evidence/v880/issuer_q3_cash_shadow/9802_2026Q3_partial_pdf_numbers.json`。目前尚未取得並 SHA256 封存完整 PDF 位元組，亦未核實發行人個別原始 MOPS PIT，因此證據層級為 **PDF 可視數值與算術核對，不是完整原件或 A+ 的正式認證**。
 
 獨立 `scripts/9802_q3_cash_shadow.py` 先驗算兩年的現金流項目、現金期初至期末、存貨成本減備抵等於淨值，再與既有 Q2 原件報告勾稽 H1 OCF；只在 Q2 原件核對通過時顯示 Q3 單季 OCF。輸出為 `tw-market-data/rankings/latest_9802_q3_cash_shadow.json` / `.md`，不覆寫 `latest_9802_cash_review`，也不把主模型 `cashflow_period` 自動設成 Q3。
 
