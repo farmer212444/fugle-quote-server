@@ -63,6 +63,14 @@ jobs:
         run: python scripts/alphamax_concentration.py --output alphamax-concentration-readiness.json
       - name: Audit original historical issuer quote coverage without PIT claims
         run: python scripts/alphamax_universe_audit.py --output alphamax-universe-readiness.json
+      - name: Capture bounded 0050 official monthly raw history (price only, never total returns)
+        # Official source may be temporarily unavailable; report capture as
+        # BLOCKED rather than hiding a network outage as a model-test failure.
+        continue-on-error: true
+        run: |
+          python scripts/alphamax_0050_backfill.py \
+            --data-root tw-market-data --max-requests 4 --start-month 2025-01 \
+            --output alphamax-0050-backfill-progress.json
       - name: Capture current official issuer profiles with original bytes and source receipts
         run: python scripts/alphamax_security_master.py --output-dir alphamax-profile-capture
       - name: Capture TWSE official retrospective delisting event ledger
@@ -119,6 +127,8 @@ jobs:
           shadow = json.loads(shadow_file.read_text()) if shadow_file.exists() else {"status": "PK_SHADOW_MISSING"}
           gap_file = Path("alphamax-pk-training-gap-audit.json")
           gap = json.loads(gap_file.read_text()) if gap_file.exists() else {"status": "PK_TRAINING_GAP_AUDIT_MISSING"}
+          backfill_file = Path("alphamax-0050-backfill-progress.json")
+          backfill = json.loads(backfill_file.read_text()) if backfill_file.exists() else {"status": "BLOCKED_0050_SOURCE_CAPTURE_MISSING"}
           with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as out:
               out.write("## AlphaMax verification — do not confuse CI with trading approval\n\n")
               out.write("- Code regression CI: **executed separately above**\n")
@@ -127,6 +137,11 @@ jobs:
               out.write("- Issuer-history coverage: **%s**\n" % universe["status"])
               out.write("- Current official company roster capture: **%s**, %s issuer profiles\n" % (profiles["status"], profiles.get("profile_count", 0)))
               out.write("- Historical listed/delisted membership certified: **NO** (current profiles cannot supply past membership)\n")
+              out.write("- 0050 official raw-price monthly backfill: **%s**; branch quote reference **%s**; requested months **%s**; still lacking durable original source **%s**; observed unadjusted sessions **%s**. Dividends, splits, total returns and PIT remain **BLOCKED**.\\n" %
+                        (backfill.get("status", "BLOCKED"), backfill.get("asof", "N/A"),
+                         len(backfill.get("requested_months_this_run", [])),
+                         len(backfill.get("remaining_completed_months_without_durable_original_receipts", [])),
+                         backfill.get("available_unadjusted_sessions", "N/A")))
               out.write("- TWSE official historical termination-date ledger: **%s**, %s events\n" % (delist["status"], delist["event_count"]))
               out.write("- TPEx termination page status: **%s**; observed rows **%s**, explicit effective dates **%s**\n" % (tpex_delist["status"], tpex_delist["event_count"], tpex_delist.get("explicit_effective_dates", 0)))
               out.write("- Historical announced-at vintage, full delisted stock universe and investor total return: **NOT CERTIFIED**\n")
@@ -180,6 +195,9 @@ jobs:
             alphamax-pk-observation.json
             alphamax-pk-shadow-price-only.json
             alphamax-pk-training-gap-audit.json
+            alphamax-0050-backfill-progress.json
+            tw-market-data/prices/issuer_history/TWSE/0050.json
+            tw-market-data/prices/originals/history/TWSE/0050-*/
             alphamax-pk-source/
             alphamax-profile-capture/
             alphamax-delist-capture/
