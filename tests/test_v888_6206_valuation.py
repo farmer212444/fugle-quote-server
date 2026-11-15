@@ -56,7 +56,7 @@ class FlytechValuationTests(unittest.TestCase):
 
     def test_future_source_receipt_rejected(self):
         b,s,r,p=fixture()
-        r["provenance"]["capture_utc"]="2026-10-21T00:00:00+00:00"
+        r["provenance"]["capture_utc"]="2026-10-22T00:00:00+00:00"
         with self.assertRaisesRegex(ValueError,"FORWARD_VINTAGE"):
             calculate(b,s,r,p)
     def test_invalid_numbers_fail_closed(self):
