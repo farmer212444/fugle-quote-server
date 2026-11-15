@@ -69,6 +69,33 @@ class PITPKGapTests(unittest.TestCase):
             self.assertIn("DIVIDENDS_SPLITS_DELISTING_TOTAL_RETURN_LEDGER_MISSING", r["blockers"])
             self.assertEqual(r["verified_12m_after_cost_walk_forward_cohorts"], 0)
 
+    def test_discontinuous_price_archive_does_not_fake_12m_span(self):
+        with tempfile.TemporaryDirectory() as temp:
+            self.write_all(temp)
+            file = Path(temp) / "TWSE/0050.json"
+            packet = json.loads(file.read_text())
+            first = date(2025, 1, 2)
+            second = date(2026, 5, 2)
+            dates = [first + timedelta(days=i) for i in range(140)]
+            dates += [second + timedelta(days=i) for i in range(140)]
+            packet["sessions"] = [{"date": d.isoformat(), "market": "TWSE",
+                                   "code": "0050", "close": 99.5} for d in dates]
+            file.write_text(json.dumps(packet))
+            r = self.report(temp)
+            self.assertEqual(r["benchmark_0050"]["priced_sessions"], 280)
+            self.assertGreater(r["benchmark_0050"]["calendar_span_days"], 365)
+            self.assertFalse(r["benchmark_0050"]["potential_12m_price_only_span"])
+            self.assertIn("0050_12M_QUOTE_BASELINE_INCOMPLETE", r["blockers"])
+
+    def test_sparse_quote_archive_cannot_fake_year(self):
+        with tempfile.TemporaryDirectory() as temp:
+            self.write_all(temp)
+            file = Path(temp) / "TWSE/0050.json"
+            file.write_text(json.dumps(self.packet("TWSE", "0050", count=260, span=700)))
+            r = self.report(temp)
+            self.assertEqual(r["benchmark_0050"]["priced_sessions"], 260)
+            self.assertFalse(r["benchmark_0050"]["potential_12m_price_only_span"])
+
     def test_missing_history_file_blocks_that_basket(self):
         with tempfile.TemporaryDirectory() as temp:
             self.write_all(temp)
