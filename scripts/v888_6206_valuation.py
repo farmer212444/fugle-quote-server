@@ -93,8 +93,16 @@ def source_snapshot():
       H1_2026_cash_m=2428,FY_2025_revenue_m=5033,FY_2025_eps=6.90))
 
 def official_revenue():
+    """Reconcile 2026 nine-month revenue from the immutable 9M or 10M source.
+
+    October reporting may replace the 'latest' shard; 10M minus October gives
+    the September YTD base. Do not silently extrapolate this shortcut to November
+    because the current monthly amount alone cannot remove October too.
+    """
     manifest=read(DATA/"latest_manifest.json")
-    require(manifest.get("period")=="2026-09","REVENUE_MONTH_NOT_2026_09")
+    month=manifest.get("period")
+    require(month in ("2026-09","2026-10"),
+            "REVENUE_6206_UNSUPPORTED_MONTH_REQUIRES_DATED_BRIDGE")
     require(manifest.get("capture_utc"),"REVENUE_SNAPSHOT_TIMESTAMP_MISSING")
     found=[]
     for x in manifest.get("shards",[]):
@@ -106,14 +114,37 @@ def official_revenue():
                 found.append(r)
     require(len(found)==1,"REVENUE_6206_MISSING_OR_DUPLICATE")
     row=found[0]
-    require(row.get("report_month")=="11509","WRONG_MOPS_REPORT_MONTH")
+    require(row.get("report_month")==("11509" if month=="2026-09" else "11510"),
+            "WRONG_MOPS_REPORT_MONTH")
     ytd=positive(row.get("ytd_revenue_k"))
-    require(ytd and ytd>3392000,"INVALID_9M_REVENUE_OR_UNIT")
-    return dict(revenue_9m_ntd_m=ytd/1000,
-                september_2026_ntd_m=positive(row["monthly_revenue_k"])/1000,
-                ytd_yoy_pct=float(row["ytd_yoy_pct"]),
-                provenance=dict(report_month="2026-09",capture_utc=manifest["capture_utc"],
+    ytd_last=positive(row.get("last_year_ytd_revenue_k"))
+    latest=positive(row.get("monthly_revenue_k"))
+    last_month=positive(row.get("last_year_month_revenue_k"))
+    require(all(x is not None for x in (ytd,ytd_last,latest,last_month)),
+            "REVENUE_6206_MISSING_NUMERIC_BRIDGE")
+    nine_ytd=ytd if month=="2026-09" else ytd-latest
+    last_nine=ytd_last if month=="2026-09" else ytd_last-last_month
+    sep=latest if month=="2026-09" else positive(row.get("prior_month_revenue_k"))
+    require(nine_ytd>3392000 and last_nine>0 and sep is not None
+            and ytd>=nine_ytd and ytd_last>=last_nine,
+            "REVENUE_6206_INVALID_NINE_MONTH_BRIDGE")
+    ytd_growth=(nine_ytd/last_nine-1)*100
+    if month=="2026-09":
+        reported_growth=positive(1+float(row["ytd_yoy_pct"])/100)
+        require(reported_growth is not None
+                and abs(ytd_growth-float(row["ytd_yoy_pct"]))<0.05,
+                "REVENUE_6206_REPORTED_YOY_CONFLICT")
+    return dict(revenue_9m_ntd_m=nine_ytd/1000,
+                september_2026_ntd_m=sep/1000,
+                ytd_yoy_pct=ytd_growth,
+                latest_reported_ytd_m=ytd/1000,
+                latest_report_month=month,
+                october_2026_ntd_m=latest/1000 if month=="2026-10" else None,
+                provenance=dict(report_month=month,capture_utc=manifest["capture_utc"],
+                    latest_10m_minus_october_bridge=(month=="2026-10"),
+                    original_nine_month_release_PIT_not_independently_verified=True,
                     official_sources=manifest.get("original_receipts",[])))
+
 
 def official_price():
     manifest=read(DATA/"prices/latest_manifest.json")
@@ -162,6 +193,8 @@ def calculate(base,src,revenue,price):
     require(year_end.year==2026 and year_end.month>=9,"QUOTE_TOO_OLD_FOR_Q3_RESEARCH")
     # Forecast 2026 Q4 revenue is hypothetical, based on 9M actual plus target 2026FY.
     revenue_q4_est_m=FORECAST_2026_FULL_YEAR_M-revenue["revenue_9m_ntd_m"]
+    after_latest_m=FORECAST_2026_FULL_YEAR_M-revenue.get("latest_reported_ytd_m",revenue["revenue_9m_ntd_m"])
+    require(0<after_latest_m<=revenue_q4_est_m,"LATEST_2026_REVENUE_BRIDGE_IMPLAUSIBLE")
     require(0<revenue_q4_est_m<2500,"IMPLAUSIBLE_Q4_REVENUE_ASSUMPTION")
     estimates={}
     for name,sc in SCENARIOS.items():
@@ -188,6 +221,8 @@ def calculate(base,src,revenue,price):
                      "first_captured_utc")} for e in (src["IR_h1"],src["IR_fy"])],
           estimated_2026_revenue_m=FORECAST_2026_FULL_YEAR_M,
           estimated_2026_Q4_revenue_m=revenue_q4_est_m,
+          estimated_2026_revenue_after_latest_month_m=after_latest_m,
+          current_month_is_research_only_not_a_filing_PIT_certificate=True,
           scenarios=estimates,
           original_common_model=base,
           assumptions_status=dict(tax_rate_uncertified=True,
