@@ -61,6 +61,9 @@ on:
       - 'README_EXPECTED_RETURNS.md'
       - 'scripts/footwear_review.py'
       - 'scripts/cash_quality_9802.py'
+      - 'scripts/9802_q3_cash_shadow.py'
+      - 'tests/test_9802_q3_cash_shadow.py'
+      - 'tw-market-data/evidence/v880/working_capital_watch/9802_2026Q3_partial_pdf_numbers.json'
       - 'tw-market-data/config/footwear_research_v1.json'
       - 'tw-market-data/evidence/v880/footwear/**'
       - 'tw-market-data/evidence/v880/earnings_version_reviews/**'
@@ -305,7 +308,7 @@ jobs:
           python -m unittest -v tests.test_flytech_full_original_statements tests.test_flytech_original_pdf_locator
           python -m unittest -v tests.test_v8108_focus_aplus_repair
           python -m unittest -v tests.test_earnings_version_review
-          python -m unittest -v tests.test_9802_cash_review
+          python -m unittest -v tests.test_9802_cash_review tests.test_9802_q3_cash_shadow
           python -m unittest -v tests.test_superforecast_ledger
           python -m unittest -v tests.test_expected_returns tests.test_expected_return_readiness
           python -m unittest -v tests.test_prospective_drawdown_challenge
