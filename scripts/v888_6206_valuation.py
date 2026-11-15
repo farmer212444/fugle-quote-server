@@ -189,6 +189,14 @@ def calculate(base,src,revenue,price):
     revenue_capture=dt.datetime.fromisoformat(revenue["provenance"]["capture_utc"].replace("Z","+00:00"))
     require(model_date.tzinfo is not None and capture<=model_date and revenue_capture<=model_date,
             "FORWARD_VINTAGE_IR_OR_REVENUE_AFTER_MODEL")
+    close_at=dt.datetime.combine(dt.date.fromisoformat(price["date"]),dt.time(13,30),
+                                 tzinfo=dt.timezone(dt.timedelta(hours=8)))
+    # The price used for an executable reference must have existed by the
+    # creation clock; issuer source captures after that *price close* may have
+    # been publicly released earlier, but lack verified release PIT.
+    require(model_date>=close_at,"MODEL_VINTAGE_BEFORE_REFERENCE_CLOSE")
+    require(capture<=close_at and revenue_capture<=close_at,
+            "SOURCE_CAPTURE_AFTER_REFERENCE_CLOSE")
     year_end=dt.date.fromisoformat(price["date"])
     require(year_end.year==2026 and year_end.month>=9,"QUOTE_TOO_OLD_FOR_Q3_RESEARCH")
     # Forecast 2026 Q4 revenue is hypothetical, based on 9M actual plus target 2026FY.
