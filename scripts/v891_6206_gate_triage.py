@@ -225,7 +225,40 @@ def check_report(probe, value, ir, history, independently_verified_daily_archive
                 gates=gates, note="Evidence reconciliation only. No synthetic/original-source claims, no gate PASS, no trade orders.")
 
 
+def pending_triage(progress, value, reason):
+    """Return an explicitly unverified, current-vintage 13-gate review queue.
+
+    A stale or missing optional independent valuation must not inherit a prior
+    valuation or stop unrelated issuer research. No formal review can be signed
+    from this placeholder.
+    """
+    require(isinstance(progress.get("estimate_vintage"), str)
+            and isinstance(progress.get("asof_price_date"), str),
+            "PENDING_SOURCE_VINTAGE_MISSING")
+    return dict(schema="V891_6206_EVIDENCE_TRIAGE",
+                issuer=CODE,status="INDEPENDENT_6206_VALUATION_PENDING",
+                estimate_vintage=progress["estimate_vintage"],
+                price_date=progress["asof_price_date"],
+                pending_reason=reason,
+                source_valuation_status=value.get("status"),
+                new_independent_valuation_admitted=False,
+                original_company_publication_time_verified=False,
+                twenty_day_turnover_reconciled=False,
+                formal_Aplus=False,newly_certified_gates=0,
+                gates=[dict(gate=gate,source_coverage="MISSING_OR_UNVERIFIED",
+                            formal_status="PENDING",next_action=PLAN[gate][1],
+                            automation_route=PLAN[gate][0],automatically_certified=False)
+                       for gate in GATES],
+                note="Diagnostic unavailable; no stale valuation carried forward or formal PASS.")
+
+
 def render_md(data):
+    if data.get("status") == "INDEPENDENT_6206_VALUATION_PENDING":
+        return ("# 6206 飛捷｜獨立估值暫停（非 A+）\\n\\n"
+                + "形成時間：" + data["estimate_vintage"]
+                + "；參考收盤日：" + data["price_date"] + "。\\n\\n"
+                + "未通過的原因：" + data["pending_reason"] + "。\\n"
+                + "13項公司／策略品質均維持 PENDING，沒有簽發 PASS，其他發行人可繼續研究。\\n")
     lines = ["# 6206 飛捷｜13項A+認證障礙自動查核", "",
              "估值形成：" + data["estimate_vintage"] + "；官方參考股價日：" + data["price_date"] + "。", "",
              "共同模型2027 Base價 %.2f元、研究價差 %+.2f%%；獨立Base價 %.2f元。" %
@@ -276,22 +309,27 @@ def main():
     probe = next((r for r in p884["top_priority_evidence"] if r["code"] == CODE), None)
     require(probe is not None, "6206_NOT_IN_EVIDENCE_FOCUS")
     common = value.get("original_common_model", {})
-    require(common.get("model_vintage") == p884.get("estimate_vintage")
-            and common.get("price_date") == p884.get("asof_price_date"),
-            "STALE_6206_EVIDENCE_MIX")
-    # Cross-check v884's proposed appended reference days against official
-    # daily bytes again, independent of the model's cached probe result.
-    from scripts.v884_evidence_probe import price_archive
-    manifest = load("prices/latest_manifest.json")
-    official_days, _ = price_archive(root, common["price_date"], manifest)
-    result = check_report(probe, value, ir, history,
-                          independently_verified_daily_archives=official_days)
+    if value.get("status") != "SOURCE_RECONCILED_RESEARCH_ONLY_UNCERTIFIED":
+        result = pending_triage(
+            p884, value, "INDEPENDENT_VALUATION_" + str(value.get("error") or value.get("status")))
+    elif (common.get("model_vintage") != p884.get("estimate_vintage")
+          or common.get("price_date") != p884.get("asof_price_date")):
+        result = pending_triage(p884, value, "STALE_6206_EVIDENCE_MIX")
+    else:
+        # Only current-vintage independent valuations may cross-check official
+        # archives. The pending path never reuses old prices or fabricated gates.
+        from scripts.v884_evidence_probe import price_archive
+        manifest = load("prices/latest_manifest.json")
+        official_days, _ = price_archive(root, common["price_date"], manifest)
+        result = check_report(probe, value, ir, history,
+                              independently_verified_daily_archives=official_days)
     dst = root / "rankings"
     (dst / "v891_6206_gate_triage.json").write_text(
         json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     (dst / "v891_6206_gate_triage.md").write_text(render_md(result), encoding="utf-8")
     print(json.dumps(dict(issuer=CODE, reference_date=result["price_date"],
-                          matched_ir=result["issuer_presentation_receipts_matched"],
+                          status=result.get("status","RESEARCH_TRIAGE_RECONCILED"),
+                          matched_ir=result.get("issuer_presentation_receipts_matched",0),
                           history_20_days_checked=result["twenty_day_turnover_reconciled"],
                           newly_certified_gates=0), ensure_ascii=False))
 
