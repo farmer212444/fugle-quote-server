@@ -1,11 +1,11 @@
 {
   "schema": "INSIDER_BUY_NOTIFICATION_CHECKPOINT_V1",
   "baseline_kind": "user_visible_chat_report",
-  "baseline_note": "2026-11-12 user-visible ChatGPT message compared 2026-11-10 vs 2026-11-11 insider ranking. Records observed findings, not confirmed push-delivery status or formal investor-account identity certification.",
-  "last_notified_date_taipei": "2026-11-12",
-  "last_notified_ranking_blob_sha": "431f42d700ae7bf6823f8f97a248e99786d1a3eb",
+  "baseline_note": "2026-11-15 user-visible ChatGPT notification of official issuer-month coverage increase and selected source-backed stock changes; historical discovery, not trade date.",
+  "last_notified_date_taipei": "2026-11-15",
+  "last_notified_ranking_blob_sha": "851e1eb1e605b59c541cd75f88373cff5d404863",
   "last_notified_ranking_git_commit": "d31128b777c1e36380d93221c77a6b49f5ba3c02",
-  "compared_prior_ranking_blob_sha": "b321b72bd967327b843737cebaa09eabe477d1d0",
+  "compared_prior_ranking_blob_sha": "431f42d700ae7bf6823f8f97a248e99786d1a3eb",
   "covered_months": [
     "2026-01",
     "2026-02",
@@ -18,21 +18,66 @@
     "2026-09"
   ],
   "metrics": {
-    "observed_positive_issuer_count": 945,
-    "complete_issuer_count": 20,
+    "observed_positive_issuer_count": 1000,
+    "complete_issuer_count": 1615,
     "listed_otc_issuer_count": 1979,
-    "verified_detail_month_count": 15183,
+    "verified_detail_month_count": 17205,
     "expected_detail_month_count": 17811
   },
   "notified_new_positive_codes": [
-    "6596",
-    "6574",
-    "6530",
-    "6279"
+    "2440",
+    "3049",
+    "6213"
   ],
   "notified_material_change_codes": [
-    "6578"
+    "5324",
+    "4946"
   ],
   "source": "https://github.com/farmer212444/fugle-quote-server/blob/main/tw-market-data/rankings/insider_marketwide_latest.json",
-  "caution": "Historical observations, partial current-year coverage, holder identity not formally certified. This file must advance only after a user-visible notification of eligible source-backed change."
+  "caution": "Historical observations, partial current-year coverage, holder identity not formally certified. This file must advance only after a user-visible notification of eligible source-backed change.",
+  "notified_changes": [
+    {
+      "code": "2440",
+      "buy_lots": 3050,
+      "sell_lots": 0,
+      "net_lots": 3050,
+      "buy_pct_of_issued": 2.19239
+    },
+    {
+      "code": "3049",
+      "buy_lots": 5596,
+      "sell_lots": 0,
+      "net_lots": 5596,
+      "buy_pct_of_issued": 0.69775
+    },
+    {
+      "code": "6213",
+      "buy_lots": 1000,
+      "sell_lots": 47,
+      "net_lots": 953,
+      "buy_pct_of_issued": 0.27501
+    },
+    {
+      "code": "5324",
+      "buy_lots": 20849,
+      "sell_lots": 0,
+      "net_lots": 20849,
+      "buy_pct_of_issued": 9.20977,
+      "prior_buy_pct_of_issued": 7.22682
+    },
+    {
+      "code": "4946",
+      "buy_lots": 444,
+      "sell_lots": 1,
+      "net_lots": 443,
+      "buy_pct_of_issued": 5.01535,
+      "prior_buy_pct_of_issued": 2.711
+    }
+  ],
+  "coverage_delta_percentage_points": 11.352534950311604,
+  "source_urls": [
+    "https://github.com/farmer212444/fugle-quote-server/blob/main/tw-market-data/rankings/insider_marketwide_latest.json",
+    "https://github.com/farmer212444/fugle-quote-server/blob/main/tw-market-data/rankings/insider_marketwide_latest.md",
+    "https://github.com/farmer212444/fugle-quote-server/tree/main/tw-market-data/insider/detail/2026-01"
+  ]
 }
