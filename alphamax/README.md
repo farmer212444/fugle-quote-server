@@ -69,6 +69,47 @@ Those historical data do not establish total-return labels, surviving/delisted
 population at past timestamps or trading feasibility. They are not sufficient
 for a trustworthy 12-month net-return ranking.
 
+
+## 0050 historical raw-price cache continuity (2026-11-15)
+
+The AlphaMax PR workflow now restores the most recent *successful* same-repo,
+same-PR-branch Actions artifact as an **untrusted research cache**, validates
+every restored original receipt and completed-month normalized-rows SHA-256,
+checks the recomputed historical-session panel, and resumes at the earliest
+missing completed month. A completed month's source-vintage conflict fails
+closed. For the latest incomplete month, the current checkout's exchange
+receipt takes precedence, without rebasing previously completed months.
+
+The cache lives under `alphamax-0050-data/` only inside the runner: the
+legacy V8 source tree is read, **not rewritten**. Each CI run downloads a
+maximum of four additional official TWSE STOCK_DAY month sources. Failed
+downloads remain explicit gaps. The artifact records source bytes, receipts,
+derived sessions and restore progress. Previous archives remain traceable to
+individual GitHub Actions run IDs.
+
+Verified engineering observations:
+- CI #79: 0050 raw-price observed sessions rose from 45 to 120.
+- CI #83: restored 7 months, captured 2025-05 to 2025-08; 200 sessions.
+- CI #87: captured 2025-09 to 2025-12; 283 sessions.
+- CI #90: captured 2026-01 to 2026-04; 358 sessions, with
+  2026-05 through 2026-08 still missing from the independent cache.
+- The formal PK gap audit reads an independent original main-branch snapshot:
+  its 45-session result is **not** overwritten by this temporary research
+  cache. These two provenance scopes must never be combined or confused.
+
+**Limitations:** Actions artifacts expire after 90 days and are **not a
+permanent independently signed data warehouse**. Raw prices can cross a
+cash-dividend ex-date or ETF share split; 0050's 2025 corporate actions
+need their own official verification and share-adjusted investor total-return
+ledger. A full raw-price archive alone certifies neither historical PIT
+feature vintages nor 12-month after-cost returns.
+
+The audit now requires a near-contiguous, sufficiently dense one-year raw
+price window. A sparse 252-plus-session archive drawn from disjoint years
+must not pass that diagnostic. Even a passing diagnostic remains
+**NOT A CERTIFIED BACKTEST**.
+
+
 ## Next implementation milestones
 
 1. Build audited issuer+date security master (include delisted names and
