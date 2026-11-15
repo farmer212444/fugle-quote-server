@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Q3 2026 9802 PDF-number cash shadow; no SHA/original-PIT/A+ admission."""
 import json
+import math
 import sys
 from pathlib import Path
 
@@ -23,7 +24,7 @@ def require(ok, code):
 def _pair(mapping, key):
     values = mapping.get(key)
     require(isinstance(values, list) and len(values) == 2, "9802_Q3_PAIR_" + key)
-    require(all(type(x) is int for x in values), "9802_Q3_NONINTEGER_" + key)
+    require(all(type(x) in (int, float) and math.isfinite(x) and float(x).is_integer() for x in values), "9802_Q3_NONINTEGER_" + key)
     return values
 
 
