@@ -17,8 +17,8 @@ import shutil
 
 from scripts.history_archive import quote_source_ready
 
-MONTH = re.compile(r"0050-20\\d{2}-(0[1-9]|1[0-2])\\Z")
-ARCHIVE_EXT = re.compile(r"[0-9a-f]{64}\\.json(?:\\.gz)?\\Z")
+MONTH = re.compile(r"0050-20\d{2}-(0[1-9]|1[0-2])\Z")
+ARCHIVE_EXT = re.compile(r"[0-9a-f]{64}\.json(?:\.gz)?\Z")
 RELATIVE_PACKET = Path("prices/issuer_history/TWSE/0050.json")
 RELATIVE_ORIGINAL = Path("prices/originals/history/TWSE")
 
@@ -28,7 +28,7 @@ def _packet(path):
     if (not isinstance(doc, dict) or doc.get("issuer") != "0050"
             or doc.get("market") != "TWSE" or not isinstance(doc.get("by_month"), dict)):
         raise ValueError("0050_RESTORED_PACKET_IDENTITY_OR_SCHEMA_INVALID")
-    if any(not re.fullmatch(r"20\\d{2}-(0[1-9]|1[0-2])", m)
+    if any(not re.fullmatch(r"20\d{2}-(0[1-9]|1[0-2])", m)
            or not isinstance(item, dict) for m, item in doc["by_month"].items()):
         raise ValueError("0050_RESTORED_PACKET_MONTH_SCHEMA_INVALID")
     return doc
@@ -73,7 +73,7 @@ def prepare_workspace(repo_root, workspace, prior_artifact=None):
         raise ValueError("0050_REFERENCE_SOURCE_SHA256_MISMATCH")
     dest_prices = workspace / "prices"
     dest_prices.mkdir(parents=True, exist_ok=True)
-    (dest_prices / "latest_manifest.json").write_text(json.dumps(manifest, sort_keys=True) + "\\n")
+    (dest_prices / "latest_manifest.json").write_text(json.dumps(manifest, sort_keys=True) + "\n")
     (dest_prices / (asof + ".json")).write_bytes(snapshot)
     base_file = source / RELATIVE_PACKET
     baseline = _packet(base_file) if base_file.is_file() else None
@@ -125,7 +125,7 @@ def main():
     args = p.parse_args()
     result = prepare_workspace(args.repo_root, args.data_root, args.prior_artifact)
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(json.dumps(result, sort_keys=True, indent=2) + "\\n", encoding="utf-8")
+    args.output.write_text(json.dumps(result, sort_keys=True, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(result, sort_keys=True))
 
 
