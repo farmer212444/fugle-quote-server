@@ -130,6 +130,12 @@ def prepare_workspace(repo_root, workspace, prior_artifact=None):
                 if earlier is None or month == asof[:7]:
                     merged[month] = item
         copied += _copy_originals(source_cache, workspace)
+        previous_asof = date.fromisoformat(cached.get("price_reference_asof", "")).isoformat()
+        if previous_asof > asof:
+            raise ValueError("0050_PREVIOUS_ARTIFACT_REFERENCE_FROM_FUTURE")
+        # Validate the previous artifact *before* any re-derivation, or a
+        # maliciously changed sessions panel could be silently repaired.
+        _validate_cached_source(workspace, cached, previous_asof)
         cached["by_month"] = merged
         cached["price_reference_asof"] = asof
         cached["sessions"] = combine({m: item["rows"] for m, item in merged.items()}, asof, "0050")
