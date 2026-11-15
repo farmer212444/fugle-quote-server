@@ -15,7 +15,7 @@ from scripts.tw_history_backfill import combine
 def make_month(root, month, day):
     rows = [{"date": day, "market": "TWSE", "code": "0050",
              "open": 100.0, "high": 101.0, "low": 99.0, "close": 100.0}]
-    raw = json.dumps({"stat": "OK", "source_test_month": month}).encode()
+    raw = json.dumps({"stat": "OK", "source_test_month": month, "day": day}).encode()
     receipt = archive_original(
         root, "TWSE", "0050-" + month,
         "https://www.twse.com.tw/rwd/zh/afterTrading/STOCK_DAY?date="
@@ -81,6 +81,42 @@ class Restored0050Tests(unittest.TestCase):
             self.assertEqual(original, base_file.read_bytes())
             self.assertFalse(result["legacy_v8_files_modified"])
             self.assertFalse(result["investor_total_return_certified"])
+
+    def test_fresh_partial_month_replaces_old_frozen_partial_month(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            repo, base, baseline, _ = source_repo(tmp)
+            previous, old_file = prior_artifact(tmp, base, baseline)
+            old_root = previous / "tw-market-data"
+            older = make_month(old_root, "2026-11", "2026-11-02")
+            old_packet = json.loads(old_file.read_text())
+            old_packet["by_month"]["2026-11"] = older
+            old_packet["sessions"] = combine(
+                {m: x["rows"] for m, x in old_packet["by_month"].items()},
+                "2026-11-09", "0050")
+            old_file.write_text(json.dumps(old_packet))
+            newer = make_month(base, "2026-11", "2026-11-09")
+            write_packet(base, {**baseline, "2026-11": newer})
+            target = Path(tmp) / "isolated"
+            result = prepare_workspace(repo, target, previous)
+            self.assertTrue(result["previous_success_artifact_restored"])
+            packet = json.loads((target / "prices/issuer_history/TWSE/0050.json").read_text())
+            self.assertEqual(packet["by_month"]["2026-11"]["rows"][0]["date"], "2026-11-09")
+            self.assertEqual(
+                packet["by_month"]["2026-11"]["original_response_sha256"],
+                newer["original_response_sha256"])
+
+    def test_conflicting_completed_month_receipts_cannot_be_rebased(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            repo, base, baseline, _ = source_repo(tmp)
+            previous, old_file = prior_artifact(tmp, base, baseline)
+            changed = make_month(previous / "tw-market-data", "2026-10", "2026-10-29")
+            packet = json.loads(old_file.read_text())
+            packet["by_month"]["2026-10"] = changed
+            packet["sessions"] = combine({m: x["rows"] for m, x in packet["by_month"].items()},
+                                         "2026-11-09", "0050")
+            old_file.write_text(json.dumps(packet))
+            with self.assertRaisesRegex(ValueError, "COMPLETED_MONTH_SOURCE_VINTAGE_CONFLICT"):
+                prepare_workspace(repo, Path(tmp) / "isolated", previous)
 
     def test_without_previous_artifact_uses_branch_only(self):
         with tempfile.TemporaryDirectory() as tmp:
