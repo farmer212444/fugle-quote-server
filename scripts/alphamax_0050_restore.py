@@ -15,7 +15,8 @@ from pathlib import Path
 import re
 import shutil
 
-from scripts.history_archive import quote_source_ready
+from scripts.history_archive import quote_source_ready, digest, canonical
+from scripts.tw_history_backfill import combine
 
 MONTH = re.compile(r"0050-20\d{2}-(0[1-9]|1[0-2])\Z")
 ARCHIVE_EXT = re.compile(r"[0-9a-f]{64}\.json(?:\.gz)?\Z")
@@ -59,6 +60,33 @@ def _copy_originals(source_root, target_root):
     return copied
 
 
+
+def _validate_cached_source(root, packet, asof):
+    # The original receipt alone does not authenticate the saved normalized
+    # rows. Match the completed-month parsed SHA and derived session panel too.
+    months = packet["by_month"]
+    for month, item in months.items():
+        rows = item.get("rows")
+        if not isinstance(rows, list) or not rows:
+            raise ValueError("0050_CACHED_ROWS_MISSING:" + month)
+        for row in rows:
+            if (not isinstance(row, dict) or row.get("market") != "TWSE"
+                    or row.get("code") != "0050"
+                    or not isinstance(row.get("date"), str)
+                    or row["date"][:7] != month
+                    or date.fromisoformat(row["date"]).isoformat() != row["date"]
+                    or row["date"] > asof):
+                raise ValueError("0050_CACHED_ROW_DATE_OR_IDENTITY_INVALID:" + month)
+        if not quote_source_ready(root, item):
+            raise ValueError("0050_PREVIOUS_ARTIFACT_RAW_RECEIPT_INVALID:" + month)
+        if month < asof[:7] and digest(canonical(rows)) != item["original_archive"].get("parsed_rows_sha256"):
+            raise ValueError("0050_CACHED_PARSED_ROWS_SHA256_MISMATCH:" + month)
+    recombined = combine({m: x["rows"] for m, x in months.items()}, asof, "0050")
+    if packet.get("sessions") != recombined:
+        raise ValueError("0050_CACHED_DERIVED_SESSIONS_MISMATCH")
+
+
+
 def prepare_workspace(repo_root, workspace, prior_artifact=None):
     repo_root, workspace = Path(repo_root).resolve(), Path(workspace).resolve()
     source = repo_root / "tw-market-data"
@@ -93,9 +121,7 @@ def prepare_workspace(repo_root, workspace, prior_artifact=None):
                 if earlier is None or earlier.get("original_response_sha256") != item.get("original_response_sha256") or earlier.get("rows") != item.get("rows"):
                     raise ValueError("0050_PREVIOUS_ARTIFACT_CONFLICTS_WITH_BRANCH")
         copied += _copy_originals(source_cache, workspace)
-        for month, item in cached["by_month"].items():
-            if not quote_source_ready(workspace, item):
-                raise ValueError("0050_PREVIOUS_ARTIFACT_RAW_RECEIPT_INVALID:" + month)
+        _validate_cached_source(workspace, cached, asof)
         (workspace / RELATIVE_PACKET).parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(source_cache / RELATIVE_PACKET, workspace / RELATIVE_PACKET)
         restored_months = len(cached["by_month"])
