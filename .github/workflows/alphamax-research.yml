@@ -64,11 +64,11 @@ jobs:
       - name: Audit original historical issuer quote coverage without PIT claims
         run: python scripts/alphamax_universe_audit.py --output alphamax-universe-readiness.json
       - name: Capture bounded 0050 official monthly raw history (price only, never total returns)
-        # Official source may be temporarily unavailable; report capture as
-        # BLOCKED rather than hiding a network outage as a model-test failure.
-        continue-on-error: true
+        # Run as a module so the repository root remains on sys.path.
+        # Failed official-source requests are recorded as missing evidence by
+        # the bounded collector; interpreter/contract errors must FAIL CI.
         run: |
-          python scripts/alphamax_0050_backfill.py \
+          python -m scripts.alphamax_0050_backfill \
             --data-root tw-market-data --max-requests 4 --start-month 2025-01 \
             --output alphamax-0050-backfill-progress.json
       - name: Capture current official issuer profiles with original bytes and source receipts
