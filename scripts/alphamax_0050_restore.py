@@ -115,12 +115,24 @@ def prepare_workspace(repo_root, workspace, prior_artifact=None):
         if source_cache is None:
             raise ValueError("0050_PRIOR_SUCCESS_ARTIFACT_MISSING_PACKET")
         cached = _packet(source_cache / RELATIVE_PACKET)
+        if any(month > asof[:7] for month in cached["by_month"]):
+            raise ValueError("0050_RESTORED_FUTURE_MONTH_REJECTED")
+        # The current partial month can acquire legitimate later sessions after
+        # a CI run. Prefer the current branch's original exchange receipt, but
+        # never silently change a previously completed month's source vintage.
+        merged = dict(cached["by_month"])
         if baseline:
             for month, item in baseline["by_month"].items():
-                earlier = cached["by_month"].get(month)
-                if earlier is None or earlier.get("original_response_sha256") != item.get("original_response_sha256") or earlier.get("rows") != item.get("rows"):
-                    raise ValueError("0050_PREVIOUS_ARTIFACT_CONFLICTS_WITH_BRANCH")
+                earlier = merged.get(month)
+                if earlier and (earlier.get("original_response_sha256") != item.get("original_response_sha256")
+                                or earlier.get("rows") != item.get("rows")) and month < asof[:7]:
+                    raise ValueError("0050_COMPLETED_MONTH_SOURCE_VINTAGE_CONFLICT:" + month)
+                if earlier is None or month == asof[:7]:
+                    merged[month] = item
         copied += _copy_originals(source_cache, workspace)
+        cached["by_month"] = merged
+        cached["price_reference_asof"] = asof
+        cached["sessions"] = combine({m: item["rows"] for m, item in merged.items()}, asof, "0050")
         _validate_cached_source(workspace, cached, asof)
         (workspace / RELATIVE_PACKET).parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(source_cache / RELATIVE_PACKET, workspace / RELATIVE_PACKET)
