@@ -8,7 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from scripts.run_research_pipeline import atomic_json
-RECEIPT_PATH = ROOT / "tw-market-data/evidence/v880/working_capital_watch/9802_2026Q3_partial_pdf_numbers.json"
+RECEIPT_PATH = ROOT / "tw-market-data/evidence/v880/issuer_q3_cash_shadow/9802_2026Q3_partial_pdf_numbers.json"
 OLDER_REPORT_PATH = ROOT / "tw-market-data/rankings/latest_9802_cash_review.json"
 OUT_JSON = ROOT / "tw-market-data/rankings/latest_9802_q3_cash_shadow.json"
 OUT_MD = ROOT / "tw-market-data/rankings/latest_9802_q3_cash_shadow.md"
