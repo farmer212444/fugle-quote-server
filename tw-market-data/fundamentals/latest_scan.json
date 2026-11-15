@@ -1,19 +1,15 @@
 {
   "model": "V8.7.7 official financial foundation",
-  "asof_taipei": "2026-11-15",
-  "last_eligible_quarter": "2026-Q2",
-  "created_at_utc": "2026-11-15T12:40:17.310419+00:00",
+  "asof_taipei": "2026-11-16",
+  "last_eligible_quarter": "2026-Q3",
+  "created_at_utc": "2026-11-15T18:02:28.123408+00:00",
   "expected_market_quarter_statement_batches": 32,
   "verified_batches": 32,
   "missing_batches": 0,
-  "new_batches_this_run": 0,
-  "requests_attempted": 0,
+  "new_batches_this_run": 4,
+  "requests_attempted": 4,
   "failures": [],
   "batches": [
-    "2024-Q3/TWSE/income",
-    "2024-Q3/TWSE/cashflow",
-    "2024-Q3/TPEX/income",
-    "2024-Q3/TPEX/cashflow",
     "2024-Q4/TWSE/income",
     "2024-Q4/TWSE/cashflow",
     "2024-Q4/TPEX/income",
@@ -41,10 +37,14 @@
     "2026-Q2/TWSE/income",
     "2026-Q2/TWSE/cashflow",
     "2026-Q2/TPEX/income",
-    "2026-Q2/TPEX/cashflow"
+    "2026-Q2/TPEX/cashflow",
+    "2026-Q3/TWSE/income",
+    "2026-Q3/TWSE/cashflow",
+    "2026-Q3/TPEX/income",
+    "2026-Q3/TPEX/cashflow"
   ],
-  "companies_with_some_data": 1978,
-  "companies_with_full_8Q_income": 1887,
+  "companies_with_some_data": 1986,
+  "companies_with_full_8Q_income": 1814,
   "formal_Aplus_count": 0,
   "formal_Aplusplus_count": 0,
   "status": "ALL_BATCHES_PRESENT_UNAUDITED",
@@ -75,7 +75,7 @@
       "market": "TWSE",
       "income_quarters": 8,
       "cashflow_quarters": 8,
-      "latest_cfo_ytd_k": -61567715.0
+      "latest_cfo_ytd_k": -56840884.0
     },
     {
       "code": "8299",
@@ -102,7 +102,7 @@
       "market": "TPEX",
       "income_quarters": 8,
       "cashflow_quarters": 8,
-      "latest_cfo_ytd_k": -14872559.0
+      "latest_cfo_ytd_k": -11482010.0
     },
     {
       "code": "5289",
@@ -129,7 +129,7 @@
       "market": "TPEX",
       "income_quarters": 8,
       "cashflow_quarters": 8,
-      "latest_cfo_ytd_k": 928573.0
+      "latest_cfo_ytd_k": 7632815.0
     },
     {
       "code": "2059",
@@ -156,7 +156,7 @@
       "market": "TWSE",
       "income_quarters": 8,
       "cashflow_quarters": 8,
-      "latest_cfo_ytd_k": 5773574.0
+      "latest_cfo_ytd_k": 16117521.0
     },
     {
       "code": "3008",
@@ -183,7 +183,7 @@
       "market": "TWSE",
       "income_quarters": 8,
       "cashflow_quarters": 8,
-      "latest_cfo_ytd_k": 18285271.0
+      "latest_cfo_ytd_k": 20237041.0
     },
     {
       "code": "5274",
@@ -210,7 +210,7 @@
       "market": "TPEX",
       "income_quarters": 8,
       "cashflow_quarters": 8,
-      "latest_cfo_ytd_k": 3154941.0
+      "latest_cfo_ytd_k": 5447309.0
     },
     {
       "code": "7769",
@@ -235,9 +235,9 @@
       "eps_model": "EPS2026 proxy = EPS2025 FY - EPS2025 H1 + EPS2026 H1; 2027 base growth = 0.5*YTD revenue YoY, clamped -15%..20%",
       "model_warning": "Proxy uses EPS subtraction despite weighted-share variation; experimental only; NOT a target price.",
       "market": "TWSE",
-      "income_quarters": 7,
-      "cashflow_quarters": 7,
-      "latest_cfo_ytd_k": 2610926.0
+      "income_quarters": 8,
+      "cashflow_quarters": 8,
+      "latest_cfo_ytd_k": 5703000.0
     },
     {
       "code": "2330",
@@ -264,7 +264,7 @@
       "market": "TWSE",
       "income_quarters": 8,
       "cashflow_quarters": 8,
-      "latest_cfo_ytd_k": 1482341242.0
+      "latest_cfo_ytd_k": 2402116725.0
     },
     {
       "code": "3260",
@@ -291,7 +291,7 @@
       "market": "TPEX",
       "income_quarters": 8,
       "cashflow_quarters": 8,
-      "latest_cfo_ytd_k": -8392303.0
+      "latest_cfo_ytd_k": -4920670.0
     },
     {
       "code": "3017",
@@ -318,7 +318,7 @@
       "market": "TWSE",
       "income_quarters": 8,
       "cashflow_quarters": 8,
-      "latest_cfo_ytd_k": 26290591.0
+      "latest_cfo_ytd_k": 36965669.0
     },
     {
       "code": "3533",
@@ -343,9 +343,9 @@
       "eps_model": "EPS2026 proxy = EPS2025 FY - EPS2025 H1 + EPS2026 H1; 2027 base growth = 0.5*YTD revenue YoY, clamped -15%..20%",
       "model_warning": "Proxy uses EPS subtraction despite weighted-share variation; experimental only; NOT a target price.",
       "market": "TWSE",
-      "income_quarters": 8,
-      "cashflow_quarters": 8,
-      "latest_cfo_ytd_k": 4593369.0
+      "income_quarters": 7,
+      "cashflow_quarters": 7,
+      "latest_cfo_ytd_k": null
     },
     {
       "code": "3661",
@@ -372,7 +372,7 @@
       "market": "TWSE",
       "income_quarters": 8,
       "cashflow_quarters": 8,
-      "latest_cfo_ytd_k": -3863029.0
+      "latest_cfo_ytd_k": -16529067.0
     },
     {
       "code": "5269",
@@ -399,7 +399,7 @@
       "market": "TWSE",
       "income_quarters": 8,
       "cashflow_quarters": 8,
-      "latest_cfo_ytd_k": 2011243.0
+      "latest_cfo_ytd_k": 2421224.0
     },
     {
       "code": "2357",
@@ -426,7 +426,7 @@
       "market": "TWSE",
       "income_quarters": 8,
       "cashflow_quarters": 8,
-      "latest_cfo_ytd_k": -77332235.0
+      "latest_cfo_ytd_k": -138865094.0
     },
     {
       "code": "2404",
@@ -453,7 +453,7 @@
       "market": "TWSE",
       "income_quarters": 8,
       "cashflow_quarters": 8,
-      "latest_cfo_ytd_k": 12163976.0
+      "latest_cfo_ytd_k": 30235860.0
     },
     {
       "code": "4967",
@@ -480,7 +480,7 @@
       "market": "TWSE",
       "income_quarters": 8,
       "cashflow_quarters": 8,
-      "latest_cfo_ytd_k": -4583853.0
+      "latest_cfo_ytd_k": -1738061.0
     },
     {
       "code": "2383",
@@ -507,7 +507,7 @@
       "market": "TWSE",
       "income_quarters": 8,
       "cashflow_quarters": 8,
-      "latest_cfo_ytd_k": 5044825.0
+      "latest_cfo_ytd_k": 12292912.0
     },
     {
       "code": "2345",
@@ -534,7 +534,7 @@
       "market": "TWSE",
       "income_quarters": 8,
       "cashflow_quarters": 8,
-      "latest_cfo_ytd_k": -15452605.0
+      "latest_cfo_ytd_k": -19301766.0
     },
     {
       "code": "6515",
@@ -561,7 +561,7 @@
       "market": "TWSE",
       "income_quarters": 8,
       "cashflow_quarters": 8,
-      "latest_cfo_ytd_k": 1024552.0
+      "latest_cfo_ytd_k": 2373721.0
     },
     {
       "code": "7750",
@@ -588,7 +588,7 @@
       "market": "TWSE",
       "income_quarters": 8,
       "cashflow_quarters": 8,
-      "latest_cfo_ytd_k": 758860.0
+      "latest_cfo_ytd_k": 2446284.0
     },
     {
       "code": "2451",
@@ -615,7 +615,7 @@
       "market": "TWSE",
       "income_quarters": 8,
       "cashflow_quarters": 8,
-      "latest_cfo_ytd_k": 16852695.0
+      "latest_cfo_ytd_k": 18724128.0
     },
     {
       "code": "3665",
@@ -640,9 +640,9 @@
       "eps_model": "EPS2026 proxy = EPS2025 FY - EPS2025 H1 + EPS2026 H1; 2027 base growth = 0.5*YTD revenue YoY, clamped -15%..20%",
       "model_warning": "Proxy uses EPS subtraction despite weighted-share variation; experimental only; NOT a target price.",
       "market": "TWSE",
-      "income_quarters": 8,
-      "cashflow_quarters": 8,
-      "latest_cfo_ytd_k": 1831961.0
+      "income_quarters": 7,
+      "cashflow_quarters": 7,
+      "latest_cfo_ytd_k": null
     },
     {
       "code": "3131",
@@ -669,7 +669,7 @@
       "market": "TPEX",
       "income_quarters": 8,
       "cashflow_quarters": 8,
-      "latest_cfo_ytd_k": 673286.0
+      "latest_cfo_ytd_k": 2053751.0
     },
     {
       "code": "2454",
@@ -696,7 +696,7 @@
       "market": "TWSE",
       "income_quarters": 8,
       "cashflow_quarters": 8,
-      "latest_cfo_ytd_k": 6593980.0
+      "latest_cfo_ytd_k": 2338244.0
     },
     {
       "code": "1590",
@@ -723,7 +723,7 @@
       "market": "TWSE",
       "income_quarters": 8,
       "cashflow_quarters": 8,
-      "latest_cfo_ytd_k": 5954216.0
+      "latest_cfo_ytd_k": 8405957.0
     },
     {
       "code": "6139",
@@ -750,7 +750,7 @@
       "market": "TWSE",
       "income_quarters": 8,
       "cashflow_quarters": 8,
-      "latest_cfo_ytd_k": -4903156.0
+      "latest_cfo_ytd_k": 28169215.0
     },
     {
       "code": "5386",
@@ -777,7 +777,7 @@
       "market": "TPEX",
       "income_quarters": 8,
       "cashflow_quarters": 8,
-      "latest_cfo_ytd_k": -1814761.0
+      "latest_cfo_ytd_k": -5846378.0
     },
     {
       "code": "7734",
@@ -804,7 +804,7 @@
       "market": "TPEX",
       "income_quarters": 8,
       "cashflow_quarters": 8,
-      "latest_cfo_ytd_k": 751095.0
+      "latest_cfo_ytd_k": 1424920.0
     },
     {
       "code": "6223",
@@ -831,7 +831,7 @@
       "market": "TPEX",
       "income_quarters": 8,
       "cashflow_quarters": 8,
-      "latest_cfo_ytd_k": 2646835.0
+      "latest_cfo_ytd_k": 1663308.0
     },
     {
       "code": "6805",
@@ -858,7 +858,7 @@
       "market": "TWSE",
       "income_quarters": 8,
       "cashflow_quarters": 8,
-      "latest_cfo_ytd_k": 2146423.0
+      "latest_cfo_ytd_k": 2225505.0
     }
   ]
 }
