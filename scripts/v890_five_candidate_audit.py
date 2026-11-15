@@ -45,7 +45,7 @@ def validate_vintage(research,documents):
     # cannot be reconstructed, but this report must not silently use old sales.
     revenue_month=research.get("revenue_month")
     fail(isinstance(revenue_month,str)
-         and re.fullmatch(r"20\\d{2}-(?:0[1-9]|1[0-2])",revenue_month) is not None
+         and re.fullmatch(r"20\d{2}-(?:0[1-9]|1[0-2])",revenue_month) is not None
          and "2026-09"<=revenue_month<=research["asof_price_date"][:7],
          "REVENUE_MONTH_INVALID_OR_FROM_FUTURE")
     instant=dt.datetime.fromisoformat(research["estimate_vintage"])
