@@ -91,7 +91,7 @@ class PITPKGapTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temp:
             self.write_all(temp)
             file = Path(temp) / "TWSE/0050.json"
-            file.write_text(json.dumps(self.packet("TWSE", "0050", count=260, span=700)))
+            file.write_text(json.dumps(self.packet("TWSE", "0050", count=260, span=600)))
             r = self.report(temp)
             self.assertEqual(r["benchmark_0050"]["priced_sessions"], 260)
             self.assertFalse(r["benchmark_0050"]["potential_12m_price_only_span"])
