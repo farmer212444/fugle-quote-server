@@ -141,7 +141,10 @@ def prepare_workspace(repo_root, workspace, prior_artifact=None):
         cached["sessions"] = combine({m: item["rows"] for m, item in merged.items()}, asof, "0050")
         _validate_cached_source(workspace, cached, asof)
         (workspace / RELATIVE_PACKET).parent.mkdir(parents=True, exist_ok=True)
-        shutil.copyfile(source_cache / RELATIVE_PACKET, workspace / RELATIVE_PACKET)
+        (workspace / RELATIVE_PACKET).write_text(
+            json.dumps(cached, ensure_ascii=False, sort_keys=True, indent=2) + "\n",
+            encoding="utf-8",
+        )
         restored_months = len(cached["by_month"])
         prior_run_archive = True
     elif baseline:
