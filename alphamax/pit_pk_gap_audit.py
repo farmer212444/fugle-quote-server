@@ -16,6 +16,8 @@ SCHEMA = "ALPHAMAX_PK_TRAINING_GAP_AUDIT_V1"
 BENCHMARK_KEY = ("TWSE", "0050")
 ONE_YEAR_CALENDAR_DAYS = 365
 MIN_ILLUSTRATIVE_SESSION_COUNT = 252
+MAX_ILLUSTRATIVE_RAW_WINDOW_DAYS = 420
+MAX_INTERSESSION_CALENDAR_GAP_DAYS = 18
 
 
 def _iso(value):
@@ -63,6 +65,34 @@ def _bool_evidence(packet, name):
     return packet.get(name) is True
 
 
+
+def _has_plausible_12m_raw_quote_window(sessions):
+    """Require a sufficiently dense, near-year continuous price-only window.
+
+    Counting 252 observations across widely separated partial years would
+    falsely suggest a one-year history. This is only a *necessary* diagnostic,
+    never a claim of official calendar completeness or investor total returns.
+    """
+    segment_start = 0
+    for end in range(len(sessions)):
+        if (end and
+                (sessions[end] - sessions[end - 1]).days >
+                MAX_INTERSESSION_CALENDAR_GAP_DAYS):
+            segment_start = end
+        if end - segment_start + 1 < MIN_ILLUSTRATIVE_SESSION_COUNT:
+            continue
+        # Every candidate has at least 252 distinct observations.
+        for start in range(end - MIN_ILLUSTRATIVE_SESSION_COUNT + 1,
+                           segment_start - 1, -1):
+            span = (sessions[end] - sessions[start]).days
+            if span > MAX_ILLUSTRATIVE_RAW_WINDOW_DAYS:
+                break
+            if span >= ONE_YEAR_CALENDAR_DAYS:
+                return True
+    return False
+
+
+
 def _issuer_report(root, market, code, cutoff):
     file = root / market / (code + ".json")
     if not file.is_file():
@@ -84,8 +114,7 @@ def _issuer_report(root, market, code, cutoff):
                 "dividend_corporate_actions_verified": False,
                 "executable_fills_verified": False}
     span = (sessions[-1] - sessions[0]).days if sessions else None
-    possible = bool(span is not None and span >= ONE_YEAR_CALENDAR_DAYS
-                    and len(sessions) >= MIN_ILLUSTRATIVE_SESSION_COUNT)
+    possible = _has_plausible_12m_raw_quote_window(sessions)
     membership = (_bool_evidence(doc, "issuer_PIT_history_verified") and
                   bool(doc.get("official_dated_security_master_receipt")))
     dividend = (_bool_evidence(doc, "share_adjusted_history") and
