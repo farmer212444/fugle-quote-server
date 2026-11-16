@@ -2,10 +2,10 @@
   "schema": "V889_OFFICIAL_TWSE_ISSUER_MONTHLY",
   "issuer": "6112",
   "market": "TWSE",
-  "price_reference_asof": "2026-11-13",
+  "price_reference_asof": "2026-11-16",
   "source_type": "OFFICIAL_TWSE_MONTHLY_STOCK_DAY",
-  "original_raw_responses_preserved_in_actions_artifact_not_repository": true,
-  "durable_original_months": 3,
+  "original_raw_responses_preserved_in_actions_artifact_not_repository": false,
+  "durable_original_months": 4,
   "backfill_capture_not_point_in_time_trade_history": true,
   "share_adjustments_dividends_and_spread_not_verified": true,
   "original_source_not_cryptographically_signed": true,
@@ -646,155 +646,359 @@
     "2026-08": {
       "source_url": "https://www.twse.com.tw/rwd/zh/afterTrading/STOCK_DAY?date=20260801&stockNo=6112&response=json",
       "original_response_sha256": "e93bdaf85cfeffc8361453a8041c704ca1f60d04ee810bbed60a335682cdff2c",
-      "captured_at_utc": "2026-10-20T01:02:17.296909+00:00",
+      "captured_at_utc": "2026-11-16T20:15:27.042001+00:00",
+      "original_archive": {
+        "schema": "HISTORICAL_EXCHANGE_ORIGINAL_V1",
+        "market": "TWSE",
+        "identity": "6112-2026-08",
+        "source_url": "https://www.twse.com.tw/rwd/zh/afterTrading/STOCK_DAY?date=20260801&stockNo=6112&response=json",
+        "captured_at_utc": "2026-11-16T20:15:27.042001+00:00",
+        "archive_path": "prices/originals/history/TWSE/6112-2026-08/e93bdaf85cfeffc8361453a8041c704ca1f60d04ee810bbed60a335682cdff2c.json.gz",
+        "original_response_sha256": "e93bdaf85cfeffc8361453a8041c704ca1f60d04ee810bbed60a335682cdff2c",
+        "parsed_rows_sha256": "21e47194cb1e6e7a08bbdbe2760268cc5429556d05d79e61cb7db3fe46cc4f48",
+        "bytes": 2679,
+        "issuer_publication_pit_verified": false,
+        "contemporaneous_universe_verified": false,
+        "fillability_verified": false,
+        "receipt_path": "prices/originals/history/TWSE/6112-2026-08/e979929b0174045f78d91bb8186788c36d0d754708b3c36d894d2708fb585d32.json"
+      },
       "original_exchange_signature_verified": false,
       "rows": [
         {
           "date": "2026-08-03",
+          "code": "6112",
+          "market": "TWSE",
           "volume_shares": 236319,
           "turnover_ntd": 9295842,
-          "close": 39.45
+          "close": 39.45,
+          "high": 39.65,
+          "low": 38.7,
+          "open": 38.85,
+          "open_at": "2026-08-03T09:00:00+08:00",
+          "close_at": "2026-08-03T13:30:00+08:00",
+          "fillability_verified": false,
+          "session_times_are_scheduled_not_broker_fills": true
         },
         {
           "date": "2026-08-04",
+          "code": "6112",
+          "market": "TWSE",
           "volume_shares": 530165,
           "turnover_ntd": 21633567,
-          "close": 41.55
+          "close": 41.55,
+          "high": 41.55,
+          "low": 39.4,
+          "open": 39.55,
+          "open_at": "2026-08-04T09:00:00+08:00",
+          "close_at": "2026-08-04T13:30:00+08:00",
+          "fillability_verified": false,
+          "session_times_are_scheduled_not_broker_fills": true
         },
         {
           "date": "2026-08-05",
+          "code": "6112",
+          "market": "TWSE",
           "volume_shares": 570890,
           "turnover_ntd": 24457384,
-          "close": 42.6
+          "close": 42.6,
+          "high": 43.35,
+          "low": 42.35,
+          "open": 42.45,
+          "open_at": "2026-08-05T09:00:00+08:00",
+          "close_at": "2026-08-05T13:30:00+08:00",
+          "fillability_verified": false,
+          "session_times_are_scheduled_not_broker_fills": true
         },
         {
           "date": "2026-08-06",
+          "code": "6112",
+          "market": "TWSE",
           "volume_shares": 2986194,
           "turnover_ntd": 136023401,
-          "close": 45.25
+          "close": 45.25,
+          "high": 46.5,
+          "low": 44.4,
+          "open": 44.6,
+          "open_at": "2026-08-06T09:00:00+08:00",
+          "close_at": "2026-08-06T13:30:00+08:00",
+          "fillability_verified": false,
+          "session_times_are_scheduled_not_broker_fills": true
         },
         {
           "date": "2026-08-07",
+          "code": "6112",
+          "market": "TWSE",
           "volume_shares": 1131865,
           "turnover_ntd": 51603586,
-          "close": 45.9
+          "close": 45.9,
+          "high": 46.0,
+          "low": 44.7,
+          "open": 45.25,
+          "open_at": "2026-08-07T09:00:00+08:00",
+          "close_at": "2026-08-07T13:30:00+08:00",
+          "fillability_verified": false,
+          "session_times_are_scheduled_not_broker_fills": true
         },
         {
           "date": "2026-08-10",
+          "code": "6112",
+          "market": "TWSE",
           "volume_shares": 927495,
           "turnover_ntd": 43382282,
-          "close": 46.65
+          "close": 46.65,
+          "high": 47.2,
+          "low": 46.2,
+          "open": 47.0,
+          "open_at": "2026-08-10T09:00:00+08:00",
+          "close_at": "2026-08-10T13:30:00+08:00",
+          "fillability_verified": false,
+          "session_times_are_scheduled_not_broker_fills": true
         },
         {
           "date": "2026-08-11",
+          "code": "6112",
+          "market": "TWSE",
           "volume_shares": 463520,
           "turnover_ntd": 21423479,
-          "close": 46.4
+          "close": 46.4,
+          "high": 46.65,
+          "low": 45.8,
+          "open": 46.65,
+          "open_at": "2026-08-11T09:00:00+08:00",
+          "close_at": "2026-08-11T13:30:00+08:00",
+          "fillability_verified": false,
+          "session_times_are_scheduled_not_broker_fills": true
         },
         {
           "date": "2026-08-12",
+          "code": "6112",
+          "market": "TWSE",
           "volume_shares": 485901,
           "turnover_ntd": 22467161,
-          "close": 46.15
+          "close": 46.15,
+          "high": 46.6,
+          "low": 46.0,
+          "open": 46.4,
+          "open_at": "2026-08-12T09:00:00+08:00",
+          "close_at": "2026-08-12T13:30:00+08:00",
+          "fillability_verified": false,
+          "session_times_are_scheduled_not_broker_fills": true
         },
         {
           "date": "2026-08-13",
+          "code": "6112",
+          "market": "TWSE",
           "volume_shares": 669099,
           "turnover_ntd": 31229792,
-          "close": 46.55
+          "close": 46.55,
+          "high": 47.1,
+          "low": 46.3,
+          "open": 46.3,
+          "open_at": "2026-08-13T09:00:00+08:00",
+          "close_at": "2026-08-13T13:30:00+08:00",
+          "fillability_verified": false,
+          "session_times_are_scheduled_not_broker_fills": true
         },
         {
           "date": "2026-08-14",
+          "code": "6112",
+          "market": "TWSE",
           "volume_shares": 784065,
           "turnover_ntd": 36825751,
-          "close": 46.9
+          "close": 46.9,
+          "high": 47.4,
+          "low": 46.25,
+          "open": 46.55,
+          "open_at": "2026-08-14T09:00:00+08:00",
+          "close_at": "2026-08-14T13:30:00+08:00",
+          "fillability_verified": false,
+          "session_times_are_scheduled_not_broker_fills": true
         },
         {
           "date": "2026-08-17",
+          "code": "6112",
+          "market": "TWSE",
           "volume_shares": 472808,
           "turnover_ntd": 21765533,
-          "close": 45.55
+          "close": 45.55,
+          "high": 46.9,
+          "low": 45.45,
+          "open": 46.9,
+          "open_at": "2026-08-17T09:00:00+08:00",
+          "close_at": "2026-08-17T13:30:00+08:00",
+          "fillability_verified": false,
+          "session_times_are_scheduled_not_broker_fills": true
         },
         {
           "date": "2026-08-18",
+          "code": "6112",
+          "market": "TWSE",
           "volume_shares": 573429,
           "turnover_ntd": 25532063,
-          "close": 43.9
+          "close": 43.9,
+          "high": 45.95,
+          "low": 43.8,
+          "open": 45.7,
+          "open_at": "2026-08-18T09:00:00+08:00",
+          "close_at": "2026-08-18T13:30:00+08:00",
+          "fillability_verified": false,
+          "session_times_are_scheduled_not_broker_fills": true
         },
         {
           "date": "2026-08-19",
+          "code": "6112",
+          "market": "TWSE",
           "volume_shares": 274291,
           "turnover_ntd": 12038090,
-          "close": 44.1
+          "close": 44.1,
+          "high": 44.3,
+          "low": 43.25,
+          "open": 43.75,
+          "open_at": "2026-08-19T09:00:00+08:00",
+          "close_at": "2026-08-19T13:30:00+08:00",
+          "fillability_verified": false,
+          "session_times_are_scheduled_not_broker_fills": true
         },
         {
           "date": "2026-08-20",
+          "code": "6112",
+          "market": "TWSE",
           "volume_shares": 240516,
           "turnover_ntd": 10746431,
-          "close": 44.8
+          "close": 44.8,
+          "high": 45.0,
+          "low": 44.25,
+          "open": 44.4,
+          "open_at": "2026-08-20T09:00:00+08:00",
+          "close_at": "2026-08-20T13:30:00+08:00",
+          "fillability_verified": false,
+          "session_times_are_scheduled_not_broker_fills": true
         },
         {
           "date": "2026-08-21",
+          "code": "6112",
+          "market": "TWSE",
           "volume_shares": 132183,
           "turnover_ntd": 5862526,
-          "close": 44.4
+          "close": 44.4,
+          "high": 44.6,
+          "low": 44.2,
+          "open": 44.5,
+          "open_at": "2026-08-21T09:00:00+08:00",
+          "close_at": "2026-08-21T13:30:00+08:00",
+          "fillability_verified": false,
+          "session_times_are_scheduled_not_broker_fills": true
         },
         {
           "date": "2026-08-24",
+          "code": "6112",
+          "market": "TWSE",
           "volume_shares": 112565,
           "turnover_ntd": 5001683,
-          "close": 44.55
+          "close": 44.55,
+          "high": 44.6,
+          "low": 44.15,
+          "open": 44.4,
+          "open_at": "2026-08-24T09:00:00+08:00",
+          "close_at": "2026-08-24T13:30:00+08:00",
+          "fillability_verified": false,
+          "session_times_are_scheduled_not_broker_fills": true
         },
         {
           "date": "2026-08-25",
+          "code": "6112",
+          "market": "TWSE",
           "volume_shares": 188856,
           "turnover_ntd": 8342930,
-          "close": 44.15
+          "close": 44.15,
+          "high": 44.6,
+          "low": 43.9,
+          "open": 44.2,
+          "open_at": "2026-08-25T09:00:00+08:00",
+          "close_at": "2026-08-25T13:30:00+08:00",
+          "fillability_verified": false,
+          "session_times_are_scheduled_not_broker_fills": true
         },
         {
           "date": "2026-08-26",
+          "code": "6112",
+          "market": "TWSE",
           "volume_shares": 369064,
           "turnover_ntd": 16682505,
-          "close": 45.3
+          "close": 45.3,
+          "high": 45.6,
+          "low": 44.5,
+          "open": 44.5,
+          "open_at": "2026-08-26T09:00:00+08:00",
+          "close_at": "2026-08-26T13:30:00+08:00",
+          "fillability_verified": false,
+          "session_times_are_scheduled_not_broker_fills": true
         },
         {
           "date": "2026-08-27",
+          "code": "6112",
+          "market": "TWSE",
           "volume_shares": 213756,
           "turnover_ntd": 9761520,
-          "close": 45.5
+          "close": 45.5,
+          "high": 45.95,
+          "low": 45.3,
+          "open": 45.3,
+          "open_at": "2026-08-27T09:00:00+08:00",
+          "close_at": "2026-08-27T13:30:00+08:00",
+          "fillability_verified": false,
+          "session_times_are_scheduled_not_broker_fills": true
         },
         {
           "date": "2026-08-28",
+          "code": "6112",
+          "market": "TWSE",
           "volume_shares": 213938,
           "turnover_ntd": 9755174,
-          "close": 45.05
+          "close": 45.05,
+          "high": 46.2,
+          "low": 45.05,
+          "open": 46.2,
+          "open_at": "2026-08-28T09:00:00+08:00",
+          "close_at": "2026-08-28T13:30:00+08:00",
+          "fillability_verified": false,
+          "session_times_are_scheduled_not_broker_fills": true
         },
         {
           "date": "2026-08-31",
+          "code": "6112",
+          "market": "TWSE",
           "volume_shares": 236150,
           "turnover_ntd": 10663892,
-          "close": 45.4
+          "close": 45.4,
+          "high": 45.7,
+          "low": 44.85,
+          "open": 45.0,
+          "open_at": "2026-08-31T09:00:00+08:00",
+          "close_at": "2026-08-31T13:30:00+08:00",
+          "fillability_verified": false,
+          "session_times_are_scheduled_not_broker_fills": true
         }
       ]
     },
     "2026-11": {
       "source_url": "https://www.twse.com.tw/rwd/zh/afterTrading/STOCK_DAY?date=20261101&stockNo=6112&response=json",
-      "original_response_sha256": "daf8843559da357d9100cfb255d647acf724e893967fd26e525ba2203cf7e5e6",
-      "captured_at_utc": "2026-11-16T07:51:47.333669+00:00",
+      "original_response_sha256": "5caae72118914e5f69d8af9f0a3ed4dcea0647e4f3d8cb1a2664218df42914af",
+      "captured_at_utc": "2026-11-16T20:15:26.120275+00:00",
       "original_archive": {
         "schema": "HISTORICAL_EXCHANGE_ORIGINAL_V1",
         "market": "TWSE",
         "identity": "6112-2026-11",
         "source_url": "https://www.twse.com.tw/rwd/zh/afterTrading/STOCK_DAY?date=20261101&stockNo=6112&response=json",
-        "captured_at_utc": "2026-11-16T07:51:47.333669+00:00",
-        "archive_path": "prices/originals/history/TWSE/6112-2026-11/daf8843559da357d9100cfb255d647acf724e893967fd26e525ba2203cf7e5e6.json.gz",
-        "original_response_sha256": "daf8843559da357d9100cfb255d647acf724e893967fd26e525ba2203cf7e5e6",
+        "captured_at_utc": "2026-11-16T20:15:26.120275+00:00",
+        "archive_path": "prices/originals/history/TWSE/6112-2026-11/5caae72118914e5f69d8af9f0a3ed4dcea0647e4f3d8cb1a2664218df42914af.json.gz",
+        "original_response_sha256": "5caae72118914e5f69d8af9f0a3ed4dcea0647e4f3d8cb1a2664218df42914af",
         "parsed_rows_sha256": "9cdba51b9b2e84c549aa18e9c83ee985b91f5f9f3d0d7535697e78a34e221a22",
-        "bytes": 1880,
+        "bytes": 1886,
         "issuer_publication_pit_verified": false,
         "contemporaneous_universe_verified": false,
         "fillability_verified": false,
-        "receipt_path": "prices/originals/history/TWSE/6112-2026-11/e18705d717e1589ad9db6feb8d1c7c990a02bd01f4d050ade6d79ca95bb4d7e5.json"
+        "receipt_path": "prices/originals/history/TWSE/6112-2026-11/2175c8d288227a6b09b07bbf98c0e24d1653adbe8be76d645970ba0570a3397d.json"
       },
       "original_exchange_signature_verified": false,
       "rows": [
@@ -947,11 +1151,41 @@
           "close_at": "2026-11-13T13:30:00+08:00",
           "fillability_verified": false,
           "session_times_are_scheduled_not_broker_fills": true
+        },
+        {
+          "date": "2026-11-16",
+          "code": "6112",
+          "market": "TWSE",
+          "volume_shares": 36589354,
+          "turnover_ntd": 2176679868,
+          "close": 57.3,
+          "high": 61.4,
+          "low": 57.3,
+          "open": 58.7,
+          "open_at": "2026-11-16T09:00:00+08:00",
+          "close_at": "2026-11-16T13:30:00+08:00",
+          "fillability_verified": false,
+          "session_times_are_scheduled_not_broker_fills": true
         }
       ]
     }
   },
   "sessions": [
+    {
+      "date": "2026-11-16",
+      "code": "6112",
+      "market": "TWSE",
+      "volume_shares": 36589354,
+      "turnover_ntd": 2176679868,
+      "close": 57.3,
+      "high": 61.4,
+      "low": 57.3,
+      "open": 58.7,
+      "open_at": "2026-11-16T09:00:00+08:00",
+      "close_at": "2026-11-16T13:30:00+08:00",
+      "fillability_verified": false,
+      "session_times_are_scheduled_not_broker_fills": true
+    },
     {
       "date": "2026-11-13",
       "code": "6112",
@@ -1689,158 +1923,347 @@
     },
     {
       "date": "2026-08-31",
+      "code": "6112",
+      "market": "TWSE",
       "volume_shares": 236150,
       "turnover_ntd": 10663892,
-      "close": 45.4
+      "close": 45.4,
+      "high": 45.7,
+      "low": 44.85,
+      "open": 45.0,
+      "open_at": "2026-08-31T09:00:00+08:00",
+      "close_at": "2026-08-31T13:30:00+08:00",
+      "fillability_verified": false,
+      "session_times_are_scheduled_not_broker_fills": true
     },
     {
       "date": "2026-08-28",
+      "code": "6112",
+      "market": "TWSE",
       "volume_shares": 213938,
       "turnover_ntd": 9755174,
-      "close": 45.05
+      "close": 45.05,
+      "high": 46.2,
+      "low": 45.05,
+      "open": 46.2,
+      "open_at": "2026-08-28T09:00:00+08:00",
+      "close_at": "2026-08-28T13:30:00+08:00",
+      "fillability_verified": false,
+      "session_times_are_scheduled_not_broker_fills": true
     },
     {
       "date": "2026-08-27",
+      "code": "6112",
+      "market": "TWSE",
       "volume_shares": 213756,
       "turnover_ntd": 9761520,
-      "close": 45.5
+      "close": 45.5,
+      "high": 45.95,
+      "low": 45.3,
+      "open": 45.3,
+      "open_at": "2026-08-27T09:00:00+08:00",
+      "close_at": "2026-08-27T13:30:00+08:00",
+      "fillability_verified": false,
+      "session_times_are_scheduled_not_broker_fills": true
     },
     {
       "date": "2026-08-26",
+      "code": "6112",
+      "market": "TWSE",
       "volume_shares": 369064,
       "turnover_ntd": 16682505,
-      "close": 45.3
+      "close": 45.3,
+      "high": 45.6,
+      "low": 44.5,
+      "open": 44.5,
+      "open_at": "2026-08-26T09:00:00+08:00",
+      "close_at": "2026-08-26T13:30:00+08:00",
+      "fillability_verified": false,
+      "session_times_are_scheduled_not_broker_fills": true
     },
     {
       "date": "2026-08-25",
+      "code": "6112",
+      "market": "TWSE",
       "volume_shares": 188856,
       "turnover_ntd": 8342930,
-      "close": 44.15
+      "close": 44.15,
+      "high": 44.6,
+      "low": 43.9,
+      "open": 44.2,
+      "open_at": "2026-08-25T09:00:00+08:00",
+      "close_at": "2026-08-25T13:30:00+08:00",
+      "fillability_verified": false,
+      "session_times_are_scheduled_not_broker_fills": true
     },
     {
       "date": "2026-08-24",
+      "code": "6112",
+      "market": "TWSE",
       "volume_shares": 112565,
       "turnover_ntd": 5001683,
-      "close": 44.55
+      "close": 44.55,
+      "high": 44.6,
+      "low": 44.15,
+      "open": 44.4,
+      "open_at": "2026-08-24T09:00:00+08:00",
+      "close_at": "2026-08-24T13:30:00+08:00",
+      "fillability_verified": false,
+      "session_times_are_scheduled_not_broker_fills": true
     },
     {
       "date": "2026-08-21",
+      "code": "6112",
+      "market": "TWSE",
       "volume_shares": 132183,
       "turnover_ntd": 5862526,
-      "close": 44.4
+      "close": 44.4,
+      "high": 44.6,
+      "low": 44.2,
+      "open": 44.5,
+      "open_at": "2026-08-21T09:00:00+08:00",
+      "close_at": "2026-08-21T13:30:00+08:00",
+      "fillability_verified": false,
+      "session_times_are_scheduled_not_broker_fills": true
     },
     {
       "date": "2026-08-20",
+      "code": "6112",
+      "market": "TWSE",
       "volume_shares": 240516,
       "turnover_ntd": 10746431,
-      "close": 44.8
+      "close": 44.8,
+      "high": 45.0,
+      "low": 44.25,
+      "open": 44.4,
+      "open_at": "2026-08-20T09:00:00+08:00",
+      "close_at": "2026-08-20T13:30:00+08:00",
+      "fillability_verified": false,
+      "session_times_are_scheduled_not_broker_fills": true
     },
     {
       "date": "2026-08-19",
+      "code": "6112",
+      "market": "TWSE",
       "volume_shares": 274291,
       "turnover_ntd": 12038090,
-      "close": 44.1
+      "close": 44.1,
+      "high": 44.3,
+      "low": 43.25,
+      "open": 43.75,
+      "open_at": "2026-08-19T09:00:00+08:00",
+      "close_at": "2026-08-19T13:30:00+08:00",
+      "fillability_verified": false,
+      "session_times_are_scheduled_not_broker_fills": true
     },
     {
       "date": "2026-08-18",
+      "code": "6112",
+      "market": "TWSE",
       "volume_shares": 573429,
       "turnover_ntd": 25532063,
-      "close": 43.9
+      "close": 43.9,
+      "high": 45.95,
+      "low": 43.8,
+      "open": 45.7,
+      "open_at": "2026-08-18T09:00:00+08:00",
+      "close_at": "2026-08-18T13:30:00+08:00",
+      "fillability_verified": false,
+      "session_times_are_scheduled_not_broker_fills": true
     },
     {
       "date": "2026-08-17",
+      "code": "6112",
+      "market": "TWSE",
       "volume_shares": 472808,
       "turnover_ntd": 21765533,
-      "close": 45.55
+      "close": 45.55,
+      "high": 46.9,
+      "low": 45.45,
+      "open": 46.9,
+      "open_at": "2026-08-17T09:00:00+08:00",
+      "close_at": "2026-08-17T13:30:00+08:00",
+      "fillability_verified": false,
+      "session_times_are_scheduled_not_broker_fills": true
     },
     {
       "date": "2026-08-14",
+      "code": "6112",
+      "market": "TWSE",
       "volume_shares": 784065,
       "turnover_ntd": 36825751,
-      "close": 46.9
+      "close": 46.9,
+      "high": 47.4,
+      "low": 46.25,
+      "open": 46.55,
+      "open_at": "2026-08-14T09:00:00+08:00",
+      "close_at": "2026-08-14T13:30:00+08:00",
+      "fillability_verified": false,
+      "session_times_are_scheduled_not_broker_fills": true
     },
     {
       "date": "2026-08-13",
+      "code": "6112",
+      "market": "TWSE",
       "volume_shares": 669099,
       "turnover_ntd": 31229792,
-      "close": 46.55
+      "close": 46.55,
+      "high": 47.1,
+      "low": 46.3,
+      "open": 46.3,
+      "open_at": "2026-08-13T09:00:00+08:00",
+      "close_at": "2026-08-13T13:30:00+08:00",
+      "fillability_verified": false,
+      "session_times_are_scheduled_not_broker_fills": true
     },
     {
       "date": "2026-08-12",
+      "code": "6112",
+      "market": "TWSE",
       "volume_shares": 485901,
       "turnover_ntd": 22467161,
-      "close": 46.15
+      "close": 46.15,
+      "high": 46.6,
+      "low": 46.0,
+      "open": 46.4,
+      "open_at": "2026-08-12T09:00:00+08:00",
+      "close_at": "2026-08-12T13:30:00+08:00",
+      "fillability_verified": false,
+      "session_times_are_scheduled_not_broker_fills": true
     },
     {
       "date": "2026-08-11",
+      "code": "6112",
+      "market": "TWSE",
       "volume_shares": 463520,
       "turnover_ntd": 21423479,
-      "close": 46.4
+      "close": 46.4,
+      "high": 46.65,
+      "low": 45.8,
+      "open": 46.65,
+      "open_at": "2026-08-11T09:00:00+08:00",
+      "close_at": "2026-08-11T13:30:00+08:00",
+      "fillability_verified": false,
+      "session_times_are_scheduled_not_broker_fills": true
     },
     {
       "date": "2026-08-10",
+      "code": "6112",
+      "market": "TWSE",
       "volume_shares": 927495,
       "turnover_ntd": 43382282,
-      "close": 46.65
+      "close": 46.65,
+      "high": 47.2,
+      "low": 46.2,
+      "open": 47.0,
+      "open_at": "2026-08-10T09:00:00+08:00",
+      "close_at": "2026-08-10T13:30:00+08:00",
+      "fillability_verified": false,
+      "session_times_are_scheduled_not_broker_fills": true
     },
     {
       "date": "2026-08-07",
+      "code": "6112",
+      "market": "TWSE",
       "volume_shares": 1131865,
       "turnover_ntd": 51603586,
-      "close": 45.9
+      "close": 45.9,
+      "high": 46.0,
+      "low": 44.7,
+      "open": 45.25,
+      "open_at": "2026-08-07T09:00:00+08:00",
+      "close_at": "2026-08-07T13:30:00+08:00",
+      "fillability_verified": false,
+      "session_times_are_scheduled_not_broker_fills": true
     },
     {
       "date": "2026-08-06",
+      "code": "6112",
+      "market": "TWSE",
       "volume_shares": 2986194,
       "turnover_ntd": 136023401,
-      "close": 45.25
+      "close": 45.25,
+      "high": 46.5,
+      "low": 44.4,
+      "open": 44.6,
+      "open_at": "2026-08-06T09:00:00+08:00",
+      "close_at": "2026-08-06T13:30:00+08:00",
+      "fillability_verified": false,
+      "session_times_are_scheduled_not_broker_fills": true
     },
     {
       "date": "2026-08-05",
+      "code": "6112",
+      "market": "TWSE",
       "volume_shares": 570890,
       "turnover_ntd": 24457384,
-      "close": 42.6
+      "close": 42.6,
+      "high": 43.35,
+      "low": 42.35,
+      "open": 42.45,
+      "open_at": "2026-08-05T09:00:00+08:00",
+      "close_at": "2026-08-05T13:30:00+08:00",
+      "fillability_verified": false,
+      "session_times_are_scheduled_not_broker_fills": true
     },
     {
       "date": "2026-08-04",
+      "code": "6112",
+      "market": "TWSE",
       "volume_shares": 530165,
       "turnover_ntd": 21633567,
-      "close": 41.55
+      "close": 41.55,
+      "high": 41.55,
+      "low": 39.4,
+      "open": 39.55,
+      "open_at": "2026-08-04T09:00:00+08:00",
+      "close_at": "2026-08-04T13:30:00+08:00",
+      "fillability_verified": false,
+      "session_times_are_scheduled_not_broker_fills": true
     },
     {
       "date": "2026-08-03",
+      "code": "6112",
+      "market": "TWSE",
       "volume_shares": 236319,
       "turnover_ntd": 9295842,
-      "close": 39.45
+      "close": 39.45,
+      "high": 39.65,
+      "low": 38.7,
+      "open": 38.85,
+      "open_at": "2026-08-03T09:00:00+08:00",
+      "close_at": "2026-08-03T13:30:00+08:00",
+      "fillability_verified": false,
+      "session_times_are_scheduled_not_broker_fills": true
     }
   ],
   "liquidity": {
     "5": {
       "sessions": 5,
-      "first": "2026-11-09",
-      "last": "2026-11-13",
-      "median_turnover_ntd": 993255909,
-      "min_turnover_ntd": 866448173,
+      "first": "2026-11-10",
+      "last": "2026-11-16",
+      "median_turnover_ntd": 1032070981,
+      "min_turnover_ntd": 978572135,
       "zero_turnover_sessions": 0,
-      "idealized_5m_exit_sessions_at_20pct": 0.03
+      "idealized_5m_exit_sessions_at_20pct": 0.02
     },
     "20": {
       "sessions": 20,
-      "first": "2026-10-15",
-      "last": "2026-11-13",
-      "median_turnover_ntd": 274179867.5,
+      "first": "2026-10-16",
+      "last": "2026-11-16",
+      "median_turnover_ntd": 391105348.0,
       "min_turnover_ntd": 42162402,
       "zero_turnover_sessions": 0,
-      "idealized_5m_exit_sessions_at_20pct": 0.09
+      "idealized_5m_exit_sessions_at_20pct": 0.06
     },
     "60": {
       "sessions": 60,
-      "first": "2026-08-17",
-      "last": "2026-11-13",
-      "median_turnover_ntd": 52824929.0,
+      "first": "2026-08-18",
+      "last": "2026-11-16",
+      "median_turnover_ntd": 54202896.5,
       "min_turnover_ntd": 5001683,
       "zero_turnover_sessions": 0,
-      "idealized_5m_exit_sessions_at_20pct": 0.47
+      "idealized_5m_exit_sessions_at_20pct": 0.46
     }
   }
 }
