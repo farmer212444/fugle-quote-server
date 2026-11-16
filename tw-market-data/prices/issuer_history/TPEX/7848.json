@@ -1,0 +1,75 @@
+{
+  "schema": "V893_OFFICIAL_TPEX_DAILY",
+  "issuer": "7848",
+  "market": "TPEX",
+  "price_reference_asof": "2026-11-16",
+  "source_type": "OFFICIAL_TPEX_DAILY_MARKET",
+  "original_raw_responses_preserved_in_actions_artifact_not_repository": false,
+  "durable_original_sessions": 1,
+  "original_source_not_cryptographically_signed": true,
+  "issuer_PIT_history_verified": false,
+  "share_adjusted_history": false,
+  "spread_and_exit_capacity_verified": false,
+  "formal_tradability_gate": "PENDING_NOT_CERTIFIED",
+  "by_day": {
+    "2026-11-16": {
+      "date": "2026-11-16",
+      "source_url": "https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes?response=json&date=115%2F11%2F16",
+      "original_response_sha256": "c0872325e33d042609aa50f3ecbf74bf57b9641e2630d96b3c65643a38f2bdb0",
+      "captured_at_utc": "2026-11-16T20:20:38.919335+00:00",
+      "original_archive": {
+        "schema": "HISTORICAL_EXCHANGE_ORIGINAL_V1",
+        "market": "TPEX",
+        "identity": "2026-11-16",
+        "source_url": "https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes?response=json&date=115%2F11%2F16",
+        "captured_at_utc": "2026-11-16T20:20:38.919335+00:00",
+        "archive_path": "prices/originals/history/TPEX/2026-11-16/c0872325e33d042609aa50f3ecbf74bf57b9641e2630d96b3c65643a38f2bdb0.json.gz",
+        "original_response_sha256": "c0872325e33d042609aa50f3ecbf74bf57b9641e2630d96b3c65643a38f2bdb0",
+        "parsed_rows_sha256": "26960e95cce08fa8cb75d9f29b0ce9a6efd5350d0706308cdf1fe573a462e5fe",
+        "bytes": 2043410,
+        "issuer_publication_pit_verified": false,
+        "contemporaneous_universe_verified": false,
+        "fillability_verified": false,
+        "receipt_path": "prices/originals/history/TPEX/2026-11-16/2a7d4f986a2d281afcffb2675bff91b9aba80f1102140107e514b34f5284bf3d.json"
+      },
+      "raw_market_response_stored_in_artifact": false,
+      "row": {
+        "date": "2026-11-16",
+        "code": "7848",
+        "market": "TPEX",
+        "close": 248.0,
+        "turnover_ntd": 195202144,
+        "volume_shares": 771783,
+        "high": 262.5,
+        "low": 244.5,
+        "open": 261.0,
+        "open_at": "2026-11-16T09:00:00+08:00",
+        "close_at": "2026-11-16T13:30:00+08:00",
+        "fillability_verified": false,
+        "session_times_are_scheduled_not_broker_fills": true
+      }
+    }
+  },
+  "sessions": [
+    {
+      "date": "2026-11-16",
+      "code": "7848",
+      "market": "TPEX",
+      "close": 248.0,
+      "turnover_ntd": 195202144,
+      "volume_shares": 771783,
+      "high": 262.5,
+      "low": 244.5,
+      "open": 261.0,
+      "open_at": "2026-11-16T09:00:00+08:00",
+      "close_at": "2026-11-16T13:30:00+08:00",
+      "fillability_verified": false,
+      "session_times_are_scheduled_not_broker_fills": true
+    }
+  ],
+  "liquidity": {
+    "5": null,
+    "20": null,
+    "60": null
+  }
+}
