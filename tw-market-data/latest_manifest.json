@@ -1,79 +1,79 @@
 {
   "format_version": 1,
   "period": "2026-10",
-  "capture_utc": "2026-11-13T17:47:01.961225+00:00",
+  "capture_utc": "2026-11-16T20:30:29.591270+00:00",
   "batch_TWSE_report_dates": [
-    "1151112"
+    "1151115"
   ],
   "batch_TPEX_report_dates": [
-    "1151113"
+    "1151116"
   ],
-  "twse_rows": 1076,
-  "tpex_rows": 897,
-  "issuer_rows": 1973,
-  "distinct_stock_codes": 1973,
+  "twse_rows": 1085,
+  "tpex_rows": 898,
+  "issuer_rows": 1983,
+  "distinct_stock_codes": 1983,
   "original_receipts": [
     {
       "name": "twse",
       "url": "https://openapi.twse.com.tw/v1/opendata/t187ap05_L",
-      "sha256": "ef67cb9a521ae7c222f28a178b5f757e904d07fa5ba345a5cc5d4c6af701cbe2"
+      "sha256": "6be6ceb15a3889951c3775be1c5d3a7dbef12d010955a92c17df814274273c88"
     },
     {
       "name": "tpex",
       "url": "https://mopsfin.twse.com.tw/opendata/t187ap05_O.csv",
-      "sha256": "c3943c548e35b122905e62f305a40e26071a4780dda82a745584b4190c4ad43a"
+      "sha256": "5044d0561d36fdb7cc28b1e86a2fea4e222e6587afd4536b309dc6ea88c70fe2"
     },
     {
       "name": "tpex_backup",
       "url": "https://www.tpex.org.tw/openapi/v1/mopsfin_t187ap05_O",
-      "sha256": "6994e73d4def1e8cb42598f87d15197867b2cb22ef5e4441c6c2b8d3913715e3"
+      "sha256": "200c7f358468b984f5688d433130e470337bbea386f186ac98bddf02a61ab68f"
     }
   ],
   "shards": [
     {
       "path": "tw-market-data/2026-10/revenue_1.json",
       "records": 231,
-      "sha256": "f8017b1a8c9cafa5c754f58799d7312735ef2352ac3c670934b5f965e813cda8"
+      "sha256": "c9cf99610ef0c58f9713c07ddf74523a3a2c220de27a3e10b4755861cef59a33"
     },
     {
       "path": "tw-market-data/2026-10/revenue_2.json",
-      "records": 334,
-      "sha256": "83b4a0034eadddceda7a733e154686ae08f21146870435a259f7a178377a1a8b"
+      "records": 342,
+      "sha256": "025e8b713bb5ce87982fbbfd4f2c4df509e8414b458fe0b0798cfd10bcd98d36"
     },
     {
       "path": "tw-market-data/2026-10/revenue_3.json",
       "records": 310,
-      "sha256": "4ed4606551f7bab03d71ec8fa28f63a5cdd4bfc41238b978bb6f47d71e7a5546"
+      "sha256": "8366e346da9257f70479ab70ebe0a20fafea2fd080c8d3f60d359871bdb4009b"
     },
     {
       "path": "tw-market-data/2026-10/revenue_4.json",
       "records": 213,
-      "sha256": "bd9028f20b0e1c9095855855ec23170b03cd1a4774334eceea0085d71b0595d6"
+      "sha256": "fc4575233793d1980a321b360a17e92174c44ddeda93138c1ec55bdaf71af4ee"
     },
     {
       "path": "tw-market-data/2026-10/revenue_5.json",
-      "records": 147,
-      "sha256": "4b20ca09fe0c08ccd3742802c4b1f18b98ddce366f3f539bc87f8a9e50d0f234"
+      "records": 148,
+      "sha256": "63e31769269fc4181a6a8a0c985bc0cc7892a7801474541dbc67ee16a306ab87"
     },
     {
       "path": "tw-market-data/2026-10/revenue_6.json",
       "records": 447,
-      "sha256": "639f1bf578423cfd8bce81d31bbe77bf1eb628915d25fc12d6023c736e281c3f"
+      "sha256": "5f5b451a3c2b11c6684dd5384d260478ccab4d0e8a7e87ee0897e17cd3e3a13c"
     },
     {
       "path": "tw-market-data/2026-10/revenue_7.json",
-      "records": 79,
-      "sha256": "591943e4b918ec554a6f0d6203bb807ec8f745294499fd1b8267f3fe9cdf02ef"
+      "records": 80,
+      "sha256": "cb5fb0502b691abb0521532ede3fbe5a36632d99b945d684960b676a67b39644"
     },
     {
       "path": "tw-market-data/2026-10/revenue_8.json",
       "records": 167,
-      "sha256": "ffedb3e63e5c3c5f208df7b5ad29351dbc3ed35a04b3ced003bba6727d8de26c"
+      "sha256": "86492c85d994ea73f61a04a3e20bc132565a8023b410ffcc3872eb802dbca194"
     },
     {
       "path": "tw-market-data/2026-10/revenue_9.json",
       "records": 45,
-      "sha256": "57896ac9a94e5b9c4c9b4580cd4bf6a0b357f26c391d16938e6d89fa21c8d6e8"
+      "sha256": "1d7808e42b5e94f4fdf561375a8bec337465ee9b953bbed6a9cbfc214a572b6a"
     }
   ],
   "original_source_authenticated_independently": false,
