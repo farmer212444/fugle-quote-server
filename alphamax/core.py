@@ -132,9 +132,14 @@ def load_bundle(folder):
     if not manifest_file.is_file() or not records_file.is_file():
         raise ContractError("DATASET_MANIFEST_OR_OBSERVATIONS_MISSING")
     manifest = json.loads(manifest_file.read_text(encoding="utf-8"))
+    if not isinstance(manifest, dict):
+        raise ContractError("INVALID_MANIFEST_OBJECT")
     if manifest.get("schema") != "alphamax-research-v1":
         raise ContractError("UNSUPPORTED_DATASET_SCHEMA")
-    missing = [key for key in REQUIRED_GATES if manifest.get("gates", {}).get(key) is not True]
+    gates = manifest.get("gates")
+    if not isinstance(gates, dict):
+        raise ContractError("INVALID_DATA_GATES")
+    missing = [key for key in REQUIRED_GATES if gates.get(key) is not True]
     if missing:
         raise ContractError("UNCERTIFIED_DATA_GATES:" + ",".join(missing))
     raw = records_file.read_bytes()
