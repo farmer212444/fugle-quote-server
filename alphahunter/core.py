@@ -112,7 +112,10 @@ def validate_rows(rows):
             div = _num(v["dividend"], name + ".dividend")
             if eps < 0 or pe <= 0 or div < 0:
                 raise EvidenceError("SCENARIO_OUT_OF_DOMAIN")
-            targets.append(eps * pe + div)
+            target = eps * pe + div
+            if not math.isfinite(target):
+                raise EvidenceError("NONFINITE_SCENARIO_TARGET")
+            targets.append(target)
         if targets != sorted(targets):
             raise EvidenceError("SCENARIOS_NOT_ORDERED")
 
@@ -121,7 +124,8 @@ def validate_rows(rows):
         if (realized is None) != (label_date is None):
             raise EvidenceError("LABEL_DATE_PAIR_REQUIRED")
         if realized is not None:
-            _num(realized, "realized_total_return_12m")
+            if _num(realized, "realized_total_return_12m") < -1:
+                raise EvidenceError("IMPOSSIBLE_12M_RETURN")
             if _day(label_date, "label_available_at") < _matures(signal):
                 raise EvidenceError("PREMATURE_12M_RETURN")
         validated.append(row)
@@ -140,6 +144,8 @@ def load_bundle(folder):
         raw = records_file.read_bytes()
     except (OSError, ValueError) as exc:
         raise EvidenceError("BUNDLE_UNREADABLE") from exc
+    if not isinstance(manifest, dict):
+        raise EvidenceError("INVALID_MANIFEST_OBJECT")
     if manifest.get("schema") != SCHEMA:
         raise EvidenceError("WRONG_SCHEMA")
     if manifest.get("observations_sha256") != sha256(raw).hexdigest():
@@ -214,7 +220,14 @@ def matured_cohort_diagnostics(rows, evaluation_date, top_n=10):
     checked = validate_rows(list(rows))
     cohorts = []
     for signal in sorted(set(r["signal_date"] for r in checked)):
-        selected = [r for r in checked if r["signal_date"] == signal and r["execution_possible"]]
+        cohort = [r for r in checked if r["signal_date"] == signal]
+        if not cohort or any(
+            r["realized_total_return_12m"] is None
+            or _day(r["label_available_at"], "label_available_at") > end
+            for r in cohort
+        ):
+            continue
+        selected = [r for r in cohort if r["execution_possible"]]
         if not selected:
             continue
         selected = sorted(selected, key=lambda r: (-score(r)["risk_adjusted_research_score"], r["code"]))[:top_n]
