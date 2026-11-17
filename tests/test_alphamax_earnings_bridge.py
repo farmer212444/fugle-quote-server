@@ -10,7 +10,7 @@ from alphamax.earnings_bridge import earnings_bridge
 def fixture():
     scenario = {
         "revenue_twd": 1_000_000_000, "gross_margin": .40,
-        "operating_expenses_twd": 100_000_000,
+        "operating_expenses_twd": 100_000_000, "other_operating_income_twd": 0,
         "net_nonoperating_income_twd": 10_000_000,
         "effective_tax_rate": .20, "noncontrolling_profit_twd": 8_000_000,
         "diluted_shares": 100_000_000, "exit_pe": 15,
@@ -19,7 +19,7 @@ def fixture():
         "source_receipt_ids": ["synthetic-report"],
     }
     spec = {
-        "schema": "alphamax-earnings-bridge-v1", "code": "SYNTHETIC",
+        "schema": "alphamax-earnings-bridge-v2", "code": "SYNTHETIC",
         "currency": "TWD", "shares_unit": "shares", "asof": "2026-11-17T02:00:00+00:00",
         "valuation_date": "2027-12-31", "required_net_return": .30,
         "quote": {"close_twd": 30, "available_at": "2026-11-16T06:00:00Z",
@@ -57,6 +57,25 @@ class EarningsBridgeTests(unittest.TestCase):
         spec["scenarios"]["base"]["diluted_shares"] *= 2
         row = self.calculate(spec)["scenarios"][1]
         self.assertAlmostEqual(row["eps_twd"], 1.2)
+
+    def test_other_operating_income_is_counted_before_tax(self):
+        spec = fixture()
+        spec["scenarios"]["base"]["other_operating_income_twd"] = 10_000_000
+        row = self.calculate(spec)["scenarios"][1]
+        self.assertEqual(row["operating_profit_twd"], 310_000_000)
+        self.assertAlmostEqual(row["eps_twd"], 2.48)
+
+    def test_missing_other_operating_income_is_not_silently_zero(self):
+        spec = fixture()
+        del spec["scenarios"]["base"]["other_operating_income_twd"]
+        with self.assertRaises(ContractError):
+            self.calculate(spec)
+
+    def test_old_contract_cannot_hide_missing_other_operating_income(self):
+        spec = fixture()
+        spec["schema"] = "alphamax-earnings-bridge-v1"
+        with self.assertRaisesRegex(ContractError, "INVALID_EARNINGS_BRIDGE_SCHEMA"):
+            self.calculate(spec)
 
     def test_net_dividends_are_not_charged_stock_sale_tax(self):
         row = self.calculate()["scenarios"][1]

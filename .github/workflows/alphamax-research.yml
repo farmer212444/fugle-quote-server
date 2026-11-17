@@ -16,6 +16,7 @@ on:
       - 'scripts/alphamax_pk_exhibition.py'
       - 'scripts/alphamax_pk_shadow_monitor.py'
       - 'scripts/alphamax_pit_pk_gap_audit.py'
+      - 'scripts/alphamax_reported_income.py'
       - 'tests/test_alphamax.py'
       - 'tests/test_alphamax_0050_backfill.py'
       - 'tests/test_alphamax_0050_restore.py'
@@ -25,6 +26,7 @@ on:
       - 'tests/test_alphamax_pit_pk_gap_audit.py'
       - 'tests/test_alphamax_concentration.py'
       - 'tests/test_alphamax_earnings_bridge.py'
+      - 'tests/test_alphamax_reported_income.py'
       - 'tests/test_alphamax_universe.py'
       - 'tests/test_alphamax_security_master.py'
       - 'tests/test_alphamax_delist.py'
@@ -36,12 +38,14 @@ on:
     paths:
       - 'alphamax/**'
       - 'scripts/alphamax_run.py'
+      - 'scripts/alphamax_reported_income.py'
       - 'scripts/alphamax_0050_backfill.py'
       - 'scripts/alphamax_pk_exhibition.py'
       - 'tests/test_alphamax.py'
       - 'tests/test_alphamax_0050_backfill.py'
       - 'tests/test_alphamax_pk_exhibition.py'
       - 'tests/test_alphamax_earnings_bridge.py'
+      - 'tests/test_alphamax_reported_income.py'
       - '.github/workflows/alphamax-research.yml'
   schedule:
     # 16:50 Asia/Taipei, Mon-Fri; scheduled jobs only run from default branch.
@@ -62,7 +66,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Run independent no-leakage and contract tests
-        run: python -m unittest -v tests.test_alphamax tests.test_alphamax_0050_backfill tests.test_alphamax_0050_restore tests.test_alphamax_0050_actions_audit tests.test_alphamax_concentration tests.test_alphamax_earnings_bridge tests.test_alphamax_universe tests.test_alphamax_security_master tests.test_alphamax_delist tests.test_alphamax_tpex_delist tests.test_alphamax_pk_exhibition tests.test_alphamax_pk_shadow_monitor tests.test_alphamax_pit_pk_gap_audit
+        run: python -m unittest -v tests.test_alphamax tests.test_alphamax_0050_backfill tests.test_alphamax_0050_restore tests.test_alphamax_0050_actions_audit tests.test_alphamax_concentration tests.test_alphamax_earnings_bridge tests.test_alphamax_reported_income tests.test_alphamax_universe tests.test_alphamax_security_master tests.test_alphamax_delist tests.test_alphamax_tpex_delist tests.test_alphamax_pk_exhibition tests.test_alphamax_pk_shadow_monitor tests.test_alphamax_pit_pk_gap_audit
       - name: Audit official source readiness; never fabricate returns
         run: |
           python scripts/alphamax_run.py readiness --output alphamax-research-readiness.json
@@ -170,6 +174,48 @@ jobs:
           python scripts/alphamax_pk_exhibition.py --manifest alphamax-pk-source/manifest.json --snapshot alphamax-pk-source/prices.json --output alphamax-pk-observation.json
           python scripts/alphamax_pk_shadow_monitor.py --manifest alphamax-pk-source/manifest.json --latest alphamax-pk-source/prices.json --entry alphamax-pk-source/entry-prices.json --output alphamax-pk-shadow-price-only.json
           python scripts/alphamax_pit_pk_gap_audit.py --repo . --source-ref origin/main --output alphamax-pk-training-gap-audit.json --history-cache alphamax-pk-source/issuer-history
+      - name: Reconcile focus-company reported income from pinned shared source bytes
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          import subprocess
+          import sys
+
+          root = Path('alphamax-reported-source')
+          output = Path('alphamax-reported-income.json')
+          source_ref_file = Path('alphamax-pk-source/source-commit.txt')
+          try:
+              source_ref = source_ref_file.read_text().strip()
+              import re
+              if not re.fullmatch(r'[0-9a-f]{40}', source_ref):
+                  raise ValueError('INVALID_PINNED_SHARED_SOURCE_COMMIT')
+              def preserve(path):
+                  if (not path.startswith('tw-market-data/financial/') or not path.endswith('.json')
+                          or '..' in Path(path).parts):
+                      raise ValueError('UNSAFE_SHARED_FINANCIAL_PATH')
+                  dest = root / path
+                  dest.parent.mkdir(parents=True, exist_ok=True)
+                  with dest.open('wb') as handle:
+                      subprocess.run(['git', 'show', source_ref + ':' + path], stdout=handle, check=True)
+                  return dest
+              manifest_path = preserve('tw-market-data/financial/latest_manifest.json')
+              manifest = json.loads(manifest_path.read_text())
+              sources = [s for s in manifest['sources'] if s.get('kind') == 'TWSE_income']
+              if len(sources) != 1:
+                  raise ValueError('UNIQUE_SHARED_INCOME_SOURCE_REQUIRED')
+              preserve(sources[0]['path'])
+              subprocess.run([
+                  sys.executable, 'scripts/alphamax_reported_income.py',
+                  '--source-root', str(root), '--source-ref-file', str(source_ref_file),
+                  '--money-unit', 'TWD_thousands', '--period-basis', 'year_to_date',
+                  '--output', str(output)
+              ], check=True)
+          except (OSError, ValueError, KeyError, TypeError, subprocess.CalledProcessError) as exc:
+              output.write_text(json.dumps({'status': 'BLOCKED_REPORTED_FACTS', 'reason': str(exc),
+                                           'buy_signal': False, 'investment_certified': False}) + '\n')
+              print('Reported-income source gap remains explicitly BLOCKED:', exc)
+          PY
       - name: Publish separate engineering and investment-readiness status
         run: |
           python - <<'PY'
@@ -191,6 +237,8 @@ jobs:
           shadow = json.loads(shadow_file.read_text()) if shadow_file.exists() else {"status": "PK_SHADOW_MISSING"}
           gap_file = Path("alphamax-pk-training-gap-audit.json")
           gap = json.loads(gap_file.read_text()) if gap_file.exists() else {"status": "PK_TRAINING_GAP_AUDIT_MISSING"}
+          income_file = Path("alphamax-reported-income.json")
+          income = json.loads(income_file.read_text()) if income_file.exists() else {"status": "BLOCKED_REPORTED_FACTS"}
           backfill_file = Path("alphamax-0050-backfill-progress.json")
           backfill = json.loads(backfill_file.read_text()) if backfill_file.exists() else {"status": "BLOCKED_0050_SOURCE_CAPTURE_MISSING"}
           restore_file = Path("alphamax-0050-restore-progress.json")
@@ -202,6 +250,7 @@ jobs:
               out.write("- Code regression CI: **executed separately above**\n")
               out.write("- Historical data/PIT readiness: **%s**\n" % research["status"])
               out.write("- Concentration allocation readiness: **%s**\n" % concentration["status"])
+              out.write("- Focus-company reported income: **%s**, reconciled **%s/%s**; YTD facts only, no annual EPS forecasts or diluted-share inference.\n" % (income.get("status"), income.get("reconciled_count", 0), income.get("requested_count", 4)))
               out.write("- Issuer-history coverage: **%s**\n" % universe["status"])
               out.write("- Current official company roster capture: **%s**, %s issuer profiles\n" % (profiles["status"], profiles.get("profile_count", 0)))
               out.write("- Historical listed/delisted membership certified: **NO** (current profiles cannot supply past membership)\n")
@@ -265,6 +314,8 @@ jobs:
             alphamax-pk-observation.json
             alphamax-pk-shadow-price-only.json
             alphamax-pk-training-gap-audit.json
+            alphamax-reported-income.json
+            alphamax-reported-source/
             alphamax-0050-backfill-progress.json
             alphamax-0050-restore-progress.json
             alphamax-0050-action-gap.json

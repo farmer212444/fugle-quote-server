@@ -314,7 +314,7 @@ python -m alphamax.earnings_bridge assumption-spec.json
 python -m unittest discover -s tests -p 'test_alphamax_earnings_bridge.py'
 ```
 
-The input contract is `schema=alphamax-earnings-bridge-v1`, `code`,
+The input contract is `schema=alphamax-earnings-bridge-v2`, `code`,
 `currency=TWD`, `shares_unit=shares`, timezone-aware `asof`, a later
 `valuation_date` in YYYY-MM-DD, nonnegative `required_net_return`, and:
 
@@ -326,7 +326,8 @@ The input contract is `schema=alphamax-earnings-bridge-v1`, `code`,
 | `scenarios` | Exactly `bear`, `base`, `bull`; each has all operating fields below, an `assumption_note`, and nonempty known `source_receipt_ids`. |
 
 Each scenario specifies `revenue_twd`, `gross_margin` (fraction, not percent),
-`operating_expenses_twd`, `net_nonoperating_income_twd`, `effective_tax_rate`,
+`operating_expenses_twd`, `other_operating_income_twd`,
+`net_nonoperating_income_twd`, `effective_tax_rate`,
 `noncontrolling_profit_twd`, actual `diluted_shares`, positive `exit_pe`, and
 `net_dividends_per_share_twd`. Money amounts are actual TWD, not report
 thousands/millions. Net dividends mean cash received per initial share by
@@ -337,7 +338,7 @@ valuation require separate models; they are not simulated here.
 Formulae:
 
 - Parent profit = `(revenue * gross_margin - operating_expenses +
-  net_nonoperating_income) - tax - noncontrolling_profit`.
+  other_operating_income + net_nonoperating_income) - tax - noncontrolling_profit`.
 - Tax = `max(pretax_profit, 0) * effective_tax_rate`; no speculative tax
   credit is created for losses. Nonpositive EPS leaves P/E value and entry
   ceiling null rather than fabricating a fair price.
@@ -352,3 +353,49 @@ output flags ordering failures. Input hashing permits change tracking,
 not independent source certification. Synthetic regression tests cover
 financial reconciliation, dilution, cash-dividend cost treatment, entry-price
 inversion, loss companies, input timestamps, units and false calibration.
+
+## Shared factual income integration (2026-11-18)
+
+`alphamax/reported_income.py` independently reads shared normalized official
+general-industry MOPS income snapshots, without reusing V8 estimates, scores
+or certification fields. The runner `scripts/alphamax_reported_income.py`
+requires an explicit original unit declaration, preserves YTD period scope,
+and checks the exact normalized-file SHA-256 against its capture manifest.
+The source Git commit, file digest, source URL, fiscal period and capture
+clock are retained. These checks do not authenticate the original response
+or establish an issuer's actual filing-publication timestamp.
+
+The focus set is 2330, 2317, 6206 and 9802. Missing issuers and mixed fiscal
+periods are disclosed per company; coverage of these four is not whole-market
+coverage. Blank required lines are rejected, rather than turned into zero.
+Revenue/cost/gross profit, operating/nonoperating/pretax, tax/net income and
+parent/noncontrolling attribution are reconciled within one source unit.
+When an optional other-operating line is blank, any algebraic residual is
+labeled derived; that line is not claimed as independently checked.
+
+The first real-data run is frozen in
+`research/2026-11-18-reported-income.json` against shared source commit
+`de6c94b35e69ac36a6b434da8526ccacae89517f`. All four requested 2026Q3
+YTD income records reconcile. TSMC's other operating income is TWD
+7,453,368,000; omitting that line from gross-profit-minus-expense math would
+understate reported operating profit. The operating scenario contract is
+therefore v2 and now requires explicit `other_operating_income_twd`. A v1
+specification must be amended explicitly; missing amounts never default to
+zero. Reported basic EPS is preserved as a sourced observation, not recomputed
+by inferring diluted shares from rounded EPS or share capital.
+
+CI stages the pinned shared main-branch manifest and exact normalized source
+bytes in `alphamax-reported-source/`, outside both legacy V8 data and AlphaMax
+production datasets. It publishes the separate report as an artifact. A
+source gap is reported as BLOCKED and does not generate a forecast or trade.
+The normalizer does not annualize nine-month earnings into an annual forecast.
+Actual diluted weighted-average shares, full statements/notes, forward
+operating assumptions and calibrated return distributions remain missing.
+
+```sh
+python scripts/alphamax_reported_income.py \
+  --source-root alphamax-reported-source \
+  --source-ref-file alphamax-pk-source/source-commit.txt \
+  --money-unit TWD_thousands --period-basis year_to_date \
+  --output alphamax-reported-income.json
+```

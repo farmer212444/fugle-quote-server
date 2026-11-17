@@ -19,7 +19,7 @@ from alphamax.core import ContractError, parse_date
 
 SCENARIOS = ("bear", "base", "bull")
 OPERATING_FIELDS = (
-    "revenue_twd", "gross_margin", "operating_expenses_twd",
+    "revenue_twd", "gross_margin", "operating_expenses_twd", "other_operating_income_twd",
     "net_nonoperating_income_twd", "effective_tax_rate",
     "noncontrolling_profit_twd", "diluted_shares", "exit_pe",
     "net_dividends_per_share_twd",
@@ -67,7 +67,7 @@ def earnings_bridge(spec, *, now=None):
     reinvestment. Ordinary positive-EPS P/E valuation only; no bank/insurance
     balance-sheet model, split/conversion simulation or loss-company pricing.
     """
-    if not isinstance(spec, dict) or spec.get("schema") != "alphamax-earnings-bridge-v1":
+    if not isinstance(spec, dict) or spec.get("schema") != "alphamax-earnings-bridge-v2":
         raise ContractError("INVALID_EARNINGS_BRIDGE_SCHEMA")
     if any(k in spec for k in ("probabilities", "expected_net_return_12m", "weights")):
         raise ContractError("CALIBRATED_PREDICTIONS_OR_WEIGHTS_NOT_SUPPORTED")
@@ -155,7 +155,8 @@ def earnings_bridge(spec, *, now=None):
             raise ContractError("UNKNOWN_OR_MISSING_SCENARIO_SOURCE")
 
         gross_profit = values["revenue_twd"] * values["gross_margin"]
-        operating_profit = gross_profit - values["operating_expenses_twd"]
+        operating_profit = (gross_profit - values["operating_expenses_twd"]
+                            + values["other_operating_income_twd"])
         pretax = operating_profit + values["net_nonoperating_income_twd"]
         # Do not invent a realizable tax asset when operating assumptions lose money.
         tax = max(pretax, 0) * values["effective_tax_rate"]
