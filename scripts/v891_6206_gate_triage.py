@@ -257,7 +257,7 @@ def pending_triage_report(value, progress, probe):
 
 def render_md(data):
     if data.get("status") == "BLOCKED_SOURCE_OR_VINTAGE_NO_NEW_CERTIFICATION":
-        return "\\n".join([
+        return "\n".join([
             "# 6206 飛捷｜來源及版本待補（未進行正式認證）", "",
             "狀態：BLOCKED_SOURCE_OR_VINTAGE_NO_NEW_CERTIFICATION",
             "目前無法交叉核對的原因：" + "；".join(data["blocking_reasons"]),
