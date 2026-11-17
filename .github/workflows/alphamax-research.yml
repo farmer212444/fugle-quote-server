@@ -7,6 +7,7 @@ on:
       - 'scripts/alphamax_run.py'
       - 'scripts/alphamax_0050_backfill.py'
       - 'scripts/alphamax_0050_restore.py'
+      - 'scripts/alphamax_0050_actions_audit.py'
       - 'scripts/alphamax_concentration.py'
       - 'scripts/alphamax_universe_audit.py'
       - 'scripts/alphamax_security_master.py'
@@ -18,6 +19,7 @@ on:
       - 'tests/test_alphamax.py'
       - 'tests/test_alphamax_0050_backfill.py'
       - 'tests/test_alphamax_0050_restore.py'
+      - 'tests/test_alphamax_0050_actions_audit.py'
       - 'tests/test_alphamax_pk_exhibition.py'
       - 'tests/test_alphamax_pk_shadow_monitor.py'
       - 'tests/test_alphamax_pit_pk_gap_audit.py'
@@ -58,7 +60,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Run independent no-leakage and contract tests
-        run: python -m unittest -v tests.test_alphamax tests.test_alphamax_0050_backfill tests.test_alphamax_0050_restore tests.test_alphamax_concentration tests.test_alphamax_universe tests.test_alphamax_security_master tests.test_alphamax_delist tests.test_alphamax_tpex_delist tests.test_alphamax_pk_exhibition tests.test_alphamax_pk_shadow_monitor tests.test_alphamax_pit_pk_gap_audit
+        run: python -m unittest -v tests.test_alphamax tests.test_alphamax_0050_backfill tests.test_alphamax_0050_restore tests.test_alphamax_0050_actions_audit tests.test_alphamax_concentration tests.test_alphamax_universe tests.test_alphamax_security_master tests.test_alphamax_delist tests.test_alphamax_tpex_delist tests.test_alphamax_pk_exhibition tests.test_alphamax_pk_shadow_monitor tests.test_alphamax_pit_pk_gap_audit
       - name: Audit official source readiness; never fabricate returns
         run: |
           python scripts/alphamax_run.py readiness --output alphamax-research-readiness.json
@@ -126,6 +128,11 @@ jobs:
           python -m scripts.alphamax_0050_backfill \
             --data-root alphamax-0050-data --max-requests 4 --start-month 2025-01 \
             --output alphamax-0050-backfill-progress.json
+      - name: Audit 0050 official split chronology and unreconciled distributions
+        run: |
+          python -m scripts.alphamax_0050_actions_audit \
+            --packet alphamax-0050-data/prices/issuer_history/TWSE/0050.json \
+            --output alphamax-0050-action-gap.json
       - name: Capture current official issuer profiles with original bytes and source receipts
         run: python scripts/alphamax_security_master.py --output-dir alphamax-profile-capture
       - name: Capture TWSE official retrospective delisting event ledger
@@ -186,6 +193,8 @@ jobs:
           backfill = json.loads(backfill_file.read_text()) if backfill_file.exists() else {"status": "BLOCKED_0050_SOURCE_CAPTURE_MISSING"}
           restore_file = Path("alphamax-0050-restore-progress.json")
           restore = json.loads(restore_file.read_text()) if restore_file.exists() else {"status": "BLOCKED_0050_CACHE_RESTORE_MISSING"}
+          action_file = Path("alphamax-0050-action-gap.json")
+          action = json.loads(action_file.read_text()) if action_file.exists() else {"status": "BLOCKED_0050_CORPORATE_ACTION_AUDIT_MISSING"}
           with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as out:
               out.write("## AlphaMax verification — do not confuse CI with trading approval\n\n")
               out.write("- Code regression CI: **executed separately above**\n")
@@ -195,6 +204,7 @@ jobs:
               out.write("- Current official company roster capture: **%s**, %s issuer profiles\n" % (profiles["status"], profiles.get("profile_count", 0)))
               out.write("- Historical listed/delisted membership certified: **NO** (current profiles cannot supply past membership)\n")
               out.write("- Prior AlphaMax raw-price cache: **%s**, reused months **%s**. CI scratch data kept separate from V8.\\n" % (restore.get("status", "BLOCKED"), restore.get("months_restored", "N/A")))
+              out.write("- 0050 split/dividend action audit: **%s**; crossing 2025 4:1 split: **%s**; candidate distributions awaiting original issuer notices: **%s**. NO adjusted returns or verified OOS.\\n" % (action.get("status", "BLOCKED"), action.get("raw_prices_span_split_date", "unknown"), len(action.get("cash_distribution_reference_candidates", []))))
               out.write("- 0050 official raw-price monthly backfill: **%s**; branch quote reference **%s**; requested months **%s**; still lacking durable original source **%s**; observed unadjusted sessions **%s**. Dividends, splits, total returns and PIT remain **BLOCKED**.\\n" %
                         (backfill.get("status", "BLOCKED"), backfill.get("asof", "N/A"),
                          len(backfill.get("requested_months_this_run", [])),
@@ -255,6 +265,7 @@ jobs:
             alphamax-pk-training-gap-audit.json
             alphamax-0050-backfill-progress.json
             alphamax-0050-restore-progress.json
+            alphamax-0050-action-gap.json
             alphamax-0050-data/prices/issuer_history/TWSE/0050.json
             alphamax-0050-data/prices/originals/history/TWSE/0050-*/
             alphamax-pk-source/
