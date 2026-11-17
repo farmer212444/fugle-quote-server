@@ -99,6 +99,19 @@ class AlphaMaxTests(unittest.TestCase):
             with self.assertRaisesRegex(ContractError, "SHA256_MISMATCH"):
                 load_bundle(folder)
 
+    def test_malformed_manifest_shapes_fail_closed_with_contract_error(self):
+        with tempfile.TemporaryDirectory() as temp:
+            folder = self._bundle(temp)
+            manifest_path = folder / "manifest.json"
+            original = json.loads(manifest_path.read_text())
+            manifest_path.write_text(json.dumps([]))
+            with self.assertRaisesRegex(ContractError, "INVALID_MANIFEST_OBJECT"):
+                load_bundle(folder)
+            original["gates"] = []
+            manifest_path.write_text(json.dumps(original))
+            with self.assertRaisesRegex(ContractError, "INVALID_DATA_GATES"):
+                load_bundle(folder)
+
     def test_premature_12m_label_is_rejected_at_ingestion_and_training(self):
         rows = sample_rows()
         rows[0]["label_available_at"] = "2020-02-01"
