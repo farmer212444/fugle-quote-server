@@ -81,7 +81,7 @@ class FlytechGateTriageTest(unittest.TestCase):
             self.assertIn("6206_NOT_IN_EVIDENCE_FOCUS", result["blocking_reasons"])
             self.assertIn("ValueError:REVENUE_MONTH_NOT_2026_09", result["blocking_reasons"])
             self.assertEqual(len(result["gates"]), 13)
-            self.assertTrue(all(not gate["automatically_certified"] for gate in result["gates"]))
+            self.assertTrue(all(not gate["automatically_certified"] and gate["formal_status"] == "PENDING" for gate in result["gates"]))
             self.assertFalse(result["formal_Aplus"])
             self.assertEqual(result["newly_certified_gates"], 0)
             self.assertNotIn("common_2027_base_price", result)
