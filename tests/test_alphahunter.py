@@ -139,6 +139,37 @@ class AlphaHunterResearchTests(unittest.TestCase):
         with self.assertRaisesRegex(EvidenceError, "SCENARIOS_NOT_ORDERED"):
             validate_rows(rows)
 
+    def test_manifest_must_be_json_object(self):
+        with tempfile.TemporaryDirectory() as temp:
+            bundle = create_bundle(temp)
+            (bundle / "manifest.json").write_text(json.dumps([]))
+            with self.assertRaisesRegex(EvidenceError, "INVALID_MANIFEST_OBJECT"):
+                load_bundle(bundle)
+
+    def test_total_return_cannot_be_below_minus_one(self):
+        rows = sample_rows()
+        rows[0]["realized_total_return_12m"] = -1.01
+        with self.assertRaisesRegex(EvidenceError, "IMPOSSIBLE_12M_RETURN"):
+            validate_rows(rows)
+
+    def test_finite_inputs_cannot_overflow_scenario_target(self):
+        rows = sample_rows()
+        rows[0]["scenarios"]["bull"]["eps"] = 1e308
+        rows[0]["scenarios"]["bull"]["pe"] = 1e308
+        with self.assertRaisesRegex(EvidenceError, "NONFINITE_SCENARIO_TARGET"):
+            validate_rows(rows)
+
+    def test_diagnostics_require_complete_matured_cohort(self):
+        rows = sample_rows()
+        # The missing label is an infeasible member of a previously matured cohort.
+        missing = next(r for r in rows if r["signal_date"] == "2023-01-01")
+        missing["execution_possible"] = False
+        missing["realized_total_return_12m"] = None
+        missing["label_available_at"] = None
+        out = matured_cohort_diagnostics(rows, "2024-12-01", top_n=2)
+        self.assertNotIn("2023-01-01", [x["signal_date"] for x in out["cohorts"]])
+        self.assertIn("2023-02-01", [x["signal_date"] for x in out["cohorts"]])
+
     def test_digest_tampering_is_rejected(self):
         with tempfile.TemporaryDirectory() as temp:
             bundle = create_bundle(temp)
