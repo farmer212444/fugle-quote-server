@@ -249,7 +249,7 @@ def pending_triage_report(value, progress, probe):
                 formal_Aplus=False, newly_certified_gates=0,
                 common_market_rank_unchanged=True, no_automatic_orders=True,
                 gates=[dict(gate=name, source_coverage="UNVERIFIED_FOR_CURRENT_VINTAGE",
-                            formal_status="UNCHANGED_NOT_EVALUATED_BY_THIS_REPORT",
+                            formal_status="PENDING",
                             next_action=PLAN[name][1], automatically_certified=False)
                        for name in GATES],
                 note="No estimated EPS, price, PASS, FAIL or transaction inferred from missing data.")
