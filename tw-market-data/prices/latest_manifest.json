@@ -1,19 +1,19 @@
 {
-  "date": "2026-11-16",
+  "date": "2026-11-17",
   "TWSE_rows": 1099,
   "TPEX_rows": 897,
   "total": 1996,
-  "path": "tw-market-data/prices/2026-11-16.json",
-  "normalized_sha256": "535d47b54a9d012bb963167682df2356980e13f898be3aa3f2fe8cf322950a71",
+  "path": "tw-market-data/prices/2026-11-17.json",
+  "normalized_sha256": "3224cb39888433bae5ea3649b0d3a59de9721f2beeb89bd9fe1b7c56f1f95b8f",
   "raw_source_sha256": {
-    "TWSE": "fa432e7050f67ac5c6c46ac0d1c2e7e626ceb8990473bea9f97846819a645c7e",
-    "TPEX": "c8d82974bed8d5db0ea9e6d3eb16ef3579cacae964a7bd9837673a62df4ac232"
+    "TWSE": "1d45365d60d71d7eec7395f956e01063d538bfcbd6c22cd5000ef882dd330057",
+    "TPEX": "47fbc2a30fff71a0e13f92ddb04389d8caec929a393f658d5a6a0eb093c0047d"
   },
   "sources": {
-    "TWSE": "https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL",
-    "TPEX": "https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_close_quotes"
+    "TWSE": "https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX?date=20261117&type=ALLBUT0999&response=json",
+    "TPEX": "https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes?date=115%2F11%2F17&response=json"
   },
-  "original_receipt_path": "originals/2026-11-16/9fac52d1abc7f13fed78.json",
+  "original_receipt_path": "originals/2026-11-17/3e0b7144e36bba1ca793.json",
   "unadjusted_quotes": true,
   "security_master_verified": false,
   "note": "Latest daily unadjusted close; not adjusted for cash dividends, splits or corporate actions."
