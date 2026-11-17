@@ -87,7 +87,7 @@ class FlytechGateTriageTest(unittest.TestCase):
             self.assertNotIn("common_2027_base_price", result)
             self.assertNotIn("independent_2027_base_price", result)
             self.assertIn("未審核／不推定PASS或FAIL", md)
-            self.assertIn("\\n", md)
+            self.assertGreater(len(md.splitlines()), 20)
 
         # Even a pending valuation with another company's identity must be
         # rejected rather than accidentally converted to 6206.
