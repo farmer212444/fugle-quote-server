@@ -48,6 +48,54 @@ def sample():
 
 
 class FlytechGateTriageTest(unittest.TestCase):
+    def test_6206_q3_rollover_and_missing_probe_remain_explicit_pending(self):
+        # Reproduces current main: October revenue cannot be consumed by the
+        # frozen September-only independent bridge, and the current focus
+        # scan does not contain 6206. Neither is evidence of a formal FAIL.
+        import json
+        import tempfile
+        from pathlib import Path
+        from unittest.mock import patch
+        import scripts.v891_6206_gate_triage as triage
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "rankings").mkdir()
+            progress = {"estimate_vintage": "2026-11-17T09:20:00+08:00",
+                        "asof_price_date": "2026-11-16",
+                        "top_priority_evidence": []}
+            blocked = {"issuer": "6206",
+                       "status": "6206_EVIDENCE_OR_VINTAGE_PENDING",
+                       "error": "ValueError:REVENUE_MONTH_NOT_2026_09",
+                       "formal_Aplus": False}
+            (root / "rankings/v884_evidence_progress.json").write_text(
+                json.dumps(progress), encoding="utf-8")
+            (root / "rankings/v888_6206_independent_valuation.json").write_text(
+                json.dumps(blocked), encoding="utf-8")
+            with patch("sys.argv", ["v891_6206_gate_triage.py", "--root", str(root)]):
+                triage.main()
+            result = json.loads(
+                (root / "rankings/v891_6206_gate_triage.json").read_text(encoding="utf-8"))
+            md = (root / "rankings/v891_6206_gate_triage.md").read_text(encoding="utf-8")
+            self.assertEqual(result["status"],
+                             "BLOCKED_SOURCE_OR_VINTAGE_NO_NEW_CERTIFICATION")
+            self.assertIn("6206_NOT_IN_EVIDENCE_FOCUS", result["blocking_reasons"])
+            self.assertIn("ValueError:REVENUE_MONTH_NOT_2026_09", result["blocking_reasons"])
+            self.assertEqual(len(result["gates"]), 13)
+            self.assertTrue(all(not gate["automatically_certified"] for gate in result["gates"]))
+            self.assertFalse(result["formal_Aplus"])
+            self.assertEqual(result["newly_certified_gates"], 0)
+            self.assertNotIn("common_2027_base_price", result)
+            self.assertNotIn("independent_2027_base_price", result)
+            self.assertIn("未審核／不推定PASS或FAIL", md)
+            self.assertIn("\\n", md)
+
+        # Even a pending valuation with another company's identity must be
+        # rejected rather than accidentally converted to 6206.
+        with self.assertRaisesRegex(ValueError, "WRONG_ISSUER_VALUATION"):
+            triage.pending_triage_report(
+                {"issuer": "9802", "status": "6206_EVIDENCE_OR_VINTAGE_PENDING"},
+                progress, None)
+
     def test_complete_archived_coverage_is_not_certification(self):
         result = check_report(*sample())
         self.assertEqual(len(result["gates"]), 13)
