@@ -290,3 +290,65 @@ The outcome always sets `investment_certified=false` and
 pass. Missing full historical PIT membership, corporate action and dividend
 ledgers, public-announcement vintages, and valid investment total returns
 still block a formal AlphaMax Top 20 or a concentrated position decision.
+
+## Independent operating-to-EPS and entry-price bridge (2026-11-17)
+
+`alphamax/earnings_bridge.py` adds a calculation layer for explicit annual
+bear/base/bull operating assumptions. It computes gross profit, operating
+profit, pretax income, tax expense, profit attributable to the parent,
+diluted EPS, positive-EPS P/E scenario prices, and a maximum entry price for
+an explicitly chosen net return through a dated valuation horizon.
+
+It does **not** estimate its own operating assumptions or probabilities,
+authenticate original source bytes, generate portfolio weights, or certify
+concentration eligibility. It cannot feed the concentration allocator's
+calibrated-return fields. Its status is always
+`SCENARIO_RESEARCH_ONLY_NOT_CALIBRATED`; `buy_signal` and
+`investment_certified` remain false. A future model must learn and validate
+the assumptions and return distributions separately.
+
+Run with an explicitly prepared JSON specification:
+
+```sh
+python -m alphamax.earnings_bridge assumption-spec.json
+python -m unittest discover -s tests -p 'test_alphamax_earnings_bridge.py'
+```
+
+The input contract is `schema=alphamax-earnings-bridge-v1`, `code`,
+`currency=TWD`, `shares_unit=shares`, timezone-aware `asof`, a later
+`valuation_date` in YYYY-MM-DD, nonnegative `required_net_return`, and:
+
+| Input | Required fields and interpretation |
+| --- | --- |
+| `source_receipts` | Nonempty list of unique `id`, HTTPS `source_url`, declared original-byte `sha256`, timezone-aware `published_at` and `observed_at`. Both clocks must precede `asof`; source declarations alone do not authenticate bytes or prove PIT history. |
+| `quote` | Positive `close_twd`, timezone-aware `available_at`, and a known `source_receipt_id`. Quote age is disclosed, never silently updated to a later price. |
+| `costs` | Explicit `buy_fee_rate`, `buy_slippage_rate`, `sell_fee_rate`, `sell_tax_rate`, `sell_slippage_rate`; no assumed broker tariff. |
+| `scenarios` | Exactly `bear`, `base`, `bull`; each has all operating fields below, an `assumption_note`, and nonempty known `source_receipt_ids`. |
+
+Each scenario specifies `revenue_twd`, `gross_margin` (fraction, not percent),
+`operating_expenses_twd`, `net_nonoperating_income_twd`, `effective_tax_rate`,
+`noncontrolling_profit_twd`, actual `diluted_shares`, positive `exit_pe`, and
+`net_dividends_per_share_twd`. Money amounts are actual TWD, not report
+thousands/millions. Net dividends mean cash received per initial share by
+the valuation date, after any assumed investor dividend tax and without
+reinvestment. Split/conversion paths and bank/insurance balance-sheet
+valuation require separate models; they are not simulated here.
+
+Formulae:
+
+- Parent profit = `(revenue * gross_margin - operating_expenses +
+  net_nonoperating_income) - tax - noncontrolling_profit`.
+- Tax = `max(pretax_profit, 0) * effective_tax_rate`; no speculative tax
+  credit is created for losses. Nonpositive EPS leaves P/E value and entry
+  ceiling null rather than fabricating a fair price.
+- Net proceeds = `scenario_price * (1 - sell_costs) + net_dividends`.
+- Net return = `net_proceeds / (entry_price * (1 + buy_costs)) - 1`.
+- Entry ceiling = `net_proceeds / ((1 + required_net_return) * (1 + buy_costs))`.
+
+Cash dividends are not charged stock sale tax. Horizon returns are labeled
+through `valuation_date`, never relabeled as 12-month returns. Bear/base/bull
+names do not prove scenario price ordering or a maximum-loss bound; the
+output flags ordering failures. Input hashing permits change tracking,
+not independent source certification. Synthetic regression tests cover
+financial reconciliation, dilution, cash-dividend cost treatment, entry-price
+inversion, loss companies, input timestamps, units and false calibration.
