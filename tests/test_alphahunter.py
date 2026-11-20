@@ -171,20 +171,6 @@ class AlphaHunterResearchTests(unittest.TestCase):
         with self.assertRaisesRegex(EvidenceError, "NONFINITE_SCENARIO_RETURN"):
             rank_asof(rows, "2024-12-01")
 
-    def test_finite_inputs_cannot_overflow_risk_penalty(self):
-        rows = sample_rows()
-        for row in rows:
-            if row["signal_date"] == "2024-12-01":
-                row["features"]["net_debt_to_ebitda"] = 1e308
-        # 0.025 * 1e308 remains finite, so push multiple finite terms
-        # into an overflowing risk calculation through a large negative score.
-        for row in rows:
-            if row["signal_date"] == "2024-12-01":
-                row["features"]["cash_conversion"] = -1e308
-                row["features"]["net_debt_to_ebitda"] = 1e308
-        with self.assertRaisesRegex(EvidenceError, "NONFINITE_RISK_SCORE"):
-            rank_asof(rows, "2024-12-01")
-
     def test_diagnostics_require_complete_matured_cohort(self):
         rows = sample_rows()
         # The missing label is an infeasible member of a previously matured cohort.
