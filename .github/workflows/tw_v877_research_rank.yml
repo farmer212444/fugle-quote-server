@@ -348,7 +348,8 @@ jobs:
         run: python scripts/honhai_original_statements.py
       - name: Archive 6206 issuer-linked full consolidated statement PDFs (not A+)
         if: github.event_name != 'pull_request'
-        run: python scripts/flytech_full_original_statements.py --data-root tw-market-data --last 2026-Q2 --max-new 5 --max-twse-probes 5
+        run: |
+          python scripts/flytech_full_original_statements.py --data-root tw-market-data --last 2026-Q2 --max-new 5 --max-twse-probes 5
           python scripts/flytech_original_pdf_locator.py --data-root tw-market-data
       - name: Admit verified original-source review packs before valuation
         run: python scripts/v891_gate_certification.py --issue-only
@@ -402,7 +403,7 @@ jobs:
               python scripts/tsmc_sec_filing_archive.py
               python scripts/honhai_original_statements.py
               python scripts/flytech_full_original_statements.py --data-root tw-market-data --last 2026-Q2 --max-new 5 --max-twse-probes 5
-          python scripts/flytech_original_pdf_locator.py --data-root tw-market-data
+              python scripts/flytech_original_pdf_locator.py --data-root tw-market-data
               python scripts/v891_gate_certification.py --issue-only
               python scripts/run_research_pipeline.py --phase core
               python scripts/honhai_original_review_packet.py
