@@ -3,21 +3,21 @@
   "benchmark_id": "0050",
   "market": "TWSE",
   "month": "2026-11",
-  "last_source_checked_at_utc": "2026-11-19T08:38:17.542909+00:00",
+  "last_source_checked_at_utc": "2026-11-20T08:21:13.569377+00:00",
   "original_archive": {
     "schema": "HISTORICAL_EXCHANGE_ORIGINAL_V1",
     "market": "TWSE",
     "identity": "0050-2026-11",
     "source_url": "https://www.twse.com.tw/rwd/zh/afterTrading/STOCK_DAY?date=20261101&stockNo=0050&response=json",
-    "captured_at_utc": "2026-11-19T08:38:17.542633+00:00",
-    "archive_path": "prices/originals/history/TWSE/0050-2026-11/775621b6052f90320668518805e6ead155c9ae63041fd807915327331a6dbf89.json.gz",
-    "original_response_sha256": "775621b6052f90320668518805e6ead155c9ae63041fd807915327331a6dbf89",
-    "parsed_rows_sha256": "3bc0ce2c262fe207021a76ea9e752663da5ef3318fc48e496a701dd2e92b927e",
-    "bytes": 2259,
+    "captured_at_utc": "2026-11-20T08:21:13.569174+00:00",
+    "archive_path": "prices/originals/history/TWSE/0050-2026-11/58932dc345ff0ed79789fe155d67893f796171f7d6ec75e8bd764dcea7bcc2aa.json.gz",
+    "original_response_sha256": "58932dc345ff0ed79789fe155d67893f796171f7d6ec75e8bd764dcea7bcc2aa",
+    "parsed_rows_sha256": "e1c2938b1929be0582595805cd037a485310b34f9a1db633f052ca10e9d75f77",
+    "bytes": 2359,
     "issuer_publication_pit_verified": false,
     "contemporaneous_universe_verified": false,
     "fillability_verified": false,
-    "receipt_path": "prices/originals/history/TWSE/0050-2026-11/4839e56a807d080a76dc03ee092b93dee0abd022275a5969df2e605bf761a6f2.json"
+    "receipt_path": "prices/originals/history/TWSE/0050-2026-11/5f00bd79c868427ed1106a9094a073e9d5656e0f9a494fa9f5123495d6691c39.json"
   },
   "rows": [
     {
@@ -227,6 +227,21 @@
       "open": 94.05,
       "open_at": "2026-11-19T09:00:00+08:00",
       "close_at": "2026-11-19T13:30:00+08:00",
+      "fillability_verified": false,
+      "session_times_are_scheduled_not_broker_fills": true
+    },
+    {
+      "date": "2026-11-20",
+      "code": "0050",
+      "market": "TWSE",
+      "volume_shares": 874056273,
+      "turnover_ntd": 74858941327,
+      "close": 84.45,
+      "high": 88.05,
+      "low": 83.95,
+      "open": 87.25,
+      "open_at": "2026-11-20T09:00:00+08:00",
+      "close_at": "2026-11-20T13:30:00+08:00",
       "fillability_verified": false,
       "session_times_are_scheduled_not_broker_fills": true
     }
