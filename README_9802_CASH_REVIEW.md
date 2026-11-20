@@ -13,3 +13,14 @@ V8.10.8 重新解析既存公司原件，將 2026H1 營運現金流、帳齡、�
 執行 `python scripts/cash_quality_9802.py`，或完整研究流程，可產出 `tw-market-data/rankings/latest_9802_cash_review.json` 與同名 Markdown。主分支發布器會在重算後保存新報告。
 
 驗證：`python -m unittest -v tests.test_9802_cash_review`，既有全套測試與完整研究流程。
+
+
+## 2026Q3 原始財報數值補充（2026-11-15，僅研究）
+
+公司於 2026-11-05 通過 2026Q3 合併季報。PDF 列印頁 6、10、11、17、44 的資產負債、現金流、存貨與流動性數字已逐頁辨識；使用的轉載 PDF URL 和公司正式財報列表收錄於 `tw-market-data/evidence/v880/issuer_q3_cash_shadow/9802_2026Q3_partial_pdf_numbers.json`。目前尚未取得並 SHA256 封存完整 PDF 位元組，亦未核實發行人個別原始 MOPS PIT，因此證據層級為 **PDF 可視數值與算術核對，不是完整原件或 A+ 的正式認證**。
+
+獨立 `scripts/9802_q3_cash_shadow.py` 先驗算兩年的現金流項目、現金期初至期末、存貨成本減備抵等於淨值，再與既有 Q2 原件報告勾稽 H1 OCF；只在 Q2 原件核對通過時顯示 Q3 單季 OCF。輸出為 `tw-market-data/rankings/latest_9802_q3_cash_shadow.json` / `.md`，不覆寫 `latest_9802_cash_review`，也不把主模型 `cashflow_period` 自動設成 Q3。
+
+重要研究數字：2026 前三季 OCF 109,987 仟元、2025 同期 1,613,783 仟元；2026 Q3 單季 OCF +383,997 仟元（H1 -274,010 仟元）；2026 年前三季 PP&E 現金支出 1,047,566 仟元、簡化 FCF -937,579 仟元；2026/9/30 存貨淨值 3,432,388 仟元、備抵 113,203 仟元。9 月底未動用銀行額度 12,149,375 仟元並非現金，9 月底 CB 未折現到期分析面額 999,800 仟元不代表實際申請賣回額。尚無完整賣回申請、融資條款及各子公司可用現金核證。
+
+`python -m unittest -v tests.test_9802_q3_cash_shadow` 驗證範圍僅限模型不變量與算術。更新研究流程會輸出獨立 Q3 報告；不得將此補充視為品質門檻 PASS、調高 Base/Bull 估值或核發 A+。
