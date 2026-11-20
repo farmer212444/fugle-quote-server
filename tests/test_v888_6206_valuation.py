@@ -2,7 +2,7 @@ import unittest
 from scripts.v888_6206_valuation import calculate,SCENARIOS,positive,require
 
 def fixture():
-    baseline=dict(price_date="2026-10-16",model_vintage="2026-10-20T03:25:30+08:00",
+    baseline=dict(price_date="2026-10-21",model_vintage="2026-10-21T20:25:30+08:00",
                   current_financial_period="2026-Q2",model_version="V8.8.2",
                   existing_base_2027=dict(eps=9.5,target_price=148.0))
     src=dict(IR_h1=dict(first_captured_utc="2026-10-19T13:36:13+00:00",
@@ -14,7 +14,7 @@ def fixture():
                                H1_2026_receivables_m=1617))
     revenue=dict(revenue_9m_ntd_m=5135.677,ytd_yoy_pct=30.07,
         provenance=dict(capture_utc="2026-10-19T16:59:14+00:00"))
-    price=dict(close=134.5,date="2026-10-16",source="official")
+    price=dict(close=134.5,date="2026-10-21",source="official")
     return baseline,src,revenue,price
 
 class FlytechValuationTests(unittest.TestCase):
@@ -40,9 +40,23 @@ class FlytechValuationTests(unittest.TestCase):
         p["date"]="2026-10-19"
         with self.assertRaisesRegex(ValueError,"PRICE_DATE_NOT_MATCHED"):
             calculate(b,s,r,p)
+    def test_post_reference_close_capture_cannot_use_stale_close(self):
+        b,s,r,p=fixture()
+        # This receipt was captured after the 13:30 Taipei reference close,
+        # even though its capture predates model creation.
+        r["provenance"]["capture_utc"]="2026-10-21T07:00:00+00:00"
+        with self.assertRaisesRegex(ValueError,"SOURCE_CAPTURE_AFTER_REFERENCE_CLOSE"):
+            calculate(b,s,r,p)
+
+    def test_model_created_before_reference_close_rejected(self):
+        b,s,r,p=fixture()
+        b["model_vintage"]="2026-10-21T12:00:00+08:00"
+        with self.assertRaisesRegex(ValueError,"MODEL_VINTAGE_BEFORE_REFERENCE_CLOSE"):
+            calculate(b,s,r,p)
+
     def test_future_source_receipt_rejected(self):
         b,s,r,p=fixture()
-        r["provenance"]["capture_utc"]="2026-10-21T00:00:00+00:00"
+        r["provenance"]["capture_utc"]="2026-10-22T00:00:00+00:00"
         with self.assertRaisesRegex(ValueError,"FORWARD_VINTAGE"):
             calculate(b,s,r,p)
     def test_invalid_numbers_fail_closed(self):

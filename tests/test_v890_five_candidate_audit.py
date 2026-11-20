@@ -59,6 +59,25 @@ class FiveCandidateAuditTests(unittest.TestCase):
           financial_last_quarter="2026-Q2",formal_Aplus_count=0)
         with self.assertRaisesRegex(ValueError,"VINTAGE_MISMATCH"):
             validate_vintage(research,{"cash":financial})
+    def test_newer_monthly_2026_10_does_not_invalidate_q2_audit(self):
+        current=dict(estimate_vintage="2026-11-14T20:00:00+08:00",
+                     asof_price_date="2026-11-13",
+                     financial_last_quarter="2026-Q2",
+                     revenue_month="2026-10",formal_Aplus_count=0)
+        same=dict(estimate_vintage=current["estimate_vintage"],
+                  asof_price_date=current["asof_price_date"],
+                  financial_last_quarter=current["financial_last_quarter"],
+                  formal_Aplus_count=0)
+        self.assertIsNotNone(validate_vintage(current,{"cash":same,"shares":same,"risk":same}))
+
+    def test_monthly_after_reference_date_is_rejected(self):
+        current=dict(estimate_vintage="2026-11-14T20:00:00+08:00",
+                     asof_price_date="2026-11-13",
+                     financial_last_quarter="2026-Q2",
+                     revenue_month="2026-12",formal_Aplus_count=0)
+        with self.assertRaisesRegex(ValueError,"REVENUE_MONTH_INVALID_OR_FROM_FUTURE"):
+            validate_vintage(current,{})
+
     def test_total_focus_unique(self):
         self.assertEqual(len(FOCUS),5)
         self.assertEqual(len(set(FOCUS)),5)
