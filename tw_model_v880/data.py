@@ -67,6 +67,36 @@ def ensure_vintage(e,asof):
     if timestamp(e['snapshot_available_at'])>cut:raise ValueError('EVIDENCE_VINTAGE_FROM_FUTURE')
     times=[e.get('last_public_refresh',{}).get('at')]+[v.get('fetched_at') for v in e.get('official_current_bulk',{}).values()]+[v.get('fetched_at') for v in e.get('capital_sources',{}).values()]
     if any(timestamp(t)>cut for t in times if t):raise ValueError('EVIDENCE_COMPONENT_VINTAGE_FROM_FUTURE')
+def quarantine_post_price_close_events(events, states, price_date):
+    """Do not use post-reference-close earnings to rank that earlier close.
+
+    The source capture clock is a conservative *upper bound* on first public
+    availability, NOT proof of issuer publication PIT. A post-close capture
+    may be released earlier, but until the exact issuer timestamp is reviewed
+    the older reference price cannot support a new-earnings buy decision.
+    """
+    cutoff = timestamp(dt.date.fromisoformat(price_date).isoformat() + "T13:30:00+08:00")
+    admitted, decisions = dict(events), dict(states)
+    for code, event in events.items():
+        available_raw = event.get("available_at") if isinstance(event, dict) else None
+        try:
+            available = timestamp(available_raw) if isinstance(available_raw, str) else None
+        except (ValueError, TypeError, AttributeError):
+            available = None
+        if available is None or available > cutoff:
+            admitted.pop(code, None)
+            decisions[code] = dict(
+                status=("EARNINGS_CAPTURE_AFTER_REFERENCE_CLOSE" if available is not None
+                        else "EARNINGS_CAPTURE_TIME_MISSING_OR_INVALID"),
+                blocks_current_decision=True,
+                reference_price_date=price_date,
+                reference_price_session_cutoff=cutoff.isoformat(),
+                earnings_available_at=available_raw,
+                issuer_first_publication_PIT_verified=False,
+                needs_next_tradable_reference_price_or_verified_issuer_release=True)
+    return admitted, decisions
+
+
 class MarketData:
     def __init__(self,root,asof):
         self.root=pathlib.Path(root).resolve();self.asof=dt.date.fromisoformat(asof[:10]);self.errors=[];self.input_receipts=[]
@@ -169,6 +199,8 @@ class MarketData:
                     self.earnings_event_states[code]=dict(status='CONFLICTING_OFFICIAL_AND_ISSUER_EARNINGS',blocks_current_decision=True)
                 continue
             self.earnings_events[code]=event
+        self.earnings_events, self.earnings_event_states = quarantine_post_price_close_events(
+            self.earnings_events, self.earnings_event_states, self.price_date)
         for code,state in self.earnings_event_states.items():
             if state.get('blocks_current_decision'):
                 self.errors.append(dict(source='issuer_earnings_event:'+code,error=state.get('reason',state['status'])))
