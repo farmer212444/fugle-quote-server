@@ -450,6 +450,78 @@ class MarketwideInsiderTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             parse_irb110(("<table><tr><td>1234 公司</td><td>1,000,000</td>"+'<td>0</td>'*6+"</tr></table>").encode("big5"))
 
+    def test_official_202610_master_404_keeps_hashed_september_report(self):
+        """Real 2026-10 two-market 404 pattern: do not turn history into zero."""
+        from unittest.mock import patch
+        import scripts.insider_marketwide as insider
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            base = root / "tw-market-data" / "insider"
+            month = "2026-09"
+            # Two full-sized synthetic IRB110 originals; no network or fake
+            # issuer-month receipt is created for unavailable October.
+            for market, first in (("TWSE", 1000), ("TPEX", 5000)):
+                original = ("<table>" + "".join(
+                    f"<tr><td>{code} 測試</td><td>1000000</td>" +
+                    "<td>0</td>" * 6 + "</tr>"
+                    for code in range(first, first + 400)) + "</table>").encode("big5")
+                path = base / "irb110" / month / (market + ".json")
+                save_original(path, original,
+                              "https://siis.twse.com.tw/publish/test/115IRB110_09.HTM",
+                              month)
+            raw = body([row(name="已核對持有人", buy=1500, sell=200)])
+            for n in range(1, 10):
+                when = f"2026-{n:02d}"
+                target = base / "detail" / when / "1000.json"
+                receipt = save_original(target, raw,
+                                        "https://mops.twse.com.tw/mops/api/query6_1", when)
+                put_json(target, dict(receipt, code="1000", month=when,
+                                      market="TWSE", **parse_detail(raw)))
+            failures = [{"month": "2026-10", "market": market,
+                         "reason": "HTTP Error 404: Not Found"}
+                        for market in ("TWSE", "TPEX")]
+            argv = ["insider_marketwide.py", "--asof", "2026-11-17",
+                    "--base", str(base), "--max-details", "0"]
+            with patch("sys.argv", argv), patch.object(insider, "ROOT", root), \
+                 patch.object(insider, "capture_irb", return_value=failures):
+                self.assertEqual(insider.main(), 0)
+            path = root / "tw-market-data" / "rankings" / "insider_marketwide_latest.json"
+            published = json.loads(path.read_text(encoding="utf-8"))
+            self.assertEqual(published["months"][-1], "2026-09")
+            self.assertEqual(published["requested_months"][-1], "2026-10")
+            self.assertEqual(published["pending_master_months"], ["2026-10"])
+            self.assertEqual(published["complete_issuer_count"], 1)
+            self.assertEqual(published["observed_positive_issuer_count"], 1)
+            self.assertEqual(published["positive_buy_observed_sample_top100"][0]["buy_lots"], 13.5)
+            self.assertFalse(published["marketwide_rank_claim_permitted"])
+            self.assertEqual(published["collection"]["requested"], 0)
+            self.assertTrue(published["collection"]["prior_verified_months_reused"])
+            md = path.with_suffix(".md").read_text(encoding="utf-8")
+            self.assertIn("2026-01～2026-09", md)
+            self.assertIn("官方雙市場母體待補月份：2026-10", md)
+
+            # GitHub's post-rebase offline rebuild must use the *requested*
+            # scope, while keeping the actual published data period separate.
+            snapshot = root / "pre-rebase.json"
+            put_json(snapshot, published)
+            rebase_argv = argv + ["--rebuild-only", "--collection-state-file", str(snapshot)]
+            with patch("sys.argv", rebase_argv), patch.object(insider, "ROOT", root), \
+                 patch.object(insider, "capture_irb",
+                              side_effect=AssertionError("unexpected source request")):
+                self.assertEqual(insider.main(), 0)
+            replayed = json.loads(path.read_text(encoding="utf-8"))
+            self.assertEqual(replayed["complete_issuer_count"], 1)
+            self.assertEqual(replayed["pending_master_months"], ["2026-10"])
+            self.assertTrue(replayed["collection"]["offline_reconciled_after_rebase"])
+
+            # A corrupt September master never qualifies for fallback.
+            master_receipt = json.loads((base / "irb110" / month / "TWSE.json").read_text())
+            (base / "irb110" / month / master_receipt["raw_archive"]).write_bytes(b"corrupt")
+            selected, master = insider.latest_verified_master_window(
+                base, ["2026-09", "2026-10"])
+            self.assertEqual(selected, [])
+            self.assertEqual(master, {})
+
     def test_footwear_supply_chain_leads_are_priority_not_certified_buyers(self):
         # A third-party lead only changes the MOPS collection order. It never
         # creates a purchase, a zero-purchase finding or a certified holder.
