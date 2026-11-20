@@ -172,11 +172,15 @@ def score(row):
         for s in SCENARIOS
     }
     expected = sum(PROBABILITIES[s] * returns[s] for s in SCENARIOS)
+    if any(not math.isfinite(value) for value in returns.values()) or not math.isfinite(expected):
+        raise EvidenceError("NONFINITE_SCENARIO_RETURN")
     downside = max(0.0, -returns["bear"])
     f = row["features"]
     cash_penalty = 0.08 * max(0.0, 0.75 - f["cash_conversion"])
     debt_penalty = 0.025 * max(0.0, f["net_debt_to_ebitda"] - 2.0)
     risk_score = expected - 0.35 * downside - cash_penalty - debt_penalty
+    if not math.isfinite(risk_score):
+        raise EvidenceError("NONFINITE_RISK_SCORE")
     inflection = f["revenue_yoy"] >= 0.10 and f["gross_margin_change_pp"] >= 0.50
     return {
         "code": row["code"],
