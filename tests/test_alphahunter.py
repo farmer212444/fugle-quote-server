@@ -202,6 +202,14 @@ class AlphaHunterResearchTests(unittest.TestCase):
             self.assertEqual(out["status"], "BLOCKED")
             self.assertFalse(out["production_ranking_allowed"])
 
+    def test_extreme_finite_labels_cannot_overflow_oos_mean(self):
+        rows = sample_rows()
+        for row in rows:
+            if row["signal_date"] == "2023-01-01":
+                row["realized_total_return_12m"] = 1e308
+        with self.assertRaisesRegex(EvidenceError, "NONFINITE_OOS_COHORT_RETURN"):
+            matured_cohort_diagnostics(rows, "2024-12-01", top_n=5)
+
     def test_diagnostics_reject_invalid_top_n(self):
         for bad in (0, -1, True, 1.5, "2"):
             with self.subTest(top_n=bad), self.assertRaisesRegex(
