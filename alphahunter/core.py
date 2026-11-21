@@ -242,6 +242,8 @@ def matured_cohort_diagnostics(rows, evaluation_date, top_n=10):
                    for r in selected):
             continue
         realized = sum(r["realized_total_return_12m"] for r in selected) / len(selected)
+        if not math.isfinite(realized):
+            raise EvidenceError("NONFINITE_OOS_COHORT_RETURN")
         cohorts.append({"signal_date": signal, "selected_count": len(selected),
                         "mean_realized_total_return_12m": round(realized, 6)})
     return {
