@@ -202,6 +202,22 @@ class AlphaHunterResearchTests(unittest.TestCase):
             self.assertEqual(out["status"], "BLOCKED")
             self.assertFalse(out["production_ranking_allowed"])
 
+    def test_diagnostics_reject_invalid_top_n(self):
+        for bad in (0, -1, True, 1.5, "2"):
+            with self.subTest(top_n=bad), self.assertRaisesRegex(
+                    EvidenceError, "INVALID_TOP_N"):
+                matured_cohort_diagnostics(sample_rows(), "2024-12-01", top_n=bad)
+
+    def test_diagnostics_require_full_feasible_top_n(self):
+        # Never silently compare a smaller cohort portfolio against a
+        # fixed-number portfolio benchmark.
+        rows = sample_rows()
+        one = next(r for r in rows if r["signal_date"] == "2023-01-01")
+        one["execution_possible"] = False
+        out = matured_cohort_diagnostics(rows, "2024-12-01", top_n=5)
+        self.assertNotIn("2023-01-01", [r["signal_date"] for r in out["cohorts"]])
+        self.assertIn("2023-02-01", [r["signal_date"] for r in out["cohorts"]])
+
     def test_12m_diagnostics_exclude_unmatured_cohorts(self):
         out = matured_cohort_diagnostics(sample_rows(), "2024-12-01", top_n=2)
         self.assertTrue(out["cohorts"])
