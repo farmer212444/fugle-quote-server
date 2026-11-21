@@ -61,6 +61,12 @@ class AlphaMaxTests(unittest.TestCase):
         scores = [r["predicted_net_return_12m"] for r in out["candidates"]]
         self.assertEqual(scores, sorted(scores, reverse=True))
 
+    def test_walk_forward_rejects_noninteger_top_n(self):
+        for value in (0, -1, True, 1.5, "5"):
+            with self.subTest(top_n=value), self.assertRaisesRegex(
+                    ContractError, "TOP_N_MUST_BE_POSITIVE_INTEGER"):
+                walk_forward(sample_rows(), "2024-07-01", top_n=value)
+
     def test_walk_forward_only_matured_full_cohorts(self):
         rows = sample_rows()
         out = walk_forward(rows, "2024-07-01", top_n=5)
