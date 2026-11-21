@@ -221,6 +221,8 @@ def matured_cohort_diagnostics(rows, evaluation_date, top_n=10):
     end = _day(evaluation_date, "evaluation_date")
     if end > date.today():
         raise EvidenceError("EVALUATION_IN_FUTURE")
+    if not isinstance(top_n, int) or isinstance(top_n, bool) or top_n < 1:
+        raise EvidenceError("INVALID_TOP_N")
     checked = validate_rows(list(rows))
     cohorts = []
     for signal in sorted(set(r["signal_date"] for r in checked)):
@@ -232,7 +234,7 @@ def matured_cohort_diagnostics(rows, evaluation_date, top_n=10):
         ):
             continue
         selected = [r for r in cohort if r["execution_possible"]]
-        if not selected:
+        if len(selected) < top_n:
             continue
         selected = sorted(selected, key=lambda r: (-score(r)["risk_adjusted_research_score"], r["code"]))[:top_n]
         if not all(r["realized_total_return_12m"] is not None
