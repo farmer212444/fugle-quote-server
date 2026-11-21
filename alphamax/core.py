@@ -270,8 +270,8 @@ def walk_forward(rows, evaluation_asof, costs=None, top_n=10, min_history=80):
     """
     cutoff = _research_asof_date(evaluation_asof)
     _assert_12m_label_maturities(rows)
-    if top_n < 1:
-        raise ContractError("TOP_N_MUST_BE_POSITIVE")
+    if not isinstance(top_n, int) or isinstance(top_n, bool) or top_n < 1:
+        raise ContractError("TOP_N_MUST_BE_POSITIVE_INTEGER")
     costs = costs or TradingCosts()
     cohorts = []
     for signal in sorted({r["signal_date"] for r in rows}):
