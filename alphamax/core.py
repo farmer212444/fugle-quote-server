@@ -96,14 +96,28 @@ def _valid_12m_label_maturity(signal_date, label_available_at):
 
 
 def _assert_12m_label_maturities(rows):
-    """Protect direct fit/walk-forward callers, not just manifest ingestion."""
+    """Enforce label pairing, validity and uniqueness on direct research calls."""
+    seen = set()
     for row in rows:
-        if row.get("total_return_12m") is not None and (
-            row.get("label_available_at") is None
-            or not _valid_12m_label_maturity(
-                row["signal_date"], row["label_available_at"]
-            )
-        ):
+        if not isinstance(row, dict):
+            raise ContractError("INVALID_RESEARCH_ROW")
+        signal = parse_date(row.get("signal_date"))
+        code = row.get("code")
+        if not isinstance(code, str) or not code:
+            raise ContractError("INVALID_SECURITY")
+        key = (code, signal)
+        if key in seen:
+            raise ContractError("DUPLICATE_SECURITY_SIGNAL_DATE")
+        seen.add(key)
+        if type(row.get("execution_possible")) is not bool:
+            raise ContractError("EXECUTION_POSSIBLE_MUST_BE_BOOL")
+        y = row.get("total_return_12m")
+        maturity = row.get("label_available_at")
+        if y is None:
+            if maturity is not None:
+                raise ContractError("UNMATCHED_LABEL_MATURITY")
+        elif (not _finite_number(y) or y < -1 or maturity is None
+              or not _valid_12m_label_maturity(row["signal_date"], maturity)):
             raise ContractError("INVALID_OR_LEAKING_RETURN_LABEL")
 
 
