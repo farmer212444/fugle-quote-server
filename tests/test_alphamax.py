@@ -131,6 +131,30 @@ class AlphaMaxTests(unittest.TestCase):
         with self.assertRaisesRegex(ContractError, "INVALID_OR_LEAKING_RETURN_LABEL"):
             walk_forward(rows, "2024-07-01", top_n=5)
 
+    def test_direct_research_rejects_unpaired_and_invalid_labels(self):
+        for bad_return, bad_date, error in (
+            (None, "2021-01-01", "UNMATCHED_LABEL_MATURITY"),
+            (-1.01, "2021-01-06", "INVALID_OR_LEAKING_RETURN_LABEL"),
+            (float("nan"), "2021-01-06", "INVALID_OR_LEAKING_RETURN_LABEL"),
+            (True, "2021-01-06", "INVALID_OR_LEAKING_RETURN_LABEL"),
+        ):
+            with self.subTest(error=error, value=str(bad_return)):
+                rows = sample_rows()
+                rows[0]["total_return_12m"] = bad_return
+                rows[0]["label_available_at"] = bad_date
+                with self.assertRaisesRegex(ContractError, error):
+                    fit_asof(rows, "2023-11-01")
+                with self.assertRaisesRegex(ContractError, error):
+                    walk_forward(rows, "2024-07-01", top_n=5)
+
+    def test_direct_research_rejects_duplicate_security_signal(self):
+        rows = sample_rows()
+        rows.append(dict(rows[0]))
+        with self.assertRaisesRegex(ContractError, "DUPLICATE_SECURITY_SIGNAL_DATE"):
+            fit_asof(rows, "2023-11-01")
+        with self.assertRaisesRegex(ContractError, "DUPLICATE_SECURITY_SIGNAL_DATE"):
+            walk_forward(rows, "2024-07-01", top_n=5)
+
     def test_feb29_12m_maturity_boundary(self):
         rows = sample_rows()
         rows[0]["signal_date"] = "2020-02-29"
