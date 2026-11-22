@@ -19,6 +19,11 @@ def main():
         "receipt_verified_count": result["receipt_verified_count"],
         "asof_publication_snapshot_verified": result["asof_publication_snapshot_verified"],
         "investor_total_return_verified": result["investor_total_return_verified"],
+        "event_checks": [
+            {"event": event["event"], "status": event["status"],
+             "reason": event.get("reason", "")}
+            for event in result["events"]
+        ],
     }, sort_keys=True))
 
 
