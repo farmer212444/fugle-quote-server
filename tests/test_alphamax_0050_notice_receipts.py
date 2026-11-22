@@ -18,7 +18,7 @@ def source_html(event):
                 " 受益憑證最後交易日期：114年6月10日"
                 " 新受益憑證上市買賣日：114年6月18日")
     else:
-        body = (f"元大台灣卓越50基金 0050 收益分配 每受益權單位"
+        body = (f"元大台灣卓越50基金 證券代碼0050 收益分配 每受益權單位"
                 f"實際配發金額為新臺幣{cash}元；除息交易日:{ex_date}；"
                 f"收益分配發放日:{pay_date}")
     return (f"<html><body><table><tr><td>發言日期</td><td>{spoken}</td>"
@@ -62,6 +62,15 @@ class NoticeReceiptTests(unittest.TestCase):
             parse_notice(data.replace("2.7".encode(), "0.675".encode()), event)
         with self.assertRaisesRegex(ValueError, "REPORT_DATE_NOT_MATCHED"):
             parse_notice(data.replace("2025.01.15".encode(), "2025.01.16".encode()), event)
+
+    def test_dividend_text_may_omit_ticker_but_not_legal_issuer_name(self):
+        event = next(e for e in NOTICES if e[0] == "dividend_20250717")
+        body = source_html(event)
+        without_ticker = body.replace("證券代碼0050".encode(), b"")
+        self.assertEqual(parse_notice(without_ticker, event)["issuer"], "0050")
+        with self.assertRaisesRegex(ValueError, "NOTICE_WRONG_SECURITY"):
+            parse_notice(without_ticker.replace(
+                "元大台灣卓越50".encode(), "元大台灣高股息".encode()), event)
 
     def test_missing_announcement_must_be_reported_blocked(self):
         responses = {_url(e[1], e[2]): source_html(e) for e in NOTICES}
