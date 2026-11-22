@@ -56,7 +56,7 @@ class NoticeReceiptTests(unittest.TestCase):
     def test_wrong_payout_or_wrong_issuer_fails_closed(self):
         event = next(e for e in NOTICES if e[0] == "dividend_20250115")
         data = source_html(event)
-        with self.assertRaisesRegex(ValueError, "WRONG_SECURITY"):
+        with self.assertRaisesRegex(ValueError, "EXPLICIT_OTHER_SECURITY_CODE"):
             parse_notice(data.replace("0050".encode(), "0056".encode()), event)
         with self.assertRaisesRegex(ValueError, "DISTRIBUTION_CASH_NOT_CONFIRMED"):
             parse_notice(data.replace("2.7".encode(), "0.675".encode()), event)
