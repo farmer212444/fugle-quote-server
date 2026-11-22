@@ -2,7 +2,14 @@
 from __future__ import annotations
 
 import copy
+from decimal import Decimal
+import json
+from pathlib import Path
+import tempfile
 import unittest
+
+from alphamax.benchmark_0050_notice_receipts import NOTICES, _url, capture_notices
+from tests.test_alphamax_0050_notice_receipts import source_html
 
 from alphamax.benchmark_0050_action_audit import (
     CASH_DISTRIBUTION_REFERENCES, SPLIT_NOTICE_URL,
@@ -46,6 +53,48 @@ class Action0050Tests(unittest.TestCase):
                             for x in out["cash_distribution_reference_candidates"]))
         self.assertTrue(all(not x["original_fund_notice_bytes_and_payment_verified"]
                             for x in out["cash_distribution_reference_candidates"]))
+
+    def test_valid_originals_reconcile_split_vintage_and_reference_cash(self):
+        # Assumes a hypothetical uninterrupted holding of one original unit.
+        # Actual bank credit, PIT snapshots, and investor returns remain blocked.
+        with tempfile.TemporaryDirectory() as temp:
+            originals = {_url(e[1], e[2]): source_html(e) for e in NOTICES}
+            capture_notices(temp, fetch=lambda u: originals[u],
+                            captured_at="2026-11-22T11:30:00+00:00")
+            result = audit_0050_corporate_action_gaps(packet(), notice_root=temp)
+            proof = result["retrospective_notice_reverification"]
+            self.assertEqual(proof["verified_count"], 6)
+            self.assertEqual(len(proof["sha256_by_event"]), 6)
+            self.assertTrue(result["split_event"]["original_announcement_bytes_archived_and_verified"])
+            ledger = result["continuous_holding_reference_cash_entitlements"]
+            self.assertEqual([r["reference_units_per_original_pre_split_unit"]
+                              for r in ledger], [1, 4, 4, 4])
+            self.assertEqual([Decimal(r["reference_gross_cash_per_original_pre_split_unit_ntd"])
+                              for r in ledger],
+                             [Decimal("2.7"), Decimal("1.44"),
+                              Decimal("4"), Decimal("2.4")])
+            self.assertTrue(all(not r["actual_payment_verified"] for r in ledger))
+            self.assertFalse(result["reference_ledger_is_investor_total_return"])
+            self.assertFalse(result["daily_adjusted_investor_total_returns_verified"])
+            self.assertEqual(result["oos_12m_after_cost_cohorts_verified"], 0)
+            self.assertIn("0050_OFFICIAL_NOTICE_ASOF_PUBLICATION_VINTAGES_UNVERIFIED",
+                          result["blockers"])
+
+    def test_tampered_archived_original_blocks_reconciliation(self):
+        with tempfile.TemporaryDirectory() as temp:
+            originals = {_url(e[1], e[2]): source_html(e) for e in NOTICES}
+            cap = capture_notices(temp, fetch=lambda u: originals[u])
+            first = cap["events"][0]
+            file = Path(temp) / first["original_relative_path"]
+            file.write_bytes(file.read_bytes() + b"TAMPER")
+            result = audit_0050_corporate_action_gaps(packet(), notice_root=temp)
+            self.assertEqual(result["retrospective_notice_reverification"]["status"],
+                             "BLOCKED_0050_NOTICE_RECEIPT_VALIDATION")
+            self.assertFalse(result["split_event"]["original_announcement_bytes_archived_and_verified"])
+            self.assertEqual(result["continuous_holding_reference_cash_entitlements"], [])
+            self.assertFalse(result["daily_adjusted_investor_total_returns_verified"])
+            self.assertIn("0050_OFFICIAL_NOTICE_RETROSPECTIVE_ARCHIVE_INCOMPLETE",
+                          result["blockers"])
 
     def test_exchange_suspension_must_not_contain_price(self):
         for suspended in ("2025-06-11", "2025-06-13", "2025-06-17"):
