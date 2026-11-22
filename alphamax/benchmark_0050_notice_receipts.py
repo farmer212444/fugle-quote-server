@@ -79,9 +79,16 @@ def parse_notice(raw, event):
         raise ValueError("NOTICE_ENCODING_INVALID") from exc
     compact = re.sub(r"\s+", "", "".join(p.parts))
     event_id, day, _typ, kind, ex_date, pay_date, cash = event
-    if ("0050" not in compact or
-            not any(name in compact for name in ("元大台灣卓越50", "元大台灣50"))):
+    # Distribution notices identify the fund by its full legal name; the
+    # visible text can omit a ticker (while the exact TWSE URL pins fund=0050
+    # and company=A00005). Split notices also explicitly show the ticker.
+    if (not any(name in compact for name in ("元大台灣卓越50", "元大台灣50"))
+            or (kind == "split" and "0050" not in compact)):
         raise ValueError("NOTICE_WRONG_SECURITY")
+    explicit_codes = re.findall(
+        r"(?:證券代碼|證券代號|基金代碼)[:：]?([0-9]{4,6})", compact)
+    if any(code != "0050" for code in explicit_codes):
+        raise ValueError("NOTICE_EXPLICIT_OTHER_SECURITY_CODE")
     report_day = f"{day[:4]}.{day[4:6]}.{day[6:]}"
     if "發言日期" + report_day not in compact:
         raise ValueError("NOTICE_REPORT_DATE_NOT_MATCHED")
