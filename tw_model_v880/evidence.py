@@ -61,7 +61,8 @@ def verify_certificate_archives(document, data_root):
             raise ValueError("CERTIFICATE_UNKNOWN_GATE")
         if item.get("status") not in ("PASS","FAIL"):
             raise ValueError("CERTIFICATE_NOT_DECIDED")
-        if item.get("issuer")!=code or item.get("reviewed_by") is None:
+        if (item.get("issuer") != code or not isinstance(item.get("reviewed_by"), str)
+                or len(item["reviewed_by"].strip()) < 3):
             raise ValueError("CERTIFICATE_REVIEWER_OR_ISSUER_INVALID")
         if item.get("original_archive_sha256_recomputed") is not True or item.get("human_source_identity_review_documented") is not True:
             raise ValueError("CERTIFICATE_ORIGINAL_REVIEW_NOT_DOCUMENTED")
