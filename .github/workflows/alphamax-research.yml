@@ -134,13 +134,14 @@ jobs:
           python -m scripts.alphamax_0050_backfill \
             --data-root alphamax-0050-data --max-requests 4 --start-month 2025-01 \
             --output alphamax-0050-backfill-progress.json
-      - name: Audit 0050 official split chronology and unreconciled distributions
+      - name: Capture six dated 0050 TWSE split and distribution notices with source hashes
+        run: python -m scripts.alphamax_0050_notices --output-dir alphamax-0050-notice-capture
+      - name: Reconcile original 0050 notice receipts and pre/post split unit entitlements
         run: |
           python -m scripts.alphamax_0050_actions_audit \
             --packet alphamax-0050-data/prices/issuer_history/TWSE/0050.json \
+            --notice-root alphamax-0050-notice-capture \
             --output alphamax-0050-action-gap.json
-      - name: Capture six dated 0050 TWSE split and distribution notices with source hashes
-        run: python -m scripts.alphamax_0050_notices --output-dir alphamax-0050-notice-capture
       - name: Capture current official issuer profiles with original bytes and source receipts
         run: python scripts/alphamax_security_master.py --output-dir alphamax-profile-capture
       - name: Capture TWSE official retrospective delisting event ledger
@@ -260,6 +261,7 @@ jobs:
               out.write("- Historical listed/delisted membership certified: **NO** (current profiles cannot supply past membership)\n")
               out.write("- Prior AlphaMax raw-price cache: **%s**, reused months **%s**. CI scratch data kept separate from V8.\\n" % (restore.get("status", "BLOCKED"), restore.get("months_restored", "N/A")))
               out.write("- 0050 split/dividend action audit: **%s**; crossing 2025 4:1 split: **%s**; candidate distributions awaiting original issuer notices: **%s**. NO adjusted returns or verified OOS.\\n" % (action.get("status", "BLOCKED"), action.get("raw_prices_span_split_date", "unknown"), len(action.get("cash_distribution_reference_candidates", []))))
+              out.write("- 0050 linked notice checksum verification: **%s**, validated **%s/6**; theoretical continuous-holding gross cash entitlement references **%s**, never actual payment or realized total returns.\n" % (action.get("retrospective_notice_reverification", {}).get("status", "BLOCKED"), action.get("retrospective_notice_reverification", {}).get("verified_count", 0), len(action.get("continuous_holding_reference_cash_entitlements", []))))
               out.write("- 0050 retrospective TWSE notices: **%s**, %s/%s captured with SHA receipts; as-of publication version, actual payment, split holdings, and certified total returns still **BLOCKED**.\n" % (notices.get("status", "BLOCKED"), notices.get("receipt_verified_count", 0), notices.get("attempted", 6)))
               out.write("- 0050 official raw-price monthly backfill: **%s**; branch quote reference **%s**; requested months **%s**; still lacking durable original source **%s**; observed unadjusted sessions **%s**. Dividends, splits, total returns and PIT remain **BLOCKED**.\\n" %
                         (backfill.get("status", "BLOCKED"), backfill.get("asof", "N/A"),
