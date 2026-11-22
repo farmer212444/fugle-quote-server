@@ -8,6 +8,7 @@ import tempfile
 import unittest
 
 from scripts.alphamax_0050_restore import prepare_workspace
+from scripts.alphamax_pit_pk_gap_audit import stage_verified_0050_quote_cache
 from scripts.history_archive import archive_original
 from scripts.tw_history_backfill import combine
 
@@ -146,6 +147,43 @@ class Restored0050Tests(unittest.TestCase):
             prior_file.write_text(json.dumps(packet))
             with self.assertRaisesRegex(ValueError, "DERIVED_SESSIONS_MISMATCH"):
                 prepare_workspace(repo, Path(tmp) / "cache", previous)
+
+    def test_gap_audit_stages_only_receipt_checked_0050_price_cache(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            cache = Path(tmp) / "isolated-0050"
+            jan = make_month(cache, "2025-01", "2025-01-20")
+            octob = make_month(cache, "2026-10", "2026-10-30")
+            original = write_packet(
+                cache, {"2025-01": jan, "2026-10": octob}, asof="2026-11-09")
+            dest = Path(tmp) / "gap-research"
+            proof = stage_verified_0050_quote_cache(
+                cache, dest, main_price_asof="2026-11-20")
+            self.assertEqual(proof["monthly_receipts"], 2)
+            self.assertTrue(proof["price_only_not_total_return"])
+            self.assertFalse(proof["historical_pit_membership_certified"])
+            self.assertFalse(proof["external_source_authentication_certified"])
+            self.assertEqual((dest / "TWSE/0050.json").read_bytes(),
+                             original.read_bytes())
+
+    def test_gap_audit_rejects_future_or_tampered_0050_receipts(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            cache = Path(tmp) / "isolated-0050"
+            jan = make_month(cache, "2025-01", "2025-01-20")
+            packet_file = write_packet(cache, {"2025-01": jan}, asof="2026-11-09")
+            dest = Path(tmp) / "gap-research"
+            with self.assertRaisesRegex(
+                    ValueError, "CACHE_AFTER_PINNED_MAIN_QUOTE_CUTOFF"):
+                stage_verified_0050_quote_cache(
+                    cache, dest, main_price_asof="2026-11-08")
+            self.assertFalse((dest / "TWSE/0050.json").exists())
+            packet = json.loads(packet_file.read_text())
+            packet["sessions"][0]["close"] = 555
+            packet_file.write_text(json.dumps(packet))
+            with self.assertRaisesRegex(
+                    ValueError, "CACHED_DERIVED_SESSIONS_MISMATCH"):
+                stage_verified_0050_quote_cache(
+                    cache, dest, main_price_asof="2026-11-20")
+            self.assertFalse((dest / "TWSE/0050.json").exists())
 
     def test_cannot_use_v8_root_as_scratch_workspace(self):
         with tempfile.TemporaryDirectory() as tmp:
