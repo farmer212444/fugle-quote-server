@@ -8,7 +8,10 @@ may be computed by this module.
 from __future__ import annotations
 
 from datetime import date
+from decimal import Decimal
 from math import isfinite
+
+from alphamax.benchmark_0050_notice_receipts import verify_archived_notices
 
 SCHEMA = "ALPHAMAX_0050_ACTION_GAP_AUDIT_V1"
 SPLIT_NOTICE_URL = (
@@ -45,7 +48,53 @@ def _iso(x):
     return value
 
 
-def audit_0050_corporate_action_gaps(packet):
+def _retrospective_notice_evidence(root):
+    if root is None:
+        return {"status": "BLOCKED_0050_NOTICE_RECEIPTS_NOT_PROVIDED",
+                "verified_count": 0, "sha256_by_event": {}}
+    try:
+        return verify_archived_notices(root)
+    except (ValueError, OSError, TypeError, KeyError) as exc:
+        return {"status": "BLOCKED_0050_NOTICE_RECEIPT_VALIDATION",
+                "reason": str(exc)[:180], "verified_count": 0,
+                "sha256_by_event": {}}
+
+
+def _reference_entitlements(asof, hashes):
+    """One pre-split unit continuously held: *reference* entitlements only.
+
+    Values are sourced from the dated official notices, but this ledger does
+    not prove real-world holdings, tax, payment receipt, available-to-trade
+    timestamps, reinvestment prices or investment total return.
+    """
+    if len(hashes) != 6:
+        return []
+    ids = ("dividend_20250115", "dividend_20250717",
+           "dividend_20260120", "dividend_20260717")
+    out = []
+    for notice_id, (ex_day, pay_day, cash, basis) in zip(
+            ids, CASH_DISTRIBUTION_REFERENCES):
+        if _iso(ex_day) > asof:
+            continue
+        units = 1 if basis == "PRE_2025_SPLIT_UNIT" else POST_SPLIT_UNITS_PER_PRE_SPLIT_UNIT
+        raw_cash = Decimal(str(cash))
+        out.append({
+            "source_notice_event": notice_id,
+            "source_original_sha256": hashes[notice_id],
+            "ex_dividend_date": ex_day,
+            "scheduled_payment_date": pay_day,
+            "per_unit_gross_cash_reference_ntd": str(raw_cash),
+            "reference_units_per_original_pre_split_unit": units,
+            "reference_gross_cash_per_original_pre_split_unit_ntd":
+                str(raw_cash * units),
+            "hypothetical_continuous_holding_only": True,
+            "actual_payment_verified": False,
+            "historical_pit_entitlement_certified": False,
+        })
+    return out
+
+
+def audit_0050_corporate_action_gaps(packet, notice_root=None):
     if not isinstance(packet, dict) or packet.get("issuer") != "0050" or packet.get("market") != "TWSE":
         raise ValueError("0050_ACTION_AUDIT_SECURITY_IDENTITY_MISMATCH")
     asof = _iso(packet.get("price_reference_asof"))
@@ -73,6 +122,9 @@ def audit_0050_corporate_action_gaps(packet):
     before_split = any(d <= PRE_SPLIT_LAST_TRADING_DATE for d in dates)
     after_split = any(d >= SPLIT_REOPEN_DATE for d in dates)
     crosses = before_split and after_split
+    notice = _retrospective_notice_evidence(notice_root)
+    hashes = notice.get("sha256_by_event", {})
+    six_notices = notice.get("verified_count") == 6
     return {
         "schema": SCHEMA,
         "status": "BLOCKED_0050_SPLIT_AND_CASH_DISTRIBUTION_TOTAL_RETURN_LEDGER",
@@ -83,6 +135,9 @@ def audit_0050_corporate_action_gaps(packet):
         "first_raw_session": dates[0].isoformat(),
         "last_raw_session": dates[-1].isoformat(),
         "raw_prices_span_split_date": crosses,
+        "retrospective_notice_reverification": notice,
+        "continuous_holding_reference_cash_entitlements": _reference_entitlements(asof, hashes),
+        "reference_ledger_is_investor_total_return": False,
         "split_event": {
             "announced_at_taipei": SPLIT_ANNOUNCED_AT,
             "announcement_reference_url": SPLIT_NOTICE_URL,
@@ -91,7 +146,7 @@ def audit_0050_corporate_action_gaps(packet):
             "post_split_units_per_pre_split_unit": POST_SPLIT_UNITS_PER_PRE_SPLIT_UNIT,
             "raw_quote_at_last_pre_split_session": PRE_SPLIT_LAST_TRADING_DATE in seen,
             "raw_quote_at_first_post_split_session": SPLIT_REOPEN_DATE in seen,
-            "original_announcement_bytes_archived_and_verified": False,
+            "original_announcement_bytes_archived_and_verified": six_notices,
             "price_and_holdings_split_adjustment_ledger_verified": False,
         },
         "distribution_reference_url": DISTRIBUTION_REFERENCE_URL,
@@ -101,6 +156,12 @@ def audit_0050_corporate_action_gaps(packet):
                 "payment_date": payment_date,
                 "cash_paid_ntd_per_unit_at_event_vintage": cash,
                 "unit_basis": basis,
+                "retrospective_notice_original_sha256": hashes.get({
+                    "2025-01-17": "dividend_20250115",
+                    "2025-07-21": "dividend_20250717",
+                    "2026-01-22": "dividend_20260120",
+                    "2026-07-21": "dividend_20260717",
+                }[ex_date]),
                 "original_fund_notice_bytes_and_payment_verified": False,
                 "reconciled_to_adjusted_total_return": False,
             }
@@ -115,13 +176,15 @@ def audit_0050_corporate_action_gaps(packet):
         "formal_Aplus": False,
         "live_buy_authorized": False,
         "blockers": [
-            "0050_OFFICIAL_SPLIT_ORIGINAL_ANNOUNCEMENT_BYTES_NOT_ARCHIVED",
+            ("0050_OFFICIAL_NOTICE_ASOF_PUBLICATION_VINTAGES_UNVERIFIED"
+             if six_notices else "0050_OFFICIAL_NOTICE_RETROSPECTIVE_ARCHIVE_INCOMPLETE"),
             "0050_2025_4_FOR_1_SPLIT_ADJUSTED_HOLDINGS_AND_PRICE_LEDGER_MISSING",
-            "0050_CASH_DISTRIBUTION_ORIGINAL_NOTICES_AND_UNIT_VINTAGES_NOT_RECONCILED",
+            "0050_CASH_PAYMENT_AND_INVESTOR_ENTITLEMENT_PROOFS_MISSING",
             "0050_DIVIDEND_INCLUSIVE_TOTAL_RETURN_SERIES_NOT_INDEPENDENTLY_VERIFIED",
             "PIT_SECURITY_MASTER_AND_RESTATEMENT_RECEIPTS_MISSING",
         ],
-        "notice": "Reference event chronology is not an independently certified "
-                  "corporate-action ledger. Never divide pre/post-split raw prices "
-                  "or infer performance, model rankings, or investable returns.",
+        "notice": "Retrospective original source evidence and theoretical gross cash "
+                  "entitlements are NOT historical as-of snapshots, investor payment "
+                  "receipts or a split/dividend-adjusted total-return series. "
+                  "Never infer backtested performance, rankings or investable returns.",
     }
