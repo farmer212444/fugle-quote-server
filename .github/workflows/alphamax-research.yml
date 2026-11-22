@@ -287,7 +287,7 @@ jobs:
               out.write("- 0050 raw price-only comparison: **%s%%**; **NOT** dividend/corporate-action adjusted, investable P&L, a backtest, or a winner\n\n" % shadow.get("benchmark_0050", {}).get("raw_price_only_change_pct", "N/A"))
               out.write("### Independent historical training-evidence gap audit\n\n")
               out.write("- Audit state: **%s**; source main SHA: %s\n" % (gap["status"], gap.get("main_source_commit", "unknown")))
-              out.write("- 0050 quote evidence used in gap audit: **%s** (raw price only, not investor total return).\\n" % gap.get("benchmark_0050_quote_source", {}).get("status", "UNAVAILABLE"))
+              out.write("- 0050 quote evidence used in gap audit: **%s** (raw price only, not investor total return).\n" % gap.get("benchmark_0050_quote_source", {}).get("status", "UNAVAILABLE"))
               benchmark = gap.get("benchmark_0050", {})
               out.write("- 0050 saved quoted sessions / calendar span: **%s / %s days**; 12m raw-span candidate: **%s**\n" % (benchmark.get("priced_sessions", "missing"), benchmark.get("calendar_span_days", "missing"), benchmark.get("potential_12m_price_only_span", False)))
               for lane, label in (("alpha_lane", "Alpha human research"), ("v8_lane", "V8 Growth research")):
