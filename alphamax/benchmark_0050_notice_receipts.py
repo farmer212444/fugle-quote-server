@@ -178,3 +178,68 @@ def capture_notices(output, fetch=None, captured_at=None):
         json.dumps(report, ensure_ascii=False, sort_keys=True, indent=2) + "\n",
         encoding="utf-8")
     return report
+
+
+def verify_archived_notices(root):
+    """Recheck archived bytes, identities and amounts instead of trusting flags.
+
+    This is retrospective provenance only, NOT a historical as-of source copy
+    and NOT a receipt for cash credited to any investor's bank account.
+    """
+    root = Path(root)
+    manifest_path = root / "capture-manifest.json"
+    try:
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    except (OSError, UnicodeError, ValueError) as exc:
+        raise ValueError("0050_NOTICE_MANIFEST_UNAVAILABLE_OR_INVALID") from exc
+    if (not isinstance(manifest, dict) or manifest.get("schema") != SCHEMA
+            or manifest.get("issuer") != "0050"
+            or manifest.get("attempted") != len(NOTICES)):
+        raise ValueError("0050_NOTICE_MANIFEST_IDENTITY_OR_COVERAGE_MISMATCH")
+    entries = manifest.get("events")
+    if not isinstance(entries, list) or len(entries) != len(NOTICES):
+        raise ValueError("0050_NOTICE_EVENT_COUNT_MISMATCH")
+    by_id = {}
+    for item in entries:
+        if not isinstance(item, dict) or not isinstance(item.get("event"), str):
+            raise ValueError("0050_NOTICE_EVENT_INVALID")
+        if item["event"] in by_id:
+            raise ValueError("0050_NOTICE_DUPLICATE_EVENT")
+        by_id[item["event"]] = item
+    hashes = {}
+    reported = {}
+    for event in NOTICES:
+        event_id, day, kind = event[:3]
+        item = by_id.get(event_id)
+        if not item or item.get("status") != "RETROSPECTIVE_NOTICE_BYTES_AND_FIELDS_MATCHED":
+            raise ValueError("0050_NOTICE_MISSING_VERIFIED_EVENT:" + event_id)
+        if item.get("url") != _url(day, kind):
+            raise ValueError("0050_NOTICE_OFFICIAL_URL_MISMATCH:" + event_id)
+        digest = item.get("original_sha256")
+        if not isinstance(digest, str) or not re.fullmatch(r"[0-9a-f]{64}", digest):
+            raise ValueError("0050_NOTICE_SHA256_MISSING:" + event_id)
+        relative = "originals/" + event_id + "-" + digest + ".html"
+        if item.get("original_relative_path") != relative:
+            raise ValueError("0050_NOTICE_ARCHIVE_PATH_MISMATCH:" + event_id)
+        file = root / relative
+        if file.is_symlink() or not file.is_file():
+            raise ValueError("0050_NOTICE_ORIGINAL_FILE_MISSING:" + event_id)
+        raw = file.read_bytes()
+        if len(raw) != item.get("bytes") or sha256(raw).hexdigest() != digest:
+            raise ValueError("0050_NOTICE_ORIGINAL_HASH_MISMATCH:" + event_id)
+        parsed = parse_notice(raw, event)
+        if (item.get("reported_at_taipei") != parsed["reported_at_taipei"]
+                or item.get("issuer") != "0050"):
+            raise ValueError("0050_NOTICE_REPORTED_TIME_OR_ISSUER_MISMATCH:" + event_id)
+        hashes[event_id] = digest
+        reported[event_id] = parsed["reported_at_taipei"]
+    return {
+        "status": "SIX_RETROSPECTIVE_OFFICIAL_NOTICES_RECHECKED_NOT_PIT",
+        "verified_count": len(NOTICES),
+        "sha256_by_event": hashes,
+        "reported_at_taipei_by_event": reported,
+        "historical_asof_publication_copy_verified": False,
+        "cash_payment_receipt_verified": False,
+        "investor_total_return_verified": False,
+        "external_attestation_verified": False,
+    }
