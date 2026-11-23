@@ -6,14 +6,14 @@
   "path": "tw-market-data/prices/2026-11-23.json",
   "normalized_sha256": "f830960409d2954aaf3127f69ddbc892440f5def67018f7e6bec2ddb2d83f42e",
   "raw_source_sha256": {
-    "TWSE": "b0c828e30a09bd9ba31cdc8bf0b99d839a3e0c6bf564556f749ca559f6750de0",
+    "TWSE": "728d702c0cce712701adae52105fd4d85b0e67f960e3faabcb3a1a7124f9272b",
     "TPEX": "14b0a37fc6acb2cc547507b3adb1ca5956b14a403812aeb4a8f069089c8b5442"
   },
   "sources": {
-    "TWSE": "https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX?date=20261123&type=ALLBUT0999&response=json",
+    "TWSE": "https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL",
     "TPEX": "https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_close_quotes"
   },
-  "original_receipt_path": "originals/2026-11-23/b9091dbb0a2754da3fb3.json",
+  "original_receipt_path": "originals/2026-11-23/78df6e290ab3d98e784a.json",
   "unadjusted_quotes": true,
   "security_master_verified": false,
   "note": "Latest daily unadjusted close; not adjusted for cash dividends, splits or corporate actions."
