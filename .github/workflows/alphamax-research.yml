@@ -9,6 +9,7 @@ on:
       - 'scripts/alphamax_0050_restore.py'
       - 'scripts/alphamax_0050_actions_audit.py'
       - 'scripts/alphamax_0050_cash_reference.py'
+      - 'scripts/alphamax_0050_current_month.py'
       - 'scripts/alphamax_concentration.py'
       - 'scripts/alphamax_universe_audit.py'
       - 'scripts/alphamax_security_master.py'
@@ -23,6 +24,7 @@ on:
       - 'tests/test_alphamax_0050_restore.py'
       - 'tests/test_alphamax_0050_actions_audit.py'
       - 'tests/test_alphamax_0050_cash_reference.py'
+      - 'tests/test_alphamax_0050_current_month.py'
       - 'tests/test_alphamax_pk_exhibition.py'
       - 'tests/test_alphamax_pk_shadow_monitor.py'
       - 'tests/test_alphamax_pit_pk_gap_audit.py'
@@ -68,7 +70,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Run independent no-leakage and contract tests
-        run: python -m unittest -v tests.test_alphamax tests.test_alphamax_0050_backfill tests.test_alphamax_0050_restore tests.test_alphamax_0050_actions_audit tests.test_alphamax_0050_notice_receipts tests.test_alphamax_0050_milestones tests.test_alphamax_0050_cash_reference tests.test_alphamax_concentration tests.test_alphamax_earnings_bridge tests.test_alphamax_reported_income tests.test_alphamax_universe tests.test_alphamax_security_master tests.test_alphamax_delist tests.test_alphamax_tpex_delist tests.test_alphamax_pk_exhibition tests.test_alphamax_pk_shadow_monitor tests.test_alphamax_pit_pk_gap_audit
+        run: python -m unittest -v tests.test_alphamax tests.test_alphamax_0050_backfill tests.test_alphamax_0050_restore tests.test_alphamax_0050_actions_audit tests.test_alphamax_0050_notice_receipts tests.test_alphamax_0050_milestones tests.test_alphamax_0050_cash_reference tests.test_alphamax_0050_current_month tests.test_alphamax_concentration tests.test_alphamax_earnings_bridge tests.test_alphamax_reported_income tests.test_alphamax_universe tests.test_alphamax_security_master tests.test_alphamax_delist tests.test_alphamax_tpex_delist tests.test_alphamax_pk_exhibition tests.test_alphamax_pk_shadow_monitor tests.test_alphamax_pit_pk_gap_audit
       - name: Audit official source readiness; never fabricate returns
         run: |
           python scripts/alphamax_run.py readiness --output alphamax-research-readiness.json
@@ -136,6 +138,11 @@ jobs:
           python -m scripts.alphamax_0050_backfill \
             --data-root alphamax-0050-data --max-requests 4 --start-month 2025-01 \
             --output alphamax-0050-backfill-progress.json
+      - name: Refresh isolated 0050 current partial month against SHA-pinned daily quote
+        run: |
+          python -m scripts.alphamax_0050_current_month \
+            --data-root alphamax-0050-data \
+            --output alphamax-0050-current-month.json
       - name: Capture six dated 0050 TWSE split and distribution notices with source hashes
         run: python -m scripts.alphamax_0050_notices --output-dir alphamax-0050-notice-capture
       - name: Reconcile original 0050 notice receipts and pre/post split unit entitlements
@@ -262,6 +269,8 @@ jobs:
           restore = json.loads(restore_file.read_text()) if restore_file.exists() else {"status": "BLOCKED_0050_CACHE_RESTORE_MISSING"}
           action_file = Path("alphamax-0050-action-gap.json")
           action = json.loads(action_file.read_text()) if action_file.exists() else {"status": "BLOCKED_0050_CORPORATE_ACTION_AUDIT_MISSING"}
+          current_month_file = Path("alphamax-0050-current-month.json")
+          current_month = json.loads(current_month_file.read_text()) if current_month_file.exists() else {"status": "BLOCKED_CURRENT_MONTH_CAPTURE_MISSING", "raw_current_month_verified": False}
           cash_reference_file = Path("alphamax-0050-gross-rights-reference.json")
           cash_reference = json.loads(cash_reference_file.read_text()) if cash_reference_file.exists() else {"status": "BLOCKED_0050_GROSS_RIGHTS_REFERENCE_MISSING", "days": 0}
           milestone_file = Path("alphamax-0050-milestone-gap.json")
@@ -279,6 +288,7 @@ jobs:
               out.write("- Historical listed/delisted membership certified: **NO** (current profiles cannot supply past membership)\n")
               out.write("- Prior AlphaMax raw-price cache: **%s**, reused months **%s**. CI scratch data kept separate from V8.\\n" % (restore.get("status", "BLOCKED"), restore.get("months_restored", "N/A")))
               out.write("- 0050 split/dividend action audit: **%s**; crossing 2025 4:1 split: **%s**; candidate distributions awaiting original issuer notices: **%s**. NO adjusted returns or verified OOS.\\n" % (action.get("status", "BLOCKED"), action.get("raw_prices_span_split_date", "unknown"), len(action.get("cash_distribution_reference_candidates", []))))
+              out.write("- 0050 current-month original source versus daily SHA quote: **%s**, verified **%s**, raw quote date **%s** (no historical PIT / total return).\n" % (current_month.get("status", "BLOCKED"), current_month.get("raw_current_month_verified", False), current_month.get("latest_current_month_quote_date", "MISSING")))
               out.write("- 0050 1-original-unit gross entitlement daily reference: **%s**, price observations **%s**, NOT historical PIT, actual bank receipts, trading performance or certified total return.\n" % (cash_reference.get("status", "BLOCKED"), cash_reference.get("days", 0)))
               out.write("- 0050 date-exact price/split/dividend milestones: **%s**, %s observed; missing %s; NOT certified total return or historical PIT.\n" % (milestone.get("status", "BLOCKED"), milestone.get("aligned_milestones", 0), len(milestone.get("missing_or_unverified_milestones", []))))
               out.write("- 0050 linked notice checksum verification: **%s**, validated **%s/6**; theoretical continuous-holding gross cash entitlement references **%s**, never actual payment or realized total returns.\n" % (action.get("retrospective_notice_reverification", {}).get("status", "BLOCKED"), action.get("retrospective_notice_reverification", {}).get("verified_count", 0), len(action.get("continuous_holding_reference_cash_entitlements", []))))
@@ -349,6 +359,7 @@ jobs:
             alphamax-0050-action-gap.json
             alphamax-0050-milestone-gap.json
             alphamax-0050-gross-rights-reference.json
+            alphamax-0050-current-month.json
             alphamax-0050-notice-capture/
             alphamax-0050-data/prices/issuer_history/TWSE/0050.json
             alphamax-0050-data/prices/originals/history/TWSE/0050-*/
