@@ -49,6 +49,19 @@ def build_cash_reference(price_root, notice_root):
             "after_cost_12m_cohorts_verified": 0,
         }
     packet = _packet(Path(price_root) / RELATIVE_PACKET)
+    latest_raw_day = max(r["date"] for r in packet["sessions"])
+    if latest_raw_day != packet["price_reference_asof"]:
+        return {
+            "schema": SCHEMA,
+            "status": "BLOCKED_0050_REFERENCE_LAST_RAW_QUOTE_STALE",
+            "source_price_reference_asof": packet["price_reference_asof"],
+            "latest_raw_quote_day": latest_raw_day,
+            "missing_events": ["0050_RAW_PRICE_NOT_AT_PINNED_ASOF"],
+            "rows": [],
+            "eligible_for_pit_or_oos_training": False,
+            "investor_total_return_certified": False,
+            "after_cost_12m_cohorts_verified": 0,
+        }
     action = audit_0050_corporate_action_gaps(packet, notice_root=notice_root)
     entitlements = action["continuous_holding_reference_cash_entitlements"]
     if len(entitlements) != 4 or not action["raw_prices_span_split_date"]:
