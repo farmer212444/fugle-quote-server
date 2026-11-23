@@ -8,6 +8,7 @@ import unittest
 
 from alphamax.benchmark_0050_cash_reference import build_cash_reference
 from tests.test_alphamax_0050_milestones import create_sources
+from scripts.tw_history_backfill import combine
 
 
 class GrossCashReferenceTests(unittest.TestCase):
@@ -67,6 +68,21 @@ class GrossCashReferenceTests(unittest.TestCase):
             self.assertEqual(r["rows"], [])
             self.assertIn("EX_DIVIDEND_2:2025-07-21", r["missing_events"])
             self.assertFalse(r["eligible_for_pit_or_oos_training"])
+
+    def test_pinned_reference_price_date_requires_exact_latest_quote(self):
+        with tempfile.TemporaryDirectory() as temp:
+            prices, notices, packet_file = create_sources(temp)
+            doc = json.loads(packet_file.read_text())
+            doc["by_month"].pop("2026-11")
+            doc["sessions"] = combine(
+                {m: item["rows"] for m, item in doc["by_month"].items()},
+                "2026-11-20", "0050")
+            packet_file.write_text(json.dumps(doc))
+            result = build_cash_reference(prices, notices)
+            self.assertEqual(result["status"], "BLOCKED_0050_REFERENCE_LAST_RAW_QUOTE_STALE")
+            self.assertEqual(result["latest_raw_quote_day"], "2026-07-21")
+            self.assertEqual(result["rows"], [])
+            self.assertFalse(result["eligible_for_pit_or_oos_training"])
 
     def test_tampered_normalized_quote_does_not_emit_reference(self):
         with tempfile.TemporaryDirectory() as temp:
