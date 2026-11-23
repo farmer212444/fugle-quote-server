@@ -276,6 +276,20 @@ def irb_master(base, month):
             out[code] = dict(data, market=market)
     return out
 
+def latest_verified_master_window(base, requested_months):
+    """Fallback to the most recent two-market SHA-verified issuer master.
+
+    Only the returned prefix may be used for rankings. Later reportable
+    months without both official source archives remain explicitly pending,
+    never fabricated as months with zero market buys or sells.
+    """
+    for count in range(len(requested_months), 0, -1):
+        master = irb_master(base, requested_months[count - 1])
+        if master:
+            return requested_months[:count], master
+    return [], {}
+
+
 def verified_detail_receipt(base, month, code, row):
     """Only a source-hashed, schema-valid and numerically consistent filing is cached."""
     if not row or row.get("code") != code or row.get("month") != month:
@@ -607,12 +621,12 @@ def main():
         previous = get_json(args.collection_state_file)
         if (not isinstance(previous, dict)
                 or previous.get("schema") != "INSIDER_MARKETWIDE_YTD_V2"
-                or previous.get("months") != months
+                or previous.get("requested_months", previous.get("months")) != months
                 or not isinstance(previous.get("collection"), dict)):
             p.error("offline rebase requires a matching verified-run report for this window")
     failures = (previous.get("monthly_master_failures", []) if previous is not None
                 else capture_irb(base, months))
-    master = irb_master(base, months[-1]) if months else {}
+    verified_months, master = latest_verified_master_window(base, months)
     if master:
         if args.rebuild_only:
             # No MOPS or SIIS HTTP is permitted in this path; rebuild after
@@ -622,9 +636,16 @@ def main():
             state["offline_reconciled_after_rebase"] = True
             state["conflicting_receipt_policy"] = "UPSTREAM_POINTER_PREFERRED"
         else:
-            state = capture_details(base, months, master, args.max_details, args.gap,
+            state = capture_details(base, verified_months, master, args.max_details, args.gap,
                                     deadline=deadline)
-        result = build_ranking(base, months, master)
+        result = build_ranking(base, verified_months, master)
+        if verified_months != months:
+            # The latest official issuer master is unavailable, but earlier
+            # verified issuer-month receipts must not disappear from reporting.
+            # This is an older-period snapshot, NOT Jan-through-latest coverage.
+            result["status"] = "PENDING_LATEST_MASTER_PRIOR_VERIFIED_MONTHS_ONLY"
+            state["blocked"] = "OFFICIAL_LATEST_MONTH_TWO_MARKET_MASTER_MISSING"
+            state["prior_verified_months_reused"] = True
     else:
         state = {"requested": 0, "succeeded": 0, "errors": [],
                  "blocked": "OFFICIAL_LATEST_MONTH_TWO_MARKET_MASTER_MISSING"}
@@ -635,13 +656,18 @@ def main():
                   "positive_buy_observed_sample_top100": [], "positive_buy_complete_sample_top100": [],
                   "observed_selling_issuer_count": 0, "positive_sell_observed_sample_top100": [],
                   "positive_sell_complete_sample_top100": [], "all_observed_selling": []}
+    # Preserve the requested window separately for offline rebase and audit.
+    # result["months"] describes ONLY the verified published period.
+    result["requested_months"] = months
+    result["pending_master_months"] = months[len(verified_months):]
+    result["latest_verified_master_month"] = verified_months[-1] if verified_months else None
     result["attempted_at_utc"] = dt.datetime.now(dt.timezone.utc).isoformat()
     result["collection"] = state
     result["monthly_master_failures"] = failures
     output = ROOT / "tw-market-data" / "rankings" / "insider_marketwide_latest.json"
     put_json(output, result)
     md = ["# 上市櫃內部人2026年起有買進公司／股本比率",
-          "", "已完成申報月份：" + ("～".join((months[0], months[-1])) if months else "尚無"),
+          "", "已完成申報月份：" + ("～".join((verified_months[0], verified_months[-1])) if verified_months else "尚無"),
           f"狀態：{result['status']}；已觀察到買進 {result.get('observed_positive_issuer_count', 0)} 家，"
           f"完整核對本年度 {result['complete_issuer_count']} / {result['listed_otc_issuer_count']} 家",
           "",
@@ -651,6 +677,10 @@ def main():
           "內部人帳戶身分去重仍未正式認證；不更改模型EPS、PE、A+、Exit。",
           "", "|樣本序|股票|已核月份|買進張數|賣出張數|買進/股本|淨買/股本|淨買月數|",
           "|---:|---|---:|---:|---:|---:|---:|---:|"]
+    if result["pending_master_months"]:
+        md.insert(4, "官方雙市場母體待補月份：" +
+                  "、".join(result["pending_master_months"]) +
+                  "；上述數據僅限已驗證歷史月份，絕非待補月份的零買賣。")
     for i, r in enumerate(result["positive_buy_observed_sample_top100"], 1):
         md.append(f"|{i}|{r['code']}|{r['observed_month_count']}/{r['expected_ytd_month_count']}|"
                   f"{r['buy_lots']:,.1f}|{r['sell_lots']:,.1f}|"

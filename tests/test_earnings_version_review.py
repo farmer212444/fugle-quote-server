@@ -88,7 +88,18 @@ class EarningsVersionReview(unittest.TestCase):
         for doc in self.docs:self.assertIn(doc['archive_path'],after)
         # Keep the historical review tests above fixed; this is a current-source smoke check.
         data=MarketData(ROOT,dt.datetime.now(dt.timezone.utc).isoformat());paths={r['path'] for r in data.input_receipts}
-        self.assertIn(REVIEW,paths)
-        for doc in self.docs:self.assertIn(doc['archive_path'],paths)
+        # Every archived version still invalidates caches even after the formal
+        # 2026-Q3 filing supersedes the issuer's unaudited press release.
+        for source in [REVIEW]+[doc['archive_path'] for doc in self.docs]:
+            self.assertEqual(data.model_source_state[source],
+                             hashlib.sha256((ROOT/source).read_bytes()).hexdigest())
+        from tw_model_v880.math import quarter_key
+        if quarter_key(data.period)>=quarter_key('2026-Q3'):
+            # Superseded originals are inventoried, not falsely represented as
+            # financial inputs consumed in the current vintage.
+            self.assertNotIn(REVIEW,paths)
+        else:
+            self.assertIn(REVIEW,paths)
+            for doc in self.docs:self.assertIn(doc['archive_path'],paths)
 
 if __name__=='__main__':unittest.main()

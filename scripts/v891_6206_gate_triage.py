@@ -225,7 +225,47 @@ def check_report(probe, value, ir, history, independently_verified_daily_archive
                 gates=gates, note="Evidence reconciliation only. No synthetic/original-source claims, no gate PASS, no trade orders.")
 
 
+def pending_triage_report(value, progress, probe):
+    """Keep a missing 6206 current-vintage input explicit without stopping other issuers.
+
+    This diagnostic never supplies a substitute estimate or formal gate state.
+    Actual contradictions in a usable source still fail in check_report().
+    """
+    require(value.get("issuer") == CODE, "WRONG_ISSUER_VALUATION")
+    blockers = []
+    if value.get("status") != "SOURCE_RECONCILED_RESEARCH_ONLY_UNCERTIFIED":
+        blockers.append("6206_UPSTREAM_VALUATION_NOT_CURRENT_VINTAGE")
+        if value.get("error"):
+            blockers.append(str(value["error"])[:240])
+    if probe is None:
+        blockers.append("6206_NOT_IN_EVIDENCE_FOCUS")
+    require(blockers, "PENDING_TRIAGE_REQUIRES_EXPLICIT_BLOCKER")
+    return dict(schema="V891_6206_EVIDENCE_TRIAGE", issuer=CODE,
+                status="BLOCKED_SOURCE_OR_VINTAGE_NO_NEW_CERTIFICATION",
+                estimate_vintage=progress.get("estimate_vintage"),
+                price_date=progress.get("asof_price_date"),
+                upstream_valuation_status=value.get("status"),
+                blocking_reasons=blockers,
+                formal_Aplus=False, newly_certified_gates=0,
+                common_market_rank_unchanged=True, no_automatic_orders=True,
+                gates=[dict(gate=name, source_coverage="UNVERIFIED_FOR_CURRENT_VINTAGE",
+                            formal_status="PENDING",
+                            next_action=PLAN[name][1], automatically_certified=False)
+                       for name in GATES],
+                note="No estimated EPS, price, PASS, FAIL or transaction inferred from missing data.")
+
+
 def render_md(data):
+    if data.get("status") == "BLOCKED_SOURCE_OR_VINTAGE_NO_NEW_CERTIFICATION":
+        return "\n".join([
+            "# 6206 飛捷｜來源及版本待補（未進行正式認證）", "",
+            "狀態：BLOCKED_SOURCE_OR_VINTAGE_NO_NEW_CERTIFICATION",
+            "目前無法交叉核對的原因：" + "；".join(data["blocking_reasons"]),
+            "原有13項品質決定及正式A+維持不變；未補值、未估價、未下單。",
+            "", "|品質門檻|本次狀態|下一步|", "|---|---|---|",
+            *["|%s|未審核／不推定PASS或FAIL|%s|" % (g["gate"], g["next_action"])
+              for g in data["gates"]],
+            ""])
     lines = ["# 6206 飛捷｜13項A+認證障礙自動查核", "",
              "估值形成：" + data["estimate_vintage"] + "；官方參考股價日：" + data["price_date"] + "。", "",
              "共同模型2027 Base價 %.2f元、研究價差 %+.2f%%；獨立Base價 %.2f元。" %
@@ -271,28 +311,34 @@ def main():
         return json.loads((root / path).read_text(encoding="utf-8"))
     p884 = load("rankings/v884_evidence_progress.json")
     value = load("rankings/v888_6206_independent_valuation.json")
-    ir = load("ir/6206/manifest.json")
-    history = load("prices/issuer_history/TWSE/6206.json")
     probe = next((r for r in p884["top_priority_evidence"] if r["code"] == CODE), None)
-    require(probe is not None, "6206_NOT_IN_EVIDENCE_FOCUS")
-    common = value.get("original_common_model", {})
-    require(common.get("model_vintage") == p884.get("estimate_vintage")
-            and common.get("price_date") == p884.get("asof_price_date"),
-            "STALE_6206_EVIDENCE_MIX")
-    # Cross-check v884's proposed appended reference days against official
-    # daily bytes again, independent of the model's cached probe result.
-    from scripts.v884_evidence_probe import price_archive
-    manifest = load("prices/latest_manifest.json")
-    official_days, _ = price_archive(root, common["price_date"], manifest)
-    result = check_report(probe, value, ir, history,
-                          independently_verified_daily_archives=official_days)
+    if probe is None or value.get("status") != "SOURCE_RECONCILED_RESEARCH_ONLY_UNCERTIFIED":
+        # A Q3 financial/revenue rollover can invalidate the old independent
+        # 6206 valuation and exclude the issuer from the current probe.
+        # Publish a bounded, non-certifying blocker; do not use stale inputs.
+        result = pending_triage_report(value, p884, probe)
+    else:
+        ir = load("ir/6206/manifest.json")
+        history = load("prices/issuer_history/TWSE/6206.json")
+        common = value.get("original_common_model", {})
+        require(common.get("model_vintage") == p884.get("estimate_vintage")
+                and common.get("price_date") == p884.get("asof_price_date"),
+                "STALE_6206_EVIDENCE_MIX")
+        # Cross-check v884 proposed appended reference days against official
+        # daily bytes again; only usable same-vintage inputs reach check_report.
+        from scripts.v884_evidence_probe import price_archive
+        manifest = load("prices/latest_manifest.json")
+        official_days, _ = price_archive(root, common["price_date"], manifest)
+        result = check_report(probe, value, ir, history,
+                              independently_verified_daily_archives=official_days)
     dst = root / "rankings"
     (dst / "v891_6206_gate_triage.json").write_text(
         json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     (dst / "v891_6206_gate_triage.md").write_text(render_md(result), encoding="utf-8")
-    print(json.dumps(dict(issuer=CODE, reference_date=result["price_date"],
-                          matched_ir=result["issuer_presentation_receipts_matched"],
-                          history_20_days_checked=result["twenty_day_turnover_reconciled"],
+    print(json.dumps(dict(issuer=CODE, status=result.get("status", "SOURCE_RECONCILED_RESEARCH_ONLY_UNCERTIFIED"),
+                          reference_date=result["price_date"],
+                          matched_ir=result.get("issuer_presentation_receipts_matched"),
+                          history_20_days_checked=result.get("twenty_day_turnover_reconciled"),
                           newly_certified_gates=0), ensure_ascii=False))
 
 
