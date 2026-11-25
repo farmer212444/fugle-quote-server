@@ -86,9 +86,39 @@ class EarningsVersionReview(unittest.TestCase):
         before=model_source_state(self.root);self.review['review_note']='receipt update';self.save();after=model_source_state(self.root)
         self.assertNotEqual(before[REVIEW],after[REVIEW])
         for doc in self.docs:self.assertIn(doc['archive_path'],after)
-        # Keep the historical review tests above fixed; this is a current-source smoke check.
-        data=MarketData(ROOT,dt.datetime.now(dt.timezone.utc).isoformat());paths={r['path'] for r in data.input_receipts}
+        # A fixed pre-Q3 fixture tests actual consumption without depending on
+        # the live latest_scan quarter or admitting future production snapshots.
+        # Only the minimal market manifests are synthetic; both PDFs and the
+        # dated version review are copied unchanged from the real archive.
+        import gzip
+        def write(name,obj):
+            path=self.root/name;path.parent.mkdir(parents=True,exist_ok=True)
+            raw=json.dumps(obj).encode();path.write_bytes(raw)
+            return hashlib.sha256(raw).hexdigest()
+        price='prices/fixture.json'
+        price_hash=write(price,[dict(market='TWSE',code='9802',date='2026-10-23')])
+        write('prices/latest_manifest.json',dict(date='2026-10-23',path=price,normalized_sha256=price_hash))
+        write('latest_manifest.json',dict(period='2026-09',shards=[]))
+        raw=json.dumps(dict(snapshot_available_at='2026-10-23T00:00:00+08:00')).encode()
+        packed=gzip.compress(raw,mtime=0)
+        snapshot='evidence/v880/fixture.json.gz'
+        (self.root/snapshot).write_bytes(packed)
+        write('evidence/v880/manifest.json',dict(path=snapshot,gzip_sha256=hashlib.sha256(packed).hexdigest(),
+                                                json_sha256=hashlib.sha256(raw).hexdigest()))
+        write('fundamentals/latest_scan.json',dict(last_eligible_quarter='2026-Q2'))
+        data=MarketData(self.root,ASOF);paths={r['path'] for r in data.input_receipts}
+        self.assertIn('9802',data.earnings_events)
         self.assertIn(REVIEW,paths)
         for doc in self.docs:self.assertIn(doc['archive_path'],paths)
+        # After the complete Q3 period supersedes the press event, keep the
+        # sources in cache inventory but never claim they were consumed.
+        write('fundamentals/latest_scan.json',dict(last_eligible_quarter='2026-Q3'))
+        data=MarketData(self.root,ASOF);paths={r['path'] for r in data.input_receipts}
+        self.assertNotIn('9802',data.earnings_events)
+        self.assertNotIn(REVIEW,paths)
+        self.assertIn(REVIEW,data.model_source_state)
+        for doc in self.docs:
+            self.assertNotIn(doc['archive_path'],paths)
+            self.assertIn(doc['archive_path'],data.model_source_state)
 
 if __name__=='__main__':unittest.main()
