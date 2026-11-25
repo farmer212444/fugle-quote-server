@@ -165,6 +165,7 @@ def parse_tpex_json(raw, captured_at_utc):
     if not isinstance(tables, list) or not tables:
         raise ContractError("TPEX_DELIST_JSON_TABLES_MISSING")
     rows = []
+    matching_tables = []
     for table in tables:
         if not isinstance(table, dict):
             continue
@@ -173,9 +174,12 @@ def parse_tpex_json(raw, captured_at_utc):
             continue
         possible_code = [i for i,k in enumerate(headings) if any(s in str(k) for s in ("代號", "代碼"))]
         possible_name = [i for i,k in enumerate(headings) if "名稱" in str(k) or "簡稱" in str(k)]
-        possible_date = [i for i,k in enumerate(headings) if ("終止" in str(k) and ("日期" in str(k) or "上櫃" in str(k)))]
+        possible_date = [i for i,k in enumerate(headings) if "終止" in str(k) and "日期" in str(k)]
         if not possible_code or not possible_name or not possible_date:
             continue
+        if len(possible_code) != 1 or len(possible_name) != 1 or len(possible_date) != 1:
+            raise ContractError("TPEX_DELIST_JSON_AMBIGUOUS_TERMINATION_HEADERS")
+        matching_tables.append({"totalCount": table.get("totalCount"), "row_count": len(cells)})
         ci, ni, di = possible_code[0], possible_name[0], possible_date[0]
         reason_col = next((i for i,k in enumerate(headings) if "原因" in str(k)), None)
         for item in cells:
@@ -213,8 +217,16 @@ def parse_tpex_json(raw, captured_at_utc):
         raise ContractError("TPEX_DELIST_CAPTURE_TZ_REQUIRED")
     if any(date.fromisoformat(r["termination_effective_date"]) > stamp.astimezone(TZ_TAIPEI).date() for r in rows):
         raise ContractError("TPEX_DELIST_FUTURE_EFFECTIVE_DATE")
+    # Only the actual termination table can attest its pagination count.
+    # Multiple matching tables are observations, not a single complete annual slice.
+    total = matching_tables[0]["totalCount"] if len(matching_tables) == 1 else None
+    pagination_complete = type(total) is int and total == len(rows)
     return {
         "status": "TPEX_OFFICIAL_JSON_ROWS_READ_NOT_FULLY_PIT",
+        "source_reported_year": str(data.get("date", "")),
+        "source_totalCount": total,
+        "source_pagination_complete": pagination_complete,
+        "matching_termination_tables": matching_tables,
         "original_sha256": sha256(raw).hexdigest(), "bytes": len(raw),
         "encoding": enc, "captured_at_utc": stamp.astimezone(timezone.utc).isoformat(),
         "record_count": len(rows), "records_with_explicit_termination_date": len(rows),
@@ -385,15 +397,15 @@ def capture_tpex_delist(output_dir, *, captured_at_utc=None, legacy_fetch=None, 
     # Verify the source-reported year and totalCount before treating it as
     # complete, even if all returned rows are individually well-formed.
     if events and not found_legacy:
-        source = json.loads(raw.decode("utf-8-sig"))
-        current_year = int(str(source.get("date", "0")))
-        expected = source.get("tables", [{}])[0].get("totalCount")
+        reported_year = parsed["source_reported_year"]
+        current_year = int(reported_year) if re.fullmatch(r"\d{4}", reported_year) else 0
+        expected = parsed["source_totalCount"]
         year_matches = all(
             event["termination_effective_date"] is not None
             and event["termination_effective_date"].startswith(str(current_year))
             for event in events
         )
-        current_complete = (type(expected) is int and expected == len(events)
+        current_complete = (parsed["source_pagination_complete"]
                             and current_year == datetime.fromisoformat(stamp).astimezone(TZ_TAIPEI).year
                             and year_matches)
         discovery["current_year_source_verified"] = current_complete
@@ -411,18 +423,14 @@ def capture_tpex_delist(output_dir, *, captured_at_utc=None, legacy_fetch=None, 
                     raise ContractError("TPEX_DELIST_YEAR_BAD_RESPONSE")
                 name = f"tpex-year-{year}-probe.json"
                 (output / name).write_bytes(year_raw)
-                decoded = json.loads(year_raw.decode("utf-8-sig"))
                 record = parse_tpex_json(year_raw, stamp)
-                reported = str(decoded.get("date","")) if isinstance(decoded, dict) else ""
+                reported = record["source_reported_year"]
                 date_years = sorted({
                     str(r["termination_effective_date"])[:4]
                     for r in record["event_rows"]
                 })
-                total = (
-                    decoded.get("tables",[{}])[0].get("totalCount")
-                    if isinstance(decoded,dict) and decoded.get("tables") else None
-                )
-                complete = type(total) is int and total == record["record_count"]
+                total = record["source_totalCount"]
+                complete = record["source_pagination_complete"]
                 verified = reported == str(year) and date_years == [str(year)] and complete
                 discovery["year_filter_probes"].append({
                     "requested_year": year, "source_url": NEW_URL,
