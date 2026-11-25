@@ -174,6 +174,58 @@ class TpexDelistTests(unittest.TestCase):
             self.assertFalse(out["bounded_2021_2026_window_complete"])
             self.assertFalse(out["investment_certified"])
 
+    def test_pagination_count_must_belong_to_termination_table(self):
+        data = json.loads(self.mock_year_json(2026))
+        data["tables"][0]["totalCount"] = 2
+        data["tables"].insert(0, {"fields": ["其他資訊"], "data": [["x"]], "totalCount": 1})
+        raw = json.dumps(data, ensure_ascii=False).encode()
+        parsed = parse_tpex_json(raw, NOW)
+        self.assertEqual(parsed["source_totalCount"], 2)
+        self.assertFalse(parsed["source_pagination_complete"])
+        with TemporaryDirectory() as tmp:
+            out = capture_tpex_delist(tmp, captured_at_utc=NOW, page_limit=1,
+                legacy_fetch=lambda _: (_ for _ in ()).throw(OSError("legacy down")),
+                modern_fetch=lambda: raw)
+        self.assertNotIn(2026, out["verified_annual_slices"])
+        self.assertFalse(out["investment_certified"])
+
+    def test_unrelated_table_cannot_block_complete_termination_table(self):
+        data = json.loads(self.mock_year_json(2026))
+        data["tables"].insert(0, {"fields": ["其他資訊"], "data": [["x"]], "totalCount": 99})
+        raw = json.dumps(data, ensure_ascii=False).encode()
+        self.assertTrue(parse_tpex_json(raw, NOW)["source_pagination_complete"])
+        with TemporaryDirectory() as tmp:
+            out = capture_tpex_delist(tmp, captured_at_utc=NOW, page_limit=1,
+                legacy_fetch=lambda _: (_ for _ in ()).throw(OSError("legacy down")),
+                modern_fetch=lambda: raw)
+        self.assertEqual(out["verified_annual_slices"], [2026])
+        self.assertFalse(out["investment_certified"])
+
+    def test_historical_year_pagination_cannot_borrow_unrelated_count(self):
+        data = json.loads(self.mock_year_json(2024))
+        data["tables"][0]["totalCount"] = 2
+        data["tables"].insert(0, {"fields": ["其他資訊"], "data": [["x"]], "totalCount": 1})
+        raw = json.dumps(data, ensure_ascii=False).encode()
+        with TemporaryDirectory() as tmp:
+            with patch("alphamax.tpex_delist_ledger._fetch_modern",
+                       return_value=self.mock_year_json(2026)):
+                with patch("alphamax.tpex_delist_ledger._fetch_year",
+                           side_effect=lambda year: raw if year == 2024 else self.mock_year_json(year)):
+                    out = capture_tpex_delist(tmp, captured_at_utc=NOW, page_limit=1,
+                        legacy_fetch=lambda _: (_ for _ in ()).throw(OSError("legacy down")))
+        self.assertNotIn(2024, out["verified_annual_slices"])
+        self.assertEqual(out["event_count"], 5)
+        self.assertFalse(out["bounded_2021_2026_window_complete"])
+
+    def test_termination_reason_is_not_the_date_column(self):
+        data = json.loads(self.mock_year_json(2026))
+        table = data["tables"][0]
+        table["fields"][2], table["fields"][3] = table["fields"][3], table["fields"][2]
+        table["data"][0][2], table["data"][0][3] = table["data"][0][3], table["data"][0][2]
+        parsed = parse_tpex_json(json.dumps(data, ensure_ascii=False).encode(), NOW)
+        self.assertEqual(parsed["event_rows"][0]["termination_effective_date"], "2026-06-01")
+        self.assertTrue(parsed["source_pagination_complete"])
+
     def test_bad_capture_timezone_blocks(self):
         with self.assertRaisesRegex(ContractError,"TZ_REQUIRED"):
             capture_tpex_delist("/tmp/missing",captured_at_utc="2026-11-11T01:00:00",page_limit=1)
