@@ -129,6 +129,7 @@ def build_cash_reference(price_root, notice_root):
         "price_asof": packet["price_reference_asof"],
         "notice_originals_reverified": action["retrospective_notice_reverification"]["verified_count"],
         "source_verified_ex_date_events": len(processed),
+        "distribution_events": entitlements,
         "days": len(rows),
         "first_date": rows[0]["date"],
         "last_date": rows[-1]["date"],
@@ -149,6 +150,120 @@ def build_cash_reference(price_root, notice_root):
         "notice": "Not a return/wealth index, investable P&L or PIT signal. "
                   "Gross rights accrue on ex-dates; scheduled payment is not bank receipt. "
                   "No taxes, fees, reinvestment or actual trade execution proven.",
+    }
+
+
+
+def simulate_holding_period(price_root, notice_root, *, start, end,
+                            buy_fee_rate, sell_fee_rate, sell_tax_rate,
+                            expected_trading_days):
+    """Costed close-to-close simulation on revalidated retrospective sources.
+
+    Buy one raw-price unit at start close; sell all split-adjusted units at
+    end close. Gross cash distributions are not reinvested. Start-day
+    ex-dividends are excluded; end-day ex-dividends are included. Scheduled
+    cash is assumed paid on its announced date, never actual bank evidence.
+    The caller must supply a separately sourced instrument trading calendar
+    including both endpoints, excluding the split suspension. Matching that
+    list does not by itself authenticate its source or certify execution.
+    Fees/tax are explicit proportional assumptions (no minimum fee, rounding
+    or personal dividend tax). This output is NOT a training/OOS label.
+    """
+    def canonical_day(value):
+        if not isinstance(value, str):
+            raise ValueError("0050_SIM_INVALID_DATE")
+        parsed = date.fromisoformat(value)
+        if parsed.isoformat() != value:
+            raise ValueError("0050_SIM_NONCANONICAL_DATE")
+        return parsed
+
+    def rate(value):
+        if isinstance(value, bool) or not isinstance(value, (str, int, float, Decimal)):
+            raise ValueError("0050_SIM_INVALID_COST_RATE")
+        try:
+            r = Decimal(str(value))
+        except ArithmeticError as exc:
+            raise ValueError("0050_SIM_INVALID_COST_RATE") from exc
+        if not r.is_finite() or not Decimal("0") <= r < Decimal("1"):
+            raise ValueError("0050_SIM_INVALID_COST_RATE")
+        return r
+
+    begin, finish = canonical_day(start), canonical_day(end)
+    if begin >= finish:
+        raise ValueError("0050_SIM_START_MUST_PRECEDE_END")
+    buy_fee, sell_fee, sell_tax = map(rate, (buy_fee_rate, sell_fee_rate, sell_tax_rate))
+    if sell_fee + sell_tax >= 1:
+        raise ValueError("0050_SIM_INVALID_COMBINED_SELL_COST")
+    if not isinstance(expected_trading_days, (list, tuple)):
+        raise ValueError("0050_SIM_TRADING_CALENDAR_REQUIRED")
+    calendar = [canonical_day(x) for x in expected_trading_days]
+    if (not calendar or calendar != sorted(set(calendar))
+            or calendar[0] != begin or calendar[-1] != finish):
+        raise ValueError("0050_SIM_INVALID_CALENDAR_INTERVAL")
+    report = build_cash_reference(price_root, notice_root)
+    blocked = {
+        "schema": "ALPHAMAX_0050_COSTED_INTERVAL_SIMULATION_V1",
+        "start": start, "end": end,
+        "independent_calendar_source_verified": False,
+        "actual_trade_or_payment_verified": False,
+        "eligible_for_pit_or_oos_training": False,
+        "independent_total_return_benchmark_certified": False,
+        "after_cost_12m_cohorts_verified": 0,
+        "formal_a_plus": False,
+    }
+    if report["status"] != "RETROSPECTIVE_GROSS_CASH_RIGHTS_REFERENCE_NOT_PIT_OR_TOTAL_RETURN":
+        return blocked | {"status": "BLOCKED_0050_SIM_SOURCE_GAPS", "source_status": report["status"]}
+    rows = {r["date"]: r for r in report["rows"] if start <= r["date"] <= end}
+    expected = {d.isoformat() for d in calendar}
+    if set(rows) != expected:
+        return blocked | {"status": "BLOCKED_0050_SIM_CALENDAR_MISMATCH",
+                          "missing_sessions": sorted(expected - set(rows)),
+                          "unexpected_sessions": sorted(set(rows) - expected)}
+    first, last = rows[start], rows[end]
+    initial_scale = Decimal(first["mechanical_units_per_original_pre_split_unit"])
+    final_units = Decimal(last["mechanical_units_per_original_pre_split_unit"]) / initial_scale
+    initial_price = Decimal(first["source_price_only_close_ntd"])
+    sale_value = Decimal(last["source_price_only_close_ntd"]) * final_units
+    initial_outlay = initial_price * (1 + buy_fee)
+    net_sale = sale_value * (1 - sell_fee - sell_tax)
+    cash, receivable = Decimal("0"), Decimal("0")
+    applied = []
+    for event in report["distribution_events"]:
+        ex = event["ex_dividend_date"]
+        if not start < ex <= end:
+            continue
+        amount = Decimal(event["reference_gross_cash_per_original_pre_split_unit_ntd"]) / initial_scale
+        payment = event["scheduled_payment_date"]
+        if canonical_day(payment) < canonical_day(ex):
+            raise ValueError("0050_SIM_PAYMENT_PRECEDES_EX_DATE")
+        if payment <= end:
+            cash += amount
+        else:
+            receivable += amount
+        applied.append({"ex_date": ex, "scheduled_payment_date": payment,
+                        "gross_entitlement_ntd": _fmt(amount),
+                        "source_original_sha256": event["source_original_sha256"]})
+    # Cross-check independent event accumulation against the source-linked
+    # cumulative rights ledger, including start-day exclusion.
+    rights_delta = (Decimal(last["cumulative_gross_dividend_rights_reference_ntd"])
+                    - Decimal(first["cumulative_gross_dividend_rights_reference_ntd"])) / initial_scale
+    if cash + receivable != rights_delta:
+        raise ValueError("0050_SIM_ENTITLEMENT_RECONCILIATION_FAILED")
+    wealth = net_sale + cash + receivable
+    return blocked | {
+        "status": "RETROSPECTIVE_COSTED_SIMULATION_REQUIRES_INDEPENDENT_AUDIT",
+        "assumption": "ONE_ENTRY_UNIT_CLOSE_TO_CLOSE_NO_REINVESTMENT_GROSS_DIVIDENDS",
+        "calendar_matches_supplied_sessions": True,
+        "trading_sessions": len(rows),
+        "buy_fee_rate": _fmt(buy_fee), "sell_fee_rate": _fmt(sell_fee),
+        "sell_tax_rate": _fmt(sell_tax),
+        "initial_outlay_ntd": _fmt(initial_outlay),
+        "exit_units": _fmt(final_units), "net_sale_proceeds_ntd": _fmt(net_sale),
+        "simulated_scheduled_cash_ntd": _fmt(cash),
+        "dividend_receivable_ntd": _fmt(receivable),
+        "gross_entitlement_events": applied,
+        "terminal_wealth_ntd": _fmt(wealth),
+        "simulated_net_trade_cost_return_before_personal_tax": _fmt(wealth / initial_outlay - 1),
     }
 
 
