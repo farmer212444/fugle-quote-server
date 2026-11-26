@@ -168,5 +168,38 @@ class CostedIntervalSimulationTests(unittest.TestCase):
 
 
 
+class IndependentMarketCalendarTests(unittest.TestCase):
+    @staticmethod
+    def packet(rows):
+        return json.dumps({"stat": "OK", "fields": ["日期", "成交股數"],
+                           "data": rows}).encode()
+
+    def test_market_calendar_parses_roc_dates(self):
+        from alphamax.benchmark_0050_market_calendar import parse_market_sessions
+        self.assertEqual(parse_market_sessions(self.packet(
+            [["114/01/02", "1,000"], ["114/01/03", "2,000"]]), "202501"),
+            ["2025-01-02", "2025-01-03"])
+
+    def test_market_calendar_rejects_bad_rows(self):
+        from alphamax.benchmark_0050_market_calendar import parse_market_sessions
+        for rows in ([["114/01/02", "0"]],
+                     [["114/02/03", "1"]],
+                     [["114/01/04", "1"]],
+                     [["114/01/02", "1"], ["114/01/02", "2"]]):
+            with self.subTest(rows=rows), self.assertRaises(ValueError):
+                parse_market_sessions(self.packet(rows), "202501")
+
+    def test_calendar_source_failure_never_emits_return(self):
+        from alphamax.benchmark_0050_market_calendar import capture_pilot
+        def missing(url):
+            raise OSError("synthetic source failure")
+        with tempfile.TemporaryDirectory() as temp:
+            result = capture_pilot(temp, temp, temp, fetch=missing)
+            self.assertEqual(result["status"], "BLOCKED_0050_INDEPENDENT_CALENDAR")
+            self.assertEqual(len(result["errors"]), 13)
+            self.assertNotIn("simulation", result)
+            self.assertEqual(result["admitted_training_labels"], 0)
+
+
 if __name__ == "__main__":
     unittest.main()
