@@ -163,6 +163,12 @@ jobs:
             --price-root alphamax-0050-data \
             --notice-root alphamax-0050-notice-capture \
             --output alphamax-0050-gross-rights-reference.json
+      - name: Replay first mature 0050 pilot against independent market session receipts
+        run: |
+          python -m alphamax.benchmark_0050_market_calendar \
+            --price-root alphamax-0050-data \
+            --notice-root alphamax-0050-notice-capture \
+            --output-dir alphamax-0050-market-calendar
       - name: Capture current official issuer profiles with original bytes and source receipts
         run: python scripts/alphamax_security_master.py --output-dir alphamax-profile-capture
       - name: Capture TWSE official retrospective delisting event ledger
@@ -361,6 +367,7 @@ jobs:
             alphamax-0050-gross-rights-reference.json
             alphamax-0050-current-month.json
             alphamax-0050-notice-capture/
+            alphamax-0050-market-calendar/
             alphamax-0050-data/prices/issuer_history/TWSE/0050.json
             alphamax-0050-data/prices/originals/history/TWSE/0050-*/
             alphamax-pk-source/
