@@ -225,7 +225,35 @@ def check_report(probe, value, ir, history, independently_verified_daily_archive
                 gates=gates, note="Evidence reconciliation only. No synthetic/original-source claims, no gate PASS, no trade orders.")
 
 
+def rollover_pending(probe_report, value):
+    # This independent H1/September scenario deliberately has no Q3 assumptions.
+    # Only the two known vintage-rollover conditions may defer it; all other
+    # errors (including bad source hashes) remain fatal to this diagnostic.
+    if value.get("status") != "6206_EVIDENCE_OR_VINTAGE_PENDING":
+        return None
+    if value.get("error") not in (
+        "ValueError:REVENUE_MONTH_NOT_2026_09",
+        "ValueError:Q3_FINANCIAL_MODEL_ROLLOVER_REQUIRES_NEW_ASSUMPTIONS",
+    ):
+        return None
+    require(value.get("issuer") == CODE and value.get("formal_Aplus") is False,
+            "INVALID_PENDING_6206_VALUATION")
+    require(probe_report.get("estimate_vintage") and probe_report.get("asof_price_date"),
+            "MISSING_MODEL_VINTAGE")
+    return dict(schema="V891_6206_EVIDENCE_TRIAGE", issuer=CODE,
+                status="PENDING_HISTORICAL_SCENARIO_ROLLOVER",
+                estimate_vintage=probe_report["estimate_vintage"],
+                price_date=probe_report["asof_price_date"],
+                reason=value["error"], newly_certified_gates=0,
+                diagnostic_complete=False, formal_Aplus=None, gates=None)
+
+
 def render_md(data):
+    if data.get("status") == "PENDING_HISTORICAL_SCENARIO_ROLLOVER":
+        return ("# 6206 飛捷｜專項估值待更新\n\n"
+                "狀態：PENDING；原因：" + data["reason"] + "\n\n"
+                "舊H1／9月假設不可套用新季度；未核發任何PASS。"
+                "正式品質及價差請查閱同版本主模型證據帳本。\n")
     lines = ["# 6206 飛捷｜13項A+認證障礙自動查核", "",
              "估值形成：" + data["estimate_vintage"] + "；官方參考股價日：" + data["price_date"] + "。", "",
              "共同模型2027 Base價 %.2f元、研究價差 %+.2f%%；獨立Base價 %.2f元。" %
@@ -271,6 +299,14 @@ def main():
         return json.loads((root / path).read_text(encoding="utf-8"))
     p884 = load("rankings/v884_evidence_progress.json")
     value = load("rankings/v888_6206_independent_valuation.json")
+    pending = rollover_pending(p884, value)
+    if pending is not None:
+        from scripts.run_research_pipeline import atomic_json
+        dst = root / "rankings"
+        atomic_json(dst / "v891_6206_gate_triage.json", pending)
+        (dst / "v891_6206_gate_triage.md").write_text(render_md(pending), encoding="utf-8")
+        print(json.dumps(pending, ensure_ascii=False))
+        return
     ir = load("ir/6206/manifest.json")
     history = load("prices/issuer_history/TWSE/6206.json")
     probe = next((r for r in p884["top_priority_evidence"] if r["code"] == CODE), None)
