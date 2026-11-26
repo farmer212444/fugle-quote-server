@@ -6,7 +6,7 @@ import json
 import tempfile
 import unittest
 
-from alphamax.benchmark_0050_cash_reference import build_cash_reference
+from alphamax.benchmark_0050_cash_reference import build_cash_reference, simulate_holding_period
 from tests.test_alphamax_0050_milestones import create_sources
 from scripts.tw_history_backfill import combine
 
@@ -102,6 +102,70 @@ class GrossCashReferenceTests(unittest.TestCase):
             self.assertEqual(r["status"], "BLOCKED_0050_REFERENCE_SOURCE_OR_EVENT_GAPS")
             self.assertEqual(r["rows"], [])
             self.assertEqual(r["after_cost_12m_cohorts_verified"], 0)
+
+
+
+class CostedIntervalSimulationTests(unittest.TestCase):
+    def simulate(self, prices, notices, start, end, **overrides):
+        report = build_cash_reference(prices, notices)
+        dates = [r["date"] for r in report["rows"] if start <= r["date"] <= end]
+        params = dict(start=start, end=end, buy_fee_rate="0.001",
+                      sell_fee_rate="0.001", sell_tax_rate="0.001",
+                      expected_trading_days=dates)
+        params.update(overrides)
+        return simulate_holding_period(prices, notices, **params)
+
+    def test_split_and_costs_on_both_sides(self):
+        with tempfile.TemporaryDirectory() as temp:
+            prices, notices, _ = create_sources(temp)
+            out = self.simulate(prices, notices, "2025-06-10", "2025-06-18")
+            self.assertEqual(Decimal(out["exit_units"]), 4)
+            self.assertEqual(Decimal(out["initial_outlay_ntd"]), Decimal("200.2"))
+            self.assertEqual(Decimal(out["net_sale_proceeds_ntd"]), Decimal("199.6"))
+            self.assertEqual(Decimal(out["terminal_wealth_ntd"]), Decimal("199.6"))
+            self.assertEqual(out["gross_entitlement_events"], [])
+            self.assertFalse(out["independent_total_return_benchmark_certified"])
+            self.assertEqual(out["after_cost_12m_cohorts_verified"], 0)
+
+    def test_ex_date_entry_excludes_prior_dividend_and_post_split_units(self):
+        with tempfile.TemporaryDirectory() as temp:
+            prices, notices, _ = create_sources(temp)
+            out = self.simulate(prices, notices, "2025-07-21", "2026-01-22")
+            self.assertEqual(Decimal(out["exit_units"]), 1)
+            self.assertEqual([x["ex_date"] for x in out["gross_entitlement_events"]], ["2026-01-22"])
+            self.assertEqual(Decimal(out["simulated_scheduled_cash_ntd"]), 0)
+            self.assertEqual(Decimal(out["dividend_receivable_ntd"]), 1)
+            self.assertFalse(out["actual_trade_or_payment_verified"])
+
+    def test_exit_ex_date_included_but_not_scheduled_cash(self):
+        with tempfile.TemporaryDirectory() as temp:
+            prices, notices, _ = create_sources(temp)
+            out = self.simulate(prices, notices, "2025-06-18", "2025-07-21")
+            self.assertEqual(Decimal(out["dividend_receivable_ntd"]), Decimal("0.36"))
+            self.assertEqual(Decimal(out["simulated_scheduled_cash_ntd"]), 0)
+
+    def test_scheduled_cash_only_after_entitlement_and_payment_date(self):
+        with tempfile.TemporaryDirectory() as temp:
+            prices, notices, _ = create_sources(temp)
+            out = self.simulate(prices, notices, "2025-06-18", "2026-01-22")
+            self.assertEqual(Decimal(out["simulated_scheduled_cash_ntd"]), Decimal("0.36"))
+            self.assertEqual(Decimal(out["dividend_receivable_ntd"]), 1)
+
+    def test_missing_session_blocks_without_return(self):
+        with tempfile.TemporaryDirectory() as temp:
+            prices, notices, _ = create_sources(temp)
+            out = self.simulate(prices, notices, "2025-06-18", "2025-07-21",
+                expected_trading_days=["2025-06-18", "2025-06-19", "2025-07-21"])
+            self.assertEqual(out["status"], "BLOCKED_0050_SIM_CALENDAR_MISMATCH")
+            self.assertIn("2025-06-19", out["missing_sessions"])
+            self.assertNotIn("simulated_net_trade_cost_return_before_personal_tax", out)
+
+    def test_negative_fee_rejected(self):
+        with tempfile.TemporaryDirectory() as temp:
+            prices, notices, _ = create_sources(temp)
+            with self.assertRaisesRegex(ValueError, "INVALID_COST_RATE"):
+                self.simulate(prices, notices, "2025-06-10", "2025-06-18", buy_fee_rate="-0.01")
+
 
 
 if __name__ == "__main__":
