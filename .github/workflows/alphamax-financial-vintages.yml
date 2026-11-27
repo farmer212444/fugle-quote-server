@@ -4,9 +4,12 @@ on:
   pull_request:
     paths:
       - 'alphamax/financial_vintages.py'
+      - 'alphamax/financial_notice_receipts.py'
+      - 'alphamax/research/financial-notice-pilot/**'
       - 'alphamax/FINANCIAL_VINTAGES.md'
       - 'alphamax/research/financial-vintages/**'
       - 'tests/test_alphamax_financial_vintages.py'
+      - 'tests/test_alphamax_financial_notice_receipts.py'
       - '.github/workflows/alphamax-financial-vintages.yml'
 permissions:
   contents: read
@@ -23,62 +26,28 @@ jobs:
         with:
           python-version: '3.12'
       - name: Reject version leakage and changed original bytes
-        run: python -m unittest -v tests.test_alphamax_financial_vintages tests.test_alphamax_reported_income tests.test_alphamax
+        run: python -m unittest -v tests.test_alphamax_financial_notice_receipts tests.test_alphamax_financial_vintages tests.test_alphamax_reported_income tests.test_alphamax
       - name: Preserve actual official bytes with capture-time availability
         run: |
           python -m alphamax.financial_vintages \
             --archive-root alphamax/research/financial-vintages \
             --output alphamax-financial-vintages-report.json
-      - name: Probe one official historical correction notice without admitting versions
-        shell: python
+      - name: Reverify committed historical notice index and detail originals
         run: |
-          import gzip, hashlib, html, json, pathlib, re
-          from datetime import datetime, timezone
-          from urllib.parse import urlencode
-          from urllib.request import Request, urlopen
-          root = pathlib.Path("alphamax-financial-filing-probe")
-          root.mkdir(exist_ok=True)
-          url = "https://mopsov.twse.com.tw/mops/web/ajax_t05st01"
-          form = {"encodeURIComponent": "1", "step": "1", "firstin": "1",
-                  "off": "1", "isQuery": "Y", "TYPEK": "all", "co_id": "6967",
-                  "year": "114", "month": "08", "date1": "14", "date2": "14"}
-          report = {"status": "BLOCKED_ORIGINAL_CORRECTION_NOTICE_PROBE",
-                    "source_url": url, "method": "POST", "request_form": form,
-                    "code": "6967", "target_fiscal_period": "2025Q2",
-                    "original_first_filing_verified": False,
-                    "complete_revision_chain_verified": False,
-                    "admitted_historical_PIT_batches": 0}
-          try:
-              request = Request(url, data=urlencode(form).encode(),
-                                headers={"User-Agent": "Mozilla/5.0",
-                                         "Content-Type": "application/x-www-form-urlencoded"})
-              with urlopen(request, timeout=25) as response:
-                  if response.status != 200 or response.geturl().split("?")[0] != url:
-                      raise ValueError("UNEXPECTED_OFFICIAL_NOTICE_RESPONSE")
-                  raw = response.read(2_000_001)
-              if not 0 < len(raw) <= 2_000_000:
-                  raise ValueError("INVALID_OFFICIAL_NOTICE_SIZE")
-              text = html.unescape(re.sub(r"<[^>]+>", " ", raw.decode("utf-8-sig")))
-              compact = re.sub(r"[\s,]", "", text)
-              if not all(x in compact for x in ("6967", "汎瑋", "25637", "500000", "15:37:02", "更正")):
-                  raise ValueError("EXPECTED_CORRECTION_FIELDS_NOT_FOUND")
-              sha = hashlib.sha256(raw).hexdigest()
-              path = root / (sha + ".html.gz")
-              path.write_bytes(gzip.compress(raw, mtime=0))
-              report.update(status="RETROSPECTIVE_CORRECTION_NOTICE_FIELDS_MATCHED_NOT_FULL_PIT",
-                            original_sha256=sha, original_path=path.name,
-                            note="One correction notice is not the superseded full statement or its first publication clock.")
-          except (OSError, ValueError, TypeError) as exc:
-              report["reason"] = type(exc).__name__ + ":" + str(exc)
-          report["observed_at"] = datetime.now(timezone.utc).isoformat()
-          (root / "report.json").write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n")
-          print("FINANCIAL_FILING_PROBE " + json.dumps(report, ensure_ascii=False))
+          python -m alphamax.financial_notice_receipts \
+            --output-dir alphamax/research/financial-notice-pilot --verify-only
+      - name: Capture historical financial notice indexes and details with source receipts
+        run: |
+          python -m alphamax.financial_notice_receipts \
+            --output-dir alphamax-financial-filing-probe
       - name: Export reviewable source checkpoint without changing any branch
         shell: python
         run: |
           import base64, hashlib, json, pathlib, subprocess
           report = json.loads(pathlib.Path("alphamax-financial-vintages-report.json").read_bytes())
           print("FINANCIAL_CAPTURE_REPORT " + json.dumps(report, ensure_ascii=False))
+          notice = json.loads(pathlib.Path("alphamax-financial-filing-probe/audit-report.json").read_bytes())
+          print("FINANCIAL_NOTICE_AUDIT " + json.dumps(notice, ensure_ascii=False))
           if report.get("status") == "OBSERVED_FINANCIAL_VERSIONS_CAPTURED_NOT_HISTORICAL_PIT":
               files = subprocess.check_output(
                   ["git", "ls-files", "--others", "--modified", "--exclude-standard", "--",
@@ -96,7 +65,8 @@ jobs:
               out.write("- Capture status: **%s**\n" % report["status"])
               out.write("- New observed versions: **%s**\n" % report.get("new_versions", 0))
               out.write("- Historical PIT filing batches admitted: **0**\n")
-              out.write("- First-filing and correction clocks remain unverified; no model PK, A+ or trading.\n")
+              out.write("- Historical notice pairs reverified: **%s**; original filing clocks remain unverified.\n" % notice.get("verified_notices", 0))
+              out.write("- No model PK, A+ or trading.\n")
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -104,5 +74,6 @@ jobs:
           path: |
             alphamax-financial-vintages-report.json
             alphamax-financial-filing-probe/
+            alphamax/research/financial-notice-pilot/
             alphamax/research/financial-vintages/
           retention-days: 90

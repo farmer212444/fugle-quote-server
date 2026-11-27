@@ -40,3 +40,27 @@ reproduce old and new views before extending to the agreed historical universe.
 
 If first-filing timestamps or superseded bytes are unavailable, keep the older
 period BLOCKED; new observed captures can only support prospective research.
+
+## Historical financial-notice pilot (2026-11-27)
+
+The earlier probe posted only an index request and checked for amounts that exist
+in a separate detail document. It also used date1/date2 instead of the actual
+b_date/e_date fields. The repaired reader selects an exact company/date/time/title
+index row, parses its five whitelisted detail assignments without evaluating
+JavaScript, and preserves the parent form's year, month and other hidden inputs.
+Both index and detail originals are saved before parsing, including rejected HTML.
+
+The bounded 6967 2025Q2 pilot preserves its board financial-release notice
+(2025-08-13 14:01:48 Taipei) and correction notice (2025-08-14 15:37:02 Taipei),
+with four original index/detail responses, request receipts and SHA-256 hashes.
+The correction states treasury-share counts before and after correction. Its
+publication does not establish when the superseded iXBRL was originally filed
+or when the corrected iXBRL upload completed. The earlier share value has no
+assigned historical availability time.
+
+Run the offline receipt audit:
+    python -m alphamax.financial_notice_receipts --output-dir alphamax/research/financial-notice-pilot --verify-only
+
+This is retrospective original-notice evidence, not a historical as-published
+snapshot or a complete financial revision chain. Financial training admission,
+formal model OOS, A+ and model winner status remain blocked.
