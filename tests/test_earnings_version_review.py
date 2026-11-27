@@ -121,4 +121,59 @@ class EarningsVersionReview(unittest.TestCase):
             self.assertNotIn(doc['archive_path'],paths)
             self.assertIn(doc['archive_path'],data.model_source_state)
 
+
+class OfficialQuarterSeedFallbackTests(unittest.TestCase):
+    def setUp(self):
+        from tw_model_v880.data import archived_current_income
+        self.load_seed=archived_current_income
+        tmp=tempfile.TemporaryDirectory();self.addCleanup(tmp.cleanup)
+        self.root=Path(tmp.name)
+        self.path=self.root/'financial/2026Q3/TWSE_income.json'
+        self.path.parent.mkdir(parents=True)
+        self.manifest=self.root/'financial/latest_manifest.json'
+        self.rows=[{'公司代號':'2330','年度':'115','季別':'3',
+                    '營業收入':'100','營業毛利（毛損）淨額':'50',
+                    '營業利益（損失）':'30','稅前淨利（淨損）':'28',
+                    '本期淨利（淨損）':'22','淨利（淨損）歸屬於母公司業主':'20'}]
+        self.doc=dict(schema='v879-quarterly-seed-v1',captured_utc='2026-11-26T01:00:00+00:00',
+            sources=[dict(kind='TWSE_income',period='2026Q3',
+                url='https://openapi.twse.com.tw/v1/opendata/t187ap06_L_ci',
+                path='tw-market-data/financial/2026Q3/TWSE_income.json')])
+        self.save()
+    def save(self):
+        raw=json.dumps(self.rows,ensure_ascii=False).encode()
+        self.path.write_bytes(raw)
+        self.doc['sources'][0].update(normalized_sha256=hashlib.sha256(raw).hexdigest(),issuer_rows=len(self.rows))
+        self.manifest.write_text(json.dumps(self.doc))
+    def load(self,period='2026-Q3',asof='2026-11-27T00:00:00+00:00'):
+        return self.load_seed(self.root,period,asof,'TWSE')
+    def test_current_quarter_seed_keeps_real_fields_and_rejects_stale_or_future(self):
+        _,p,rows=self.load()
+        self.assertEqual(p,self.path)
+        self.assertEqual(rows,self.rows)
+        self.assertIsNone(self.load(period='2026-Q2'))
+        with self.assertRaisesRegex(ValueError,'CAPTURE_FROM_FUTURE'):
+            self.load(asof='2026-11-25T00:00:00+00:00')
+        self.path.write_bytes(b'[]')
+        with self.assertRaisesRegex(ValueError,'NORMALIZED_HASH_MISMATCH'):
+            self.load()
+    def test_mixed_quarter_duplicate_and_unapproved_source_are_rejected(self):
+        self.rows.append(dict(self.rows[0]));self.save()
+        with self.assertRaisesRegex(ValueError,'DUPLICATE_ISSUER'):self.load()
+        self.rows.pop();self.rows[0]['季別']='2';self.save()
+        with self.assertRaisesRegex(ValueError,'ROW_PERIOD_MISMATCH'):self.load()
+        self.rows[0]['季別']='3';self.doc['sources'][0]['url']='https://example.org/other';self.save()
+        with self.assertRaisesRegex(ValueError,'SOURCE_OR_PATH_MISMATCH'):self.load()
+    def test_seed_manifest_and_bytes_invalidate_model_cache(self):
+        for name in ('prices/latest_manifest.json','fundamentals/latest_scan.json','latest_manifest.json','evidence/v880/manifest.json'):
+            p=self.root/name;p.parent.mkdir(parents=True,exist_ok=True);p.write_text('{}')
+        before=model_source_state(self.root)
+        self.assertIn('financial/latest_manifest.json',before)
+        rel='financial/2026Q3/TWSE_income.json'
+        self.assertIn(rel,before)
+        self.rows[0]['稅前淨利（淨損）']='29';self.save()
+        after=model_source_state(self.root)
+        self.assertNotEqual(before[rel],after[rel])
+        self.assertNotEqual(before['financial/latest_manifest.json'],after['financial/latest_manifest.json'])
+
 if __name__=='__main__':unittest.main()
