@@ -1,0 +1,152 @@
+name: AlphaMax Parallel Evidence Lanes
+on:
+  push:
+    branches:
+      - 'sprint/alphamax-parallel-ci-20261128'
+  pull_request:
+    branches:
+      - 'feature/alphamax-v1-independent-research'
+    paths:
+      - 'alphamax/**'
+      - 'scripts/alphamax*'
+      - 'tests/test_alphamax*'
+      - '.github/workflows/alphamax-parallel-evidence.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: alphamax-parallel-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  evidence:
+    name: ${{ matrix.lane }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      max-parallel: 10
+      matrix:
+        include:
+          - lane: 01-financial-pit
+            modules: tests.test_alphamax_financial_vintages tests.test_alphamax_financial_notice_receipts
+            audit: none
+          - lane: 02-reported-income
+            modules: tests.test_alphamax_reported_income
+            audit: none
+          - lane: 03-historical-universe
+            modules: tests.test_alphamax_universe tests.test_alphamax_security_master
+            audit: universe
+          - lane: 04-delisted-issuers
+            modules: tests.test_alphamax_delist tests.test_alphamax_tpex_delist
+            audit: none
+          - lane: 05-raw-price-evidence
+            modules: tests.test_alphamax_0050_backfill tests.test_alphamax_0050_restore tests.test_alphamax_0050_current_month
+            audit: none
+          - lane: 06-corporate-actions
+            modules: tests.test_alphamax_0050_actions_audit tests.test_alphamax_0050_notice_receipts tests.test_alphamax_0050_milestones tests.test_alphamax_0050_cash_reference
+            audit: none
+          - lane: 07-operating-valuation
+            modules: tests.test_alphamax_earnings_bridge
+            audit: none
+          - lane: 08-concentration-gates
+            modules: tests.test_alphamax_concentration
+            audit: concentration
+          - lane: 09-model-contract
+            modules: tests.test_alphamax
+            audit: readiness
+          - lane: 10-pk-gap-audit
+            modules: tests.test_alphamax_pk_exhibition tests.test_alphamax_pk_shadow_monitor tests.test_alphamax_pit_pk_gap_audit
+            audit: none
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run isolated regression lane
+        shell: bash
+        env:
+          TEST_MODULES: ${{ matrix.modules }}
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          git rev-parse HEAD > evidence/commit.txt
+          printf '%s\n' "$TEST_MODULES" > evidence/modules.txt
+          read -r -a modules <<< "$TEST_MODULES"
+          python -m unittest -v "${modules[@]}" 2>&1 | tee evidence/tests.log
+      - name: Generate independent diagnostic where supported
+        shell: bash
+        env:
+          AUDIT: ${{ matrix.audit }}
+        run: |
+          set -euo pipefail
+          case "$AUDIT" in
+            universe) python scripts/alphamax_universe_audit.py --output evidence/universe.json ;;
+            concentration) python scripts/alphamax_concentration.py --output evidence/concentration.json ;;
+            readiness) python scripts/alphamax_run.py readiness --output evidence/readiness.json ;;
+            none) echo "Offline regression only; no new source admission." ;;
+            *) exit 2 ;;
+          esac
+      - name: Preserve isolated evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: alphamax-lane-${{ matrix.lane }}
+          path: evidence/
+          if-no-files-found: error
+          retention-days: 30
+  integrate:
+    name: Integrate evidence (no investment certification)
+    needs: evidence
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: alphamax-lane-*
+          path: evidence
+      - name: Verify all ten lane receipts and summarize
+        env:
+          MATRIX_RESULT: ${{ needs.evidence.result }}
+        run: |
+          python - <<'PY'
+          import os
+          import re
+          from pathlib import Path
+          root = Path("evidence")
+          lanes = sorted(root.glob("alphamax-lane-*"))
+          hashes = set()
+          expected = {"01-financial-pit", "02-reported-income", "03-historical-universe", "04-delisted-issuers", "05-raw-price-evidence", "06-corporate-actions", "07-operating-valuation", "08-concentration-gates", "09-model-contract", "10-pk-gap-audit"}
+          expected = {"alphamax-lane-" + name for name in expected}
+          expected_audits = {"alphamax-lane-03-historical-universe": "universe.json", "alphamax-lane-08-concentration-gates": "concentration.json", "alphamax-lane-09-model-contract": "readiness.json"}
+          import json
+          ok = []
+          counts = 0
+          summary = ["## Parallel regression receipts (NOT investment certification)", ""]
+          for lane in lanes:
+              commit = lane / "commit.txt"
+              modules = lane / "modules.txt"
+              logfile = lane / "tests.log"
+              if commit.exists():
+                  hashes.add(commit.read_text().strip())
+              log = logfile.read_text(errors="replace") if logfile.exists() else ""
+              match = re.search(r"Ran (\d+) tests? in", log)
+              passed = bool(commit.exists() and modules.exists() and match and re.search(r"^OK\s*$", log, re.M) and int(match.group(1)) > 0)
+              audit_name = expected_audits.get(lane.name)
+              if audit_name:
+                  try:
+                      audit = json.loads((lane / audit_name).read_text())
+                      passed = passed and isinstance(audit, dict) and bool(audit.get("status"))
+                  except (OSError, ValueError, TypeError):
+                      passed = False
+              if passed:
+                  ok.append(lane.name)
+                  counts += int(match.group(1))
+              summary.append(f"- {lane.name}: {'PASS' if passed else 'FAIL/MISSING'} ({match.group(1) if match else 'unknown'} tests)")
+          complete = ({lane.name for lane in lanes} == expected and set(ok) == expected and len(hashes) == 1 and all(re.fullmatch(r"[0-9a-f]{40}", sha) for sha in hashes) and os.environ["MATRIX_RESULT"] == "success")
+          summary.extend(["", f"Regression receipts: {len(ok)}/10; tests in passing lanes: {counts}", f"Same checkout: {len(hashes) == 1}", f"Engineering matrix complete: {complete}", "Historical PIT admission, executable total returns, 12-month OOS, formal PK and A+ are NOT certified by this workflow."])
+          with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as out:
+              out.write("\n".join(summary) + "\n")
+          if not complete:
+              raise SystemExit("INCOMPLETE_PARALLEL_EVIDENCE")
+          PY
