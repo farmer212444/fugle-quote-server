@@ -15,13 +15,28 @@ class Fund0056EPSStressTests(unittest.TestCase):
     def setUpClass(cls):
         cls.report=audit_0056(ROOT)
 
-    def test_all_34_rows_present_exact_constituents(self):
+    def test_all_rankable_rows_and_exclusions_partition_exact_constituents(self):
         r=self.report
+        holdings,_,full=load_inputs(ROOT)
+        codes={p['code'] for p in holdings['positions']}
+        records={x['code']:x for x in full['all_model_rows'] if x['code'] in codes}
+        expected={code for code,x in records.items() if x.get('rankable')
+                  and isinstance(x.get('reference_close'),(float,int))
+                  and x['reference_close']>0
+                  and all(isinstance((x.get('base') or {}).get(k),(float,int))
+                          for k in ('eps','pe','target_price','price_upside_pct'))}
+        actual=[x['code'] for x in r['all_34_ranked']]
+        excluded=[x['code'] for x in r['not_rankable']]
+        absent=[x['code'] for x in r['absent']]
         self.assertEqual(r['tracked_etf_holdings_count'],50)
-        self.assertEqual(r['base_price_rankable_count'],34)
-        self.assertEqual(r['not_rankable_count'],16)
-        self.assertEqual(len(r['all_34_ranked']),34)
-        self.assertEqual(len(r['top10']),10)
+        self.assertEqual(set(actual),expected)
+        self.assertEqual(set(excluded),set(records)-expected)
+        self.assertEqual(set(absent),codes-set(records))
+        self.assertEqual(len(actual+excluded+absent),50)
+        self.assertEqual(r['base_price_rankable_count'],len(expected))
+        self.assertEqual(r['not_rankable_count'],len(excluded))
+        self.assertEqual(r['absent_count'],len(absent))
+        self.assertEqual(r['top10'],r['all_34_ranked'][:10])
         self.assertTrue(r['original_base_ranking_and_targets_unchanged'])
         self.assertTrue(r['no_formal_gate_pass_granted'])
         self.assertTrue(r['dividends_and_fees_unmodeled'])
@@ -33,7 +48,14 @@ class Fund0056EPSStressTests(unittest.TestCase):
         rows={x['code']:x for x in self.report['all_34_ranked']}
         _,_,full=load_inputs(ROOT)
         forecasts={r['code']:r for r in full['all_model_rows']}
+        excluded={x['code']:x for x in self.report['not_rankable']}
         for code,h1 in {'2317':7.84,'2376':17.73,'2382':12.93}.items():
+            if code not in rows:
+                self.assertIn(code,excluded)
+                self.assertFalse(forecasts[code].get('rankable'))
+                self.assertEqual(excluded[code]['status'],forecasts[code].get('status'))
+                self.assertEqual(excluded[code]['reason'],forecasts[code].get('exclusion_reasons'))
+                continue
             row=rows[code]
             self.assertEqual(row['h1_2026_basic_eps'],h1)
             self.assertEqual(row['forward_2027_eps'],forecasts[code]['base']['eps'])
