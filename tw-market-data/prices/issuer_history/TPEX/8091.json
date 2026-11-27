@@ -2,10 +2,10 @@
   "schema": "V893_OFFICIAL_TPEX_DAILY",
   "issuer": "8091",
   "market": "TPEX",
-  "price_reference_asof": "2026-11-26",
+  "price_reference_asof": "2026-11-27",
   "source_type": "OFFICIAL_TPEX_DAILY_MARKET",
   "original_raw_responses_preserved_in_actions_artifact_not_repository": false,
-  "durable_original_sessions": 375,
+  "durable_original_sessions": 376,
   "original_source_not_cryptographically_signed": true,
   "issuer_PIT_history_verified": false,
   "share_adjusted_history": false,
@@ -13886,9 +13886,61 @@
         "fillability_verified": false,
         "session_times_are_scheduled_not_broker_fills": true
       }
+    },
+    "2026-11-27": {
+      "date": "2026-11-27",
+      "source_url": "https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes?response=json&date=115%2F11%2F27",
+      "original_response_sha256": "861a16ddde675802d17b47178c1e9451765cfe5a34e8020c86fc805c84b258fb",
+      "captured_at_utc": "2026-11-27T09:38:05.599821+00:00",
+      "original_archive": {
+        "schema": "HISTORICAL_EXCHANGE_ORIGINAL_V1",
+        "market": "TPEX",
+        "identity": "2026-11-27",
+        "source_url": "https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes?response=json&date=115%2F11%2F27",
+        "captured_at_utc": "2026-11-27T09:38:05.599821+00:00",
+        "archive_path": "prices/originals/history/TPEX/2026-11-27/861a16ddde675802d17b47178c1e9451765cfe5a34e8020c86fc805c84b258fb.json.gz",
+        "original_response_sha256": "861a16ddde675802d17b47178c1e9451765cfe5a34e8020c86fc805c84b258fb",
+        "parsed_rows_sha256": "cda5b5ebe2d4fd5da9582720937aa99918a2ebc5ce3b17981c88fef4a78b8efa",
+        "bytes": 1995295,
+        "issuer_publication_pit_verified": false,
+        "contemporaneous_universe_verified": false,
+        "fillability_verified": false,
+        "receipt_path": "prices/originals/history/TPEX/2026-11-27/59fa1349956afbb852c39d68254fae16f21d82b999288f196c567961e99d15a4.json"
+      },
+      "raw_market_response_stored_in_artifact": false,
+      "row": {
+        "date": "2026-11-27",
+        "code": "8091",
+        "market": "TPEX",
+        "close": 154.5,
+        "turnover_ntd": 38480157,
+        "volume_shares": 247559,
+        "high": 157.5,
+        "low": 153.5,
+        "open": 157.0,
+        "open_at": "2026-11-27T09:00:00+08:00",
+        "close_at": "2026-11-27T13:30:00+08:00",
+        "fillability_verified": false,
+        "session_times_are_scheduled_not_broker_fills": true
+      }
     }
   },
   "sessions": [
+    {
+      "date": "2026-11-27",
+      "code": "8091",
+      "market": "TPEX",
+      "close": 154.5,
+      "turnover_ntd": 38480157,
+      "volume_shares": 247559,
+      "high": 157.5,
+      "low": 153.5,
+      "open": 157.0,
+      "open_at": "2026-11-27T09:00:00+08:00",
+      "close_at": "2026-11-27T13:30:00+08:00",
+      "fillability_verified": false,
+      "session_times_are_scheduled_not_broker_fills": true
+    },
     {
       "date": "2026-11-26",
       "code": "8091",
@@ -19518,26 +19570,26 @@
   "liquidity": {
     "5": {
       "sessions": 5,
-      "first": "2026-11-20",
-      "last": "2026-11-26",
-      "median_turnover_ntd": 47744688,
+      "first": "2026-11-23",
+      "last": "2026-11-27",
+      "median_turnover_ntd": 46652069,
       "min_turnover_ntd": 4183722,
       "zero_turnover_sessions": 0,
-      "idealized_5m_exit_sessions_at_20pct": 0.52
+      "idealized_5m_exit_sessions_at_20pct": 0.54
     },
     "20": {
       "sessions": 20,
-      "first": "2026-10-30",
-      "last": "2026-11-26",
-      "median_turnover_ntd": 73018128.5,
+      "first": "2026-11-02",
+      "last": "2026-11-27",
+      "median_turnover_ntd": 67204000.5,
       "min_turnover_ntd": 4183722,
       "zero_turnover_sessions": 0,
-      "idealized_5m_exit_sessions_at_20pct": 0.34
+      "idealized_5m_exit_sessions_at_20pct": 0.37
     },
     "60": {
       "sessions": 60,
-      "first": "2026-08-28",
-      "last": "2026-11-26",
+      "first": "2026-08-31",
+      "last": "2026-11-27",
       "median_turnover_ntd": 64031099.0,
       "min_turnover_ntd": 4183722,
       "zero_turnover_sessions": 0,
