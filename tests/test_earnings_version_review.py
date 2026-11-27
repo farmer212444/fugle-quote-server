@@ -86,9 +86,18 @@ class EarningsVersionReview(unittest.TestCase):
         before=model_source_state(self.root);self.review['review_note']='receipt update';self.save();after=model_source_state(self.root)
         self.assertNotEqual(before[REVIEW],after[REVIEW])
         for doc in self.docs:self.assertIn(doc['archive_path'],after)
-        # Keep the historical review tests above fixed; this is a current-source smoke check.
-        data=MarketData(ROOT,dt.datetime.now(dt.timezone.utc).isoformat());paths={r['path'] for r in data.input_receipts}
-        self.assertIn(REVIEW,paths)
-        for doc in self.docs:self.assertIn(doc['archive_path'],paths)
+        # The provenance inventory must track the reviewed originals even if a
+        # newer formal quarterly statement supersedes the provisional Q3 event.
+        # Consumption receipts, by contrast, include only actively used inputs.
+        current_state=model_source_state(ROOT)
+        self.assertIn(REVIEW,current_state)
+        for doc in self.docs:self.assertIn(doc['archive_path'],current_state)
+        data=MarketData(ROOT,dt.datetime.now(dt.timezone.utc).isoformat())
+        paths={r['path'] for r in data.input_receipts}
+        event=data.earnings_events.get('9802')
+        if event and event.get('source_version_review'):
+            self.assertEqual(event['source_version_review']['archive_path'],REVIEW)
+            self.assertIn(REVIEW,paths)
+            for doc in self.docs:self.assertIn(doc['archive_path'],paths)
 
 if __name__=='__main__':unittest.main()

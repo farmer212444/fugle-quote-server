@@ -68,6 +68,18 @@ jobs:
             echo 'No new financial snapshot.'
           else
             git commit -m 'data: archive provisional official quarterly financial evidence'
-            git pull --rebase origin main
-            git push origin HEAD:main
+            # Multiple data collectors update main independently. Rebase onto
+            # the latest head and retry non-force pushes after lease races.
+            # A genuine merge conflict still fails closed.
+            for attempt in 1 2 3 4 5; do
+              git fetch origin main
+              git rebase origin/main
+              if git push origin HEAD:main; then
+                exit 0
+              fi
+              echo "::warning::main advanced during push (attempt ${attempt}/5); retrying"
+              sleep $((attempt * 2))
+            done
+            echo "::error::Failed to push the verified financial snapshot after five attempts"
+            exit 1
           fi
