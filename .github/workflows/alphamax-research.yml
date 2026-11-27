@@ -204,6 +204,85 @@ jobs:
           python scripts/alphamax_pk_exhibition.py --manifest alphamax-pk-source/manifest.json --snapshot alphamax-pk-source/prices.json --output alphamax-pk-observation.json
           python scripts/alphamax_pk_shadow_monitor.py --manifest alphamax-pk-source/manifest.json --latest alphamax-pk-source/prices.json --entry alphamax-pk-source/entry-prices.json --output alphamax-pk-shadow-price-only.json
           python scripts/alphamax_pit_pk_gap_audit.py --repo . --source-ref origin/main --output alphamax-pk-training-gap-audit.json --history-cache alphamax-pk-source/issuer-history --benchmark-cache-root alphamax-0050-data
+      - name: Reuse immutable TPEx raw original pairs for first two-issuer mature interval
+        run: |
+          git fetch --depth=1 origin 4af98730bbc2706620a782cb41dafd98c40e068d
+          python - <<'PY'
+          import gzip
+          import hashlib
+          import json
+          import re
+          import subprocess
+          from pathlib import Path
+          from scripts.history_archive import canonical, digest
+          from scripts.v893_tpex_daily_backfill import parse_daily, daily_url
+
+          ref = "4af98730bbc2706620a782cb41dafd98c40e068d"
+          start, end = "2025-05-20", "2026-05-20"
+          codes = ("6274", "5274")
+          report = {"source_commit": ref, "start": start, "end": end,
+                    "status": "BLOCKED_TPEX_ORIGINAL_REPLAY", "errors": [],
+                    "verified_market_days": [], "formal_training_labels_added": 0,
+                    "independent_session_completeness_verified": False,
+                    "corporate_action_completeness_verified": False,
+                    "financial_pit_verified": False, "formal_a_plus": False}
+
+          def read(path):
+              return subprocess.check_output(["git", "show", ref + ":tw-market-data/" + path])
+
+          try:
+              packets = {}
+              for code in codes:
+                  raw = read("prices/issuer_history/TPEX/" + code + ".json")
+                  obj = json.loads(raw)
+                  if obj.get("issuer") != code or obj.get("market") != "TPEX":
+                      raise ValueError("ISSUER_IDENTITY_MISMATCH")
+                  packets[code] = obj
+                  report.setdefault("packet_sha256", {})[code] = digest(raw)
+              dates = {code: {day for day in packets[code]["by_day"] if start <= day <= end}
+                       for code in codes}
+              report["observed_dates_by_issuer"] = {code: len(days) for code, days in dates.items()}
+              if dates[codes[0]] != dates[codes[1]] or start not in dates[codes[0]] or end not in dates[codes[0]]:
+                  raise ValueError("OBSERVED_SESSION_SET_MISMATCH")
+              for day in sorted(dates[codes[0]]):
+                  rows = [packets[code]["by_day"][day] for code in codes]
+                  receipts = [row["original_archive"] for row in rows]
+                  source = receipts[0]
+                  if any(other != source for other in receipts):
+                      raise ValueError("SHARED_MARKET_RECEIPT_MISMATCH:" + day)
+                  if source.get("identity") != day or source.get("market") != "TPEX" or source.get("source_url") != daily_url(day):
+                      raise ValueError("RECEIPT_SOURCE_MISMATCH:" + day)
+                  prefix = "prices/originals/history/TPEX/" + day + "/"
+                  for key, suffix in (("receipt_path", ".json"), ("archive_path", ".json.gz")):
+                      value = source[key]
+                      if not value.startswith(prefix) or not re.fullmatch(r"[0-9a-f]{64}" + re.escape(suffix), value[len(prefix):]):
+                          raise ValueError("UNSAFE_RECEIPT_PATH:" + day)
+                  receipt_raw = read(source["receipt_path"])
+                  receipt = json.loads(receipt_raw)
+                  if receipt != {k: v for k, v in source.items() if k != "receipt_path"}:
+                      raise ValueError("RECEIPT_MISMATCH:" + day)
+                  raw = gzip.decompress(read(source["archive_path"]))
+                  if len(raw) != receipt["bytes"] or digest(raw) != receipt["original_response_sha256"]:
+                      raise ValueError("RAW_SHA256_MISMATCH:" + day)
+                  quotes = parse_daily(raw, day)
+                  for code, row in zip(codes, rows):
+                      if row["original_response_sha256"] != digest(raw) or quotes.get(code) != row["row"]:
+                          raise ValueError("RAW_ISSUER_ROW_MISMATCH:" + code + ":" + day)
+                      sessions = [x for x in packets[code]["sessions"] if x["date"] == day]
+                      if sessions != [row["row"]]:
+                          raise ValueError("DERIVED_SESSION_MISMATCH:" + code + ":" + day)
+                  report["verified_market_days"].append({"date": day, "raw_sha256": digest(raw),
+                      "receipt_sha256": digest(receipt_raw), "receipt_path": source["receipt_path"],
+                      "archive_path": source["archive_path"]})
+              report["status"] = "OBSERVED_RAW_QUOTES_REPLAYED_NOT_TOTAL_RETURN_OR_PIT"
+          except (OSError, ValueError, KeyError, TypeError, subprocess.CalledProcessError) as exc:
+              report["errors"].append(str(exc))
+          report["verified_market_day_count"] = len(report["verified_market_days"])
+          Path("alphamax-tpex-mature-pilot-raw-replay.json").write_text(
+              json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+          print(json.dumps({"status": report["status"], "days": report["verified_market_day_count"],
+                            "errors": report["errors"]}, ensure_ascii=False))
+          PY
       - name: Reconcile focus-company reported income from pinned shared source bytes
         run: |
           python - <<'PY'
@@ -358,6 +437,7 @@ jobs:
             alphamax-pk-observation.json
             alphamax-pk-shadow-price-only.json
             alphamax-pk-training-gap-audit.json
+            alphamax-tpex-mature-pilot-raw-replay.json
             alphamax-reported-income.json
             alphamax-reported-source/
             alphamax-0050-backfill-progress.json
