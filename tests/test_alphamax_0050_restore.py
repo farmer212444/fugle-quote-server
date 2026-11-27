@@ -83,6 +83,38 @@ class Restored0050Tests(unittest.TestCase):
             self.assertFalse(result["legacy_v8_files_modified"])
             self.assertFalse(result["investor_total_return_certified"])
 
+    def test_independent_capture_same_hash_different_receipt_clock(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            repo, base, baseline, base_file = source_repo(tmp)
+            previous, prior_file = prior_artifact(tmp, base, baseline)
+            old_root = previous / "tw-market-data"
+            packet = json.loads(prior_file.read_text())
+            item = packet["by_month"]["2026-10"]
+            ref = item["original_archive"]
+            ref["captured_at_utc"] = "2026-11-10T00:00:00+00:00"
+            receipt = old_root / ref["receipt_path"]
+            receipt.write_text(json.dumps({k: v for k, v in ref.items()
+                                           if k != "receipt_path"}))
+            prior_file.write_text(json.dumps(packet))
+            target = Path(tmp) / "isolated"
+            source_bytes = (base / ref["receipt_path"]).read_bytes()
+            self.assertNotEqual(source_bytes, receipt.read_bytes())
+            result = prepare_workspace(repo, target, previous)
+            self.assertEqual(result["months_restored"], 2)
+            self.assertEqual((target / ref["receipt_path"]).read_bytes(), receipt.read_bytes())
+            self.assertEqual((base / ref["receipt_path"]).read_bytes(), source_bytes)
+
+    def test_independent_capture_tampered_raw_still_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            repo, base, baseline, _ = source_repo(tmp)
+            previous, prior_file = prior_artifact(tmp, base, baseline)
+            packet = json.loads(prior_file.read_text())
+            ref = packet["by_month"]["2026-10"]["original_archive"]
+            archive = previous / "tw-market-data" / ref["archive_path"]
+            archive.write_bytes(b"not gzip")
+            with self.assertRaisesRegex(ValueError, "PREVIOUS_ARTIFACT_RAW_RECEIPT_INVALID"):
+                prepare_workspace(repo, Path(tmp) / "isolated", previous)
+
     def test_fresh_partial_month_replaces_old_frozen_partial_month(self):
         with tempfile.TemporaryDirectory() as tmp:
             repo, base, baseline, _ = source_repo(tmp)
