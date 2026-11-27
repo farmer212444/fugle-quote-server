@@ -283,6 +283,91 @@ jobs:
           print(json.dumps({"status": report["status"], "days": report["verified_market_day_count"],
                             "errors": report["errors"]}, ensure_ascii=False))
           PY
+      - name: Preserve official TPEx historical ex-right and ex-dividend source for mature pilot
+        run: |
+          python - <<'PY'
+          import datetime as dt
+          import hashlib
+          import json
+          import urllib.parse
+          import urllib.request
+          from pathlib import Path
+
+          root = Path("alphamax-tpex-pilot-actions")
+          root.mkdir(exist_ok=True)
+          start, end = dt.date(2025, 5, 20), dt.date(2026, 5, 20)
+          base = "https://www.tpex.org.tw/www/zh-tw/bulletin/exDailyQ"
+          report = {"status": "BLOCKED_ACTION_LEDGER_NOT_ADMITTED",
+                    "start": start.isoformat(), "end": end.isoformat(),
+                    "codes": ["6274", "5274"], "receipts": [], "errors": [],
+                    "formal_training_labels_added": 0,
+                    "corporate_action_completeness_verified": False,
+                    "payment_schedule_verified": False, "formal_a_plus": False}
+
+          def roc(day):
+              return f"{day.year-1911}/{day.month:02d}/{day.day:02d}"
+
+          first = start
+          while first <= end:
+              last = min(first + dt.timedelta(days=89), end)
+              key = first.isoformat() + "_" + last.isoformat()
+              url = base + "?" + urllib.parse.urlencode({
+                  "startDate": roc(first), "endDate": roc(last), "response": "json"})
+              try:
+                  req = urllib.request.Request(url, headers={
+                      "User-Agent": "Mozilla/5.0", "Accept": "application/json",
+                      "Referer": "https://www.tpex.org.tw/"})
+                  with urllib.request.urlopen(req, timeout=25) as resp:
+                      actual = urllib.parse.urlsplit(resp.geturl())
+                      if (resp.status != 200 or actual.scheme != "https"
+                              or actual.hostname != "www.tpex.org.tw"
+                              or actual.path != urllib.parse.urlsplit(base).path):
+                          raise ValueError("UNEXPECTED_OFFICIAL_SOURCE_RESPONSE")
+                      raw = resp.read(8_000_001)
+                  if len(raw) > 8_000_000:
+                      raise ValueError("SOURCE_RESPONSE_TOO_LARGE")
+                  file = root / (key + ".json")
+                  file.write_bytes(raw)
+                  rec = {"from": first.isoformat(), "to": last.isoformat(),
+                         "url": url, "path": file.name, "bytes": len(raw),
+                         "sha256": hashlib.sha256(raw).hexdigest(),
+                         "captured_at_utc": dt.datetime.now(dt.timezone.utc).isoformat()}
+                  report["receipts"].append(rec)
+                  obj = json.loads(raw.decode("utf-8-sig"))
+                  if not isinstance(obj, dict) or str(obj.get("stat", "")).lower() != "ok":
+                      raise ValueError("SOURCE_JSON_STATUS_NOT_OK")
+                  tables = obj.get("tables")
+                  if not isinstance(tables, list) or not tables:
+                      raise ValueError("SOURCE_TABLES_MISSING")
+                  rec["tables"] = [{"title": t.get("title"), "fields": t.get("fields"),
+                                    "rows": len(t["data"]) if isinstance(t.get("data"), list) else None}
+                                   for t in tables if isinstance(t, dict)]
+                  rec["candidate_rows"] = []
+                  for table in tables:
+                      if not isinstance(table, dict):
+                          continue
+                      fields, data = table.get("fields"), table.get("data")
+                      if not isinstance(fields, list) or not isinstance(data, list):
+                          continue
+                      indices = [i for i, name in enumerate(fields)
+                                 if str(name).replace(" ", "") in ("股票代號", "證券代號", "代號")]
+                      if len(indices) != 1:
+                          continue
+                      i = indices[0]
+                      for row in data:
+                          if isinstance(row, list) and len(row) == len(fields) and str(row[i]).strip() in report["codes"]:
+                              rec["candidate_rows"].append({"fields": fields, "row": row})
+                  rec["parsed_status"] = "SOURCE_TABLE_CAPTURED_PENDING_RANGE_AND_EVENT_AUDIT"
+              except (OSError, ValueError, TypeError, KeyError) as exc:
+                  report["errors"].append({"range": key, "url": url, "reason": str(exc)})
+              first = last + dt.timedelta(days=1)
+          report["requested_ranges"] = 5
+          report["parsed_ranges"] = sum("parsed_status" in rec for rec in report["receipts"])
+          (root / "capture-manifest.json").write_text(
+              json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+          print(json.dumps({"status": report["status"], "parsed_ranges": report["parsed_ranges"],
+                            "errors": report["errors"]}, ensure_ascii=False))
+          PY
       - name: Reconcile focus-company reported income from pinned shared source bytes
         run: |
           python - <<'PY'
@@ -438,6 +523,7 @@ jobs:
             alphamax-pk-shadow-price-only.json
             alphamax-pk-training-gap-audit.json
             alphamax-tpex-mature-pilot-raw-replay.json
+            alphamax-tpex-pilot-actions/
             alphamax-reported-income.json
             alphamax-reported-source/
             alphamax-0050-backfill-progress.json
