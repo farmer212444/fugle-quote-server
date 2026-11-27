@@ -152799,65 +152799,99 @@
     }
   ],
   "footwear_supply_chain_category": "footwear_manufacturing_and_direct_materials",
-  "attempted_at_utc": "2026-11-26T22:34:15.448712+00:00",
+  "attempted_at_utc": "2026-11-27T10:05:08.039449+00:00",
   "collection": {
-    "requested": 10,
+    "requested": 13,
     "succeeded": 0,
     "errors": [
       {
-        "code": "1907",
+        "code": "1477",
         "month": "2026-10",
         "reason": "MOPS_SAME_NAME_ACCOUNT_COLLISION_NEEDS_REVIEW"
       },
       {
-        "code": "2412",
+        "code": "2897",
         "month": "2026-10",
         "reason": "MOPS_SAME_NAME_ACCOUNT_COLLISION_NEEDS_REVIEW"
       },
       {
-        "code": "2423",
+        "code": "3003",
         "month": "2026-10",
         "reason": "MOPS_SAME_NAME_ACCOUNT_COLLISION_NEEDS_REVIEW"
       },
       {
-        "code": "2436",
+        "code": "3008",
         "month": "2026-10",
         "reason": "MOPS_SAME_NAME_ACCOUNT_COLLISION_NEEDS_REVIEW"
       },
       {
-        "code": "2615",
+        "code": "3323",
         "month": "2026-10",
         "reason": "MOPS_SAME_NAME_ACCOUNT_COLLISION_NEEDS_REVIEW"
       },
       {
-        "code": "2801",
-        "month": "2026-10",
-        "reason": "MOPS_SAME_NAME_ACCOUNT_COLLISION_NEEDS_REVIEW"
-      },
-      {
-        "code": "2812",
-        "month": "2026-10",
-        "reason": "MOPS_SAME_NAME_ACCOUNT_COLLISION_NEEDS_REVIEW"
-      },
-      {
-        "code": "7835",
-        "month": "2026-02",
+        "code": "3718",
+        "month": "2026-08",
         "reason": "MOPS_UNSUCCESSFUL_RESPONSE_NOT_ZERO"
       },
       {
         "code": "3718",
-        "month": "2026-01",
+        "month": "2026-07",
+        "reason": "MOPS_UNSUCCESSFUL_RESPONSE_NOT_ZERO"
+      },
+      {
+        "code": "3718",
+        "month": "2026-06",
+        "reason": "MOPS_UNSUCCESSFUL_RESPONSE_NOT_ZERO"
+      },
+      {
+        "code": "3718",
+        "month": "2026-05",
+        "reason": "MOPS_UNSUCCESSFUL_RESPONSE_NOT_ZERO"
+      },
+      {
+        "code": "3718",
+        "month": "2026-04",
+        "reason": "MOPS_UNSUCCESSFUL_RESPONSE_NOT_ZERO"
+      },
+      {
+        "code": "3718",
+        "month": "2026-03",
         "reason": "MOPS_UNSUCCESSFUL_RESPONSE_NOT_ZERO"
       },
       {
         "code": "7835",
-        "month": "2026-01",
+        "month": "2026-03",
+        "reason": "MOPS_UNSUCCESSFUL_RESPONSE_NOT_ZERO"
+      },
+      {
+        "code": "3718",
+        "month": "2026-02",
         "reason": "MOPS_UNSUCCESSFUL_RESPONSE_NOT_ZERO"
       }
     ],
-    "deferred_identity_conflicts": 286,
-    "offline_reconciled_after_rebase": true,
-    "conflicting_receipt_policy": "UPSTREAM_POINTER_PREFERRED"
+    "deferred_identity_conflicts": 289
   },
-  "monthly_master_failures": []
+  "monthly_master_failures": [
+    {
+      "month": "2026-09",
+      "market": "TWSE",
+      "reason": "<urlopen error [Errno 104] Connection reset by peer>"
+    },
+    {
+      "month": "2026-09",
+      "market": "TPEX",
+      "reason": "<urlopen error [Errno 104] Connection reset by peer>"
+    },
+    {
+      "month": "2026-10",
+      "market": "TWSE",
+      "reason": "<urlopen error [Errno 104] Connection reset by peer>"
+    },
+    {
+      "month": "2026-10",
+      "market": "TPEX",
+      "reason": "<urlopen error [Errno 104] Connection reset by peer>"
+    }
+  ]
 }
