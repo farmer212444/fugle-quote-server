@@ -38,8 +38,6 @@ def unique(items,code,kind):
 def validate_vintage(research,documents):
     fail(bool(research.get("estimate_vintage")) and bool(research.get("asof_price_date")),
          "RESEARCH_VINTAGE_MISSING")
-    fail(research.get("financial_last_quarter")=="2026-Q2","PERIOD_ROLLOVER_REQUIRES_NEW_FIVE_CANDIDATE_AUDIT")
-    fail(research.get("revenue_month")=="2026-09","REVENUE_MONTH_NOT_YET_SUPPORTED")
     instant=dt.datetime.fromisoformat(research["estimate_vintage"])
     fail(instant.tzinfo is not None,"MODEL_CREATION_TIMESTAMP_UNZONED")
     for label,document in documents.items():
@@ -51,7 +49,26 @@ def validate_vintage(research,documents):
              "FINANCIAL_PERIOD_MISMATCH_"+label)
         fail(document.get("formal_Aplus_count")==research["formal_Aplus_count"],
              "FORMAL_Aplus_COUNT_MISMATCH_"+label)
+    fail(research.get("financial_last_quarter")=="2026-Q2","PERIOD_ROLLOVER_REQUIRES_NEW_FIVE_CANDIDATE_AUDIT")
+    fail(research.get("revenue_month")=="2026-09","REVENUE_MONTH_NOT_YET_SUPPORTED")
     return instant
+
+def rollover_report(research,error):
+    # Do not reapply the historical H1-specific audit to a later quarter.
+    # Only a positively identified forward rollover can defer this diagnostic.
+    from tw_model_v880.math import quarter_key
+    q=quarter_key(research["financial_last_quarter"])
+    m=dt.date.fromisoformat(research["revenue_month"]+"-01")
+    reason=str(error)
+    if not ((reason=="PERIOD_ROLLOVER_REQUIRES_NEW_FIVE_CANDIDATE_AUDIT" and q>(2026,2))
+            or (reason=="REVENUE_MONTH_NOT_YET_SUPPORTED" and m>dt.date(2026,9,1))):
+        raise error
+    return dict(status="PENDING_HISTORICAL_FIVE_CANDIDATE_ROLLOVER",
+                reason=reason,model=research["model"],estimate_vintage=research["estimate_vintage"],
+                asof_price_date=research["asof_price_date"],
+                latest_available_quarter=research["financial_last_quarter"],
+                revenue_month=research["revenue_month"],issuer_count=None,securities=[],
+                diagnostic_complete=False,no_formal_Aplus_added=True,unchanged_market_ranking=True)
 
 def scenario_stress(base_eps,pe,close,shares,legal):
     eps=num(base_eps,"FORWARD_EPS")
@@ -144,7 +161,12 @@ def conduct(root=DATA):
         "cash":load(root/"rankings/latest_cash_quality.json"),
         "shares":load(root/"rankings/latest_share_audit.json"),
         "risk":load(root/"rankings/latest_risk_overlay.json")}
-    modeltime=validate_vintage(research,sources)
+    try:
+        modeltime=validate_vintage(research,sources)
+    except ValueError as exc:
+        if str(exc) not in ("PERIOD_ROLLOVER_REQUIRES_NEW_FIVE_CANDIDATE_AUDIT","REVENUE_MONTH_NOT_YET_SUPPORTED"):
+            raise
+        return rollover_report(research,exc)
     asof=modeltime.astimezone(dt.timezone(dt.timedelta(hours=8))).date()
     rows=research.get("top30_provisional",[])
     fail(all(x.get("formal_Aplus") is False for x in rows if x.get("code") in FOCUS),
@@ -248,6 +270,10 @@ def conduct(root=DATA):
           "An issuer-specific official original filing, independent CB legal terms, matched PE peers, and a true PIT investment backtest remain outstanding."])
 
 def markdown(report):
+    if report.get("status")=="PENDING_HISTORICAL_FIVE_CANDIDATE_ROLLOVER":
+        return ("# V8.9.0 五檔候選專項稽核待更新\n\n"
+                +report["estimate_vintage"]+"；"+report["reason"]+
+                "\n\n歷史H1假設不適用新季度；未完成稽核，沒有新增正式A+。")
     lines=["# V8.9.0 五檔候選：EPS、現金流、CB與估值壓測","",
       f"資料版本：{report['estimate_vintage']}；價格日：{report['asof_price_date']}。",
       "**研究排查，不修改Top20，不產生正式A+、不視作買進訊號。**","",
