@@ -56,6 +56,13 @@ def model_source_state(root):
                     continue  # The issuer loader quarantines this case; never read unsafe bytes.
                 raise ValueError('SOURCE_STATE_UNSAFE_ARCHIVE_PATH')
             paths.add(target)
+    # The separate official quarterly seed may advance before the evidence
+    # snapshot refresh. Include its manifest and normalized bytes in cache
+    # invalidation even when a previous run could not use them.
+    seed=root/'financial/latest_manifest.json'
+    if seed.is_file():
+        paths.add(seed)
+        paths.update((root/'financial').glob('20????/*_income.json'))
     dated_closures=root/'config/daily_price_closures_v1.json'
     if dated_closures.is_file():
         paths.add(dated_closures)
@@ -67,6 +74,53 @@ def ensure_vintage(e,asof):
     if timestamp(e['snapshot_available_at'])>cut:raise ValueError('EVIDENCE_VINTAGE_FROM_FUTURE')
     times=[e.get('last_public_refresh',{}).get('at')]+[v.get('fetched_at') for v in e.get('official_current_bulk',{}).values()]+[v.get('fetched_at') for v in e.get('capital_sources',{}).values()]
     if any(timestamp(t)>cut for t in times if t):raise ValueError('EVIDENCE_COMPONENT_VINTAGE_FROM_FUTURE')
+OFFICIAL_SEED_INCOME_URLS={
+    'TWSE':'https://openapi.twse.com.tw/v1/opendata/t187ap06_L_ci',
+    'TPEX':'https://mopsfin.twse.com.tw/opendata/t187ap06_O_ci.csv',
+}
+def archived_current_income(root,period,asof,market):
+    """Reuse the existing official normalized seed, never claim original/PIT review.
+
+    Only a current-period, hash-matching, dated and uniquely identified batch
+    is admitted. No network request and no inferred missing accounting fields.
+    """
+    root=pathlib.Path(root).resolve()
+    path=root/'financial/latest_manifest.json'
+    if not path.is_file():return None
+    meta=read(path)
+    if meta.get('schema')!='v879-quarterly-seed-v1':
+        raise ValueError('QUARTERLY_SEED_SCHEMA_MISMATCH')
+    sources=[x for x in meta['sources'] if x['kind']==market+'_income']
+    if not sources:return None
+    if len(sources)!=1:raise ValueError('QUARTERLY_SEED_DUPLICATE_MARKET')
+    src=sources[0];token=period.replace('-','')
+    if src['period']!=token:return None
+    if timestamp(meta['captured_utc'])>timestamp(asof):
+        raise ValueError('QUARTERLY_SEED_CAPTURE_FROM_FUTURE')
+    expected=pathlib.Path('financial')/token/(market+'_income.json')
+    rel=pathlib.Path(src['path'])
+    if rel.parts and rel.parts[0] in (root.name,'tw-market-data'):
+        rel=pathlib.Path(*rel.parts[1:])
+    if rel!=expected or src['url']!=OFFICIAL_SEED_INCOME_URLS[market]:
+        raise ValueError('QUARTERLY_SEED_SOURCE_OR_PATH_MISMATCH')
+    target=(root/expected).resolve()
+    if not target.is_relative_to(root):raise ValueError('QUARTERLY_SEED_UNSAFE_PATH')
+    body=target.read_bytes()
+    if sha(body)!=src['normalized_sha256']:
+        raise ValueError('QUARTERLY_SEED_NORMALIZED_HASH_MISMATCH')
+    rows=json.loads(body)
+    if not isinstance(rows,list) or not rows or len(rows)!=src['issuer_rows']:
+        raise ValueError('QUARTERLY_SEED_ROW_COUNT_MISMATCH')
+    seen=set()
+    for row in rows:
+        code=str(row['公司代號']);ry=int(row['年度']);ry=ry+1911 if ry<1911 else ry
+        if len(code)!=4 or not code.isascii() or not code.isdigit() or code in seen:
+            raise ValueError('QUARTERLY_SEED_INVALID_OR_DUPLICATE_ISSUER')
+        if f"{ry}-Q{int(row['季別'])}"!=period:
+            raise ValueError('QUARTERLY_SEED_ROW_PERIOD_MISMATCH')
+        seen.add(code)
+    return path,target,rows
+
 class MarketData:
     def __init__(self,root,asof):
         self.root=pathlib.Path(root).resolve();self.asof=dt.date.fromisoformat(asof[:10]);self.errors=[];self.input_receipts=[]
@@ -127,6 +181,21 @@ class MarketData:
                     ry=int(r['年度']);ry=ry+1911 if ry<1911 else ry
                     if f"{ry}-Q{int(r['季別'])}"!=self.period:raise ValueError('OFFICIAL_ROW_PERIOD_MISMATCH')
                     self.bulk[(market,r['公司代號'],kind)]=r
+        # A rolling quarter can be available in the official seed before the
+        # older evidence snapshot is refreshed (including offline PR CI).
+        # Never overwrite a current snapshot, and never promote normalized
+        # seed rows into the primary original or formal evidence ledgers.
+        for market in ('TWSE','TPEX'):
+            if any(k[0]==market and k[2]=='income' for k in self.bulk):continue
+            try:
+                source=archived_current_income(self.root,self.period,asof,market)
+                if source is None:continue
+                seed_manifest,seed_file,rows=source
+                self.receipt(seed_manifest,'DATED_OFFICIAL_QUARTERLY_SEED_MANIFEST_NOT_PIT_PROOF')
+                self.receipt(seed_file,'SHA_CHECKED_NORMALIZED_OFFICIAL_INCOME_NOT_ORIGINAL_OR_FORMAL_REVIEW')
+                for row in rows:self.bulk[(market,str(row['公司代號']),'income')]=row
+            except (ValueError,KeyError,TypeError,OSError) as ex:
+                self.errors.append(dict(source='financial/latest_manifest.json:'+market,error=str(ex)))
         for p in sorted((self.root/'financial_history').glob('*/*_income_shard*.json')):
             y,q=quarter_key(p.parent.name);period=f'{y}-Q{q}';market=p.name.split('_')[0]
             if quarter_end(period)>self.asof:continue
