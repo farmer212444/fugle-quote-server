@@ -4,6 +4,13 @@ on:
   push:
     paths:
       - '.github/workflows/tw_mops_history.yml'
+      - 'scripts/mops_history_window.py'
+      - 'tests/test_mops_history_window.py'
+  pull_request:
+    paths:
+      - '.github/workflows/tw_mops_history.yml'
+      - 'scripts/mops_history_window.py'
+      - 'tests/test_mops_history_window.py'
   schedule:
     # Daily 20:50 Taiwan local time; two quarters per run (maximum eight HTTP requests).
     - cron: '50 12 * * *'
@@ -19,7 +26,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+      - name: Validate moving MOPS detail window
+        run: python3 -m unittest -v tests.test_mops_history_window
       - name: Download and verify past MOPS quarter reports
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
         shell: bash
         run: |
           python3 - <<'PY'
@@ -36,14 +46,20 @@ jobs:
           from urllib.parse import urlencode
           from urllib.request import Request, urlopen
           
+          from scripts.mops_history_window import desired_backfill_quarters
+
           ROOT=Path('tw-market-data/financial_history')
           LOGS=Path('mops-history-runlogs')
           LOGS.mkdir(exist_ok=True)
           OUTPUT=ROOT/'latest_manifest.json'
           ENDPOINT='https://mopsov.twse.com.tw/mops/web/'
-          CURRENT_QUARTER='2026Q2' # latest current-period financial seed already saved separately
-          # 8 quarters through 2026Q2; historical backfill excludes existing seed quarter
-          HISTORY=['2026Q1','2025Q4','2025Q3','2025Q2','2025Q1','2024Q4','2024Q3']
+          # 2026-Q2 is retained as a separately seeded legacy snapshot.
+          # The newest eligible quarter must be collected as source-backed detail,
+          # rather than frozen at Q2 while the normalized model moves to Q3.
+          CURRENT_QUARTER='2026Q2'
+          FINANCIAL_SCAN=json.loads(Path('tw-market-data/fundamentals/latest_scan.json').read_text(encoding='utf-8'))
+          HISTORY=desired_backfill_quarters(FINANCIAL_SCAN,seed_quarter=CURRENT_QUARTER)
+          print('MOPS_DETAIL_WINDOW',HISTORY,'SEED',CURRENT_QUARTER,flush=True)
           KINDS={'income':'ajax_t163sb04','balance':'ajax_t163sb05'}
           MARKETS={'TWSE':'sii','TPEX':'otc'}
           MAX_QUARTERS_PER_RUN=2
@@ -331,7 +347,7 @@ jobs:
           if-no-files-found: ignore
           retention-days: 30
       - name: Commit verified historical financial snapshots
-        if: always()
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
         shell: bash
         run: |
           git config user.name 'github-actions[bot]'
@@ -340,7 +356,19 @@ jobs:
             git add tw-market-data/financial_history/
             if ! git diff --cached --quiet; then
               git commit -m 'data: incremental historical MOPS income balance snapshots'
-              git push
+              # Other official collectors may advance main during this job.
+              # Never force-push, and stop on a genuine rebase conflict.
+              for attempt in 1 2 3 4 5; do
+                git fetch origin main
+                git rebase origin/main
+                if git push origin HEAD:main; then
+                  exit 0
+                fi
+                echo "::warning::main advanced during push (attempt ${attempt}/5); retrying"
+                sleep $((attempt * 2))
+              done
+              echo "::error::Failed to push quarter detail after five non-force attempts"
+              exit 1
             else
               echo 'No new or revised historical MOPS data'
             fi
