@@ -95,6 +95,7 @@ def audit_0056(root):
         base_price_rankable_count=selected['rankable_count'],
         not_rankable_count=selected['unrankable_count'],
         not_rankable=selected['unrankable'],
+        absent_count=selected['absent_count'],absent=selected['absent'],
         stress_name=STRESS_NAME,eps_factor=EPS_FACTOR,pe_factor=PE_FACTOR,
         higher_than_h1_annualized_by_30pct_count=sum(x['base_2027_eps_above_h1_runrate_by_30pct'] for x in examined),
         top10=examined[:10],all_34_ranked=examined,
@@ -120,7 +121,7 @@ def write_report(data,path):
             f"模型形成：{data['estimate_vintage']}；預估至 {data['target_date']}。",'',
             f"0056持股 {data['tracked_etf_holdings_count']} 檔；"
             f"可比估值 {data['base_price_rankable_count']} 檔；"
-            f"排除待補 {data['not_rankable_count']} 檔。",'',
+            f"排除待補 {data['not_rankable_count']} 檔；未追蹤 {data.get('absent_count',0)} 檔。",'',
             '**研究情境，不是目標報酬率或交易建議。**'
             '壓力測試僅將原模型2027 EPS和合理PE各下修20%，'
             '不估算發生機率，也不自動修改Base、股票排序與品質門檻。','',
@@ -136,11 +137,11 @@ def write_report(data,path):
                 f"{r['combined_eps_pe_minus20_price_ntd']:.2f}|"
                 f"{r['combined_eps_pe_minus20_upside_pct']:+.1f}%|"
                 f"{'是' if r['original_current_issuer_numeric_checked'] else '否'}|")
-        lines+=['',f"34檔可比股中，2027 Base EPS 高於2026上半年EPS簡單年化30%以上："
+        lines+=['',f"{data['base_price_rankable_count']}檔可比股中，2027 Base EPS 高於2026上半年EPS簡單年化30%以上："
                 f"{data['higher_than_h1_annualized_by_30pct_count']} 檔。",
                 '「簡單年化」未校正季節性，不能視為正式2026全年預測。'
                 '公司原始主表、年度量價利潤橋接、股本稀釋及正式PE同業驗證仍需逐檔複核。',
-                '另外16檔因銀行ROE/PB、特殊營運假設或財報缺件暫未可比，'
+                f"另外{data['not_rankable_count']+data.get('absent_count',0)}檔因銀行ROE/PB、特殊營運假設或財報缺件暫未可比，"
                 '不可將其視為低報酬；未知股利及成本亦未計入。','',
                 '來源：本GitHub封存的0056成分名單、2026-Q2官方標準化TWSE財報鏡像、'
                 'SHA檢查的2027完整模型情境。完整原始MOPS公告PIT尚未核實。',
