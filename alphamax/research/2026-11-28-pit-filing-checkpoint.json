@@ -1,0 +1,59 @@
+{
+  "schema": "ALPHAMAX_PIT_FILING_EVIDENCE_CHECKPOINT_V1",
+  "issuer": "6967",
+  "period": "2025Q2",
+  "source_audit": "alphamax/research/financial-notice-pilot/audit-report.json",
+  "required": [
+    {
+      "id": "first_filing_bytes",
+      "verified": false
+    },
+    {
+      "id": "first_filing_publication_clock_bound_to_bytes",
+      "verified": false
+    },
+    {
+      "id": "superseded_full_statement_bytes",
+      "verified": false
+    },
+    {
+      "id": "corrected_full_statement_bytes",
+      "verified": false
+    },
+    {
+      "id": "corrected_upload_clock_bound_to_bytes",
+      "verified": false
+    },
+    {
+      "id": "complete_revision_chain",
+      "verified": false
+    }
+  ],
+  "notice_evidence": {
+    "verified": 2,
+    "expected": 2,
+    "original_receipts": 4,
+    "board_notice_at": "2025-08-13T14:01:48+08:00",
+    "correction_notice_at": "2025-08-14T15:37:02+08:00",
+    "before_shares": 25637,
+    "after_shares": 500000
+  },
+  "coverage": {
+    "verified_filing_requirements": 0,
+    "expected_filing_requirements": 6,
+    "admitted_issuer_periods": 0,
+    "pilot_issuer_periods": 1,
+    "market_denominator": null
+  },
+  "admission": "BLOCKED",
+  "next_probe": {
+    "portal": "https://mops.twse.com.tw/mops/",
+    "request": "Locate official historical financial filing version index for issuer 6967 ROC year 114 quarter 2; preserve exact first and corrected documents plus version-specific public timestamps. If superseded bytes or clocks unavailable, record unavailable and continue prospective captures.",
+    "status": "NOT_EXECUTED"
+  },
+  "prohibited_substitutions": [
+    "notice timestamp as filing timestamp",
+    "current download as historical version",
+    "correction summary as full statement"
+  ]
+}
