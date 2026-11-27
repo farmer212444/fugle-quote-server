@@ -13,7 +13,7 @@ import unittest
 from unittest.mock import patch
 
 from scripts.v8b6_0056_financial_pb_hurdle import screen,validate_bvps,write_report
-from scripts.v8b4_0056_forward_top10 import load_inputs
+from scripts.v8b4_0056_forward_top10 import load_inputs,filter_top10
 
 ROOT=Path(__file__).resolve().parents[1]/'tw-market-data'
 INPUT=ROOT/'config/0056_financial_bvps_2026-Q2_watch.json'
@@ -50,12 +50,19 @@ class FinancialNine0056Tests(unittest.TestCase):
         else:
             self.assertEqual(screen(ROOT,ASOF),self.data)
 
-    def test_all_nine_guarded_and_seven_other_issuers_remain_missing(self):
+    def test_all_nine_guarded_and_other_issuers_partition_holdings(self):
         a=self.data
+        holdings,_,full=load_inputs(ROOT)
+        expected=filter_top10(holdings,full)
         self.assertEqual(a['total_constituents'],50)
-        self.assertEqual(a['other_sector_base_price_comparable_count'],34)
+        self.assertEqual(a['other_sector_base_price_comparable_count'],expected['rankable_count'])
         self.assertEqual(a['nine_financial_ROE_PB_hurdle_only_count'],9)
-        self.assertEqual(a['remaining_missing_comparable_count'],7)
+        self.assertEqual(a['remaining_missing_comparable_count'],
+                         expected['unrankable_count']+expected['absent_count']-9)
+        self.assertEqual(a['other_sector_base_price_comparable_count']+9+
+                         a['remaining_missing_comparable_count'],50)
+        self.assertFalse(set(x['code'] for x in expected['all_ranked'])&
+                         set(x['code'] for x in a['financials_sorted_by_conditional_hurdle_gap']))
         self.assertEqual(len(a['financials_sorted_by_conditional_hurdle_gap']),9)
         self.assertTrue(a['finance_ranking_is_not_a_2027_return_ranking'])
         self.assertTrue(a['exact_historical_original_BVPS_unverified'])
@@ -110,7 +117,7 @@ class FinancialNine0056Tests(unittest.TestCase):
             write_report(self.data,p)
             self.assertEqual(before,p.read_bytes())
             t=p.with_suffix('.md').read_text(encoding='utf-8')
-            self.assertIn('尚不可比 7檔',t)
+            self.assertIn(f"尚不可比 {self.data['remaining_missing_comparable_count']}檔",t)
             self.assertIn('不屬2027合理價',t)
             self.assertIn('正式2027 EPS',t)
             self.assertIn('凱基金',t)
