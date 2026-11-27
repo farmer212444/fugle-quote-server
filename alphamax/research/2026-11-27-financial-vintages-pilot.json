@@ -1,0 +1,46 @@
+{
+  "admitted_historical_PIT_batches": 0,
+  "buy_signal": false,
+  "focus_issuers": [
+    "2330",
+    "2317",
+    "6206",
+    "9802"
+  ],
+  "formal_a_plus": false,
+  "issuer_publication_timestamps_verified": false,
+  "new_versions": 4,
+  "note": "Capture time is conservative observed availability, not first filing time. Changed values are not a verified issuer correction.",
+  "observed_at": "2026-11-27T07:49:21.285227+00:00",
+  "original_sha256": "e17d21a92632976b7f19edc4fb2e825ccf4dd5c50f4de5db7672dd710af5127b",
+  "schema": "ALPHAMAX_OBSERVED_FINANCIAL_VINTAGES_V1",
+  "snapshot_count": 1,
+  "snapshot_id": "62d43a15cd2fa32c5b82b18d90d48d28af0f736e5f8d8ad18856fb3b092fc78e",
+  "source_row_count": 1053,
+  "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap06_L_ci",
+  "status": "OBSERVED_FINANCIAL_VERSIONS_CAPTURED_NOT_HISTORICAL_PIT",
+  "total_versions": 4,
+  "verified_model_oos_cohorts": 0,
+  "source_commit": "87f350be20d682ee72a507edaa746e1c602e9b99",
+  "source_ci_run": 45961017317,
+  "source_ci_job": 140378582252,
+  "validation_tests_passed": 53,
+  "historical_first_filing_plus_correction_pair_verified": false,
+  "files": [
+    {
+      "path": "alphamax/research/financial-vintages/ledger.json",
+      "sha256": "d91a555d4005ae164c6dbe87fee80966b5254bc1768913b4159eea469bff68cb",
+      "bytes": 8322
+    },
+    {
+      "path": "alphamax/research/financial-vintages/originals/e17d21a92632976b7f19edc4fb2e825ccf4dd5c50f4de5db7672dd710af5127b.json.gz",
+      "sha256": "5c7f32b6d2554a3b81f4f9f6fe48c38f9171c2505365390c4d4a41cc4d9d917a",
+      "bytes": 116468
+    }
+  ],
+  "limitations": [
+    "Current official income snapshot observed on capture date; not the original filing version.",
+    "No historical first-release/correction clock or complete revision coverage proven.",
+    "No retrospective training admission, calibrated forecasts, A+ or model PK."
+  ]
+}
