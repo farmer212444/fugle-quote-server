@@ -61,6 +61,37 @@ def _copy_originals(source_root, target_root):
 
 
 
+def _copy_selected_month(source_root, target_root, month, item):
+    """Stage only the selected verified receipt and its raw payload.
+
+    Receipt keys omit capture time, so independent captures can share a key
+    but differ in timestamp or compression bytes. Never merge those metadata
+    files by filename or rewrite a source receipt. Select one complete pair.
+    """
+    if not quote_source_ready(source_root, item):
+        raise ValueError("0050_SELECTED_MONTH_RECEIPT_INVALID:" + month)
+    ref = item["original_archive"]
+    expected = RELATIVE_ORIGINAL / ("0050-" + month)
+    count = 0
+    for key in ("receipt_path", "archive_path"):
+        rel = Path(ref[key])
+        if rel.parent != expected or not ARCHIVE_EXT.fullmatch(rel.name):
+            raise ValueError("0050_SELECTED_MONTH_ARCHIVE_PATH_INVALID:" + month)
+        src, dst = Path(source_root) / rel, Path(target_root) / rel
+        if src.is_symlink() or not src.is_file() or src.stat().st_size > 1024 * 1024:
+            raise ValueError("0050_UNSAFE_OR_OVERSIZED_ORIGINAL_ARCHIVE")
+        dst.parent.mkdir(parents=True, exist_ok=True)
+        if dst.exists():
+            if dst.read_bytes() != src.read_bytes():
+                raise ValueError("0050_ORIGINAL_ARCHIVE_BYTE_CONFLICT")
+        else:
+            shutil.copyfile(src, dst)
+            count += 1
+    if not quote_source_ready(target_root, item):
+        raise ValueError("0050_SELECTED_MONTH_STAGED_RECEIPT_INVALID:" + month)
+    return count
+
+
 def _validate_cached_source(root, packet, asof):
     # The original receipt alone does not authenticate the saved normalized
     # rows. Match the completed-month parsed SHA and derived session panel too.
@@ -105,7 +136,7 @@ def prepare_workspace(repo_root, workspace, prior_artifact=None):
     (dest_prices / (asof + ".json")).write_bytes(snapshot)
     base_file = source / RELATIVE_PACKET
     baseline = _packet(base_file) if base_file.is_file() else None
-    copied = _copy_originals(source, workspace)
+    copied = 0
     restored_months = 0
     prior_run_archive = False
     if prior_artifact is not None:
@@ -121,6 +152,7 @@ def prepare_workspace(repo_root, workspace, prior_artifact=None):
         # a CI run. Prefer the current branch's original exchange receipt, but
         # never silently change a previously completed month's source vintage.
         merged = dict(cached["by_month"])
+        selected_roots = {month: source_cache for month in merged}
         if baseline:
             for month, item in baseline["by_month"].items():
                 earlier = merged.get(month)
@@ -129,13 +161,15 @@ def prepare_workspace(repo_root, workspace, prior_artifact=None):
                     raise ValueError("0050_COMPLETED_MONTH_SOURCE_VINTAGE_CONFLICT:" + month)
                 if earlier is None or month == asof[:7]:
                     merged[month] = item
-        copied += _copy_originals(source_cache, workspace)
+                    selected_roots[month] = source
         previous_asof = date.fromisoformat(cached.get("price_reference_asof", "")).isoformat()
         if previous_asof > asof:
             raise ValueError("0050_PREVIOUS_ARTIFACT_REFERENCE_FROM_FUTURE")
         # Validate the previous artifact *before* any re-derivation, or a
         # maliciously changed sessions panel could be silently repaired.
-        _validate_cached_source(workspace, cached, previous_asof)
+        _validate_cached_source(source_cache, cached, previous_asof)
+        for month, item in merged.items():
+            copied += _copy_selected_month(selected_roots[month], workspace, month, item)
         cached["by_month"] = merged
         cached["price_reference_asof"] = asof
         cached["sessions"] = combine({m: item["rows"] for m, item in merged.items()}, asof, "0050")
@@ -148,6 +182,7 @@ def prepare_workspace(repo_root, workspace, prior_artifact=None):
         restored_months = len(cached["by_month"])
         prior_run_archive = True
     elif baseline:
+        copied = _copy_originals(source, workspace)
         (workspace / RELATIVE_PACKET).parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(base_file, workspace / RELATIVE_PACKET)
     return {
