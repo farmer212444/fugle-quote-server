@@ -1,0 +1,63 @@
+name: AlphaMax Financial Vintage Capture
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'alphamax/financial_vintages.py'
+      - 'alphamax/FINANCIAL_VINTAGES.md'
+      - 'alphamax/research/financial-vintages/**'
+      - 'tests/test_alphamax_financial_vintages.py'
+      - '.github/workflows/alphamax-financial-vintages.yml'
+permissions:
+  contents: read
+concurrency:
+  group: alphamax-financial-vintages-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  observed-vintage-evidence:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Reject version leakage and changed original bytes
+        run: python -m unittest -v tests.test_alphamax_financial_vintages tests.test_alphamax_reported_income tests.test_alphamax
+      - name: Preserve actual official bytes with capture-time availability
+        run: |
+          python -m alphamax.financial_vintages \
+            --archive-root alphamax/research/financial-vintages \
+            --output alphamax-financial-vintages-report.json
+      - name: Export reviewable source checkpoint without changing any branch
+        shell: python
+        run: |
+          import base64, hashlib, json, pathlib, subprocess
+          report = json.loads(pathlib.Path("alphamax-financial-vintages-report.json").read_bytes())
+          print("FINANCIAL_CAPTURE_REPORT " + json.dumps(report, ensure_ascii=False))
+          if report.get("status") == "OBSERVED_FINANCIAL_VERSIONS_CAPTURED_NOT_HISTORICAL_PIT":
+              files = subprocess.check_output(
+                  ["git", "ls-files", "--others", "--modified", "--exclude-standard", "--",
+                   "alphamax/research/financial-vintages"], text=True).splitlines()
+              for name in sorted(set(files)):
+                  path = pathlib.Path(name)
+                  data = path.read_bytes()
+                  print("FINANCIAL_CHECKPOINT_FILE " + json.dumps({
+                      "path": name, "encoding": "base64",
+                      "content": base64.b64encode(data).decode("ascii"),
+                      "sha256": hashlib.sha256(data).hexdigest(),
+                      "bytes": len(data)}))
+          with open(__import__("os").environ["GITHUB_STEP_SUMMARY"], "a") as out:
+              out.write("## Observed financial versions\n\n")
+              out.write("- Capture status: **%s**\n" % report["status"])
+              out.write("- New observed versions: **%s**\n" % report.get("new_versions", 0))
+              out.write("- Historical PIT filing batches admitted: **0**\n")
+              out.write("- First-filing and correction clocks remain unverified; no model PK, A+ or trading.\n")
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: alphamax-financial-vintages
+          path: |
+            alphamax-financial-vintages-report.json
+            alphamax/research/financial-vintages/
+          retention-days: 90
