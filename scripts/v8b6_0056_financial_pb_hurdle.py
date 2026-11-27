@@ -71,6 +71,10 @@ def screen(root,read_at):
     previously=filter_top10(holdings,full)
     source=json.loads((root/SOURCE).read_text(encoding="utf-8"))
     positions=validate_bvps(source,holdings,read_at)
+    # Nine research-only financial hurdles must not overlap the comparable
+    # operating-model partition, regardless of how many holdings are valued.
+    if not {p['code'] for p in positions} <= {p['code'] for p in previously['unrankable']}:
+        raise ValueError("0056_FINANCIAL_HURDLE_PARTITION_CONFLICT")
     # Bind the comparison to the forecast's consumed quote bytes. A newer daily
     # manifest must not invalidate, or silently reprice, an older frozen model.
     day=dt.date.fromisoformat(full["asof_price_date"]).isoformat()
@@ -141,7 +145,7 @@ def screen(root,read_at):
         cost_of_equity_assumption_pct=KE*100,long_term_growth_assumption_pct=G*100,
         total_constituents=50,other_sector_base_price_comparable_count=previously["rankable_count"],
         nine_financial_ROE_PB_hurdle_only_count=len(result),
-        remaining_missing_comparable_count=previously["unrankable_count"]-len(result),
+        remaining_missing_comparable_count=previously["unrankable_count"]+previously["absent_count"]-len(result),
         finance_ranking_is_not_a_2027_return_ranking=True,
         exact_historical_original_BVPS_unverified=True,
         H1_eps_source_sha256=hashlib.sha256(official_bytes).hexdigest(),
@@ -185,7 +189,7 @@ def write_report(data,path):
         lines+=["","BVPS為第三方StatementDog對2026Q2財報的整理（非原始MOPS稽核簽章），"
             "各來源由紀錄中的發行人網址核對；H1 EPS及表列日期收盤價係本模型具SHA的官方標準化資料。",
             "保險業OCI、持股淨值、資本適足率、稀釋及除權息使跨產業P/B不可直接排名。",
-            "正式2027 EPS、BVPS、合理P/B、合理價與漲幅**全部維持空值**；不變更原34檔排名、A+或宣稱勝過0056。",""]
+            "正式2027 EPS、BVPS、合理P/B、合理價與漲幅**全部維持空值**；不變更原可比股排名、A+或宣稱勝過0056。",""]
         text="\n".join(lines)
     path.write_text(text,encoding="utf-8")
 
