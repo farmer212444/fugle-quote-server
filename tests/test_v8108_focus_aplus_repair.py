@@ -147,6 +147,28 @@ class CertificationFocusTests(unittest.TestCase):
             self.assertFalse(eight["review_completed"])
             self.assertFalse(report["review_pack_not_written"] is False)
 
+    def test_quarter_rollover_replaces_stale_specialist_outputs_without_pass(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp);fixture(root)
+            p=root/"rankings/v891_6206_gate_triage.json"
+            put(p,dict(issuer="6206",price_date=DATE,estimate_vintage=STAMP,
+                       status="PENDING_HISTORICAL_SCENARIO_ROLLOVER",
+                       reason="ValueError:REVENUE_MONTH_NOT_2026_09",
+                       newly_certified_gates=0,diagnostic_complete=False,gates=None))
+            put(root/"rankings/v886_9802_early_q3.json",
+                dict(code="9802",status="QUARTER_ALREADY_IN_MAIN_MODEL",certified_Aplus=False))
+            result=publish(root)
+            self.assertEqual(result["formal_pass_added"],0)
+            self.assertEqual(result["formal_Aplus_certificates_issued_by_this_report"],0)
+            self.assertIsNone(result["review_starter"]["gate_review_starter"])
+            self.assertIsNone(result["second_focus"])
+            self.assertEqual(json.loads((root/"rankings/6206_gate_review_starter_latest.json").read_text())["status"],
+                             "PENDING_HISTORICAL_SCENARIO_ROLLOVER")
+            self.assertIn("9802_QUARTER_ALREADY_IN_MAIN_MODEL",markdown(result))
+            t=json.loads(p.read_text());t["reason"]="ValueError:BAD_HASH";put(p,t)
+            with self.assertRaisesRegex(ValueError,"INVALID_ROLLOVER_PENDING_TRIAGE"):
+                build(root)
+
     def test_tampering_original_pdf_is_rejected(self):
         with tempfile.TemporaryDirectory() as tmp:
             root=Path(tmp);rel,_=fixture(root)

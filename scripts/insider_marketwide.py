@@ -268,7 +268,7 @@ def irb_master(base, month):
             if hashlib.sha256(raw).hexdigest() != rec["sha256"]:
                 return {}
             rows = parse_irb110(raw)
-        except (OSError, ValueError, KeyError):
+        except (OSError, EOFError, ValueError, KeyError):
             return {}
         for code, data in rows.items():
             if code in out:
@@ -314,7 +314,7 @@ def recover_failed_original(base, month, code, market):
                               market=market,
                               status="OFFICIAL_ARCHIVED_RESPONSE_REPARSED_DEDUP_UNVERIFIED"))
         return True
-    except (OSError, ValueError, KeyError, TypeError, json.JSONDecodeError):
+    except (OSError, EOFError, ValueError, KeyError, TypeError, json.JSONDecodeError):
         return False
 
 def deferred_identity_conflict(base, month, code, last_error, now=None):
@@ -470,7 +470,7 @@ def build_ranking(base, months, master):
                 parsed = parse_detail(original)
                 if any(parsed[k] != row[k] for k in ("buy_shares", "sell_shares")):
                     raise ValueError("NORMALIZED_SOURCE_MISMATCH")
-            except (OSError, ValueError, KeyError):
+            except (OSError, EOFError, ValueError, KeyError):
                 missing.append(month)
                 consecutive_net_sell_months = 0
                 continue

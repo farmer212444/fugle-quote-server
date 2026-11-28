@@ -4,7 +4,7 @@ import unittest
 
 from scripts.v890_five_candidate_audit import (
     FOCUS, scenario_stress, equity_watch, flags_and_next,
-    validate_vintage, markdown
+    validate_vintage, markdown, rollover_report
 )
 
 class FiveCandidateAuditTests(unittest.TestCase):
@@ -59,6 +59,23 @@ class FiveCandidateAuditTests(unittest.TestCase):
           financial_last_quarter="2026-Q2",formal_Aplus_count=0)
         with self.assertRaisesRegex(ValueError,"VINTAGE_MISMATCH"):
             validate_vintage(research,{"cash":financial})
+    def test_forward_quarter_rollover_is_pending_not_audit_or_pass(self):
+        r=dict(model="V8.10.8",estimate_vintage="2026-11-27T05:00:00+08:00",
+               asof_price_date="2026-11-26",financial_last_quarter="2026-Q3",
+               revenue_month="2026-10",formal_Aplus_count=0)
+        with self.assertRaisesRegex(ValueError,"PERIOD_ROLLOVER") as exc:
+            validate_vintage(r,{"cash":dict(r)})
+        out=rollover_report(r,exc.exception)
+        self.assertFalse(out["diagnostic_complete"])
+        self.assertIsNone(out["issuer_count"])
+        self.assertEqual(out["securities"],[])
+        self.assertTrue(out["no_formal_Aplus_added"])
+        self.assertIn("待更新",markdown(out))
+        with self.assertRaisesRegex(ValueError,"VINTAGE_MISMATCH"):
+            validate_vintage(r,{"cash":dict(r,estimate_vintage="2026-11-26T05:00:00+08:00")})
+        with self.assertRaisesRegex(ValueError,"PERIOD_ROLLOVER"):
+            rollover_report(dict(r,financial_last_quarter="2026-Q1"),exc.exception)
+
     def test_total_focus_unique(self):
         self.assertEqual(len(FOCUS),5)
         self.assertEqual(len(set(FOCUS)),5)

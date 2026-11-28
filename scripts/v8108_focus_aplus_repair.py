@@ -218,8 +218,8 @@ def build(root):
     vintage=official.get("estimate_vintage")
     date=official.get("asof_price_date")
     require(all(x==vintage for x in (
-        triage.get("estimate_vintage"),footwear.get("estimate_vintage"),
-        early.get("estimate_vintage"))),"INPUT_ESTIMATE_VINTAGE_MISMATCH")
+        triage.get("estimate_vintage"),footwear.get("estimate_vintage"))),
+        "INPUT_ESTIMATE_VINTAGE_MISMATCH")
     require(all(x==date for x in (triage.get("price_date"),
                                  footwear.get("asof_price_date"))),
             "INPUT_REFERENCE_PRICE_DATE_MISMATCH")
@@ -234,6 +234,42 @@ def build(root):
                     rows[code]["company_gates_pending"]<=12
                 and isinstance(rows[code].get("strategy_validation_lane"),str),
                 "FORMAL_QUALITY_COUNTS_OR_LANE_INVALID")
+    flytech_pending = triage.get("status") == "PENDING_HISTORICAL_SCENARIO_ROLLOVER"
+    shoe_superseded = early.get("status") == "QUARTER_ALREADY_IN_MAIN_MODEL"
+    if shoe_superseded:
+        from tw_model_v880.math import quarter_key
+        require(early.get("code")=="9802" and
+                quarter_key(rows["9802"]["valuation_period"])>=quarter_key("2026-Q3"),
+                "9802_Q3_SUPERSESSION_NOT_CONFIRMED")
+    else:
+        require(early.get("estimate_vintage")==vintage,"INPUT_ESTIMATE_VINTAGE_MISMATCH")
+    if flytech_pending or shoe_superseded:
+        # A historical scenario is not a current review packet. Publish an
+        # explicit replacement with null unavailable results, not stale values
+        # or fabricated source counts. The current formal lanes remain intact.
+        if flytech_pending:
+            require(triage.get("issuer")=="6206" and triage.get("newly_certified_gates")==0
+                    and triage.get("diagnostic_complete") is False
+                    and triage.get("gates") is None
+                    and triage.get("reason") in (
+                        "ValueError:REVENUE_MONTH_NOT_2026_09",
+                        "ValueError:Q3_FINANCIAL_MODEL_ROLLOVER_REQUIRES_NEW_ASSUMPTIONS"),
+                    "INVALID_ROLLOVER_PENDING_TRIAGE")
+        else:
+            # An available starter must still pass the original SHA and gate checks.
+            full_6206_starter(root,triage,rows["6206"],manifest)
+        reasons=[]
+        if flytech_pending: reasons.append(triage["reason"])
+        if shoe_superseded: reasons.append("9802_QUARTER_ALREADY_IN_MAIN_MODEL")
+        return dict(schema=SCHEMA, model=official["model"], asof_price_date=date,
+                    estimate_vintage=vintage, status="PENDING_HISTORICAL_SCENARIO_ROLLOVER",
+                    reasons=reasons, formal_Aplus_certificates_issued_by_this_report=0,
+                    formal_pass_added=0, no_trading_or_position_changes=True,
+                    review_pack_not_written=True, first_review_candidate=None, second_focus=None,
+                    review_starter=dict(schema="V8108_6206_13_GATE_REVIEW_STARTER_NOT_CERTIFICATE",
+                                        code="6206", estimate_vintage=vintage, status="PENDING_HISTORICAL_SCENARIO_ROLLOVER",
+                                        gate_review_starter=None, originals_sha256_checked=None,
+                                        review_packs_written=False, formal_Aplus=None))
     starter=full_6206_starter(root,triage,rows["6206"],manifest)
     quarter=footwear.get("companies",[])
     shoe=next((c for c in quarter if c.get("code")=="9802"),None)
@@ -287,6 +323,10 @@ def build(root):
         assessment="EVIDENCE_PREPARED_NOT_SIGNED_OR_CERTIFIED")
 
 def markdown(doc):
+    if doc.get("status")=="PENDING_HISTORICAL_SCENARIO_ROLLOVER":
+        return ("# 專項審查包待更新\n\n" + doc["estimate_vintage"] +
+                "\n\n" + "；".join(doc["reasons"]) +
+                "\n\n舊情境不再適用；本報告沒有新增PASS或A+。正式狀態請查閱同版本主模型證據帳本。\n")
     a=doc["first_review_candidate"]
     b=doc["second_focus"]
     h=b["operating_hurdle"]
@@ -341,6 +381,9 @@ def main():
     ap.add_argument("--data-root",default="tw-market-data")
     args=ap.parse_args()
     r=publish(args.data_root)
+    if r.get("status")=="PENDING_HISTORICAL_SCENARIO_ROLLOVER":
+        print(json.dumps(dict(status=r["status"],reasons=r["reasons"],new_quality_pass=0,new_Aplus=0),ensure_ascii=False))
+        return
     print(json.dumps(dict(date=r["asof_price_date"],flytech_sources=
         r["first_review_candidate"]["verified_presentation_pdf_count"],
         footwear_required_margin_pct=

@@ -492,5 +492,59 @@ class MarketwideInsiderTests(unittest.TestCase):
             self.assertEqual(pending_peer["status"], "PARTIAL_SCOPE_NO_BUY_OBSERVED_NOT_ZERO")
 
 
+
+    def test_truncated_failed_gzip_is_not_recovered_and_capture_continues(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            base = Path(tmp)
+            code, month = "1234", "2026-09"
+            original = body([row(buy=1000, sell=0)])
+            failed = base / "failed" / month / (code + ".json")
+            rec = save_original(failed, original, "https://mops.twse.com.tw/mops/api/query6_1", month)
+            archive = failed.parent / rec["raw_archive"]
+            archive.write_bytes(archive.read_bytes()[:-4])
+            self.assertFalse(recover_failed_original(base, month, code, "TWSE"))
+            master = {code: {"market": "TWSE", "issued_shares": 1000000}}
+            calls = []
+            def getter(url, payload):
+                calls.append(payload["companyId"])
+                return original
+            state = capture_details(base, [month], master, 1, gap=0, getter=getter)
+            self.assertEqual(calls, [code])
+            self.assertEqual(state["succeeded"], 1)
+            self.assertEqual(build_ranking(base, [month], master)["verified_detail_month_count"], 1)
+
+    def test_truncated_detail_gzip_is_pending_not_zero_or_fatal(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            base = Path(tmp)
+            month = "2026-09"
+            master = {c: {"market": "TWSE", "issued_shares": 1000000}
+                      for c in ("1234", "1235")}
+            original = body([row(buy=1000, sell=0)])
+            for code in master:
+                target = base / "detail" / month / (code + ".json")
+                rec = save_original(target, original, "https://mops.twse.com.tw/mops/api/query6_1", month)
+                put_json(target, dict(rec, code=code, month=month, buy_shares=1000, sell_shares=0))
+                if code == "1234":
+                    archive = target.parent / rec["raw_archive"]
+                    archive.write_bytes(archive.read_bytes()[:-4])
+            report = build_ranking(base, [month], master)
+            self.assertEqual(report["verified_detail_month_count"], 1)
+            self.assertEqual(report["expected_detail_month_count"], 2)
+            self.assertEqual(report["pending_issuer_count"], 1)
+            self.assertEqual(report["pending_examples"][0]["missing_months"], [month])
+            self.assertEqual([x["code"] for x in report["all_observed_positive"]], ["1235"])
+
+    def test_truncated_master_gzip_returns_unavailable(self):
+        from scripts.insider_marketwide import irb_master
+        with tempfile.TemporaryDirectory() as tmp:
+            base = Path(tmp)
+            month = "2026-09"
+            target = base / "irb110" / month / "TWSE.json"
+            rec = save_original(target, b"synthetic unavailable master archive", "https://siis.twse.com.tw", month)
+            archive = target.parent / rec["raw_archive"]
+            archive.write_bytes(archive.read_bytes()[:-4])
+            self.assertEqual(irb_master(base, month), {})
+
+
 if __name__ == "__main__":
     unittest.main()

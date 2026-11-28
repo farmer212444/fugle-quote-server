@@ -3,7 +3,7 @@ import datetime as dt
 import statistics
 import unittest
 
-from scripts.v891_6206_gate_triage import check_report, render_md
+from scripts.v891_6206_gate_triage import check_report, render_md, rollover_pending
 from tw_model_v880.evidence import GATES
 
 
@@ -48,6 +48,20 @@ def sample():
 
 
 class FlytechGateTriageTest(unittest.TestCase):
+    def test_old_revenue_window_defers_without_minting_gate_or_using_stale_values(self):
+        probe=dict(estimate_vintage="2026-11-25T06:00:00+08:00",asof_price_date="2026-11-24",
+                   top_priority_evidence=[])
+        value=dict(status="6206_EVIDENCE_OR_VINTAGE_PENDING",issuer="6206",formal_Aplus=False,
+                   error="ValueError:REVENUE_MONTH_NOT_2026_09")
+        result=rollover_pending(probe,value)
+        self.assertEqual(result["status"],"PENDING_HISTORICAL_SCENARIO_ROLLOVER")
+        self.assertEqual(result["newly_certified_gates"],0)
+        self.assertIsNone(result["gates"])
+        self.assertIsNone(result["formal_Aplus"])
+        self.assertIn("PENDING",render_md(result))
+        value["error"]="ValueError:OFFICIAL_REVENUE_SHARD_SHA_MISMATCH"
+        self.assertIsNone(rollover_pending(probe,value))
+
     def test_complete_archived_coverage_is_not_certification(self):
         result = check_report(*sample())
         self.assertEqual(len(result["gates"]), 13)
