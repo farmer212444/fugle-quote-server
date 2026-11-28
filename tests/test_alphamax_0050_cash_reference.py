@@ -5,6 +5,7 @@ from decimal import Decimal
 import json
 import tempfile
 import unittest
+from unittest.mock import patch
 
 from alphamax.benchmark_0050_cash_reference import build_cash_reference, simulate_holding_period
 from tests.test_alphamax_0050_milestones import create_sources
@@ -158,6 +159,34 @@ class CostedIntervalSimulationTests(unittest.TestCase):
                 expected_trading_days=["2025-06-18", "2025-06-19", "2025-07-21"])
             self.assertEqual(out["status"], "BLOCKED_0050_SIM_CALENDAR_MISMATCH")
             self.assertIn("2025-06-19", out["missing_sessions"])
+            self.assertNotIn("simulated_net_trade_cost_return_before_personal_tax", out)
+
+    def test_duplicate_source_rows_block_without_return(self):
+        with tempfile.TemporaryDirectory() as temp:
+            prices, notices, _ = create_sources(temp)
+            report = build_cash_reference(prices, notices)
+            start, end = "2025-06-10", "2025-06-18"
+            dates = [r["date"] for r in report["rows"] if start <= r["date"] <= end]
+            report["rows"].append(next(r.copy() for r in report["rows"] if r["date"] == start))
+            with patch("alphamax.benchmark_0050_cash_reference.build_cash_reference", return_value=report):
+                out = simulate_holding_period(prices, notices, start=start, end=end,
+                    buy_fee_rate="0.001", sell_fee_rate="0.001", sell_tax_rate="0.001",
+                    expected_trading_days=dates)
+            self.assertEqual(out["status"], "BLOCKED_0050_SIM_DUPLICATE_SOURCE_SESSIONS")
+            self.assertNotIn("simulated_net_trade_cost_return_before_personal_tax", out)
+
+    def test_duplicate_distribution_blocks_without_return(self):
+        with tempfile.TemporaryDirectory() as temp:
+            prices, notices, _ = create_sources(temp)
+            report = build_cash_reference(prices, notices)
+            start, end = "2025-06-18", "2025-07-21"
+            dates = [r["date"] for r in report["rows"] if start <= r["date"] <= end]
+            report["distribution_events"].append(report["distribution_events"][0].copy())
+            with patch("alphamax.benchmark_0050_cash_reference.build_cash_reference", return_value=report):
+                out = simulate_holding_period(prices, notices, start=start, end=end,
+                    buy_fee_rate="0.001", sell_fee_rate="0.001", sell_tax_rate="0.001",
+                    expected_trading_days=dates)
+            self.assertEqual(out["status"], "BLOCKED_0050_SIM_DUPLICATE_DISTRIBUTIONS")
             self.assertNotIn("simulated_net_trade_cost_return_before_personal_tax", out)
 
     def test_negative_fee_rejected(self):
