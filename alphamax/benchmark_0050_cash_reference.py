@@ -213,7 +213,14 @@ def simulate_holding_period(price_root, notice_root, *, start, end,
     }
     if report["status"] != "RETROSPECTIVE_GROSS_CASH_RIGHTS_REFERENCE_NOT_PIT_OR_TOTAL_RETURN":
         return blocked | {"status": "BLOCKED_0050_SIM_SOURCE_GAPS", "source_status": report["status"]}
-    rows = {r["date"]: r for r in report["rows"] if start <= r["date"] <= end}
+    interval_rows = [r for r in report["rows"] if start <= r["date"] <= end]
+    rows = {r["date"]: r for r in interval_rows}
+    if len(rows) != len(interval_rows):
+        return blocked | {"status": "BLOCKED_0050_SIM_DUPLICATE_SOURCE_SESSIONS"}
+    events = report["distribution_events"]
+    ex_dates = [canonical_day(event["ex_dividend_date"]) for event in events]
+    if len(ex_dates) != len(set(ex_dates)):
+        return blocked | {"status": "BLOCKED_0050_SIM_DUPLICATE_DISTRIBUTIONS"}
     expected = {d.isoformat() for d in calendar}
     if set(rows) != expected:
         return blocked | {"status": "BLOCKED_0050_SIM_CALENDAR_MISMATCH",
