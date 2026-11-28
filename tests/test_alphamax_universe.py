@@ -95,8 +95,52 @@ class UniverseAuditTests(unittest.TestCase):
             })
             a = audit_history(root, min_sessions=2)
             self.assertEqual(a["status"], "BLOCKED_NOT_A_PIT_SECURITY_MASTER")
-            self.assertEqual(a["counts"]["history_files_with_verified_corporate_actions"], 1)
-            self.assertEqual(a["counts"]["history_files_with_independent_issuer_pit"], 1)
+            for key in ("history_files_with_verified_corporate_actions",
+                        "history_files_with_independent_issuer_pit",
+                        "history_files_with_verified_tradability"):
+                self.assertEqual(a["counts"][key], 0)
+            for key in ("unverified_corporate_action_claims",
+                        "unverified_issuer_pit_claims",
+                        "unverified_tradability_claims"):
+                self.assertEqual(a["counts"][key], 1)
+
+    def test_receipt_presence_is_not_verified_source(self):
+        with TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            build(root, packet={
+                "original_raw_responses_preserved_in_actions_artifact_not_repository": False,
+                "original_receipt_path": "fake-receipt.json",
+            })
+            (root / "fake-receipt.json").write_text("{}")
+            a = audit_history(root)
+            self.assertEqual(a["counts"]["unverified_receipt_file_presence"], 1)
+            self.assertEqual(a["counts"]["history_files_with_durable_original_receipt"], 0)
+
+    def test_untrusted_receipt_paths_rejected(self):
+        for value in ("../outside.json", "/tmp/outside.json", 123, ["receipt.json"]):
+            with self.subTest(value=value), TemporaryDirectory() as tmp:
+                root = Path(tmp)
+                build(root, packet={
+                    "original_raw_responses_preserved_in_actions_artifact_not_repository": False,
+                    "original_receipt_path": value,
+                })
+                a = audit_history(root)
+                self.assertEqual(a["counts"]["invalid_receipt_path_claims"], 1)
+                self.assertEqual(a["counts"]["unverified_receipt_file_presence"], 0)
+
+    def test_receipt_symlink_escape_rejected(self):
+        with TemporaryDirectory() as tmp, TemporaryDirectory() as outside:
+            root = Path(tmp)
+            external = Path(outside) / "receipt.json"
+            external.write_text("{}")
+            (root / "link.json").symlink_to(external)
+            build(root, packet={
+                "original_raw_responses_preserved_in_actions_artifact_not_repository": False,
+                "original_receipt_path": "link.json",
+            })
+            a = audit_history(root)
+            self.assertEqual(a["counts"]["invalid_receipt_path_claims"], 1)
+            self.assertEqual(a["counts"]["unverified_receipt_file_presence"], 0)
 
     def test_empty_snapshot_no_divide_by_zero(self):
         with TemporaryDirectory() as tmp:
