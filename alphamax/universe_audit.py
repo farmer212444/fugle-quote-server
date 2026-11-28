@@ -117,6 +117,11 @@ def audit_history(root, *, min_sessions=756, max_examples=25):
         "history_files_with_independent_issuer_pit": 0,
         "history_files_with_verified_tradability": 0,
         "history_files_with_durable_original_receipt": 0,
+        "unverified_corporate_action_claims": 0,
+        "unverified_issuer_pit_claims": 0,
+        "unverified_tradability_claims": 0,
+        "unverified_receipt_file_presence": 0,
+        "invalid_receipt_path_claims": 0,
         "unpriced_historical_sessions": 0,
         "history_files_with_unpriced_sessions": 0,
         "history_files_without_any_positive_close": 0,
@@ -166,15 +171,28 @@ def audit_history(root, *, min_sessions=756, max_examples=25):
             counts["history_files_not_in_snapshot"] += 1
             unlisted.append(f"{market}:{code}")
         if packet.get("share_adjusted_history") is True and packet.get("dividend_total_return_verified") is True:
-            counts["history_files_with_verified_corporate_actions"] += 1
+            counts["unverified_corporate_action_claims"] += 1
         if packet.get("issuer_PIT_history_verified") is True and packet.get("official_dated_security_master_receipt"):
-            counts["history_files_with_independent_issuer_pit"] += 1
+            counts["unverified_issuer_pit_claims"] += 1
         if packet.get("formal_tradability_gate") == "VERIFIED_EXECUTABLE":
-            counts["history_files_with_verified_tradability"] += 1
+            counts["unverified_tradability_claims"] += 1
         if packet.get("original_raw_responses_preserved_in_actions_artifact_not_repository") is False and packet.get("original_receipt_path"):
-            receipt = root / packet["original_receipt_path"]
-            if receipt.is_file():
-                counts["history_files_with_durable_original_receipt"] += 1
+            # File presence is not proof of authenticity, identity, or completeness.
+            # Never follow an untrusted packet path outside the repository.
+            value = packet["original_receipt_path"]
+            try:
+                if not isinstance(value, str) or not value or "\x00" in value:
+                    raise ValueError("INVALID_RECEIPT_PATH")
+                relative = Path(value)
+                if relative.is_absolute() or ".." in relative.parts:
+                    raise ValueError("UNSAFE_RECEIPT_PATH")
+                receipt = (root / relative).resolve()
+                if not receipt.is_relative_to(root.resolve()):
+                    raise ValueError("UNSAFE_RECEIPT_PATH")
+                if receipt.is_file():
+                    counts["unverified_receipt_file_presence"] += 1
+            except (ValueError, OSError, RuntimeError):
+                counts["invalid_receipt_path_claims"] += 1
 
     missing_codes = [f"{m}:{c}" for m, c in sorted(missing)]
     return {
@@ -185,6 +203,7 @@ def audit_history(root, *, min_sessions=756, max_examples=25):
         "current_quote_unpriced_sample": sorted(current_unpriced)[:max_examples],
         "min_sessions_target": min_sessions,
         "counts": counts,
+        "verification_policy": "Packet claims and receipt file presence are diagnostic only. Verified counters stay zero until independent source replay is implemented.",
         "snapshot_without_well_formed_history": len(missing_codes),
         "snapshot_history_coverage_ratio": round(
             counts["present_in_snapshot_with_history"] / len(current_keys), 6
