@@ -1,0 +1,63 @@
+{
+  "schema": "ALPHAMAX_0050_FIRST_MATURE_INTERVAL_PILOT_V1",
+  "status": "RETROSPECTIVE_COSTED_PILOT_BLOCKED_INDEPENDENT_CALENDAR",
+  "source_commit": "6981f6d9c489a695b75f2b999c67ea3dae2e264c",
+  "source_ci_run": 45768216427,
+  "source_artifact_id": 15092379058,
+  "source_artifact_sha256": "8c08be0f3e0bc66a0133770b1ccb11d2f524f13921b48ae0441de38185bb81a6",
+  "reference_path": "alphamax-0050-gross-rights-reference.json",
+  "reference_sha256": "89392c99076ded002b0374e6547cf394aad0aae333388d0d2c50d3139138d60d",
+  "price_packet_path": "alphamax-0050-data/prices/issuer_history/TWSE/0050.json",
+  "price_packet_sha256": "c51eedae43626022113c813df187c93798ac52e37cc8e06874e8907a5c48c703",
+  "original_month_sha256_rechecked": 23,
+  "original_notice_sha256_rechecked": 6,
+  "source_url_pattern": "https://www.twse.com.tw/rwd/zh/afterTrading/STOCK_DAY?date=YYYYMM01&stockNo=0050&response=json",
+  "start": "2025-01-02",
+  "end": "2026-01-02",
+  "observed_quote_sessions_inclusive": 239,
+  "entry_close_ntd": "194.05",
+  "entry_units": 1,
+  "exit_close_ntd": "66.95",
+  "exit_units": 4,
+  "gross_exit_value_ntd": "267.80",
+  "distribution_events": [
+    {
+      "ex_date": "2025-01-17",
+      "scheduled_payment_date": "2025-02-20",
+      "gross_entitlement_ntd": "2.70",
+      "original_sha256": "468cccc245566b71d02333c464d8ecceb85b6ca5364b123fa120c2363110232f"
+    },
+    {
+      "ex_date": "2025-07-21",
+      "scheduled_payment_date": "2025-08-08",
+      "gross_entitlement_ntd": "1.44",
+      "original_sha256": "07a026aa3d7b96a43c9dd409f517743aabc95c15faf669a018b8c95d224d8776"
+    }
+  ],
+  "simulated_scheduled_cash_ntd": "4.14",
+  "receivable_ntd": "0",
+  "buy_fee_rate": "0.001425",
+  "sell_fee_rate": "0.001425",
+  "sell_tax_rate": "0.001",
+  "entry_outlay_ntd": "194.32652125",
+  "net_sale_proceeds_ntd": "267.15058500",
+  "terminal_wealth_ntd": "271.29058500",
+  "gross_return": "0.401391393970626127286781757",
+  "costed_pilot_return": "0.396055377592985136608058330",
+  "calculation_method": "Independent Decimal arithmetic on CI-exported reference: (4*66.95*(1-0.001425-0.001)+4.14)/(194.05*(1+0.001425))-1. No reinvestment, proportional fees/tax assumptions, no min-fee or rounding, no personal dividend tax. One normalized entry unit, not literal executable odd-lot fill.",
+  "ci_new_simulator_status": "Independent CI success on source commit; this particular historical interval was recomputed from the archived reference, not executed by the new simulator with a verified calendar.",
+  "calendar_probe": {
+    "source_url": "https://www.twse.com.tw/rwd/zh/afterTrading/FMTQIK?date=20250101&response=html",
+    "status": "BLOCKED_SOURCE_UNAVAILABLE_IN_CURRENT_RUNTIME",
+    "independent_calendar_source_verified": false
+  },
+  "actual_trade_or_payment_verified": false,
+  "independent_total_return_benchmark_certified": false,
+  "admitted_training_labels": 0,
+  "formal_a_plus": false,
+  "limitations": [
+    "Retrospective evidence not as-published PIT feature data.",
+    "Independent market calendar and instrument suspension exclusions not yet verified; observed sessions are not proof of completeness.",
+    "No claim of independent benchmark certification, actual account payment, actual execution or model performance."
+  ]
+}

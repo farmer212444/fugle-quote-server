@@ -1,0 +1,350 @@
+{
+  "schema": "ALPHAMAX_V8_RESEARCH_EXHIBITION_MATCH_V1",
+  "comparator_vintage_date": "2026-11-11",
+  "reference_price_date": "2026-11-10",
+  "data_sources": {
+    "alpha_research": "alphamax/research/2026-11-10-top20-evidence.md",
+    "alpha_research_branch": "feature/alphamax-v1-independent-research",
+    "v8_search": "tw-market-data/rankings/latest_return_model_search.json",
+    "v8_experiment_id": "search-1bd7a00c1991103076642296",
+    "v8_estimate_vintage": "2026-11-11T06:50:20.042032+08:00",
+    "price_snapshot": "tw-market-data/prices/2026-11-10.json",
+    "alpha_branch_sha_before_freeze": "532a58530064e42c428f15f6a9094bbe3c26f187"
+  },
+  "alpha_lane": {
+    "name": "AlphaMax independent human research triage (not trained AlphaMax engine)",
+    "selection_method": "take first 10 ranks in frozen research queue; no V8 features or rankings imported into selection",
+    "rows": [
+      {
+        "rank": 1,
+        "code": "8299",
+        "name": "群聯",
+        "market": "TPEX",
+        "reference_close": 1675,
+        "price_date": "2026-11-10",
+        "forecast_expected_net_return_12m": null,
+        "rank_kind": "MANUAL_RESEARCH_TRIAGE_NOT_MODEL"
+      },
+      {
+        "rank": 2,
+        "code": "6691",
+        "name": "洋基工程",
+        "market": "TWSE",
+        "reference_close": 568,
+        "price_date": "2026-11-10",
+        "forecast_expected_net_return_12m": null,
+        "rank_kind": "MANUAL_RESEARCH_TRIAGE_NOT_MODEL"
+      },
+      {
+        "rank": 3,
+        "code": "6274",
+        "name": "台燿",
+        "market": "TPEX",
+        "reference_close": 982,
+        "price_date": "2026-11-10",
+        "forecast_expected_net_return_12m": null,
+        "rank_kind": "MANUAL_RESEARCH_TRIAGE_NOT_MODEL"
+      },
+      {
+        "rank": 4,
+        "code": "2330",
+        "name": "台積電",
+        "market": "TWSE",
+        "reference_close": 2285,
+        "price_date": "2026-11-10",
+        "forecast_expected_net_return_12m": null,
+        "rank_kind": "MANUAL_RESEARCH_TRIAGE_NOT_MODEL"
+      },
+      {
+        "rank": 5,
+        "code": "2383",
+        "name": "台光電",
+        "market": "TWSE",
+        "reference_close": 4365,
+        "price_date": "2026-11-10",
+        "forecast_expected_net_return_12m": null,
+        "rank_kind": "MANUAL_RESEARCH_TRIAGE_NOT_MODEL"
+      },
+      {
+        "rank": 6,
+        "code": "2395",
+        "name": "研華",
+        "market": "TWSE",
+        "reference_close": 593,
+        "price_date": "2026-11-10",
+        "forecast_expected_net_return_12m": null,
+        "rank_kind": "MANUAL_RESEARCH_TRIAGE_NOT_MODEL"
+      },
+      {
+        "rank": 7,
+        "code": "2408",
+        "name": "南亞科",
+        "market": "TWSE",
+        "reference_close": 383,
+        "price_date": "2026-11-10",
+        "forecast_expected_net_return_12m": null,
+        "rank_kind": "MANUAL_RESEARCH_TRIAGE_NOT_MODEL"
+      },
+      {
+        "rank": 8,
+        "code": "2344",
+        "name": "華邦電",
+        "market": "TWSE",
+        "reference_close": 135,
+        "price_date": "2026-11-10",
+        "forecast_expected_net_return_12m": null,
+        "rank_kind": "MANUAL_RESEARCH_TRIAGE_NOT_MODEL"
+      },
+      {
+        "rank": 9,
+        "code": "2360",
+        "name": "致茂",
+        "market": "TWSE",
+        "reference_close": 1310,
+        "price_date": "2026-11-10",
+        "forecast_expected_net_return_12m": null,
+        "rank_kind": "MANUAL_RESEARCH_TRIAGE_NOT_MODEL"
+      },
+      {
+        "rank": 10,
+        "code": "5274",
+        "name": "信驊",
+        "market": "TPEX",
+        "reference_close": 11935,
+        "price_date": "2026-11-10",
+        "forecast_expected_net_return_12m": null,
+        "rank_kind": "MANUAL_RESEARCH_TRIAGE_NOT_MODEL"
+      }
+    ]
+  },
+  "v8_lane": {
+    "name": "V8.10.8 growth predefined parameter research screen (not certified live model)",
+    "strategy_id": "fba4fc7e0f98702ddc21",
+    "selection_method": "take order of frozen growth research positions; not a chosen backtested winner",
+    "rows": [
+      {
+        "rank": 1,
+        "code": "6505",
+        "name": "台塑化",
+        "market": "TWSE",
+        "reference_close": 89.6,
+        "price_date": "2026-11-10",
+        "rank_score": 0.9402985074626866,
+        "base_price_upside_pct": 83.48,
+        "bear_price_upside_pct": 9.25,
+        "ocf_to_sales": 0.01575603304990522,
+        "warning_flags": [
+          "CURRENT_DETAIL_IS_OFFICIAL_BATCH_SUMMARY_NOT_ORIGINAL_ISSUER_NOTES"
+        ],
+        "expected_net_return_12m": null,
+        "formal_Aplus": false
+      },
+      {
+        "rank": 2,
+        "code": "6221",
+        "name": "晉泰",
+        "market": "TPEX",
+        "reference_close": 41.35,
+        "price_date": "2026-11-10",
+        "rank_score": 0.917910447761194,
+        "base_price_upside_pct": -25.82,
+        "bear_price_upside_pct": -74.9,
+        "ocf_to_sales": 0.15834354988348298,
+        "warning_flags": [
+          "CURRENT_DETAIL_IS_OFFICIAL_BATCH_SUMMARY_NOT_ORIGINAL_ISSUER_NOTES",
+          "MONTHLY_OR_YTD_REVENUE_GROWTH_NONPOSITIVE"
+        ],
+        "expected_net_return_12m": null,
+        "formal_Aplus": false
+      },
+      {
+        "rank": 3,
+        "code": "3219",
+        "name": "倚強科",
+        "market": "TPEX",
+        "reference_close": 109,
+        "price_date": "2026-11-10",
+        "rank_score": 0.907960199004975,
+        "base_price_upside_pct": 4.66,
+        "bear_price_upside_pct": -43.63,
+        "ocf_to_sales": -0.029017088408578643,
+        "warning_flags": [
+          "CURRENT_DETAIL_IS_OFFICIAL_BATCH_SUMMARY_NOT_ORIGINAL_ISSUER_NOTES",
+          "POST_SNAPSHOT_CB_TERMS_UNVERIFIED",
+          "NEGATIVE_OCF_CYCLE_AND_COLLECTION_REVIEW",
+          "INSIDER_SELL_RESEARCH_REVIEW_REQUIRED"
+        ],
+        "expected_net_return_12m": null,
+        "formal_Aplus": false
+      },
+      {
+        "rank": 4,
+        "code": "4155",
+        "name": "訊映",
+        "market": "TWSE",
+        "reference_close": 17.5,
+        "price_date": "2026-11-10",
+        "rank_score": 0.900497512437811,
+        "base_price_upside_pct": 68.32,
+        "bear_price_upside_pct": -8.74,
+        "ocf_to_sales": 0.23368260058762763,
+        "warning_flags": [
+          "CURRENT_DETAIL_IS_OFFICIAL_BATCH_SUMMARY_NOT_ORIGINAL_ISSUER_NOTES"
+        ],
+        "expected_net_return_12m": null,
+        "formal_Aplus": false
+      },
+      {
+        "rank": 5,
+        "code": "3287",
+        "name": "廣寰科",
+        "market": "TPEX",
+        "reference_close": 79.2,
+        "price_date": "2026-11-10",
+        "rank_score": 0.8955223880597015,
+        "base_price_upside_pct": -19.44,
+        "bear_price_upside_pct": -62.52,
+        "ocf_to_sales": 0.1380611880663696,
+        "warning_flags": [
+          "CURRENT_DETAIL_IS_OFFICIAL_BATCH_SUMMARY_NOT_ORIGINAL_ISSUER_NOTES"
+        ],
+        "expected_net_return_12m": null,
+        "formal_Aplus": false
+      },
+      {
+        "rank": 6,
+        "code": "6538",
+        "name": "倉和",
+        "market": "TPEX",
+        "reference_close": 309.5,
+        "price_date": "2026-11-10",
+        "rank_score": 0.8830845771144278,
+        "base_price_upside_pct": -89.42,
+        "bear_price_upside_pct": -99.17,
+        "ocf_to_sales": 0.10400622561801387,
+        "warning_flags": [
+          "CURRENT_DETAIL_IS_OFFICIAL_BATCH_SUMMARY_NOT_ORIGINAL_ISSUER_NOTES",
+          "POST_SNAPSHOT_CB_TERMS_UNVERIFIED"
+        ],
+        "expected_net_return_12m": null,
+        "formal_Aplus": false
+      },
+      {
+        "rank": 7,
+        "code": "2059",
+        "name": "川湖",
+        "market": "TWSE",
+        "reference_close": 8565,
+        "price_date": "2026-11-10",
+        "rank_score": 0.8756218905472637,
+        "base_price_upside_pct": 58.94,
+        "bear_price_upside_pct": -11.29,
+        "ocf_to_sales": 0.35464723510153645,
+        "warning_flags": [
+          "CURRENT_DETAIL_IS_OFFICIAL_BATCH_SUMMARY_NOT_ORIGINAL_ISSUER_NOTES"
+        ],
+        "expected_net_return_12m": null,
+        "formal_Aplus": false
+      },
+      {
+        "rank": 8,
+        "code": "4979",
+        "name": "華星光",
+        "market": "TPEX",
+        "reference_close": 383,
+        "price_date": "2026-11-10",
+        "rank_score": 0.8631840796019901,
+        "base_price_upside_pct": -64.76,
+        "bear_price_upside_pct": -82.75,
+        "ocf_to_sales": 0.21262747796048154,
+        "warning_flags": [
+          "CURRENT_DETAIL_IS_OFFICIAL_BATCH_SUMMARY_NOT_ORIGINAL_ISSUER_NOTES",
+          "POST_SNAPSHOT_CB_TERMS_UNVERIFIED"
+        ],
+        "expected_net_return_12m": null,
+        "formal_Aplus": false
+      },
+      {
+        "rank": 9,
+        "code": "4721",
+        "name": "美琪瑪",
+        "market": "TPEX",
+        "reference_close": 68.8,
+        "price_date": "2026-11-10",
+        "rank_score": 0.8432835820895522,
+        "base_price_upside_pct": 95.58,
+        "bear_price_upside_pct": -6.96,
+        "ocf_to_sales": -0.12174705432239095,
+        "warning_flags": [
+          "CURRENT_DETAIL_IS_OFFICIAL_BATCH_SUMMARY_NOT_ORIGINAL_ISSUER_NOTES",
+          "CYCLICAL_SECTOR_RESEARCH_ONLY_PE_UNCHANGED_PENDING_BACKTEST",
+          "NEGATIVE_OCF_CYCLE_AND_COLLECTION_REVIEW"
+        ],
+        "expected_net_return_12m": null,
+        "formal_Aplus": false
+      },
+      {
+        "rank": 10,
+        "code": "4931",
+        "name": "新盛力",
+        "market": "TPEX",
+        "reference_close": 185.5,
+        "price_date": "2026-11-10",
+        "rank_score": 0.8258706467661692,
+        "base_price_upside_pct": 4.73,
+        "bear_price_upside_pct": -43.99,
+        "ocf_to_sales": 0.024436139570879086,
+        "warning_flags": [
+          "CURRENT_DETAIL_IS_OFFICIAL_BATCH_SUMMARY_NOT_ORIGINAL_ISSUER_NOTES",
+          "POST_SNAPSHOT_CB_TERMS_UNVERIFIED"
+        ],
+        "expected_net_return_12m": null,
+        "formal_Aplus": false
+      }
+    ]
+  },
+  "stats": {
+    "alpha_count": 10,
+    "v8_count": 10,
+    "overlap_count": 0,
+    "overlap_codes": [],
+    "v8_negative_base_upside_count": 4,
+    "v8_nonpositive_ocf_count": 2,
+    "v8_avg_unweighted_base_upside_pct": 11.63,
+    "v8_avg_unweighted_bear_upside_pct": -42.47,
+    "v8_bear_scenario_worst_pct": -99.17,
+    "v8_formal_a_plus_count": 0,
+    "v8_calibrated_expected_returns_count": 0,
+    "alpha_calibrated_expected_returns_count": 0,
+    "benchmark_0050_close": 99.7
+  },
+  "fair_pk_protocol": {
+    "not_backtest": true,
+    "reference_closes_are_not_executable_entry_fills": true,
+    "t0_minimum": "first verifiable executable quote strictly after both lists and information vintages are frozen",
+    "rebalance": "none before first 12-month study horizon, unless independently documented risk-exit policy is frozen before test",
+    "research_equal_weight_per_stock": 0.1,
+    "fees_tax_slippage": "must be matched and disclosed before reported return",
+    "dividends_corporate_actions": "must be included in investor total return",
+    "return_horizons": [
+      "21 sessions",
+      "63 sessions",
+      "126 sessions",
+      "252 sessions"
+    ],
+    "scorecard": [
+      "net total return",
+      "net benchmark excess vs 0050",
+      "max drawdown",
+      "worst scenario drawdown",
+      "turnover",
+      "PIT availability",
+      "execution feasibility"
+    ],
+    "missing_outcomes_are_null": true,
+    "no_lookahead": true,
+    "official_certification": false,
+    "live_buy_signal": false
+  },
+  "interpretation": "This preliminary match is not a model-vs-model expected-return test because AlphaMax is a research queue and V8 growth is only an uncalibrated screen. Prior dates and data vintages differ; benchmark and executions must begin after freeze. V8 scenario upside is not expected return."
+}

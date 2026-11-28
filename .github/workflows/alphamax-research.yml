@@ -1,0 +1,544 @@
+name: AlphaMax Independent Research
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'alphamax/**'
+      - 'scripts/alphamax_run.py'
+      - 'scripts/alphamax_0050_backfill.py'
+      - 'scripts/alphamax_0050_restore.py'
+      - 'scripts/alphamax_0050_actions_audit.py'
+      - 'scripts/alphamax_0050_cash_reference.py'
+      - 'scripts/alphamax_0050_current_month.py'
+      - 'scripts/alphamax_concentration.py'
+      - 'scripts/alphamax_universe_audit.py'
+      - 'scripts/alphamax_security_master.py'
+      - 'scripts/alphamax_delist.py'
+      - 'scripts/alphamax_tpex_delist.py'
+      - 'scripts/alphamax_pk_exhibition.py'
+      - 'scripts/alphamax_pk_shadow_monitor.py'
+      - 'scripts/alphamax_pit_pk_gap_audit.py'
+      - 'scripts/alphamax_reported_income.py'
+      - 'tests/test_alphamax.py'
+      - 'tests/test_alphamax_0050_backfill.py'
+      - 'tests/test_alphamax_0050_restore.py'
+      - 'tests/test_alphamax_0050_actions_audit.py'
+      - 'tests/test_alphamax_0050_cash_reference.py'
+      - 'tests/test_alphamax_0050_current_month.py'
+      - 'tests/test_alphamax_pk_exhibition.py'
+      - 'tests/test_alphamax_pk_shadow_monitor.py'
+      - 'tests/test_alphamax_pit_pk_gap_audit.py'
+      - 'tests/test_alphamax_concentration.py'
+      - 'tests/test_alphamax_earnings_bridge.py'
+      - 'tests/test_alphamax_reported_income.py'
+      - 'tests/test_alphamax_universe.py'
+      - 'tests/test_alphamax_security_master.py'
+      - 'tests/test_alphamax_delist.py'
+      - 'tests/test_alphamax_tpex_delist.py'
+      - '.github/workflows/alphamax-research.yml'
+  push:
+    branches:
+      - 'main'
+    paths:
+      - 'alphamax/**'
+      - 'scripts/alphamax_run.py'
+      - 'scripts/alphamax_reported_income.py'
+      - 'scripts/alphamax_0050_backfill.py'
+      - 'scripts/alphamax_pk_exhibition.py'
+      - 'tests/test_alphamax.py'
+      - 'tests/test_alphamax_0050_backfill.py'
+      - 'tests/test_alphamax_pk_exhibition.py'
+      - 'tests/test_alphamax_earnings_bridge.py'
+      - 'tests/test_alphamax_reported_income.py'
+      - '.github/workflows/alphamax-research.yml'
+  schedule:
+    # 16:50 Asia/Taipei, Mon-Fri; scheduled jobs only run from default branch.
+    - cron: '50 8 * * 1-5'
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: alphamax-research-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  contract-and-readiness:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run independent no-leakage and contract tests
+        run: python -m unittest -v tests.test_alphamax tests.test_alphamax_0050_backfill tests.test_alphamax_0050_restore tests.test_alphamax_0050_actions_audit tests.test_alphamax_0050_notice_receipts tests.test_alphamax_0050_milestones tests.test_alphamax_0050_cash_reference tests.test_alphamax_0050_current_month tests.test_alphamax_concentration tests.test_alphamax_earnings_bridge tests.test_alphamax_reported_income tests.test_alphamax_financial_vintages tests.test_alphamax_financial_notice_receipts tests.test_alphamax_universe tests.test_alphamax_security_master tests.test_alphamax_delist tests.test_alphamax_tpex_delist tests.test_alphamax_pk_exhibition tests.test_alphamax_pk_shadow_monitor tests.test_alphamax_pit_pk_gap_audit
+      - name: Audit official source readiness; never fabricate returns
+        run: |
+          python scripts/alphamax_run.py readiness --output alphamax-research-readiness.json
+      - name: Audit concentration readiness; never create an unverified buy signal
+        run: python scripts/alphamax_concentration.py --output alphamax-concentration-readiness.json
+      - name: Audit original historical issuer quote coverage without PIT claims
+        run: python scripts/alphamax_universe_audit.py --output alphamax-universe-readiness.json
+      - name: Discover previous successful AlphaMax raw-price cache
+        id: prior_0050
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ github.token }}
+          script: |
+            const { owner, repo } = context.repo;
+            const head = context.payload.pull_request?.head;
+            if (!head || head.repo?.full_name !== `${owner}/${repo}`) {
+              core.info('External fork or no PR head: source cache not imported.');
+              return;
+            }
+            const runs = await github.rest.actions.listWorkflowRuns({
+              owner, repo, workflow_id: 'alphamax-research.yml',
+              branch: head.ref, event: 'pull_request',
+              status: 'success', per_page: 40
+            });
+            for (const run of runs.data.workflow_runs) {
+              if (run.id === context.runId ||
+                  run.head_repository?.full_name !== `${owner}/${repo}`) continue;
+              const response = await github.rest.actions.listWorkflowRunArtifacts({
+                owner, repo, run_id: run.id, per_page: 100
+              });
+              if (response.data.artifacts.some(x =>
+                    x.name === 'alphamax-readiness' && !x.expired)) {
+                core.setOutput('run_id', String(run.id));
+                core.info(`Using the original raw-price archive from completed CI run ${run.id}; not financial certification.`);
+                return;
+              }
+            }
+            core.info('No prior successful cache; begin from branch originals.');
+      - name: Retrieve previous verified-source research artifact
+        if: steps.prior_0050.outputs.run_id != ''
+        uses: actions/download-artifact@v4
+        with:
+          name: alphamax-readiness
+          run-id: ${{ steps.prior_0050.outputs.run_id }}
+          github-token: ${{ github.token }}
+          path: alphamax-prior-artifact
+      - name: Stage 0050 source cache outside the legacy V8 data tree
+        shell: bash
+        env:
+          PREVIOUS_RUN: ${{ steps.prior_0050.outputs.run_id }}
+        run: |
+          set -euo pipefail
+          opts=()
+          if [[ -n "${PREVIOUS_RUN}" ]]; then
+            opts=(--prior-artifact alphamax-prior-artifact)
+          fi
+          python -m scripts.alphamax_0050_restore \
+            --repo-root . --data-root alphamax-0050-data \
+            "${opts[@]}" --output alphamax-0050-restore-progress.json
+      - name: Capture bounded 0050 official monthly raw history (price only, never total returns)
+        # Preserve and reuse verified originals from the previous successful
+        # artifact; re-download only missing completed months, never a live fill.
+        run: |
+          python -m scripts.alphamax_0050_backfill \
+            --data-root alphamax-0050-data --max-requests 4 --start-month 2025-01 \
+            --output alphamax-0050-backfill-progress.json
+      - name: Refresh isolated 0050 current partial month against SHA-pinned daily quote
+        run: |
+          python -m scripts.alphamax_0050_current_month \
+            --data-root alphamax-0050-data \
+            --output alphamax-0050-current-month.json
+      - name: Capture six dated 0050 TWSE split and distribution notices with source hashes
+        run: python -m scripts.alphamax_0050_notices --output-dir alphamax-0050-notice-capture
+      - name: Reconcile original 0050 notice receipts and pre/post split unit entitlements
+        run: |
+          python -m scripts.alphamax_0050_actions_audit \
+            --packet alphamax-0050-data/prices/issuer_history/TWSE/0050.json \
+            --notice-root alphamax-0050-notice-capture \
+            --output alphamax-0050-action-gap.json
+      - name: Audit exact 0050 ex-dividend and split raw quote milestones without return claims
+        run: |
+          python -m scripts.alphamax_0050_milestones \
+            --price-root alphamax-0050-data \
+            --notice-root alphamax-0050-notice-capture \
+            --output alphamax-0050-milestone-gap.json
+      - name: Build 0050 daily non-reinvested gross dividend rights reference (NOT PIT or total return)
+        run: |
+          python -m scripts.alphamax_0050_cash_reference \
+            --price-root alphamax-0050-data \
+            --notice-root alphamax-0050-notice-capture \
+            --output alphamax-0050-gross-rights-reference.json
+      - name: Replay first mature 0050 pilot against independent market session receipts
+        run: |
+          python -m alphamax.benchmark_0050_market_calendar \
+            --price-root alphamax-0050-data \
+            --notice-root alphamax-0050-notice-capture \
+            --output-dir alphamax-0050-market-calendar
+      - name: Capture current official issuer profiles with original bytes and source receipts
+        run: python scripts/alphamax_security_master.py --output-dir alphamax-profile-capture
+      - name: Capture TWSE official retrospective delisting event ledger
+        run: python scripts/alphamax_delist.py --output-dir alphamax-delist-capture
+      - name: Probe TPEx historical termination pages with official original receipts
+        run: python scripts/alphamax_tpex_delist.py --output-dir alphamax-tpex-delist-capture --page-limit 15
+      - name: Inspect latest official main-branch quotes for frozen PK without claiming trading performance
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --depth=1 origin main
+          # The 2026-11-12 entry was frozen at this previously verified commit.
+          # Never silently rebase its prices when main republishes that date.
+          git fetch --depth=1 origin 6ea4b93db706265fc64b415e8080f14f89469eb4
+          mkdir -p alphamax-pk-source
+          git rev-parse origin/main > alphamax-pk-source/source-commit.txt
+          echo 6ea4b93db706265fc64b415e8080f14f89469eb4 > alphamax-pk-source/frozen-entry-commit.txt
+          git show origin/main:tw-market-data/prices/latest_manifest.json > alphamax-pk-source/manifest.json
+          python - <<'PY'
+          import json
+          import subprocess
+          from pathlib import Path
+
+          manifest = json.loads(Path("alphamax-pk-source/manifest.json").read_text(encoding="utf-8"))
+          path = manifest["path"]
+          if not path.startswith("tw-market-data/prices/") or not path.endswith(".json") or ".." in path:
+              raise SystemExit("UNSAFE_MAIN_PRICE_MANIFEST_PATH")
+          with Path("alphamax-pk-source/prices.json").open("wb") as out:
+              subprocess.run(["git", "show", "origin/main:" + path], stdout=out, check=True)
+          with Path("alphamax-pk-source/entry-prices.json").open("wb") as out:
+              subprocess.run(["git", "show", "6ea4b93db706265fc64b415e8080f14f89469eb4:tw-market-data/prices/2026-11-12.json"], stdout=out, check=True)
+          PY
+          python scripts/alphamax_pk_exhibition.py --manifest alphamax-pk-source/manifest.json --snapshot alphamax-pk-source/prices.json --output alphamax-pk-observation.json
+          python scripts/alphamax_pk_shadow_monitor.py --manifest alphamax-pk-source/manifest.json --latest alphamax-pk-source/prices.json --entry alphamax-pk-source/entry-prices.json --output alphamax-pk-shadow-price-only.json
+          python scripts/alphamax_pit_pk_gap_audit.py --repo . --source-ref origin/main --output alphamax-pk-training-gap-audit.json --history-cache alphamax-pk-source/issuer-history --benchmark-cache-root alphamax-0050-data
+      - name: Reuse immutable TPEx raw original pairs for first two-issuer mature interval
+        run: |
+          git fetch --depth=1 origin 4af98730bbc2706620a782cb41dafd98c40e068d
+          python - <<'PY'
+          import gzip
+          import hashlib
+          import json
+          import re
+          import subprocess
+          from pathlib import Path
+          from scripts.history_archive import canonical, digest
+          from scripts.v893_tpex_daily_backfill import parse_daily, daily_url
+
+          ref = "4af98730bbc2706620a782cb41dafd98c40e068d"
+          start, end = "2025-05-20", "2026-05-20"
+          codes = ("6274", "5274")
+          report = {"source_commit": ref, "start": start, "end": end,
+                    "status": "BLOCKED_TPEX_ORIGINAL_REPLAY", "errors": [],
+                    "verified_market_days": [], "formal_training_labels_added": 0,
+                    "independent_session_completeness_verified": False,
+                    "corporate_action_completeness_verified": False,
+                    "financial_pit_verified": False, "formal_a_plus": False}
+
+          def read(path):
+              return subprocess.check_output(["git", "show", ref + ":tw-market-data/" + path])
+
+          try:
+              packets = {}
+              for code in codes:
+                  raw = read("prices/issuer_history/TPEX/" + code + ".json")
+                  obj = json.loads(raw)
+                  if obj.get("issuer") != code or obj.get("market") != "TPEX":
+                      raise ValueError("ISSUER_IDENTITY_MISMATCH")
+                  packets[code] = obj
+                  report.setdefault("packet_sha256", {})[code] = digest(raw)
+              dates = {code: {day for day in packets[code]["by_day"] if start <= day <= end}
+                       for code in codes}
+              report["observed_dates_by_issuer"] = {code: len(days) for code, days in dates.items()}
+              if dates[codes[0]] != dates[codes[1]] or start not in dates[codes[0]] or end not in dates[codes[0]]:
+                  raise ValueError("OBSERVED_SESSION_SET_MISMATCH")
+              for day in sorted(dates[codes[0]]):
+                  rows = [packets[code]["by_day"][day] for code in codes]
+                  receipts = [row["original_archive"] for row in rows]
+                  source = receipts[0]
+                  if any(other != source for other in receipts):
+                      raise ValueError("SHARED_MARKET_RECEIPT_MISMATCH:" + day)
+                  if source.get("identity") != day or source.get("market") != "TPEX" or source.get("source_url") != daily_url(day):
+                      raise ValueError("RECEIPT_SOURCE_MISMATCH:" + day)
+                  prefix = "prices/originals/history/TPEX/" + day + "/"
+                  for key, suffix in (("receipt_path", ".json"), ("archive_path", ".json.gz")):
+                      value = source[key]
+                      if not value.startswith(prefix) or not re.fullmatch(r"[0-9a-f]{64}" + re.escape(suffix), value[len(prefix):]):
+                          raise ValueError("UNSAFE_RECEIPT_PATH:" + day)
+                  receipt_raw = read(source["receipt_path"])
+                  receipt = json.loads(receipt_raw)
+                  if receipt != {k: v for k, v in source.items() if k != "receipt_path"}:
+                      raise ValueError("RECEIPT_MISMATCH:" + day)
+                  raw = gzip.decompress(read(source["archive_path"]))
+                  if len(raw) != receipt["bytes"] or digest(raw) != receipt["original_response_sha256"]:
+                      raise ValueError("RAW_SHA256_MISMATCH:" + day)
+                  quotes = parse_daily(raw, day)
+                  for code, row in zip(codes, rows):
+                      if row["original_response_sha256"] != digest(raw) or quotes.get(code) != row["row"]:
+                          raise ValueError("RAW_ISSUER_ROW_MISMATCH:" + code + ":" + day)
+                      sessions = [x for x in packets[code]["sessions"] if x["date"] == day]
+                      if sessions != [row["row"]]:
+                          raise ValueError("DERIVED_SESSION_MISMATCH:" + code + ":" + day)
+                  report["verified_market_days"].append({"date": day, "raw_sha256": digest(raw),
+                      "receipt_sha256": digest(receipt_raw), "receipt_path": source["receipt_path"],
+                      "archive_path": source["archive_path"]})
+              report["status"] = "OBSERVED_RAW_QUOTES_REPLAYED_NOT_TOTAL_RETURN_OR_PIT"
+          except (OSError, ValueError, KeyError, TypeError, subprocess.CalledProcessError) as exc:
+              report["errors"].append(str(exc))
+          report["verified_market_day_count"] = len(report["verified_market_days"])
+          Path("alphamax-tpex-mature-pilot-raw-replay.json").write_text(
+              json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+          print(json.dumps({"status": report["status"], "days": report["verified_market_day_count"],
+                            "errors": report["errors"]}, ensure_ascii=False))
+          PY
+      - name: Preserve official TPEx historical ex-right and ex-dividend source for mature pilot
+        run: |
+          python - <<'PY'
+          import datetime as dt
+          import hashlib
+          import json
+          import urllib.parse
+          import urllib.request
+          from pathlib import Path
+
+          root = Path("alphamax-tpex-pilot-actions")
+          root.mkdir(exist_ok=True)
+          start, end = dt.date(2025, 5, 20), dt.date(2026, 5, 20)
+          base = "https://www.tpex.org.tw/www/zh-tw/bulletin/exDailyQ"
+          report = {"status": "BLOCKED_ACTION_LEDGER_NOT_ADMITTED",
+                    "start": start.isoformat(), "end": end.isoformat(),
+                    "codes": ["6274", "5274"], "receipts": [], "errors": [],
+                    "formal_training_labels_added": 0,
+                    "corporate_action_completeness_verified": False,
+                    "payment_schedule_verified": False, "formal_a_plus": False}
+
+          def roc(day):
+              return f"{day.year-1911}/{day.month:02d}/{day.day:02d}"
+
+          first = start
+          while first <= end:
+              last = min(first + dt.timedelta(days=89), end)
+              key = first.isoformat() + "_" + last.isoformat()
+              url = base + "?" + urllib.parse.urlencode({
+                  "startDate": roc(first), "endDate": roc(last), "response": "json"})
+              try:
+                  req = urllib.request.Request(url, headers={
+                      "User-Agent": "Mozilla/5.0", "Accept": "application/json",
+                      "Referer": "https://www.tpex.org.tw/"})
+                  with urllib.request.urlopen(req, timeout=25) as resp:
+                      actual = urllib.parse.urlsplit(resp.geturl())
+                      if (resp.status != 200 or actual.scheme != "https"
+                              or actual.hostname != "www.tpex.org.tw"
+                              or actual.path != urllib.parse.urlsplit(base).path):
+                          raise ValueError("UNEXPECTED_OFFICIAL_SOURCE_RESPONSE")
+                      raw = resp.read(8_000_001)
+                  if len(raw) > 8_000_000:
+                      raise ValueError("SOURCE_RESPONSE_TOO_LARGE")
+                  file = root / (key + ".json")
+                  file.write_bytes(raw)
+                  rec = {"from": first.isoformat(), "to": last.isoformat(),
+                         "url": url, "path": file.name, "bytes": len(raw),
+                         "sha256": hashlib.sha256(raw).hexdigest(),
+                         "captured_at_utc": dt.datetime.now(dt.timezone.utc).isoformat()}
+                  report["receipts"].append(rec)
+                  obj = json.loads(raw.decode("utf-8-sig"))
+                  if not isinstance(obj, dict) or str(obj.get("stat", "")).lower() != "ok":
+                      raise ValueError("SOURCE_JSON_STATUS_NOT_OK")
+                  tables = obj.get("tables")
+                  if not isinstance(tables, list) or not tables:
+                      raise ValueError("SOURCE_TABLES_MISSING")
+                  rec["tables"] = [{"title": t.get("title"), "fields": t.get("fields"),
+                                    "rows": len(t["data"]) if isinstance(t.get("data"), list) else None}
+                                   for t in tables if isinstance(t, dict)]
+                  rec["candidate_rows"] = []
+                  for table in tables:
+                      if not isinstance(table, dict):
+                          continue
+                      fields, data = table.get("fields"), table.get("data")
+                      if not isinstance(fields, list) or not isinstance(data, list):
+                          continue
+                      indices = [i for i, name in enumerate(fields)
+                                 if str(name).replace(" ", "") in ("股票代號", "證券代號", "代號")]
+                      if len(indices) != 1:
+                          continue
+                      i = indices[0]
+                      for row in data:
+                          if isinstance(row, list) and len(row) == len(fields) and str(row[i]).strip() in report["codes"]:
+                              rec["candidate_rows"].append({"fields": fields, "row": row})
+                  rec["parsed_status"] = "SOURCE_TABLE_CAPTURED_PENDING_RANGE_AND_EVENT_AUDIT"
+              except (OSError, ValueError, TypeError, KeyError) as exc:
+                  report["errors"].append({"range": key, "url": url, "reason": str(exc)})
+              first = last + dt.timedelta(days=1)
+          report["requested_ranges"] = 5
+          report["parsed_ranges"] = sum("parsed_status" in rec for rec in report["receipts"])
+          (root / "capture-manifest.json").write_text(
+              json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+          print(json.dumps({"status": report["status"], "parsed_ranges": report["parsed_ranges"],
+                            "errors": report["errors"]}, ensure_ascii=False))
+          PY
+      - name: Reconcile focus-company reported income from pinned shared source bytes
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          import subprocess
+          import sys
+
+          root = Path('alphamax-reported-source')
+          output = Path('alphamax-reported-income.json')
+          source_ref_file = Path('alphamax-pk-source/source-commit.txt')
+          try:
+              source_ref = source_ref_file.read_text().strip()
+              import re
+              if not re.fullmatch(r'[0-9a-f]{40}', source_ref):
+                  raise ValueError('INVALID_PINNED_SHARED_SOURCE_COMMIT')
+              def preserve(path):
+                  if (not path.startswith('tw-market-data/financial/') or not path.endswith('.json')
+                          or '..' in Path(path).parts):
+                      raise ValueError('UNSAFE_SHARED_FINANCIAL_PATH')
+                  dest = root / path
+                  dest.parent.mkdir(parents=True, exist_ok=True)
+                  with dest.open('wb') as handle:
+                      subprocess.run(['git', 'show', source_ref + ':' + path], stdout=handle, check=True)
+                  return dest
+              manifest_path = preserve('tw-market-data/financial/latest_manifest.json')
+              manifest = json.loads(manifest_path.read_text())
+              sources = [s for s in manifest['sources'] if s.get('kind') == 'TWSE_income']
+              if len(sources) != 1:
+                  raise ValueError('UNIQUE_SHARED_INCOME_SOURCE_REQUIRED')
+              preserve(sources[0]['path'])
+              subprocess.run([
+                  sys.executable, 'scripts/alphamax_reported_income.py',
+                  '--source-root', str(root), '--source-ref-file', str(source_ref_file),
+                  '--money-unit', 'TWD_thousands', '--period-basis', 'year_to_date',
+                  '--output', str(output)
+              ], check=True)
+          except (OSError, ValueError, KeyError, TypeError, subprocess.CalledProcessError) as exc:
+              output.write_text(json.dumps({'status': 'BLOCKED_REPORTED_FACTS', 'reason': str(exc),
+                                           'buy_signal': False, 'investment_certified': False}) + '\n')
+              print('Reported-income source gap remains explicitly BLOCKED:', exc)
+          PY
+      - name: Publish separate engineering and investment-readiness status
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          research = json.loads(Path("alphamax-research-readiness.json").read_text())
+          concentration = json.loads(Path("alphamax-concentration-readiness.json").read_text())
+          universe = json.loads(Path("alphamax-universe-readiness.json").read_text())
+          profile_file = Path("alphamax-profile-capture/capture-manifest.json")
+          profiles = json.loads(profile_file.read_text()) if profile_file.exists() else {"status": "CAPTURE_MANIFEST_MISSING", "profile_count": 0}
+          delist_file = Path("alphamax-delist-capture/capture-manifest.json")
+          delist = json.loads(delist_file.read_text()) if delist_file.exists() else {"status": "CAPTURE_MANIFEST_MISSING", "event_count": 0}
+          tpex_file = Path("alphamax-tpex-delist-capture/capture-manifest.json")
+          tpex_delist = json.loads(tpex_file.read_text()) if tpex_file.exists() else {"status": "CAPTURE_MANIFEST_MISSING", "event_count": 0}
+          pk_file = Path("alphamax-pk-observation.json")
+          pk = json.loads(pk_file.read_text()) if pk_file.exists() else {"status": "PK_OBSERVATION_MISSING"}
+          shadow_file = Path("alphamax-pk-shadow-price-only.json")
+          shadow = json.loads(shadow_file.read_text()) if shadow_file.exists() else {"status": "PK_SHADOW_MISSING"}
+          gap_file = Path("alphamax-pk-training-gap-audit.json")
+          gap = json.loads(gap_file.read_text()) if gap_file.exists() else {"status": "PK_TRAINING_GAP_AUDIT_MISSING"}
+          income_file = Path("alphamax-reported-income.json")
+          income = json.loads(income_file.read_text()) if income_file.exists() else {"status": "BLOCKED_REPORTED_FACTS"}
+          backfill_file = Path("alphamax-0050-backfill-progress.json")
+          backfill = json.loads(backfill_file.read_text()) if backfill_file.exists() else {"status": "BLOCKED_0050_SOURCE_CAPTURE_MISSING"}
+          restore_file = Path("alphamax-0050-restore-progress.json")
+          restore = json.loads(restore_file.read_text()) if restore_file.exists() else {"status": "BLOCKED_0050_CACHE_RESTORE_MISSING"}
+          action_file = Path("alphamax-0050-action-gap.json")
+          action = json.loads(action_file.read_text()) if action_file.exists() else {"status": "BLOCKED_0050_CORPORATE_ACTION_AUDIT_MISSING"}
+          current_month_file = Path("alphamax-0050-current-month.json")
+          current_month = json.loads(current_month_file.read_text()) if current_month_file.exists() else {"status": "BLOCKED_CURRENT_MONTH_CAPTURE_MISSING", "raw_current_month_verified": False}
+          cash_reference_file = Path("alphamax-0050-gross-rights-reference.json")
+          cash_reference = json.loads(cash_reference_file.read_text()) if cash_reference_file.exists() else {"status": "BLOCKED_0050_GROSS_RIGHTS_REFERENCE_MISSING", "days": 0}
+          milestone_file = Path("alphamax-0050-milestone-gap.json")
+          milestone = json.loads(milestone_file.read_text()) if milestone_file.exists() else {"status": "BLOCKED_0050_MILESTONE_REPORT_MISSING", "aligned_milestones": 0}
+          notices_file = Path("alphamax-0050-notice-capture/capture-manifest.json")
+          notices = json.loads(notices_file.read_text()) if notices_file.exists() else {"status": "BLOCKED_0050_NOTICE_CAPTURE_NOT_RUN", "attempted": 6, "receipt_verified_count": 0}
+          with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as out:
+              out.write("## AlphaMax verification — do not confuse CI with trading approval\n\n")
+              out.write("- Code regression CI: **executed separately above**\n")
+              out.write("- Historical data/PIT readiness: **%s**\n" % research["status"])
+              out.write("- Concentration allocation readiness: **%s**\n" % concentration["status"])
+              out.write("- Focus-company reported income: **%s**, reconciled **%s/%s**; YTD facts only, no annual EPS forecasts or diluted-share inference.\n" % (income.get("status"), income.get("reconciled_count", 0), income.get("requested_count", 4)))
+              out.write("- Issuer-history coverage: **%s**\n" % universe["status"])
+              out.write("- Current official company roster capture: **%s**, %s issuer profiles\n" % (profiles["status"], profiles.get("profile_count", 0)))
+              out.write("- Historical listed/delisted membership certified: **NO** (current profiles cannot supply past membership)\n")
+              out.write("- Prior AlphaMax raw-price cache: **%s**, reused months **%s**. CI scratch data kept separate from V8.\\n" % (restore.get("status", "BLOCKED"), restore.get("months_restored", "N/A")))
+              out.write("- 0050 split/dividend action audit: **%s**; crossing 2025 4:1 split: **%s**; candidate distributions awaiting original issuer notices: **%s**. NO adjusted returns or verified OOS.\\n" % (action.get("status", "BLOCKED"), action.get("raw_prices_span_split_date", "unknown"), len(action.get("cash_distribution_reference_candidates", []))))
+              out.write("- 0050 current-month original source versus daily SHA quote: **%s**, verified **%s**, raw quote date **%s** (no historical PIT / total return).\n" % (current_month.get("status", "BLOCKED"), current_month.get("raw_current_month_verified", False), current_month.get("latest_current_month_quote_date", "MISSING")))
+              out.write("- 0050 1-original-unit gross entitlement daily reference: **%s**, price observations **%s**, NOT historical PIT, actual bank receipts, trading performance or certified total return.\n" % (cash_reference.get("status", "BLOCKED"), cash_reference.get("days", 0)))
+              out.write("- 0050 date-exact price/split/dividend milestones: **%s**, %s observed; missing %s; NOT certified total return or historical PIT.\n" % (milestone.get("status", "BLOCKED"), milestone.get("aligned_milestones", 0), len(milestone.get("missing_or_unverified_milestones", []))))
+              out.write("- 0050 linked notice checksum verification: **%s**, validated **%s/6**; theoretical continuous-holding gross cash entitlement references **%s**, never actual payment or realized total returns.\n" % (action.get("retrospective_notice_reverification", {}).get("status", "BLOCKED"), action.get("retrospective_notice_reverification", {}).get("verified_count", 0), len(action.get("continuous_holding_reference_cash_entitlements", []))))
+              out.write("- 0050 retrospective TWSE notices: **%s**, %s/%s captured with SHA receipts; as-of publication version, actual payment, split holdings, and certified total returns still **BLOCKED**.\n" % (notices.get("status", "BLOCKED"), notices.get("receipt_verified_count", 0), notices.get("attempted", 6)))
+              out.write("- 0050 official raw-price monthly backfill: **%s**; branch quote reference **%s**; requested months **%s**; still lacking durable original source **%s**; observed unadjusted sessions **%s**. Dividends, splits, total returns and PIT remain **BLOCKED**.\\n" %
+                        (backfill.get("status", "BLOCKED"), backfill.get("asof", "N/A"),
+                         len(backfill.get("requested_months_this_run", [])),
+                         len(backfill.get("remaining_completed_months_without_durable_original_receipts", [])),
+                         backfill.get("available_unadjusted_sessions", "N/A")))
+              out.write("- TWSE official historical termination-date ledger: **%s**, %s events\n" % (delist["status"], delist["event_count"]))
+              out.write("- TPEx termination page status: **%s**; observed rows **%s**, explicit effective dates **%s**\n" % (tpex_delist["status"], tpex_delist["event_count"], tpex_delist.get("explicit_effective_dates", 0)))
+              out.write("- Historical announced-at vintage, full delisted stock universe and investor total return: **NOT CERTIFIED**\n")
+              out.write("- Historical price records / latest snapshot: **%s / %s**\n" % (universe.get("counts", {}).get("present_in_snapshot_with_history", 0), universe.get("current_quote_snapshot_securities", 0)))
+              out.write("- Companies with >= 756 preserved observed sessions: **%s** (observation count, not PIT audit)\n" % universe.get("counts", {}).get("history_files_ge_min_sessions", 0))
+              out.write("- Snapshot rows with no valid close (not executable): **%s**\n" % universe.get("current_quote_rows_without_positive_close", 0))
+              out.write("- Historical sessions with missing/invalid close: **%s** (not counted as priced sessions)\n" % universe.get("counts", {}).get("unpriced_historical_sessions", 0))
+              out.write("- Live buy authorization: **NO**\n\n")
+              out.write("### Frozen PK exhibition (NOT model vs model)\n\n")
+              out.write("- Observation: **%s**; official winner: **NONE**\n" % pk["status"])
+              obs = pk.get("observation", {})
+              out.write("- Main-branch official raw quote session: **%s** (NO trades or dividend adjustments)\n" % obs.get("observation_price_date", "unknown"))
+              for lane, label in (("alpha_lane", "Alpha human triage"), ("v8_lane", "V8 Growth research")):
+                  stat = obs.get("lanes", {}).get(lane, {})
+                  out.write("- %s raw quote coverage: **%s/10**; unadjusted baseline change: **%s%%**, NOT INVESTABLE\n" %
+                            (label, stat.get("quote_coverage", "not checked"), stat.get("raw_equal_weight_close_change_pct", "N/A")))
+              out.write("- Both lanes: **not certified**; no verified execution, cash dividends, corporate actions or true model-vs-model 12m outcomes\n\n")
+              out.write("### Prospective post-freeze quote-only shadow monitor (NO live fills)\n\n")
+              out.write("- Status: **%s**; pinned post-freeze entry proxy **%s**; last session **%s**\n" % (shadow["status"], shadow.get("entry_price_date", "N/A"), shadow.get("last_price_date", "N/A")))
+              out.write("- Pinned original entry Git blob: **%s**\n" % shadow.get("entry_price_source_git_blob_sha", "MISSING"))
+              for lane, label in (("alpha_lane", "Alpha human triage"), ("v8_lane", "V8 Growth research")):
+                  stat = shadow.get("lanes", {}).get(lane, {})
+                  out.write("- %s: **%s/10** raw quotes; cumulative unadjusted price-only change **%s%%**\n" % (label, stat.get("complete_quote_count", "missing"), stat.get("equal_initial_capital_unadjusted_price_change_pct", "N/A")))
+              out.write("- 0050 raw price-only comparison: **%s%%**; **NOT** dividend/corporate-action adjusted, investable P&L, a backtest, or a winner\n\n" % shadow.get("benchmark_0050", {}).get("raw_price_only_change_pct", "N/A"))
+              out.write("### Independent historical training-evidence gap audit\n\n")
+              out.write("- Audit state: **%s**; source main SHA: %s\n" % (gap["status"], gap.get("main_source_commit", "unknown")))
+              out.write("- 0050 quote evidence used in gap audit: **%s** (raw price only, not investor total return).\n" % gap.get("benchmark_0050_quote_source", {}).get("status", "UNAVAILABLE"))
+              benchmark = gap.get("benchmark_0050", {})
+              out.write("- 0050 saved quoted sessions / calendar span: **%s / %s days**; 12m raw-span candidate: **%s**\n" % (benchmark.get("priced_sessions", "missing"), benchmark.get("calendar_span_days", "missing"), benchmark.get("potential_12m_price_only_span", False)))
+              for lane, label in (("alpha_lane", "Alpha human research"), ("v8_lane", "V8 Growth research")):
+                  ls = gap.get("lanes", {}).get(lane, {})
+                  out.write("- %s: files **%s/10**; 12m raw-quote spans **%s/10**; verified PIT universe **%s/10**; verified dividend paths **%s/10**\n" % (label, ls.get("history_files", "missing"), ls.get("raw_quote_spans_at_least_12m", "missing"), ls.get("historical_PIT_universe_verified_count", "missing"), ls.get("adjusted_dividend_return_verified_count", "missing")))
+              out.write("- Certified model walk-forward training labels: **0**; real model-vs-model PK: **BLOCKED**\n")
+              out.write("- Critical blockers: **%s**\n\n" % ", ".join(gap.get("blockers", [])))
+              for issue in research.get("blockers", []):
+                  out.write("- Data blocker: %s\n" % issue)
+              for issue in research.get("warnings", []):
+                  out.write("- Data warning: %s\n" % issue)
+              if concentration.get("reason"):
+                  out.write("- Allocation blocker: %s\n" % concentration["reason"])
+              out.write("\nReference: GitHub issue #179. Synthetic tests cannot certify expected returns.\n")
+          PY
+      - name: Publish readiness as artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: alphamax-readiness
+          path: |
+            alphamax-research-readiness.json
+            alphamax-concentration-readiness.json
+            alphamax-universe-readiness.json
+            alphamax-pk-observation.json
+            alphamax-pk-shadow-price-only.json
+            alphamax-pk-training-gap-audit.json
+            alphamax-tpex-mature-pilot-raw-replay.json
+            alphamax-tpex-pilot-actions/
+            alphamax-reported-income.json
+            alphamax-reported-source/
+            alphamax-0050-backfill-progress.json
+            alphamax-0050-restore-progress.json
+            alphamax-0050-action-gap.json
+            alphamax-0050-milestone-gap.json
+            alphamax-0050-gross-rights-reference.json
+            alphamax-0050-current-month.json
+            alphamax-0050-notice-capture/
+            alphamax-0050-market-calendar/
+            alphamax-0050-data/prices/issuer_history/TWSE/0050.json
+            alphamax-0050-data/prices/originals/history/TWSE/0050-*/
+            alphamax-pk-source/
+            alphamax-profile-capture/
+            alphamax-delist-capture/
+            alphamax-tpex-delist-capture/
+          if-no-files-found: warn
+          retention-days: 90

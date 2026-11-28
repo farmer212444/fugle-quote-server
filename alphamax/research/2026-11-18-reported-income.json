@@ -1,0 +1,286 @@
+{
+  "status": "RESEARCH_REPORTED_FACTS_ONLY",
+  "asof": "2026-11-17T23:17:11.633681+00:00",
+  "source_commit": "de6c94b35e69ac36a6b434da8526ccacae89517f",
+  "source_capture_declared_at": "2026-11-16T21:16:14.647766+00:00",
+  "source_period": "2026Q3",
+  "manifest_sha256": "78128f5b4fb0290cadf8d9d4aa9cd513f738fe587b4b82b0c32706cf1897a533",
+  "normalized_file_sha256": "ec4ef29fd47dca78e3f6498d6bb83f656254cc1a79adf493a3815b163a49be1b",
+  "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap06_L_ci",
+  "source_path": "tw-market-data/financial/2026Q3/TWSE_income.json",
+  "source_row_count": 1001,
+  "declared_units": {
+    "money": "TWD_thousands",
+    "eps": "TWD_per_share",
+    "period_basis": "year_to_date"
+  },
+  "source_original_bytes_authenticated": false,
+  "issuer_publication_timestamps_verified": false,
+  "requested_count": 4,
+  "reconciled_count": 4,
+  "issuers": [
+    {
+      "code": "2330",
+      "name": "台積電",
+      "fiscal_period": "2026Q3",
+      "period_basis": "year_to_date",
+      "covered_months": 9,
+      "source_batch_date": "1151116",
+      "status": "RECONCILED_REPORTED_FACTS_ONLY",
+      "reported_amounts_twd": {
+        "revenue_twd": 3898726974000.0,
+        "cost_of_revenue_twd": 1294742208000.0,
+        "gross_profit_twd": 2603984766000.0,
+        "net_gross_profit_twd": 2603984766000.0,
+        "operating_expenses_twd": 309424177000.0,
+        "operating_profit_twd": 2302013957000.0,
+        "net_nonoperating_income_twd": 159254586000.0,
+        "pretax_profit_twd": 2461268543000.0,
+        "tax_expense_twd": 418345489000.0,
+        "net_profit_twd": 2042923054000.0,
+        "parent_profit_twd": 2042106112000.0,
+        "noncontrolling_profit_twd": 816942000.0
+      },
+      "reported_basic_eps_twd": 78.75,
+      "calculated_diluted_eps_twd": null,
+      "operating_inputs_for_same_reported_period_only": {
+        "revenue_twd": 3898726974000.0,
+        "gross_margin": 0.667906417496164,
+        "operating_expenses_twd": 309424177000.0,
+        "other_operating_income_twd": 7453368000.0,
+        "net_nonoperating_income_twd": 159254586000.0,
+        "effective_tax_rate": 0.16997149302939757,
+        "noncontrolling_profit_twd": 816942000.0,
+        "diluted_shares": null,
+        "exit_pe": null,
+        "net_dividends_per_share_twd": null
+      },
+      "other_operating_income_basis": "SEPARATELY_REPORTED",
+      "discontinued_profit_basis": "BLANK_NOT_SEPARATELY_REPORTED_ZERO_USED_FOR_RECONCILIATION_ONLY",
+      "checks": {
+        "revenue_less_cost_to_gross_profit": true,
+        "operating_profit_including_other_operating_income": true,
+        "operating_plus_nonoperating_to_pretax": true,
+        "pretax_less_tax_plus_discontinued_to_net": true,
+        "parent_plus_noncontrolling_to_net": true
+      },
+      "residuals_twd": {
+        "revenue_less_cost_to_gross_profit": 0.0,
+        "operating_profit_including_other_operating_income": 0.0,
+        "operating_plus_nonoperating_to_pretax": 0.0,
+        "pretax_less_tax_plus_discontinued_to_net": 0.0,
+        "parent_plus_noncontrolling_to_net": 0.0
+      },
+      "independent_operating_line_check": true,
+      "bridge_ready_for_forecast": false,
+      "buy_signal": false,
+      "blockers": [
+        "ACTUAL_DILUTED_WEIGHTED_AVERAGE_SHARES_NOT_IN_SUMMARY",
+        "FORWARD_OPERATING_ASSUMPTIONS_NOT_ESTIMATED",
+        "COMPLETE_STATEMENTS_AND_NOTES_NOT_REVIEWED"
+      ]
+    },
+    {
+      "code": "2317",
+      "name": "鴻海",
+      "fiscal_period": "2026Q3",
+      "period_basis": "year_to_date",
+      "covered_months": 9,
+      "source_batch_date": "1151116",
+      "status": "RECONCILED_REPORTED_FACTS_ONLY",
+      "reported_amounts_twd": {
+        "revenue_twd": 7661061739000.0,
+        "cost_of_revenue_twd": 7194034566000.0,
+        "gross_profit_twd": 467027173000.0,
+        "net_gross_profit_twd": 467027173000.0,
+        "operating_expenses_twd": 181225003000.0,
+        "operating_profit_twd": 285802170000.0,
+        "net_nonoperating_income_twd": 1807472000.0,
+        "pretax_profit_twd": 287609642000.0,
+        "tax_expense_twd": 69696628000.0,
+        "net_profit_twd": 217913014000.0,
+        "parent_profit_twd": 187416909000.0,
+        "noncontrolling_profit_twd": 30496105000.0
+      },
+      "reported_basic_eps_twd": 13.35,
+      "calculated_diluted_eps_twd": null,
+      "operating_inputs_for_same_reported_period_only": {
+        "revenue_twd": 7661061739000.0,
+        "gross_margin": 0.06096115511281092,
+        "operating_expenses_twd": 181225003000.0,
+        "other_operating_income_twd": 0.0,
+        "net_nonoperating_income_twd": 1807472000.0,
+        "effective_tax_rate": 0.24233063785810074,
+        "noncontrolling_profit_twd": 30496105000.0,
+        "diluted_shares": null,
+        "exit_pe": null,
+        "net_dividends_per_share_twd": null
+      },
+      "other_operating_income_basis": "ALGEBRAIC_RESIDUAL_NOT_SEPARATELY_REPORTED",
+      "discontinued_profit_basis": "BLANK_NOT_SEPARATELY_REPORTED_ZERO_USED_FOR_RECONCILIATION_ONLY",
+      "checks": {
+        "revenue_less_cost_to_gross_profit": true,
+        "operating_profit_including_other_operating_income": true,
+        "operating_plus_nonoperating_to_pretax": true,
+        "pretax_less_tax_plus_discontinued_to_net": true,
+        "parent_plus_noncontrolling_to_net": true
+      },
+      "residuals_twd": {
+        "revenue_less_cost_to_gross_profit": 0.0,
+        "operating_profit_including_other_operating_income": 0.0,
+        "operating_plus_nonoperating_to_pretax": 0.0,
+        "pretax_less_tax_plus_discontinued_to_net": 0.0,
+        "parent_plus_noncontrolling_to_net": 0.0
+      },
+      "independent_operating_line_check": false,
+      "bridge_ready_for_forecast": false,
+      "buy_signal": false,
+      "blockers": [
+        "ACTUAL_DILUTED_WEIGHTED_AVERAGE_SHARES_NOT_IN_SUMMARY",
+        "FORWARD_OPERATING_ASSUMPTIONS_NOT_ESTIMATED",
+        "COMPLETE_STATEMENTS_AND_NOTES_NOT_REVIEWED"
+      ]
+    },
+    {
+      "code": "6206",
+      "name": "飛捷",
+      "fiscal_period": "2026Q3",
+      "period_basis": "year_to_date",
+      "covered_months": 9,
+      "source_batch_date": "1151116",
+      "status": "RECONCILED_REPORTED_FACTS_ONLY",
+      "reported_amounts_twd": {
+        "revenue_twd": 5135677000.0,
+        "cost_of_revenue_twd": 2808853000.0,
+        "gross_profit_twd": 2326824000.0,
+        "net_gross_profit_twd": 2326824000.0,
+        "operating_expenses_twd": 829254000.0,
+        "operating_profit_twd": 1497570000.0,
+        "net_nonoperating_income_twd": 38124000.0,
+        "pretax_profit_twd": 1535694000.0,
+        "tax_expense_twd": 314091000.0,
+        "net_profit_twd": 1221603000.0,
+        "parent_profit_twd": 1237383000.0,
+        "noncontrolling_profit_twd": -15780000.0
+      },
+      "reported_basic_eps_twd": 8.65,
+      "calculated_diluted_eps_twd": null,
+      "operating_inputs_for_same_reported_period_only": {
+        "revenue_twd": 5135677000.0,
+        "gross_margin": 0.4530705494134464,
+        "operating_expenses_twd": 829254000.0,
+        "other_operating_income_twd": 0.0,
+        "net_nonoperating_income_twd": 38124000.0,
+        "effective_tax_rate": 0.20452707375297421,
+        "noncontrolling_profit_twd": -15780000.0,
+        "diluted_shares": null,
+        "exit_pe": null,
+        "net_dividends_per_share_twd": null
+      },
+      "other_operating_income_basis": "ALGEBRAIC_RESIDUAL_NOT_SEPARATELY_REPORTED",
+      "discontinued_profit_basis": "BLANK_NOT_SEPARATELY_REPORTED_ZERO_USED_FOR_RECONCILIATION_ONLY",
+      "checks": {
+        "revenue_less_cost_to_gross_profit": true,
+        "operating_profit_including_other_operating_income": true,
+        "operating_plus_nonoperating_to_pretax": true,
+        "pretax_less_tax_plus_discontinued_to_net": true,
+        "parent_plus_noncontrolling_to_net": true
+      },
+      "residuals_twd": {
+        "revenue_less_cost_to_gross_profit": 0.0,
+        "operating_profit_including_other_operating_income": 0.0,
+        "operating_plus_nonoperating_to_pretax": 0.0,
+        "pretax_less_tax_plus_discontinued_to_net": 0.0,
+        "parent_plus_noncontrolling_to_net": 0.0
+      },
+      "independent_operating_line_check": false,
+      "bridge_ready_for_forecast": false,
+      "buy_signal": false,
+      "blockers": [
+        "ACTUAL_DILUTED_WEIGHTED_AVERAGE_SHARES_NOT_IN_SUMMARY",
+        "FORWARD_OPERATING_ASSUMPTIONS_NOT_ESTIMATED",
+        "COMPLETE_STATEMENTS_AND_NOTES_NOT_REVIEWED"
+      ]
+    },
+    {
+      "code": "9802",
+      "name": "鈺齊-KY",
+      "fiscal_period": "2026Q3",
+      "period_basis": "year_to_date",
+      "covered_months": 9,
+      "source_batch_date": "1151116",
+      "status": "RECONCILED_REPORTED_FACTS_ONLY",
+      "reported_amounts_twd": {
+        "revenue_twd": 14369046000.0,
+        "cost_of_revenue_twd": 12334419000.0,
+        "gross_profit_twd": 2034627000.0,
+        "net_gross_profit_twd": 2034627000.0,
+        "operating_expenses_twd": 1357405000.0,
+        "operating_profit_twd": 677222000.0,
+        "net_nonoperating_income_twd": -37987000.0,
+        "pretax_profit_twd": 639235000.0,
+        "tax_expense_twd": 147304000.0,
+        "net_profit_twd": 491931000.0,
+        "parent_profit_twd": 493828000.0,
+        "noncontrolling_profit_twd": -1897000.0
+      },
+      "reported_basic_eps_twd": 2.46,
+      "calculated_diluted_eps_twd": null,
+      "operating_inputs_for_same_reported_period_only": {
+        "revenue_twd": 14369046000.0,
+        "gross_margin": 0.14159791819164613,
+        "operating_expenses_twd": 1357405000.0,
+        "other_operating_income_twd": 0.0,
+        "net_nonoperating_income_twd": -37987000.0,
+        "effective_tax_rate": 0.230437945356559,
+        "noncontrolling_profit_twd": -1897000.0,
+        "diluted_shares": null,
+        "exit_pe": null,
+        "net_dividends_per_share_twd": null
+      },
+      "other_operating_income_basis": "ALGEBRAIC_RESIDUAL_NOT_SEPARATELY_REPORTED",
+      "discontinued_profit_basis": "BLANK_NOT_SEPARATELY_REPORTED_ZERO_USED_FOR_RECONCILIATION_ONLY",
+      "checks": {
+        "revenue_less_cost_to_gross_profit": true,
+        "operating_profit_including_other_operating_income": true,
+        "operating_plus_nonoperating_to_pretax": true,
+        "pretax_less_tax_plus_discontinued_to_net": true,
+        "parent_plus_noncontrolling_to_net": true
+      },
+      "residuals_twd": {
+        "revenue_less_cost_to_gross_profit": 0.0,
+        "operating_profit_including_other_operating_income": 0.0,
+        "operating_plus_nonoperating_to_pretax": 0.0,
+        "pretax_less_tax_plus_discontinued_to_net": 0.0,
+        "parent_plus_noncontrolling_to_net": 0.0
+      },
+      "independent_operating_line_check": false,
+      "bridge_ready_for_forecast": false,
+      "buy_signal": false,
+      "blockers": [
+        "ACTUAL_DILUTED_WEIGHTED_AVERAGE_SHARES_NOT_IN_SUMMARY",
+        "FORWARD_OPERATING_ASSUMPTIONS_NOT_ESTIMATED",
+        "COMPLETE_STATEMENTS_AND_NOTES_NOT_REVIEWED"
+      ]
+    }
+  ],
+  "source": {
+    "commit": "de6c94b35e69ac36a6b434da8526ccacae89517f",
+    "declared_capture_at": "2026-11-16T21:16:14.647766+00:00",
+    "manifest_sha256": "78128f5b4fb0290cadf8d9d4aa9cd513f738fe587b4b82b0c32706cf1897a533",
+    "normalized_path": "tw-market-data/financial/2026Q3/TWSE_income.json",
+    "normalized_sha256": "ec4ef29fd47dca78e3f6498d6bb83f656254cc1a79adf493a3815b163a49be1b",
+    "declared_original_url": "https://openapi.twse.com.tw/v1/opendata/t187ap06_L_ci",
+    "declared_original_sha256": "f3ca3cfe090e5fbd3e8234d6d9a5e4676b4dfbf264552c391f03b636d444ea1e",
+    "original_bytes_independently_verified": false,
+    "declared_units": {
+      "money": "TWD_thousands",
+      "eps": "TWD_per_share",
+      "period_basis": "year_to_date"
+    }
+  },
+  "buy_signal": false,
+  "investment_certified": false,
+  "expected_net_return_12m": null,
+  "note": "Normalized-byte checks and arithmetic do not authenticate originals, issuer filing clocks, diluted shares, forward assumptions or investment eligibility. Focus-company coverage is not whole-market coverage."
+}
